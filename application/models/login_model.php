@@ -429,7 +429,7 @@ class login_model extends Model {
 
     function listarsms() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select("s.sms_id, s.numero, s.mensagem || ' Qualquer duvida, ligue para ' || e.celular || '.' as mensagem, controle_id, numero_indentificacao_sms as numero_indentificacao");
+        $this->db->select("s.sms_id, s.numero, s.mensagem, controle_id, numero_indentificacao_sms as numero_indentificacao");
         $this->db->from('tb_sms s');
         $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id');
         $this->db->join('tb_empresa_sms es', 'es.empresa_id = s.empresa_id');
@@ -440,10 +440,10 @@ class login_model extends Model {
         $this->db->where('s.empresa_id', $empresa_id);
         $return = $this->db->get()->result_array();
 
-        $this->db->set('enviado', 't');
-        $this->db->where('enviado', 'f');
-        $this->db->where('empresa_id', $empresa_id);
-        $this->db->update('tb_sms');
+//        $this->db->set('enviado', 't');
+//        $this->db->where('enviado', 'f');
+//        $this->db->where('empresa_id', $empresa_id);
+//        $this->db->update('tb_sms');
 
         return $return;
     }

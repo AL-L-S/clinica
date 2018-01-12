@@ -456,6 +456,7 @@ function debug($object) {
                                                 if ($this->session->userdata('recomendacao_configuravel') != "t") {
                                                     ?>
                                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter indica&ccedil;&atilde;o</a></span></ul>
+                                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Indicação</a></span></ul>
                                                 <? } ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/pesquisarfiladeimpressao">Fila de Impressão</a></span></ul>
                                                 <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/pesquisarmedicosolicitante">Editar Medico Solicitante</a></span></ul>
@@ -968,6 +969,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
                                         <? if ($this->session->userdata('recomendacao_configuravel') == "t") { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter Recomendação</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Recomendação</a></span></ul>
                                         <? } ?>
         <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>-->
                                     <? } ?>

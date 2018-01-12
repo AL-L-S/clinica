@@ -1,5 +1,5 @@
 <div class="content ficha_ceatox">
-        <h3 class="singular"><a href="#">Nova Indica&ccedil;&atilde;o</a></h3>
+        <h3 class="singular"><a href="#">Nova Indicação/Recomendação</a></h3>
         <div>
             <form name="form_indicacao" id="form_indicacao" action="<?= base_url() ?>ambulatorio/indicacao/gravar" method="post">
                 <fieldset>
@@ -8,11 +8,20 @@
                         <input type="hidden" name="paciente_indicacao_id" class="texto10" value="<?= @$obj->_paciente_indicacao_id; ?>" />
                         <input type="text" name="txtNome" id="txtNome" class="texto10" value="<?= @$obj->_nome; ?>" />
                     </div>
+                    <div>
+                        <label>Grupo</label>
+                        <select  name="grupo_id" id="grupo_id" class="size4">
+                            <option value="">Selecione</option>
+                            <? foreach ($grupo as $item) : ?>
+                                <option value="<?= $item->grupo_id; ?>" <?= (@$obj->_grupo_id == $item->grupo_id)? 'selected': ""?>><?= $item->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </div>
                 </fieldset>
-                    <hr>
-                    <button type="submit" name="btnEnviar">Enviar</button>
-                    <button type="reset" name="btnLimpar">Limpar</button>
-                    <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
+                <hr>
+                <button type="submit" name="btnEnviar">Enviar</button>
+                <button type="reset" name="btnLimpar">Limpar</button>
+                <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
             </form>
     </div>
 </div> <!-- Final da DIV content -->

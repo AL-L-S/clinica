@@ -35,13 +35,35 @@ class Indicacao extends BaseController {
 //            $this->carregarView($data);
     }
 
+    function pesquisargrupoindicacao($args = array()) {
+
+        $this->loadView('ambulatorio/grupoindicacao-lista', $args);
+
+//            $this->carregarView($data);
+    }
+
+    function carregargrupoindicacao($grupo_id) {
+        $data['grupo'] = $this->indicacao->carregargrupoindicacao($grupo_id);
+        $this->loadView('ambulatorio/grupoindicacao-form', $data);
+    }
+
     function carregarindicacao($exame_indicacao_id) {
         $obj_indicacao = new indicacao_model($exame_indicacao_id);
         $data['obj'] = $obj_indicacao;
-        $data['medicos'] = $this->operador_m->listarmedicos();
-        $data['procedimentos'] = $this->procedimento->listarprocedimentos();
+        $data['grupo'] = $this->indicacao->listargrupoindicacao();
 //        $this->load->View('ambulatorio/indicacao-form', $data);
         $this->loadView('ambulatorio/indicacao-form', $data);
+    }
+
+    function excluirgrupo($grupo_id) {
+        if ($this->indicacao->excluirgrupo($grupo_id)) {
+            $mensagem = 'Sucesso ao excluir o Grupo';
+        } else {
+            $mensagem = 'Erro ao excluir o Grupo. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/indicacao/pesquisargrupoindicacao");
     }
 
     function excluir($exame_indicacao_id) {
@@ -53,6 +75,17 @@ class Indicacao extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/indicacao");
+    }
+
+    function gravargrupo() {
+        $exame_indicacao_id = $this->indicacao->gravargrupo();
+        if ($exame_indicacao_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar o Grupo. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar o Grupo.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/indicacao/pesquisargrupoindicacao");
     }
 
     function gravar() {

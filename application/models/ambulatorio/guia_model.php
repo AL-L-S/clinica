@@ -586,7 +586,7 @@ class guia_model extends Model {
                             p.nome as paciente,
                             ae.procedimento_tuss_id,
                             pt.nome as exame,
-                            ag.tipo
+                            ag.tipo,
                             pt.grupo,
                             pt.descricao as procedimento,
                             pt.codigo');
@@ -2142,6 +2142,11 @@ class guia_model extends Model {
         } else {
             $this->db->where("p.indicacao is not null");
         }
+        
+        if ($_POST['grupo_indicacao'] != "0") {
+            $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
+        }
+        
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -2184,6 +2189,9 @@ class guia_model extends Model {
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo_indicacao'] != "0") {
+            $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
         }
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
@@ -2381,6 +2389,10 @@ class guia_model extends Model {
         } else {
             $this->db->where("ae.indicacao is not null");
         }
+        
+        if ($_POST['grupo_indicacao'] != "0") {
+            $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
+        }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -2517,6 +2529,11 @@ class guia_model extends Model {
         } else {
             $this->db->where("p.indicacao is not null");
         }
+        
+        if ($_POST['grupo_indicacao'] != "0") {
+            $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
+        }
+        
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }

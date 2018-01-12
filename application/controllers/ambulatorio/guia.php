@@ -2522,12 +2522,15 @@ class Guia extends BaseController {
     function relatorioindicacao() {
         $data['indicacao'] = $this->paciente->listaindicacao();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->indicacao->listargrupoindicacao();
         $this->loadView('ambulatorio/relatorioindicacao', $data);
     }
 
     function relatorioindicacaoexames() {
         $data['indicacao'] = $this->paciente->listaindicacao();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->indicacao->listargrupoindicacao();
+        
         $this->loadView('ambulatorio/relatorioindicacaoexames', $data);
     }
 

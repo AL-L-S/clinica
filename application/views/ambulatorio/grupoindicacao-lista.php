@@ -1,71 +1,52 @@
-<?
-$grupos = $this->indicacao->listargrupoindicacao();
-?>
+
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>ambulatorio/indicacao/carregarindicacao/0">
-            Nova Indicação
+        <a href="<?php echo base_url() ?>ambulatorio/indicacao/carregargrupoindicacao/0">
+            Novo Grupo
         </a>
     </div>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Indicação/Recomendação</a></h3>
+        <h3 class="singular"><a href="#">Manter Grupo Indicação/Recomendação</a></h3>
         <div>
             <table>
                 <thead>
-                    <form method="get" action="<?= base_url() ?>ambulatorio/indicacao/pesquisar">
-                        <tr>
-                            <th colspan="" class="tabela_title">Nome</th>
-                            <th colspan="" class="tabela_title">Grupo</th>
-                            <th colspan="" class="tabela_title"></th>
-                        </tr>
-                        <tr>
-                            <th colspan="" class="tabela_title">
+                    <tr>
+                        <th colspan="5" class="tabela_title">
+                            <form method="get" action="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">
                                 <input type="text" name="nome" class="texto10 bestupper" value="<?php echo @$_GET['nome']; ?>" />
-                            </th>
-                            <th colspan="" class="tabela_title">
-                                <select name="grupo_id" id="grupo_id" class="">
-                                    <option value="">Todos</option>
-                                    <? foreach ($grupos as $item) : ?>
-                                        <option value="<?= $item->grupo_id; ?>" <?= (@@$_GET['grupo_id'] == $item->grupo_id)? 'selected': ""?>><?= $item->nome; ?></option>
-                                    <? endforeach; ?>
-                                </select>
-                            </th>
-                            <th colspan="" class="tabela_title">
                                 <button type="submit" id="enviar">Pesquisar</button>
-                            </th>
-                        </tr>
-                    </form>
+                            </form>
+                        </th>
+                    </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th class="tabela_header">Grupo</th>
                         <th class="tabela_header">Detalhes</th>
                     </tr>
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->indicacao->listar($_GET);
+                $consulta = $this->indicacao->listargrupo($_GET);
                 $total = $consulta->count_all_results();
-                $limit = 10;
+                $limit = 15;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                 if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->indicacao->listar($_GET)->limit($limit, $pagina)->orderby('nome')->get()->result();
+                        $lista = $this->indicacao->listargrupo($_GET)->limit($limit, $pagina)->orderby('nome')->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
 
-                                    <a href="<?= base_url() ?>ambulatorio/indicacao/carregarindicacao/<?= $item->paciente_indicacao_id ?>">
+                                    <a href="<?= base_url() ?>ambulatorio/indicacao/carregargrupoindicacao/<?= $item->grupo_id ?>">
                                         editar
                                     </a>&zwnj;&nbsp;
-                                    <a href="<?= base_url() ?>ambulatorio/indicacao/excluir/<?= $item->paciente_indicacao_id ?>">
+                                    <a href="<?= base_url() ?>ambulatorio/indicacao/excluirgrupo/<?= $item->grupo_id ?>">
                                         excluir
                                     </a>
                                 </td>

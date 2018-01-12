@@ -18,5 +18,19 @@ $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
 
-
+-- Dia 10/01/2017
+CREATE TABLE ponto.tb_paciente_indicacao_grupo
+(
+    paciente_indicacao_grupo_id serial NOT NULL,
+    nome character varying(40),
+    ativo boolean DEFAULT true,
+    data_cadastro timestamp without time zone,
+    operador_cadastro integer,
+    data_atualizacao timestamp without time zone,
+    operador_atualizacao integer,
+    CONSTRAINT tb_paciente_indicacao_grupo_pkey PRIMARY KEY (paciente_indicacao_grupo_id)
+);
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN data_cadastro timestamp without time zone;
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN operador_cadastro integer;
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN grupo_id integer;
 
