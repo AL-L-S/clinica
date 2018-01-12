@@ -10749,9 +10749,9 @@ ORDER BY ae.agenda_exames_id)";
                 if ($_POST['ordenador'] != "") {
                     $this->db->set('ordenador', $_POST['ordenador']);
                 }
-//                if ($_POST['indicacao'] != "") {
-//                    $this->db->set('indicacao', $_POST['indicacao']);
-//                }
+                if ($_POST['indicacao'] != "") {
+                    $this->db->set('indicacao', $_POST['indicacao']);
+                }
                 if ($medico_id != "") {
                     $this->db->set('medico_solicitante', $medico_id);
                     $this->db->set('tipo', 'EXAME');
@@ -11088,6 +11088,10 @@ ORDER BY ae.agenda_exames_id)";
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('forma_pagamento', $_POST['formapamento']);
                 }
+                if ($_POST['indicacao'] != "") {
+                    $this->db->set('indicacao', $_POST['indicacao']);
+                }
+                
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('quantidade', '1');

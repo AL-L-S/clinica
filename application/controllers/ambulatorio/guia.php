@@ -888,7 +888,6 @@ class Guia extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             if (isset($_POST['guia_id'])) {
                 $guia_id = $_POST['guia_id'];
-//                die;
                 redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$guia_id");
             } else {
                 redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id");
