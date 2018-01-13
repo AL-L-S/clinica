@@ -898,7 +898,8 @@ class Laudo extends BaseController {
             } else {
                 $assinatura = "";
             }
-//            var_dump($assinatura); die;
+            
+            
             if ($data['impressaolaudo'][0]->rodape == 't') {
                 if ($data['empresa'][0]->rodape_config == 't') {
 //                $cabecalho = $cabecalho_config;
@@ -915,10 +916,13 @@ class Laudo extends BaseController {
             }
 
             $html = $this->load->view('ambulatorio/impressaolaudoconfiguravel', $data, true);
+//            echo $cabecalho . $html . $rodape;
+//            var_dump($cabecalho);
+//            die;
             pdf($html, $filename, $cabecalho, $rodape);
 //            $this->load->View('ambulatorio/impressaolaudo_1', $data);
         }
-        else{
+        else{ // CASO O LAUDO NÃO CONFIGURÁVEL
     //////////////////////////////////////////////////////////////////////////////////////////////////
             if ($data['empresa'][0]->impressao_laudo == 1) {//HUMANA IMAGEM
                 $filename = "laudo.pdf";

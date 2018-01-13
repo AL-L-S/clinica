@@ -12,7 +12,7 @@ if (file_exists("./upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".
     $caminho_background = base_url() . 'upload/timbrado/timbrado.png';
 }
 ?>
-<div class="teste" style="background-size: contain;height: 100%;width: 90%;background-image: url(<?=$caminho_background ?>);">
+<div class="teste" style="background-size: contain; height: 70%; width: 90%;background-image: url(<?=$caminho_background ?>);">
 
 
 <?

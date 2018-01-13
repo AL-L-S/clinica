@@ -180,6 +180,10 @@ class Login extends Controller {
         }
     }
 
+    function confirmarAtendimentoSMS ( $agenda_exames_id ) {
+        
+    }
+
     function sair() {
         $this->login->sair();
 
