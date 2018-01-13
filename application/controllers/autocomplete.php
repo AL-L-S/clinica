@@ -906,7 +906,7 @@ class Autocomplete extends Controller {
     function procedimentoconveniomedico() {
 
         if (isset($_GET['convenio1'])) {
-            $result = $this->exametemp->listarautocompleteprocedimentosconveniomedico($_GET['convenio1'], $_GET['teste']);
+            $result = $this->exametemp->listarautocompleteprocedimentosconveniomedico($_GET['convenio1'], $_GET['teste'], $_GET['empresa_id']);
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentosconveniomedico();
         }

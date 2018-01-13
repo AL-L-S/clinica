@@ -20,11 +20,20 @@
                 </select>
             </div>
             <div>
+                <label>Empresa</label>
+                <select name="empresa" id="empresa" class="size4" required="">
+                    <option value="">Selecione</option>                    
+                    <? foreach ($empresa as $value) : ?>
+                        <option value="<?= $value->empresa_id; ?>"><?php echo $value->nome; ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+            <div>
                 <label>&nbsp;</label>
                 <button type="submit" name="btnEnviar">Adicionar</button>
             </div>
+        </fieldset>
     </form>
-                </fieldset>
             
         <fieldset>
     <?
@@ -36,6 +45,7 @@
 
                 <tr>
                     <th class="tabela_header">Convenio</th>
+                    <th class="tabela_header">Empresa</th>
                     <th class="tabela_header" colspan="3">&nbsp;</th>
                 </tr>
             </thead>
@@ -47,8 +57,9 @@
                 <tbody>
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                            <a href="<?= base_url() ?>seguranca/operador/operadorconvenioprocedimento/<?= $item->convenio_id; ?>/<?= $item->operador_id; ?>">Procedimentos
+                            <a href="<?= base_url() ?>seguranca/operador/operadorconvenioprocedimento/<?= $item->convenio_id; ?>/<?= $item->operador_id; ?>/<?= $item->empresa_id; ?>">Procedimentos
                             </a></div>
                         </td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">

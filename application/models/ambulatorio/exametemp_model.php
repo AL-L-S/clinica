@@ -5828,6 +5828,7 @@ class exametemp_model extends Model {
         $this->db->where('pc.convenio_id', $parametro);
 //        $this->db->where("cop.ativo", 't');
         $procedimento_excecao = $this->session->userdata('procedimento_excecao');
+        $empresa_id = $this->session->userdata('empresa_id');
         if ($procedimento_excecao == "t") {
             $this->db->where("pc.procedimento_convenio_id NOT IN (
                                 SELECT cop.procedimento_convenio_id FROM ponto.tb_convenio_operador_procedimento cop
@@ -5836,6 +5837,7 @@ class exametemp_model extends Model {
                                 INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
                                 WHERE pc2.convenio_id = {$parametro}
                                 AND cop.operador = {$teste}
+                                AND cop.empresa_id = {$empresa_id}
                                 AND cop.ativo = 't'
                             )");
         } else {
@@ -5846,12 +5848,13 @@ class exametemp_model extends Model {
                                 INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
                                 WHERE pc2.convenio_id = '{$parametro}'
                                 AND cop.operador = {$teste}
+                                AND cop.empresa_id = {$empresa_id}
                                 AND cop.ativo = 't'
                             )");
         }
 
-        $empresa_id = $this->session->userdata('empresa_id');
-        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+//        $empresa_id = $this->session->userdata('empresa_id');
+//        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
         if ($procedimento_multiempresa == 't') {
             $this->db->where('pc.empresa_id', $empresa_id);
         }
@@ -5905,7 +5908,7 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarautocompleteprocedimentosconveniomedico($parametro, $teste) {
+    function listarautocompleteprocedimentosconveniomedico($parametro, $teste, $empresa_id) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.nome as procedimento, 
                             pt.codigo');
@@ -5917,6 +5920,7 @@ class exametemp_model extends Model {
         $this->db->where("pc.agrupador", 'f');
         $this->db->where('pc.convenio_id', $parametro);
 //        $this->db->where("cop.ativo", 't');
+//        $empresa_id = $this->session->userdata('empresa_id');
         $procedimento_excecao = $this->session->userdata('procedimento_excecao');
         if ($procedimento_excecao == "t") {
             $this->db->where("pc.procedimento_convenio_id NOT IN (
@@ -5926,6 +5930,7 @@ class exametemp_model extends Model {
                                 INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
                                 WHERE pc2.convenio_id = {$parametro}
                                 AND cop.operador = {$teste}
+                                AND cop.empresa_id = {$empresa_id}
                                 AND cop.ativo = 't'
                             )");
         } else {
@@ -5936,11 +5941,11 @@ class exametemp_model extends Model {
                                 INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
                                 WHERE pc2.convenio_id = '{$parametro}'
                                 AND cop.operador = {$teste}
+                                AND cop.empresa_id = {$empresa_id}
                                 AND cop.ativo = 't'
                             )");
         }
 
-        $empresa_id = $this->session->userdata('empresa_id');
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
         if ($procedimento_multiempresa == 't') {
             $this->db->where('pc.empresa_id', $empresa_id);
@@ -6119,6 +6124,8 @@ class exametemp_model extends Model {
     }
 
     function listarautocompleteprocedimentosgrupomedico($convenio_id = null, $grupo = null, $medico_id = null) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
                             pt.nome as procedimento');
@@ -6135,6 +6142,7 @@ class exametemp_model extends Model {
                                 INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
                                 WHERE pc2.convenio_id = {$convenio_id}
                                 AND cop.operador = {$medico_id}
+                                AND cop.empresa_id = {$empresa_id}
                                 AND cop.ativo = 't'
                             )");
         } else {
@@ -6145,6 +6153,7 @@ class exametemp_model extends Model {
                                 INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
                                 WHERE pc2.convenio_id = '{$convenio_id}'
                                 AND cop.operador = {$medico_id}
+                                AND cop.empresa_id = {$empresa_id}
                                 AND cop.ativo = 't'
                             )");
         }
@@ -6157,7 +6166,6 @@ class exametemp_model extends Model {
         if ($grupo != null) {
             $this->db->where('pt.grupo', $grupo);
         }
-        $empresa_id = $this->session->userdata('empresa_id');
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
         if ($procedimento_multiempresa == 't') {
             $this->db->where('pc.empresa_id', $empresa_id);

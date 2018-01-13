@@ -35,3 +35,13 @@ ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN operador_cadastro integer;
 ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN grupo_id integer;
 ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN registro character varying(60);
 
+-- Dia 13/01/2017
+ALTER TABLE ponto.tb_convenio_operador_procedimento ADD COLUMN empresa_id integer;
+
+UPDATE ponto.tb_ambulatorio_convenio_operador
+SET empresa_id = (SELECT empresa_id FROM ponto.tb_empresa WHERE ativo = 't' ORDER BY empresa_id LIMIT 1)
+WHERE empresa_id IS NULL;
+
+UPDATE ponto.tb_convenio_operador_procedimento
+SET empresa_id  = (SELECT empresa_id FROM ponto.tb_empresa WHERE ativo = 't' ORDER BY empresa_id LIMIT 1)
+WHERE empresa_id IS NULL;
