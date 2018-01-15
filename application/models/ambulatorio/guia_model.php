@@ -3688,6 +3688,30 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function percentuallaboratorioconvenioexames($procedimentopercentual, $laboratoriopercentual) {
+        $this->db->select('mc.valor as perc_laboratorio, mc.percentual');
+        $this->db->from('tb_procedimento_percentual_laboratorio_convenio mc');
+        $this->db->join('tb_procedimento_percentual_laboratorio m', 'm.procedimento_percentual_laboratorio_id = mc.procedimento_percentual_laboratorio_id', 'left');
+        $this->db->where('m.procedimento_tuss_id', $procedimentopercentual);
+        $this->db->where('mc.laboratorio', $laboratoriopercentual);
+        $this->db->where('mc.ativo', 'true');
+        $this->db->where('mc.revisor', 'false');
+        $return = $this->db->get();
+
+        return $return->result();
+    }
+
+    function percentuallaboratorioprocedimento($procedimentopercentual) {
+
+        $this->db->select('pt.perc_laboratorio, pt.percentual');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+        $this->db->where('pc.procedimento_convenio_id', $procedimentopercentual);
+//        $this->db->where('pc.ativo', 'true');
+//        $this->db->where('pt.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function relatorioprocedimentoatendimentomensal() {
 
@@ -10292,7 +10316,7 @@ ORDER BY ae.agenda_exames_id)";
         return $medico_id;
     }
 
-    function gravarexames($ambulatorio_guia_id, $medico_id, $percentual) {
+    function gravarexames($ambulatorio_guia_id, $medico_id, $percentual, $percentual_laboratorio) {
         try {
 //            var_dump($_POST); die;
             $horario = date("Y-m-d H:i:s");

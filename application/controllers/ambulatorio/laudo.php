@@ -901,7 +901,7 @@ class Laudo extends BaseController {
     }
 
     function adicionalcabecalho($cabecalho, $laudo) {
-        
+
 //        $cabecalho = $impressaolaudo[0]->texto;
         $cabecalho = str_replace("_paciente_", $laudo['0']->paciente, $cabecalho);
         $cabecalho = str_replace("_sexo_", $laudo['0']->sexo, $cabecalho);
@@ -921,7 +921,7 @@ class Laudo extends BaseController {
         $cabecalho = str_replace("_altura_", $laudo['0']->altura, $cabecalho);
         $cabecalho = str_replace("_cid1_", $laudo['0']->cid1, $cabecalho);
         $cabecalho = str_replace("_cid2_", $laudo['0']->cid2, $cabecalho);
-        
+
         return $cabecalho;
     }
 
@@ -971,7 +971,7 @@ class Laudo extends BaseController {
                 $cabecalho = '';
             }
             $cabecalho = $cabecalho . "<br> {$data['impressaolaudo'][0]->adicional_cabecalho}";
-           
+
             $cabecalho = $this->adicionalcabecalho($cabecalho, $data['laudo']);
 //             var_dump($cabecalho);
 //            die;
@@ -2497,6 +2497,25 @@ class Laudo extends BaseController {
                 $filename = "laudo.pdf";
                 $cabecalho = "<table><tr><td></td><td>Nome:" . $data['laudo']['0']->paciente . "<br>Exame:" . $data['laudo']['0']->procedimento . "</td></tr></table>";
                 $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+                if ($verificador == 1) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem1', $data, true);
+                }
+                if ($verificador == 2) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem2', $data, true);
+                }
+                if ($verificador == 3) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem3', $data, true);
+                }
+                if ($verificador == 4) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem4', $data, true);
+                }
+                if ($verificador == 5) {
+                    $html = $this->load->view('ambulatorio/impressaoimagem5', $data, true);
+                }
+                if ($verificador == 6 || $verificador == "") {
+
+                    $html = $this->load->view('ambulatorio/impressaoimagem6', $data, true);
+                }
             }
         }
 

@@ -522,10 +522,15 @@ class exametemp_model extends Model {
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
-        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id', 'left');
+        if ($grupo != '') {
+            $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id', 'left');
+        }
         $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
 //        $this->db->where("ae.tipo IN ('CONSULTA', 'ESPECIALIDADE', 'FISIOTERAPIA', 'EXAME') OR ae.tipo is null");
         $this->db->where("ae.data is not null");
+        if ($grupo != '') {
+            $this->db->where("esg.ativo", 'true');
+        }
         $this->db->where("ae.data >", $data_passado);
         $this->db->where("ae.data <", $data_futuro);
         if (isset($empresa_id)) {
@@ -1900,7 +1905,7 @@ class exametemp_model extends Model {
         $this->db->orderby("ae.forma_pagamento DESC");
         $this->db->orderby("ae.data");
         $this->db->orderby("ae.inicio");
-        
+
         $return = $this->db->get();
 
         return $return->result();
@@ -1956,7 +1961,7 @@ class exametemp_model extends Model {
         $this->db->orderby("ae.forma_pagamento DESC");
         $this->db->orderby("ae.data");
         $this->db->orderby("ae.inicio");
-        
+
         $return = $this->db->get();
 
         return $return->result();

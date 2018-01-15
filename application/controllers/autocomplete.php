@@ -551,12 +551,12 @@ class Autocomplete extends Controller {
 
     function listarhorarioscalendario() {
 //            echo $_POST['custom_param1'];
-        if (isset($_POST['medico']) || isset($_POST['tipoagenda']) || isset($_POST['empresa'])) {
+        if (count($_POST) > 0) {
             $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], null, $_POST['empresa'], $_POST['sala'], $_POST['grupo'], $_POST['tipoagenda']);
-            $algo = 'asd';
+//            $algo = 'asd';
         } else {
             $result = $this->exametemp->listarhorarioscalendariovago();
-            $algo = 'dsa';
+//            $algo = 'dsa';
         }
 
         $var = Array();

@@ -990,6 +990,7 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/gerarelatorioprocedimentotuss">Relatorio Procedimentos TUSS</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoconvenio">Manter grupo convenio</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/convenio">Manter convenio</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>cadastros/laboratorio">Manter Laboratório</a></span></ul>
                                         <? } ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano">Manter Procedimentos Convenio</a></span></ul>
                                         <? if ($perfil_id != 10) { ?> 
@@ -997,7 +998,7 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentual">Manter Percentual M&eacute;dico</a></span></ul>
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">Manter Percentual M&eacute;dico</a></span></ul>-->
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">Manter Percentual Promotor</a></span></ul>
-                                            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentuallaboratorio">Manter Percentual Laboratório</a></span></ul>-->
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentuallaboratorio">Manter Percentual Laboratório</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificacao</a></span></ul>
                                         <? } ?>
                                     <? } ?>

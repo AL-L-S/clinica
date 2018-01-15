@@ -94,10 +94,10 @@
                                 <td class="<?php echo $estilo_linha; ?>"></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                     <a onclick="javascript: return confirm('Deseja realmente excluir os percentuais associados a esse convenio?');"
-                                       href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualconvenio/<?= $item->convenio_id; ?>">Excluir&nbsp;
+                                       href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentuallaboratorioconvenio/<?= $item->convenio_id; ?>">Excluir&nbsp;
                                     </a>
                                     <a 
-                                        href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentual/<?= $item->convenio_id; ?>">Editar
+                                        href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentuallaboratorial/<?= $item->convenio_id; ?>">Editar
                                     </a>  
                                 </td>
                             </tr>

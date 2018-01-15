@@ -1782,6 +1782,9 @@ class exame_model extends Model {
         if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
             $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
         }
+        if ($args['tipoagenda'] != '') {
+            $this->db->where('ae.tipo_consulta_id', $args['tipoagenda']);
+        }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
@@ -1901,6 +1904,10 @@ class exame_model extends Model {
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
+        }
+//        var_dump($args); die;
+        if ($args['tipoagenda'] != '') {
+            $this->db->where('ae.tipo_consulta_id', $args['tipoagenda']);
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
@@ -2791,7 +2798,7 @@ class exame_model extends Model {
             if (count($return) > 0) {
 
                 foreach ($return as $value) {
-                    
+
                     $data = date("Y-m-d");
                     $hora = date("H:i:s");
                     $horario = date("Y-m-d H:i:s");
@@ -2911,11 +2918,11 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->set('ativo', 'f');
         $this->db->set('cancelada', 'f');
-        if($_POST['medico_id'] != ''){
-            $this->db->where('ae.medico_agenda', $_POST['medico_id']); 
-        }        
+        if ($_POST['medico_id'] != '') {
+            $this->db->where('ae.medico_agenda', $_POST['medico_id']);
+        }
 
-        if ( $_POST['grupo'] != '' ){ 
+        if ($_POST['grupo'] != '') {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
@@ -2953,14 +2960,14 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->set('ativo', 'f');
         $this->db->set('cancelada', 'f');
-        if($_POST['medico_id'] != ''){
-            $this->db->where('ae.medico_agenda', $_POST['medico_id']); 
+        if ($_POST['medico_id'] != '') {
+            $this->db->where('ae.medico_agenda', $_POST['medico_id']);
         }
-        
+
         $this->db->where('pt.grupo', "RETORNO"); // Trazendo apenas os atendimentos que são retornos
 
-        if ( $_POST['grupo'] != '' ){ // Filtrando pelo grupo do procedimento no qual o procedimento de retorno esta associado
-            $this->db->where('pt2.grupo', $_POST['grupo']); 
+        if ($_POST['grupo'] != '') { // Filtrando pelo grupo do procedimento no qual o procedimento de retorno esta associado
+            $this->db->where('pt2.grupo', $_POST['grupo']);
         }
 
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
@@ -6355,41 +6362,39 @@ class exame_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
 //            $exame_id = $_POST['txtagenda_exames_id'];
-            
+
             $this->db->select('tipo, agenda_exames_nome_id as sala');
             $this->db->from('tb_agenda_exames ae');
             $this->db->where("agenda_exames_id", $agenda_exames_id);
             $return = $this->db->get()->result();
-            
-            
+
+
             $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
             $this->db->from('tb_procedimento_percentual_medico ppm');
             $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
             $this->db->where("ppm.procedimento_tuss_id", $procedimento_tuss_id);
             $this->db->where("ppmc.medico", $medico_id);
             $retorno = $this->db->get()->result();
-            
-            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '' ){
-                if( date("d") > $retorno[0]->dia_recebimento ) {
-                    $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
+
+            if (count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '') {
+                if (date("d") > $retorno[0]->dia_recebimento) {
+                    $d = date("Y-m-", strtotime("+1 month")) . $retorno[0]->dia_recebimento;
+                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+                } else {
+                    $d = date("Y-m-") . $retorno[0]->dia_recebimento;
                     $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
                 }
-                else{
-                    $d = date( "Y-m-" ) . $retorno[0]->dia_recebimento;
-                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
-                }
-            }
-            else {
+            } else {
                 $dataProducao = $data;
             }
-            
+
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->set('guia_id', $guia_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
             $this->db->set('tipo', @$return[0]->tipo);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             if ($medico_id != "") {
@@ -6426,7 +6431,7 @@ class exame_model extends Model {
             $this->db->set('senha', md5($exame_id));
             $this->db->set('data_realizacao', $horario);
             $this->db->set('operador_realizacao', $operador_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('agenda_exames_nome_id', @$return[0]->sala);
             }
             $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -6436,7 +6441,7 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             $this->db->set('paciente_id', $paciente_id);
@@ -6454,41 +6459,39 @@ class exame_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
 //            $exame_id = $_POST['txtagenda_exames_id'];
-            
+
             $this->db->select('tipo, agenda_exames_nome_id as sala');
             $this->db->from('tb_agenda_exames ae');
             $this->db->where("agenda_exames_id", $agenda_exames_id);
             $return = $this->db->get()->result();
-            
-            
+
+
             $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
             $this->db->from('tb_procedimento_percentual_medico ppm');
             $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
             $this->db->where("ppm.procedimento_tuss_id", $procedimento_tuss_id);
             $this->db->where("ppmc.medico", $medico_id);
             $retorno = $this->db->get()->result();
-            
-            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '' ){
-                if( date("d") > $retorno[0]->dia_recebimento ) {
-                    $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
+
+            if (count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '') {
+                if (date("d") > $retorno[0]->dia_recebimento) {
+                    $d = date("Y-m-", strtotime("+1 month")) . $retorno[0]->dia_recebimento;
+                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+                } else {
+                    $d = date("Y-m-") . $retorno[0]->dia_recebimento;
                     $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
                 }
-                else{
-                    $d = date( "Y-m-" ) . $retorno[0]->dia_recebimento;
-                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
-                }
-            }
-            else {
+            } else {
                 $dataProducao = $data;
             }
-            
+
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->set('guia_id', $guia_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
             $this->db->set('tipo', @$return[0]->tipo);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             if ($medico_id != "") {
@@ -6525,7 +6528,7 @@ class exame_model extends Model {
             $this->db->set('senha', md5($exame_id));
             $this->db->set('data_realizacao', $horario);
             $this->db->set('operador_realizacao', $operador_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('agenda_exames_nome_id', @$return[0]->sala);
             }
             $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -6535,7 +6538,7 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             $this->db->set('paciente_id', $paciente_id);
@@ -6553,41 +6556,39 @@ class exame_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
 //            $exame_id = $_POST['txtagenda_exames_id'];
-            
+
             $this->db->select('tipo, agenda_exames_nome_id as sala');
             $this->db->from('tb_agenda_exames ae');
             $this->db->where("agenda_exames_id", $agenda_exames_id);
             $return = $this->db->get()->result();
-            
-            
+
+
             $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
             $this->db->from('tb_procedimento_percentual_medico ppm');
             $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
             $this->db->where("ppm.procedimento_tuss_id", $procedimento_tuss_id);
             $this->db->where("ppmc.medico", $medico_id);
             $retorno = $this->db->get()->result();
-            
-            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '' ){
-                if( date("d") > $retorno[0]->dia_recebimento ) {
-                    $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
+
+            if (count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '') {
+                if (date("d") > $retorno[0]->dia_recebimento) {
+                    $d = date("Y-m-", strtotime("+1 month")) . $retorno[0]->dia_recebimento;
+                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+                } else {
+                    $d = date("Y-m-") . $retorno[0]->dia_recebimento;
                     $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
                 }
-                else{
-                    $d = date( "Y-m-" ) . $retorno[0]->dia_recebimento;
-                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
-                }
-            }
-            else {
+            } else {
                 $dataProducao = $data;
             }
-            
+
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->set('guia_id', $guia_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
             $this->db->set('tipo', @$return[0]->tipo);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             if ($medico_id != "") {
@@ -6624,7 +6625,7 @@ class exame_model extends Model {
             $this->db->set('senha', md5($exame_id));
             $this->db->set('data_realizacao', $horario);
             $this->db->set('operador_realizacao', $operador_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('agenda_exames_nome_id', @$return[0]->sala);
             }
             $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -6634,7 +6635,7 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             $this->db->set('paciente_id', $paciente_id);
@@ -6644,7 +6645,7 @@ class exame_model extends Model {
             return -1;
         }
     }
-    
+
     function enviarsalaesperamedicoconsulta($percentual, $paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -6652,41 +6653,39 @@ class exame_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
 //            $exame_id = $_POST['txtagenda_exames_id'];
-            
+
             $this->db->select('tipo, agenda_exames_nome_id as sala');
             $this->db->from('tb_agenda_exames ae');
             $this->db->where("agenda_exames_id", $agenda_exames_id);
             $return = $this->db->get()->result();
-            
-            
+
+
             $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
             $this->db->from('tb_procedimento_percentual_medico ppm');
             $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
             $this->db->where("ppm.procedimento_tuss_id", $procedimento_tuss_id);
             $this->db->where("ppmc.medico", $medico_id);
             $retorno = $this->db->get()->result();
-            
-            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '' ){
-                if( date("d") > $retorno[0]->dia_recebimento ) {
-                    $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
+
+            if (count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '') {
+                if (date("d") > $retorno[0]->dia_recebimento) {
+                    $d = date("Y-m-", strtotime("+1 month")) . $retorno[0]->dia_recebimento;
+                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+                } else {
+                    $d = date("Y-m-") . $retorno[0]->dia_recebimento;
                     $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
                 }
-                else{
-                    $d = date( "Y-m-" ) . $retorno[0]->dia_recebimento;
-                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
-                }
-            }
-            else {
+            } else {
                 $dataProducao = $data;
             }
-            
+
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->set('guia_id', $guia_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
             $this->db->set('tipo', @$return[0]->tipo);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             if ($medico_id != "") {
@@ -6723,7 +6722,7 @@ class exame_model extends Model {
             $this->db->set('senha', md5($exame_id));
             $this->db->set('data_realizacao', $horario);
             $this->db->set('operador_realizacao', $operador_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('agenda_exames_nome_id', @$return[0]->sala);
             }
             $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -6733,7 +6732,7 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             $this->db->set('paciente_id', $paciente_id);
@@ -6743,7 +6742,7 @@ class exame_model extends Model {
             return -1;
         }
     }
-    
+
     function enviarsalaesperamedicoexame($percentual, $paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -6751,41 +6750,39 @@ class exame_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
 //            $exame_id = $_POST['txtagenda_exames_id'];
-            
+
             $this->db->select('tipo, agenda_exames_nome_id as sala');
             $this->db->from('tb_agenda_exames ae');
             $this->db->where("agenda_exames_id", $agenda_exames_id);
             $return = $this->db->get()->result();
-            
-            
+
+
             $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
             $this->db->from('tb_procedimento_percentual_medico ppm');
             $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
             $this->db->where("ppm.procedimento_tuss_id", $procedimento_tuss_id);
             $this->db->where("ppmc.medico", $medico_id);
             $retorno = $this->db->get()->result();
-            
-            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '' ){
-                if( date("d") > $retorno[0]->dia_recebimento ) {
-                    $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
+
+            if (count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '') {
+                if (date("d") > $retorno[0]->dia_recebimento) {
+                    $d = date("Y-m-", strtotime("+1 month")) . $retorno[0]->dia_recebimento;
+                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+                } else {
+                    $d = date("Y-m-") . $retorno[0]->dia_recebimento;
                     $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
                 }
-                else{
-                    $d = date( "Y-m-" ) . $retorno[0]->dia_recebimento;
-                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
-                }
-            }
-            else {
+            } else {
                 $dataProducao = $data;
             }
-            
+
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->set('guia_id', $guia_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
             $this->db->set('tipo', @$return[0]->tipo);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             if ($medico_id != "") {
@@ -6822,7 +6819,7 @@ class exame_model extends Model {
             $this->db->set('senha', md5($exame_id));
             $this->db->set('data_realizacao', $horario);
             $this->db->set('operador_realizacao', $operador_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('agenda_exames_nome_id', @$return[0]->sala);
             }
             $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -6832,7 +6829,7 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             $this->db->set('paciente_id', $paciente_id);
@@ -6842,7 +6839,7 @@ class exame_model extends Model {
             return -1;
         }
     }
-    
+
     function enviarsalaesperamedico($percentual, $paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -6850,41 +6847,39 @@ class exame_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
 //            $exame_id = $_POST['txtagenda_exames_id'];
-            
+
             $this->db->select('tipo, agenda_exames_nome_id as sala');
             $this->db->from('tb_agenda_exames ae');
             $this->db->where("agenda_exames_id", $agenda_exames_id);
             $return = $this->db->get()->result();
-            
-            
+
+
             $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
             $this->db->from('tb_procedimento_percentual_medico ppm');
             $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
             $this->db->where("ppm.procedimento_tuss_id", $procedimento_tuss_id);
             $this->db->where("ppmc.medico", $medico_id);
             $retorno = $this->db->get()->result();
-            
-            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '' ){
-                if( date("d") > $retorno[0]->dia_recebimento ) {
-                    $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
+
+            if (count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '') {
+                if (date("d") > $retorno[0]->dia_recebimento) {
+                    $d = date("Y-m-", strtotime("+1 month")) . $retorno[0]->dia_recebimento;
+                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+                } else {
+                    $d = date("Y-m-") . $retorno[0]->dia_recebimento;
                     $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
                 }
-                else{
-                    $d = date( "Y-m-" ) . $retorno[0]->dia_recebimento;
-                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
-                }
-            }
-            else {
+            } else {
                 $dataProducao = $data;
             }
-            
+
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->set('guia_id', $guia_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
             $this->db->set('tipo', @$return[0]->tipo);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             if ($medico_id != "") {
@@ -6921,7 +6916,7 @@ class exame_model extends Model {
             $this->db->set('senha', md5($exame_id));
             $this->db->set('data_realizacao', $horario);
             $this->db->set('operador_realizacao', $operador_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('agenda_exames_nome_id', @$return[0]->sala);
             }
             $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -6931,7 +6926,7 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('agenda_exames_id', $agenda_exames_id);
-            if(@$return[0]->sala != ''){
+            if (@$return[0]->sala != '') {
                 $this->db->set('sala_id', @$return[0]->sala);
             }
             $this->db->set('paciente_id', $paciente_id);
@@ -6950,35 +6945,33 @@ class exame_model extends Model {
             $empresa_id = $this->session->userdata('empresa_id');
             $exame_id = $_POST['txtagenda_exames_id'];
 //            echo '<pre>';
-//            var_dump($_POST['txtpaciente_id']);
+//            var_dump($_POST);
 //            var_dump($_POST['txtprocedimento_tuss_id']);
 //            var_dump($_POST['txtguia_id']);
 //            var_dump($_POST['txtagenda_exames_id']);
 //            var_dump($_POST['txttipo']);
 //            die;
-            
+
             $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
             $this->db->from('tb_procedimento_percentual_medico ppm');
             $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
             $this->db->where("ppm.procedimento_tuss_id", $_POST['txtprocedimento_tuss_id']);
             $this->db->where("ppmc.medico", $_POST['txtmedico']);
             $retorno = $this->db->get()->result();
-            
+
 //            echo "<pre>"; var_dump($retorno); die;
-            if( count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '' ){
-                if( date("d") > $retorno[0]->dia_recebimento ) {
-                    $d = date( "Y-m-", strtotime("+1 month") ) . $retorno[0]->dia_recebimento;
+            if (count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '') {
+                if (date("d") > $retorno[0]->dia_recebimento) {
+                    $d = date("Y-m-", strtotime("+1 month")) . $retorno[0]->dia_recebimento;
+                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+                } else {
+                    $d = date("Y-m-") . $retorno[0]->dia_recebimento;
                     $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
                 }
-                else{
-                    $d = date( "Y-m-" ) . $retorno[0]->dia_recebimento;
-                    $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
-                }
-            }
-            else {
+            } else {
                 $dataProducao = $data;
             }
-            
+
             if ($_POST['txttipo'] == 'EXAME' || $_POST['txttipo'] == 'MEDICAMENTO' || $_POST['txttipo'] == 'MATERIAL') {
 
 //                $this->db->set('ativo', 'f');
