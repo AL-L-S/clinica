@@ -393,6 +393,13 @@ class Operador extends BaseController {
         $this->loadView('seguranca/operadorconvenio-form', $data);
     }
 
+    function copiaroperadorconvenio($convenio_id, $operador_id, $empresa_id) {
+
+        $data['dados'] = $this->operador_m->listaroperadordadosconvenio($convenio_id, $operador_id, $empresa_id);
+        $data['empresa'] = $this->operador_m->listarempresasconvenio();
+        $this->loadView('seguranca/copiaroperadorconvenio-form', $data);
+    }
+
     function operadorconvenioprocedimento($convenio_id, $operador_id, $empresa_id) {
         $data['empresa_id'] = $empresa_id;
         $data['grupo'] = $this->operador_m->listargrupo();
@@ -400,6 +407,11 @@ class Operador extends BaseController {
         $data['procedimentos'] = $this->operador_m->listarprocedimentoconvenio($convenio_id);
         $data['procedimentos_cadastrados'] = $this->operador_m->listarprocedimentoconveniooperador($operador_id, $convenio_id, $empresa_id);
         $this->loadView('seguranca/operadorconvenioprocedimento-form', $data);
+    }
+
+    function gravarcopiaroperadorconvenio() {
+        $this->operador_m->gravarcopiaroperadorconvenio();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravaroperadorconvenio() {

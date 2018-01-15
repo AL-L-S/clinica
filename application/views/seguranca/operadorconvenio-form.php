@@ -63,6 +63,10 @@
                             </a></div>
                         </td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
+                                <a target="_blank" href="<?= base_url() ?>seguranca/operador/copiaroperadorconvenio/<?= $item->convenio_id; ?>/<?= $item->operador_id; ?>/<?= $item->empresa_id; ?>">Copiar
+                            </a></div>
+                        </td>
+                        <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
                             <a href="<?= base_url() ?>seguranca/operador/excluiroperadorconvenio/<?= $item->ambulatorio_convenio_operador_id; ?>/<?= $item->operador_id; ?>">Excluir
                             </a></div>
 

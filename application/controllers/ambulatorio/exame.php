@@ -354,6 +354,7 @@ class Exame extends BaseController {
     function autorizarorcamento($ambulatorio_orcamento_id) {
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
         $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['salas'] = $this->guia->listarsalas();
         $this->load->View('ambulatorio/autorizarorcamento-form', $data);
     }
     

@@ -144,7 +144,7 @@ class app_model extends Model {
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
 //        $this->db->where('ae.data', $dataAtual);
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where('ae.medico_consulta_id', $_GET['operador_id']);
+        $this->db->where('ae.medico_consulta_id', @$_GET['operador_id']);
         if (@$_GET['situacao'] != '') {
             switch ($_GET['situacao']) {
                 case 'o':
@@ -186,7 +186,7 @@ class app_model extends Model {
         }
 
         if(@$_GET['data'] != ""){
-            $this->db->where('ae.data', date("Y-m-d", strtotime($_GET['data'])) );
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) );
         }
         else{
             $this->db->where('ae.data', date("Y-m-d"));

@@ -1,4 +1,9 @@
 <meta charset="UTF-8">
+<style>
+    .size1{
+        width: 100%;
+    }
+</style>
 <body bgcolor="#C0C0C0">
     <div class="content"> <!-- Inicio da DIV content -->
         <h3 class="singular">Autorizar Orçamento</h3>
@@ -10,10 +15,22 @@
                     <table>
                         <tr>                            
                             <td>
-                                <label>Medico</label>
+                                <label>Sala</label>
+                            </td>
+                            <td>
+                                <select  name="sala" id="sala" class="size1" required="" >
+                                    <option value="">Selecione</option>
+                                    <? foreach ($salas as $item): ?>
+                                        <option value="<?= $item->exame_sala_id; ?>"><?= $item->nome; ?></option>
+                                    <? endforeach; ?>
+                                </select>
+
                             </td>
                         </tr>
                         <tr>                            
+                            <td>
+                                <label>Medico</label>
+                            </td>
                             <td>
                                 <select name="medico_id" id="medico_id" class="size1" required>
                                     <option value="">Selecione</option>
