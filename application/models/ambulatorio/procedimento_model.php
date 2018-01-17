@@ -594,6 +594,9 @@ class procedimento_model extends Model {
             if ($_POST['descricao'] != '') {
                 $this->db->set('descricao_procedimento', $_POST['descricao']);
             }
+            if ($_POST['laboratorio_id'] != '') {
+                $this->db->set('laboratorio_id', $_POST['laboratorio_id']);
+            }
 //            if ($_POST['observacao'] != '') {
 //                $this->db->set('observacao_procedimento', $_POST['observacao']);
 //            }
@@ -826,7 +829,7 @@ class procedimento_model extends Model {
                                pt.medico, pt.percentual,  t.descricao, pt.perc_medico,  pt.valor_promotor,  pt.percentual_promotor, 
                                pt.valor_revisor,  pt.percentual_revisor, 
                                pt.qtde, pt.dencidade_calorica, pt.proteinas, pt.percentual_laboratorio, pt.valor_laboratorio,
-                               pt.carboidratos, pt.lipidios, pt.kcal,
+                               pt.carboidratos, pt.lipidios, pt.kcal,pt.laboratorio_id,
                                pt.revisao, pt.sala_preparo, pt.revisao_dias,
                                pt.associacao_procedimento_tuss_id, pt.retorno_dias');
             $this->db->from('tb_procedimento_tuss pt');
@@ -863,6 +866,7 @@ class procedimento_model extends Model {
             $this->_associacao_procedimento_tuss_id = $return[0]->associacao_procedimento_tuss_id;
             $this->_percentual_laboratorio = $return[0]->percentual_laboratorio;
             $this->_valor_laboratorio = $return[0]->valor_laboratorio;
+            $this->_laboratorio_id = $return[0]->laboratorio_id;
             $this->_retorno_dias = $return[0]->retorno_dias;
         } else {
             $this->_procedimento_tuss_id = null;

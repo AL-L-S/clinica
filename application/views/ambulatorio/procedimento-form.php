@@ -185,7 +185,7 @@
                         </select>
                     </dd>
                     
-                    <dt>
+<!--                    <dt>
                         <label>Perc./Valor Laboratório</label>
                     </dt>
                     <dd>
@@ -209,7 +209,18 @@
                             endif;
                             ?>>N&Atilde;O</option>
                         </select>
-                    </dd>
+                    </dd>-->
+<!--                    <dt>
+                        <label>Laboratório</label>
+                    </dt>
+                    <dd>
+                        <select name="laboratorio_id" id="laboratorio_id" class="size2">
+                            <option value="">Selecione</option>
+                            <?foreach($laboratorios as $item){?>
+                            <option <?if($item->laboratorio_id == @$obj->_laboratorio_id){echo 'selected';}?> value="<?=$item->laboratorio_id?>"><?=$item->nome?></option>
+                            <?}?>
+                        </select>
+                    </dd>-->
                             
                     <dt>
                         <label>Qtde de sess&otilde;es</label>

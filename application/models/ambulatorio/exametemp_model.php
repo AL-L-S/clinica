@@ -4161,7 +4161,10 @@ class exametemp_model extends Model {
                     if ($medicoexecutante == '') {
                         $medicoexecutante = 0;
                     }
-//                var_dump($guiaconvenio); die;
+
+//                    echo '<pre>';
+//                    var_dump();
+//                    die;
                     $this->db->select('mc.valor as perc_medico, mc.percentual');
                     $this->db->from('tb_procedimento_percentual_medico_convenio mc');
                     $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
@@ -4170,6 +4173,20 @@ class exametemp_model extends Model {
                     $this->db->where('mc.ativo', 'true');
                     $this->db->where('mc.revisor', 'false');
                     $percentual = $this->db->get()->result();
+                    $grupo_laboratorio = $this->verificagrupoprocedimento($procedimento_tuss_id);
+//                    $grupo = $_POST['grupo'][$i];
+                    if ($grupo_laboratorio == 'LABORATORIAL') {
+                        $this->db->select('mc.valor as perc_laboratorio, mc.percentual, mc.laboratorio');
+                        $this->db->from('tb_procedimento_percentual_laboratorio_convenio mc');
+                        $this->db->join('tb_procedimento_percentual_laboratorio m', 'm.procedimento_percentual_laboratorio_id = mc.procedimento_percentual_laboratorio_id', 'left');
+                        $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+//        $this->db->where('mc.laboratorio', $laboratoriopercentual);
+                        $this->db->where('mc.ativo', 'true');
+//                        $this->db->where('mc.revisor', 'false');
+                        $percentual_laboratorio = $this->db->get()->result();
+                    }
+//                    echo '<pre>';
+//                    var_dump($percentual_laboratorio); die;
 
                     if (count($percentual) == 0) {
                         $this->db->select('pt.perc_medico, pt.percentual');
@@ -4194,7 +4211,8 @@ class exametemp_model extends Model {
                     } else {
                         $return2 = array();
                     }
-//            var_dump($return2); die;
+//                    var_dump($percentual_laboratorio);
+//                    die;
 //                    if ($index == 1) {
 //                    }
 //                var_dump($percentual); die;
@@ -4240,6 +4258,12 @@ class exametemp_model extends Model {
 //                        $this->db->set('valor_promotor', $promotor[0]->valor_promotor);
 //                        $this->db->set('percentual_promotor', $promotor[0]->percentual_promotor);
                         $this->db->set('indicacao', $indicacao);
+                    }
+                    if (count($percentual_laboratorio) > 0) {
+//                        var_dump($index, $_POST['indicacao']);
+                        $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
+                        $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
+                        $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
                     }
                     if (count($return2) > 0) {
 //                        var_dump($index, $_POST['indicacao']);
@@ -5292,6 +5316,17 @@ class exametemp_model extends Model {
         $tipo = $query->result();
         return $tipo[0]->tipo;
     }
+    function verificagrupoprocedimento($procedimento_convenio_id) {
+
+        $this->db->select('ag.nome');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->where("pc.procedimento_convenio_id", $procedimento_convenio_id);
+        $query = $this->db->get();
+        $tipo = $query->result();
+        return $tipo[0]->nome;
+    }
 
     function autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id) {
         try {
@@ -5459,6 +5494,17 @@ class exametemp_model extends Model {
                     } else {
                         $promotor = array();
                     }
+                    $grupo_laboratorio = $this->verificagrupoprocedimento($procedimento_tuss_id);
+                    if ($grupo_laboratorio == 'LABORATORIAL') {
+                        $this->db->select('mc.valor as perc_laboratorio, mc.percentual, mc.laboratorio');
+                        $this->db->from('tb_procedimento_percentual_laboratorio_convenio mc');
+                        $this->db->join('tb_procedimento_percentual_laboratorio m', 'm.procedimento_percentual_laboratorio_id = mc.procedimento_percentual_laboratorio_id', 'left');
+                        $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+//        $this->db->where('mc.laboratorio', $laboratoriopercentual);
+                        $this->db->where('mc.ativo', 'true');
+                        $this->db->where('mc.revisor', 'false');
+                        $percentual_laboratorio = $this->db->get()->result();
+                    }
 
 
 
@@ -5505,6 +5551,13 @@ class exametemp_model extends Model {
 
                         $this->db->set('valor_promotor', $promotor[0]->valor_promotor);
                         $this->db->set('percentual_promotor', $promotor[0]->percentual_promotor);
+                    }
+
+                    if (count($percentual_laboratorio) > 0) {
+//                        var_dump($index, $_POST['indicacao']);
+                        $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
+                        $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
+                        $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
                     }
                     if ($crmsolicitante != "") {
                         $this->db->set('medico_solicitante', $crmsolicitante);
@@ -6427,7 +6480,10 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarautocompletegrupoempresasala($parametro = null) {
+    function listarautocompletegrupoempresasala($parametro = null, $empresa_id = null) {
+        if ($empresa_id == null) {
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
         $this->db->select('DISTINCT(es.exame_sala_id), es.nome');
         $this->db->from('tb_exame_sala es');
         $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id');
@@ -6436,11 +6492,16 @@ class exametemp_model extends Model {
         }
         $this->db->where('es.excluido', 'f');
         $this->db->where('esg.ativo', 't');
+        $this->db->where('es.empresa_id', $empresa_id);
+        $this->db->orderby('es.exame_sala_id');
         $return = $this->db->get();
         return $return->result();
     }
 
-    function listarautocompletegrupoempresasalatodos($parametro = null) {
+    function listarautocompletegrupoempresasalatodos($parametro = null, $empresa_id = null) {
+        if ($empresa_id == null) {
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
         $this->db->select('DISTINCT(es.exame_sala_id), es.nome');
         $this->db->from('tb_exame_sala es');
         $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id');
@@ -6449,6 +6510,9 @@ class exametemp_model extends Model {
         }
         $this->db->where('es.excluido', 'f');
         $this->db->where('esg.ativo', 't');
+        $this->db->where('es.empresa_id', $empresa_id);
+        $this->db->orderby('es.exame_sala_id');
+        
         $return = $this->db->get();
         return $return->result();
     }

@@ -1052,7 +1052,7 @@ class procedimentoplano_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function buscarlaboratoriopercentual($procedimento_percentual_laboratorio_convenio_id) {
         $this->db->select('o.nome,
                             mc.valor,
@@ -1375,7 +1375,7 @@ class procedimentoplano_model extends Model {
         //verifica se esse laboratorio já está cadastrado nesse procedimento 
         $this->db->select('laboratorio');
         $this->db->from('tb_procedimento_percentual_laboratorio_convenio');
-        $this->db->where('laboratorio', $_POST['laboratorio']);
+//        $this->db->where('laboratorio', $_POST['laboratorio']);
         $this->db->where('procedimento_percentual_laboratorio_id', $procedimento_percentual_laboratorio_id);
         if ($_POST['revisor'] == '1') {
             $this->db->where('revisor', 't');
@@ -1505,7 +1505,7 @@ class procedimentoplano_model extends Model {
             return false;
         }
     }
-    
+
     function gravareditarlaboratoriopercentual($procedimento_percentual_laboratorio_convenio_id) {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -2932,11 +2932,33 @@ class procedimentoplano_model extends Model {
         }
     }
 
-    function gravarpercentuallaboratorio() {
+    function gravarpercentuallaboratorioconvenio() {
         try {
 //            echo "<pre>";
 //            var_dump($_POST);
 //            die;
+//            if($_POST['covenio'] != ''){
+//            }
+            $this->db->select('pc.convenio_id');
+            $this->db->from('tb_procedimento_percentual_laboratorio_convenio lc');
+            $this->db->join('tb_procedimento_percentual_laboratorio pl', 'pl.procedimento_percentual_laboratorio_id = lc.procedimento_percentual_laboratorio_id', 'left');
+            $this->db->join('tb_procedimento_convenio pc', 'pl.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+//        $this->db->where('laboratorio', $_POST['laboratorio']);
+            $this->db->where('pc.convenio_id', $_POST['covenio']);
+            $this->db->where('lc.ativo', 'true');
+            $this->db->where('pl.ativo', 'true');
+            $return = $this->db->get();
+            $result = $return->result();
+//            var_dump($result);
+//            die;
+            if (count($result) > 0) {
+                return -1;
+            }
+
+
+
+
+
             $grupo = $_POST['grupo'];
             $convenio = $_POST['covenio'];
             $laboratorio = $_POST['laboratorio'];
@@ -3309,6 +3331,431 @@ class procedimentoplano_model extends Model {
 
 
             return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarpercentuallaboratorio() {
+        try {
+            echo "<pre>";
+//            var_dump($_POST);
+//            die;
+//            if($_POST['covenio'] != ''){
+//            }
+            $this->db->select('pc.procedimento_convenio_id');
+            $this->db->from('tb_procedimento_percentual_laboratorio_convenio lc');
+            $this->db->join('tb_procedimento_percentual_laboratorio pl', 'pl.procedimento_percentual_laboratorio_id = lc.procedimento_percentual_laboratorio_id', 'left');
+            $this->db->join('tb_procedimento_convenio pc', 'pl.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+            $this->db->where('lc.laboratorio', $_POST['laboratorio']);
+//            $this->db->where('pc.convenio_id', $_POST['covenio']);
+            $this->db->where('lc.ativo', 'true');
+            $this->db->where('pl.ativo', 'true');
+            $return = $this->db->get();
+            $result = $return->result();
+
+            $array_procedimentos = array();
+            foreach ($result as $item) {
+                $array_procedimentos[] = $item->procedimento_convenio_id;
+            }
+//            var_dump($result[0]->procedimento_convenio_id);
+            $teste = in_array(23566, $array_procedimentos);
+//            var_dump($teste);
+//            var_dump($array_procedimentos);
+//            die;
+//            if (count($result) > 0) {
+//                return -1;
+//            }
+
+
+
+
+
+            $grupo = $_POST['grupo'];
+            $convenio = $_POST['covenio'];
+            $laboratorio = $_POST['laboratorio'];
+            $procediemento = $_POST['procedimento'];
+
+            if ($grupo == "") {  // inicio grupo=selecione
+                if ($laboratorio == "TODOS") { // inicio grupo=selecione  laboratorio=todos
+                    $this->db->select('laboratorio_id,
+                            nome,
+                            dinheiro,
+                            conta_id');
+                    $this->db->from('tb_laboratorio');
+                    $this->db->where("ativo", 't');
+                    $this->db->orderby("nome");
+                    $return = $this->db->get();
+                    $laboratorios = $return->result();
+                    $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+//                    $this->db->set('laboratorio', $laboratorio);
+//                    $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_procedimento_percentual_laboratorio');
+
+                    $procedimento_percentual_laboratorio_id = $this->db->insert_id();
+
+                    foreach ($laboratorios as $item) {
+                        $laboratorio = $item->laboratorio_id;
+
+                        /* inicia o mapeamento no banco */
+
+                        $this->db->set('procedimento_percentual_laboratorio_id', $procedimento_percentual_laboratorio_id);
+                        $this->db->set('laboratorio', $laboratorio);
+                        $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+
+                        if ($_POST['dia_recebimento'] != '') {
+                            $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                        }
+                        if ($_POST['tempo_recebimento'] != '') {
+                            $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                        }
+                        $percentual = $_POST['percentual'];
+                        $this->db->set('percentual', $percentual);
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_procedimento_percentual_laboratorio_convenio');
+                    }  // fim grupo=selecione  laboratorio=todos
+                } else {
+                    /* inicia o mapeamento no banco */
+                    $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+//                    $this->db->set('laboratorio', $_POST['laboratorio']);
+//                    $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_procedimento_percentual_laboratorio');
+
+                    $procedimento_percentual_laboratorio_id = $this->db->insert_id();
+                    $this->db->set('procedimento_percentual_laboratorio_id', $procedimento_percentual_laboratorio_id);
+                    $this->db->set('laboratorio', $_POST['laboratorio']);
+                    $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                    if ($_POST['dia_recebimento'] != '') {
+                        $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                    }
+                    if ($_POST['tempo_recebimento'] != '') {
+                        $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                    }
+                    $percentual = $_POST['percentual'];
+                    $this->db->set('percentual', $percentual);
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_procedimento_percentual_laboratorio_convenio');
+                } // fim grupo=selecione
+            } elseif ($grupo == "TODOS") {  // inicio grupo=todos 
+                if ($procediemento == "") {
+                    $this->db->select('procedimento_convenio_id,
+                                    procedimento_tuss_id ');
+                    $this->db->from('tb_procedimento_convenio');
+                    $this->db->where('convenio_id', $convenio);
+                    $this->db->where('ativo', 't');
+                    $return = $this->db->get();
+                    $procedimentos = $return->result();
+
+                    if ($laboratorio == "TODOS") { // inicio grupo=todos laboratorio=todos
+                        $this->db->select('laboratorio_id,
+                                       nome');
+                        $this->db->from('tb_laboratorio');
+//                        //$this->db->where('consulta', 'true');
+                        $this->db->where('ativo', 'true');
+//                        //$this->db->where('solicitante', 'f');
+                        $return = $this->db->get();
+                        $laboratorios = $return->result();
+
+
+
+
+                        foreach ($procedimentos as $value) {
+                            $dados = $value->procedimento_convenio_id;
+                            $this->db->set('procedimento_tuss_id', $dados);
+//                        $this->db->set('laboratorio', $laboratorio);
+//                        $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                            $horario = date("Y-m-d H:i:s");
+                            $operador_id = $this->session->userdata('operador_id');
+                            $this->db->set('data_cadastro', $horario);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->insert('tb_procedimento_percentual_laboratorio');
+
+                            $procedimento_percentual_laboratorio_id = $this->db->insert_id();
+                            foreach ($laboratorios as $item) {
+                                $laboratorio = $item->laboratorio_id;
+
+                                /* inicia o mapeamento no banco */
+
+                                $this->db->set('procedimento_percentual_laboratorio_id', $procedimento_percentual_laboratorio_id);
+                                $this->db->set('laboratorio', $laboratorio);
+                                $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                                $percentual = $_POST['percentual'];
+                                if ($_POST['dia_recebimento'] != '') {
+                                    $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                                }
+                                if ($_POST['tempo_recebimento'] != '') {
+                                    $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                                }
+                                $this->db->set('percentual', $percentual);
+                                $horario = date("Y-m-d H:i:s");
+                                if ($_POST['revisor'] == '1') {
+                                    $this->db->set('revisor', 't');
+                                }
+                                $operador_id = $this->session->userdata('operador_id');
+                                $this->db->set('data_cadastro', $horario);
+                                $this->db->set('operador_cadastro', $operador_id);
+                                $this->db->insert('tb_procedimento_percentual_laboratorio_convenio');
+                            }
+                        }
+                    } //fim grupo=todos laboratorio=todos
+                    else {
+                        foreach ($procedimentos as $value) {
+                            if (!in_array($value->procedimento_convenio_id, $array_procedimentos)) {
+                                $dados = $value->procedimento_convenio_id;
+                                /* inicia o mapeamento no banco */
+                                $this->db->set('procedimento_tuss_id', $dados);
+//                        $this->db->set('laboratorio', $_POST['laboratorio']);
+//                        $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                                $horario = date("Y-m-d H:i:s");
+                                $operador_id = $this->session->userdata('operador_id');
+                                $this->db->set('data_cadastro', $horario);
+                                $this->db->set('operador_cadastro', $operador_id);
+                                $this->db->insert('tb_procedimento_percentual_laboratorio');
+
+                                $procedimento_percentual_laboratorio_id = $this->db->insert_id();
+                                $this->db->set('procedimento_percentual_laboratorio_id', $procedimento_percentual_laboratorio_id);
+                                $this->db->set('laboratorio', $_POST['laboratorio']);
+                                if ($_POST['dia_recebimento'] != '') {
+                                    $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                                }
+                                if ($_POST['tempo_recebimento'] != '') {
+                                    $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                                }
+                                if ($_POST['revisor'] == '1') {
+                                    $this->db->set('revisor', 't');
+                                }
+                                $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                                $percentual = $_POST['percentual'];
+                                $this->db->set('percentual', $percentual);
+                                $horario = date("Y-m-d H:i:s");
+                                $operador_id = $this->session->userdata('operador_id');
+                                $this->db->set('data_cadastro', $horario);
+                                $this->db->set('operador_cadastro', $operador_id);
+                                $this->db->insert('tb_procedimento_percentual_laboratorio_convenio');
+                            } else {
+                                $in_array = true;
+                            }
+                        }
+                    }
+                } elseif ($procediemento !== "") {
+                    if ($laboratorio == "TODOS") { // inicio grupo=selecione  laboratorio=todos
+                        $this->db->select('laboratorio_id,
+                                       nome');
+                        $this->db->from('tb_laboratorio');
+                        //$this->db->where('consulta', 'true');
+                        $this->db->where('ativo', 'true');
+                        //$this->db->where('solicitante', 'f');
+                        $return = $this->db->get();
+                        $laboratorios = $return->result();
+                        $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+//                    $this->db->set('laboratorio', $laboratorio);
+//                    $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_procedimento_percentual_laboratorio');
+
+                        $procedimento_percentual_laboratorio_id = $this->db->insert_id();
+
+                        foreach ($laboratorios as $item) {
+                            $laboratorio = $item->laboratorio_id;
+
+                            /* inicia o mapeamento no banco */
+
+                            $this->db->set('procedimento_percentual_laboratorio_id', $procedimento_percentual_laboratorio_id);
+                            $this->db->set('laboratorio', $laboratorio);
+                            $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                            $percentual = $_POST['percentual'];
+                            $this->db->set('percentual', $percentual);
+                            if ($_POST['dia_recebimento'] != '') {
+                                $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                            }
+                            if ($_POST['tempo_recebimento'] != '') {
+                                $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                            }
+                            if ($_POST['revisor'] == '1') {
+                                $this->db->set('revisor', 't');
+                            }
+                            $horario = date("Y-m-d H:i:s");
+                            $operador_id = $this->session->userdata('operador_id');
+                            $this->db->set('data_cadastro', $horario);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->insert('tb_procedimento_percentual_laboratorio_convenio');
+                        }  // fim grupo=selecione  laboratorio=todos
+                    } else {
+                        /* inicia o mapeamento no banco */
+                        $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
+//                    $this->db->set('laboratorio', $_POST['laboratorio']);
+//                    $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_procedimento_percentual_laboratorio');
+
+                        $procedimento_percentual_laboratorio_id = $this->db->insert_id();
+                        $this->db->set('procedimento_percentual_laboratorio_id', $procedimento_percentual_laboratorio_id);
+                        $this->db->set('laboratorio', $_POST['laboratorio']);
+                        $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                        $percentual = $_POST['percentual'];
+                        $this->db->set('percentual', $percentual);
+                        $horario = date("Y-m-d H:i:s");
+                        if ($_POST['dia_recebimento'] != '') {
+                            $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                        }
+                        if ($_POST['tempo_recebimento'] != '') {
+                            $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                        }
+                        if ($_POST['revisor'] == '1') {
+                            $this->db->set('revisor', 't');
+                        }
+                        $operador_id = $this->session->userdata('operador_id');
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_procedimento_percentual_laboratorio_convenio');
+                    }
+                }
+            } // fim grupo todos
+            else { //inicio grupo especifico
+                $this->db->select('pt.procedimento_tuss_id,
+                                   pc.procedimento_convenio_id');
+                $this->db->from('tb_procedimento_tuss pt');
+                $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+                $this->db->where('pc.convenio_id', $convenio);
+                $this->db->where('pt.grupo', $grupo);
+
+                if ($procediemento != "") {
+                    $this->db->where('pc.procedimento_convenio_id', $procediemento);
+                }
+
+                $this->db->where('pc.ativo', 't');
+                $this->db->where('pt.ativo', 't');
+                $this->db->orderby("pt.nome");
+                $return = $this->db->get();
+                $procedimentos2 = $return->result();
+//                echo '<pre>';
+//                var_dump($grupo);
+//                var_dump($procedimentos2); die;
+
+                if ($laboratorio == "TODOS") { // inicio grupo especifico  laboratorio=todos
+                    $this->db->select('laboratorio_id,
+                                       nome');
+                    $this->db->from('tb_laboratorio');
+                    //$this->db->where('consulta', 'true');
+                    $this->db->where('ativo', 'true');
+                    //$this->db->where('solicitante', 'f');
+                    $return = $this->db->get();
+                    $laboratorios = $return->result();
+
+
+                    foreach ($procedimentos2 as $value) {
+                        $dados = $value->procedimento_convenio_id;
+
+                        $this->db->set('procedimento_tuss_id', $dados);
+//                        $this->db->set('laboratorio', $laboratorio);
+//                        $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_procedimento_percentual_laboratorio');
+
+                        $procedimento_percentual_laboratorio_id = $this->db->insert_id();
+                        foreach ($laboratorios as $item) {
+                            $laboratorio = $item->laboratorio_id;
+                            /* inicia o mapeamento no banco */
+
+                            $this->db->set('procedimento_percentual_laboratorio_id', $procedimento_percentual_laboratorio_id);
+                            $this->db->set('laboratorio', $laboratorio);
+                            $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                            $percentual = $_POST['percentual'];
+                            $this->db->set('percentual', $percentual);
+                            $horario = date("Y-m-d H:i:s");
+                            $operador_id = $this->session->userdata('operador_id');
+                            if ($_POST['dia_recebimento'] != '') {
+                                $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                            }
+                            if ($_POST['tempo_recebimento'] != '') {
+                                $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                            }
+                            if ($_POST['revisor'] == '1') {
+                                $this->db->set('revisor', 't');
+                            }
+                            $this->db->set('data_cadastro', $horario);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->insert('tb_procedimento_percentual_laboratorio_convenio');
+                        }
+                    }
+                } // fim laboratorio=todos
+                else {
+                    foreach ($procedimentos2 as $value) {
+                        if (!in_array($value->procedimento_convenio_id, $array_procedimentos)) {
+
+
+                            $dados = $value->procedimento_convenio_id;
+                            /* inicia o mapeamento no banco */
+                            $this->db->set('procedimento_tuss_id', $dados);
+//                        $this->db->set('laboratorio', $_POST['laboratorio']);
+//                        $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                            $horario = date("Y-m-d H:i:s");
+                            $operador_id = $this->session->userdata('operador_id');
+                            $this->db->set('data_cadastro', $horario);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->insert('tb_procedimento_percentual_laboratorio');
+
+                            $procedimento_percentual_laboratorio_id = $this->db->insert_id();
+                            $this->db->set('procedimento_percentual_laboratorio_id', $procedimento_percentual_laboratorio_id);
+                            $this->db->set('laboratorio', $_POST['laboratorio']);
+                            $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
+                            $percentual = $_POST['percentual'];
+                            $this->db->set('percentual', $percentual);
+                            $horario = date("Y-m-d H:i:s");
+                            if ($_POST['dia_recebimento'] != '') {
+                                $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
+                            }
+                            if ($_POST['tempo_recebimento'] != '') {
+                                $this->db->set('tempo_recebimento', $_POST['tempo_recebimento']);
+                            }
+                            if ($_POST['revisor'] == '1') {
+                                $this->db->set('revisor', 't');
+                            }
+                            $operador_id = $this->session->userdata('operador_id');
+                            $this->db->set('data_cadastro', $horario);
+                            $this->db->set('operador_cadastro', $operador_id);
+                            $this->db->insert('tb_procedimento_percentual_laboratorio_convenio');
+                        } else {
+                            $in_array = true;
+                        }
+                    }
+                }
+            }
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+//                $procedimento_id = $this->db->insert_id();
+
+            if ($in_array == true) {
+                return -2;
+            } else {
+                return 0;
+            }
         } catch (Exception $exc) {
             return -1;
         }

@@ -1,13 +1,13 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Editar M&eacute;dico</a></h3>
+        <h3 class="singular"><a href="#">Editar Laboratório</a></h3>
         <div>
             <form name="form_procedimentohonorarioeditar" id="form_procedimentohonorarioeditar" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravareditarlaboratoriopercentual/<?= $procedimento_percentual_laboratorio_convenio_id ?>" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                        <label>Medico</label>
+                        <label>Laboratório</label>
                     </dt>
                     <dd>     
                         <input type="hidden" name="percentual_laboratorio_id" value="<?= $percentual_laboratorio_id ?>"/>

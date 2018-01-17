@@ -377,7 +377,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                                     <th colspan="1" class="tabela_title">
                                         <button type="submit" id="enviar">Pesquisar</button>
                                     </th>
-<!--                               O FORM FECHA AQUI-->     </form>
+                                    <!--                               O FORM FECHA AQUI-->     </form>
                                     <th colspan="1" class="tabela_title">
                                         <button id="botaosala">S/ de Espera</button>
                                     </th>
@@ -583,8 +583,8 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
 
                                 <!-- DATA, DIA E AGENDA -->
                                 <? if ($item->ocupado == 't') { ?>
-                                                                <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>-->
-                                                        <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($dia, 0, 3); ?></strike></td>-->
+                                                                        <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>-->
+                                                                <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($dia, 0, 3); ?></strike></td>-->
                                     <td class="<?php echo $estilo_linha; ?>"><strike><?= $item->inicio; ?></strike></td>
                         <? } else { ?>
                                     <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>-->
@@ -613,38 +613,44 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                         <? } ?>
 
                         <!-- SALA -->   
-                        <? 
-                        if($verifica = 2){ $cor = "green"; }
-                        else if($verifica = 3){ $cor = "red"; }
-                        else if($verifica = 4){ $cor = "blue"; }
-                        else if($verifica = 5){ $cor = "gray"; }
-                        else{ $cor = "black"; }
-                              
+                        <?
+                        if ($verifica = 2) {
+                            $cor = "green";
+                        } else if ($verifica = 3) {
+                            $cor = "red";
+                        } else if ($verifica = 4) {
+                            $cor = "blue";
+                        } else if ($verifica = 5) {
+                            $cor = "gray";
+                        } else {
+                            $cor = "black";
+                        }
+
                         $title = $item->medicoagenda;
                         $corMedico = $cor;
                         if ($item->confirmacao_medico != '') {
-                            if($item->confirmacao_medico == 'f'){
+                            if ($item->confirmacao_medico == 'f') {
                                 $corMedico = "#ff8c00";
                                 $title .= ". Não comparecerá na clinica.";
-                            } 
-                            else{
+                            } else {
                                 $corMedico = "green";
-                                $title .=  ". Comparecerá na clinica.";
+                                $title .= ". Comparecerá na clinica.";
                             }
                         }
-                        if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") {  ?>
-                            <td style="cursor: pointer; color: <?=$cor?>;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala; ?>"><b><a style="color:<?=$cor?>;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala; ?></b></td>
-                            <td style="cursor: pointer; color: <?= $corMedico; ?>" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $title; ?>"><b><a style="color:<?=$corMedico?>;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->medicoagenda ?></b></td>
+                        if ($situacao == 'espera' || $situacao == 'agendado' || $situacao == "<font color='gray'>faltou") {
+                            ?>
+                            <td style="cursor: pointer; color: <?= $cor ?>;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala; ?>"><b><a style="color:<?= $cor ?>;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala; ?></b></td>
+                            <td style="cursor: pointer; color: <?= $corMedico; ?>" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $title; ?>"><b><a style="color:<?= $corMedico ?>;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->medicoagenda ?></b></td>
                         <? } else { ?>
-                            <td style="cursor: pointer; color: <?=$cor?>;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala ?>"><?= $item->sala ?></td>
+                            <td style="cursor: pointer; color: <?= $cor ?>;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala ?>"><?= $item->sala ?></td>
                             <td style="cursor: pointer; color: <?= $corMedico; ?>" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $title; ?>"><?= $item->medicoagenda; ?></td>
 
                         <? } ?>  
                         <!-- OBSERVAÇOES -->
-                        <!--<td class="<?php // echo $estilo_linha;                   ?>"><?= $item->observacoes; ?></td>-->
+                        <!--<td class="<?php // echo $estilo_linha;                     ?>"><?= $item->observacoes; ?></td>-->
 
                         <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style=" cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                                                                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></td>
                             <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -752,8 +758,72 @@ if (@$_GET['nome'] != '') {
 } else {
     $nome = "";
 }
+if (@$_GET['sala'] != '') {
+    $sala = "";
+}
 ?>
 <script>
+
+//alert();
+<?if($sala_atual != 0){?>
+   var sala_atual = <?=$sala_atual?>; 
+<?}else{?>
+   var sala_atual = ''; 
+<?}?>
+    
+    if ($('#grupo').val()) {
+
+//        alert($('#grupo').val());
+        $('.carregando').show();
+//                                                        alert('teste_parada');
+        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+            options = '<option value=""></option>';
+//                    alert(j);
+             sala_atual = <?= $sala_atual ?>;
+            for (var c = 0; c < j.length; c++) {
+                if (sala_atual == j[c].exame_sala_id) {
+                    options += '<option selected value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                } else {
+                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                }
+
+            }
+
+            $('#sala').html(options).show();
+            $('.carregando').hide();
+
+
+
+        });
+    }
+
+
+    if ($('#grupo').val()) {
+
+//        alert($('#grupo').val());
+        $('.carregando').show();
+//                                                        alert('teste_parada');
+        $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+            options = '<option value=""></option>';
+//                    alert(j);
+            var empresa_atual = <?= $empresa_atual ?>;
+            for (var c = 0; c < j.length; c++) {
+                if (empresa_atual == j[c].empresa_id) {
+                    options += '<option selected value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                } else {
+                    options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                }
+
+
+            }
+            $('#empresa').html(options).show();
+            $('.carregando').hide();
+
+
+
+        });
+    }
+
 //alert($('#medico').val());
     $(function () {
         $("#accordion").accordion();
@@ -777,7 +847,7 @@ if (@$_GET['nome'] != '') {
     } else {
         var paciente = '';
     }
-
+//    alert('<?= $sala_atual ?>');
     $('#calendar').fullCalendar({
         header: {
             left: 'prev,next',
@@ -829,7 +899,7 @@ if (@$_GET['nome'] != '') {
                     medico: $('#medico').val(),
                     tipoagenda: $('#tipoagenda').val(),
                     empresa: $('#empresa').val(),
-                    sala: $('#sala').val(),
+                    sala: sala_atual,
                     grupo: $('#grupo').val(),
                     paciente: paciente
                 },
@@ -851,7 +921,7 @@ if (@$_GET['nome'] != '') {
 //                alert($(this).val());
                 $('.carregando').show();
 //                                                        alert('teste_parada');
-                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $(this).val(), ajax: true}, function (j) {
+                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
                     options = '<option value=""></option>';
 //                    alert(j);
                     for (var c = 0; c < j.length; c++) {
@@ -864,7 +934,41 @@ if (@$_GET['nome'] != '') {
             } else {
                 $('.carregando').show();
 //                                                        alert('teste_parada');
-                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasalatodos', {txtgrupo: $(this).val(), ajax: true}, function (j) {
+                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasalatodos', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+//                    alert(j);
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                    }
+                    $('#sala').html(options).show();
+                    $('.carregando').hide();
+                });
+            }
+
+        });
+    });
+
+    $(function () {
+        $('#empresa').change(function () {
+
+            if ($(this).val()) {
+//                alert($(this).val());
+                $('.carregando').show();
+//                                                        alert('teste_parada');
+                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+//                    alert(j);
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                    }
+                    $('#sala').html(options).show();
+                    $('.carregando').hide();
+                });
+
+            } else {
+                $('.carregando').show();
+//                                                        alert('teste_parada');
+                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasalatodos', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
                     options = '<option value=""></option>';
 //                    alert(j);
                     for (var c = 0; c < j.length; c++) {
@@ -919,78 +1023,6 @@ if (@$_GET['nome'] != '') {
 //            }
         });
     });
-
-
-    if ($('#grupo').val()) {
-
-//        alert($('#grupo').val());
-        $('.carregando').show();
-//                                                        alert('teste_parada');
-        $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $('#grupo').val(), ajax: true}, function (j) {
-            options = '<option value=""></option>';
-//                    alert(j);
-            var empresa_atual = <?= $empresa_atual ?>;
-            for (var c = 0; c < j.length; c++) {
-                if (empresa_atual == j[c].empresa_id) {
-                    options += '<option selected value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
-                } else {
-                    options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
-                }
-
-
-            }
-            $('#empresa').html(options).show();
-            $('.carregando').hide();
-
-
-
-        });
-    }
-    if ($('#grupo').val()) {
-
-//        alert($('#grupo').val());
-        $('.carregando').show();
-//                                                        alert('teste_parada');
-        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), ajax: true}, function (j) {
-            options = '<option value=""></option>';
-//                    alert(j);
-            var sala_atual = <?= $sala_atual ?>;
-            for (var c = 0; c < j.length; c++) {
-                if (sala_atual == j[c].exame_sala_id) {
-                    options += '<option selected value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                } else {
-                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                }
-
-            }
-            $('#sala').html(options).show();
-            $('.carregando').hide();
-
-
-
-        });
-    }
-
-//    }
-
-
-//    $(document).ready(function () {
-
-
-
-//            $.getJSON("<?= base_url() ?>autocomplete/listarhorarioscalendario", json);
-//            function json(data) {
-
-
-//            }
-
-//    });
-//    $('#medico').change(function () {
-//        document.getElementById('form').submit();
-//    });
-//    $('#especialidade').change(function () {
-//        document.getElementById('form').submit();
-//    });
 
 
 

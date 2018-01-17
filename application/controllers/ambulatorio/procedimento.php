@@ -20,6 +20,7 @@ class Procedimento extends BaseController {
         $this->load->model('ponto/Competencia_model', 'competencia');
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('cadastro/laboratorio_model', 'laboratorio');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -66,6 +67,11 @@ class Procedimento extends BaseController {
         $this->loadView('ambulatorio/ajustevalores-form', $data);
     }
     
+//    function carregarajustevalores() {
+//        $data['grupos'] = $this->procedimento->listargrupos();
+//        $this->loadView('ambulatorio/ajustevalores-form', $data);
+//    }
+    
     function gravarajustevalores() {
         $verifica = $this->procedimento->gravarajustevalores();
         if ($verifica) {
@@ -99,6 +105,7 @@ class Procedimento extends BaseController {
         $data['obj'] = $obj_procedimento;
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
         $data['grupos'] = $this->procedimento->listargrupos();
+        $data['laboratorios'] = $this->laboratorio->listarlaboratorios();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimento-form', $data);
     }

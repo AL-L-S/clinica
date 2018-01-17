@@ -50,7 +50,7 @@
                     <dd>                    
                         <select name="laboratorio" id="laboratorio" class="size4">
                             <option>SELECIONE</option>
-                            <option>TODOS</option>
+                            <!--<option>TODOS</option>-->
                             <? foreach ($laboratorios as $value) : ?>
                                 <option value="<?= $value->laboratorio_id; ?>"><?php echo $value->nome; ?></option>
                             <? endforeach; ?>

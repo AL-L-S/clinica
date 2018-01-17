@@ -27,6 +27,13 @@
                     </a>
                 </div>
             </td>
+            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimento/procedimentolaboratorio">
+                        Laboratorio Proc.
+                    </a>
+                </div>
+            </td>
         </tr>
     </table>
 

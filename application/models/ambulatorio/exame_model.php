@@ -1782,7 +1782,7 @@ class exame_model extends Model {
         if (isset($args['especialidade']) && strlen($args['especialidade']) > 0) {
             $this->db->where('o.cbo_ocupacao_id', $args['especialidade']);
         }
-        if ($args['tipoagenda'] != '') {
+        if (@$args['tipoagenda'] != '') {
             $this->db->where('ae.tipo_consulta_id', $args['tipoagenda']);
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
@@ -1869,6 +1869,9 @@ class exame_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio co', 'co.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+//        if(){
+//           $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id', 'left'); 
+//        }
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
@@ -1906,7 +1909,7 @@ class exame_model extends Model {
             $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
 //        var_dump($args); die;
-        if ($args['tipoagenda'] != '') {
+        if (@$args['tipoagenda'] != '') {
             $this->db->where('ae.tipo_consulta_id', $args['tipoagenda']);
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {

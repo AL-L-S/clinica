@@ -172,3 +172,10 @@ SELECT insereValor();
 
  ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_laboratorio numeric(10,2);
  ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_laboratorio boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN laboratorio_id integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN laboratorio_id integer;
+
+ALTER TABLE ponto.tb_laboratorio ADD COLUMN tipo_id integer;
+ALTER TABLE ponto.tb_laboratorio ADD COLUMN classe text;
+ALTER TABLE ponto.tb_laboratorio ADD COLUMN tipo text;

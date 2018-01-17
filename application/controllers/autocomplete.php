@@ -2248,7 +2248,7 @@ class Autocomplete extends Controller {
     function grupoempresasala() {
 //        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtgrupo'])) {
-            $result = $this->exametemp->listarautocompletegrupoempresasala($_GET['txtgrupo']);
+            $result = $this->exametemp->listarautocompletegrupoempresasala($_GET['txtgrupo'], $_GET['txtempresa']);
         } else {
             $result = $this->exametemp->listarautocompletegrupoempresasala();
         }
@@ -2259,7 +2259,7 @@ class Autocomplete extends Controller {
     function grupoempresasalatodos() {
 //        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtgrupo'])) {
-            $result = $this->exametemp->listarautocompletegrupoempresasalatodos($_GET['txtgrupo']);
+            $result = $this->exametemp->listarautocompletegrupoempresasalatodos($_GET['txtgrupo'], $_GET['txtempresa']);
         } else {
             $result = $this->exametemp->listarautocompletegrupoempresasalatodos();
         }

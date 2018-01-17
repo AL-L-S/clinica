@@ -80,7 +80,23 @@ class Laboratorio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
+    function listarlaboratoriorelatorio($laboratorio_id) {
+        $this->db->select('laboratorio_id,
+                            nome,
+                            credor_devedor_id,
+                            tipo,
+                            classe,
+                            dinheiro,
+                            conta_id');
+        $this->db->from('tb_laboratorio');
+//        $this->db->where("ativo", 't');
+        $this->db->where("laboratorio_id", $laboratorio_id);
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarlaboratorios() {
         $this->db->select('laboratorio_id,
                             nome,
@@ -807,6 +823,37 @@ class Laboratorio_model extends Model {
 
     function gravar() {
         try {
+            echo '<pre>';
+//            var_dump($_POST); die;
+            if ($_POST['criarcredor'] == "on") {
+                $this->db->set('razao_social', $_POST['txtNome']);
+                $this->db->set('razao_social', $_POST['txtNome']);
+                $this->db->set('cep', $_POST['cep']);
+                if ($_POST['cpf'] != '') {
+                    $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
+                } else {
+                    $this->db->set('cpf', null);
+                }
+                $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
+                $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
+                if ($_POST['tipo_logradouro'] != '') {
+                    $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
+                }
+                if ($_POST['municipio_id'] != '') {
+                    $this->db->set('municipio_id', $_POST['municipio_id']);
+                }
+                $this->db->set('logradouro', $_POST['endereco']);
+                $this->db->set('numero', $_POST['numero']);
+                $this->db->set('bairro', $_POST['bairro']);
+                $this->db->set('complemento', $_POST['complemento']);
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_credor_devedor');
+                $financeiro_credor_devedor_id = $this->db->insert_id();
+            }
+
             /* inicia o mapeamento no banco */
             $laboratorio_id = $_POST['txtlaboratorio_id'];
             $this->db->set('nome', $_POST['txtNome']);
@@ -816,6 +863,17 @@ class Laboratorio_model extends Model {
 //            $this->db->set('codigoidentificador', $_POST['txtcodigo']);
 //            var_dump($_POST['laboratorio_associacao']); die;
 
+
+            if ($_POST['conta'] != "") {
+                $this->db->set('conta_id', $_POST['conta']);
+            }
+            if ($_POST['criarcredor'] == "on") {
+                $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
+            } elseif ($_POST['credor_devedor'] != "") {
+                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
+            }
+            $this->db->set('classe', $_POST['classe']);
+            $this->db->set('tipo', $_POST['tipo']);
 
 
             $this->db->set('cep', $_POST['cep']);
@@ -947,6 +1005,10 @@ class Laboratorio_model extends Model {
                                 co.codigoidentificador,
                                 co.parenteral,
                                 co.credor_devedor_id,
+                                co.conta_id,
+                                co.tipo_id,
+                                co.tipo,
+                                co.classe,
                                 co.associado,
                                 co.associacao_percentual,
                                 co.associacao_laboratorio_id,
@@ -961,6 +1023,10 @@ class Laboratorio_model extends Model {
             $this->_nome = $return[0]->nome;
             $this->_laboratorio_grupo_id = $return[0]->laboratorio_grupo_id;
             $this->_razao_social = $return[0]->razao_social;
+            $this->_classe = $return[0]->classe;
+            $this->_tipo_id = $return[0]->tipo_id;
+            $this->_tipo = $return[0]->tipo;
+            $this->_conta_id = $return[0]->conta_id;
             $this->_cnpj = $return[0]->cnpj;
             $this->_logradouro = $return[0]->logradouro;
             $this->_municipio_id = $return[0]->municipio_id;

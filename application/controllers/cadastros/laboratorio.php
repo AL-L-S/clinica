@@ -20,6 +20,10 @@ class Laboratorio extends BaseController {
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
 //        $this->load->model('cadastro/grupoconvenio_model', 'grupolaboratorio');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
+        $this->load->model('cadastro/tipo_model', 'tipo');
+        $this->load->model('cadastro/forma_model', 'forma');
+        $this->load->model('cadastro/classe_model', 'classe');
+        $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -77,12 +81,12 @@ class Laboratorio extends BaseController {
     }
 
     function gravardesconto($laboratorio_id) {
-        
+
         $data['laboratorio_antigo'] = $this->laboratorio->gravardescontoantigo($laboratorio_id);
         $data['laboratorio'] = $this->laboratorio->gravardesconto($laboratorio_id);
-        
+
         $this->laboratorio->gravarajustelaboratoriosecundario($laboratorio_id);
-        
+
         $data['laboratorioid'] = $laboratorio_id;
         redirect(base_url() . "cadastros/laboratorio");
     }
@@ -103,25 +107,24 @@ class Laboratorio extends BaseController {
 
     function gravar() {
         $laboratorio_id = $this->laboratorio->gravar();
-        
+
         if ($laboratorio_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar Laboratorio. Opera&ccedil;&atilde;o cancelada.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar Laboratorio.';
         }
-        
+
         $this->session->set_flashdata('message', $data['mensagem']);
-        
+
         if (isset($_POST['associalaboratorio'])) {
-            
+
 //            $laboratorio_associacao = $_POST['laboratorio_associacao'];
             $laboratorio_id = $_POST['txtlaboratorio_id'];
-            
+
             $this->laboratorio->removerprocedimentosnaopertenceprincipal($laboratorio_id);
-            
+
             redirect(base_url() . "cadastros/laboratorio/ajustargrupo/$laboratorio_id");
-        }
-        else{
+        } else {
             redirect(base_url() . "cadastros/laboratorio");
         }
     }

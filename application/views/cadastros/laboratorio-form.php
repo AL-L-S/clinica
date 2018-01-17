@@ -78,10 +78,98 @@
                     <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" value="<?= @$obj->_celular; ?>" />
                 </div>
             </fieldset>
-            
-            
-            
-            
+            <fieldset>
+                <legend>Financeiro</legend>
+                <div>
+                    <label>Criar Credor</label>
+                    <input type="checkbox" name="criarcredor" id="criarcredor"/></div>
+
+                <div>
+
+
+
+                    <label>Credor / Devedor</label>
+
+
+                    <select name="credor_devedor" id="credor_devedor" class="size2" required>
+                        <option value='' >Selecione</option>
+                        <?php
+                        $credor_devedor = $this->convenio->listarcredordevedor();
+                        foreach ($credor_devedor as $item) {
+                            ?>
+
+                            <option   value =<?php echo $item->financeiro_credor_devedor_id; ?> <?
+                            if (@$obj->_credor_devedor_id == $item->financeiro_credor_devedor_id):echo 'selected';
+                            endif;
+                            ?>><?php echo $item->razao_social; ?></option>
+                                      <?php
+                                  }
+                                  ?> 
+                    </select>
+                </div>
+                <div>
+                    <label>Conta</label>
+
+
+                    <select name="conta" id="conta" class="size2" required>
+                        <option value='' >Selecione</option>
+                        <?php
+                        $conta = $this->forma->listarforma();
+                        foreach ($conta as $item) {
+                            ?>
+
+                            <option   value =<?php echo $item->forma_entradas_saida_id; ?> <?
+                            if (@$obj->_conta_id == $item->forma_entradas_saida_id):echo 'selected';
+                            endif;
+                            ?>><?php echo $item->descricao; ?></option>
+                                      <?php
+                                  }
+                                  ?> 
+                    </select>
+                </div>
+                <div>
+                    <label>Tipo</label>
+
+
+                    <select name="tipo" id="tipo" class="size2" required>
+                        <option value='' >Selecione</option>
+                        <?php
+                        $tipo = $this->tipo->listartipo();
+
+                        foreach ($tipo as $item) {
+                            ?>
+
+                            <option   value = "<?= $item->descricao; ?>" <?
+                            if (@$obj->_tipo == $item->descricao):echo 'selected';
+                            endif;
+                            ?>><?php echo $item->descricao; ?></option>
+                                      <?php
+                                  }
+                                  ?> 
+                    </select>
+                </div>
+                <div>
+                    <label>Classe</label>
+
+
+                    <select name="classe" id="classe" class="size2" required>
+                        <option value="">Selecione</option>
+                        <? foreach ($classe as $value) : ?>
+                            <option value="<?= $value->descricao; ?>"
+                            <?
+                            if ($value->descricao == @$obj->_classe):echo'selected';
+                            endif;
+                            ?>
+                                    ><?php echo $value->descricao; ?></option>
+                                <? endforeach; ?>
+                    </select>
+                </div>
+
+
+            </fieldset>          
+
+
+
             <fieldset>
                 <legend>Observa&ccedil;&atilde;o</legend>
                 <div>
@@ -105,19 +193,14 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    <?if(@$obj->_associado != 't'){?>
-        $("#div_associacao").hide();
-    <?}?>
-    $('#associalaboratorio').change(function () {
+
+    $('#criarcredor').change(function () {
         if ($(this).is(":checked")) {
-            $("#div_associacao").show();
-            $("#laboratorio_associacao").prop('required', true);
-            $("#valorpercentual").prop('required', true);
-            
+            $("#credor_devedor").prop('required', false);
+
         } else {
-            $("#div_associacao").hide();
-            $("#laboratorio_associacao").prop('required', false);
-            $("#valorpercentual").prop('required', false);
+            $("#credor_devedor").prop('required', true);
+
         }
     });
     var teste = '<? echo $obj->_tabela; ?>';
@@ -129,18 +212,75 @@
         $("#procedimento2").prop('required', false);
     }
 
+//    $(function () {
+//        $('#tipo').change(function () {
+//            if ($(this).val() == 'PROPRIA' || $(this).val() == 'CBHPM') {
+//                $("#procedimento1").prop('required', true);
+//                $("#procedimento2").prop('required', true);
+//
+//            } else {
+//                $("#procedimento1").prop('required', false);
+//                $("#procedimento2").prop('required', false);
+//            }
+//        });
+//    });
+    var classe_selecionada = '';
+    <?if(@$obj->_classe != ''){?>
+        classe_selecionada = '<?=@$obj->_classe?>';
+    <?}?>
+
+    if ($('#tipo').val()) {
+        $('.carregando').show();
+        $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalistadescricao', {nome: $('#tipo').val(), ajax: true}, function (j) {
+            options = '<option value=""></option>';
+            for (var c = 0; c < j.length; c++) {
+                if(j[c].classe == classe_selecionada){
+                  options += '<option selected value="' + j[c].classe + '">' + j[c].classe + '</option>';    
+                }else{
+                  options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';  
+                }
+                
+            }
+            $('#classe').html(options).show();
+            $('.carregando').hide();
+        });
+    } else {
+        $('.carregando').show();
+        $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalistadescricaotodos', {nome: $('#tipo').val(), ajax: true}, function (j) {
+            options = '<option value=""></option>';
+            for (var c = 0; c < j.length; c++) {
+                options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+            }
+            $('#classe').html(options).show();
+            $('.carregando').hide();
+        });
+    }
     $(function () {
         $('#tipo').change(function () {
-            if ($(this).val() == 'PROPRIA' || $(this).val() == 'CBHPM') {
-                $("#procedimento1").prop('required', true);
-                $("#procedimento2").prop('required', true);
-
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalistadescricao', {nome: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                    }
+                    $('#classe').html(options).show();
+                    $('.carregando').hide();
+                });
             } else {
-                $("#procedimento1").prop('required', false);
-                $("#procedimento2").prop('required', false);
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalistadescricaotodos', {nome: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                    }
+                    $('#classe').html(options).show();
+                    $('.carregando').hide();
+                });
             }
         });
     });
+
 
     $(function () {
         $("#txtCidade").autocomplete({

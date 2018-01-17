@@ -612,15 +612,15 @@ class guia_model extends Model {
             $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
             $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         }
-        
-        if( isset($_POST['filtro_hora']) ){
+
+        if (isset($_POST['filtro_hora'])) {
             $_POST['horario_inicio'] = ($_POST['horario_inicio'] == '') ? '00:00' : $_POST['horario_inicio'];
             $_POST['horario_fim'] = ($_POST['horario_fim'] == '') ? '00:00' : $_POST['horario_fim'];
-            
+
             $this->db->where("ae.inicio >=", $_POST['horario_inicio']);
             $this->db->where("ae.fim <=", $_POST['horario_fim']);
         }
-        
+
         if ($_POST['grupoconvenio'] != "0") {
             $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
         }
@@ -3688,14 +3688,15 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    function percentuallaboratorioconvenioexames($procedimentopercentual, $laboratoriopercentual) {
-        $this->db->select('mc.valor as perc_laboratorio, mc.percentual');
+
+    function percentuallaboratorioconvenioexames($procedimentopercentual) {
+        $this->db->select('mc.valor as perc_laboratorio, mc.percentual, mc.laboratorio');
         $this->db->from('tb_procedimento_percentual_laboratorio_convenio mc');
         $this->db->join('tb_procedimento_percentual_laboratorio m', 'm.procedimento_percentual_laboratorio_id = mc.procedimento_percentual_laboratorio_id', 'left');
         $this->db->where('m.procedimento_tuss_id', $procedimentopercentual);
-        $this->db->where('mc.laboratorio', $laboratoriopercentual);
+//        $this->db->where('mc.laboratorio', $laboratoriopercentual);
         $this->db->where('mc.ativo', 'true');
-        $this->db->where('mc.revisor', 'false');
+//        $this->db->where('mc.revisor', 'false');
         $return = $this->db->get();
 
         return $return->result();
@@ -3871,6 +3872,10 @@ class guia_model extends Model {
                             ae.autorizacao,
                             ae.percentual_medico,
                             ae.valor_medico,
+                            ae.percentual_laboratorio,
+                            ae.valor_laboratorio,
+                            ae.laboratorio_id,
+                            lab.nome as laboratorio,
                             ae.percentual_promotor,
                             ae.valor_promotor,
                             ae.desconto_ajuste1,
@@ -3952,6 +3957,7 @@ class guia_model extends Model {
         $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = ae.laboratorio_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
         $this->db->join('tb_operador ops', 'ops.operador_id = ae.medico_solicitante', 'left');
@@ -4010,6 +4016,138 @@ class guia_model extends Model {
 //            $this->db->orderby('ae.paciente_id');
         } else {
             $this->db->orderby('al.medico_parecer1');
+            $this->db->orderby('pc.convenio_id');
+            $this->db->orderby('ae.data');
+            $this->db->orderby('ae.paciente_id');
+        }
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function relatoriolaboratorioconveniofinanceiro() {
+
+        $this->db->select("ae.quantidade,
+                            p.nome as paciente,
+                            pt.nome as procedimento,
+                            pc.procedimento_convenio_id,
+                            ae.autorizacao,
+                            ae.percentual_laboratorio,
+                            ae.valor_laboratorio,
+                            ae.data,
+                            al.data as data_laudo,
+                            al.data_producao,
+                            ae.data_antiga,
+                            ae.sala_pendente,
+                            e.situacao,
+                            ae.valor,
+                            ae.valor1,
+                            ae.valor2,
+                            ae.valor3,
+                            ae.valor4,
+                            ae.valor_total,
+                            pc.procedimento_tuss_id,
+          
+                            pt.grupo,
+                            (
+                                SELECT dia_recebimento 
+                                FROM ponto.tb_procedimento_percentual_laboratorio_convenio ppmc
+                                INNER JOIN ponto.tb_procedimento_percentual_laboratorio ppm 
+                                ON ppm.procedimento_percentual_laboratorio_id = ppmc.procedimento_percentual_laboratorio_id
+                                WHERE ppm.procedimento_tuss_id = ae.procedimento_tuss_id
+                                AND ppm.ativo = 't'
+                                AND ppmc.ativo = 't'
+                                AND ppmc.laboratorio = ae.laboratorio_id
+                                ORDER BY ppmc.data_cadastro DESC
+                                LIMIT 1
+                            ) as dia_recebimento,
+                            (
+                                SELECT tempo_recebimento 
+                                FROM ponto.tb_procedimento_percentual_laboratorio_convenio ppmc
+                                INNER JOIN ponto.tb_procedimento_percentual_laboratorio ppm 
+                                ON ppm.procedimento_percentual_laboratorio_id = ppmc.procedimento_percentual_laboratorio_id
+                                WHERE ppm.procedimento_tuss_id = ae.procedimento_tuss_id
+                                AND ppm.ativo = 't'
+                                AND ppmc.ativo = 't'
+                                AND ppmc.laboratorio = ae.laboratorio_id
+                                ORDER BY ppmc.data_cadastro DESC
+                                LIMIT 1
+                            ) as tempo_recebimento,
+                            al.situacao as situacaolaudo,
+                            tu.classificacao,
+                            lab.nome as laboratorio,
+                            lab.nome as laboratorio,
+                            pi.nome as indicacao,
+                            ops.nome as medicosolicitante,
+                            c.nome as convenio,
+                            c.iss,
+                            ae.valor1,
+                            ae.laboratorio_id,
+                            ae.forma_pagamento2,
+                            ae.valor2,
+                            ae.forma_pagamento3,
+                            ae.valor3,
+                            ae.numero_sessao,
+                            ae.forma_pagamento4,
+                            ae.valor4");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = ae.indicacao', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = ae.laboratorio_id', 'left');
+        $this->db->join('tb_operador ops', 'ops.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+//        $this->db->where('ae.valor_laboratorio is not null');
+        $this->db->where('ae.paciente_id is not null');
+        $this->db->where('pt.home_care', 'f');
+
+        if ($_POST['situacao'] == "1") {
+            $this->db->where('al.situacao', 'FINALIZADO');
+        } elseif ($_POST['situacao'] == "0") {
+            $this->db->where('al.situacao !=', 'FINALIZADO');
+        }
+
+        if ($_POST['laboratorios'] != "0") {
+            $this->db->where('ae.laboratorio_id', $_POST['laboratorios']);
+        }
+
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['grupoconvenio'] != "0") {
+            $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+
+
+
+
+        $this->db->where("al.data_producao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("al.data_producao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        if ($_POST['ordem'] == '1') {
+            $this->db->orderby('ae.data');
+            $this->db->orderby('ae.data_autorizacao');
+            $this->db->orderby('ae.ordenador desc');
+//            $this->db->orderby('ae.paciente_id');
+        } else {
+            $this->db->orderby('ae.laboratorio_id');
             $this->db->orderby('pc.convenio_id');
             $this->db->orderby('ae.data');
             $this->db->orderby('ae.paciente_id');
@@ -4329,6 +4467,65 @@ class guia_model extends Model {
 
         $this->db->groupby('op.nome');
         $this->db->orderby('op.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatoriolaboratorioconveniofinanceirotodos() {
+
+        $this->db->select('sum(ae.valor_total)as valor,
+            sum(ae.quantidade) as quantidade,
+            lab.nome as laboratorio');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = ae.laboratorio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+//        $this->db->where('ae.valor_laboratorio is not null');
+        $this->db->where('pt.home_care', 'f');
+
+        if ($_POST['situacao'] == "1") {
+            $this->db->where('al.situacao', 'FINALIZADO');
+        } elseif ($_POST['situacao'] == "0") {
+            $this->db->where('al.situacao !=', 'FINALIZADO');
+        }
+
+        if ($_POST['laboratorios'] != "0") {
+            $this->db->where('ae.laboratorio_id', $_POST['laboratorios']);
+        }
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['grupoconvenio'] != "0") {
+            $this->db->where("c.convenio_grupo_id", $_POST['grupoconvenio']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+
+
+
+
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        $this->db->groupby('lab.nome');
+        $this->db->orderby('lab.nome');
         $return = $this->db->get();
         return $return->result();
     }
@@ -4745,6 +4942,47 @@ class guia_model extends Model {
         }
         if ($_POST['revisor'] != "0") {
             $this->db->where('al.medico_parecer2', $_POST['revisor']);
+        }
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if ($_POST['convenio'] == "") {
+            $this->db->where("c.dinheiro", "f");
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+
+        $this->db->where("al.data_producao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("al.data_producao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        $return = $this->db->count_all_results();
+        return $return;
+    }
+    
+    function relatoriolaboratorioconveniocontadorfinanceiro() {
+
+        $this->db->select('ae.data,
+            c.nome as convenio');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('e.cancelada', 'false');
+//        $this->db->where('ae.valor_laboratorio is not null');
+        $this->db->where('ae.paciente_id is not null');
+//        $this->db->where('al.situacao', 'FINALIZADO');
+        if ($_POST['laboratorios'] != "0") {
+            $this->db->where('ae.laboratorio_id', $_POST['laboratorios']);
         }
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
@@ -9797,6 +10035,50 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->insert('tb_saidas');
         }
     }
+    
+    function fecharlaboratorio($data_contaspagar) {
+        /* inicia o mapeamento no banco */
+        $horario = date("Y-m-d H:i:s");
+        $data = date("Y-m-d");
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        if ($this->session->userdata('producao_medica_saida') != 't') {
+            if ($data_contaspagar == 't') {
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
+            } else {
+                $this->db->set('data', $data);
+            }
+
+            $this->db->set('valor', $_POST['valor']);
+            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('credor', $_POST['nome']);
+            $this->db->set('conta', $_POST['conta']);
+            $this->db->set('classe', $_POST['classe']);
+            $this->db->set('observacao', $_POST['observacao']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_financeiro_contaspagar');
+        } else {
+            if ($data_contaspagar == 't') {
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
+            } else {
+                $this->db->set('data', $data);
+            }
+
+            $this->db->set('valor', $_POST['valor']);
+            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('nome', $_POST['nome']);
+            $this->db->set('conta', $_POST['conta']);
+            $this->db->set('classe', $_POST['classe']);
+            $this->db->set('observacao', $_POST['observacao']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_saidas');
+        }
+    }
 
     function listardados($convenio) {
         $this->db->select('nome,
@@ -10348,6 +10630,12 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('valor_promotor', $return2[0]->valor_promotor);
                 $this->db->set('percentual_promotor', $return2[0]->percentual_promotor);
             }
+            if (count($percentual_laboratorio) > 0) {
+                $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
+                $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
+                $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
+            }
+//            var_dump($percentual_laboratorio); die;
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
@@ -10677,7 +10965,7 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function gravaratendimemto($ambulatorio_guia_id, $medico_id, $percentual) {
+    function gravaratendimemto($ambulatorio_guia_id, $medico_id, $percentual, $percentual_laboratorio) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -10723,6 +11011,11 @@ ORDER BY ae.agenda_exames_id)";
 
                 $this->db->set('valor_medico', $percentual[0]->perc_medico);
                 $this->db->set('percentual_medico', $percentual[0]->percentual);
+                if (count($percentual_laboratorio) > 0) {
+                    $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
+                    $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
+                    $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
+                }
                 $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
                 if ($_POST['medicoagenda'] != "") {
                     $this->db->set('medico_consulta_id', $_POST['medicoagenda']);

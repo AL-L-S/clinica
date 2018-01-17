@@ -7,11 +7,11 @@
     </div>
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novolaboratorio/<?= $dados ?>/<?= $convenio_id; ?>">
-            Novo M&eacute;dico
+            Novo Laboratório
         </a>
     </div>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Procedimento Honor&aacute;rios M&eacute;dicos</a></h3>
+        <h3 class="singular"><a href="#">Manter Procedimento Honor&aacute;rios Laboratório</a></h3>
         <div>
             <table>
                 <thead>
@@ -20,7 +20,7 @@
                     </tr>
                 <form method="post" action="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimento/<?= $dados; ?>/<?= $convenio_id; ?>">
                     <tr>
-                        <th class="tabela_title">Medico</th>  
+                        <th class="tabela_title">Laboratório</th>  
                         <th class="tabela_title" width="10px;" >Valor</th>
 <!--                        <th class="tabela_title" >Procedimento</th>                         
                         <th class="tabela_title" width="10px;">Conv&ecirc;nio</th>-->

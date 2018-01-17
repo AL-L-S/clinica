@@ -3,7 +3,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Cadastro de Honor&aacute;rios M&eacute;dicos</a></h3>
         <div>
-            <form name="form_procedimentohonorario" id="form_procedimentohonorario" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarpercentuallaboratorio" method="post">
+            <form name="form_procedimentohonorario" id="form_procedimentohonorario" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarpercentuallaboratorioconvenio" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>
@@ -54,7 +54,7 @@
                     <dd>                    
                         <select name="laboratorio" id="laboratorio" class="size4" required="">
                             <option value="">SELECIONE</option>
-                            <option>TODOS</option>
+                            <!--<option>TODOS</option>-->
                             <? foreach ($laboratorios as $value) : ?>
                                 <option value="<?= $value->laboratorio_id; ?>"><?php echo $value->nome; ?></option>
 <? endforeach; ?>

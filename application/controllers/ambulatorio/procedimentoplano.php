@@ -56,15 +56,6 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/conveniopercentuallaboratorio-lista', $args);
     }
 
-//    function procedimentoconveniopercentuallaboratorio($convenio_id) {
-//        $data['convenio_id'] = $convenio_id;
-////        var_dump($_GET);die;
-////        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconveniopercentuallaboratorio($convenio_id);
-//        $data['grupo'] = $this->procedimento->listargrupos();
-////        var_dump($data['grupo']);die;
-//        $this->loadView('ambulatorio/procedimentopercentuallaboratorio-lista', $data);
-//    }
-
     function procedimentoconveniopercentual($convenio_id) {
         $data['convenio_id'] = $convenio_id;
 //        var_dump($_GET);die;
@@ -647,7 +638,7 @@ class Procedimentoplano extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/procedimentoplano/editarprocedimento/{$percentual_medico_id}/{$convenio_id}");
     }
-    
+
     function gravareditarlaboratoriopercentual($procedimento_percentual_laboratorio_convenio_id) {
         $convenio_id = $_POST['convenio_id'];
         $percentual_laboratorio_id = $_POST['percentual_laboratorio_id'];
@@ -729,12 +720,25 @@ class Procedimentoplano extends BaseController {
         redirect(base_url() . "ambulatorio/procedimentoplano/conveniopercentual");
     }
 
+    function gravarpercentuallaboratorioconvenio() {
+        $procedimentoplano_tuss_id = $this->procedimentoplano->gravarpercentuallaboratorioconvenio();
+        if ($procedimentoplano_tuss_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar o percentual do convênio. Convênio já cadastrado';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/procedimentoplano/conveniopercentuallaboratorio");
+    }
+
     function gravarpercentuallaboratorio() {
         $procedimentoplano_tuss_id = $this->procedimentoplano->gravarpercentuallaboratorio();
         if ($procedimentoplano_tuss_id == "-1") {
-            $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Opera&ccedil;&atilde;o cancelada.';
+            $data['mensagem'] = 'Erro ao gravar o percentual do convênio. Convênio já cadastrado';
+        } elseif ($procedimentoplano_tuss_id == "-2") {
+            $data['mensagem'] = 'Alguns procedimentos não foram gravados porque já existem registros dos mesmos.';
         } else {
-            $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
+           $data['mensagem'] = 'Erro ao gravar o percentual do convênio. Convênio já cadastrado'; 
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/procedimentoplano/conveniopercentuallaboratorio");
