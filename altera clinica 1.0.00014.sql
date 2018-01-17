@@ -45,3 +45,6 @@ WHERE empresa_id IS NULL;
 UPDATE ponto.tb_convenio_operador_procedimento
 SET empresa_id  = (SELECT empresa_id FROM ponto.tb_empresa WHERE ativo = 't' ORDER BY empresa_id LIMIT 1)
 WHERE empresa_id IS NULL;
+
+-- Dia 17/01/2018
+ALTER TABLE ponto.tb_empresa_sms ADD COLUMN endereco_externo character varying(60);

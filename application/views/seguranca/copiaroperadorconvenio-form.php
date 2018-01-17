@@ -25,7 +25,8 @@
                 <label>Empresa</label>
                 <select name="empresa_id_destino" id="empresa_id_origem" class="size4" required="">
                     <option value="">Selecione</option>                    
-                    <? foreach ($empresa as $value) : ?>
+                    <? foreach ($empresa as $value) : 
+                        if($dados[0]->empresa_id == $value->empresa_id) { continue; }?>
                         <option value="<?= $value->empresa_id; ?>"><?php echo $value->nome; ?></option>
                     <? endforeach; ?>
                 </select>

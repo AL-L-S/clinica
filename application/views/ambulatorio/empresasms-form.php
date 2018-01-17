@@ -31,12 +31,12 @@
                     </div>
                     <div style="width: 100%">
                         <label onclick="mostrarPopUpIndentificao()">Identificação da Empresa</label>
-                        <input type="text" name="numero_identificacao_sms" value="<?= @$mensagem[0]->numero_indentificacao_sms ?>"/>
+                        <input type="text" name="numero_identificacao_sms" value="<?= @$mensagem[0]->numero_indentificacao_sms ?>" required=""/>
                     </div>
-<!--                    <div style="width: 100%">
-                        <label>Ip do Servidor SMS</label>
-                        <input type="text" name="ip_server" value="<?= @$mensagem[0]->ip_servidor_sms ?>"/>
-                    </div>-->
+                    <div style="width: 100%">
+                        <label>Endereço Externo</label>
+                        <input type="text" name="endereco_externo" value="<?= @$mensagem[0]->endereco_externo ?>"/>
+                    </div>
                 <? } ?>
                 <div style="width: 100%">
                     <input type="checkbox" id="msgensExcedentes" name="msgensExcedentes" <? if (@$mensagem[0]->enviar_excedentes == 't') echo "checked" ?>/>
@@ -46,20 +46,20 @@
                 </div>
                 <div style="width: 100%">
                     <label>Mensagem Confirmaçao</label>
-                    <input type="text" id="txtMensagemConfirmacao" class="mensagem_texto" name="txtMensagemConfirmacao" value="<?= @$mensagem[0]->mensagem_confirmacao ?>" />
+                    <input type="text" id="txtMensagemConfirmacao" class="mensagem_texto" name="txtMensagemConfirmacao" value="<?= @$mensagem[0]->mensagem_confirmacao ?>" maxlength="105"/>
                 </div>
                 <div  style="width: 100%">
                     <label>Mensagem de Agradecimento</label>
-                    <input type="text" id="txtMensagemAgradecimento" class="mensagem_texto" name="txtMensagemAgradecimento" value="<?= @$mensagem[0]->mensagem_agradecimento ?>"/>
+                    <input type="text" id="txtMensagemAgradecimento" class="mensagem_texto" name="txtMensagemAgradecimento" value="<?= @$mensagem[0]->mensagem_agradecimento ?>" maxlength="105"/>
                 </div>
                 <div style="width: 100%">
                     <label>Mensagem de Aniversariantes</label>
-                    <input type="text" id="txtMensagemAniversariantes" class="mensagem_texto" name="txtMensagemAniversariantes" value="<?= @$mensagem[0]->mensagem_aniversariante ?>"/>
+                    <input type="text" id="txtMensagemAniversariantes" class="mensagem_texto" name="txtMensagemAniversariantes" value="<?= @$mensagem[0]->mensagem_aniversariante ?>" maxlength="105"/>
                 </div>
 
                 <div style="width: 100%">
                     <label>Mensagem de Revisão</label>
-                    <input type="text" id="txtMensagemRevisao" class="mensagem_texto" name="txtMensagemRevisao" value="<?= @$mensagem[0]->mensagem_revisao ?>"/>
+                    <input type="text" id="txtMensagemRevisao" class="mensagem_texto" name="txtMensagemRevisao" value="<?= @$mensagem[0]->mensagem_revisao ?>" maxlength="105"/>
                 </div>
 
                 <div style="width: 100%">

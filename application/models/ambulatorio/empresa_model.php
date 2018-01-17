@@ -228,7 +228,7 @@ class empresa_model extends Model {
                             empresa_sms_id,
                             numero_indentificacao_sms,
                             enviar_excedentes,
-                            ip_servidor_sms,
+                            endereco_externo,
                             mensagem_revisao, 
                             mensagem_confirmacao, 
                             mensagem_agradecimento,
@@ -661,7 +661,7 @@ class empresa_model extends Model {
             /* inicia o mapeamento no banco */
             $this->db->set('pacote_id', $_POST['txtpacote']);
             $this->db->set('empresa_id', $_POST['empresa_id']);
-            $this->db->set('ip_servidor_sms', $_POST['ip_server']);
+            $this->db->set('endereco_externo', $_POST['endereco_externo']);
             $this->db->set('numero_indentificacao_sms', $_POST['numero_identificacao_sms']);
 
             if (isset($_POST['msgensExcedentes'])) {

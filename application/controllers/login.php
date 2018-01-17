@@ -109,9 +109,10 @@ class Login extends Controller {
             
             // Buscando mensagens  no banco que deverao ser mandadas
             $dados = $this->login->listarsms();
-//                var_dump($dados); die;
             if (count($dados) > 0) {
                 
+                require_once ('./application/libraries/Googl.class.php');
+                $Googl = new Googl();
                 
                 /* INTEGRAÇÃO ZENVIA API */
                 require_once ('./application/libraries/php-rest-api/autoload.php');
@@ -120,16 +121,25 @@ class Login extends Controller {
 
                 foreach ($dados as $value) {
                     $numero = $this->utilitario->validaTelefone($value['numero']);
-                    
-                    $sms = new Sms();
-                    $sms->setTo($numero);
-                    $sms->setMsg($value['mensagem']);
-                    $sms->setId($value['numero_indentificacao'] . "-" . $value['sms_id']);
-//                    $sms->setFrom($from);
-//                    $sms->setSchedule("2014-07-13T16:00:00");
-                    $smsLote[] = $sms;
+                    if($numero["valido"]){
+                        $sms = new Sms();
+                        $sms->setTo($numero["numFor"]);
+                        
+                        if($value->tipo == 'CONFIRMACAO') {
+                            // Encurta a URL de confirmação
+                            $msg = $value['mensagem'] . " Para confirmar, acesse: " . $Googl->shorten($value->endereco_externo);
+                            $sms->setMsg($msg);
+                        }
+                        else {
+                            $sms->setMsg($value['mensagem']);
+                        }
+                        
+                        $sms->setId($value['numero_indentificacao'] . "-" . $value['sms_id']);
+    //                    $sms->setFrom($from);
+    //                    $sms->setSchedule("2014-07-13T16:00:00");
+                        $smsLote[] = $sms;
+                    }
                 }
-                
                 
                 try {
 //                    $responses = $smsFacade->sendMultiple($smsLote);
@@ -138,12 +148,14 @@ class Login extends Controller {
 //                        echo "\nDetalhe: " . $response->getDetailCode() . " - " . $response->getDetailDescription() . "\n";
 //                    }
                 } catch( Exception $ex ){
-//                    echo "<pre>";
-//                    var_dump($ex->message);
+                    echo "<pre>";
+                    var_dump($ex->message);
                 }
             }          
+//                die('morreu');
             
         }
+        
     }
 
     function autenticar() {
@@ -180,8 +192,15 @@ class Login extends Controller {
         }
     }
 
-    function confirmarAtendimentoSMS ( $agenda_exames_id ) {
-        
+    function confirmarAtendimentoSMS($agenda_exames_id) {
+        $this->login->confirmarAtendimentoSMS($agenda_exames_id);
+        echo '
+            <html>
+                <body>
+                    <h3 style="text-align: center">Consulta/Exame Confirmado com sucesso!</h3>
+                </body>
+            </html>
+        ';
     }
 
     function sair() {

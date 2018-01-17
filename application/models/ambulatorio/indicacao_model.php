@@ -33,7 +33,7 @@ class indicacao_model extends Model {
         $this->db->join('tb_paciente_indicacao_grupo pig', 'pig.paciente_indicacao_grupo_id = aml.grupo_id', 'left');
         $this->db->where('aml.ativo', 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('aml.nome ilike', "%" . $args['nome'] . "%");
+            $this->db->where("(aml.nome ilike '%". $args['nome']. "%' OR aml.registro ilike '%". $args['nome']. "%')");
         }
         if ( @$args['grupo_id'] != '') {
             $this->db->where('grupo_id',$args['grupo_id']);

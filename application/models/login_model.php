@@ -379,6 +379,17 @@ class login_model extends Model {
         return $retorno;
     }
 
+    function confirmarAtendimentoSMS($agenda_exames_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('telefonema', 't');
+        $this->db->set('data_telefonema', $horario);
+        $this->db->set('operador_telefonema', $operador_id);
+        $this->db->where('agenda_exames_id', $agenda_exame_id);
+        $this->db->update('tb_agenda_exames');
+    }
+
     function criandoregistrosms() {
         $empresa_id = $this->session->userdata('empresa_id');
         $horario = date('Y-m-d');
@@ -429,7 +440,7 @@ class login_model extends Model {
 
     function listarsms() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select("s.sms_id, s.numero, s.mensagem, controle_id, numero_indentificacao_sms as numero_indentificacao");
+        $this->db->select("s.sms_id, s.numero, s.mensagem, controle_id, numero_indentificacao_sms as numero_indentificacao, s.tipo, es.endereco_externo");
         $this->db->from('tb_sms s');
         $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id');
         $this->db->join('tb_empresa_sms es', 'es.empresa_id = s.empresa_id');

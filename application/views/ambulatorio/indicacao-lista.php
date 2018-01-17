@@ -14,7 +14,7 @@ $grupos = $this->indicacao->listargrupoindicacao();
                 <thead>
                     <form method="get" action="<?= base_url() ?>ambulatorio/indicacao/pesquisar">
                         <tr>
-                            <th colspan="" class="tabela_title">Nome</th>
+                            <th colspan="" class="tabela_title">Nome/Registro</th>
                             <th colspan="" class="tabela_title">Grupo</th>
                             <th colspan="" class="tabela_title"></th>
                         </tr>

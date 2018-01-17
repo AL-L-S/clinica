@@ -183,7 +183,7 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                         foreach ($indicacao as $item) {
                                             ?>
                                             <option value="<?php echo $item->paciente_indicacao_id; ?>">
-                                                <?php echo $item->nome; ?>
+                                                <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?>
                                             </option>
                                             <?php
                                         }

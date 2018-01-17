@@ -5854,7 +5854,7 @@ class exametemp_model extends Model {
         }
 
 //        $empresa_id = $this->session->userdata('empresa_id');
-//        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
         if ($procedimento_multiempresa == 't') {
             $this->db->where('pc.empresa_id', $empresa_id);
         }
@@ -6264,6 +6264,40 @@ class exametemp_model extends Model {
 
 
         $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletemedicoconveniogeral($parametro) {
+
+        $this->db->select('c.convenio_id,
+                            c.nome,');
+        $this->db->from('tb_convenio c');
+        
+        $procedimento_excecao = $this->session->userdata('procedimento_excecao');
+        $empresa_id = $this->session->userdata('empresa_id');
+        
+        if ($procedimento_excecao == "t") {
+            $this->db->where("c.convenio_id NOT IN (
+                                SELECT pc2.convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                WHERE cop.ativo = 't'
+                                AND cop.operador = {$parametro}
+                                AND cop.empresa_id = {$empresa_id}
+                            )");
+        }
+        else {
+            $this->db->where("c.convenio_id IN (
+                                SELECT pc2.convenio_id FROM ponto.tb_convenio_operador_procedimento cop
+                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                WHERE cop.ativo = 't'
+                                AND cop.operador = {$parametro}
+                                AND cop.empresa_id = {$empresa_id}
+                            )");
+        }
+
+        $this->db->where('c.ativo', 't');
+        $this->db->orderby('c.nome');
         $return = $this->db->get();
         return $return->result();
     }
