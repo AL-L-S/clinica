@@ -12,7 +12,65 @@ class Utilitario {
             return true;
         }
     }
-
+    
+    function removerCaracter($string) {
+        $string = preg_replace("/[áàâãä]/", "a", $string);
+        $string = preg_replace("/[ÁÀÂÃÄ]/", "A", $string);
+        $string = preg_replace("/[éèê]/", "e", $string);
+        $string = preg_replace("/[ÉÈÊ]/", "E", $string);
+        $string = preg_replace("/[íì]/", "i", $string);
+        $string = preg_replace("/[ÍÌ]/", "I", $string);
+        $string = preg_replace("/[óòôõö]/", "o", $string);
+        $string = preg_replace("/[ÓÒÔÕÖ]/", "O", $string);
+        $string = preg_replace("/[úùü]/", "u", $string);
+        $string = preg_replace("/[ÚÙÜ]/", "U", $string);
+        $string = preg_replace("/ç/", "c", $string);
+        $string = preg_replace("/Ç/", "C", $string);
+        $string = preg_replace("/[][><}{)(:;,!?*%~^`@\.-]/", "", $string);
+        $string = str_replace(" ", "", $string);
+        $string = str_replace("+", "", $string);
+        return $string;
+    }
+    
+    function validaTelefone($telefone){
+        /* Essa função irá retornar se o numero é um telefone valido. 
+         * As verificações feitas aqui serão: 
+         *      -- A quantidade de caracteres no numero   
+         *      -- Caso o numero esteja correto, porem sem o digito 9 na frente, ele adcionará
+         *      -- Se possui um DDD válido */
+        
+        $numFor = $this->removerCaracter($telefone);
+        $result = false;
+        
+        if (strlen($numFor) > 9) {
+            if( strlen($numFor) == 10) { // Possui o DDD mas não possui o digito 9
+                $ddd = substr($numFor, 0, 2);
+                $num = "9" . substr($numFor, 2);
+                $result = true;
+            }
+            elseif( strlen($numFor) == 11) { // Possui o DDD e o digito 9
+                $ddd = substr($numFor, 0, 2);
+                $num = substr($numFor, 2);
+                $result = true;
+            }
+            
+            if ( in_array( (int) substr($num, 1, 1), array(9,8,7,6)) ) { // Verificando se o numero é de telefonia movel             
+                $result = true;
+            }
+            
+            $numFor = "+55" . $ddd . $num;
+        } 
+        // Caso o numero de digtos seja <= 9, ele não possui DDD
+        
+        $retorno = array(
+            "numFor" => $numFor,
+            "valido" => $result
+        );
+        
+        return $retorno;        
+        
+    }
+    
     function preencherDireita($valor, $tamanho, $caractere = "") {
         $i = strlen($valor);
 

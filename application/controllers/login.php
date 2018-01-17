@@ -6,6 +6,7 @@ class Login extends Controller {
         parent::Controller();
         $this->load->model('login_model', 'login');
         $this->load->library('mensagem');
+        $this->load->library('utilitario');
     }
 
     function index() {
@@ -105,55 +106,56 @@ class Login extends Controller {
 //                $this->email->message($mensagem);
 //                $this->email->send();
             }
-            // Buscando mensagens  no banco que deverao ser mandadas para o webservice
+            
+            // Buscando mensagens  no banco que deverao ser mandadas
             $dados = $this->login->listarsms();
-//                var_dump($dados);die;
-
-            /* ENVIANDO PARA O WEBSERVICE */
-            $cliente = new SoapClient(null, array(
-                /*
-                 * Certifique-se de ter criado a coluna abaixo no banco IONIC
-                 * que está no mesmo servidor do webservice
-                 * 
-                 * ALTER TABLE sms ADD COLUMN sms_associacao_id integer;
-                 *                   
-                 */
-                'location' => "http://" . $dadosEmpresaSms[0]->ip_servidor_sms . "/webservice/webservice/servidor.php",
-                'uri' => "http://" . $dadosEmpresaSms[0]->ip_servidor_sms . "/webservice/webservice/",
-                'trace' => 1
-            ));
-//            var_dump($dadosEmpresaSms[0]->ip_servidor_sms);die;
-            try {
-                $resultado = $cliente->__soapCall("recebemensagens", array(
-                    "dados" => $dados
-                ));
+            if (count($dados) > 0) {
                 
-                //Salvando o numero de controle recebido pelo WEBSERVICE no banco 
-                if( count($resultado) > 0 ){
-                    $this->login->atualizandonumerocontrole($resultado);
+                require_once ('./application/libraries/Googl.class.php');
+                $Googl = new Googl();
+                
+                /* INTEGRAÇÃO ZENVIA API */
+                require_once ('./application/libraries/php-rest-api/autoload.php');
+                $smsFacade = new SmsFacade("stgs.api", "ydaLex6jin");
+                $smsLote = array();
+
+                foreach ($dados as $value) {
+                    $numero = $this->utilitario->validaTelefone($value['numero']);
+                    if($numero["valido"]){
+                        $sms = new Sms();
+                        $sms->setTo($numero["numFor"]);
+                        
+                        if($value->tipo == 'CONFIRMACAO') {
+                            // Encurta a URL de confirmação
+                            $msg = $value['mensagem'] . " Para confirmar, acesse: " . $Googl->shorten($value->endereco_externo);
+                            $sms->setMsg($msg);
+                        }
+                        else {
+                            $sms->setMsg($value['mensagem']);
+                        }
+                        
+                        $sms->setId($value['numero_indentificacao'] . "-" . $value['sms_id']);
+    //                    $sms->setFrom($from);
+    //                    $sms->setSchedule("2014-07-13T16:00:00");
+                        $smsLote[] = $sms;
+                    }
                 }
                 
-            } catch (SoapFault $fault) {
-                die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
-            }
-
-//
-//            try { // CONFIRMANDO CONSULTAS COM AS MENSAGENS DE RETORNO
-//                
-//                /*
-//                 * Certifique-se de ter criado a coluna abaixo no banco IONIC
-//                 * que está no mesmo servidor do webservice
-//                 * 
-//                 * ALTER TABLE sms_retorno ADD COLUMN lido boolean;
-//                 *                   
-//                 */
-//                
-//                $retorno = $cliente->__soapCall("verificamensagensretorno", array($dadosEmpresaSms[0]->numero_indentificacao_sms));
-//                
-//            } catch (SoapFault $fault) {
-//                die("<hr>SOAP Fault: fault code: {$fault->faultcode}, fault string: {$fault->faultstring}");
-//            }
+                try {
+//                    $responses = $smsFacade->sendMultiple($smsLote);
+//                    foreach ($responses as $response) {
+//                        echo "Status: " . $response->getStatusCode() . " - " . $response->getStatusDescription();
+//                        echo "\nDetalhe: " . $response->getDetailCode() . " - " . $response->getDetailDescription() . "\n";
+//                    }
+                } catch( Exception $ex ){
+                    echo "<pre>";
+                    var_dump($ex->message);
+                }
+            }          
+//                die('morreu');
+            
         }
+        
     }
 
     function autenticar() {
@@ -188,6 +190,17 @@ class Login extends Controller {
             $data['mensagem'] = $this->mensagem->getMensagem('Navegador n&atilde;o suportado. Utilize o Firefox (Em caso de IOS. Atualize sua vers&atilde;o).');
             $this->carregarView($data);
         }
+    }
+
+    function confirmarAtendimentoSMS($agenda_exames_id) {
+        $this->login->confirmarAtendimentoSMS($agenda_exames_id);
+        echo '
+            <html>
+                <body>
+                    <h3 style="text-align: center">Consulta/Exame Confirmado com sucesso!</h3>
+                </body>
+            </html>
+        ';
     }
 
     function sair() {

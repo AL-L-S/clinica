@@ -1,3 +1,6 @@
+<?
+$perfil_id = $this->session->userdata('perfil_id');
+?>
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examepacientedetalhes/<?= $paciente_id; ?>/<?= $procedimento_tuss_id; ?>/<?= $guia_id; ?>/<?= $agenda_exames_id ?>', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Detalhes
         </a></div>
@@ -60,23 +63,26 @@
                             <? endforeach; ?>
                         </select>
                     </dd>
-                    <dt>
-                        <label>Recomendação</label>
-                    </dt>
-                    <dd>
-                        <select name="indicacao" id="indicacao" class="size4" >
-                            <option value='' >Selecione</option>
-                            <?php
-                            $indicacao = $this->paciente->listaindicacao($_GET);
-                            foreach ($indicacao as $item) {
-                                ?>
-                                <option value="<?php echo $item->paciente_indicacao_id; ?>" <?php if($item->paciente_indicacao_id == $agenda_exames_nome_id[0]->indicacao ){echo 'selected';} ?>> <?php echo $item->nome; ?></option>
+                    <? if($perfil_id == 1 || $perfil_id == 10) { ?>
+                        <dt>
+                            <label>Recomendação</label>
+                        </dt>
+                        <dd>
+                            <select name="indicacao" id="indicacao" class="size4" >
+                                <option value='' >Selecione</option>
                                 <?php
-                            }
-                            ?> 
-                        </select>
-                    </dd>
-
+                                $indicacao = $this->paciente->listaindicacao($_GET);
+                                foreach ($indicacao as $item) {
+                                    ?>
+                                    <option value="<?php echo $item->paciente_indicacao_id; ?>" <?php if($item->paciente_indicacao_id == $agenda_exames_nome_id[0]->indicacao ){echo 'selected';} ?>> 
+                                        <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?>
+                                    </option>
+                                    <?php
+                                }
+                                ?> 
+                            </select>
+                        </dd>
+                    <? } ?>
                 </dl>    
 
                 <hr/>

@@ -455,7 +455,23 @@ class Guia extends BaseController {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
-        $this->load->View('ambulatorio/impressaoorcamento', $data);
+        
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+        $data['impressaoorcamento'] = $this->guia->listarconfiguracaoimpressaoorcamento($empresa_id);
+        $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['cabecalho'] =  @$data['cabecalhoconfig'][0]->cabecalho;
+        $data['rodape'] =  @$data['cabecalhoconfig'][0]->rodape;
+//        var_dump($data['exames']); die;
+        
+        if($data['permissoes'][0]->orcamento_config == 't'){
+           $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);    
+        }elseif($data['empresa'][0]->impressao_orcamento == 1){// MODELO SOLICITADO PELA AME
+           $this->load->View('ambulatorio/impressaoorcamentorecepcao1', $data);    
+        }else{
+           $this->load->View('ambulatorio/impressaoorcamento', $data);    
+        }
+        
+        
     }
 
     function impressaofichaconvenio($paciente_id, $guia_id, $exames_id) {
@@ -938,7 +954,6 @@ class Guia extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             if (isset($_POST['guia_id'])) {
                 $guia_id = $_POST['guia_id'];
-//                die;
                 redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$guia_id");
             } else {
                 redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id");
@@ -2580,12 +2595,15 @@ class Guia extends BaseController {
     function relatorioindicacao() {
         $data['indicacao'] = $this->paciente->listaindicacao();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->indicacao->listargrupoindicacao();
         $this->loadView('ambulatorio/relatorioindicacao', $data);
     }
 
     function relatorioindicacaoexames() {
         $data['indicacao'] = $this->paciente->listaindicacao();
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->indicacao->listargrupoindicacao();
+        
         $this->loadView('ambulatorio/relatorioindicacaoexames', $data);
     }
 

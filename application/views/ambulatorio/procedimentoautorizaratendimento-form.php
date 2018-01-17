@@ -181,7 +181,7 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                         foreach ($indicacao as $itens) {
                                             ?>
                                             <option value="<?php echo $itens->paciente_indicacao_id; ?>">
-                                                <?php echo $itens->nome; ?>
+                                                <?php echo $itens->nome . ( ($itens->registro != '' ) ? " - " . $itens->registro : '' ); ?>
                                             </option>
                                             <?php
                                         }
@@ -244,25 +244,32 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                 $("#grupo<?= $b ?>").trigger("chosen:updated");
                 $('.carregando').hide();
             }); 
-
-            $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
+            
+            // Traz os convenios liberados para esse médico
+            $.getJSON('<?= base_url() ?>autocomplete/medicoconveniogeral', {exame: $('#medico_id<?= $b ?>').val(), ajax: true}, function (j) {
                 var options = '<option value=""></option>';
                 for (var i = 0; i < j.length; i++) {
                     var selected = '';
+                    
 
                     convenio_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->convenio_agenda ?>;
                     proc_agendado[<?= $b - 1 ?>] = <?= @$exames[$b - 1]->procedimento_tuss_id ?>;
 
-                    if(convenio_agendado[<?= $b - 1 ?>] == j[i].convenio_id){
+                    // Quando ele estiver iterando sobre o convenio que esta marcado o exame, ele entra aqui
+                    if(convenio_agendado[<?= $b - 1 ?>] == j[i].convenio_id){ 
+                        
                         selected = "selected='true'";
                         <?$it = ($b == 1)?'':$b;?>
-//                                                        procedimentoconveniomedico', {convenio1: $(this).val(), teste: $('#medico1').val(), 
+                        
+                        // Traz todos os procedimentos dos grupos associados a sala
                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedicocadastrosala', {convenio1: j[i].convenio_id, sala: $('#sala<?= $b ?>').val(), teste: $('#medico_id<?= $b ?>').val(), ajax: true}, function (t) {
+//                            alert('teste');
                             var opt = '<option value=""></option>';
-                            var slt = '';
                             for (var c = 0; c < t.length; c++) {
+                                // Quando ele estiver iterando sobre o procedimento que estava marcado, ele entra aqui
                                 if(proc_agendado[<?= $b - 1 ?>] == t[c].procedimento_convenio_id){
-                                    slt = "selected='true'";
+                                    opt += '<option value="' + t[c].procedimento_convenio_id + '" selected="true">' + t[c].procedimento + '</option>';
+                                    
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (a) {
                                         var valor = a[0].valortotal;
                                         var qtde = a[0].qtde;
@@ -287,6 +294,7 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                         $('.carregando').hide();
                                     });
 
+
                                     $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
                                         var options = '<option value="0">Selecione</option>';
                                         for (var c = 0; c < j.length; c++) {
@@ -299,8 +307,9 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                     });
 //                                                            formapagamentoporprocedimento
                                 }
-                                opt += '<option value="' + t[c].procedimento_convenio_id + '"'+ slt + '>' + t[c].procedimento + '</option>';
-                                slt = '';
+                                else{
+                                    opt += '<option value="' + t[c].procedimento_convenio_id + '">' + t[c].procedimento + '</option>';
+                                }
                             }
                             $('#procedimento<?= $b ?>').html(opt).show();
                             $('.carregando').hide();

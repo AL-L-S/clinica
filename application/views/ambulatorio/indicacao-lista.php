@@ -1,25 +1,44 @@
-
+<?
+$grupos = $this->indicacao->listargrupoindicacao();
+?>
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>ambulatorio/indicacao/carregarindicacao/0">
-            Nova Indica&ccedil;&atilde;o
+            Nova Indicação
         </a>
     </div>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Indica&ccedil;&atilde;o</a></h3>
+        <h3 class="singular"><a href="#">Manter Indicação/Recomendação</a></h3>
         <div>
             <table>
                 <thead>
-                    <tr>
-                        <th colspan="5" class="tabela_title">
-                            <form method="get" action="<?= base_url() ?>ambulatorio/indicacao/pesquisar">
+                    <form method="get" action="<?= base_url() ?>ambulatorio/indicacao/pesquisar">
+                        <tr>
+                            <th colspan="" class="tabela_title">Nome/Registro</th>
+                            <th colspan="" class="tabela_title">Grupo</th>
+                            <th colspan="" class="tabela_title"></th>
+                        </tr>
+                        <tr>
+                            <th colspan="" class="tabela_title">
                                 <input type="text" name="nome" class="texto10 bestupper" value="<?php echo @$_GET['nome']; ?>" />
+                            </th>
+                            <th colspan="" class="tabela_title">
+                                <select name="grupo_id" id="grupo_id" class="">
+                                    <option value="">Todos</option>
+                                    <? foreach ($grupos as $item) : ?>
+                                        <option value="<?= $item->grupo_id; ?>" <?= (@@$_GET['grupo_id'] == $item->grupo_id)? 'selected': ""?>><?= $item->nome; ?></option>
+                                    <? endforeach; ?>
+                                </select>
+                            </th>
+                            <th colspan="" class="tabela_title">
                                 <button type="submit" id="enviar">Pesquisar</button>
-                            </form>
-                        </th>
-                    </tr>
+                            </th>
+                        </tr>
+                    </form>
                     <tr>
                         <th class="tabela_header">Nome</th>
+                        <th class="tabela_header">Registro</th>
+                        <th class="tabela_header">Grupo</th>
                         <th class="tabela_header">Detalhes</th>
                     </tr>
                 </thead>
@@ -41,13 +60,15 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->registro; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
 
                                     <a href="<?= base_url() ?>ambulatorio/indicacao/carregarindicacao/<?= $item->paciente_indicacao_id ?>">
-                                        editar
-                                    </a>&zwnj;&nbsp;
+                                        Editar
+                                    </a>&nbsp;
                                     <a href="<?= base_url() ?>ambulatorio/indicacao/excluir/<?= $item->paciente_indicacao_id ?>">
-                                        excluir
+                                        Excluir
                                     </a>
                                 </td>
                             </tr>

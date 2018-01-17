@@ -144,7 +144,7 @@ class app_model extends Model {
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
 //        $this->db->where('ae.data', $dataAtual);
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where('ae.medico_consulta_id', $_GET['operador_id']);
+        $this->db->where('ae.medico_consulta_id', @$_GET['operador_id']);
         if (@$_GET['situacao'] != '') {
             switch ($_GET['situacao']) {
                 case 'o':
@@ -186,7 +186,7 @@ class app_model extends Model {
         }
 
         if(@$_GET['data'] != ""){
-            $this->db->where('ae.data', date("Y-m-d", strtotime($_GET['data'])) );
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) );
         }
         else{
             $this->db->where('ae.data', date("Y-m-d"));
@@ -204,6 +204,39 @@ class app_model extends Model {
 //        $this->db->limit("");
         
         $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function buscarHistoricoPaciente() {
+        
+        $agenda_exames_id = $_GET['agenda_exames_id'];
+        
+        $this->db->select('a.agenda_exames_id,
+                            a.inicio,
+                            a.data,
+                            a.nome,
+                            a.data,
+                            a.agenda_exames_nome_id,
+                            es.nome as sala,
+                            a.medico_agenda,
+                            o.nome as medico,
+                            c.nome as convenio,
+                            a.medico_consulta_id,
+                            a.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            a.observacoes');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("a.confirmado", 'true');
+        $this->db->where("a.paciente_id = (SELECT paciente_id FROM ponto.tb_agenda_exames WHERE agenda_exames_id = {$agenda_exames_id} LIMIT 1) ");
+        $this->db->orderby("a.data desc");
+        $this->db->orderby("a.inicio desc");
+        $return = $this->db->get();
+        
         return $return->result();
     }
     

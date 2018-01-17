@@ -16,8 +16,21 @@
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
+                    
                     <dt>
-                    <label>Indica&ccedil;&atilde;o</label>
+                        <label>Grupo Indicação</label>
+                    </dt>
+                    <dd>
+                        <select name="grupo_indicacao" id="grupo_indicacao" class="size2">
+                            <option value="0">TODOS</option>
+                            <? foreach ($grupos as $item) : ?>
+                                <option value="<?= $item->grupo_id; ?>"><?= $item->nome; ?></option>
+                            <? endforeach; ?>                            
+                        </select>
+                    </dd>
+                    
+                    <dt>
+                        <label>Indicação</label>
                     </dt>
                     <dd>
                         <select name="indicacao" id="indicacao" class="size2">

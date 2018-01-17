@@ -1,20 +1,31 @@
 <div class="content ficha_ceatox">
-        <h3 class="singular"><a href="#">Nova Indica&ccedil;&atilde;o</a></h3>
-        <div>
-            <form name="form_indicacao" id="form_indicacao" action="<?= base_url() ?>ambulatorio/indicacao/gravar" method="post">
-                <fieldset>
-                    <div>
-                        <label>Nome</label>
-                        <input type="hidden" name="paciente_indicacao_id" class="texto10" value="<?= @$obj->_paciente_indicacao_id; ?>" />
-                        <input type="text" name="txtNome" id="txtNome" class="texto10" value="<?= @$obj->_nome; ?>" />
-                    </div>
-                </fieldset>
-                    <hr>
-                    <button type="submit" name="btnEnviar">Enviar</button>
-                    <button type="reset" name="btnLimpar">Limpar</button>
-                    <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
-            </form>
-    </div>
+    <h3 class="singular"><a href="#">Nova Indicação/Recomendação</a></h3>
+    <form name="form_indicacao" id="form_indicacao" action="<?= base_url() ?>ambulatorio/indicacao/gravar" method="post">
+        <fieldset>
+            <div>
+                <label>Nome</label>
+                <input type="hidden" name="paciente_indicacao_id" class="texto10" value="<?= @$obj->_paciente_indicacao_id; ?>" />
+                <input type="text" name="txtNome" id="txtNome" class="texto10" value="<?= @$obj->_nome; ?>" />
+            </div>
+            <div>
+                <label>Registro</label>
+                <input type="text" name="registro" id="registro" class="texto06" value="<?= @$obj->_registro; ?>" />
+            </div>
+            <div>
+                <label>Grupo</label>
+                <select name="grupo_id" id="grupo_id" class="size4">
+                    <option value="">Selecione</option>
+                    <? foreach ($grupo as $item) : ?>
+                        <option value="<?= $item->grupo_id; ?>" <?= (@$obj->_grupo_id == $item->grupo_id)? 'selected': ""?>><?= $item->nome; ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+        </fieldset>
+        <hr>
+        <button type="submit" name="btnEnviar">Enviar</button>
+        <button type="reset" name="btnLimpar">Limpar</button>
+        <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
+    </form>
 </div> <!-- Final da DIV content -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <link href="<?= base_url() ?>css/estilo.css" rel="stylesheet" type="text/css" />

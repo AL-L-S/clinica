@@ -298,7 +298,7 @@ class paciente_model extends BaseModel {
 
     function listaindicacao() {
 
-        $this->db->select('paciente_indicacao_id, nome');
+        $this->db->select('paciente_indicacao_id, nome, registro');
         $this->db->from('tb_paciente_indicacao');
         $this->db->where('ativo', 't');
         $this->db->orderby('nome');

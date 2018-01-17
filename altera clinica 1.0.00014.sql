@@ -18,6 +18,22 @@ $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
 
+-- Dia 10/01/2017
+CREATE TABLE ponto.tb_paciente_indicacao_grupo
+(
+    paciente_indicacao_grupo_id serial NOT NULL,
+    nome character varying(40),
+    ativo boolean DEFAULT true,
+    data_cadastro timestamp without time zone,
+    operador_cadastro integer,
+    data_atualizacao timestamp without time zone,
+    operador_atualizacao integer,
+    CONSTRAINT tb_paciente_indicacao_grupo_pkey PRIMARY KEY (paciente_indicacao_grupo_id)
+);
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN data_cadastro timestamp without time zone;
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN operador_cadastro integer;
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN grupo_id integer;
+ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN registro character varying(60);
 CREATE TABLE ponto.tb_empresa_impressao_encaminhamento
 (
   empresa_impressao_encaminhamento_id serial,
@@ -34,6 +50,8 @@ CREATE TABLE ponto.tb_empresa_impressao_encaminhamento
   CONSTRAINT tb_empresa_impressao_encaminhamento_pkey PRIMARY KEY (empresa_impressao_encaminhamento_id)
 );
 
+-- Dia 13/01/2017
+ALTER TABLE ponto.tb_convenio_operador_procedimento ADD COLUMN empresa_id integer;
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN encaminhamento_citycor boolean DEFAULT false;
 
@@ -179,3 +197,13 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN laboratorio_id integer;
 ALTER TABLE ponto.tb_laboratorio ADD COLUMN tipo_id integer;
 ALTER TABLE ponto.tb_laboratorio ADD COLUMN classe text;
 ALTER TABLE ponto.tb_laboratorio ADD COLUMN tipo text;
+UPDATE ponto.tb_ambulatorio_convenio_operador
+SET empresa_id = (SELECT empresa_id FROM ponto.tb_empresa WHERE ativo = 't' ORDER BY empresa_id LIMIT 1)
+WHERE empresa_id IS NULL;
+
+UPDATE ponto.tb_convenio_operador_procedimento
+SET empresa_id  = (SELECT empresa_id FROM ponto.tb_empresa WHERE ativo = 't' ORDER BY empresa_id LIMIT 1)
+WHERE empresa_id IS NULL;
+
+-- Dia 17/01/2018
+ALTER TABLE ponto.tb_empresa_sms ADD COLUMN endereco_externo character varying(60);

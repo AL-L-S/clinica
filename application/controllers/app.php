@@ -151,7 +151,37 @@ class App extends Controller {
         
         die ( json_encode( $var ) );
     }
-    
+  
+    function buscarHistoricoPaciente(){
+        header('Access-Control-Allow-Origin: *');
+        $retorno = $this->app->buscarHistoricoPaciente();
+           
+        $var = array();
+        foreach($retorno as $value){
+
+            $data_atual = date('Y-m-d');
+            $data1 = new DateTime($data_atual);
+            $data2 = new DateTime($value->data);
+
+            $intervalo = $data1->diff($data2);
+
+            $var[] = array(
+                "agenda_exames_id" => $value->agenda_exames_id,
+                "inicio" => $value->inicio,
+                "nome" => $value->nome,
+                "data" => date("d/m/Y", strtotime($value->data) ),
+                "intervalo" => $intervalo->days,
+                "sala" => $value->sala,
+                "medico_agenda" => $value->medico_agenda,
+                "medico" => $value->medico,
+                "convenio" => $value->convenio,
+                "procedimento" => $value->procedimento,
+                "observacoes" => $value->observacoes
+            ); 
+        }
+        
+        die ( json_encode( $var ) );
+    }  
     
     function buscarLembreteNaoLido(){
         header('Access-Control-Allow-Origin: *');

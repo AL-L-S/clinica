@@ -906,7 +906,7 @@ class Autocomplete extends Controller {
     function procedimentoconveniomedico() {
 
         if (isset($_GET['convenio1'])) {
-            $result = $this->exametemp->listarautocompleteprocedimentosconveniomedico($_GET['convenio1'], $_GET['teste']);
+            $result = $this->exametemp->listarautocompleteprocedimentosconveniomedico($_GET['convenio1'], $_GET['teste'], $_GET['empresa_id']);
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentosconveniomedico();
         }
@@ -1316,6 +1316,16 @@ class Autocomplete extends Controller {
             $result = $this->financeiro_classe->listarautocompleteclassessaida($_GET['tipo']);
         } else {
             $result = $this->financeiro_classe->listarautocompleteclassessaida();
+        }
+        echo json_encode($result);
+    }
+
+    function medicoconveniogeral() {
+
+        if (isset($_GET['exame'])) {
+            $result = $this->exametemp->listarautocompletemedicoconveniogeral($_GET['exame']);
+        } else {
+            $result = $this->exametemp->listarautocompletemedicoconveniogeral();
         }
         echo json_encode($result);
     }

@@ -1,8 +1,10 @@
+<meta charset="utf-8">
 <?
 
 $procedimentos = "<table cellpadding='5'>
         <tr>
             <td >Procedimento</td>
+            <td >Descrição</td>
             <td >Qtde</td>
             <td >V. Unit</td>
             <td >Grupo</td>
@@ -15,12 +17,13 @@ $total = 0;
 foreach ($exames as $item) {
     $total = $total + $item->valor_total;
     $procedimentos = $procedimentos . "<tr><td width='25%;'>" . utf8_decode($item->procedimento) . "</td>
+                <td width='10%;'>" . utf8_decode($item->descricao_procedimento) . "</td>
                 <td width='10%;'>" . utf8_decode($item->quantidade) . "</td>
                 <td width='10%;'>" . number_format($item->valor, 2, ',', '.') . "</td>
-                <td width='15%;'>" . $item->grupo . "</td>
-                <td width='25%;'>" . $item->convenio . "</td>
-                <td width='25%;'>" . $item->forma_pagamento . "</td>
-                <td width='25%;'>" . number_format($item->valor_total, 2, ',', '.') . "</td></tr>";
+                <td width='10%;'>" . $item->grupo . "</td>
+                <td width='10%;'>" . $item->convenio . "</td>
+                <td width='10%;'>" . $item->forma_pagamento . "</td>
+                <td width='10%;'>" . number_format($item->valor_total, 2, ',', '.') . "</td></tr>";
 }
 $procedimentos = $procedimentos. "</table>";
 //        echo $procedimentos;
@@ -47,12 +50,12 @@ $corpo = str_replace("_data_", substr($exames['0']->data_cadastro, 8, 2) . '/' .
 
 
 
-if ($impressaoorcamento[0]->cabecalho == 't') {
+if (@$impressaoorcamento[0]->cabecalho == 't') {
     echo @$cabecalho;
 }
 echo $corpo . "<br>";
 
-if ($impressaoorcamento[0]->rodape == 't') {
+if (@$impressaoorcamento[0]->rodape == 't') {
     echo @$rodape;
 }
 ?>

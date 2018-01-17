@@ -2812,6 +2812,8 @@ class exame_model extends Model {
                     $this->db->set('cancelada', 'f');
                     $this->db->set('confirmado', 'f');
                     $this->db->set('situacao', 'OK');
+                    
+                    $this->db->set('agenda_exames_nome_id', $_POST['sala']);
 
                     $this->db->set('medico_consulta_id', $_POST['medico_id']);
                     $this->db->set('medico_agenda', $_POST['medico_id']);

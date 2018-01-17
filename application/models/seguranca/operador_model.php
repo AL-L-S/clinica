@@ -108,11 +108,67 @@ class Operador_model extends BaseModel {
         return $this->db;
     }
 
+    function gravarcopiaroperadorconvenio() {
+        try {
+            $operador_id = $_POST['txtoperador_id'];
+            $convenio_id = $_POST['convenio_id'];
+            $empresa_id_origem = $_POST['empresa_id_origem'];
+            $empresa_id_destino = $_POST['empresa_id_destino'];
+            
+            $this->db->select('ambulatorio_convenio_operador_id');
+            $this->db->from('tb_ambulatorio_convenio_operador');
+            $this->db->where('ativo', 't');
+            $this->db->where('operador_id', $operador_id);
+            $this->db->where('convenio_id', $convenio_id);
+            $this->db->where('empresa_id', $empresa_id_destino);
+            $return = $this->db->get()->result();
+            
+            if( count($return) == 0 ){
+                $this->db->set('operador_id', $operador_id);
+                $this->db->set('convenio_id', $convenio_id);
+                $this->db->set('empresa_id', $empresa_id_destino);
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_ambulatorio_convenio_operador');
+            }
+            
+            $this->db->select('cop.procedimento_convenio_id');
+            $this->db->from('tb_convenio_operador_procedimento cop');
+            $this->db->where('cop.ativo', 't');
+            $this->db->where('cop.operador', $operador_id);
+            $this->db->where('cop.convenio_id', $convenio_id);
+            $this->db->where('cop.empresa_id', $empresa_id_origem);
+            $return = $this->db->get()->result();
+            
+            if( count($return) > 0 ){
+                
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                
+                foreach ($return as $value) {
+                    $this->db->set('operador', $operador_id);
+                    $this->db->set('convenio_id', $convenio_id);
+                    $this->db->set('empresa_id', $empresa_id_destino);
+                    $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_convenio_operador_procedimento');
+                }
+            }
+            
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravaroperadorconvenio() {
         try {
             /* inicia o mapeamento no banco */
             $this->db->set('operador_id', $_POST['txtoperador_id']);
             $this->db->set('convenio_id', $_POST['convenio_id']);
+            $this->db->set('empresa_id', $_POST['empresa']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('data_cadastro', $horario);
@@ -158,6 +214,7 @@ class Operador_model extends BaseModel {
                 foreach ($return as $value) {
                     $this->db->set('operador', $_POST['txtoperador_id']);
                     $this->db->set('convenio_id', $_POST['txtconvenio_id']);
+                    $this->db->set('empresa_id', $_POST['txtempresa_id']);
                     $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
                     $horario = date("Y-m-d H:i:s");
                     $operador_id = $this->session->userdata('operador_id');
@@ -176,6 +233,7 @@ class Operador_model extends BaseModel {
 
                 $this->db->set('operador', $_POST['txtoperador_id']);
                 $this->db->set('convenio_id', $_POST['txtconvenio_id']);
+                $this->db->set('empresa_id', $_POST['txtempresa_id']);
                 $this->db->set('procedimento_convenio_id', $_POST['procedimento']);
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
@@ -227,6 +285,24 @@ class Operador_model extends BaseModel {
             return 0;
     }
 
+    function listaroperadordadosconvenio($convenio_id, $operador_id, $empresa_id) {
+        $this->db->select('o.operador_id,
+                           o.nome as operador,
+                           c.nome as convenio,
+                           aco.convenio_id,
+                           e.nome as empresa,
+                           e.empresa_id');
+        $this->db->from('tb_ambulatorio_convenio_operador aco');
+        $this->db->join('tb_operador o', 'o.operador_id = aco.operador_id');
+        $this->db->join('tb_convenio c', 'c.convenio_id = aco.convenio_id');
+        $this->db->join('tb_empresa e', 'e.empresa_id = aco.empresa_id');
+        $this->db->where('aco.operador_id', $operador_id);
+        $this->db->where('aco.convenio_id', $convenio_id);
+        $this->db->where('aco.empresa_id', $empresa_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarCada($operador_id) {
         $this->db->select('o.operador_id,
                                o.usuario,
@@ -254,9 +330,12 @@ class Operador_model extends BaseModel {
         $this->db->select('co.convenio_id,
                             c.nome,
                             co.operador_id,
-                            co.ambulatorio_convenio_operador_id');
+                            co.empresa_id,
+                            co.ambulatorio_convenio_operador_id,
+                            e.nome as empresa');
         $this->db->from('tb_ambulatorio_convenio_operador co');
         $this->db->join('tb_convenio c', 'c.convenio_id = co.convenio_id');
+        $this->db->join('tb_empresa e', 'e.empresa_id = co.empresa_id', 'left');
         $this->db->where('co.operador_id', $operador_id);
         $this->db->where('co.ativo', 't');
         $this->db->orderby("c.nome");
@@ -264,6 +343,18 @@ class Operador_model extends BaseModel {
         return $return->result();
     }
 
+    function listarempresasconvenio() {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('empresa_id,
+                            nome');
+        $this->db->from('tb_empresa');
+        $this->db->orderby('nome');
+//        $this->db->where('empresa_id', $empresa_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarprocedimentoconvenio($convenio_id) {
         $this->db->select('pc.procedimento_convenio_id,
                             pt.nome as procedimento,
@@ -273,21 +364,31 @@ class Operador_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id');
         $this->db->where('pc.convenio_id', $convenio_id);
+        
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
+        
         $this->db->where('pc.ativo', 't');
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
     }
 
-    function listarprocedimentoconveniooperador($operador_id, $convenio_id) {
+    function listarprocedimentoconveniooperador($operador_id, $convenio_id, $empresa_id) {
         $this->db->select('cop.convenio_operador_procedimento_id,
                             pt.nome as procedimento,
-                            c.nome as convenio');
+                            c.nome as convenio,
+                            e.nome as empresa');
         $this->db->from('tb_convenio_operador_procedimento cop');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = cop.procedimento_convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = cop.empresa_id', 'left');
         $this->db->where('cop.operador', $operador_id);
+        $this->db->where('cop.empresa_id', $empresa_id);
         $this->db->where('pc.convenio_id', $convenio_id);
         $this->db->where('cop.ativo', 't');
         $this->db->orderby("c.nome");
