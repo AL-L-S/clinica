@@ -19,7 +19,8 @@ class modeloreceita_model extends Model {
                             aml.nome,
                             medico_id,
                             o.nome as medico,
-                            texto');
+                            texto,
+                            carregar_automaticamente');
         $this->db->from('tb_ambulatorio_modelo_receita aml');
         $this->db->join('tb_operador o', 'o.operador_id = aml.medico_id', 'left');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
@@ -27,6 +28,35 @@ class modeloreceita_model extends Model {
             $this->db->orwhere('o.nome ilike', "%" . $args['nome'] . "%");
         }
         return $this->db;
+    }
+
+    function desativarmodeloreceitaautomatico($modelo_receita_id) {
+        
+        $this->db->set('carregar_automaticamente', 'f');
+        $this->db->where('ambulatorio_modelo_receita_id', $modelo_receita_id);
+        $this->db->update('tb_ambulatorio_modelo_receita');
+        
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
+    function ativarmodeloreceitaautomatico($modelo_receita_id) {
+
+        $this->db->set('carregar_automaticamente', 'f');
+        $this->db->update('tb_ambulatorio_modelo_receita');
+        
+        $this->db->set('carregar_automaticamente', 't');
+        $this->db->where('ambulatorio_modelo_receita_id', $modelo_receita_id);
+        $this->db->update('tb_ambulatorio_modelo_receita');
+        
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
     }
 
     function excluir($ambulatorio_modelo_receita_id) {

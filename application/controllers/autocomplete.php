@@ -1327,6 +1327,8 @@ class Autocomplete extends Controller {
         } else {
             $result = $this->exametemp->listarautocompletemedicoconveniogeral();
         }
+//        echo "<pre>";
+//        var_dump($result); die;
         echo json_encode($result);
     }
 

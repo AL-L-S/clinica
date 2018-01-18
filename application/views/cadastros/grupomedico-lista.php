@@ -2,7 +2,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>cadastros/grupomedico/carregargrupomedico/0">
-            Nova Grupo Médico
+            Novo Grupo Médico
         </a>
     </div>
     <div id="accordion">
@@ -20,7 +20,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th class="tabela_header" colspan="2">Detalhes</th>
+                        <th class="tabela_header" colspan="2"><center>Detalhes</center></th>
                     </tr>
                 </thead>
                 <?php
@@ -43,7 +43,10 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>cadastros/grupomedico/carregargrupomedicoadicionar/<?= $item->operador_grupo_id ?>">Editar</a></div>
+                                    <a href="<?= base_url() ?>cadastros/grupomedico/carregargrupomedicoadicionar/<?= $item->operador_grupo_id ?>">Editar</a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                    <a href="<?= base_url() ?>cadastros/grupomedico/excluir/<?= $item->operador_grupo_id ?>">Excluir</a></div>
                                 </td>
                             </tr>
 

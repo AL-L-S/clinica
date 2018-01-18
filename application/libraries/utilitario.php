@@ -32,6 +32,18 @@ class Utilitario {
         return $string;
     }
     
+    function validaExternoEndereco($endereco){
+        if( substr($endereco, 0, 4) != "http" ){
+            $endereco = "http://" . $endereco;
+        }
+        
+        if( substr($endereco, -1, 1) != "/" ){
+            $endereco = $endereco . "/";
+        }
+        
+        return $endereco;
+    }
+    
     function validaTelefone($telefone){
         /* Essa função irá retornar se o numero é um telefone valido. 
          * As verificações feitas aqui serão: 

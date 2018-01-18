@@ -207,3 +207,7 @@ WHERE empresa_id IS NULL;
 
 -- Dia 17/01/2018
 ALTER TABLE ponto.tb_empresa_sms ADD COLUMN endereco_externo character varying(60);
+
+-- Dia 18/01/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN carregar_modelo_receituario boolean DEFAULT false;
+ALTER TABLE ponto.tb_ambulatorio_modelo_receita ADD COLUMN carregar_automaticamente boolean DEFAULT false;

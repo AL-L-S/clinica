@@ -374,13 +374,13 @@ class Operador extends BaseController {
 
     function excluirlogo($operador_id) {
 
-        unlink("./upload/operadorLOGO/$operador_id.jpg");
+        unlink("./upload/operadorLOGO/$operador_id.jpg") || unlink("./upload/operadorLOGO/$operador_id.jpeg") || unlink("./upload/operadorLOGO/$operador_id.png");
         redirect(base_url() . "seguranca/operador/anexarlogo/$operador_id");
     }
 
     function ecluirimagem($operador_id) {
 
-        unlink("./upload/1ASSINATURAS/$operador_id.jpg");
+        unlink("./upload/1ASSINATURAS/$operador_id.jpg") || unlink("./upload/1ASSINATURAS/$operador_id.png") || unlink("./upload/1ASSINATURAS/$operador_id.jpeg");
         redirect(base_url() . "seguranca/operador/anexarimagem/$operador_id");
     }
 

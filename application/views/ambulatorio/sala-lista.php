@@ -20,7 +20,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th class="tabela_header">Tipo</th>
+                        <!--<th class="tabela_header">Tipo</th>-->
                         <th class="tabela_header" colspan="4">Detalhes</th>
                     </tr>
                 </thead>
@@ -42,7 +42,7 @@
                      ?>
                         <tr>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
-                            <td class="<?php echo $estilo_linha; ?>"><?= $item->tipo; ?></td>
+                            <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->tipo; ?></td>-->
 
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/sala/carregarsala/<?= $item->exame_sala_id ?>">Editar</a></div>

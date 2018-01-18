@@ -108,11 +108,12 @@ class Login extends Controller {
             }
             
             // Buscando mensagens  no banco que deverao ser mandadas
-            $dados = $this->login->listarsms();
+//            $dados = $this->login->listarsms();
+            
             if (count($dados) > 0) {
                 
-                require_once ('./application/libraries/Googl.class.php');
-                $Googl = new Googl();
+//                require_once ('./application/libraries/Googl.class.php');
+//                $Googl = new Googl('AIzaSyAXqZLY8c_aC-G2VD7ppuCBF-lWEhWmEvY ');
                 
                 /* INTEGRAÇÃO ZENVIA API */
                 require_once ('./application/libraries/php-rest-api/autoload.php');
@@ -125,9 +126,10 @@ class Login extends Controller {
                         $sms = new Sms();
                         $sms->setTo($numero["numFor"]);
                         
-                        if($value->tipo == 'CONFIRMACAO') {
+                        if($value['tipo'] == 'CONFIRMACAO') {
                             // Encurta a URL de confirmação
-                            $msg = $value['mensagem'] . " Para confirmar, acesse: " . $Googl->shorten($value->endereco_externo);
+                            $url = $this->utilitario->validaExternoEndereco($value['endereco_externo']) . "login/confirmarAtendimentoSMS/" . $value['agenda_exames_id'];
+                            $msg = $value['mensagem'] . " Para confirmar, acesse: " . $url;
                             $sms->setMsg($msg);
                         }
                         else {
@@ -141,12 +143,15 @@ class Login extends Controller {
                     }
                 }
                 
+//                echo "<pre>";
+//                var_dump($smsLote); die;
+                
                 try {
-//                    $responses = $smsFacade->sendMultiple($smsLote);
-//                    foreach ($responses as $response) {
-//                        echo "Status: " . $response->getStatusCode() . " - " . $response->getStatusDescription();
-//                        echo "\nDetalhe: " . $response->getDetailCode() . " - " . $response->getDetailDescription() . "\n";
-//                    }
+                    $responses = $smsFacade->sendMultiple($smsLote);
+                    foreach ($responses as $response) {
+                        echo "Status: " . $response->getStatusCode() . " - " . $response->getStatusDescription();
+                        echo "\nDetalhe: " . $response->getDetailCode() . " - " . $response->getDetailDescription() . "\n";
+                    }
                 } catch( Exception $ex ){
                     echo "<pre>";
                     var_dump($ex->message);
@@ -196,6 +201,9 @@ class Login extends Controller {
         $this->login->confirmarAtendimentoSMS($agenda_exames_id);
         echo '
             <html>
+                <head>
+                    <meta charset="utf-8"/>
+                </head>
                 <body>
                     <h3 style="text-align: center">Consulta/Exame Confirmado com sucesso!</h3>
                 </body>

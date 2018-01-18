@@ -900,7 +900,7 @@ class Caixa extends BaseController {
         $data['conta'] = $this->forma->listarforma();
         $data['credordevedor'] = $this->caixa->listarcredordevedor();
         $data['tipo'] = $this->tipo->listartipo();
-//        $data['empresa'] = $this->guia->listarempresas();
+        $data['empresas'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriomovimento', $data);
     }
 

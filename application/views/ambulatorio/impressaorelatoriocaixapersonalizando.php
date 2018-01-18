@@ -627,9 +627,13 @@
                     <input type="hidden" class="texto3" name="agenda_exames_id" value="<?= $agenda_exames_id; ?>"/>
                     
                     <? if ($faturado == 't' && $exame == 't') { ?>
-                        <? if (count($operador) == 0 && $financeiro == 'f') { ?>
-                            <button type="submit" name="btnEnviar">Fechar Caixa</button>
-                        <? } elseif (count($operador) > 0 && $financeiro == 'f') {
+                        <? if (count($operador) == 0 && $financeiro == 'f') {
+                            if($paciente == '') {?>
+                                <button type="submit" name="btnEnviar">Fechar Caixa</button>
+                        <?  } else { ?>
+                                <b>Não é possível fechar caixa por paciente</b>
+                            <? }
+                        } elseif (count($operador) > 0 && $financeiro == 'f') {
                             ?>
                             <b>Não é possível fechar caixa por operador</b>
                             <?
