@@ -7307,6 +7307,7 @@ class exame_model extends Model {
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data', $data);
+                $this->db->set('data_producao', $data);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $procedimento);
                 $this->db->set('exame_id', $exames_id);
