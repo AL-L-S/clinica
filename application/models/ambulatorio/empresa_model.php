@@ -778,6 +778,12 @@ class empresa_model extends Model {
             if ($_POST['impressao_orcamento'] != "") {
                 $this->db->set('impressao_orcamento', $_POST['impressao_orcamento']);
             }
+            if ($_POST['horario_sab'] != "") {
+                $this->db->set('horario_sab', $_POST['horario_sab']);
+            }
+            if ($_POST['horario_seg_sex'] != "") {
+                $this->db->set('horario_seg_sex', $_POST['horario_seg_sex']);
+            }
             if ($_POST['impressao_laudo'] != "") {
                 $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
             }
@@ -1362,6 +1368,8 @@ class empresa_model extends Model {
                                chat,
                                procedimento_excecao,
                                ordem_chegada,
+                               f.horario_sab,
+                               f.horario_seg_sex,
                                ep.valor_autorizar,
                                ep.gerente_contasapagar,
                                ep.cpf_obrigatorio,
@@ -1396,6 +1404,8 @@ class empresa_model extends Model {
             $this->_telefone = $return[0]->telefone;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
+            $this->_horario_seg_sex = $return[0]->horario_seg_sex;
+            $this->_horario_sab = $return[0]->horario_sab;
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;
             $this->_bairro = $return[0]->bairro;

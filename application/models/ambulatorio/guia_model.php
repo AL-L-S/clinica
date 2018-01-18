@@ -71,6 +71,8 @@ class guia_model extends Model {
         $this->db->select('e.empresa_id,
                             ordem_chegada,
                             oftamologia,
+                            horario_sab,
+                            horario_seg_sex,
                             desativar_personalizacao_impressao');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
@@ -2143,11 +2145,11 @@ class guia_model extends Model {
         } else {
             $this->db->where("p.indicacao is not null");
         }
-        
+
         if ($_POST['grupo_indicacao'] != "0") {
             $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
         }
-        
+
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -2391,7 +2393,7 @@ class guia_model extends Model {
         } else {
             $this->db->where("ae.indicacao is not null");
         }
-        
+
         if ($_POST['grupo_indicacao'] != "0") {
             $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
         }
@@ -2531,11 +2533,11 @@ class guia_model extends Model {
         } else {
             $this->db->where("p.indicacao is not null");
         }
-        
+
         if ($_POST['grupo_indicacao'] != "0") {
             $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
         }
-        
+
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -4042,6 +4044,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function relatoriolaboratorioconveniofinanceiro() {
 
         $this->db->select("ae.quantidade,
@@ -4488,7 +4491,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function relatoriolaboratorioconveniofinanceirotodos() {
 
         $this->db->select('sum(ae.valor_total)as valor,
@@ -4983,7 +4986,7 @@ class guia_model extends Model {
         $return = $this->db->count_all_results();
         return $return;
     }
-    
+
     function relatoriolaboratorioconveniocontadorfinanceiro() {
 
         $this->db->select('ae.data,
@@ -10053,7 +10056,7 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->insert('tb_saidas');
         }
     }
-    
+
     function fecharlaboratorio($data_contaspagar) {
         /* inicia o mapeamento no banco */
         $horario = date("Y-m-d H:i:s");
@@ -10173,6 +10176,8 @@ ORDER BY ae.agenda_exames_id)";
                             telefone,
                             email,
                             cnes,
+                            horario_sab,
+                            horario_seg_sex,
                             producaomedicadinheiro,
                             impressao_declaracao,
                             impressao_orcamento,
@@ -11409,7 +11414,7 @@ ORDER BY ae.agenda_exames_id)";
                 if ($_POST['indicacao'] != "") {
                     $this->db->set('indicacao', $_POST['indicacao']);
                 }
-                
+
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('quantidade', '1');
@@ -11744,6 +11749,15 @@ ORDER BY ae.agenda_exames_id)";
             if ($_POST['indicacao'] != '') {
                 $this->db->set('indicacao', $_POST['indicacao']);
             }
+            if (isset($_POST['data'])) {
+                $this->db->set('data', $_POST['data']);
+            }
+            if (isset($_POST['data_faturar'])) {
+                $this->db->set('data_faturar', $_POST['data_faturar']);
+            }
+            if (isset($_POST['data'])) {
+                $this->db->set('data_entrega', $_POST['data_entrega']);
+            }
             $this->db->set('medico_agenda', $_POST['medico_agenda']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
@@ -11770,10 +11784,17 @@ ORDER BY ae.agenda_exames_id)";
 
         $this->db->select('ae.autorizacao,
                               ae.medico_solicitante,
+                              ae.data_entrega,
+                              ae.data,
+                              ae.data_faturar,
+                              al.data as data_laudo,
+                              al.data_producao,
                               ae.medico_agenda,
                               ae.procedimento_tuss_id,
                               ae.agenda_exames_nome_id');
         $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->where("ae.agenda_exames_id", $ambulatorio_guia_id);
         $query = $this->db->get();
         return $query->result();

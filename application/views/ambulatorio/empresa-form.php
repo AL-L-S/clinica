@@ -96,6 +96,18 @@
                         <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_municipio_id; ?>" readonly="true" />
                         <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_municipio; ?>" />
                     </dd>
+                    <dt>
+                        <label>Horário Seg á Sex</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="horario_seg_sex" class="texto05" name="horario_seg_sex" value="<?= @$obj->_horario_seg_sex; ?>" />
+                    </dd>
+                    <dt>
+                        <label>Horário Sab</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="horario_sab" class="texto05" name="horario_sab" value="<?= @$obj->_horario_sab; ?>" />
+                    </dd>
 
                     <? if ($this->session->userdata('operador_id') == 1) { ?>
 

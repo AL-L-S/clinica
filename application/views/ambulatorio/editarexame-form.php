@@ -55,11 +55,12 @@
                             <select  name="sala1" id="sala1" class="size2" required="true" >
                                 <option value="">Selecione</option>
                                 <? foreach ($salas as $item) : ?>
-                                    <option value="<?= $item->exame_sala_id; ?>" <? if ($selecionado[0]->agenda_exames_nome_id == $item->exame_sala_id) {
-                                    echo 'selected';
-                                }
+                                    <option value="<?= $item->exame_sala_id; ?>" <?
+                                    if ($selecionado[0]->agenda_exames_nome_id == $item->exame_sala_id) {
+                                        echo 'selected';
+                                    }
                                     ?>><?= $item->nome; ?></option>
-<? endforeach; ?>
+                                        <? endforeach; ?>
                             </select>
                         </dd>
                     </dl>
@@ -72,13 +73,13 @@
                                 <option value=""> </option>
                                 <? foreach ($medico as $value) : ?>
                                     <option value="<?= $value->operador_id; ?>"<?
-                                            if ($selecionado[0]->medico_agenda == $value->operador_id):echo 'selected';
-                                            endif;
-                                            ?>>
-                                    <?php echo $value->nome; ?>
+                                    if ($selecionado[0]->medico_agenda == $value->operador_id):echo 'selected';
+                                    endif;
+                                    ?>>
+                                                <?php echo $value->nome; ?>
 
                                     </option>
-<? endforeach; ?>
+                                <? endforeach; ?>
 
                             </select>
                         </dd>
@@ -87,29 +88,55 @@
                         <dt>Solicitante</dt>
                         <dd><select  name="medico" id="medico" class="size2" required="true">
                                 <option value="">Selecione</option>
-                                        <? foreach ($operadores as $item) : ?>
-                                    <option value="<?= $item->operador_id; ?>" <? if ($selecionado[0]->medico_solicitante == $item->operador_id) {
-                                            echo 'selected';
-                                        }
-                                        ?>><?= $item->nome; ?></option>
-<? endforeach; ?>
+                                <? foreach ($operadores as $item) : ?>
+                                    <option value="<?= $item->operador_id; ?>" <?
+                                    if ($selecionado[0]->medico_solicitante == $item->operador_id) {
+                                        echo 'selected';
+                                    }
+                                    ?>><?= $item->nome; ?></option>
+                                        <? endforeach; ?>
                             </select></dd>
                         <dt>Recomendação</dt>
                         <dd><select name="indicacao" id="indicacao" class="size4" >
-                            <option value='' >Selecione</option>
-                            <?php
-                            $indicacao = $this->paciente->listaindicacao($_GET);
-                            foreach ($indicacao as $item) {
-                                ?>
-                                <option value="<?php echo $item->paciente_indicacao_id; ?>" <?php if($item->paciente_indicacao_id == $indicacao_selecionada[0]->indicacao ){echo 'selected';} ?>> 
-                                    <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?>
-                                </option>
+                                <option value='' >Selecione</option>
                                 <?php
-                            }
-                            ?> 
-                        </select></dd>
+                                $indicacao = $this->paciente->listaindicacao($_GET);
+                                foreach ($indicacao as $item) {
+                                    ?>
+                                    <option value="<?php echo $item->paciente_indicacao_id; ?>" <?php
+                                    if ($item->paciente_indicacao_id == $indicacao_selecionada[0]->indicacao) {
+                                        echo 'selected';
+                                    }
+                                    ?>> 
+                                                <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?>
+                                    </option>
+                                    <?php
+                                }
+                                ?> 
+                            </select></dd>
                         <dt>Autorização</dt>
                         <dd><input type="text" name="autorizacao1" id="autorizacao" class="size1" value="<? echo $selecionado[0]->autorizacao ?>"/></dd>
+
+                        <dt>Data de Entrega</dt>
+                        <dd><input type="text" name="data_entrega" id="data_entrega" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data_entrega)); ?>"/></dd>
+                        <?
+                        $operador_id = $this->session->userdata('operador_id');
+                        $perfil_id = $this->session->userdata('perfil_id');
+
+                        if ($operador_id == 1) {
+                            ?>
+
+
+
+                            <dt>Data de Faturamento</dt>
+                            <dd><input type="text" name="data_faturar" id="data_faturar" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data_faturar)); ?>"/></dd>
+                            <dt>Data de Agendamento</dt>
+                            <dd><input type="text" name="data" id="data" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data)); ?>"/></dd>
+                            <dt>Data de Atendimento</dt>
+                            <dd><input type="text" name="data_laudo" id="data_laudo" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data_laudo)); ?>" readonly=""/></dd>
+                            <dt>Data de Produção</dt>
+                            <dd><input type="text" name="data_producao" id="data_producao" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data_producao)); ?>" readonly=""/></dd>
+                            <? } ?>
                     </dl>
                     <hr/>
                     <button type="submit" name="btnEnviar">Enviar</button>
@@ -125,6 +152,41 @@
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+
+                            $(function () {
+                                $("#data_entrega").datepicker({
+                                    autosize: true,
+                                    changeYear: true,
+                                    changeMonth: true,
+                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                    dateFormat: 'dd/mm/yy'
+                                });
+                            });
+                            $(function () {
+                                $("#data").datepicker({
+                                    autosize: true,
+                                    changeYear: true,
+                                    changeMonth: true,
+                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                    dateFormat: 'dd/mm/yy'
+                                });
+                            });
+                            $(function () {
+                                $("#data_faturar").datepicker({
+                                    autosize: true,
+                                    changeYear: true,
+                                    changeMonth: true,
+                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                    buttonImage: '<?= base_url() ?>img/form/date.png',
+                                    dateFormat: 'dd/mm/yy'
+                                });
+                            });
+
 
                             $(function () {
                                 $("#accordion").accordion();
