@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar relatorio Moviten&Ccedil;&atilde;o</a></h3>
+        <h3><a href="#">Gerar relatorio Movimentação</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>cadastros/caixa/gerarelatoriomovitamentacao">
                 <dl>
@@ -57,17 +57,17 @@
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
-                    <!--                    <dt>
-                                        <label>Empresa</label>
-                                        </dt>
-                                        <dd>
-                                            <select name="empresa" id="empresa" class="size2">
-                    <? foreach ($empresa as $value) : ?>
-                                                                    <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
-                    <? endforeach; ?>
-                                                <option value="0">TODOS</option>
-                                            </select>
-                                        </dd>-->
+                    <dt>
+                        <label>Empresa</label>
+                    </dt>
+                    <dd>
+                        <select name="empresa" id="empresa" class="size2">
+                        <? foreach ($empresas as $value) : ?>
+                            <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
+                        <? endforeach; ?>
+                            <option value="0">TODOS</option>
+                        </select>
+                    </dd>
                     <dt>
                         <label>Enviar para Email?</label>
                     </dt>

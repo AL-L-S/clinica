@@ -568,9 +568,7 @@ class caixa_model extends Model {
 
     function relatoriomovimento() {
         if ($_POST['tipo'] > 0) {
-            $this->db->select('
-                            tes.descricao
-                            ');
+            $this->db->select('tes.descricao');
             $this->db->from('tb_tipo_entradas_saida tes');
             $this->db->where('tes.ativo', 'true');
             $this->db->where('tes.tipo_entradas_saida_id', $_POST['tipo']);
@@ -601,6 +599,9 @@ class caixa_model extends Model {
         if ($_POST['classe'] != '') {
             $this->db->where('e.classe', $_POST['classe']);
             $this->db->orwhere('sa.classe', $_POST['classe']);
+        }
+        if ($_POST['empresa'] != 0) {
+            $this->db->where('s.empresa_id', $_POST['empresa']);
         }
         if ($_POST['conta'] != 0) {
             $this->db->where('s.conta', $_POST['conta']);

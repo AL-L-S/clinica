@@ -20,6 +20,7 @@ class grupomedico_model extends Model {
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', $args['nome'] . "%");
         }
+        $this->db->where('ativo', 't');
         return $this->db;
     }
 
@@ -28,6 +29,7 @@ class grupomedico_model extends Model {
         $this->db->select('operador_grupo_id,
                             nome');
         $this->db->from('tb_operador_grupo');
+        $this->db->where('ativo', 't');
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();

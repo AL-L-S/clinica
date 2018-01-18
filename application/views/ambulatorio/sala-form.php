@@ -18,7 +18,7 @@
                     <dd>
                         <input type="text" name="txtnomechamada" class="texto10" value="<?= @$obj->_nome_chamada; ?>" />
                     </dd>
-                    <dt>
+<!--                    <dt>
                         <label>Tipo de sala</label>
                     </dt>
                     <dd>
@@ -32,7 +32,7 @@
                                     endif;
                                     ?>>EXAME</option>
                         </select>
-                    </dd>
+                    </dd>-->
                     <dt>
                         <label>Armazem</label>
                     </dt>

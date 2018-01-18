@@ -386,7 +386,7 @@ class login_model extends Model {
         $this->db->set('telefonema', 't');
         $this->db->set('data_telefonema', $horario);
         $this->db->set('operador_telefonema', $operador_id);
-        $this->db->where('agenda_exames_id', $agenda_exame_id);
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
         $this->db->update('tb_agenda_exames');
     }
 
@@ -440,7 +440,14 @@ class login_model extends Model {
 
     function listarsms() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select("s.sms_id, s.numero, s.mensagem, controle_id, numero_indentificacao_sms as numero_indentificacao, s.tipo, es.endereco_externo");
+        $this->db->select("s.sms_id, 
+                           s.numero, 
+                           s.mensagem, 
+                           s.agenda_exames_id, 
+                           controle_id, 
+                           numero_indentificacao_sms as numero_indentificacao, 
+                           s.tipo, 
+                           es.endereco_externo");
         $this->db->from('tb_sms s');
         $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id');
         $this->db->join('tb_empresa_sms es', 'es.empresa_id = s.empresa_id');
@@ -451,10 +458,10 @@ class login_model extends Model {
         $this->db->where('s.empresa_id', $empresa_id);
         $return = $this->db->get()->result_array();
 
-//        $this->db->set('enviado', 't');
-//        $this->db->where('enviado', 'f');
-//        $this->db->where('empresa_id', $empresa_id);
-//        $this->db->update('tb_sms');
+        $this->db->set('enviado', 't');
+        $this->db->where('enviado', 'f');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->update('tb_sms');
 
         return $return;
     }

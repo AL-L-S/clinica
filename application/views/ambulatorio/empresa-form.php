@@ -512,6 +512,12 @@
                         <dd>
                             <input type="checkbox" id="encaminhamento_citycor" name="encaminhamento_citycor" <? if (@$obj->_encaminhamento_citycor == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ativando essa flag, quando só tiver um modelo de receituario cadastrado ele será carregado automaticamente.">Carregar Modelo Receiturario Automaticamente</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="carregar_modelo_receituario" name="carregar_modelo_receituario" <? if (@$obj->_carregar_modelo_receituario == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

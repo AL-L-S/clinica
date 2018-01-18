@@ -63,7 +63,7 @@
                             </a></div>
                         </td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                                <a target="_blank" href="<?= base_url() ?>seguranca/operador/copiaroperadorconvenio/<?= $item->convenio_id; ?>/<?= $item->operador_id; ?>/<?= $item->empresa_id; ?>">Copiar
+                                <a target="_blank" href="<?= base_url() ?>seguranca/operador/copiaroperadorconvenio/<?= $item->convenio_id; ?>/<?= $item->operador_id; ?>/<?= $item->empresa_id; ?>">Replicar
                             </a></div>
                         </td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">

@@ -50,8 +50,8 @@ class Grupomedico extends BaseController {
         $this->loadView('cadastros/grupomedicoadicionar-form', $data);
     }
 
-    function excluir($exame_grupomedico_id) {
-        if ($this->grupomedico->excluir($exame_grupomedico_id)) {
+    function excluir($grupomedico_id) {
+        if ($this->grupomedico->excluir($grupomedico_id)) {
             $mensagem = 'Sucesso ao excluir a Grupomedico';
         } else {
             $mensagem = 'Erro ao excluir a grupomedico. Opera&ccedil;&atilde;o cancelada.';

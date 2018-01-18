@@ -156,7 +156,7 @@ class sala_model extends Model {
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('nome_chamada', $_POST['txtnomechamada']);
-            $this->db->set('tipo', $_POST['tipo']);
+//            $this->db->set('tipo', $_POST['tipo']);
             $this->db->set('painel_id', $_POST['painel_id']);
 //            $this->db->set('grupo', $_POST['grupo']);
             $horario = date("Y-m-d H:i:s");

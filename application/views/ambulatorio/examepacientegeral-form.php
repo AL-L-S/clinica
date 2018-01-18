@@ -242,7 +242,8 @@
         $('#convenio1').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#medico").val()}, function (j) {
+                <? $empresa_id = $this->session->userdata('empresa_id'); ?>
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedico', {convenio1: $(this).val(), teste: $("#medico").val(), empresa_id: <?= $empresa_id ?> }, function (j) {
                     options = '<option value=""></option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';

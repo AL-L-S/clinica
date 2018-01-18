@@ -44,11 +44,11 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome_laudo;?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
                                 <?
-                                if($item->ativo == 't'){?>
-                                <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
-                                        <button style="border:none;" disabled >Ativado</button></div>
-                                </td>
-                                <?}else{?>
+                                if ($item->ativo == 't'){ ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                                            <button style="border:none;" disabled >Ativado</button></div>
+                                    </td>
+                                <?} else { ?>
                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/empresa/ativarconfiguracaolaudo/<?= $item->empresa_impressao_laudo_id; ?>">Ativar</a></div>
                                 </td> 

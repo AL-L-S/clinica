@@ -1126,6 +1126,12 @@ class empresa_model extends Model {
                     $this->db->set('desativar_personalizacao_impressao', 'f');
                 }
 
+                if (isset($_POST['carregar_modelo_receituario'])) {
+                    $this->db->set('carregar_modelo_receituario', 't');
+                } else {
+                    $this->db->set('carregar_modelo_receituario', 'f');
+                }
+
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -1290,8 +1296,15 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('desativar_personalizacao_impressao', 'f');
                 }
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
+
+                if (isset($_POST['carregar_modelo_receituario'])) {
+                    $this->db->set('carregar_modelo_receituario', 't');
+                } else {
+                    $this->db->set('carregar_modelo_receituario', 'f');
+                }
+                
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('empresa_id', $empresa_id);
                 $this->db->update('tb_empresa_permissoes');
             }
@@ -1389,7 +1402,8 @@ class empresa_model extends Model {
                                ep.desativar_personalizacao_impressao,
                                ep.recomendacao_configuravel,
                                f.mostrar_logo_clinica,
-                               ep.recomendacao_obrigatorio');
+                               ep.recomendacao_obrigatorio,
+                               ep.carregar_modelo_receituario');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
@@ -1482,6 +1496,7 @@ class empresa_model extends Model {
             $this->_retirar_botao_ficha = $return[0]->retirar_botao_ficha;
             $this->_desativar_personalizacao_impressao = $return[0]->desativar_personalizacao_impressao;
             $this->_mostrar_logo_clinica = $return[0]->mostrar_logo_clinica;
+            $this->_carregar_modelo_receituario = $return[0]->carregar_modelo_receituario;
         } else {
             $this->_empresa_id = null;
         }

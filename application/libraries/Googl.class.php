@@ -68,6 +68,7 @@ class Googl
 		if ( $extended || $this->extended) {
 			return json_decode(curl_exec($this->ch));
 		} else {
+                        var_dump(json_decode(curl_exec($this->ch)));
 			$ret = json_decode(curl_exec($this->ch))->id;
 			self::$buffer[$url] = $ret;
 			return $ret;

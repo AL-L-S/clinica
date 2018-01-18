@@ -6337,19 +6337,17 @@ class exametemp_model extends Model {
         
         if ($procedimento_excecao == "t") {
             $this->db->where("c.convenio_id NOT IN (
-                                SELECT pc2.convenio_id FROM ponto.tb_convenio_operador_procedimento cop
-                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                SELECT cop.convenio_id FROM ponto.tb_ambulatorio_convenio_operador cop
                                 WHERE cop.ativo = 't'
-                                AND cop.operador = {$parametro}
+                                AND cop.operador_id = {$parametro}
                                 AND cop.empresa_id = {$empresa_id}
                             )");
         }
         else {
             $this->db->where("c.convenio_id IN (
-                                SELECT pc2.convenio_id FROM ponto.tb_convenio_operador_procedimento cop
-                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                SELECT cop.convenio_id FROM ponto.tb_ambulatorio_convenio_operador cop
                                 WHERE cop.ativo = 't'
-                                AND cop.operador = {$parametro}
+                                AND cop.operador_id = {$parametro}
                                 AND cop.empresa_id = {$empresa_id}
                             )");
         }
@@ -6687,6 +6685,17 @@ class exametemp_model extends Model {
             $this->db->where('ambulatorio_modelo_receita_id', $parametro);
         }
         $this->db->orderby('aml.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarmodelosreceitaautomatico() {
+        $this->db->select('aml.ambulatorio_modelo_receita_id,
+                            aml.nome,
+                            aml.texto');
+        $this->db->from('tb_ambulatorio_modelo_receita aml');
+        $this->db->where('aml.ativo', 'true');
+        $this->db->where('aml.carregar_automaticamente', 'true');
         $return = $this->db->get();
         return $return->result();
     }

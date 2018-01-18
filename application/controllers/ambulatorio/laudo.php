@@ -644,7 +644,8 @@ class Laudo extends BaseController {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
         $data['lista'] = $this->exametemp->listarautocompletemodelosreceita();
-//        $data['contador'] = $this->laudo->contadorlistarreceita($ambulatorio_laudo_id);
+        $data['modelo'] = $this->exametemp->listarmodelosreceitaautomatico();
+        $data['empresapermissao'] = $this->guia->listarempresapermissoes();
         $data['receita'] = $this->laudo->listarreceita($ambulatorio_laudo_id);
         $data['operadores'] = $this->operador_m->listarmedicos();
 

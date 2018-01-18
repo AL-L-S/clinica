@@ -21,10 +21,11 @@
                     <tr>
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">Medico</th>
-                        <th class="tabela_header">Detalhes</th>
+                        <th class="tabela_header" colspan="4"><center>Detalhes</center></th>
                     </tr>
                 </thead>
                 <?php
+                    $empresapermissao = $this->guia->listarempresapermissoes();
                     $url      = $this->utilitario->build_query_params(current_url(), $_GET);
                     $consulta = $this->modeloreceita->listar($_GET);
                     $total    = $consulta->count_all_results();
@@ -43,14 +44,29 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->medico; ?></td>
-
+                                
+                                <? 
+                                if (@$empresapermissao[0]->carregar_modelo_receituario == 't') { 
+                                    if (@$item->carregar_automaticamente != 't') { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                                            <a href="<?= base_url() ?>ambulatorio/modeloreceita/ativarmodeloreceitaautomatico/<?= $item->ambulatorio_modelo_receita_id ?>">
+                                                Ativar
+                                            </a>
+                                        </td>
+                                    <? } else { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                                            <a href="<?= base_url() ?>ambulatorio/modeloreceita/desativarmodeloreceitaautomatico/<?= $item->ambulatorio_modelo_receita_id ?>">
+                                                Desativar
+                                            </a>
+                                        </td>
+                                    <? } 
+                                } ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                  
                                     <a href="<?= base_url() ?>ambulatorio/modeloreceita/carregarmodeloreceita/<?= $item->ambulatorio_modelo_receita_id ?>">
- editar
+                                        editar
                                     </a>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
 
                         </tbody>
                         <?php

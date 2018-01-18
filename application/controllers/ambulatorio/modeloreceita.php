@@ -15,9 +15,10 @@ class Modeloreceita extends BaseController {
 
     function Modeloreceita() {
         parent::Controller();
-        $this->load->model('ambulatorio/modeloreceita_model', 'modeloreceita');
+        $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
+        $this->load->model('ambulatorio/modeloreceita_model', 'modeloreceita');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -42,6 +43,16 @@ class Modeloreceita extends BaseController {
         $data['procedimentos'] = $this->procedimento->listarprocedimentos();
 //        $this->load->View('ambulatorio/modeloreceita-form', $data);
         $this->load->View('ambulatorio/modeloreceita-form', $data);
+    }
+
+    function ativarmodeloreceitaautomatico($modeloreceita_id) {
+        $this->modeloreceita->ativarmodeloreceitaautomatico($modeloreceita_id);
+        redirect(base_url() . "ambulatorio/modeloreceita");
+    }
+
+    function desativarmodeloreceitaautomatico($modeloreceita_id) {
+        $this->modeloreceita->desativarmodeloreceitaautomatico($modeloreceita_id);
+        redirect(base_url() . "ambulatorio/modeloreceita");
     }
 
     function excluir($exame_modeloreceita_id) {

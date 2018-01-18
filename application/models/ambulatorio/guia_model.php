@@ -107,6 +107,7 @@ class guia_model extends Model {
                             odontologia_valor_alterar,
                             selecionar_retorno,
                             oftamologia,
+                            carregar_modelo_receituario,
                             retirar_botao_ficha');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
@@ -5125,8 +5126,8 @@ class guia_model extends Model {
         $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $sql = '';
-        if ($_POST['txtNomeid'] != '') {
-            $sql .= " AND ae.paciente_id = " . $_POST['txtNomeid'];
+        if ($_POST['txtNome'] != '') {
+            $sql .= " AND p.nome ilike '%" .  $_POST['txtNome'] . "%'";
         }
         if ($_POST['empresa'] != '0' && $_POST['empresa'] != '') {
             $sql .= " AND ae.empresa_id = " . $_POST['empresa'];
@@ -5140,6 +5141,7 @@ class guia_model extends Model {
         $this->db->where("o.operador_id IN 
                             (
                             SELECT DISTINCT(ae.operador_faturamento) FROM ponto.tb_agenda_exames ae
+                            LEFT JOIN ponto.tb_paciente p ON p.paciente_id = ae.paciente_id
                             LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id
                             LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id
                             WHERE ae.data >= '{$data_inicio}' AND ae.data <= '{$data_fim}'
@@ -5355,11 +5357,14 @@ class guia_model extends Model {
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
-//        $this->db->where('ae.faturado', 'true');
+        $this->db->where('pt.home_care', 'f');
         $this->db->where('ae.operador_autorizacao >', 0);
+        $this->db->where('c.dinheiro', "t");
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
-        if ($_POST['txtNomeid'] != '') {
-            $this->db->where("ae.paciente_id", $_POST['txtNomeid']);
+        if ($_POST['txtNome'] != '') {
+            $this->db->where("p.nome ilike '%" .  $_POST['txtNome'] . "%'");
         }
 
         if ($_POST['empresa'] != '0' && $_POST['empresa'] != '') {
@@ -5369,9 +5374,6 @@ class guia_model extends Model {
         if ($_POST['operador'] != '0' && $_POST['operador'] != '') {
             $this->db->where("ae.operador_faturamento", $_POST['operador']);
         }
-        $this->db->where('c.dinheiro', "t");
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('ae.guia_id');
         $this->db->orderby('ae.operador_faturamento');
         $this->db->orderby('ae.operador_autorizacao');
@@ -5449,6 +5451,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('pt.home_care', 'f');
         $this->db->where('ae.operador_autorizacao >', 0);
+        $this->db->where('c.dinheiro', "t");
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
@@ -5475,7 +5478,6 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        $this->db->where('c.dinheiro', "t");
         $this->db->orderby('ae.operador_autorizacao');
 //        $this->db->orderby('pc.convenio_id');
         $this->db->orderby('ae.data');

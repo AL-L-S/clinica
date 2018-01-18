@@ -80,7 +80,14 @@
                             <input type="hidden" id="medico" name="medico" value="<?= $operador_id ?>"/>
                         </div>
                         <div>
-                            <textarea id="laudo" name="laudo" rows="25" cols="80" style="width: 80%"></textarea></td>
+                            
+                            <textarea id="laudo" name="laudo" rows="25" cols="80" style="width: 80%">
+                                <? if (@$empresapermissao[0] ->carregar_modelo_receituario == 't') {
+                                    if (count($modelo) > 0){
+                                        echo @$modelo[0]->texto;
+                                    }
+                                } ?>
+                            </textarea>
                         </div>
                         <table>
 <!--                            <tr>
