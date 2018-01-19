@@ -147,40 +147,40 @@
                     $qtdepaciente++;
                     $qtdeexame++;
                     ?>
-                                                                                        <!--<tr>-->
+                                                                                                <!--<tr>-->
                     <? if ($paciente == $item->paciente) { ?>
-                                                                                                            <!--                                    <td>&nbsp;</td>
-                                                                                                                                            <td>&nbsp;</td>
-                                                                                                                                            <td>&nbsp;</td>-->
+                                                                                                                            <!--                                    <td>&nbsp;</td>
+                                                                                                                                                            <td>&nbsp;</td>
+                                                                                                                                                            <td>&nbsp;</td>-->
                     <? } else { ?>
-                                                                                                            <!--                                    <td><font size="-2"><?= $item->guia_id; ?></td>
-                                                                                                                                            <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
+                                                                                                                            <!--                                    <td><font size="-2"><?= $item->guia_id; ?></td>
+                                                                                                                                                            <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
                         <? if ($item->verificado == 't') {
                             ?>&Sqrt;<? }
                         ?>
-                                                                                                                                            </td>
-                                                                                                                                            <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>-->
+                                                                                                                                                            </td>
+                                                                                                                                                            <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>-->
                     <? } ?>
-                                                                <!--                                <td><font size="-2"><?= utf8_decode($item->exame); ?></td>-->
+                                                                        <!--                                <td><font size="-2"><?= utf8_decode($item->exame); ?></td>-->
                     <? if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
-                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
-                                                                                                                                            <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
+                                                                                                                                                            <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                        <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                        <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
 
                             <?
                         }
                         $valor = $valor + $item->valor1 + $item->valor2 + $item->valor3 + $item->valor4;
                     }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                         ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
 
                             <?
                         }
@@ -188,12 +188,12 @@
                     }
                     if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                         ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
 
                             <?
                         }
@@ -201,12 +201,12 @@
                     }
                     if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                         ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
 
                             <?
                         }
@@ -215,24 +215,24 @@
 
                     if ($item->forma_pagamento == 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') {
                         ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
 
                             <?
                         }
                         $valor = $valor + $item->valor2 + $item->valor3 + $item->valor4;
                     }if ($item->forma_pagamento == 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                         ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
 
                             <?
                         }
@@ -240,12 +240,12 @@
                     }if ($item->forma_pagamento == 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                         ?>
 
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?></td>
-                                                                                                                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?></td>
+                                                                                                                                                                            <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
 
                             <?
                         }
@@ -253,36 +253,36 @@
                     }
                     ?>
                     <? if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 == 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
 
                             <?
                         }
                         $valor = $valor + $item->valor1 + $item->valor3 + $item->valor4;
                     }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 == 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                         ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_3; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_3; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
 
                             <?
                         }
                         $valor = $valor + $item->valor1 + $item->valor3;
                     }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 == 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                         ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
 
                             <?
                         }
@@ -290,36 +290,36 @@
                     }
                     ?>
                     <? if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 == 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_4 != '') { ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_4; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_4; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
 
                             <?
                         }
                         $valor = $valor + $item->valor1 + $item->valor2 + $item->valor4;
                     }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 == 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_4 == '') {
                         ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
 
                             <?
                         }
                         $valor = $valor + $item->valor1 + $item->valor2;
                     }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_3 == 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_4 == '') {
                         ?>
-                                                                                                                                                    <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
-                                                                                                                                                                                        <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
                         <? if ($item->operador_editar != '') { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
 
                             <?
                         }
@@ -362,15 +362,15 @@
             </tbody>
         </table>
         <!--<hr>-->
-        <? 
+        <?
 //        var_dump($numero);
 //        die;
         ?>
         <table border="1">
             <tbody>
-                <tr>
-                    <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
-            <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>
+            <tr>
+              <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
+              <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>
             </tr>
             <?
             foreach ($formapagamento as $value) {
