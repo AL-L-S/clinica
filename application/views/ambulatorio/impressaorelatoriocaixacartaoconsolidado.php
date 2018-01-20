@@ -14,13 +14,13 @@
                 <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">CONFERENCIA CAIXA CART&Atilde;O</th>
             </tr>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
             </tr>
             <? if ($grupo == "0") { ?>
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: TODOS</th>
                 </tr>
-            <?
+                <?
             } else {
                 if (isset($relatorio[0]->grupo)) {
                     $nome_grupo = $relatorio[0]->grupo;
@@ -32,7 +32,7 @@
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ESPECIALIDADE: <?= $nome_grupo; ?></th>
                 </tr>
             </thead>
-        <?
+            <?
         }
         if ($contador > 0) {
             ?>
@@ -66,45 +66,16 @@
                 $operadorexames = "";
                 $paciente = "";
 
+                foreach ($formapagamento as $value) {
+                    $data[$value->nome] = 0;
+                    $datacredito[$value->nome] = 0;
+                    $numerocredito[$value->nome] = 0;
+                    $descontocredito[$value->nome] = 0;
+                    $numero[$value->nome] = 0;
+                    $desconto[$value->nome] = 0;
+                }
+
                 foreach ($relatorio as $item) :
-
-                    if ($item->forma_pagamento == "CARTAO VISA") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento == "CARTAO MASTER") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento == "HIPER CARD") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento_2 == "CARTAO VISA") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento_2 == "CARTAO MASTER") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento_2 == "HIPER CARD") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento_3 == "CARTAO VISA") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento_3 == "CARTAO MASTER") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento_3 == "HIPER CARD") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento_4 == "CARTAO VISA") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento_4 == "CARTAO MASTER") {
-                        $cartao = 1;
-                    }
-                    if ($item->forma_pagamento_4 == "HIPER CARD") {
-                        $cartao = 1;
-                    }
-
 
                     $i++;
                     $b++;
@@ -115,246 +86,248 @@
                         $faturado = 'f';
                     }
 
+                    $u = 0;
+                    foreach ($formapagamento as $value) {
+//                            echo 'teste'; die;
+                        if ($item->forma_pagamento == $value->nome) {
+                            $data[$value->nome] = $data[$value->nome] + $item->valor1;
+                            $numero[$value->nome] ++;
+                            if ($u == 0) {
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                            }
+                            if ($item->desconto != '') {
+                                $u++;
+                            }
+                        }
+                    }
+                    foreach ($formapagamento as $value) {
+                        if ($item->forma_pagamento_2 == $value->nome) {
+                            $data[$value->nome] = $data[$value->nome] + $item->valor2;
+                            $numero[$value->nome] ++;
+                            if ($u == 0) {
+
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                            }
+                            if ($item->desconto != '') {
+                                $u++;
+                            }
+                        }
+                    }
+                    foreach ($formapagamento as $value) {
+                        if ($item->forma_pagamento_3 == $value->nome) {
+                            $data[$value->nome] = $data[$value->nome] + $item->valor3;
+                            $numero[$value->nome] ++;
+                            if ($u == 0) {
+
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                            }
+                            if ($item->desconto != '') {
+                                $u++;
+                            }
+                        }
+                    }
+                    foreach ($formapagamento as $value) {
+                        if ($item->forma_pagamento_4 == $value->nome) {
+                            $data[$value->nome] = $data[$value->nome] + $item->valor4;
+                            $numero[$value->nome] ++;
+                            if ($u == 0) {
+
+                                $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                            }
+                            if ($item->desconto != '') {
+                                $u++;
+                            }
+                        }
+                    }
+
+
                     $valortotal = $valortotal + $item->valor_total;
 
-                    if ($cartao == 1) {
-
-
-                        $valoroperador = $valoroperador + $item->valor_total;
-                        $qtdepaciente++;
-                        $qtdeexame++;
+                    $valoroperador = $valoroperador + $item->valor_total;
+                    $qtdepaciente++;
+                    $qtdeexame++;
+                    ?>
+                                                                                                <!--<tr>-->
+                    <? if ($paciente == $item->paciente) { ?>
+                                                                                                                            <!--                                    <td>&nbsp;</td>
+                                                                                                                                                            <td>&nbsp;</td>
+                                                                                                                                                            <td>&nbsp;</td>-->
+                    <? } else { ?>
+                                                                                                                            <!--                                    <td><font size="-2"><?= $item->guia_id; ?></td>
+                                                                                                                                                            <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
+                        <? if ($item->verificado == 't') {
+                            ?>&Sqrt;<? }
                         ?>
-                                    <!--<tr>-->
-            <? if ($paciente == $item->paciente) { ?>
-                <!--                                    <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>-->
+                                                                                                                                                            </td>
+                                                                                                                                                            <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>-->
+                    <? } ?>
+                                                                        <!--                                <td><font size="-2"><?= utf8_decode($item->exame); ?></td>-->
+                    <? if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
+                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
+                                                                                                                                                            <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
                         <? } else { ?>
-                <!--                                    <td><font size="-2"><?= $item->guia_id; ?></td>
-                                                <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?>
-                            <? if ($item->verificado == 't') {
-                                ?>&Sqrt;<? }
-                            ?>
-                                                </td>
-                                                <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>-->
-                        <? } ?>
-            <!--                                <td><font size="-2"><?= utf8_decode($item->exame); ?></td>-->
-                        <? if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
-                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
 
-                                <?
-                            }
-                            $valor = $valor + $item->valor1 + $item->valor2 + $item->valor3 + $item->valor4;
-                        }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
-                            ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
-                <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
-
-                                <?
-                            }
-                            $valor = $valor + $item->valor1 + $item->valor2 + $item->valor3;
+                            <?
                         }
-                        if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
-                            ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
-
-                                <?
-                            }
-                            $valor = $valor + $item->valor1 + $item->valor2;
-                        }
-                        if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
-                            ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
-
-                                <?
-                            }
-                            $valor = $valor + $item->valor1;
-                        }
-
-                        if ($item->forma_pagamento == 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') {
-                            ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
-
-                                <?
-                            }
-                            $valor = $valor + $item->valor2 + $item->valor3 + $item->valor4;
-                        }if ($item->forma_pagamento == 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
-                            ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
-
-                    <?
-                }
-                $valor = $valor + $item->valor2 + $item->valor3;
-            }if ($item->forma_pagamento == 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
-                ?>
-
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?></td>
-                <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
-
-                                <?
-                            }
-                            $valor = $valor + $item->valor2;
-                        }
+                        $valor = $valor + $item->valor1 + $item->valor2 + $item->valor3 + $item->valor4;
+                    }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                         ?>
-                        <? if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 == 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
 
-                                <?
-                            }
-                            $valor = $valor + $item->valor1 + $item->valor3 + $item->valor4;
-                        }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 == 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
-                            ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_3; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
-                <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
-
-                                <?
-                            }
-                            $valor = $valor + $item->valor1 + $item->valor3;
-                        }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 == 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
-                            ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
-
-                                <?
-                            }
-                            $valor = $valor + $item->valor1;
+                            <?
                         }
+                        $valor = $valor + $item->valor1 + $item->valor2 + $item->valor3;
+                    }
+                    if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                         ?>
-                        <? if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 == 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_4 != '') { ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_4; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
 
-                                <?
-                            }
-                            $valor = $valor + $item->valor1 + $item->valor2 + $item->valor4;
-                        }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 == 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_4 == '') {
-                            ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
+                            <?
+                        }
+                        $valor = $valor + $item->valor1 + $item->valor2;
+                    }
+                    if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
+                        ?>
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
 
-                                <?
-                            }
-                            $valor = $valor + $item->valor1 + $item->valor2;
-                        }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_3 == 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_4 == '') {
-                            ?>
-                <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
-                                                    <td><font size="-2"><?= $item->quantidade; ?></td>-->
-                            <? if ($item->operador_editar != '') { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
-                            <? } else { ?>
-                    <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
+                            <?
+                        }
+                        $valor = $valor + $item->valor1;
+                    }
 
-                    <?
-                }
-                $valor = $valor + $item->valor1;
-            }
-            ?>
+                    if ($item->forma_pagamento == 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') {
+                        ?>
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+
+                            <?
+                        }
+                        $valor = $valor + $item->valor2 + $item->valor3 + $item->valor4;
+                    }if ($item->forma_pagamento == 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
+                        ?>
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
+
+                            <?
+                        }
+                        $valor = $valor + $item->valor2 + $item->valor3;
+                    }if ($item->forma_pagamento == 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
+                        ?>
+
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento_2; ?></td>
+                                                                                                                                                                            <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
+
+                            <?
+                        }
+                        $valor = $valor + $item->valor2;
+                    }
+                    ?>
+                    <? if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 == 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+
+                            <?
+                        }
+                        $valor = $valor + $item->valor1 + $item->valor3 + $item->valor4;
+                    }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 == 'DINHEIRO' && $item->forma_pagamento_3 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
+                        ?>
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_3; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor3, 2, ',', '.') ?></td>-->
+
+                            <?
+                        }
+                        $valor = $valor + $item->valor1 + $item->valor3;
+                    }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 == 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
+                        ?>
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
+
+                            <?
+                        }
+                        $valor = $valor + $item->valor1;
+                    }
+                    ?>
+                    <? if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 == 'DINHEIRO' && $item->forma_pagamento_4 != 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_4 != '') { ?>
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_4; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?><br><?= number_format($item->valor4, 2, ',', '.') ?></td>-->
+
+                            <?
+                        }
+                        $valor = $valor + $item->valor1 + $item->valor2 + $item->valor4;
+                    }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_2 != 'DINHEIRO' && $item->forma_pagamento_3 == 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_4 == '') {
+                        ?>
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?><br><?= number_format($item->valor2, 2, ',', '.') ?></td>-->
+
+                            <?
+                        }
+                        $valor = $valor + $item->valor1 + $item->valor2;
+                    }if ($item->forma_pagamento != 'DINHEIRO' && $item->forma_pagamento_3 == 'DINHEIRO' && $item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_4 == '') {
+                        ?>
+                                                                                                                                                                            <!--                                    <td><font size="-2"><?= $item->forma_pagamento; ?></td>
+                                                                                                                                                                                                                <td><font size="-2"><?= $item->quantidade; ?></td>-->
+                        <? if ($item->operador_editar != '') { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') . " (*)" ?></td>-->
+                        <? } else { ?>
+                                                                                                                                                                                                                                <!--                                        <td><font size="-2"><?= number_format($item->valor1, 2, ',', '.') ?></td>-->
+
+                            <?
+                        }
+                        $valor = $valor + $item->valor1;
+                        ?>
                         <!--</tr>-->
 
                         <?php
-                        if ($item->forma_pagamento == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor1;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor1;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor1;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento_2 == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor2;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento_2 == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor2;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento_2 == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor2;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento_3 == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor3;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento_3 == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor3;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento_3 == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor3;
-                            $NUMEROCARTAOHIPER++;
-                        }
-                        if ($item->forma_pagamento_4 == "CARTAO VISA") {
-                            $CARTAOVISA = $CARTAOVISA + $item->valor4;
-                            $NUMEROCARTAOVISA++;
-                        }
-                        if ($item->forma_pagamento_4 == "CARTAO MASTER") {
-                            $CARTAOMASTER = $CARTAOMASTER + $item->valor4;
-                            $NUMEROCARTAOMASTER++;
-                        }
-                        if ($item->forma_pagamento_4 == "HIPER CARD") {
-                            $CARTAOHIPER = $CARTAOHIPER + $item->valor4;
-                            $NUMEROCARTAOHIPER++;
-                        }
-
                         $y++;
 
                         $paciente = $item->paciente;
@@ -389,69 +362,80 @@
             </tbody>
         </table>
         <!--<hr>-->
+        <?
+//        var_dump($numero);
+//        die;
+        ?>
         <table border="1">
             <tbody>
-                <tr>
-                    <td colspan="4" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
-            </tr>
             <tr>
-                <td width="140px;"><font size="-1">CARTAO VISA</td>
-                <td width="140px;"><font size="-1"><?= $NUMEROCARTAOVISA; ?></td>
-                <!--<td><font size="-2"></td>-->
-                <td width="200px;"><font size="-1"><?= number_format($CARTAOVISA, 2, ',', '.'); ?></td>
+              <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
+              <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>
             </tr>
+            <?
+            foreach ($formapagamento as $value) {
+                if ($numero[$value->nome] > 0) {
+                    ?>
+                    <tr>
+                        <td width="140px;"><font size="-1"><?= $value->nome ?></td>
+                        <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
+                        <td width="200px;"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
+                        <td><font size="-1"><?= number_format($desconto[$value->nome], 2, ',', '.'); ?></td>
+                    </tr>    
+
+
+                    <?
+                }
+            }
+            ?>
             <tr>
-                <td width="140px;"><font size="-1">CARTAO MASTER</td>
-                <td width="140px;"><font size="-1"><?= $NUMEROCARTAOMASTER; ?></td>
-                <!--<td><font size="-2"></td>-->
-                <td width="200px;"><font size="-1"><?= number_format($CARTAOMASTER, 2, ',', '.'); ?></td>
-            </tr>
-            <tr>
-                <td width="140px;"><font size="-1">HIPER CARD</td>
-                <td width="140px;"><font size="-1"><?= $NUMEROCARTAOHIPER; ?></td>
-                <!--<td><font size="-2"></td>-->
-                <td width="200px;"><font size="-1"><?= number_format($CARTAOHIPER, 2, ',', '.'); ?></td>
-            </tr>
-    <?
-    $TOTALCARTAO = $CARTAOVISA + $CARTAOMASTER + $CARTAOHIPER;
-    $QTDECARTAO = $NUMEROCARTAOVISA + $NUMEROCARTAOMASTER + $NUMEROCARTAOHIPER;
-    ?>
+                <td width="140px;"><font size="-1">PENDENTES</td>
+                <td width="140px;"><font size="-1"><?= $NUMEROOUTROS ?></td>
+                <td width="200px;"><font size="-1"><?= number_format($OUTROS, 2, ',', '.'); ?></td>
+                <td><font size="-2"></td>
+            </tr>  
+            <?
+            $TOTALCARTAO = 0;
+            $QTDECARTAO = 0;
+            foreach ($formapagamento as $value) {
+                /* A linha abaixo era a condiçao do IF antigamente. Agora tudo que nao for cartao sera DINHEIRO */
+                //                ($value->nome != 'DINHEIRO' && $value->nome != 'DEBITO' && $value->nome != 'CHEQUE') 
+                if ($value->cartao != 'f') {
+                    $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
+                    $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
+                }
+            }
+            ?>
             <tr>
                 <td width="140px;"><font size="-1">TOTAL CARTAO</td>
                 <td width="140px;"><font size="-1">Nr. Cart&otilde;es: <?= $QTDECARTAO; ?></td>
-                <!--<td><font size="-2"></td>-->
-                <td width="200px;"><font size="-1">Total Cartao: <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
+                <td width="200px;" colspan="2"><font size="-1">Total Cartao: <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
             </tr>
-    <!--            <tr>
-                <td width="140px;"><font size="-1">TOTAL GERAL</td>
-                <td width="140px;"><font size="-1">Nr. Exa: <?= $i; ?></td>
-                <td><font size="-2"></td>
-                <td width="200px;"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
-            </tr>-->
+
             </tbody>
 
         </table>
         <!--<h4>(*) Valores alterados.</h4>-->
-    <?
-    $PERCENTUALDINHEIRO = ($NUMERODINHEIRO * 100) / $i;
-    $PERCENTUALCHEQUE = ($NUMEROCHEQUE * 100) / $i;
-    $PERCENTUALCARTAOVISA = ($NUMEROCARTAOVISA * 100) / $i;
-    $PERCENTUALCARTAOMASTER = ($NUMEROCARTAOMASTER * 100) / $i;
-    $PERCENTUALCARTAOHIPER = ($NUMEROCARTAOHIPER * 100) / $i;
-    $PERCENTUALOUTROS = ($NUMEROOUTROS * 100) / $i;
-    $PERCENTUALVALORDINHEIRO = ($DINHEIRO * 100) / $valortotal;
-    $PERCENTUALVALORCHEQUE = ($CHEQUE * 100) / $valortotal;
-    $PERCENTUALVALORCARTAOVISA = ($CARTAOVISA * 100) / $valortotal;
-    $PERCENTUALVALORCARTAOMASTER = ($CARTAOMASTER * 100) / $valortotal;
-    $PERCENTUALVALORCARTAOHIPER = ($CARTAOHIPER * 100) / $valortotal;
-    $PERCENTUALVALOROUTROS = ($OUTROS * 100) / $valortotal;
-    $VALORDINHEIRO = (str_replace("", ".", str_replace("", ",", $DINHEIRO))) / 100;
-    $VALORCHEQUE = (str_replace("", ".", str_replace("", ",", $CHEQUE))) / 100;
-    $VALORCARTAOVISA = (str_replace("", ".", str_replace("", ",", $CARTAOVISA))) / 100;
-    $VALORCARTAOMASTER = (str_replace("", ".", str_replace("", ",", $CARTAOMASTER))) / 100;
-    $VALORCARTAOHIPER = (str_replace("", ".", str_replace("", ",", $CARTAOHIPER))) / 100;
-    $VALOROUTROS = (str_replace("", ".", str_replace("", ",", $OUTROS))) / 100;
-    ?>
+        <?
+        @$PERCENTUALDINHEIRO = ($NUMERODINHEIRO * 100) / $i;
+        @$PERCENTUALCHEQUE = ($NUMEROCHEQUE * 100) / $i;
+        @$PERCENTUALCARTAOVISA = ($NUMEROCARTAOVISA * 100) / $i;
+        @$PERCENTUALCARTAOMASTER = ($NUMEROCARTAOMASTER * 100) / $i;
+        @$PERCENTUALCARTAOHIPER = ($NUMEROCARTAOHIPER * 100) / $i;
+        @$PERCENTUALOUTROS = ($NUMEROOUTROS * 100) / $i;
+        @$PERCENTUALVALORDINHEIRO = ($DINHEIRO * 100) / $valortotal;
+        @$PERCENTUALVALORCHEQUE = ($CHEQUE * 100) / $valortotal;
+        @$PERCENTUALVALORCARTAOVISA = ($CARTAOVISA * 100) / $valortotal;
+        @$PERCENTUALVALORCARTAOMASTER = ($CARTAOMASTER * 100) / $valortotal;
+        @$PERCENTUALVALORCARTAOHIPER = ($CARTAOHIPER * 100) / $valortotal;
+        @$PERCENTUALVALOROUTROS = ($OUTROS * 100) / $valortotal;
+        @$VALORDINHEIRO = (str_replace("", ".", str_replace("", ",", $DINHEIRO))) / 100;
+        @$VALORCHEQUE = (str_replace("", ".", str_replace("", ",", $CHEQUE))) / 100;
+        @$VALORCARTAOVISA = (str_replace("", ".", str_replace("", ",", $CARTAOVISA))) / 100;
+        @$VALORCARTAOMASTER = (str_replace("", ".", str_replace("", ",", $CARTAOMASTER))) / 100;
+        @$VALORCARTAOHIPER = (str_replace("", ".", str_replace("", ",", $CARTAOHIPER))) / 100;
+        @$VALOROUTROS = (str_replace("", ".", str_replace("", ",", $OUTROS))) / 100;
+        ?>
 
         <!--        GRAFICO DE QUANTIDADE DE EXAMES
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $NUMERODINHEIRO; ?>,<?= $NUMEROCHEQUE; ?>,<?= $NUMEROCARTAOVISA; ?>,<?= $NUMEROCARTAOMASTER; ?>,<?= $NUMEROCARTAOHIPER; ?>,<?= $NUMEROOUTROS; ?>&chtt=QUANTIDADE DE EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCHEQUE, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALOUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|CHEQUE|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste"/></center>
@@ -459,12 +443,12 @@
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $VALORDINHEIRO; ?>,<?= $VALORCHEQUE; ?>,<?= $VALORCARTAOVISA; ?>,<?= $VALORCARTAOMASTER; ?>,<?= $VALORCARTAOHIPER; ?>,<?= $VALOROUTROS; ?>&chtt=VALOR DOS EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALVALORDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCHEQUE, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOHIPER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALOROUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|CHEQUE|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste2" /></center>-->
 
 
-<? } else {
-    ?>
+    <? } else {
+        ?>
         <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
-    <?
-}
-?>
+        <?
+    }
+    ?>
 
 </div> <!-- Final da DIV content -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />

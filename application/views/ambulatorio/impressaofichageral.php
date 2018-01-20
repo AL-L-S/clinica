@@ -137,7 +137,7 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1>REALIZADO: <?= substr($exame[0]->data_autorizacao, 8, 2) . "/" . substr($exame[0]->data_autorizacao, 5, 2) . "/" . substr($exame[0]->data_autorizacao, 0, 4); ?>&agrave;s <?= substr($dataatualizacao, 10, 9); ?></u></font></td>
+    <td ><font size = -1>REALIZADO: <?= substr($exame[0]->data_autorizacao, 8, 2) . "/" . substr($exame[0]->data_autorizacao, 5, 2) . "/" . substr($exame[0]->data_autorizacao, 0, 4); ?> &agrave;s <?= substr($dataatualizacao, 10, 9); ?></u></font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )TB RESIDUAL</font></td>
@@ -157,11 +157,11 @@ $agenda = $exame[0]->agenda;
     $data = $exame[0]->data_autorizacao;
     $dia = strftime("%A", strtotime($data));
 
-    if ($dia == "Saturday") {    
-    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($exame[0]->data_autorizacao)));
-    }elseif($dia == "Sunday") {
-    $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($exame[0]->data_autorizacao)));
-    }
+//    if ($dia == "Saturday") {    
+//    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($exame[0]->data_autorizacao)));
+//    }elseif($dia == "Sunday") {
+//    $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($exame[0]->data_autorizacao)));
+//    }
 //    if ($dia == "Saturday") {    
 //    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($item->data_autorizacao)));
 //    }elseif($dia == "Sunday") {
@@ -220,7 +220,7 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1>Seg a Sex de 07:30 as 17:00 hs</font></td>
+    <td ><font size = -1>Seg a Sex de <?=$empresa[0]->horario_seg_sex?></font></td>
 </tr>
 <tr>
     <td ><font size = -2>( )HIPERTENS&Atilde;O</font></td>
@@ -230,7 +230,7 @@ $agenda = $exame[0]->agenda;
         border-bottom:none;border-top:none;mso-border-left-alt:
         solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -2></font></td>
     <td >&nbsp;</td>
-    <td ><font size = -1>Sab de 07:30 as 11:30 hs</font></td>
+    <td ><font size = -1>Sab de <?=$empresa[0]->horario_sab?></font></td>
 </tr>
 <tr>
     <td ><font size = -1>INDICA&Ccedil;&Atilde;O: <?= $exame[0]->indicacao; ?></font></td>

@@ -176,11 +176,11 @@ foreach($ordem_atendimento as $item){
     $data = $exame[0]->data_autorizacao;
     $dia = strftime("%A", strtotime($data));
 
-    if ($dia == "Saturday") {    
-    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($exame[0]->data_autorizacao)));
-    }elseif($dia == "Sunday") {
-    $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($exame[0]->data_autorizacao)));
-    }
+//    if ($dia == "Saturday") {    
+//    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($exame[0]->data_autorizacao)));
+//    }elseif($dia == "Sunday") {
+//    $DT_ENTREGA = date('d-m-Y', strtotime("+1 days", strtotime($exame[0]->data_autorizacao)));
+//    }
 //    if ($dia == "Saturday") {    
 //    $DT_ENTREGA = date('d-m-Y', strtotime("+2 days", strtotime($item->data_autorizacao)));
 //    }elseif($dia == "Sunday") {
