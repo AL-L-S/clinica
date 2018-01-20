@@ -1290,6 +1290,14 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function formapagamentoorcamento() {
+        $forma = $_GET['formapamento1'];
+        if (isset($forma)) {
+            $result = $this->formapagamento->buscarformapagamentoorcamento($forma);
+        } 
+        echo json_encode($result);
+    }
+
     function formapagamento($forma) {
 
         if (isset($forma)) {

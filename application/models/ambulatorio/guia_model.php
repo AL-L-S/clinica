@@ -5123,6 +5123,22 @@ class guia_model extends Model {
         $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $sql = '';
+        if ($_POST['grupo'] == "1") {
+            $sql .= " AND pt.grupo != 'RM'";
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $sql .= " AND pt.grupo = " . $_POST['grupo'];
+        }
+        if ($_POST['procedimentos'] != "0") {
+            $sql .= " AND pt.procedimento_tuss_id = " . $_POST['procedimentos'];
+        }
+        if ($_POST['grupomedico'] != "0") {
+            $sql .= " AND ogm.operador_grupo_id = " . $_POST['grupomedico'];
+            $sql .= " AND ogm.ativo = 't'";
+        }
+        if ($_POST['medico'] != "0") {
+            $sql .= " AND ae.medico_consulta_id = " . $_POST['medico'];
+        }        
         if ($_POST['txtNome'] != '') {
             $sql .= " AND p.nome ilike '%" .  $_POST['txtNome'] . "%'";
         }
@@ -5132,7 +5148,7 @@ class guia_model extends Model {
         if ($_POST['operador'] != '0' && $_POST['operador'] != '') {
             $sql .= " AND ae.operador_faturamento = " . $_POST['operador'];
         }
-
+        
         $this->db->select('o.operador_id, o.nome');
         $this->db->from('tb_operador o');
         $this->db->where("o.operador_id IN 
@@ -5140,6 +5156,8 @@ class guia_model extends Model {
                             SELECT DISTINCT(ae.operador_faturamento) FROM ponto.tb_agenda_exames ae
                             LEFT JOIN ponto.tb_paciente p ON p.paciente_id = ae.paciente_id
                             LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id
+                            LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id
+                            LEFT JOIN ponto.tb_operador_grupo_medico ogm ON ae.medico_consulta_id = ogm.operador_id
                             LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id
                             WHERE ae.data >= '{$data_inicio}' AND ae.data <= '{$data_fim}'
                             AND ae.confirmado = 't' AND ae.operador_autorizacao > 0
@@ -5288,7 +5306,7 @@ class guia_model extends Model {
         return $return->result();
     }
 
-    function relatoriocaixapersonalizadoprocedimentos() {
+    function listarprocedimentocaixapersonalizadooperadorfaturamento($operador_faturamento) {
 
         $this->db->select('ae.agenda_exames_id,
                             ae.agenda_exames_nome_id,
@@ -5351,6 +5369,7 @@ class guia_model extends Model {
         $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = ae.forma_pagamento3', 'left');
         $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_operador_grupo_medico ogm', 'ae.medico_consulta_id = ogm.operador_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.confirmado', 'true');
@@ -5360,6 +5379,134 @@ class guia_model extends Model {
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        if ($_POST['procedimentos'] != "0") {
+            $this->db->where('pt.procedimento_tuss_id', $_POST['procedimentos']);
+        }
+//        var_dump($_POST['grupomedico']); die;
+        if ($_POST['grupomedico'] != "0") {
+            $this->db->where('ogm.operador_grupo_id', $_POST['grupomedico']);
+            $this->db->where('ogm.ativo', 't');
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
+        if ($_POST['txtNome'] != '') {
+            $this->db->where("p.nome ilike '%" .  $_POST['txtNome'] . "%'");
+        }
+
+        if ($_POST['empresa'] != '0' && $_POST['empresa'] != '') {
+            $this->db->where("ae.empresa_id", $_POST['empresa']);
+        }
+        
+        $this->db->where("ae.operador_faturamento", $operador_faturamento);
+        
+        $this->db->orderby('ae.guia_id');
+        $this->db->orderby('ae.operador_faturamento');
+        $this->db->orderby('ae.operador_autorizacao');
+        $this->db->orderby('ae.data');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriocaixapersonalizadoprocedimentosnaofaturados() {
+
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.guia_id,
+                            ae.inicio,
+                            ae.fim,
+                            ae.financeiro,
+                            ae.faturado,
+                            ae.ativo,
+                            ae.verificado,
+                            al.ambulatorio_laudo_id as laudo,
+                            ae.situacao,
+                            pt.grupo,
+                            c.nome as convenio,
+                            ae.guia_id,
+                            pc.valortotal,
+                            ae.quantidade,
+                            ae.valor_total,
+                            ae.valor,
+                            ae.valor1,
+                            ae.forma_pagamento2,
+                            ae.valor2,
+                            ae.realizada,
+                            ae.forma_pagamento3,
+                            ae.valor3,
+                            ae.numero_sessao,
+                            ae.forma_pagamento4,
+                            ae.valor4,
+                            ae.autorizacao,
+                            ae.operador_autorizacao,
+                            ae.paciente_id,
+                            ae.operador_editar,
+                            p.nome as paciente,
+                            ae.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            o.nome,
+                            e.exames_id,
+                            op.nome as nomefaturamento,
+                            ae.operador_faturamento,
+                            f.nome as forma_pagamento,
+                            f2.nome as forma_pagamento_2,
+                            f3.nome as forma_pagamento_3,
+                            f4.nome as forma_pagamento_4,
+                            pt.codigo,
+                            ae.desconto,
+                            ae.parcelas1,
+                            ae.parcelas2,
+                            ae.parcelas3,
+                            ae.parcelas4');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = ae.forma_pagamento', 'left');
+        $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = ae.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = ae.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_operador_grupo_medico ogm', 'ae.medico_consulta_id = ogm.operador_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.confirmado', 'true');
+        $this->db->where('pt.home_care', 'f');
+        $this->db->where('ae.operador_autorizacao >', 0);
+        $this->db->where('ae.operador_faturamento IS NULL');
+        $this->db->where('c.dinheiro', "t");
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        if ($_POST['procedimentos'] != "0") {
+            $this->db->where('pt.procedimento_tuss_id', $_POST['procedimentos']);
+        }
+//        var_dump($_POST['grupomedico']); die;
+        if ($_POST['grupomedico'] != "0") {
+            $this->db->where('ogm.operador_grupo_id', $_POST['grupomedico']);
+            $this->db->where('ogm.ativo', 't');
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
+        
         if ($_POST['txtNome'] != '') {
             $this->db->where("p.nome ilike '%" .  $_POST['txtNome'] . "%'");
         }
@@ -5372,7 +5519,6 @@ class guia_model extends Model {
             $this->db->where("ae.operador_faturamento", $_POST['operador']);
         }
         $this->db->orderby('ae.guia_id');
-        $this->db->orderby('ae.operador_faturamento');
         $this->db->orderby('ae.operador_autorizacao');
         $this->db->orderby('ae.data');
         $this->db->orderby('p.nome');

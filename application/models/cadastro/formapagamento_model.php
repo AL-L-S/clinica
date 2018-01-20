@@ -121,6 +121,18 @@ class formapagamento_model extends Model {
         return $return->result();
     }
 
+    function buscarformapagamentoorcamento($forma_pagamento_id) {
+        $this->db->select('forma_pagamento_id,
+                            nome,
+                            ajuste,
+                            parcelas');
+        $this->db->from('tb_forma_pagamento');
+        $this->db->where('ativo', 'true');
+        $this->db->where('forma_pagamento_id', "$forma_pagamento_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function buscarforma($forma_pagamento_id) {
         $this->db->select('forma_pagamento_id,
                             nome,

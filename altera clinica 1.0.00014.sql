@@ -188,8 +188,8 @@ $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
 
- ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_laboratorio numeric(10,2);
- ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_laboratorio boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_laboratorio numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_laboratorio boolean DEFAULT false;
 
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN laboratorio_id integer;
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN laboratorio_id integer;
@@ -211,3 +211,6 @@ ALTER TABLE ponto.tb_empresa_sms ADD COLUMN endereco_externo character varying(6
 -- Dia 18/01/2018
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN carregar_modelo_receituario boolean DEFAULT false;
 ALTER TABLE ponto.tb_ambulatorio_modelo_receita ADD COLUMN carregar_automaticamente boolean DEFAULT false;
+
+-- Dia 19/01/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN caixa_personalizado boolean DEFAULT false;

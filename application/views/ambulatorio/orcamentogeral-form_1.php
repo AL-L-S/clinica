@@ -46,6 +46,7 @@
                             <th class="tabela_header">F. de Pagamento</th>
                             <th class="tabela_header">Qtde*</th>
                             <th class="tabela_header">V. Unit</th>
+                            <th class="tabela_header">V. Unit Ajuste</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,6 +97,7 @@
                             </td>
                             <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
                             <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                            <td  width="20px;"><input type="text" name="ajustevalor1" id="ajustevalor1" class="texto01" readonly=""/></td>
                         </tr>
                         <? if ($empresa[0]->impressao_orcamento == 1) { ?>
                             <tr>
@@ -294,7 +296,7 @@
                                             }
                                         });
 
-<? if (@$obj->_paciente_id == NULL) { ?>
+                                <? if (@$obj->_paciente_id == NULL) { ?>
                                     $(function () {
                                         $("#txtNome").autocomplete({
                                             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
@@ -313,7 +315,7 @@
                                             }
                                         });
                                     });
-<? } ?>
+                                <? } ?>
 
 
 
@@ -409,14 +411,27 @@
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                 options = "";
                                                 options += j[0].valortotal;
-<? if ($odontologia_alterar == 't') { ?>
+                                                <? if ($odontologia_alterar == 't') { ?>
                                                     if (j[0].grupo == 'ODONTOLOGIA') {
                                                         $("#valor1").prop('readonly', false);
                                                     } else {
                                                         $("#valor1").prop('readonly', true);
                                                     }
-<? } ?>
-                                                document.getElementById("valor1").value = options
+                                                <? } ?>
+                                                document.getElementById("valor1").value = options;
+                                                
+                                                if( $('#formapamento').val() ){
+                                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $('#formapamento').val(), ajax: true}, function (j) {
+                                                        var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
+
+                                                        var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
+                                                        
+                                                        $("#ajustevalor1").val(valorajuste1.toFixed(2));
+
+                                                        $('.carregando').hide();
+                                                    });
+                                                }
+                                                
                                                 $('.carregando').hide();
                                             });
                                         } else {
@@ -444,6 +459,25 @@
                                         $('.carregando').hide();
                                     });
                                 }
+                                
+
+                                 $(function () {
+                                    $('#formapamento').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $(this).val(), ajax: true}, function (j) {
+                                                var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
+
+                                                var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
+
+                                                $("#ajustevalor1").val(valorajuste1.toFixed(2));
+
+                                                
+                                                $('.carregando').hide();
+                                            });
+                                        } 
+                                    });
+                                });
 
 
 

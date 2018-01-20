@@ -69,6 +69,7 @@
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">V. Unit</th>
+                                <th class="tabela_header">V. Unit Ajustado</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
                             </tr>
                         </thead>
@@ -125,6 +126,7 @@
                                 </td>
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
                                 <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td  width="20px;"><input type="text" name="ajustevalor1" id="ajustevalor1" class="texto01" readonly=""/></td>
                             </tr>
 
                         </tbody>
@@ -366,11 +368,41 @@
                                                     }    
                                                 <? } ?>
                                                 document.getElementById("valor1").value = options
+                                                
+                                                if( $('#formapamento').val() ){
+                                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $('#formapamento').val(), ajax: true}, function (j) {
+                                                        var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
+
+                                                        var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
+                                                        
+                                                        $("#ajustevalor1").val(valorajuste1.toFixed(2));
+
+                                                        $('.carregando').hide();
+                                                    });
+                                                }
                                                 $('.carregando').hide();
                                             });
                                         } else {
                                             $('#valor1').html('value=""');
                                         }
+                                    });
+                                });
+
+                                 $(function () {
+                                    $('#formapamento').change(function () {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $(this).val(), ajax: true}, function (j) {
+                                                var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
+
+                                                var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
+
+                                                $("#ajustevalor1").val(valorajuste1.toFixed(2));
+
+                                                
+                                                $('.carregando').hide();
+                                            });
+                                        } 
                                     });
                                 });
 

@@ -1126,6 +1126,12 @@ class empresa_model extends Model {
                     $this->db->set('carregar_modelo_receituario', 'f');
                 }
 
+                if (isset($_POST['caixa_personalizado'])) {
+                    $this->db->set('caixa_personalizado', 't');
+                } else {
+                    $this->db->set('caixa_personalizado', 'f');
+                }
+
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -1297,6 +1303,12 @@ class empresa_model extends Model {
                     $this->db->set('carregar_modelo_receituario', 'f');
                 }
                 
+                if (isset($_POST['caixa_personalizado'])) {
+                    $this->db->set('caixa_personalizado', 't');
+                } else {
+                    $this->db->set('caixa_personalizado', 'f');
+                }
+                
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('empresa_id', $empresa_id);
@@ -1395,6 +1407,7 @@ class empresa_model extends Model {
                                ep.recomendacao_configuravel,
                                f.mostrar_logo_clinica,
                                ep.recomendacao_obrigatorio,
+                               ep.caixa_personalizado,
                                ep.carregar_modelo_receituario');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -1487,6 +1500,7 @@ class empresa_model extends Model {
             $this->_desativar_personalizacao_impressao = $return[0]->desativar_personalizacao_impressao;
             $this->_mostrar_logo_clinica = $return[0]->mostrar_logo_clinica;
             $this->_carregar_modelo_receituario = $return[0]->carregar_modelo_receituario;
+            $this->_caixa_personalizado = $return[0]->caixa_personalizado;
         } else {
             $this->_empresa_id = null;
         }

@@ -643,6 +643,7 @@ class Laudo extends BaseController {
     function carregarreceituario($ambulatorio_laudo_id) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $data['lista'] = $this->exametemp->listarautocompletemodelosreceita();
         $data['modelo'] = $this->exametemp->listarmodelosreceitaautomatico();
         $data['empresapermissao'] = $this->guia->listarempresapermissoes();

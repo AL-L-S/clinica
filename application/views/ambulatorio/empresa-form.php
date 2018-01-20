@@ -506,6 +506,12 @@
                         <dd>
                             <input type="checkbox" id="carregar_modelo_receituario" name="carregar_modelo_receituario" <? if (@$obj->_carregar_modelo_receituario == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o relatorio de caixa normal some e so fica disponivel o caixa personalizado. Além dsso os relatorios de caixa cartão irão ficar com o layout do personalizado e o rel. previsão irá sumir.">Caixa personalizado</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="caixa_personalizado" name="caixa_personalizado" <? if (@$obj->_caixa_personalizado == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

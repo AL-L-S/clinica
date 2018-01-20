@@ -39,6 +39,7 @@ class login_model extends Model {
                            ep.relatorio_producao,
                            ep.relatorios_recepcao,
                            ep.financeiro_cadastro,       
+                           ep.caixa_personalizado,       
                            ep.botao_ativar_sala');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
@@ -84,6 +85,7 @@ class login_model extends Model {
             $relatorios_recepcao = $retorno[0]->relatorios_recepcao;
             $financeiro_cadastro = $retorno[0]->financeiro_cadastro;
             $logo_clinica = $retorno[0]->mostrar_logo_clinica;
+            $caixa_personalizado = $retorno[0]->caixa_personalizado;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -145,6 +147,7 @@ class login_model extends Model {
                 'calendario_layout' => $calendario_layout,
                 'recomendacao_configuravel' => $recomendacao_configuravel,
                 'recomendacao_obrigatorio' => $recomendacao_obrigatorio,
+                'caixa_personalizado' => $caixa_personalizado,
                 'botao_ativar_sala' => $botao_ativar_sala,
                 'logo_clinica' => $logo_clinica,
                 'empresa' => $empresanome

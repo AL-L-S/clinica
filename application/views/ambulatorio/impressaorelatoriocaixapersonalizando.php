@@ -86,13 +86,19 @@
         <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
         <h4>PACIENTE: <?= $paciente; ?></h4>
         <h4>OPERADOR: <?= (count($operador) != 0) ? $operador[0]->nome : "TODOS"; ?></h4>
-
+        <? if (count($medico) != 0) { ?>
+            <h3>MÉDICO: <?= $medico[0]->nome; ?></h3>
+        <? } ?>    
+        <? if (count($medico) == 0) { ?>
+            <h3>MÉDICO: TODOS</h3>
+        <? } ?>
         <hr>
         <?
         $agenda_exames_id = '';
         $financeiro = 'f';
         $faturado = 't';
         $exame = 't';
+        
 
         foreach ($formapagamento as $item_resumo) {
             $caixaOperador[$item_resumo->nome] = 0;
@@ -104,11 +110,9 @@
         $procNaoFaturados = array();
         $valPendentes = 0;
                 
-        if (count($relatorioprocedimentos) > 0) {
+        if (count($procNaoFaturados) > 0 || count($operadores) > 0) {
             
-            if(count($operadores) == 0) {
-                $procNaoFaturados = $relatorioprocedimentos;
-            }
+            $totalProcedimentos = count($procNaoFaturados);
             
             foreach ($operadores as $opItem) {
 
@@ -125,20 +129,14 @@
                 }
                 $verificador_operador = true;
                 ?>
-                <table cellpadding="5" border='1' cellspacing='5'>
-                    <thead><?
-                        if ($verificador_operador) {
-                            $verificador_operador = false;
-                            ?>
-
-                            <tr>
-                                <th class="tabela_header" colspan="5">
-                                    Operador Faturamento: <font size="5"><?= $opItem->nome; ?></font>
-                                    <button type="button" id="button<?= $opItem->operador_id ?>">Ver Resumo</button>
-                                </th>
-                            </tr>
-                        <? }
-                        ?>
+                <table border='1' cellspacing=0 cellpadding=5>
+                    <thead>
+                        <tr>
+                            <th class="tabela_header" colspan="5">
+                                Operador Faturamento: <font size="5"><?= $opItem->nome; ?></font>
+                                <button type="button" id="button<?= $opItem->operador_id ?>">Ver Resumo</button>
+                            </th>
+                        </tr>
                         <tr>
                             <th class="tabela_header"><font size="4">Paciente</font></th>
                             <th class="tabela_header"><font size="4">Procedimento</font></th>
@@ -149,17 +147,13 @@
                     </thead>
                     <tbody>
                         <?
+                        $listaProcOp = $this->guia->listarprocedimentocaixapersonalizadooperadorfaturamento($opItem->operador_id);
+                        $totalProcedimentos += count($listaProcOp);
                         $primeiro = true;
                         $t = -1;
 
-
-                        foreach ($relatorioprocedimentos as $item) {
+                        foreach ($listaProcOp as $item) {
                             $t++;
-
-                            if ($item->operador_faturamento == "") {
-                                $procNaoFaturados[] = $item;
-                                $faturado = 'f';
-                            }
 
                             if ($opItem->operador_id == $item->operador_faturamento) {
                                 /* CABECALHO */
@@ -360,14 +354,14 @@
                                         <tr>
                                             <td colspan="8">
 
-                                                <table border="1">
+                                                <table border="1" cellspacing=0 >
                                                     <thead>
                                                         <tr>
                                                             <th width="270px;"><font size="2">Forma Pagamento</font></th>
                                                             <!--<th style="text-align: right" width="70px;"><font size="2">Qtde</font></th>-->
                                                             <th style="text-align: right" width="70px;"><font size="2">Ajuste (%)</font></th>
                                                             <th style="text-align: right" width="70px;"><font size="2">Parcela</font></th>
-                                                            <th style="text-align: right" width="70px;"><font size="2">Vlr Proc</font></th>
+                                                            <th style="text-align: right" width="70px;"><font size="2">Vlr Parcela</font></th>
                                                             <th style="text-align: right" width="70px;"><font size="2">Vlr Total</font></th>
                                                         </tr>
                                                     </thead>
@@ -420,7 +414,6 @@
                             }
                         }
                         ?>
-
                     </tbody>
                 </table>
 
@@ -648,9 +641,6 @@
                     <? } ?>
                 </form>
             </div>
-                    <?
-//            }
-                    ?>
             <div id="resumoGeral" class="resumo">
                 <center>
                     <h3>RESUMO GERAL</h3>
@@ -662,39 +652,39 @@
                             </tr>
                         </thead>
                         <tbody>
-    <?
-    $resumoDesconto = 0;
-    $resumoDinheiro = 0;
-    $resumoTotalCaixa = 0;
-    $resumoQtdeCaixa = 0;
-    $desconto = 0;
-    $geral = 0;
+                        <?
+                        $resumoDesconto = 0;
+                        $resumoDinheiro = 0;
+                        $resumoTotalCaixa = 0;
+                        $resumoQtdeCaixa = 0;
+                        $desconto = 0;
+                        $geral = 0;
 
-    foreach ($formapagamento as $fpCaixa) {
-        if (@$caixaOperador[$fpCaixa->nome] == 0 || !isset($caixaOperador[$fpCaixa->nome])) {
-            continue;
-        }
+                        foreach ($formapagamento as $fpCaixa) {
+                            if (@$caixaOperador[$fpCaixa->nome] == 0 || !isset($caixaOperador[$fpCaixa->nome])) {
+                                continue;
+                            }
 
-        if ($fpCaixa->cartao != 'f') {
-            $resumoTotalCaixa = $resumoTotalCaixa + $caixaOperador[$fpCaixa->nome];
-            $resumoQtdeCaixa = $resumoQtdeCaixa + $caixaOperador[$fpCaixa->nome];
-        } else {
-            $resumoDinheiro = $resumoDinheiro + $caixaOperador[$fpCaixa->nome];
-        }
-        $desconto += (float) $caixaDesconto[$fpCaixa->nome];
-        ?>
-                                <tr>
-                                    <td ><font size="-1"><?= $fpCaixa->nome ?></td>
-                                    <td style="text-align: right"><font size="-1"><?= $caixaNumero[$fpCaixa->nome]; ?></td>
-                                    <td style="text-align: right"><font size="-1"><?= number_format($caixaOperador[$fpCaixa->nome], 2, ',', '.'); ?></td>
-                                    <td style="text-align: right"><font size="-1"><?= number_format($descontoResumo[$fpCaixa->nome], 2, ',', '.'); ?></td>
-                                </tr>   
-    <? } ?>
+                            if ($fpCaixa->cartao != 'f') {
+                                $resumoTotalCaixa = $resumoTotalCaixa + $caixaOperador[$fpCaixa->nome];
+                                $resumoQtdeCaixa = $resumoQtdeCaixa + $caixaOperador[$fpCaixa->nome];
+                            } else {
+                                $resumoDinheiro = $resumoDinheiro + $caixaOperador[$fpCaixa->nome];
+                            }
+                            $desconto += (float) $caixaDesconto[$fpCaixa->nome];
+                            ?>
+                            <tr>
+                                <td ><font size="-1"><?= $fpCaixa->nome ?></td>
+                                <td style="text-align: right"><font size="-1"><?= $caixaNumero[$fpCaixa->nome]; ?></td>
+                                <td style="text-align: right"><font size="-1"><?= number_format($caixaOperador[$fpCaixa->nome], 2, ',', '.'); ?></td>
+                                <td style="text-align: right"><font size="-1"><?= number_format($descontoResumo[$fpCaixa->nome], 2, ',', '.'); ?></td>
+                            </tr>   
+                        <?  } ?>
                             <tr>
                                 <td colspan="4" align="center" style="background-color: #ddd"><font size="-1">TOTAL</td></tr>
                             <tr>
                                 <td colspan="3"><font size="-1">NÚMERO DE PROCEDIMENTOS</td>
-                                <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= count($relatorioprocedimentos); ?></td>
+                                <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= $totalProcedimentos; ?></td>
                             </tr>
                             <tr>
                                 <td colspan="3"><font size="-1">PENDENTES</td>
@@ -710,7 +700,7 @@
                             </tr>
                             <tr>
                                 <td width="140px;" colspan="3"><font size="-1">TOTAL GERAL</td>
-    <? $resumoTotal = $resumoTotalCaixa + $resumoDinheiro + $valPendentes; ?>
+                                <? $resumoTotal = $resumoTotalCaixa + $resumoDinheiro + $valPendentes; ?>
                                 <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($resumoTotal, 2, ',', '.'); ?></td>
                             </tr>
                         </tbody>
@@ -718,7 +708,7 @@
                 </center>
             </div>   
     <?
-} else {
+        } else {
     ?>
             <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
         <? }

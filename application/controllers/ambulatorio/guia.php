@@ -3516,6 +3516,11 @@ class Guia extends BaseController {
     }
 
     function relatoriocaixapersonalizado() {
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $data['procedimentos'] = $this->procedimento->listarprocedimentos();
+        $data['grupomedico'] = $this->grupomedico->listargrupomedicos();
+        
         $data['empresa'] = $this->guia->listarempresas();
         $data['operadores'] = $this->operador_m->listartecnicos();
         $this->loadView('ambulatorio/relatoriocaixapersonalizado', $data);
@@ -3524,17 +3529,17 @@ class Guia extends BaseController {
     function gerarelatoriocaixapersonalizando() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
-        $data['paciente'] = ($_POST['txtNomeid'] != '') ? $_POST['txtNome'] : "TODOS";
-
+        $data['paciente'] = ($_POST['txtNome'] != '') ? $_POST['txtNome'] : "TODOS";
+        $data['grupo'] = $_POST['grupo'];
         $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
-
+        $data['medico'] = $this->operador_m->listaroperador($_POST['medico']);
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
-//        $data['relatorio'] = $this->guia->relatoriocaixapersonalizado();
-        $data['relatorioprocedimentos'] = $this->guia->relatoriocaixapersonalizadoprocedimentos();
-//        echo "<pre>";
-//        var_dump(count($data['relatorioprocedimentos']));die;
-        $data['operadores'] = $this->guia->relatoriocaixapersonalizadooperadores();
         $data['formapagamento'] = $this->formapagamento->listarforma();
+        
+        $data['procNaoFaturados'] = $this->guia->relatoriocaixapersonalizadoprocedimentosnaofaturados();
+        $data['operadores'] = $this->guia->relatoriocaixapersonalizadooperadores();
+        // Obs: A busca pelos procedimentos é feita na view. (Caso queira alterar a busca, altere as duas funções acima e a que está dentro da view)
+        
         $this->load->View('ambulatorio/impressaorelatoriocaixapersonalizando', $data);
     }    
 
@@ -3547,8 +3552,6 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixa();
         $data['creditos'] = $this->guia->relatoriocaixacreditoslancados();
-//        echo "<pre>";
-//        var_dump(count($data['relatorio']));die;
         $data['relatoriohomecare'] = $this->guia->relatoriocaixahomecare();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['contador'] = $this->guia->relatoriocaixacontador();
@@ -3616,6 +3619,14 @@ class Guia extends BaseController {
         redirect(base_url() . "ambulatorio/guia/relatoriovalorprocedimento", $data);
     }
 
+    function relatoriocaixacartaopersonalizado() {
+        $data['operadores'] = $this->operador_m->listartecnicos();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $this->loadView('ambulatorio/relatoriocaixacartaopersonalizado', $data);
+    }
+
     function relatoriocaixacartao() {
         $data['operadores'] = $this->operador_m->listartecnicos();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -3656,6 +3667,20 @@ class Guia extends BaseController {
         $data['contador'] = $this->guia->relatoriocaixacontadorfaturado();
         $data['formapagamento'] = $this->formapagamento->listarforma();
         $this->load->View('ambulatorio/impressaorelatoriocaixafaturado', $data);
+    }
+
+    function gerarelatoriocaixacartaopersonalizado() {
+        $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
+        $data['medico'] = $this->operador_m->listaroperador($_POST['medico']);
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['grupo'] = $_POST['grupo'];
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->guia->relatoriocaixacartao();
+        $data['contador'] = $this->guia->relatoriocaixacontadorcartao();
+        $data['caixa'] = $this->caixa->listarsangriacaixa();
+        $data['formapagamento'] = $this->formapagamento->listarformacartao();
+        $this->load->View('ambulatorio/impressaorelatoriocaixacartaopersonalizado', $data);
     }
 
     function gerarelatoriocaixacartao() {
