@@ -136,7 +136,8 @@
                                 <th class="tabela_header">Procedimento</th>
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Descrição</th>
-                                <th class="tabela_header">V. Unit</th>
+                                <th class="tabela_header">V. Total</th>
+                                <th class="tabela_header">V. Total Ajustado</th>
                                 <th class="tabela_header"></th>
                             </tr>
                         </thead>
@@ -155,6 +156,7 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->forma_pagamento; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total_ajustado; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirorcamentorecepcao/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
                                         </a>
@@ -475,7 +477,10 @@
                                                 
                                                 $('.carregando').hide();
                                             });
-                                        } 
+                                        }
+                                        else{
+                                            $("#ajustevalor1").val('');
+                                        }
                                     });
                                 });
 

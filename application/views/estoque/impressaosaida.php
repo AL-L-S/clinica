@@ -32,7 +32,7 @@
                 <td class="tabela_teste"><font size="-2">SAÍDA</td>
     <!--            <td class="tabela_teste"><font size="-2">SALDO/ESTOQUE</td>-->
                 <td class="tabela_teste"><font size="-2">SALDO APÓS SAIDA</td>
-                <td class="tabela_teste"><font size="-2">SALDO ATUAL</th>
+                <!--<td class="tabela_teste"><font size="-2">SALDO ATUAL</td>-->
             </tr>
         </thead>
         <tbody>
@@ -45,7 +45,7 @@
                     <td><font size="-2"><?= $item->unidade; ?></td>
                     <td><font size="-2"><?= $item->quantidade; ?></td>
                     <td><font size="-2"><?= $item->saldo; ?></td>
-                    <td><font size="-2"><?= $item->saldo_atual; ?></td>
+                    <!--<td><font size="-2"><?= $item->saldo_atual; ?></td>-->
 <!--                    <td><font size="-2"></td>-->
 <!--                    <td><font size="-2"><?= date('d/m/y', strtotime(substr($item->validade, 0, 10))); ?></td>-->
                 </tr>

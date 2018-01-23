@@ -159,7 +159,8 @@
                                 <th class="tabela_header">Procedimento</th>
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Descriçao</th>
-                                <th class="tabela_header">V. Unit</th>
+                                <th class="tabela_header">V. Total</th>
+                                <th class="tabela_header">V. Total Ajustado</th>
                                 <th class="tabela_header"></th>
                             </tr>
                         </thead>
@@ -178,6 +179,7 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->forma_pagamento; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total_ajustado; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <a href="<?= base_url() ?>ambulatorio/guia/excluirorcamento/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
                                         </a>
@@ -191,7 +193,7 @@
                     ?>
                     <tfoot>
                         <tr>
-                            <th class="tabela_footer" colspan="2">
+                            <th class="tabela_footer" colspan="3">
                                 Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                             </th>
                             <th colspan="1" align="center"><center><div class="bt_linkf">
@@ -236,31 +238,35 @@
 </style>
 <script type="text/javascript">
                                 if ($('#convenio1').val() != '-1') {
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $('#convenio1').val(), ajax: true}, function (j) {
-                                        options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                        }
-//                                        $('#procedimento1').html(options).show();
+                                    if($('#grupo1').val() == ''){
+                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $('#convenio1').val(), ajax: true}, function (j) {
+                                            options = '<option value=""></option>';
+                                            for (var c = 0; c < j.length; c++) {
+                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                            }
+    //                                        $('#procedimento1').html(options).show();
 
-                                        $('#procedimento1 option').remove();
-                                        $('#procedimento1').append(options);
-                                        $("#procedimento1").trigger("chosen:updated");
-                                        $('.carregando').hide();
-                                    });
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
-                                        options = '<option value=""></option>';
-//                                        alert('ola');
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                        }
+                                            $('#procedimento1 option').remove();
+                                            $('#procedimento1').append(options);
+                                            $("#procedimento1").trigger("chosen:updated");
+                                            $('.carregando').hide();
+                                        });
+                                    }
+                                    else {
+                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
+                                            options = '<option value=""></option>';
+    //                                        alert('ola');
+                                            for (var c = 0; c < j.length; c++) {
+                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                            }
 
-                                        $('#procedimento1 option').remove();
-                                        $('#procedimento1').append(options);
-                                        $("#procedimento1").trigger("chosen:updated");
-//                                        $('#procedimento1').html(options).show();
-                                        $('.carregando').hide();
-                                    });
+                                            $('#procedimento1 option').remove();
+                                            $('#procedimento1').append(options);
+                                            $("#procedimento1").trigger("chosen:updated");
+    //                                        $('#procedimento1').html(options).show();
+                                            $('.carregando').hide();
+                                        });
+                                    }
                                 }
 
                                 $(function () {
@@ -388,7 +394,7 @@
                                     });
                                 });
 
-                                 $(function () {
+                                $(function () {
                                     $('#formapamento').change(function () {
                                         if ($(this).val()) {
                                             $('.carregando').show();
@@ -402,7 +408,10 @@
                                                 
                                                 $('.carregando').hide();
                                             });
-                                        } 
+                                        }
+                                        else{
+                                            $("#ajustevalor1").val('');
+                                        }
                                     });
                                 });
 

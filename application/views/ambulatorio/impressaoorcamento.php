@@ -32,8 +32,9 @@
             <td >V. Unit</td>
             <td >Grupo</td>
             <td >Convenio</td>
-            <td>Forma de Pagamento</td>
+            <td >Forma de Pagamento</td>
             <td >V. Total</td>
+            <td >V. Total Ajustado</td>
         </tr>
         <?
         $total = 0;
@@ -41,7 +42,6 @@
             $total = $total + $item->valor_total;
             ?>
             <tr>
-
                 <td width="25%;"><?= utf8_decode($item->procedimento) ?></td>
                 <td width="10%;"><?= utf8_decode($item->quantidade) ?></td>
                 <td width="10%;"><?= number_format($item->valor, 2, ',', '.') ?></td>
@@ -49,6 +49,7 @@
                 <td width="25%;"><?= $item->convenio ?></td>
                 <td width="25%;"><?= $item->forma_pagamento ?></td>
                 <td width="25%;"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
+                <td width="25%;"><?= number_format($item->valor_total_ajustado, 2, ',', '.') ?></td>
             </tr>
 
             <?

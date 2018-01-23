@@ -1204,9 +1204,9 @@
                 foreach ($formapagamento as $value) {
 
                     //Caso seja forma de pagamento CREDITO não será processado no fechar caixa da mesma forma que os outros
-                    if ($value->forma_pagamento_id == 1000)
+                    if ($value->forma_pagamento_id == 1000) {
                         continue;
-
+                    }
 
                     $w++;
 
@@ -1233,14 +1233,14 @@
     <input type="hidden" class="texto3" name="cartaoelo" value="<?= number_format($CARTAOELO, 2, ',', '.'); ?>" readonly/>-->
     <!--                <input type="hidden" class="texto3" name="outros" value="<?= number_format($OUTROS, 2, ',', '.'); ?>" readonly/>-->
                 <?
-                $j = 0;
-                foreach ($creditos as $item) {
+//                $j = 0;
+//                foreach ($creditos as $item) {
                     ?>
-                    <input type="hidden" class="texto3" name="creditoValor[<?= $j; ?>]" value="<?= $item->valor; ?>"/>
+<!--                    <input type="hidden" class="texto3" name="creditoValor[<?= $j; ?>]" value="<?= $item->valor; ?>"/>
                     <input type="hidden" class="texto3" name="creditoData[<?= $j; ?>]" value="<?= $item->data; ?>"/>
-                    <input type="hidden" class="texto3" name="creditoForma[<?= $j; ?>]" value="<?= $item->forma_pagamento_id; ?>"/>
-                    <? $j++; ?>
-                <? } ?>
+                    <input type="hidden" class="texto3" name="creditoForma[<?= $j; ?>]" value="<?= $item->forma_pagamento_id; ?>"/>-->
+                    <? // $j++; ?>
+                <? // } ?>
 
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
                 <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>

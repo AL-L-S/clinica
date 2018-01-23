@@ -207,8 +207,8 @@ WHERE empresa_id IS NULL;
 
 -- Dia 17/01/2018
 ALTER TABLE ponto.tb_empresa_sms ADD COLUMN endereco_externo character varying(60);
--- Dia 18/01/2018
 
+-- Dia 18/01/2018
 ALTER TABLE ponto.tb_empresa ADD COLUMN horario_sab text;
 ALTER TABLE ponto.tb_empresa ADD COLUMN horario_seg_sex text;
 
@@ -216,7 +216,6 @@ UPDATE ponto.tb_empresa
    SET horario_sab='07:30 as 17:00 hs', horario_seg_sex='07:30 as 11:30 hs'
  WHERE impressao_tipo IN (4,3, 10, 6, 14, 9);
 
--- Dia 18/01/2018
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN carregar_modelo_receituario boolean DEFAULT false;
 ALTER TABLE ponto.tb_ambulatorio_modelo_receita ADD COLUMN carregar_automaticamente boolean DEFAULT false;
 

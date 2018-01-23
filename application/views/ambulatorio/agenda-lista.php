@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th class="tabela_header">Tipo</th>
+                        <!--<th class="tabela_header">Tipo</th>-->
                         <th class="tabela_header" colspan="3"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
@@ -49,7 +49,7 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->tipo; ?></td>
+                                <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->tipo; ?></td>-->
 
 
 

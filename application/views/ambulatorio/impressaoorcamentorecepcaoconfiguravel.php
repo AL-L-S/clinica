@@ -11,6 +11,7 @@ $procedimentos = "<table cellpadding='5'>
             <td >Convenio</td>
             <td >Forma de Pagamento</td>
             <td >V. Total</td>
+            <td >V. Total Ajuste</td>
         </tr> ";
 
 $total = 0;
@@ -23,7 +24,8 @@ foreach ($exames as $item) {
                 <td width='10%;'>" . $item->grupo . "</td>
                 <td width='10%;'>" . $item->convenio . "</td>
                 <td width='10%;'>" . $item->forma_pagamento . "</td>
-                <td width='10%;'>" . number_format($item->valor_total, 2, ',', '.') . "</td></tr>";
+                <td width='10%;'>" . number_format($item->valor_total, 2, ',', '.') . "</td>
+                <td width='10%;'>" . number_format($item->valor_total_ajustado, 2, ',', '.') . "</td></tr>";
 }
 $procedimentos = $procedimentos. "</table>";
 //        echo $procedimentos;

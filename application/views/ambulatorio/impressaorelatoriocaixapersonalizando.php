@@ -105,9 +105,11 @@
             $caixaNumero[$item_resumo->nome] = 0;
             $caixaDesconto[$item_resumo->nome] = 0;
             $caixaParcela[$item_resumo->nome] = 0;
+            
+            $datacredito[$item_resumo->nome] = 0;
+            $numerocredito[$item_resumo->nome] = 0;
         }
         
-        $procNaoFaturados = array();
         $valPendentes = 0;
                 
         if (count($procNaoFaturados) > 0 || count($operadores) > 0) {
@@ -590,126 +592,310 @@
                     </center>
                 </div>
             <? } ?>
-            <div class="fecharCaixa">
-                <span class="button-resumoGeral">Resumo Geral</span>
-                <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixapersonalizado" method="post">
-                <?
-                foreach ($formapagamento as $value) {
-
-
-                    if ($value->forma_pagamento_id == 1000){
-                        continue; //Caso seja forma de pagamento CREDITO não será processado no fechar caixa
+            <? if (count($creditos) > 0) {
+                foreach ($creditos as $item) {
+                    if ($item->faturado == 'f') {
+                        $faturado = 'f';
                     }
-
-                    /*
-                     * Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
-                     * tais como '-', ' ', entre outros ao se fazer isso:
-                     * name="qtde['<? $value->nome; \?\>']
-                     */
-                    $nomeForma = str_replace(array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '), '', $value->nome);
-                    $nomeForma = strtolower($nomeForma);
-                    ?>
-
-                        <input type="hidden" class="texto3" name="qtde[<?= $nomeForma; ?>]" value="<?= number_format($caixaOperador[$value->nome], 2, ',', '.'); ?>"/>
-                    <? }
-                    if (count($empresa) > 0) { ?>
-                        <input type="hidden" class="texto3" name="empresa" value="<?= $empresa[0]->empresa_id; ?>"/>
-                    <? } ?>
-                    <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
-                    <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
-                    <input type="hidden" class="texto3" name="agenda_exames_id" value="<?= $agenda_exames_id; ?>"/>
                     
-                    <? if ($faturado == 't' && $exame == 't') { ?>
-                        <? if (count($operador) == 0 && $financeiro == 'f') {
-                            if($paciente == '') {?>
-                                <button type="submit" name="btnEnviar">Fechar Caixa</button>
-                        <?  } else { ?>
-                                <b>Não é possível fechar caixa por paciente</b>
-                            <? }
-                        } elseif (count($operador) > 0 && $financeiro == 'f') {
-                            ?>
-                            <b>Não é possível fechar caixa por operador</b>
-                            <?
-                        } else {
-                            ?>
-                            <b>Caixa Fechado</b>
-                            <?
+                    foreach ($formapagamento as $value) {
+                        if ($item->forma_pagamento == $value->nome) {
+                            $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor1;
+                            $numerocredito[$value->nome] ++;
                         }
-                    } else {
+                        
+                        if ($item->forma_pagamento_2 == $value->nome) {
+                            $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor2;
+                            $numerocredito[$value->nome] ++;
+                        }
+                        
+                        if ($item->forma_pagamento_3 == $value->nome) {
+                            $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor3;
+                            $numerocredito[$value->nome] ++;
+                        }
+                        
+                        if ($item->forma_pagamento_4 == $value->nome) {
+                            $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor4;
+                            $numerocredito[$value->nome] ++;
+                        }
+                    }
+                    
+                } ?>
+                <table border="1" cellpadding="5" cellspacing="5" style="magin-right: 12pt;">
+                    <thead>
+                        <tr>
+                            <th colspan="12" bgcolor="#C0C0C0"><font size="-1"> CRÉDITOS LANÇADOS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td bgcolor="#C0C0C0"><font size="-2">PACIENTE</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">DATA</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">VALOR</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">F.Pagamento 1</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">Valor 1</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">F.Pagamento 2</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">Valor 2</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">F.Pagamento 3</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">Valor 3</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">F.Pagamento 4</td>
+                            <td bgcolor="#C0C0C0"><font size="-2">Valor 4</td>
+                        </tr>
+                        <?
+                        $valorcreditototal = 0;
+                        foreach ($creditos as $item) {
+                            ?>
+                            <?
+                            $valorcreditototal = $valorcreditototal + $item->valor;
+                            ?>
+                            <tr <? if ($item->faturado == 'f') { ?> style="color: red;" <? } ?>>
+                                <td><font size="-2"><?= $item->paciente ?></td>
+                                <td><font size="-2"><?= date("d/m/Y", strtotime($item->data)) ?></td>
+                                <td><font size="-2"><?= number_format($item->valor, 2, ',', '') ?></td>
+                                <td><font size="-2"><?= $item->forma_pagamento ?></td>
+                                <td><font size="-2"><?= number_format($item->valor1, 2, ',', '') ?></td>
+                                <td><font size="-2"><?= $item->forma_pagamento_2 ?></td>
+                                <td><font size="-2"><?= number_format($item->valor2, 2, ',', '') ?></td>
+                                <td><font size="-2"><?= $item->forma_pagamento_3 ?></td>
+                                <td><font size="-2"><?= number_format($item->valor3, 2, ',', '') ?></td>
+                                <td><font size="-2"><?= $item->forma_pagamento_4 ?></td>
+                                <td><font size="-2"><?= number_format($item->valor4, 2, ',', '') ?></td>
+                            </tr>
+
+                        <? }
                         ?>
-                        <b>Pendencias de Faturamento / Finalizar exame</b>
-                    <? } ?>
-                </form>
-            </div>
-            <div id="resumoGeral" class="resumo">
-                <center>
-                    <h3>RESUMO GERAL</h3>
+                    </tbody>
+                </table> 
+            <? } ?>  
+        
+            <table>
+                <tr>
+                    <td>
+                        <div class="fecharCaixa">
+                            <span class="button-resumoGeral">Resumo Geral</span>
+                            <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/guia/fecharcaixapersonalizado" method="post">
+                                <?
+                                foreach ($formapagamento as $value) {
+                                    if ($value->forma_pagamento_id == 1000){
+                                        continue; //Caso seja forma de pagamento CREDITO não será processado no fechar caixa
+                                    }
+
+                                    /*
+                                     * Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
+                                     * tais como '-', ' ', entre outros ao se fazer isso:
+                                     * name="qtde['<? $value->nome; \?\>']
+                                     */
+                                    $nomeForma = str_replace(array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '), '', $value->nome);
+                                    $nomeForma = strtolower($nomeForma);
+                                    ?>
+
+                                    <input type="hidden" class="texto3" name="qtdecredito[<?= $nomeForma; ?>]" value="<?= number_format($datacredito[$value->nome], 2, ',', '.'); ?>"/>
+                                    <input type="hidden" class="texto3" name="qtde[<?= $nomeForma; ?>]" value="<?= number_format($caixaOperador[$value->nome], 2, ',', '.'); ?>"/>
+                                <? }
+                                if (count($empresa) > 0) { ?>
+                                    <input type="hidden" class="texto3" name="empresa" value="<?= $empresa[0]->empresa_id; ?>"/>
+                                <? } ?>
+                                <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
+                                <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
+                                <input type="hidden" class="texto3" name="agenda_exames_id" value="<?= $agenda_exames_id; ?>"/>
+
+                                <? if ($faturado == 't' && $exame == 't') { 
+                                    if (count($operador) == 0 && $financeiro == 'f') {
+                                        if($paciente == '' || $paciente == 'TODOS') {?>
+                                            <button type="submit" name="btnEnviar">Fechar Caixa</button>
+                                    <?  } else { ?>
+                                            <b>Não é possível fechar caixa por paciente</b>
+                                        <? }
+                                    } elseif (count($operador) > 0 && $financeiro == 'f') {
+                                        ?>
+                                        <b>Não é possível fechar caixa por operador</b>
+                                        <?
+                                    } else {
+                                        ?>
+                                        <b>Caixa Fechado</b>
+                                        <?
+                                    }
+                                } else {
+                                    ?>
+                                    <b>Pendencias de Faturamento / Finalizar exame</b>
+                                <? } ?>
+                            </form>
+                        </div>
+
+                    </td>
+                    <td>
+                        <div id="resumoGeral" class="resumo">
+                            <center>
+                                <h3>RESUMO GERAL</h3>
+                                <table border="1">
+                                    <thead>
+                                        <tr>
+                                            <th width="270px;" colspan="3"><font size="2">Forma Pagamento</font></th>
+                                            <th width="50px;" style="text-align: right"><font size="2">Desconto</font></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?
+                                    $resumoDesconto = 0;
+                                    $resumoDinheiro = 0;
+                                    $resumoTotalCaixa = 0;
+                                    $resumoQtdeCaixa = 0;
+                                    $desconto = 0;
+                                    $geral = 0;
+
+                                    foreach ($formapagamento as $fpCaixa) {
+                                        if (@$caixaOperador[$fpCaixa->nome] == 0 || !isset($caixaOperador[$fpCaixa->nome])) {
+                                            continue;
+                                        }
+
+                                        if ($fpCaixa->cartao != 'f') {
+                                            $resumoTotalCaixa = $resumoTotalCaixa + $caixaOperador[$fpCaixa->nome];
+                                            $resumoQtdeCaixa = $resumoQtdeCaixa + $caixaOperador[$fpCaixa->nome];
+                                        } else {
+                                            $resumoDinheiro = $resumoDinheiro + $caixaOperador[$fpCaixa->nome];
+                                        }
+                                        $desconto += (float) $caixaDesconto[$fpCaixa->nome];
+                                        ?>
+                                        <tr>
+                                            <td ><font size="-1"><?= $fpCaixa->nome ?></td>
+                                            <td style="text-align: right"><font size="-1"><?= $caixaNumero[$fpCaixa->nome]; ?></td>
+                                            <td style="text-align: right"><font size="-1"><?= number_format($caixaOperador[$fpCaixa->nome], 2, ',', '.'); ?></td>
+                                            <td style="text-align: right"><font size="-1"><?= number_format($descontoResumo[$fpCaixa->nome], 2, ',', '.'); ?></td>
+                                        </tr>   
+                                    <?  } ?>
+                                        <tr>
+                                            <td colspan="4" align="center" style="background-color: #ddd"><font size="-1">TOTAL</td></tr>
+                                        <tr>
+                                            <td colspan="3"><font size="-1">NÚMERO DE PROCEDIMENTOS</td>
+                                            <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= $totalProcedimentos; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"><font size="-1">PENDENTES</td>
+                                            <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($valPendentes, 2, ',', '.'); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"><font size="-1">TOTAL CARTAO</td>
+                                            <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($resumoTotalCaixa, 2, ',', '.'); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"><font size="-1">TOTAL DESCONTO</td>
+                                            <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($desconto, 2, ',', '.'); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="140px;" colspan="3"><font size="-1">TOTAL GERAL</td>
+                                            <? $resumoTotal = $resumoTotalCaixa + $resumoDinheiro + $valPendentes; ?>
+                                            <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($resumoTotal, 2, ',', '.'); ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </center>
+                        </div> 
+                    </td>
+                    <td>
+                        <? if (count($creditos) > 0) {
+                            $i = 0; ?>
+                            <div style="display: inline-block;margin-left: 10px;">
+                                <table border="1">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO CRÉDITO</center></td>
+                                    <!--<td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>-->
+                                    </tr>
+                                    <?
+                                    foreach ($formapagamento as $value) {
+                                        
+                                        if ($numerocredito[$value->nome] > 0) {
+                                            $i += $numerocredito[$value->nome];
+                                            ?>
+                                            <tr>
+                                                <td width="140px;"><font size="-1"><?= $value->nome ?></td>
+                                                <td width="140px;"><font size="-1"><?= $numerocredito[$value->nome]; ?></td>
+                                                <td width="200px;"><font size="-1"><?= number_format($datacredito[$value->nome], 2, ',', '.'); ?></td>
+                                                
+                                            </tr>    
+
+
+                                            <?
+                                        }
+                                    }
+                                    
+                                    $TOTALCARTAO = 0;
+                                    $QTDECARTAO = 0;
+                                    foreach ($formapagamento as $value) {
+                                        /* A linha abaixo era a condiçao do IF antigamente. Agora tudo que nao for cartao sera DINHEIRO */
+                                        //                ($value->nome != 'DINHEIRO' && $value->nome != 'DEBITO' && $value->nome != 'CHEQUE') 
+                                        if ($value->cartao != 'f') {
+                                            $TOTALCARTAO = $TOTALCARTAO + $datacredito[$value->nome];
+                                            $QTDECARTAO = $QTDECARTAO + $numerocredito[$value->nome];
+                                        }
+                                    }
+                                    ?>
+                                    <tr>
+                                        <td width="140px;"><font size="-1">TOTAL CARTAO</td>
+                                        <td width="140px;"><font size="-1">Nr. Cart&otilde;es: <?= $QTDECARTAO; ?></td>
+                                        <td width="200px;" colspan="2"><font size="-1">Total Cartao: <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="140px;"><font size="-1">TOTAL GERAL</td>
+                                        <td width="140px;"><font size="-1">Nr. Exa: <?= $i; ?></td>
+                                        <td width="200px;" colspan="2"><font size="-1">Total Geral: <?= number_format($valorcreditototal, 2, ',', '.'); ?></td>
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        <? } ?>
+                    </td>
+                </tr>
+            </table>
+        
+            <? if (count($caixa)) { ?>
+                <div>
                     <table border="1">
                         <thead>
                             <tr>
-                                <th width="270px;" colspan="3"><font size="2">Forma Pagamento</font></th>
-                                <th width="50px;" style="text-align: right"><font size="2">Desconto</font></th>
+                                <th colspan="2" bgcolor="#C0C0C0">Sangria</th>
+                            </tr>
+                            <tr>
+                                <th bgcolor="#C0C0C0">Caixa</th>
+                                <th bgcolor="#C0C0C0">Valor</th>
                             </tr>
                         </thead>
                         <tbody>
-                        <?
-                        $resumoDesconto = 0;
-                        $resumoDinheiro = 0;
-                        $resumoTotalCaixa = 0;
-                        $resumoQtdeCaixa = 0;
-                        $desconto = 0;
-                        $geral = 0;
-
-                        foreach ($formapagamento as $fpCaixa) {
-                            if (@$caixaOperador[$fpCaixa->nome] == 0 || !isset($caixaOperador[$fpCaixa->nome])) {
-                                continue;
-                            }
-
-                            if ($fpCaixa->cartao != 'f') {
-                                $resumoTotalCaixa = $resumoTotalCaixa + $caixaOperador[$fpCaixa->nome];
-                                $resumoQtdeCaixa = $resumoQtdeCaixa + $caixaOperador[$fpCaixa->nome];
-                            } else {
-                                $resumoDinheiro = $resumoDinheiro + $caixaOperador[$fpCaixa->nome];
-                            }
-                            $desconto += (float) $caixaDesconto[$fpCaixa->nome];
-                            ?>
+                            <?
+                            $valorsangria = 0;
+                            
+                            foreach ($caixa as $item) :
+                                $valorsangria = $valorsangria + $item->valor;
+                                ?>
+                                <tr>
+                                    <td><?= utf8_decode($item->operador_caixa); ?></td>
+                                    <td><?= number_format($item->valor, 2, ',', '.'); ?></td>
+                                </tr>
+                            <? endforeach; ?>
                             <tr>
-                                <td ><font size="-1"><?= $fpCaixa->nome ?></td>
-                                <td style="text-align: right"><font size="-1"><?= $caixaNumero[$fpCaixa->nome]; ?></td>
-                                <td style="text-align: right"><font size="-1"><?= number_format($caixaOperador[$fpCaixa->nome], 2, ',', '.'); ?></td>
-                                <td style="text-align: right"><font size="-1"><?= number_format($descontoResumo[$fpCaixa->nome], 2, ',', '.'); ?></td>
-                            </tr>   
-                        <?  } ?>
-                            <tr>
-                                <td colspan="4" align="center" style="background-color: #ddd"><font size="-1">TOTAL</td></tr>
-                            <tr>
-                                <td colspan="3"><font size="-1">NÚMERO DE PROCEDIMENTOS</td>
-                                <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= $totalProcedimentos; ?></td>
+                                <th colspan="2" bgcolor="#C0C0C0">Total de Sangria</th>
                             </tr>
                             <tr>
-                                <td colspan="3"><font size="-1">PENDENTES</td>
-                                <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($valPendentes, 2, ',', '.'); ?></td>
+                                <td style="font-weight: bold">Total</td>
+                                <td><?= number_format($valorsangria, 2, ',', '.'); ?></td>
                             </tr>
                             <tr>
-                                <td colspan="3"><font size="-1">TOTAL CARTAO</td>
-                                <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($resumoTotalCaixa, 2, ',', '.'); ?></td>
+                                <th colspan="2" bgcolor="#C0C0C0">Total Apurado Menos Sangria</th>
                             </tr>
                             <tr>
-                                <td colspan="3"><font size="-1">TOTAL DESCONTO</td>
-                                <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($desconto, 2, ',', '.'); ?></td>
-                            </tr>
-                            <tr>
-                                <td width="140px;" colspan="3"><font size="-1">TOTAL GERAL</td>
-                                <? $resumoTotal = $resumoTotalCaixa + $resumoDinheiro + $valPendentes; ?>
-                                <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($resumoTotal, 2, ',', '.'); ?></td>
+                                <td style="font-weight: bold">Total</td>
+                                <td><?= number_format($resumoTotal - $valorsangria, 2, ',', '.'); ?></td>
                             </tr>
                         </tbody>
                     </table>
-                </center>
-            </div>   
+
+                </div>
+            <? } ?>
     <?
-        } else {
-    ?>
+        } 
+        else {
+        ?>
             <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
         <? }
         ?>

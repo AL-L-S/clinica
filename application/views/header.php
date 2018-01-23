@@ -824,7 +824,6 @@ function debug($object) {
                                             <!-- O rel. de caixa faturamento não foi adicionado no padrão do personalizado pq ele possui as mesmas informações do rel. caixa personalizado-->
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixapersonalizado">Relatorio Caixa</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixacartaopersonalizado">Relatorio Caixa Cartao</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixacartaoconsolidado">Relatorio Consolidado Cartao</a></span></ul>
                                         <? } ?>
                                             
                                         <? if ($this->session->userdata('recomendacao_configuravel') != "t") { ?>

@@ -202,7 +202,7 @@ class Agenda extends BaseController {
             $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/agenda");
+        redirect(base_url() . "ambulatorio/agenda/listarhorarioagenda/" . $agenda_id);
     }
 
     function gravarmedicogeral() {

@@ -2054,6 +2054,7 @@ class exametemp_model extends Model {
                             oi.valor_total,
                             oi.orcamento_id,
                             oi.paciente_id,
+                            (oi.valor_ajustado * oi.quantidade) as valor_total_ajustado,
                             pc.convenio_id,
                             p.nome as paciente,
                             c.nome as convenio,
