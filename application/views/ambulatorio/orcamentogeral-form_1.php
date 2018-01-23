@@ -19,13 +19,13 @@
                 <div>
                     <label>Dt de nascimento</label>
 
-                    <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date"  maxlength="10" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>"/>
+                    <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date"  maxlength="10" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" required=""/>
                 </div>
                 <div>
                     <label>Telefone</label>
 
 
-                    <input type="text" id="txtTelefone" class="texto02" name="txtTelefone" value="<?= @$obj->_telefone; ?>"/>
+                    <input type="text" id="txtTelefone" class="texto02" name="txtTelefone" value="<?= @$obj->_telefone; ?>" required=""/>
                 </div>
                 <div>
                     <label>Celular</label>
@@ -46,7 +46,7 @@
                             <th class="tabela_header">F. de Pagamento</th>
                             <th class="tabela_header">Qtde*</th>
                             <th class="tabela_header">V. Unit</th>
-                            <th class="tabela_header">V. Unit Ajuste</th>
+                            <th class="tabela_header">V. Cartão</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,13 +122,14 @@
             <fieldset>
                 <?
                 $total = 0;
+                $totalCartao = 0;
                 $orcamento = 0;
                 if (count($exames) > 0) {
                     ?>
                     <table id="table_agente_toxico" border="0">
                         <thead>
                             <tr>
-                                <th colspan="10"><span style="font-size: 12pt; font-weight: bold;">Operador Responsavel: <?= @$responsavel[0]->nome ?></span></th>
+                                <th colspan="10"><span style="font-size: 12pt; font-weight: bold;">Operador Responsável: <?= @$responsavel[0]->nome ?></span></th>
                             </tr>
                             <tr>
                                 <th class="tabela_header">Convenio</th>
@@ -137,7 +138,7 @@
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Descrição</th>
                                 <th class="tabela_header">V. Total</th>
-                                <th class="tabela_header">V. Total Ajustado</th>
+                                <th class="tabela_header">V. Cartão</th>
                                 <th class="tabela_header"></th>
                             </tr>
                         </thead>
@@ -146,6 +147,8 @@
                         foreach ($exames as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             $total = $total + $item->valor_total;
+                            $totalCartao = $totalCartao + $item->valor_total_ajustado;
+                            
                             $orcamento = $item->orcamento_id;
                             ?>
                             <tbody>
@@ -170,8 +173,11 @@
                     ?>
                     <tfoot>
                         <tr>
-                            <th class="tabela_footer" colspan="2">
+                            <th class="tabela_footer" colspan="">
                                 Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
+                            </th>
+                            <th class="tabela_footer" colspan="2">
+                                Valor Total Cartao: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
                             </th>
                             <th colspan="" align="center">
                     <center>
@@ -433,6 +439,9 @@
                                                         $('.carregando').hide();
                                                     });
                                                 }
+                                                else{
+                                                    $("#ajustevalor1").val($("#valor1").val());
+                                                }
                                                 
                                                 $('.carregando').hide();
                                             });
@@ -479,7 +488,7 @@
                                             });
                                         }
                                         else{
-                                            $("#ajustevalor1").val('');
+                                            $("#ajustevalor1").val($("#valor1").val());
                                         }
                                     });
                                 });

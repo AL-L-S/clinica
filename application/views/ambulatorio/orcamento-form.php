@@ -69,7 +69,7 @@
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">V. Unit</th>
-                                <th class="tabela_header">V. Unit Ajustado</th>
+                                <th class="tabela_header">V. Cartão</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
                             </tr>
                         </thead>
@@ -145,13 +145,14 @@
             <fieldset>
                 <?
                 $total = 0;
+                $totalCartao = 0;
                 $orcamento = 0;
                 if (count($exames) > 0) {
                     ?>
                     <table id="table_agente_toxico" border="0">
                         <thead>
                             <tr>
-                                <th colspan="10"><span style="font-size: 12pt; font-weight: bold;">Operador Responsavel: <?= @$responsavel[0]->nome ?></span></th>
+                                <th colspan="10"><span style="font-size: 12pt; font-weight: bold;">Operador Responsável: <?= @$responsavel[0]->nome ?></span></th>
                             </tr>
                             <tr>
                                 <th class="tabela_header">Convenio</th>
@@ -160,7 +161,7 @@
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Descriçao</th>
                                 <th class="tabela_header">V. Total</th>
-                                <th class="tabela_header">V. Total Ajustado</th>
+                                <th class="tabela_header">V. Cartão</th>
                                 <th class="tabela_header"></th>
                             </tr>
                         </thead>
@@ -169,6 +170,7 @@
                         foreach ($exames as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             $total = $total + $item->valor_total;
+                            $totalCartao = $totalCartao + $item->valor_total_ajustado;
                             $orcamento = $item->orcamento_id;
                             ?>
                             <tbody>
@@ -193,8 +195,11 @@
                     ?>
                     <tfoot>
                         <tr>
-                            <th class="tabela_footer" colspan="3">
+                            <th class="tabela_footer" colspan="">
                                 Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
+                            </th>
+                            <th class="tabela_footer" colspan="2">
+                                Valor Total Cartao: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
                             </th>
                             <th colspan="1" align="center"><center><div class="bt_linkf">
                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
@@ -386,6 +391,9 @@
                                                         $('.carregando').hide();
                                                     });
                                                 }
+                                                else{
+                                                    $("#ajustevalor1").val($("#valor1").val());
+                                                }
                                                 $('.carregando').hide();
                                             });
                                         } else {
@@ -410,7 +418,7 @@
                                             });
                                         }
                                         else{
-                                            $("#ajustevalor1").val('');
+                                            $("#ajustevalor1").val($("#valor1").val());
                                         }
                                     });
                                 });

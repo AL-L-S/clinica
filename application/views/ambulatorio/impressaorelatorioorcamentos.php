@@ -17,6 +17,7 @@
                 <th class="tabela_header" width="150px;">Telefone</th>
                 <th class="tabela_header" width="150px;">Data</th>
                 <th class="tabela_header" width="150px;">Valor (R$)</th>
+                <th class="tabela_header" width="150px;">Valor Cartão(R$)</th>
                 <th class="tabela_header" width="300px;">Empresa</th>
                 <th class="tabela_header" width="150px;">Ação</th>
             </tr>
@@ -41,6 +42,11 @@
                         <td style="text-align: right">
                             <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}"; ?>/', '_blank', 'width=800,height=800');">
                                     <?= number_format($item->valor, 2, ',', "") ?>
+                                </a>
+                        </td>
+                        <td style="text-align: right">
+                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}"; ?>/', '_blank', 'width=800,height=800');">
+                                    <?= number_format($item->valorcartao, 2, ',', "") ?>
                                 </a>
                         </td>
                         <td><b><?= $item->empresa_nome; ?></b></td>

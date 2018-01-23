@@ -234,7 +234,7 @@ class Procedimentoplano extends BaseController {
                 $ambulatorio_orcamento = $resultadoorcamento['ambulatorio_orcamento_id'];
             }
 
-            $this->guia->gravarorcamentoitemrecepcao($ambulatorio_orcamento);
+            $this->guia->gravarorcamentoitemrecepcao($ambulatorio_orcamento, $paciente_id);
 
             redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/$paciente_id/$ambulatorio_orcamento");
         }

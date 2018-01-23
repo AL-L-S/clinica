@@ -1,8 +1,10 @@
-
+<meta charset="utf8">
+<style>
+    .negrito{
+        font-weight: bold;
+    }
+</style>
 <div class="content ficha_ceatox">
-
-
-
     <table>
         <tbody>
             <tr>
@@ -27,19 +29,21 @@
     <hr>
     <table cellpadding="5">
         <tr>
-            <td >Procedimento</td>
-            <td >Qtde</td>
-            <td >V. Unit</td>
-            <td >Grupo</td>
-            <td >Convenio</td>
-            <td >Forma de Pagamento</td>
-            <td >V. Total</td>
-            <td >V. Total Ajustado</td>
+            <td class="negrito">Procedimento</td>
+            <td class="negrito">Qtde</td>
+            <td class="negrito">V. Unit</td>
+            <td class="negrito">Grupo</td>
+            <td class="negrito">Convenio</td>
+            <td class="negrito">Forma de Pagamento</td>
+            <td class="negrito">Valor</td>
+            <td class="negrito">Valor Cartão</td>
         </tr>
         <?
         $total = 0;
+        $totalCartao = 0;
         foreach ($exames as $item) :
             $total = $total + $item->valor_total;
+            $totalCartao = $totalCartao + $item->valor_total_ajustado;
             ?>
             <tr>
 
@@ -49,24 +53,22 @@
                 <td width="10%;"><?= $item->grupo ?></td>
                 <td width="10%;"><?= $item->convenio ?></td>
                 <td width="10%;"><?= $item->forma_pagamento ?></td>
-                <td width="10%;"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
-                <td width="10%;"><?= number_format($item->valor_total_ajustado, 2, ',', '.') ?></td>
+                <td width="15%;"><?= number_format($item->valor_total, 2, ',', '.') ?></td>
+                <td width="20%;"><?= number_format($item->valor_total_ajustado, 2, ',', '.') ?></td>
             </tr>
 
             <?
         endforeach;
         ?>
             <tr>
-                <td>&nbsp;</td>
+                <td colspan="6"></td>
+                <td colspan="">
+                    <span class="negrito">Total:</span> <?= number_format($total, 2, ',', '.') ?>
+                </td>
+                <td colspan="">
+                    <span class="negrito">Total Cartão:</span> <?= number_format($totalCartao, 2, ',', '.') ?>
+                </td>
             </tr>
-        <tr>
-            <td width="25%;"><b>Total Geral</b></td>
-            <td ><b></b></td>
-            <td ><b></b></td>
-            <td ><b></b></td>
-            <td width="25%;"><b><?= number_format($total, 2, ',', '.') ?></b></td>
-        </tr>
-        </tbody>
     </table>
 
 

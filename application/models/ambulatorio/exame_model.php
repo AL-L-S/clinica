@@ -2737,7 +2737,7 @@ class exame_model extends Model {
     function gerarelatorioorcamentos($args = array()) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select(' ao.ambulatorio_orcamento_id,
+        $this->db->select(" ao.ambulatorio_orcamento_id,
                             p.nome as paciente,
                             p.celular,
                             p.telefone,
@@ -2747,7 +2747,14 @@ class exame_model extends Model {
                                 SELECT SUM(valor_total)
                                 FROM ponto.tb_ambulatorio_orcamento_item
                                 WHERE ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id
-                            ) as valor');
+                                AND ativo = 't'
+                            ) as valor,
+                            (
+                                SELECT SUM(valor_ajustado * quantidade)
+                                FROM ponto.tb_ambulatorio_orcamento_item
+                                WHERE ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id
+                                AND ativo = 't'
+                            ) as valorcartao");
         $this->db->from('tb_ambulatorio_orcamento ao');
         $this->db->join('tb_paciente p', 'p.paciente_id = ao.paciente_id', 'left');
         $this->db->join('tb_empresa e', 'e.empresa_id = ao.empresa_id', 'left');
