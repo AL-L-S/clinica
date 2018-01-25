@@ -118,25 +118,27 @@
                         <dd><input type="text" name="autorizacao1" id="autorizacao" class="size1" value="<? echo $selecionado[0]->autorizacao ?>"/></dd>
 
                         <dt>Data de Entrega</dt>
-                        <dd><input type="text" name="data_entrega" id="data_entrega" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data_entrega)); ?>"/></dd>
+                        <dd><input type="text" name="data_entrega" id="data_entrega" class="size1" value="<?= ($selecionado[0]->data_entrega != '') ? date("d/m/Y", strtotime($selecionado[0]->data_entrega)) : ''; ?>"/></dd>
+                        
                         <?
                         $operador_id = $this->session->userdata('operador_id');
                         $perfil_id = $this->session->userdata('perfil_id');
 
                         if ($operador_id == 1) {
                             ?>
-
-
-
                             <dt>Data de Faturamento</dt>
-                            <dd><input type="text" name="data_faturar" id="data_faturar" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data_faturar)); ?>"/></dd>
+                            <dd><input type="text" name="data_faturar" id="data_faturar" class="size1" value="<?= ($selecionado[0]->data_faturar != '') ? date("d/m/Y", strtotime($selecionado[0]->data_faturar)) : ''; ?>"/></dd>
+                            
                             <dt>Data de Agendamento</dt>
                             <dd><input type="text" name="data" id="data" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data)); ?>"/></dd>
+                            
                             <dt>Data de Atendimento</dt>
-                            <dd><input type="text" name="data_laudo" id="data_laudo" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data_laudo)); ?>" readonly=""/></dd>
-                            <dt>Data de Produção</dt>
-                            <dd><input type="text" name="data_producao" id="data_producao" class="size1" value="<? echo date("d/m/Y", strtotime($selecionado[0]->data_producao)); ?>" readonly=""/></dd>
-                            <? } ?>
+                            <dd><input type="text" name="data_laudo" id="data_laudo" class="size1" value="<?= ($selecionado[0]->data_laudo != '') ? date("d/m/Y", strtotime($selecionado[0]->data_laudo)) : ''; ?>"/></dd>
+                            
+                            <dt>Data de Recebimento</dt>
+                            <dd><input type="text" name="data_producao" id="data_producao" class="size1" value="<?= ($selecionado[0]->data_producao != '') ? date("d/m/Y", strtotime($selecionado[0]->data_producao)) : ''; ?>"/></dd>
+                            
+                        <? } ?>
                     </dl>
                     <hr/>
                     <button type="submit" name="btnEnviar">Enviar</button>

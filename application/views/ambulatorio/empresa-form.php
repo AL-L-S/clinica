@@ -507,10 +507,10 @@
                             <input type="checkbox" id="desativar_personalizacao_impressao" name="desativar_personalizacao_impressao" <? if (@$obj->_desativar_personalizacao_impressao == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Ativando essa flag, quando encaminhar um paciente será disparado um email para o médico que recebe (Padrão Citycor).">Encaminhamento Email Citycor</label>
+                            <label title="Ativando essa flag, quando encaminhar um paciente será disparado um email para o médico que recebe (Padrão Citycor).">Encaminhamento Email</label>
                         </dt>
                         <dd>
-                            <input type="checkbox" id="encaminhamento_citycor" name="encaminhamento_citycor" <? if (@$obj->_encaminhamento_citycor == 't') echo "checked"; ?>/> 
+                            <input type="checkbox" id="encaminhamento_email" name="encaminhamento_email" <? if (@$obj->_encaminhamento_email == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
                             <label title="Ativando essa flag, quando só tiver um modelo de receituario cadastrado ele será carregado automaticamente.">Carregar Modelo Receiturario Automaticamente</label>
@@ -523,6 +523,12 @@
                         </dt>
                         <dd>
                             <input type="checkbox" id="caixa_personalizado" name="caixa_personalizado" <? if (@$obj->_caixa_personalizado == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa flag, o sistema não irá mais barrar o lançamento de procedimentos do tipo Retorno.">Desabilitar trava no Retorno</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="desabilitar_trava_retorno" name="desabilitar_trava_retorno" <? if (@$obj->_desabilitar_trava_retorno == 't') echo "checked"; ?>/> 
                         </dd>
                     <? } ?>
                 </dl>    

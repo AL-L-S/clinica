@@ -12,6 +12,7 @@
                         <label>Nome</label>                      
                         <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
                         <input type="hiden" id="txtpaciente_id" name="txtpaciente_id"  value="<?= $paciente_id; ?>"/>
+                        <input type="hiden" id="medico_agenda" name="medico_agenda"  value="<?= @$exame[0]->medico_consulta_id; ?>"/>
                     </div>
                     <div>
                         <label>Sexo</label>

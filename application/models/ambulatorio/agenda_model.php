@@ -131,9 +131,12 @@ class agenda_model extends Model {
                            h.qtdeconsulta,
                            h.empresa_id,
                            h.observacoes,
-                           h.horarioagenda_editada_id');
+                           h.horarioagenda_editada_id,
+                           h.sala_id,
+                           e.nome as sala');
         $this->db->from('tb_horarioagenda_editada h');
         $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->join('tb_exame_sala s', 's.exame_sala_id = h.sala_id', 'left');
         $this->db->where("h.agenda_id", $agenda_id);
         $this->db->where("h.ativo", 't');
         $this->db->where("h.consolidado", 'f');
@@ -183,9 +186,12 @@ class agenda_model extends Model {
                            h.qtdeconsulta,
                            h.empresa_id,
                            h.observacoes,
-                           h.horarioagenda_id');
+                           h.horarioagenda_id,
+                           h.sala_id,
+                           s.nome as sala');
         $this->db->from('tb_horarioagenda h');
         $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->join('tb_exame_sala s', 's.exame_sala_id = h.sala_id', 'left');
         $this->db->where("h.agenda_id", $agenda_id);
         $this->db->where("h.horarioagenda_id IN (   
                                 SELECT horario_id 
@@ -197,6 +203,18 @@ class agenda_model extends Model {
         $this->db->orderby('dia');
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function gravarsalahorarioagenda() {
+        try {
+            $sala_id = $_POST['sala_id'];
+            $horario_id = $_POST['horario_id'];
+            $this->db->set('sala_id', $sala_id);
+            $this->db->where('horarioagenda_id', $horario_id);
+            $this->db->update('tb_horarioagenda');
+        } catch (Exception $exc) {
+            return -1;
+        }
     }
 
     function gravar() {
@@ -2361,6 +2379,30 @@ class agenda_model extends Model {
         }
     }
 
+    function listarhorarioagendacriado($agenda_id = null) {
+        $this->db->select('e.nome as empresa,
+                           h.dia,
+                           h.horaentrada1,
+                           h.horasaida1,
+                           h.intervaloinicio,
+                           h.intervalofim,
+                           h.tempoconsulta,
+                           h.agenda_id,
+                           h.qtdeconsulta,
+                           h.empresa_id,
+                           h.observacoes,
+                           h.horarioagenda_id,
+                           s.nome as sala,
+                           h.sala_id');
+        $this->db->from('tb_horarioagenda h');
+        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->join('tb_exame_sala s', 's.exame_sala_id = h.sala_id', 'left');
+        $this->db->where('agenda_id', $agenda_id);
+        $this->db->orderby('dia');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarhorarioagenda($agenda_id = null) {
         $this->db->select('e.nome as empresa,
                            h.dia,
@@ -2373,9 +2415,12 @@ class agenda_model extends Model {
                            h.qtdeconsulta,
                            h.empresa_id,
                            h.observacoes,
-                           h.horarioagenda_id');
+                           h.horarioagenda_id,
+                           s.nome as sala,
+                           h.sala_id');
         $this->db->from('tb_horarioagenda h');
         $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->join('tb_exame_sala s', 's.exame_sala_id = h.sala_id', 'left');
         $this->db->where('agenda_id', $agenda_id);
         $this->db->orderby('dia');
         $return = $this->db->get();
@@ -2441,10 +2486,13 @@ class agenda_model extends Model {
                            h.qtdeconsulta,
                            h.empresa_id,
                            h.observacoes,
-                           h.horarioagenda_id');
+                           h.horarioagenda_id,
+                           h.sala_id');
         $this->db->from('tb_horarioagenda h');
         $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->join('tb_exame_sala s', 's.exame_sala_id = h.sala_id', 'left');
         $this->db->where('agenda_id', $agenda_id);
+        $this->db->where('h.sala_id IS NOT NULL');
 
         if (count($return2) > 0) {
 
@@ -2471,7 +2519,6 @@ class agenda_model extends Model {
         $return2 = $this->db->get()->result();
         if (count($return2) > 0) {
             $horario_id = '';
-//            $horario_id = $return2
             foreach ($return2 as $item) {
                 if ($horario_id == '') {
                     $horario_id = $horario_id . "$item->horario_id";
@@ -2480,7 +2527,6 @@ class agenda_model extends Model {
                 }
             }
         }
-//        var_dump(count($return2)); die;
 
 
         $this->db->select('e.nome as empresa,
@@ -2494,13 +2540,15 @@ class agenda_model extends Model {
                            h.qtdeconsulta,
                            h.empresa_id,
                            h.observacoes,
-                           h.horarioagenda_id');
+                           h.horarioagenda_id,
+                           h.sala_id');
         $this->db->from('tb_horarioagenda h');
         $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->join('tb_exame_sala s', 's.exame_sala_id = h.sala_id', 'left');
         $this->db->where('agenda_id', $agenda_id);
+        $this->db->where('h.sala_id IS NOT NULL');
 
         if (count($return2) > 0) {
-
             $this->db->where("horarioagenda_id NOT IN ($horario_id)");
         }
 
@@ -2523,9 +2571,11 @@ class agenda_model extends Model {
                            h.qtdeconsulta,
                            h.empresa_id,
                            h.observacoes,
-                           h.horarioagenda_editada_id');
+                           h.horarioagenda_editada_id,
+                           h.sala_id');
         $this->db->from('tb_horarioagenda_editada h');
         $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->join('tb_exame_sala s', 's.exame_sala_id = h.sala_id', 'left');
         $this->db->where("h.agenda_id", $_GET['agenda_id']);
         $this->db->where("h.ativo", 't');
         $this->db->where("h.consolidado", 'f');
@@ -2725,6 +2775,7 @@ class agenda_model extends Model {
                 $tempoconsulta = $_POST['txtTempoconsulta'][$i];
                 $qtdeconsulta = $_POST['txtQtdeconsulta'][$i];
                 $empresa_id = $_POST['empresa'][$i];
+                $sala_id = $_POST['sala_id'][$i];
 
                 if ($horaentrada1 != '') {
 
@@ -2742,6 +2793,7 @@ class agenda_model extends Model {
                         $this->db->set('qtdeconsulta', $qtdeconsulta);
                     }
                     $this->db->set('empresa_id', $empresa_id);
+                    $this->db->set('sala_id', $sala_id);
                     $this->db->set('medico_id', $_POST['medico_id']);
                     $this->db->set('nome', $_POST['nome_agenda']);
                     $this->db->set('data_cadastro', $horario);
@@ -2764,9 +2816,9 @@ class agenda_model extends Model {
         try {
             $agenda_id = $_POST['txtagendaID'];
             $i = 0;
+            
             /* inicia o mapeamento no banco */
-//            echo '<pre>';
-//            var_dump($agenda_id); die;
+            
             foreach ($_POST['txtDia'] as $dia) {
                 $i++;
                 $horaentrada1 = $_POST['txthoraEntrada'][$i];
@@ -2776,37 +2828,80 @@ class agenda_model extends Model {
                 $tempoconsulta = $_POST['txtTempoconsulta'][$i];
                 $qtdeconsulta = $_POST['txtQtdeconsulta'][$i];
                 $empresa_id = $_POST['empresa'][$i];
-
-//                var_dump($dia, $horaentrada1, $horasaida1, $intervaloinicio, $intervalofim, $tempoconsulta);
+                $sala_id = $_POST['sala'][$i];
 
                 if ($horaentrada1 != '') {
-
-
-                    $this->db->set('agenda_id', $agenda_id);
-                    $this->db->set('dia', $dia);
-                    $this->db->set('horaentrada1', $horaentrada1);
-                    $this->db->set('horasaida1', $horasaida1);
-                    $this->db->set('intervaloinicio', $intervaloinicio);
-                    $this->db->set('intervalofim', $intervalofim);
-                    
-                    if($tempoconsulta != ""){
-                        $this->db->set('tempoconsulta', $tempoconsulta);
-                    }
-                    if($qtdeconsulta != ""){
-                        $this->db->set('qtdeconsulta', $qtdeconsulta);
+                    if ($horaentrada1 >= $horasaida1 ){
+                        return -4;
                     }
                     
-                    $this->db->set('empresa_id', $empresa_id);
-                    $this->db->set('observacoes', $_POST['obs']);
+                    $this->db->select('horaentrada1, horasaida1');
+                    $this->db->from('tb_horarioagenda');
+                    $this->db->where('agenda_id', $agenda_id);
+                    $this->db->where('dia', $dia);
+                    $query = $this->db->get()->result();
+                    
+                    if( count($query) > 0 ) { // Caso ja tenha algum horario nesse dia
+                        if ( count($query) == 1 ) { // Caso tenha apenas um horario
+                            // A condição abaixo verifica se os horarios colidem
+                            if (($horaentrada1 > $query[0]->horaentrada1 && $horaentrada1 >= $query[0]->horasaida1) || ($horasaida1 < $query[0]->horaentrada1 )){
+                                
+                                $this->db->set('agenda_id', $agenda_id);
+                                $this->db->set('dia', $dia);
+                                $this->db->set('horaentrada1', $horaentrada1);
+                                $this->db->set('horasaida1', $horasaida1);
+                                $this->db->set('intervaloinicio', $intervaloinicio);
+                                $this->db->set('intervalofim', $intervalofim);
 
-                    $this->db->insert('tb_horarioagenda');
+                                if($tempoconsulta != ""){
+                                    $this->db->set('tempoconsulta', $tempoconsulta);
+                                }
+                                if($qtdeconsulta != ""){
+                                    $this->db->set('qtdeconsulta', $qtdeconsulta);
+                                }
+
+                                $this->db->set('empresa_id', $empresa_id);
+                                $this->db->set('sala_id', $sala_id);
+                                $this->db->set('observacoes', $_POST['obs']);
+
+                                $this->db->insert('tb_horarioagenda');
+                            }
+                            else {
+                                return -2;
+                            }
+                        }
+                        else {
+                            return -3;
+                        }
+                    } else {
+                    
+                        $this->db->set('agenda_id', $agenda_id);
+                        $this->db->set('dia', $dia);
+                        $this->db->set('horaentrada1', $horaentrada1);
+                        $this->db->set('horasaida1', $horasaida1);
+                        $this->db->set('intervaloinicio', $intervaloinicio);
+                        $this->db->set('intervalofim', $intervalofim);
+
+                        if($tempoconsulta != ""){
+                            $this->db->set('tempoconsulta', $tempoconsulta);
+                        }
+                        if($qtdeconsulta != ""){
+                            $this->db->set('qtdeconsulta', $qtdeconsulta);
+                        }
+
+                        $this->db->set('empresa_id', $empresa_id);
+                        $this->db->set('sala_id', $sala_id);
+                        $this->db->set('observacoes', $_POST['obs']);
+
+                        $this->db->insert('tb_horarioagenda');
+                    }
                 }
             }
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
-                return true;
+                return -1;
             else
-                return false;
+                return 1;
         } catch (Exception $exc) {
             return false;
         }

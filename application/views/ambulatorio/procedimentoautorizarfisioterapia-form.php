@@ -1,3 +1,146 @@
+<style>
+    .custom-combobox {
+        position: relative;
+        display: inline-block;
+    }
+    .custom-combobox-toggle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin-left: -1px;
+        padding: 0;
+    }
+    .custom-combobox-input {
+        margin: 0;
+        /*padding: 5px 10px;*/
+    }
+    .custom-combobox a {
+        display: inline-block;        
+    }
+</style>
+<script>
+    
+    $(function () {
+        $.widget("custom.combobox", {
+            _create: function () {
+                this.wrapper = $("<span>")
+                        .addClass("custom-combobox")
+                        .insertAfter(this.element);
+
+                this.element.hide();
+                this._createAutocomplete();
+                this._createShowAllButton();
+            },
+
+            _createAutocomplete: function () {
+                var selected = this.element.children(":selected"),
+                        value = selected.val() ? selected.text() : "";
+                
+                var wasOpen = false;
+//                console.log(value);
+
+                this.input = $("<input>")
+                        .appendTo(this.wrapper)
+                        .val(value)
+                        .attr("title", "")
+                        .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left input-recomendacao-combobox")
+                        .autocomplete({
+                            delay: 0,
+                            minLength: 0,
+                            source: $.proxy(this, "_source")
+                        })
+                        .tooltip({
+                            classes: {
+                                "ui-tooltip": "ui-state-highlight"
+                            }
+                        });
+
+                this._on(this.input, {
+                    autocompleteselect: function (event, ui) {
+                        ui.item.option.selected = true;
+                        this._trigger("select", event, {
+                            item: ui.item.option.text
+                        });
+                    },
+
+                    autocompletechange: "_removeIfInvalid"
+                });
+            },
+
+            _createShowAllButton: function () {
+                var input = this.input,
+                        wasOpen = false;
+
+                input.on("click", function () {
+                    input.trigger("focus");
+
+                    // Close if already visible
+                    if (wasOpen) {
+                        return;
+                    }
+
+                    // Pass empty string as value to search for, displaying all results
+                    input.autocomplete("search", "");
+                });
+            },
+
+            _source: function (request, response) {
+                var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
+                response(this.element.children("option").map(function () {
+                    var text = $(this).text();
+                    if (this.value && (!request.term || matcher.test(text)))
+                        return {
+                            label: text,
+                            value: text,
+                            option: this
+                        };
+                }));
+            },
+
+            _removeIfInvalid: function (event, ui) {
+
+                // Selected an item, nothing to do
+                if (ui.item) {
+                    return;
+                }
+
+                // Search for a match (case-insensitive)
+                var value = this.input.val(),
+                        valueLowerCase = value.toLowerCase(),
+                        valid = false;
+                this.element.children("option").each(function () {
+                    if ($(this).text().toLowerCase() === valueLowerCase) {
+                        this.selected = valid = true;
+                        return false;
+                    }
+                });
+
+                // Found a match, nothing to do
+                if (valid) {
+                    return;
+                }
+
+                // Remove invalid value
+                this.input
+                        .val("")
+                        .tooltip("open");
+                this.element.val("");
+                this._delay(function () {
+                    this.input.tooltip("close").attr("title", "");
+                }, 2500);
+                this.input.autocomplete("instance").term = "";
+            },
+
+            _destroy: function () {
+                this.wrapper.remove();
+                this.element.show();
+            }
+        });
+        <? for($i = 1; $i <= count($exames); $i++) { ?>
+            $("#indicacao<?= $i ?>").combobox();
+        <? } ?>
+    });
+</script>
 <? 
 $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); 
 $empresa = $this->guia->listarempresapermissoes(); 
@@ -132,7 +275,7 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1" />
                                     <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <?
 //                                    echo "<pre>";
@@ -176,15 +319,13 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                     </select>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select name="indicacao[<?= $i; ?>]" id="indicacao<?= $i ?>" class="size1" >
-                                        <option value=''>Selecione</option>
+                                    <select name="indicacao[<?= $i; ?>]" id="indicacao<?= $i ?>" class="size1 ui-widget" >
+                                        <option value='' >Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
                                         foreach ($indicacao as $item) {
                                             ?>
-                                            <option value="<?php echo $item->paciente_indicacao_id; ?>">
-                                                <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?>
-                                            </option>
+                                            <option value="<?php echo $item->paciente_indicacao_id; ?>"> <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
                                             <?php
                                         }
                                         ?> 
@@ -312,6 +453,7 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
 ?>
 
                                                     });
+                                    
 <? for ($b = 1; $b <= $i; $b++) { ?>
                                     $('#grupo<?= $b ?>').change(function () {
                                         if ($('#convenio<?= $b ?>').val()) {

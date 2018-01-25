@@ -5,21 +5,23 @@
         }*/
 
 </style>
-<?
-if (file_exists("./upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".png")) {
-    $caminho_background = base_url() . "upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".png";
-} else {
-    $caminho_background = base_url() . 'upload/timbrado/timbrado.png';
-}
-?>
-<div class="teste" style="background-size: contain; height: 70%; width: 90%;background-image: url(<?=$caminho_background ?>);">
+<? if($empresapermissao[0]->desativar_personalizacao_impressao != 't') {
+    
+    if (file_exists("./upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".png")) {
+        $caminho_background = base_url() . "upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".png";
+    } else {
+        $caminho_background = base_url() . 'upload/timbrado/timbrado.png';
+    }
+    ?>
+    <div class="teste" style="background-size: contain; height: 70%; width: 90%;background-image: url(<?=$caminho_background ?>);">
 
 
-<?
-if (file_exists("./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg")) {
-    $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg'>";
-} else {
-    $assinatura = "";
+    <?
+    if (file_exists("./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg")) {
+        $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg'>";
+    } else {
+        $assinatura = "";
+    }
 }
 
 //echo $assinatura;

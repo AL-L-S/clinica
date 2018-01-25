@@ -30,10 +30,10 @@
                         <input type="text"  id="txtdatafinal" name="txtdatafinal" alt="date" class="size2" required/>
                     </dd>
                     <dt>
-                        <label title="Aqui é possível especificar o número de dias na criação de agendas. Um exemplo: De 15 em 15 dias (No exemplo de querer a agenda de X em X dias, digitar apenas o número). Caso queira a criação normal, não digite nada ou digite 0.">Intervalo de dias. (Ex: 15)</label>
+                        <label title="Aqui é possivel criar uma agenda alternando entre as semanas. Por exemplo: Uma semana sim e outra não (nesse exmplo, basta informa o numero 1). Caso queira a criação normal, não digite nada ou digite 0.">Intervalo de Semanas. (Ex: 2)</label>
                     </dt>
                     <dd>
-                        <input title="Aqui é possível especificar o número de dias na criação de agendas. Um exemplo: De 15 em 15 dias (No exemplo de querer a agenda de X em X dias, digitar apenas o número). Caso queira a criação normal, não digite nada ou digite 0." type="number" min="1"  id="txtintervalo" name="txtintervalo" class="size2"/>
+                        <input title="Aqui é possivel criar uma agenda alternando entre as semanas. Por exemplo: Uma semana sim e outra não (nesse exmplo, basta informa o numero 1). Caso queira a criação normal, não digite nada ou digite 0." type="number" min="1"  id="txtintervalo" name="txtintervalo" class="size2"/>
                     </dd>
                     <dt>
                         <label>Horario *</label>
@@ -42,7 +42,7 @@
                         <input type="hidden"  id="txthorario" name="txthorario" value="<?= $agenda_id ?>"  class="size2"  />
                         <input type="text"  id="txthorariolabel" name="txthorariotitulo" value="<?= $agenda[0]->nome ?>"  class="size4" readonly=""/>
                     </dd>
-                    <dt>
+<!--                    <dt>
                         <label>Salas *</label>
                     </dt>
                     <dd>
@@ -53,7 +53,7 @@
                                 <option value="<?= $item->exame_sala_id; ?>"><?= $item->nome; ?></option>
                             <? endforeach; ?>
                         </select>
-                    </dd>
+                    </dd>-->
                     <dt>
                         <label>Medico *</label>
                     </dt>

@@ -102,13 +102,14 @@ class guia_model extends Model {
                             relatorio_ordem,
                             relatorio_producao,
                             relatorios_recepcao,
-                            encaminhamento_citycor,
+                            encaminhamento_email,
                             financeiro_cadastro,
                             odontologia_valor_alterar,
                             selecionar_retorno,
                             oftamologia,
                             carregar_modelo_receituario,
-                            retirar_botao_ficha');
+                            retirar_botao_ficha,
+                            ep.desabilitar_trava_retorno');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
@@ -3906,6 +3907,7 @@ class guia_model extends Model {
                             ae.data,
                             al.data as data_laudo,
                             al.data_producao,
+                            al.ambulatorio_laudo_id,
                             ae.data_antiga,
                             ae.sala_pendente,
                             e.situacao,
@@ -6989,6 +6991,7 @@ class guia_model extends Model {
                             pc.convenio_id,
                             pc.procedimento_convenio_id,
                             ae.data_entregue,
+                            ae.medico_consulta_id,
                             (ae.valor * ae.quantidade) as valor,
                             ae.valor_total,
                             ae.ativo,
@@ -12527,14 +12530,14 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('indicacao', $_POST['indicacao']);
             }
             if (isset($_POST['data'])) {
-                $this->db->set('data', $_POST['data']);
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
             }
             if (isset($_POST['data_faturar'])) {
-                $this->db->set('data_faturar', $_POST['data_faturar']);
+                $this->db->set('data_faturar', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_faturar']))));
             }
-            if (isset($_POST['data'])) {
-                $this->db->set('data_entrega', $_POST['data_entrega']);
-            }
+//            if (isset($_POST['data_entrega'])) {
+//                $this->db->set('data_entrega', $_POST['data_entrega']);
+//            }
             $this->db->set('medico_agenda', $_POST['medico_agenda']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
@@ -12545,7 +12548,41 @@ ORDER BY ae.agenda_exames_id)";
 
             $this->db->set('sala_id', $_POST['sala1']);
             $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
-            $this->db->update('tb_exames');
+            $this->db->update('tb_exames');         
+            
+            if( isset($_POST['data_producao']) ){
+                $data_prod = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_producao'])));
+                
+                $this->db->select('al.ambulatorio_laudo_id');
+                $this->db->from('tb_ambulatorio_laudo al');
+                $this->db->join('tb_exames e', 'al.exame_id = e.exames_id', 'left');
+                $this->db->where('e.agenda_exames_id', $_POST['agenda_exames_id']);
+                $query = $this->db->get()->result();
+                
+                if(count($query) > 0){
+                    $this->db->set('data_producao', $data_prod);
+                    $this->db->set('data_alteracao_producao', $horario);
+                    $this->db->where('ambulatorio_laudo_id', $query[0]->ambulatorio_laudo_id);
+                    $this->db->update('tb_ambulatorio_laudo');
+                }
+            }
+            
+            if( isset($_POST['data_laudo']) ){
+                $data_laudo = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_laudo'])));
+                
+                $this->db->select('al.ambulatorio_laudo_id');
+                $this->db->from('tb_ambulatorio_laudo al');
+                $this->db->join('tb_exames e', 'al.exame_id = e.exames_id', 'left');
+                $this->db->where('e.agenda_exames_id', $_POST['agenda_exames_id']);
+                $query = $this->db->get()->result();
+                
+                if(count($query) > 0){
+                    $this->db->set('data', $data_laudo);
+                    $this->db->where('ambulatorio_laudo_id', $query[0]->ambulatorio_laudo_id);
+                    $this->db->update('tb_ambulatorio_laudo');
+                }
+            }
+//            
             $erro = $this->db->_error_message();
             if (trim($erro) != "") { // erro de banco
                 return -1;
@@ -12669,7 +12706,7 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function valorexames() {
+    function valorexames($percentual) {
         try {
             $exame_id = "";
 
@@ -12734,6 +12771,8 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('forma_pagamento4', NULL);
                 $this->db->set('valor4', 0);
             }
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('data_editar', $horario);
             $this->db->set('operador_editar', $operador_id);
             $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);

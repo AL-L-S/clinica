@@ -26,6 +26,7 @@
                             <th>Fim do intervalo</th>
                             <th>Tempo Consulta</th>
                             <th>QTDE Consulta</th>
+                            <th>Sala</th>
                             <th>Empresa</th>
                             <!--<th>Ações</th>-->
 
@@ -49,6 +50,16 @@
                             <td><input type='text' id="txtFimintervalo1" name="txtFimintervalo[1]" alt='time' value='00:00' class='size1 hora' /></td>
                             <td><input type='text' id="txtTempoconsulta1" name="txtTempoconsulta[1]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text' id="txtQtdeconsulta1" name="txtQtdeconsulta[1]" value='0' class='size1' /></td>
+                            <td>                
+                                <select name='sala[1]' id="sala1" class='size2' >
+                                    <option value="" ></option>
+                                    <? foreach ($salas as $row) : ?>
+                                        <option value="<?= $row->exame_sala_id ?>">
+                                            <?= $row->nome ?>
+                                        </option> 
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
                             <td>                
                                 <select name='empresa[1]' id="empresa1" class='size2' >
                                     <option value="" ></option>
@@ -85,6 +96,16 @@
                             <td><input type='text'  id="txtTempoconsulta2" name="txtTempoconsulta[2]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta2" name="txtQtdeconsulta[2]" value='0' class='size1' /></td>
                             <td>                
+                                <select name='sala[2]' id="sala2" class='size2' >
+                                    <option value="" ></option>
+                                    <? foreach ($salas as $row) : ?>
+                                        <option value="<?= $row->exame_sala_id ?>">
+                                            <?= $row->nome ?>
+                                        </option> 
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
                                 <select name='empresa[2]' id="empresa2" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -119,6 +140,16 @@
                             <td><input type='text'  id="txtFimintervalo3" name="txtFimintervalo[3]" alt='time' value='00:00' class='size1 hora' /></td>
                             <td><input type='text'  id="txtTempoconsulta3" name="txtTempoconsulta[3]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta3" name="txtQtdeconsulta[3]" value='0' class='size1' /></td>
+                            <td>                
+                                <select name='sala[3]' id="sala3" class='size2' >
+                                    <option value="" ></option>
+                                    <? foreach ($salas as $row) : ?>
+                                        <option value="<?= $row->exame_sala_id ?>">
+                                            <?= $row->nome ?>
+                                        </option> 
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
                             <td>                
                                 <select name='empresa[3]' id="empresa3" class='size2' >
                                     <option value="" ></option>
@@ -155,6 +186,16 @@
                             <td><input type='text'  id="txtTempoconsulta4" name="txtTempoconsulta[4]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta4" name="txtQtdeconsulta[4]" value='0' class='size1' /></td>
                             <td>                
+                                <select name='sala[4]' id="sala4" class='size2' >
+                                    <option value="" ></option>
+                                    <? foreach ($salas as $row) : ?>
+                                        <option value="<?= $row->exame_sala_id ?>">
+                                            <?= $row->nome ?>
+                                        </option> 
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
                                 <select name='empresa[4]' id="empresa4" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -189,6 +230,16 @@
                             <td><input type='text'  id="txtFimintervalo5" name="txtFimintervalo[5]" alt='time' value='00:00' class='size1 hora' /></td>
                             <td><input type='text'  id="txtTempoconsulta5" name="txtTempoconsulta[5]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta5" name="txtQtdeconsulta[5]" value='0' class='size1' /></td>
+                            <td>                
+                                <select name='sala[5]' id="sala5" class='size2' >
+                                    <option value="" ></option>
+                                    <? foreach ($salas as $row) : ?>
+                                        <option value="<?= $row->exame_sala_id ?>">
+                                            <?= $row->nome ?>
+                                        </option> 
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
                             <td>                
                                 <select name='empresa[5]' id="empresa5" class='size2' >
                                     <option value="" ></option>
@@ -225,6 +276,16 @@
                             <td><input type='text'  id="txtTempoconsulta6" name="txtTempoconsulta[6]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta6" name="txtQtdeconsulta[6]" value='0' class='size1' /></td>
                             <td>                
+                                <select name='sala[6]' id="sala6" class='size2' >
+                                    <option value="" ></option>
+                                    <? foreach ($salas as $row) : ?>
+                                        <option value="<?= $row->exame_sala_id ?>">
+                                            <?= $row->nome ?>
+                                        </option> 
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
                                 <select name='empresa[6]' id="empresa6" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -259,6 +320,16 @@
                             <td><input type='text'  id="txtFimintervalo7" name="txtFimintervalo[7]" alt='time' value='00:00' class='size1 hora' /></td>
                             <td><input type='text'  id="txtTempoconsulta7" name="txtTempoconsulta[7]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta7" name="txtQtdeconsulta[7]" value='0' class='size1' /></td>
+                            <td>                
+                                <select name='sala[7]' id="sala7" class='size2' >
+                                    <option value="" ></option>
+                                    <? foreach ($salas as $row) : ?>
+                                        <option value="<?= $row->exame_sala_id ?>">
+                                            <?= $row->nome ?>
+                                        </option> 
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
                             <td>                
                                 <select name='empresa[7]' id="empresa7" class='size2' >
                                     <option value="" ></option>
@@ -300,6 +371,7 @@
                                     <th class="tabela_header">Fim do intervalo</th>
                                     <th class="tabela_header">Tempo consulta</th>
                                     <!--<th class="tabela_header">Obs</th>-->
+                                    <th class="tabela_header">Sala</th>
                                     <th class="tabela_header">Empresa</th>
                                     <th class="tabela_header">&nbsp;</th>
                                 </tr>
@@ -318,10 +390,8 @@
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->intervalofim; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->tempoconsulta; ?></td>
                                         <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>-->
+                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
-
-
-
                                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                             <a target="_blank" href="<?= base_url() ?>ambulatorio/agenda/excluirhorarioagendaeditada/<?= $item->horarioagenda_editada_id ?>">
                                                 <img border="0" title="Excluir" alt="Excluir"
@@ -370,285 +440,43 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-     $('#txthoraEntrada1').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txthoraSaida1").prop('required', true);
-            $("#txtIniciointervalo1").prop('required', true);
-            $("#txtFimintervalo1").prop('required', true);
-            $("#empresa1").prop('required', true);
-            $("#txtTempoconsulta1").prop('required', true);
-//            $("#txtQtdeconsulta1").prop('required', true);
-        } else {
-            $("#txthoraSaida1").prop('required', false);
-            $("#txtIniciointervalo1").prop('required', false);
-            $("#txtFimintervalo1").prop('required', false);
-            $("#empresa1").prop('required', false);
-            $("#txtTempoconsulta1").prop('required', false);
-//            $("#txtQtdeconsulta1").prop('required', false);
-        }
-    });
-    $('#txthoraEntrada2').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txthoraSaida2").prop('required', true);
-            $("#txtIniciointervalo2").prop('required', true);
-            $("#txtFimintervalo2").prop('required', true);
-            $("#empresa2").prop('required', true);
-            $("#txtTempoconsulta2").prop('required', true);
-//            $("#txtQtdeconsulta1").prop('required', true);
-        } else {
-            $("#txthoraSaida2").prop('required', false);
-            $("#txtIniciointerval2").prop('required', false);
-            $("#txtFimintervalo2").prop('required', false);
-            $("#empresa2").prop('required', false);
-            $("#txtTempoconsulta2").prop('required', false);
-//            $("#txtQtdeconsulta1").prop('required', false);
-        }
-    });
-    
-    $('#txthoraEntrada3').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txthoraSaida3").prop('required', true);
-            $("#txtIniciointervalo3").prop('required', true);
-            $("#txtFimintervalo3").prop('required', true);
-            $("#empresa3").prop('required', true);
-            $("#txtTempoconsulta3").prop('required', true);
-//            $("#txtQtdeconsulta1").prop('required', true);
-        } else {
-            $("#txthoraSaida3").prop('required', false);
-            $("#txtIniciointerval3").prop('required', false);
-            $("#txtFimintervalo3").prop('required', false);
-            $("#empresa3").prop('required', false);
-            $("#txtTempoconsulta3").prop('required', false);
-//            $("#txtQtdeconsulta1").prop('required', false);
-        }
-    });
-    $('#txthoraEntrada4').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txthoraSaida4").prop('required', true);
-            $("#txtIniciointervalo4").prop('required', true);
-            $("#txtFimintervalo4").prop('required', true);
-            $("#empresa4").prop('required', true);
-            $("#txtTempoconsulta4").prop('required', true);
-//            $("#txtQtdeconsulta1").prop('required', true);
-        } else {
-            $("#txthoraSaida4").prop('required', false);
-            $("#txtIniciointerval4").prop('required', false);
-            $("#txtFimintervalo4").prop('required', false);
-            $("#empresa4").prop('required', false);
-            $("#txtTempoconsulta4").prop('required', false);
-//            $("#txtQtdeconsulta1").prop('required', false);
-        }
-    });
-    $('#txthoraEntrada5').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txthoraSaida5").prop('required', true);
-            $("#txtIniciointervalo5").prop('required', true);
-            $("#txtFimintervalo5").prop('required', true);
-            $("#empresa5").prop('required', true);
-            $("#txtTempoconsulta5").prop('required', true);
-//            $("#txtQtdeconsulta1").prop('required', true);
-        } else {
-            $("#txthoraSaida5").prop('required', false);
-            $("#txtIniciointerval5").prop('required', false);
-            $("#txtFimintervalo5").prop('required', false);
-            $("#empresa5").prop('required', false);
-            $("#txtTempoconsulta5").prop('required', false);
-//            $("#txtQtdeconsulta1").prop('required', false);
-        }
-    });
-    $('#txthoraEntrada6').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txthoraSaida6").prop('required', true);
-            $("#txtIniciointervalo6").prop('required', true);
-            $("#txtFimintervalo6").prop('required', true);
-            $("#empresa6").prop('required', true);
-            $("#txtTempoconsulta6").prop('required', true);
-//            $("#txtQtdeconsulta1").prop('required', true);
-        } else {
-            $("#txthoraSaida6").prop('required', false);
-            $("#txtIniciointerval6").prop('required', false);
-            $("#txtFimintervalo6").prop('required', false);
-            $("#empresa6").prop('required', false);
-            $("#txtTempoconsulta6").prop('required', false);
-//            $("#txtQtdeconsulta1").prop('required', false);
-        }
-    });
-    $('#txthoraEntrada7').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txthoraSaida7").prop('required', true);
-            $("#txtIniciointervalo7").prop('required', true);
-            $("#txtFimintervalo7").prop('required', true);
-            $("#empresa7").prop('required', true);
-            $("#txtTempoconsulta7").prop('required', true);
-//            $("#txtQtdeconsulta1").prop('required', true);
-        } else {
-            $("#txthoraSaida7").prop('required', false);
-            $("#txtIniciointerval7").prop('required', false);
-            $("#txtFimintervalo7").prop('required', false);
-            $("#empresa7").prop('required', false);
-            $("#txtTempoconsulta7").prop('required', false);
-//            $("#txtQtdeconsulta1").prop('required', false);
-        }
-    });
-    
-    
-    
-    
+     <? for($i = 1; $i <= 100; $i++){ ?>
+        $('#txthoraEntrada<?= $i ?>').blur(function () {
+            if ($(this).val() != '') {
+                $("#txthoraSaida<?= $i ?>").prop('required', true);
+                $("#txtIniciointervalo<?= $i ?>").prop('required', true);
+                $("#txtFimintervalo<?= $i ?>").prop('required', true);
+                $("#empresa<?= $i ?>").prop('required', true);
+                $("#sala<?= $i ?>").prop('required', true);
+                $("#txtTempoconsulta<?= $i ?>").prop('required', true);
+    //            $("#txtQtdeconsulta<?= $i ?>").prop('required', true);
+            } else {
+                $("#txthoraSaida<?= $i ?>").prop('required', false);
+                $("#txtIniciointervalo<?= $i ?>").prop('required', false);
+                $("#txtFimintervalo<?= $i ?>").prop('required', false);
+                $("#empresa<?= $i ?>").prop('required', false);
+                $("#sala<?= $i ?>").prop('required', false);
+                $("#txtTempoconsulta<?= $i ?>").prop('required', false);
+    //            $("#txtQtdeconsulta<?= $i ?>").prop('required', false);
+            }        
 
-    $('#txtTempoconsulta1').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txtQtdeconsulta1").prop('readonly', true);
-//            
-        } else {
-            $("#txtQtdeconsulta1").prop('readonly', false);
-//            
-        }
-    });
-    
-    $('#txtQtdeconsulta1').blur(function () {
-        if ($(this).val() > 0) {
-//            alert('sd');
-            $("#txtTempoconsulta1").prop('readonly', true);
-//            
-        } else {
-            $("#txtTempoconsulta1").prop('readonly', false);
-//            
-        }
-    });
-    $('#txtTempoconsulta2').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txtQtdeconsulta2").prop('readonly', true);
-//            
-        } else {
-            $("#txtQtdeconsulta2").prop('readonly', false);
-//            
-        }
-    });
-    
-    $('#txtQtdeconsulta2').blur(function () {
-        if ($(this).val() > 0) {
-//            alert('sd');
-            $("#txtTempoconsulta2").prop('readonly', true);
-//            
-        } else {
-            $("#txtTempoconsulta2").prop('readonly', false);
-//            
-        }
-    });
-    $('#txtTempoconsulta3').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txtQtdeconsulta3").prop('readonly', true);
-//            
-        } else {
-            $("#txtQtdeconsulta3").prop('readonly', false);
-//            
-        }
-    });
-    
-    $('#txtQtdeconsulta3').blur(function () {
-        if ($(this).val() > 0) {
-//            alert('sd');
-            $("#txtTempoconsulta3").prop('readonly', true);
-//            
-        } else {
-            $("#txtTempoconsulta3").prop('readonly', false);
-//            
-        }
-    });
-    $('#txtTempoconsulta4').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txtQtdeconsulta4").prop('readonly', true);
-//            
-        } else {
-            $("#txtQtdeconsulta4").prop('readonly', false);
-//            
-        }
-    });
-    
-    $('#txtQtdeconsulta4').blur(function () {
-        if ($(this).val() > 0) {
-//            alert('sd');
-            $("#txtTempoconsulta4").prop('readonly', true);
-//            
-        } else {
-            $("#txtTempoconsulta4").prop('readonly', false);
-//            
-        }
-    });
-    $('#txtTempoconsulta5').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txtQtdeconsulta5").prop('readonly', true);
-//            
-        } else {
-            $("#txtQtdeconsulta5").prop('readonly', false);
-//            
-        }
-    });
-    
-    $('#txtQtdeconsulta5').blur(function () {
-        if ($(this).val() > 0) {
-//            alert('sd');
-            $("#txtTempoconsulta5").prop('readonly', true);
-//            
-        } else {
-            $("#txtTempoconsulta5").prop('readonly', false);
-//            
-        }
-    });
-    $('#txtTempoconsulta6').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txtQtdeconsulta6").prop('readonly', true);
-//            
-        } else {
-            $("#txtQtdeconsulta6").prop('readonly', false);
-//            
-        }
-    });
-    
-    $('#txtQtdeconsulta6').blur(function () {
-        if ($(this).val() > 0) {
-//            alert('sd');
-            $("#txtTempoconsulta6").prop('readonly', true);
-//            
-        } else {
-            $("#txtTempoconsulta6").prop('readonly', false);
-//            
-        }
-    });
-    $('#txtTempoconsulta7').blur(function () {
-        if ($(this).val() != '') {
-//            alert('sd');
-            $("#txtQtdeconsulta7").prop('readonly', true);
-//            
-        } else {
-            $("#txtQtdeconsulta7").prop('readonly', false);
-//            
-        }
-    });
-    
-    $('#txtQtdeconsulta7').blur(function () {
-        if ($(this).val() > 0) {
-//            alert('sd');
-            $("#txtTempoconsulta7").prop('readonly', true);
-//            
-        } else {
-            $("#txtTempoconsulta7").prop('readonly', false);
-//            
-        }
-    });
+            $('#txtTempoconsulta<?= $i ?>').blur(function () {
+                if ($(this).val() != '') {
+                    $("#txtQtdeconsulta<?= $i ?>").prop('readonly', true);
+                } else {
+                    $("#txtQtdeconsulta<?= $i ?>").prop('readonly', false);
+                }
+            });
+
+            $('#txtQtdeconsulta<?= $i ?>').blur(function () {
+                if ($(this).val() > 0) {
+                    $("#txtTempoconsulta<?= $i ?>").prop('readonly', true);
+                } else {
+                    $("#txtTempoconsulta<?= $i ?>").prop('readonly', false);
+                }
+            });
+        });
+    <? } ?>
 
 
 

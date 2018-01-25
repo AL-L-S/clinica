@@ -1194,7 +1194,7 @@ class Guia extends BaseController {
         } else {
             $data['mensagem'] = 'Sucesso ao gravar a Dados.';
         }
-        $this->pesquisar($paciente_id);
+        redirect(base_url() . "ambulatorio/guia/pesquisar/" . $paciente_id);
     }
 
     function editarexame($paciente_id, $guia_id, $ambulatorio_guia_id) {
@@ -1227,10 +1227,17 @@ class Guia extends BaseController {
     function valorexames() {
         $paciente_id = $_POST['txtpaciente_id'];
         $agenda_exames_id = $_POST['agenda_exames_id'];
-//        var_dump($agenda_exames_id);
+        $procedimentopercentual = $_POST['procedimento1'];
+        $medicopercentual = $_POST['medico_agenda'];
+        // Calcula o Percentual do médico para salvar na agenda_exames
+        $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+        if (count($percentual) == 0) {
+            $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+        }
+//        var_dump($percentual);
 //        die;
         $dadosantigos = $this->guia->listardadosantigoseditarvalor($agenda_exames_id);
-        $ambulatorio_guia_id = $this->guia->valorexames();
+        $ambulatorio_guia_id = $this->guia->valorexames($percentual);
         if ($ambulatorio_guia_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Dados. Opera&ccedil;&atilde;o cancelada.';
         } else {

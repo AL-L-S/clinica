@@ -68,6 +68,7 @@ $geral = $this->session->userdata('geral');
                         <th class="tabela_header">Tempo consulta</th>
                         <th class="tabela_header">Obs</th>
                         <th class="tabela_header">Empresa</th>
+                        <th class="tabela_header">Sala</th>
                         <th class="tabela_header">&nbsp;</th>
                     </tr>
                 </thead>
@@ -87,9 +88,11 @@ $geral = $this->session->userdata('geral');
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->tempoconsulta; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
-
-
-
+                            <td class="<?php echo $estilo_linha; ?>">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/agenda/alterarsalahorarioagenda/<?= $item->horarioagenda_id; ?>/<?= $agenda; ?>/<?= $item->sala_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">
+                                    => <?= $item->sala; ?>
+                                </a>
+                            </td>
                             <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                 <a 
                                     href="<?= base_url() ?>ambulatorio/agenda/carregarexclusaohorario/<?= $item->horarioagenda_id; ?>/<?= $agenda; ?>">
@@ -153,7 +156,7 @@ $geral = $this->session->userdata('geral');
                                             <input type="hidden" name="medico_id" value="<?= @$item->medico_id ?>"/>
                                             <input type="hidden" name="nome" value="<?= @$item->nome ?>"/>
                                             <input type="hidden" name="horario_id" value="<?=@ $agenda ?>"/>
-                                            <a onclick="document.excluiragenda<?= $i ?>.submit()">
+                                            <a onclick="javascript: if (confirm('Deseja realmente excluir essa agenda?') ) { document.excluiragenda<?= $i ?>.submit(); }">
                                                 Excluir
                                             </a>
                                         </form>

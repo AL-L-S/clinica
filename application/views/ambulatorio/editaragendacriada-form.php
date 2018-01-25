@@ -33,6 +33,7 @@
                             <th class="tabela_header">Tempo consulta</th>
                             <th class="tabela_header">Obs</th>
                             <th class="tabela_header">Empresa</th>
+                            <th class="tabela_header">Sala</th>
                             <th class="tabela_header">&nbsp;</th>
                         </tr>
                     </thead>
@@ -54,6 +55,9 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->tempoconsulta; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <?= $item->sala; ?>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                     <div class="bt_link_new">
                                         <form method="get" name="excluirhorarioagenda<?= $i ?>" action="<?= base_url() ?>ambulatorio/agenda/excluirhorarioagendacriada/<?=@ $horario_id ?>">
@@ -61,7 +65,7 @@
                                             <input type="hidden" name="nome" value="<?= @$_GET['nome'] ?>"/>
                                             <!--<input type="hidden" name="agenda_id" value="<?=@ $agenda ?>"/>-->
                                             <input type="hidden" name="horario_id" value="<?=@ $item->horarioagenda_id ?>"/>
-                                            <a onclick="document.excluirhorarioagenda<?= $i ?>.submit()">
+                                            <a onclick="javascript: if (confirm('Deseja realmente excluir esse horario da agenda?') ) { document.excluirhorarioagenda<?= $i ?>.submit(); }">
                                                 Excluir
                                             </a>
                                         </form>
@@ -119,7 +123,7 @@
                                             <input type="hidden" name="nome" value="<?= @$_GET['nome'] ?>"/>
                                             <!--<input type="hidden" name="agenda_id" value="<?=@ $agenda ?>"/>-->
                                             <input type="hidden" name="horario_id" value="<?=@ $item->horarioagenda_editada_id ?>"/>
-                                            <a onclick="document.excluirhorarioagendaconsolidado<?= $i ?>.submit()">
+                                            <a onclick="javascript: if (confirm('Deseja realmente excluir esse horario da agenda?') ) { document.excluirhorarioagendaconsolidado<?= $i ?>.submit(); }">
                                                 Excluir
                                             </a>
                                         </form>

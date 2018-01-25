@@ -45,6 +45,19 @@ class Agenda extends BaseController {
         $this->loadView('ambulatorio/horarioagenda-lista', $data);
     }
 
+    function gravarsalahorarioagenda() {
+        $this->agenda->gravarsalahorarioagenda();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+    }
+
+    function alterarsalahorarioagenda($horario_id, $agenda_id, $sala_id = null) {
+        $data['horario_id'] = $horario_id;
+        $data['agenda_id'] = $agenda_id;
+        $data['sala_id'] = $sala_id;
+        $data['salas'] = $this->exame->listartodassalas();
+        $this->load->view('ambulatorio/alterarsalahorarioagenda-form', $data);
+    }
+
     function medicoagendageral() {
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['salas'] = $this->exame->listartodassalas();
@@ -297,6 +310,7 @@ class Agenda extends BaseController {
     function novohorarioagendacriada($agenda_id) {
         $data['agenda_id'] = $agenda_id;
         $data['empresas'] = $this->agenda->listarempresa();
+        $data['salas'] = $this->exame->listartodassalas();
         $data['horarios'] = $this->agenda->listarhorarioagendaeditadas($agenda_id);
         $this->loadView('ambulatorio/horarioagendacriada-form', $data);
     }
@@ -304,19 +318,32 @@ class Agenda extends BaseController {
     function novohorarioagenda($agenda_id) {
         $data['agenda_id'] = $agenda_id;
         $data['empresas'] = $this->agenda->listarempresa();
+        $data['salas'] = $this->exame->listartodassalas();
+        $data['lista'] = $this->agenda->listarhorarioagendacriado($agenda_id);
         $this->loadView('ambulatorio/horarioagenda-form', $data);
     }
     
     function gravarhorarioagenda() {
         $horariotipo = $_POST['txtagendaID'];
-        if ($this->agenda->gravarhorariofixo()) {
-            $data['mensagem'] = 'Erro ao gravar o Horario. Opera&ccedil;&atilde;o cancelada.';
-        } else {
-            $data['mensagem'] = 'Sucesso ao gravar o Horario.';
+        $retorno = $this->agenda->gravarhorariofixo();
+        
+        if ( $retorno == -1 ) {
+            $data['mensagem'] = 'Erro ao gravar o Horário. Opera&ccedil;&atilde;o cancelada.';
+        } 
+        elseif( $retorno == -2 ) {
+            $data['mensagem'] = 'Erro ao gravar o Horário. Alguns horários informados entram em conflito com outros já criados.';
+        } 
+        elseif( $retorno == -3 ) {
+            $data['mensagem'] = 'Erro ao gravar o Horário. Só é possivel criar dois horários para o mesmo dia.';
+        } 
+        elseif( $retorno == -4 ) {
+            $data['mensagem'] = 'Erro ao gravar o Horário. Horário de inicio não pode ser maior ou igual que o horários final.';
+        } 
+        else {
+            $data['mensagem'] = 'Sucesso ao gravar o Horário.';
         }
-//        die;
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/agenda/listarhorarioagenda/$horariotipo");
+        redirect(base_url() . "ambulatorio/agenda/novohorarioagenda/$horariotipo");
     }
 
     function gravarhorarioagendacriada($agenda_id) {

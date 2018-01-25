@@ -88,7 +88,7 @@ class Laudo extends BaseController {
         $empresapermissao = $this->guia->listarempresapermissoes();
         $laudo_id = $_POST["ambulatorio_laudo_id"];
         $medico_id = $_POST["medico_id"];
-        $email_ativado = $empresapermissao[0]->encaminhamento_citycor;
+        $email_ativado = $empresapermissao[0]->encaminhamento_email;
 //        var_dump($_POST);
 //        die;
 //        $this->laudo->gravarencaminhamentoatendimento();
@@ -108,7 +108,7 @@ class Laudo extends BaseController {
         $medico_encaminhar = $resposta2[0]->medico;
         $medico_email = $resposta2[0]->email;
 //            $senha = $resposta[0]->agenda_exames_id;
-        $mensagem = "Dr(a). $medico1 indicou você para um paciente. Continue a corrente e sempre que possível, indique outro procedimento da CityCor para fazer a clinica ainda mais forte <br><br><br><br> <span>Obs: Não responda esse email. Email automático</span>";
+        $mensagem = "Dr(a). $medico1 indicou você para um paciente. Continue a corrente e sempre que possível, indique outro procedimento da " . $empresa[0]->nome . " para fazer a clinica ainda mais forte <br><br><br><br> <span>Obs: Não responda esse email. Email automático</span>";
 //            echo '<pre>';
 //            var_dump($empresa); die;           
         $this->load->library('email');
@@ -127,7 +127,7 @@ class Laudo extends BaseController {
         if (@$empresa[0]->email != '') {
             $this->email->from($empresa[0]->email, $empresa[0]->nome);
         } else {
-            $this->email->from('equipe2016gcjh@gmail.com', 'Citycor');
+            $this->email->from('equipe2016gcjh@gmail.com', $empresa[0]->nome);
         }
 
         $this->email->to($medico_email);
@@ -934,6 +934,7 @@ class Laudo extends BaseController {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($data['laudo'][0]->medico_parecer1);
 //        var_dump($data['cabecalhomedico']); die;

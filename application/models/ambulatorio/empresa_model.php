@@ -989,10 +989,10 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('ordem_chegada', 'f');
                 }
-                if (isset($_POST['encaminhamento_citycor'])) {
-                    $this->db->set('encaminhamento_citycor', 't');
+                if (isset($_POST['encaminhamento_email'])) {
+                    $this->db->set('encaminhamento_email', 't');
                 } else {
-                    $this->db->set('encaminhamento_citycor', 'f');
+                    $this->db->set('encaminhamento_email', 'f');
                 }
                 if (isset($_POST['valor_autorizar'])) {
                     $this->db->set('valor_autorizar', 't');
@@ -1138,6 +1138,12 @@ class empresa_model extends Model {
                     $this->db->set('caixa_personalizado', 'f');
                 }
 
+                if (isset($_POST['desabilitar_trava_retorno'])) {
+                    $this->db->set('desabilitar_trava_retorno', 't');
+                } else {
+                    $this->db->set('desabilitar_trava_retorno', 'f');
+                }
+
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -1171,10 +1177,10 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('gerente_contasapagar', 'f');
                 }
-                if (isset($_POST['encaminhamento_citycor'])) {
-                    $this->db->set('encaminhamento_citycor', 't');
+                if (isset($_POST['encaminhamento_email'])) {
+                    $this->db->set('encaminhamento_email', 't');
                 } else {
-                    $this->db->set('encaminhamento_citycor', 'f');
+                    $this->db->set('encaminhamento_email', 'f');
                 }
                 if (isset($_POST['cpf_obrigatorio'])) {
                     $this->db->set('cpf_obrigatorio', 't');
@@ -1314,6 +1320,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('caixa_personalizado', 'f');
                 }
+
+                if (isset($_POST['desabilitar_trava_retorno'])) {
+                    $this->db->set('desabilitar_trava_retorno', 't');
+                } else {
+                    $this->db->set('desabilitar_trava_retorno', 'f');
+                }
                 
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
@@ -1410,13 +1422,14 @@ class empresa_model extends Model {
                                ep.calendario_layout,
                                ep.botao_ativar_sala,
                                ep.retirar_botao_ficha,
-                               ep.encaminhamento_citycor,
+                               ep.encaminhamento_email,
                                ep.desativar_personalizacao_impressao,
                                ep.recomendacao_configuravel,
                                f.mostrar_logo_clinica,
                                ep.recomendacao_obrigatorio,
                                ep.caixa_personalizado,
-                               ep.carregar_modelo_receituario');
+                               ep.carregar_modelo_receituario,
+                               ep.desabilitar_trava_retorno');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
@@ -1440,7 +1453,7 @@ class empresa_model extends Model {
             $this->_caixa = $return[0]->caixa;
             $this->_promotor_medico = $return[0]->promotor_medico;
             $this->_municipio = $return[0]->municipio;
-            $this->_encaminhamento_citycor = $return[0]->encaminhamento_citycor;
+            $this->_encaminhamento_email = $return[0]->encaminhamento_email;
             $this->_nome = $return[0]->nome;
             $this->_orcamento_config = $return[0]->orcamento_config;
             $this->_odontologia_valor_alterar = $return[0]->odontologia_valor_alterar;
@@ -1511,6 +1524,7 @@ class empresa_model extends Model {
             $this->_mostrar_logo_clinica = $return[0]->mostrar_logo_clinica;
             $this->_carregar_modelo_receituario = $return[0]->carregar_modelo_receituario;
             $this->_caixa_personalizado = $return[0]->caixa_personalizado;
+            $this->_desabilitar_trava_retorno = $return[0]->desabilitar_trava_retorno;
         } else {
             $this->_empresa_id = null;
         }

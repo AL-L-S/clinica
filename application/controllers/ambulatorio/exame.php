@@ -2272,7 +2272,7 @@ class Exame extends BaseController {
         $data['agenda_id'] = $agenda_id;
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
-        $data['salas'] = $this->exame->listartodassalas();
+//        $data['salas'] = $this->exame->listartodassalas();
         $data['tipo'] = $this->tipoconsulta->listartodos();
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
         $this->loadView('ambulatorio/geral-form', $data);
@@ -2282,7 +2282,7 @@ class Exame extends BaseController {
         $data['agenda_id'] = $agenda_id;
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
-        $data['salas'] = $this->exame->listartodassalas();
+//        $data['salas'] = $this->exame->listartodassalas();
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
         $this->loadView('ambulatorio/exame-form', $data);
     }
@@ -2332,40 +2332,45 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $intervalo = (int) $_POST['txtintervalo'];
-        $intervalo_teste = (int) $_POST['txtintervalo'] - 1;
-        $datainicial_intervalo = $datainicial;
-        $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo_teste days", strtotime($datainicial)));
-        $b = 0;
+        
         $agenda_id = $_POST['txthorario'];
-        $sala_id = $_POST['txtsala'];
+//        $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-//        var_dump($datafinal);
-//        var_dump($datafinal_intervalo);
-//        die;
+        
         if ($intervalo != '' && $intervalo > 0) {
+
+            // Data inicial
+            $datainicial_intervalo = $datainicial;
+
+            // Pega a quantidade de dias que faltam até encerrar a semana da data inicial
+            $diasAteFimDaSemana = 6 - date("N", strtotime($datainicial));
+
+            // Data equivalente ao ultimo dia da semana da data inicial      
+            $datafinal_intervalo = date('Y-m-d', strtotime("+$diasAteFimDaSemana days", strtotime($datainicial)));
+            
             while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
-//                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
-//                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
-//            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
 
-                $this->gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
-
-                if (strtotime($datafinal_intervalo) > strtotime($datafinal)) {
-
-                    $datafinal_intervalo = $datafinal;
-                } else {
-                    $somador_inicial = $intervalo + 1;
-                    $somador_final = $intervalo * 2;
-                    $datainicial_intervalo = date('Y-m-d', strtotime("+$somador_inicial days", strtotime($datafinal_intervalo)));
-                    $datafinal_intervalo = date('Y-m-d', strtotime("+$somador_final days", strtotime($datafinal_intervalo)));
+                $this->gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
+                
+                // Avança o marcador inicial para o primeiro dia da semana seguinte
+                $datainicial_intervalo = date('Y-m-d', strtotime("+" . $intervalo . " week 1 day", strtotime($datafinal_intervalo)));
+                
+                // Avança o marcador final para o ultimo dia da semana seguinte
+                $datafinal_intervalo = date('Y-m-d', strtotime("+" . $intervalo + 1 . " week", strtotime($datafinal_intervalo)));
+                
+                if ( strtotime($datafinal_intervalo) >= strtotime($datafinal) ) { 
+                    // Caso o marcador final fique maior que a data final informada na criaçao da agenda, ele repoe o valor do marcador
+                    // Pela data maxima que a agenda pode ser criada (ou seja, a data que o usuario informou)
+                    $datafinal_intervalo = $datafinal;    
+                    
+                    // Em seguida ele salva e sai do laço
+                    $this->gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
+                    break; // Se tirar esse trecho, ele irá ficar no loop eternamente
                 }
-//            if(strtotime($datafinal_intervalo) > strtotime($datafinal) && $b == 0){
-//                $datafinal_intervalo = $datafinal;
-//                $b++;
-//            }
             }
-        } else {
-            $this->gravargeral($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);
+        }
+        else {
+            $this->gravargeral($datainicial, $datafinal, $agenda_id, $medico_id);
         }
         $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
 
@@ -2377,42 +2382,43 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $intervalo = (int) $_POST['txtintervalo'];
-        $intervalo_teste = (int) $_POST['txtintervalo'] - 1;
-        $datainicial_intervalo = $datainicial;
-        $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo_teste days", strtotime($datainicial)));
-        $b = 0;
+        
         $agenda_id = $_POST['txthorario'];
         $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-//        var_dump($datafinal);
-//        var_dump($datafinal_intervalo);
-//        die;
+        
         if ($intervalo != '' && $intervalo > 0) {
+
+            // Data inicial
+            $datainicial_intervalo = $datainicial;
+
+            // Pega a quantidade de dias que faltam até encerrar a semana da data inicial
+            $diasAteFimDaSemana = 6 - date("N", strtotime($datainicial));
+
+            // Data equivalente ao ultimo dia da semana da data inicial      
+            $datafinal_intervalo = date('Y-m-d', strtotime("+$diasAteFimDaSemana days", strtotime($datainicial)));
+            
             while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
-//                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
-//                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
-//            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
 
                 $this->gravarespecialidade($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
-
-                if (strtotime($datafinal_intervalo) > strtotime($datafinal)) {
-
-                    $datafinal_intervalo = $datafinal;
-                } else {
-                    $somador_inicial = $intervalo + 1;
-                    $somador_final = $intervalo * 2;
-                    $datainicial_intervalo = date('Y-m-d', strtotime("+$somador_inicial days", strtotime($datafinal_intervalo)));
-                    $datafinal_intervalo = date('Y-m-d', strtotime("+$somador_final days", strtotime($datafinal_intervalo)));
+                
+                // Avança o marcador inicial para o primeiro dia da semana seguinte
+                $datainicial_intervalo = date('Y-m-d', strtotime("+" . $intervalo . " week 1 day", strtotime($datafinal_intervalo)));
+                
+                // Avança o marcador final para o ultimo dia da semana seguinte
+                $datafinal_intervalo = date('Y-m-d', strtotime("+" . $intervalo + 1 . " week", strtotime($datafinal_intervalo)));
+                
+                if ( strtotime($datafinal_intervalo) >= strtotime($datafinal) ) { 
+                    // Caso o marcador final fique maior que a data final informada na criaçao da agenda, ele repoe o valor do marcador
+                    // Pela data maxima que a agenda pode ser criada (ou seja, a data que o usuario informou)
+                    $datafinal_intervalo = $datafinal;    
+                    
+                    // Em seguida ele salva e sai do laço
+                    $this->gravarespecialidade($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
+                    break; // Se tirar esse trecho, ele irá ficar no loop eternamente
                 }
-//            if(strtotime($datafinal_intervalo) > strtotime($datafinal) && $b == 0){
-//                $datafinal_intervalo = $datafinal;
-//                $b++;
-//            }
             }
-        } 
-        else {
-//            var_dump($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);
-//            die('morreu');
+        } else {
             $this->gravarespecialidade($datainicial, $datafinal, $agenda_id, $medico_id);
         }
         $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
@@ -2425,37 +2431,41 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $intervalo = (int) $_POST['txtintervalo'];
-        $intervalo_teste = (int) $_POST['txtintervalo'] - 1;
-        $datainicial_intervalo = $datainicial;
-        $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo_teste days", strtotime($datainicial)));
-        $b = 0;
+        
         $agenda_id = $_POST['txthorario'];
         $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-//        var_dump($datafinal);
-//        var_dump($datafinal_intervalo);
-//        die;
+        
         if ($intervalo != '' && $intervalo > 0) {
+
+            // Data inicial
+            $datainicial_intervalo = $datainicial;
+
+            // Pega a quantidade de dias que faltam até encerrar a semana da data inicial
+            $diasAteFimDaSemana = 6 - date("N", strtotime($datainicial));
+
+            // Data equivalente ao ultimo dia da semana da data inicial      
+            $datafinal_intervalo = date('Y-m-d', strtotime("+$diasAteFimDaSemana days", strtotime($datainicial)));
+            
             while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
-//                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
-//                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
-//            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
 
                 $this->gravarconsulta($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
-
-                if (strtotime($datafinal_intervalo) > strtotime($datafinal)) {
-
-                    $datafinal_intervalo = $datafinal;
-                } else {
-                    $somador_inicial = $intervalo + 1;
-                    $somador_final = $intervalo * 2;
-                    $datainicial_intervalo = date('Y-m-d', strtotime("+$somador_inicial days", strtotime($datafinal_intervalo)));
-                    $datafinal_intervalo = date('Y-m-d', strtotime("+$somador_final days", strtotime($datafinal_intervalo)));
+                
+                // Avança o marcador inicial para o primeiro dia da semana seguinte
+                $datainicial_intervalo = date('Y-m-d', strtotime("+" . $intervalo . " week 1 day", strtotime($datafinal_intervalo)));
+                
+                // Avança o marcador final para o ultimo dia da semana seguinte
+                $datafinal_intervalo = date('Y-m-d', strtotime("+" . $intervalo + 1 . " week", strtotime($datafinal_intervalo)));
+                
+                if ( strtotime($datafinal_intervalo) >= strtotime($datafinal) ) { 
+                    // Caso o marcador final fique maior que a data final informada na criaçao da agenda, ele repoe o valor do marcador
+                    // Pela data maxima que a agenda pode ser criada (ou seja, a data que o usuario informou)
+                    $datafinal_intervalo = $datafinal;    
+                    
+                    // Em seguida ele salva e sai do laço
+                    $this->gravarconsulta($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
+                    break; // Se tirar esse trecho, ele irá ficar no loop eternamente
                 }
-//            if(strtotime($datafinal_intervalo) > strtotime($datafinal) && $b == 0){
-//                $datafinal_intervalo = $datafinal;
-//                $b++;
-//            }
             }
         } else {
             $this->gravarconsulta($datainicial, $datafinal, $agenda_id, $medico_id);
@@ -2470,40 +2480,44 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $intervalo = (int) $_POST['txtintervalo'];
-        $intervalo_teste = (int) $_POST['txtintervalo'] - 1;
-        $datainicial_intervalo = $datainicial;
-        $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo_teste days", strtotime($datainicial)));
-        $b = 0;
+        
         $agenda_id = $_POST['txthorario'];
-        $sala_id = $_POST['txtsala'];
+//        $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-//        var_dump($datafinal);
-//        var_dump($datafinal_intervalo);
-//        die;
+        
         if ($intervalo != '' && $intervalo > 0) {
+
+            // Data inicial
+            $datainicial_intervalo = $datainicial;
+
+            // Pega a quantidade de dias que faltam até encerrar a semana da data inicial
+            $diasAteFimDaSemana = 6 - date("N", strtotime($datainicial));
+
+            // Data equivalente ao ultimo dia da semana da data inicial      
+            $datafinal_intervalo = date('Y-m-d', strtotime("+$diasAteFimDaSemana days", strtotime($datainicial)));
+            
             while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
-//                echo 'Data Inicial: ' . $datainicial_intervalo . '<br>';
-//                echo 'Data Final: ' . $datafinal_intervalo . '<br>';
-//            $datafinal_intervalo = date('Y-m-d', strtotime("+$intervalo days", strtotime($datafinal_intervalo)));
-
-                $this->gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
-
-                if (strtotime($datafinal_intervalo) > strtotime($datafinal)) {
-
-                    $datafinal_intervalo = $datafinal;
-                } else {
-                    $somador_inicial = $intervalo + 1;
-                    $somador_final = $intervalo * 2;
-                    $datainicial_intervalo = date('Y-m-d', strtotime("+$somador_inicial days", strtotime($datafinal_intervalo)));
-                    $datafinal_intervalo = date('Y-m-d', strtotime("+$somador_final days", strtotime($datafinal_intervalo)));
+        
+                $this->gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
+                
+                // Avança o marcador inicial para o primeiro dia da semana seguinte
+                $datainicial_intervalo = date('Y-m-d', strtotime("+" . $intervalo . " week 1 day", strtotime($datafinal_intervalo)));
+                
+                // Avança o marcador final para o ultimo dia da semana seguinte
+                $datafinal_intervalo = date('Y-m-d', strtotime("+" . $intervalo + 1 . " week", strtotime($datafinal_intervalo)));
+                
+                if ( strtotime($datafinal_intervalo) >= strtotime($datafinal) ) { 
+                    // Caso o marcador final fique maior que a data final informada na criaçao da agenda, ele repoe o valor do marcador
+                    // Pela data maxima que a agenda pode ser criada (ou seja, a data que o usuario informou)
+                    $datafinal_intervalo = $datafinal;    
+                    
+                    // Em seguida ele salva e sai do laço
+                    $this->gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
+                    break; // Se tirar esse trecho, ele irá ficar no loop eternamente
                 }
-//            if(strtotime($datafinal_intervalo) > strtotime($datafinal) && $b == 0){
-//                $datafinal_intervalo = $datafinal;
-//                $b++;
-//            }
             }
         } else {
-            $this->gravar($datainicial, $datafinal, $agenda_id, $sala_id, $medico_id);
+            $this->gravar($datainicial, $datafinal, $agenda_id, $medico_id);
         }
         $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
 
@@ -2511,7 +2525,7 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/agenda");
     }
 
-    function gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id) {
+    function gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id) {
 
 //        $agenda_id = $_POST['txthorario'];
 //        $sala_id = $_POST['txtsala'];
@@ -2531,6 +2545,7 @@ class Exame extends BaseController {
             $qtdeconsulta = (int) $qtdeconsulta;
             $horarioagenda_id = $item->horarioagenda_id;
             $empresa_id = $item->empresa_id;
+            $sala_id = $item->sala_id;
             $obs = $item->observacoes;
 
             if (($qtdeconsulta != 0) && ($item->intervaloinicio == "00:00:00")) {
@@ -2634,7 +2649,7 @@ class Exame extends BaseController {
 //        redirect(base_url() . "ambulatorio/agenda");
     }
 
-    function gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id) {
+    function gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id) {
 //        var_dump($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
 //        die;
 //        $agenda_id = $_POST['txthorario'];
@@ -2644,12 +2659,11 @@ class Exame extends BaseController {
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $datafinal_intervalo)));
         $nome = $_POST['txtNome'];
 
-        $tipo = $this->agenda->listartiposala($sala_id);
+        $tipo = $this->agenda->listartiposala();
         $tipo = $tipo[0]->tipo;
         $horarioagenda = $this->agenda->listarhorarioagendacriacaogeral($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
-//        var_dump($horarioagenda); die;
         $id = 0;
-
+        
         foreach ($horarioagenda as $item) {
 
             $tempoconsulta = $item->tempoconsulta;
@@ -2658,6 +2672,7 @@ class Exame extends BaseController {
             $horarioagenda_id = $item->horarioagenda_id;
             $empresa_id = $item->empresa_id;
             $obs = $item->observacoes;
+            $sala_id = $item->sala_id;
 
             if (($qtdeconsulta != 0) && ($item->intervaloinicio == "00:00:00")) {
                 $entrada = $item->horaentrada1;
@@ -2915,6 +2930,7 @@ class Exame extends BaseController {
             $qtdeconsulta = (int) $qtdeconsulta;
             $horarioagenda_id = $item->horarioagenda_editada_id;
             $empresa_id = $item->empresa_id;
+            $sala_id = $item->sala_id;
             $obs = $item->observacoes;
 
             if (($qtdeconsulta != 0) && ($item->intervaloinicio == "00:00:00")) {
