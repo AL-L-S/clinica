@@ -143,7 +143,7 @@ class Login extends Controller {
                 }
                 
                 try {
-                    $responses = $smsFacade->sendMultiple($smsLote);
+//                    $responses = $smsFacade->sendMultiple($smsLote);
                     foreach ($responses as $response) {
                         echo "Status: " . $response->getStatusCode() . " - " . $response->getStatusDescription();
                         echo "\nDetalhe: " . $response->getDetailCode() . " - " . $response->getDetailDescription() . "\n";

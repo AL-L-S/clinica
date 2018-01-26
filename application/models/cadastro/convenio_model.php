@@ -813,7 +813,13 @@ class Convenio_model extends Model {
             $this->db->set('registroans', $_POST['txtregistroans']);
             $this->db->set('codigoidentificador', $_POST['txtcodigo']);
             
-//            var_dump($_POST['convenio_associacao']); die;
+            
+            if (isset($_POST['guia_prestador_unico'])) {
+                $this->db->set('guia_prestador_unico', 't');
+            } else{
+                $this->db->set('guia_prestador_unico', 'f');
+            }
+            
             if (isset($_POST['associaconvenio'])) {
                 $this->db->set('associado', 't');
 //                $this->db->set('associacao_percentual', str_replace(",", ".", $_POST['valorpercentual']));
@@ -1007,7 +1013,8 @@ class Convenio_model extends Model {
                                 co.associado,
                                 co.associacao_percentual,
                                 co.associacao_convenio_id,
-                                co.razao_social');
+                                co.razao_social,
+                                co.guia_prestador_unico');
             $this->db->from('tb_convenio co');
             $this->db->join('tb_municipio c', 'c.municipio_id = co.municipio_id', 'left');
             $this->db->join('tb_tipo_logradouro tp', 'tp.tipo_logradouro_id = co.tipo_logradouro_id', 'left');
@@ -1055,6 +1062,7 @@ class Convenio_model extends Model {
             $this->_associado = $return[0]->associado;
             $this->_associacao_percentual = $return[0]->associacao_percentual;
             $this->_associacao_convenio_id = $return[0]->associacao_convenio_id;
+            $this->_guia_prestador_unico = $return[0]->guia_prestador_unico;
         } else {
             $this->_convenio_id = null;
         }

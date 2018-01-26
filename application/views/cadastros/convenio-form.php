@@ -39,6 +39,20 @@
                     }
                     ?>
                 </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <?php
+                    if (@$obj->_guia_prestador_unico == "t") {
+                        ?>
+                        <input type="checkbox" name="guia_prestador_unico" checked ="true" />Número único de guia do prestador (xml)
+                        <?php
+                    } else {
+                        ?>
+                        <input type="checkbox" name="guia_prestador_unico"  />Número único de guia do prestador (xml)
+                        <?php
+                    }
+                    ?>
+                </div>
 
             </fieldset>
             <fieldset>

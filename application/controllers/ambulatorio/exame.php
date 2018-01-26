@@ -3356,13 +3356,12 @@ class Exame extends BaseController {
                                     $conselhosolicitante = $item->conselhosolicitante;
                                 }
 
-
                                 if ($_POST['autorizacao'] == 'SIM') {
                                     $corpo = $corpo . "
                     <ans:guiaSP-SADT>
                       <ans:cabecalhoGuia>
                          <ans:registroANS>" . $registroans . "</ans:registroANS>
-                         <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                         <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f') ? $value->ambulatorio_guia_id : $item->agenda_exames_id) . "</ans:numeroGuiaPrestador>
                          <ans:guiaPrincipal>1</ans:guiaPrincipal>
                       </ans:cabecalhoGuia>
                       
@@ -3469,14 +3468,15 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                } else {
+                                } 
+                                else {
 
 //                                    die('morreu02');
                                     $corpo = $corpo . "
                 <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
                             <ans:registroANS>" . $registroans . "</ans:registroANS>
-                         <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                         <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f') ? $value->ambulatorio_guia_id : $item->agenda_exames_id) . "</ans:numeroGuiaPrestador>
                          <ans:guiaPrincipal>1</ans:guiaPrincipal>
                       </ans:cabecalhoGuia>
                       <ans:dadosAutorizacao>
@@ -3719,7 +3719,7 @@ class Exame extends BaseController {
                 <ans:guiaConsulta>
                     <ans:cabecalhoConsulta>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
-                        <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                        <ans:numeroGuiaPrestador>" . (($value->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $value->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
                     </ans:cabecalhoConsulta>
                     <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
                     <ans:dadosBeneficiario>
@@ -3906,7 +3906,7 @@ class Exame extends BaseController {
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
                             <ans:registroANS>" . $registroans . "</ans:registroANS>
-                         <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                         <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $item->agenda_exames_id)). "</ans:numeroGuiaPrestador>
                          <ans:guiaPrincipal>1</ans:guiaPrincipal>
                       </ans:cabecalhoGuia>
                       <ans:dadosAutorizacao>
@@ -4015,7 +4015,7 @@ class Exame extends BaseController {
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
                             <ans:registroANS>" . $registroans . "</ans:registroANS>
-                         <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                         <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $item->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
                          <ans:guiaPrincipal>1</ans:guiaPrincipal>
                       </ans:cabecalhoGuia>
                       <ans:dadosAutorizacao>
@@ -4260,7 +4260,7 @@ class Exame extends BaseController {
                 <ans:guiaConsulta>
                     <ans:cabecalhoConsulta>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
-                        <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                        <ans:numeroGuiaPrestador>" . (($value->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $value->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
                     </ans:cabecalhoConsulta>
                     <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
                     <ans:dadosBeneficiario>
