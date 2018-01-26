@@ -1,4 +1,4 @@
-
+<meta charset="utf8">
 <div class="content ficha_ceatox">
     <?
     $exame_id = $exame[0]->agenda_exames_id;
