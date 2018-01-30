@@ -3216,10 +3216,7 @@ class Exame extends BaseController {
         $listarpacienete = $this->exame->listarpacientesxmlfaturamento();
         $listarexame = $this->exame->listargxmlfaturamento();
         $listarexames = $this->exame->listarxmlfaturamentoexames();
-//        echo '<pre>';
-//        var_dump($listarexame); 
-//        var_dump($listarexames); die;
-
+        
         $horario = date("Y-m-d");
         $hora = date("H:i:s");
         $empresa = $this->exame->listarcnpj();
@@ -3297,12 +3294,6 @@ class Exame extends BaseController {
                 <ans:guiasTISS>";
                     $contador = count($listarpacienete);
                     foreach ($listarpacienete as $value) {
-
-                        if ($value->guiaconvenio == '') {
-                            $guianumero = '0000000';
-                        } else {
-                            $guianumero = $value->guiaconvenio;
-                        }
                         if ($value->convenionumero == '') {
                             $numerodacarteira = '0000000';
                         } else {
@@ -3310,6 +3301,12 @@ class Exame extends BaseController {
                         }
 
                         foreach ($listarexames as $item) {
+                            
+                            if ($item->guiaconvenio == '') {
+                                $guianumero = '0000000';
+                            } else {
+                                $guianumero = $item->guiaconvenio;
+                            }
 
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $tabela = '22';
@@ -3816,7 +3813,8 @@ class Exame extends BaseController {
                         }
                     }
                 }
-            } else {
+            } 
+            else {
                 if ($listarexame[0]->grupo != 'CONSULTA') {
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -4393,12 +4391,12 @@ class Exame extends BaseController {
                 <ans:guiasTISS>";
                     $contador = count($listarpacienete);
                     foreach ($listarpacienete as $value) {
-
-                        if ($value->guiaconvenio == '') {
-                            $guianumero = '0000000';
-                        } else {
-                            $guianumero = $value->guiaconvenio;
-                        }
+//
+//                        if ($value->guiaconvenio == '') {
+//                            $guianumero = '0000000';
+//                        } else {
+//                            $guianumero = $value->guiaconvenio;
+//                        }
                         if ($value->convenionumero == '') {
                             $numerodacarteira = '0000000';
                         } else {
@@ -4406,7 +4404,13 @@ class Exame extends BaseController {
                         }
 
                         foreach ($listarexames as $item) {
-
+                            
+                            if ($item->guiaconvenio == '') {
+                                $guianumero = '0000000';
+                            } else {
+                                $guianumero = $item->guiaconvenio;
+                            }
+                            
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $i++;
                                 $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
@@ -4439,7 +4443,7 @@ class Exame extends BaseController {
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
                             <ans:registroANS>" . $registroans . "</ans:registroANS>
-                         <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                         <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f') ? $value->ambulatorio_guia_id : $item->agenda_exames_id) . "</ans:numeroGuiaPrestador>
                          <ans:guiaPrincipal>1</ans:guiaPrincipal>
                       </ans:cabecalhoGuia>
                       <ans:dadosAutorizacao>
@@ -4528,7 +4532,7 @@ class Exame extends BaseController {
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
                             <ans:registroANS>" . $registroans . "</ans:registroANS>
-                         <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                         <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f') ? $value->ambulatorio_guia_id : $item->agenda_exames_id) . "</ans:numeroGuiaPrestador>
                          <ans:guiaPrincipal>1</ans:guiaPrincipal>
                       </ans:cabecalhoGuia>
                       <ans:dadosAutorizacao>
@@ -4707,7 +4711,7 @@ class Exame extends BaseController {
                 <ans:guiaConsulta>
                     <ans:cabecalhoConsulta>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
-                        <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                        <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f') ? $value->ambulatorio_guia_id : $item->agenda_exames_id) . "</ans:numeroGuiaPrestador>
                     </ans:cabecalhoConsulta>
                     <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
                     <ans:dadosBeneficiario>
@@ -4781,7 +4785,8 @@ class Exame extends BaseController {
                         }
                     }
                 }
-            } else {
+            } 
+            else {
 
                 if ($listarexame[0]->grupo != 'CONSULTA') {
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -4809,12 +4814,6 @@ class Exame extends BaseController {
             <ans:guiasTISS>";
                     $contador = count($listarpacienete);
                     foreach ($listarpacienete as $value) {
-
-                        if ($value->guiaconvenio == '') {
-                            $guianumero = '0000000';
-                        } else {
-                            $guianumero = $value->guiaconvenio;
-                        }
                         if ($value->convenionumero == '') {
                             $numerodacarteira = '0000000';
                         } else {
@@ -4822,6 +4821,13 @@ class Exame extends BaseController {
                         }
 
                         foreach ($listarexames as $item) {
+                            
+                            if ($item->guiaconvenio == '') {
+                                $guianumero = '0000000';
+                            } else {
+                                $guianumero = $item->guiaconvenio;
+                            }
+
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $i++;
                                 $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
@@ -4847,13 +4853,13 @@ class Exame extends BaseController {
                                 } else {
                                     $conselhosolicitante = $item->conselhosolicitante;
                                 }
-
+                                
                                 if ($_POST['autorizacao'] == 'SIM') {
                                     $corpo = $corpo . "
                                                       <ans:guiaSP-SADT>
                       <ans:cabecalhoGuia>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
-                     <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                     <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f') ? $value->ambulatorio_guia_id : $item->agenda_exames_id) . "</ans:numeroGuiaPrestador>
                      <ans:guiaPrincipal>1</ans:guiaPrincipal>
                   </ans:cabecalhoGuia>
                   <ans:dadosAutorizacao>
@@ -4941,7 +4947,7 @@ class Exame extends BaseController {
                                                       <ans:guiaSP-SADT>
                       <ans:cabecalhoGuia>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
-                     <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                     <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f') ? $value->ambulatorio_guia_id : $item->agenda_exames_id) . "</ans:numeroGuiaPrestador>
                      <ans:guiaPrincipal>1</ans:guiaPrincipal>
                   </ans:cabecalhoGuia>
                   <ans:dadosAutorizacao>
@@ -5072,7 +5078,8 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } else {
+                } 
+                else {
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
 <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>

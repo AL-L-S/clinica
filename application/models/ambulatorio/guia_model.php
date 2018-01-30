@@ -4159,9 +4159,6 @@ class guia_model extends Model {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-
-
-
         $this->db->where("al.data_producao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("al.data_producao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
@@ -12724,7 +12721,7 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function valorexames($percentual) {
+    function valorexames($percentual, $percentual_laboratorio) {
         try {
             $exame_id = "";
 
@@ -12789,6 +12786,13 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('forma_pagamento4', NULL);
                 $this->db->set('valor4', 0);
             }
+            
+            if (count($percentual_laboratorio) > 0) {
+                $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
+                $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
+                $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
+            }
+            
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('data_editar', $horario);
