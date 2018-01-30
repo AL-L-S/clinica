@@ -31,11 +31,8 @@ class Login extends Controller {
         }
 
         $servicosms = $this->session->userdata('servicosms');
-//        var_dump($servicosms);
+        
         if ($servicosms == 't') {
-//            $verificacoes = $this->login->verificacaosmsdia();
-//            if ($verificacoes[0]->total < 3 && ( date("H") == "08" ) ) {
-
             $registro_sms_id = $this->login->criandoregistrosms();
 
             $dadosEmpresaSms = $this->login->listarempresasmsdados();
@@ -108,12 +105,8 @@ class Login extends Controller {
             }
             
             // Buscando mensagens  no banco que deverao ser mandadas
-//            $dados = $this->login->listarsms();
-            
+            $dados = $this->login->listarsms();
             if (count($dados) > 0) {
-                
-//                require_once ('./application/libraries/Googl.class.php');
-//                $Googl = new Googl('AIzaSyAXqZLY8c_aC-G2VD7ppuCBF-lWEhWmEvY ');
                 
                 /* INTEGRAÇÃO ZENVIA API */
                 require_once ('./application/libraries/php-rest-api/autoload.php');
@@ -127,8 +120,8 @@ class Login extends Controller {
                         $sms->setTo($numero["numFor"]);
                         
                         if($value['tipo'] == 'CONFIRMACAO') {
-                            // Encurta a URL de confirmação
-                            $url = $this->utilitario->validaExternoEndereco($value['endereco_externo']) . "login/confirmarAtendimentoSMS/" . $value['agenda_exames_id'];
+                            $url = $this->utilitario->validaExternoEndereco($value['endereco_externo']) . "login/c/" . $value['agenda_exames_id'];
+                            
                             $msg = $value['mensagem'] . " Para confirmar, acesse: " . $url;
                             $sms->setMsg($msg);
                         }
@@ -137,7 +130,7 @@ class Login extends Controller {
                         }
                         
                         $sms->setId($value['numero_indentificacao'] . "-" . $value['sms_id']);
-    //                    $sms->setFrom($from);
+                        $sms->setFrom($value['remetente_sms']);
                         $smsLote[] = $sms;
                     }
                 }
@@ -146,14 +139,13 @@ class Login extends Controller {
 //                    $responses = $smsFacade->sendMultiple($smsLote);
                     foreach ($responses as $response) {
                         echo "Status: " . $response->getStatusCode() . " - " . $response->getStatusDescription();
-                        echo "\nDetalhe: " . $response->getDetailCode() . " - " . $response->getDetailDescription() . "\n";
+                        echo " Detalhe: " . $response->getDetailCode() . " - " . $response->getDetailDescription() . "<br>";
                     }
                 } catch( Exception $ex ){
                     echo "<pre>";
                     var_dump($ex->message);
                 }
-            }          
-//                die('morreu');
+            }
             
         }
         
@@ -193,7 +185,7 @@ class Login extends Controller {
         }
     }
 
-    function confirmarAtendimentoSMS($agenda_exames_id) {
+    function c($agenda_exames_id) { // Função para confirmar os atendimentos
         $this->login->confirmarAtendimentoSMS($agenda_exames_id);
         echo '
             <html>

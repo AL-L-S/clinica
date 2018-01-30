@@ -30,7 +30,7 @@
                         </select>
                     </div>
                     <div style="width: 100%">
-                        <label onclick="mostrarPopUpIndentificao()">Identificação da Empresa</label>
+                        <label onclick="mostrarPopUpIndentificao()" title="Clique para obter mais informações.">Identificação da Empresa</label>
                         <input type="text" name="numero_identificacao_sms" value="<?= @$mensagem[0]->numero_indentificacao_sms ?>" required=""/>
                     </div>
                     <div style="width: 100%">
@@ -45,7 +45,11 @@
                     </label>
                 </div>
                 <div style="width: 100%">
-                    <label>Mensagem Confirmaçao</label>
+                    <label>Remetente</label>
+                    <input type="text" id="remetente_sms" class="mensagem_texto" name="remetente_sms" value="<?= @$mensagem[0]->remetente_sms ?>" maxlength="20"/>
+                </div>
+                <div style="width: 100%">
+                    <label>Mensagem Confirmaçao (Para mostrar a data que o procedimento está agendado na mensagem use _dia_ )</label>
                     <input type="text" id="txtMensagemConfirmacao" class="mensagem_texto" name="txtMensagemConfirmacao" value="<?= @$mensagem[0]->mensagem_confirmacao ?>" maxlength="105"/>
                 </div>
                 <div  style="width: 100%">

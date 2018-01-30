@@ -223,7 +223,7 @@ class login_model extends Model {
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('numero', preg_replace('/[^\d]+/', '', $numero));
-                $this->db->set('mensagem', $mensagem . " Consulta: " . $item->nome);
+                $this->db->set('mensagem', str_replace("_dia_", date("d/m/Y", strtotime($item->data)), $mensagem));
                 $this->db->set('tipo', 'CONFIRMACAO');
                 $this->db->set('data', $horario);
                 $this->db->insert('tb_sms');
@@ -450,7 +450,8 @@ class login_model extends Model {
                            controle_id, 
                            numero_indentificacao_sms as numero_indentificacao, 
                            s.tipo, 
-                           es.endereco_externo");
+                           es.endereco_externo,
+                           es.remetente_sms");
         $this->db->from('tb_sms s');
         $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id');
         $this->db->join('tb_empresa_sms es', 'es.empresa_id = s.empresa_id');
@@ -526,6 +527,7 @@ class login_model extends Model {
         $d = (date('N') == 6) ? 2 : 1;
         $diaSeguinte = date('d-m-Y', strtotime("+$d day", strtotime(date('d-m-Y'))));
         $this->db->select('ae.agenda_exames_id,
+                           ae.data,
                            p.paciente_id,
                            p.nome as paciente,
                            p.celular,
