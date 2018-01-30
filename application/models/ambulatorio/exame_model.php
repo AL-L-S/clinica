@@ -5534,6 +5534,7 @@ class exame_model extends Model {
                             ae.data,
                             pt.grupo,
                             c.nome as convenio,
+                            c.guia_prestador_unico,
                             tuc.nome as classificacao,
                             ae.quantidade,
                             c.registroans,
@@ -5542,7 +5543,10 @@ class exame_model extends Model {
                             e.data_atualizacao,
                             g.data_criacao,
                             ae.guiaconvenio,
-                            ae.paciente_id');
+                            ae.paciente_id,
+                            ae.agenda_exames_id,
+                            ae.guiaconvenio,
+                            c.guia_prestador_unico');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -5596,7 +5600,7 @@ class exame_model extends Model {
         $_POST['datafim'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datafim'])));
 
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('ae.paciente_id, ae.guiaconvenio, convenionumero, p.nome as paciente, ambulatorio_guia_id, c.nome as convenio, ae.agenda_exames_id');
+        $this->db->select('ae.paciente_id, p.convenionumero, p.nome as paciente, ambulatorio_guia_id');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -5641,7 +5645,7 @@ class exame_model extends Model {
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
         }
-        $this->db->groupby('ae.paciente_id, ae.guiaconvenio, convenionumero, p.nome, ambulatorio_guia_id, c.nome, ae.agenda_exames_id');
+        $this->db->groupby('ae.paciente_id, convenionumero, p.nome, ambulatorio_guia_id');
         $return = $this->db->get();
         return $return->result();
     }
@@ -5666,7 +5670,9 @@ class exame_model extends Model {
                             tu.descricao as procedimento,
                             sum(ae.quantidade) as quantidade,
                             ae.guiaconvenio,
-                            ae.paciente_id");
+                            ae.paciente_id,
+                            ae.agenda_exames_id,
+                            c.guia_prestador_unico");
         $this->db->from("tb_ambulatorio_guia g");
         $this->db->join("tb_agenda_exames ae", "ae.guia_id = g.ambulatorio_guia_id", "left");
         $this->db->join("tb_paciente p", "p.paciente_id = ae.paciente_id", "left");
@@ -5722,7 +5728,9 @@ class exame_model extends Model {
                             pt.codigo,
                             tu.descricao,
                             ae.guiaconvenio,
-                            ae.paciente_id");
+                            ae.paciente_id,
+                            ae.agenda_exames_id,
+                            c.guia_prestador_unico");
         $return = $this->db->get();
         return $return->result();
     }

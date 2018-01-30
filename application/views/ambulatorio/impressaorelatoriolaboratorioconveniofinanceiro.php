@@ -77,7 +77,7 @@ switch ($MES) {
 
                     <th class="tabela_header"><font size="-1">Convenio</th>
                     <th class="tabela_header"><font size="-1">Nome</th>
-                    <th class="tabela_header"><font size="-1">Medico</th>
+                    <th class="tabela_header"><font size="-1">Laboratorio</th>
                     <th class="tabela_header" width="100px;" title="Data do agendamento. Data onde o paciente foi agendado"><font size="-1">Data Agend.</th>
                     <th class="tabela_header" width="100px;" title="Data do atendimento. Data em que foi enviado da sala de espera"><font size="-1">Data Atend.</th>
                     <th class="tabela_header" width="100px;" title="Data de recebimento. Data em que o relatorio se baseia"><font size="-1">Data Receb.</th>

@@ -4159,9 +4159,6 @@ class guia_model extends Model {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
 
-
-
-
         $this->db->where("al.data_producao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("al.data_producao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
@@ -4642,7 +4639,7 @@ class guia_model extends Model {
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer2', 'left');
-        $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_operador ops', 'ops.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('ae.procedimento_tuss_id is not null');
@@ -4768,6 +4765,9 @@ class guia_model extends Model {
                            (
                             SELECT SUM(pcr.valor) FROM ponto.tb_paciente_credito pcr WHERE pcr.ativo = 't' AND pcr.paciente_id = p.paciente_id
                            ) as saldo_credito,
+                           (
+                            SELECT data_cadastro FROM ponto.tb_paciente_credito pc2 WHERE pc2.ativo = 't' AND pc2.paciente_id = p.paciente_id AND pc2.valor > 0 ORDER BY data_cadastro DESC LIMIT 1
+                           ) AS data_lancamento,
                            c.dinheiro,
                            c.nome,
                            ae.percentual_medico,
@@ -12514,8 +12514,23 @@ ORDER BY ae.agenda_exames_id)";
 
     function editarexames($percentual) {
         try {
-//            var_dump($percentual);die;
-
+            if ($_POST['indicacao'] != "") {
+                $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
+                $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
+                $this->db->join('tb_procedimento_percentual_promotor m', 'm.procedimento_percentual_promotor_id = mc.procedimento_percentual_promotor_id', 'left');
+                $this->db->where('m.procedimento_tuss_id', $_POST['procedimento1']);
+                $this->db->where('mc.promotor', $_POST['indicacao']);
+                $this->db->where('mc.ativo', 'true');
+                $return2 = $this->db->get()->result();
+            } else {
+                $return2 = array();
+            }
+            
+            if (count($return2) > 0) {
+                $this->db->set('valor_promotor', $return2[0]->valor_promotor);
+                $this->db->set('percentual_promotor', $return2[0]->percentual_promotor);
+            }
+            
             $this->db->set('autorizacao', $_POST['autorizacao1']);
             $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
             $this->db->set('guia_id', $_POST['guia_id']);
@@ -12706,7 +12721,7 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function valorexames($percentual) {
+    function valorexames($percentual, $percentual_laboratorio) {
         try {
             $exame_id = "";
 
@@ -12771,6 +12786,13 @@ ORDER BY ae.agenda_exames_id)";
                 $this->db->set('forma_pagamento4', NULL);
                 $this->db->set('valor4', 0);
             }
+            
+            if (count($percentual_laboratorio) > 0) {
+                $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
+                $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
+                $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
+            }
+            
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('data_editar', $horario);

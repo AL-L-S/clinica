@@ -453,14 +453,15 @@
         <br>
         <table border="1">
             <tr>
-                <td colspan="5"><center><font size="-1"><B>PACIENTES CRÉDITO</B></center></td>
+                <td colspan="6"><center><font size="-1"><B>PACIENTES CRÉDITO</B></center></td>
             </tr>
             <tr>
                 <th style='text-align: left;'><font size="-1">Paciente</th>
                 <th style='text-align: right;'width="120px;"><font size="-1">Procedimento</th>
                 <th style='text-align: right;'width="120px;"><font size="-1">Valor Crédito</th>
                 <th style='text-align: right;'width="120px;"><font size="-1">Saldo Atual</th>
-                <th style='text-align: right;'width="120px;"><font size="-1">Data</th>
+                <th style=''width="120px;"><font size="-1">Data Lançamento</th>
+                <th style=''width="120px;"><font size="-1">Data</th>
             </tr> <?
     foreach ($relatoriocredito as $item) {
         if ($item->forma_pagamento == 1000) {
@@ -481,6 +482,7 @@
                     <td style='text-align: right;'width="120px;"><font size="-1"><?= $item->procedimento ?></td>
                     <td style='text-align: right;'width="120px;"><font size="-1"><?= "R$ " . number_format($credito, 2, ',', '.') ?></td>
                     <td style='text-align: right;'width="120px;"><font size="-1"><?= "R$ " . number_format($item->saldo_credito, 2, ',', '.') ?></td>
+                    <td style='text-align: right;'width="120px;"><font size="-1"><?= date("d/m/Y", strtotime($item->data_lancamento)) ?></td>
                     <td style='text-align: right;'width="120px;"><font size="-1"><?= date("d/m/Y", strtotime($item->data)) ?></td>
                 </tr> 
 

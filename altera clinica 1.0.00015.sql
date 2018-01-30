@@ -18,6 +18,10 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN data_alteracao_producao timest
 ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN situacao_revisor TYPE TEXT;
 ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN cabecalho TYPE TEXT;
 
+-- Dia 26/01/2018
+ALTER TABLE ponto.tb_convenio ADD COLUMN guia_prestador_unico boolean DEFAULT false;
+
+
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
 DECLARE
@@ -27,6 +31,23 @@ BEGIN
     IF resultado = 0 THEN 
 	INSERT INTO ponto.tb_perfil(perfil_id, nome)
         VALUES (19, 'MEDICO ADMINISTRATIVO');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000015');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000015', '1.0.000015');
     END IF;
     RETURN 'SUCESSO';
 END;

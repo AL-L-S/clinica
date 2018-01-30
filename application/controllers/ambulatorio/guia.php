@@ -902,16 +902,12 @@ class Guia extends BaseController {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
         }
         $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
-//            var_dump($grupo); die;
         if ($grupo == 'LABORATORIAL') {
             $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
         } else {
             $percentual_laboratorio = array();
         }
-//        var_dump($_POST['grupo1']); die;
-//        if (count($percentual) == 0) {
-//            $percentual_laboratorio = $this->guia->percentuallaboratorioprocedimento($procedimentopercentual, $medicopercentual);
-//        }
+        
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
@@ -1234,10 +1230,16 @@ class Guia extends BaseController {
         if (count($percentual) == 0) {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
         }
-//        var_dump($percentual);
-//        die;
+        // Caso seja um procedimento laboratorial
+        $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
+        if ($grupo == 'LABORATORIAL') {
+            $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
+        } else {
+            $percentual_laboratorio = array();
+        }
+        
         $dadosantigos = $this->guia->listardadosantigoseditarvalor($agenda_exames_id);
-        $ambulatorio_guia_id = $this->guia->valorexames($percentual);
+        $ambulatorio_guia_id = $this->guia->valorexames($percentual, $percentual_laboratorio);
         if ($ambulatorio_guia_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Dados. Opera&ccedil;&atilde;o cancelada.';
         } else {

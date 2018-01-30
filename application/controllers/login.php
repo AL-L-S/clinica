@@ -138,16 +138,12 @@ class Login extends Controller {
                         
                         $sms->setId($value['numero_indentificacao'] . "-" . $value['sms_id']);
     //                    $sms->setFrom($from);
-    //                    $sms->setSchedule("2014-07-13T16:00:00");
                         $smsLote[] = $sms;
                     }
                 }
                 
-//                echo "<pre>";
-//                var_dump($smsLote); die;
-                
                 try {
-                    $responses = $smsFacade->sendMultiple($smsLote);
+//                    $responses = $smsFacade->sendMultiple($smsLote);
                     foreach ($responses as $response) {
                         echo "Status: " . $response->getStatusCode() . " - " . $response->getStatusDescription();
                         echo "\nDetalhe: " . $response->getDetailCode() . " - " . $response->getDetailDescription() . "\n";
