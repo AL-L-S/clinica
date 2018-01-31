@@ -61,7 +61,7 @@ switch ($MES) {
 
     <hr>
     <?
-    if ($contador > 0 || count($relatoriocirurgico) > 0 || count($relatoriohomecare) > 0) {
+    if ($contador > 0) {
         $totalperc = 0;
         $valor_recebimento = 0;
         ?>

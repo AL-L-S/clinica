@@ -5600,7 +5600,11 @@ class exame_model extends Model {
         $_POST['datafim'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['datafim'])));
 
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('ae.paciente_id, p.convenionumero, p.nome as paciente, ambulatorio_guia_id');
+        $this->db->select("ae.paciente_id, 
+                           p.convenionumero, 
+                           p.nome as paciente, 
+                           ambulatorio_guia_id, 
+                           COUNT(*) as contador");
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');

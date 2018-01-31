@@ -391,6 +391,15 @@ class login_model extends Model {
         $this->db->set('operador_telefonema', $operador_id);
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $this->db->update('tb_agenda_exames');
+
+        $this->db->select('ae.inicio, pt.nome as procedimento, ae.data, p.nome as paciente');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('ae.agenda_exames_id', $agenda_exames_id);
+        $retorno = $this->db->get()->result();
+        return $retorno;
     }
 
     function criandoregistrosms() {

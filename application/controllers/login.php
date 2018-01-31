@@ -186,14 +186,29 @@ class Login extends Controller {
     }
 
     function c($agenda_exames_id) { // Função para confirmar os atendimentos
-        $this->login->confirmarAtendimentoSMS($agenda_exames_id);
+        $retorno = $this->login->confirmarAtendimentoSMS($agenda_exames_id);
+        if(count($retorno) > 0){
+            $dados = '<table border=1 cellspacing=0 cellpadding=5>
+                        <tr><td colspan="2" style="text-align: center; background-color: #ccc">Detalhes</td></tr>
+                        <tr><td>Paciente:</td><td>' . @$retorno[0]->paciente . '</td></tr>
+                        <tr><td>Procedimento:</td><td>' . @$retorno[0]->procedimento . '</td></tr>
+                        <tr><td>Data:</td><td>' . date("d/m/Y", strtotime(@$retorno[0]->data)) . '</td></tr>
+                        <tr><td>Hora:</td><td>' . @$retorno[0]->inicio . '</td></tr>
+                        <tr><td colspan="2" style="text-align: center; color: green">Confirmado com sucesso!</td></tr>
+                      </table>';
+        }
         echo '
             <html>
                 <head>
                     <meta charset="utf-8"/>
+                    <script>
+                        alert("Consulta/Exame confirmado com sucesso!");
+                    </script>
                 </head>
                 <body>
-                    <h3 style="text-align: center">Consulta/Exame Confirmado com sucesso!</h3>
+                    <div> ' . 
+                        $dados . '
+		    </div>
                 </body>
             </html>
         ';
