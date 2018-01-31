@@ -162,7 +162,6 @@ class pacientes extends BaseController {
         }
         $teste = $this->exametemp->autorizarpacientetemp($paciente_id, $ambulatorio_guia_id);
         if ($teste == 0) {
-//            $this->gerardicom($ambulatorio_guia_id);
             $data['mensagem'] = 'Paciente gravado com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar paciente';

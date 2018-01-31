@@ -403,7 +403,22 @@ class Exame extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['relatorio'] = $this->exame->gerarelatoriopacientetelefone();
-        $this->load->View('ambulatorio/impressaorelatoriopacientetelefone', $data);
+        if($_POST['gera_planilha'] == 'SIM') {
+            
+            $html = $this->load->View('ambulatorio/impressaorelatoriopacientetelefone', $data, true);
+            $filename = "Relatorio ". $_POST['txtdata_inicio'] . " a " .$_POST['txtdata_fim'];
+            
+            // Configurações header para forçar o download
+            header ("Content-type: application/x-msexcel; charset=utf-8");
+            header ("Content-Disposition: attachment; filename=\"{$filename}\"" );
+            header ("Content-Description: PHP Generated Data" );
+            
+            // Envia o conteúdo do arquivo
+            echo $html;
+            exit;            
+        } else {
+            $this->load->View('ambulatorio/impressaorelatoriopacientetelefone', $data);
+        }
     }
 
     function gerarelatoriomedicoagendaconsultas() {

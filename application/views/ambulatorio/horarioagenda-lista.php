@@ -89,7 +89,7 @@ $geral = $this->session->userdata('geral');
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
                             <td class="<?php echo $estilo_linha; ?>">
-                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/agenda/alterarsalahorarioagenda/<?= $item->horarioagenda_id; ?>/<?= $agenda; ?>/<?= $item->sala_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/agenda/alterarsalahorarioagenda/<?= $item->horarioagenda_id; ?>/<?= $agenda; ?>/<?= $item->empresa_id; ?>/<?= $item->sala_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">
                                     => <?= $item->sala; ?>
                                 </a>
                             </td>

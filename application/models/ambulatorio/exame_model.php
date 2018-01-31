@@ -474,6 +474,17 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listartodassalasagenda($empresa_id) {
+        $this->db->select('exame_sala_id,
+                            nome');
+        $this->db->from('tb_exame_sala es');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('excluido', 'f');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listartodassalas() {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_sala_id,
@@ -3042,7 +3053,8 @@ class exame_model extends Model {
                             pc.valortotal,
                             pt.nome,
                             ae.inicio,
-                            al.dias_retorno');
+                            al.dias_retorno,
+                            p.cns as email');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
