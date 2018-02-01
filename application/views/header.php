@@ -259,7 +259,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id                                    ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id                                     ?>);
                     }
                 }
 
@@ -287,7 +287,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id                                      ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id                                       ?>);
                 }
 
 <? } ?>
@@ -428,8 +428,8 @@ function debug($object) {
                                             <? }
                                             ?>
 
-                                                                                                                                                                                                                            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
-                                                                                                                                                                                                                            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
+                                                                                                                                                                                                                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
+                                                                                                                                                                                                                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
 
                                             <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
                                                 <? if ($geral == 't') { ?>
@@ -767,7 +767,7 @@ function debug($object) {
                     <? } ?>
 <!--                    <li><span class="folder">Farmácia</span>
                         <ul><? if ($perfil_id == 1 || $perfil_id == 8) { ?>
-                                                <li><span class="folder">Rotinas</span>                                                 <li><span class="file"><a href="<?= base_url() ?>farmacia/solicitacao">Manter Solicitacao</a></span></li>
+                                <li><span class="folder">Rotinas</span>                                                 <li><span class="file"><a href="<?= base_url() ?>farmacia/solicitacao">Manter Solicitacao</a></span></li>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada">Manter Entrada</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/menu">Manter Menu</a></span></ul>
 
@@ -1378,7 +1378,7 @@ function debug($object) {
                 //atualiza status do operador
                 //                setInterval(function () {
                 //                    atualizastatus();
-                //                    verifica(0, 0,<? // echo $operador_id                      ?>);
+                //                    verifica(0, 0,<? // echo $operador_id                       ?>);
                 //                }, 10000);
 
                 buscamensagens();

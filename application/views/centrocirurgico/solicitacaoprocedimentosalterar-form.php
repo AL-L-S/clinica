@@ -1,6 +1,6 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
-    <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaoprocedimentos" method="post">
+    <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaoprocedimentosalterar" method="post">
         <?
         $perfil_id = $this->session->userdata('perfil_id');
         ?>
@@ -27,17 +27,7 @@
 
             <fieldset>
                 <legend>Procedimentos</legend>
-                <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravareditarprocedimentoscirurgia/<?= $solicitacao_id ?>" method="post">
-                    <input type="hidden" name="txtdata" id="txtdata" alt="date" class="texto02" value="<?
-                    if (@$solicitacao[0]->data_prevista != '') {
-                        echo date("d/m/Y", strtotime(@$solicitacao[0]->data_prevista));
-                    }
-                    ?>" required/>
-                    <input type="hidden" name="hora" id="hora" alt="99:99" class="texto02" value="<?
-                    if (@$solicitacao[0]->hora_prevista != '') {
-                        echo date("H:i", strtotime(@$solicitacao[0]->hora_prevista));
-                    }
-                    ?>" required/>
+                <input type="hidden" name="solicitacao_id" value="<?php echo $solicitacao_id; ?>"/>
                     <table>
                         <tr>
                             <td>Quantidade</td>
@@ -61,7 +51,7 @@
                         <tr>
                             <td>Procedimento</td>
                             <td>
-                                <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                                <select name="procedimentoID" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                                     <option value="">Selecione</option>
                                 </select>
                             </td>
@@ -91,7 +81,7 @@
                     </table>
                     <hr/>
                     <button type="submit" name="btnEnviar">Enviar</button>
-                </form>
+     
             </fieldset>
 
             <hr/>
@@ -135,10 +125,10 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                 <center>
-                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaoprocedimento/<?= $item->solicitacao_procedimento_id; ?>/<?= $solicitacao_id; ?>" class="delete">
+                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaoprocedimentoeditar/<?= $item->solicitacao_procedimento_id; ?>/<?= $solicitacao_id; ?>" class="delete">
                     </a>
                 </center>
-                </td>
+                        </td>
                 </tr>
 
 
@@ -239,10 +229,10 @@
                     });
 
 
-                
 
 
-          
+
+
 
 
 
