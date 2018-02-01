@@ -41,7 +41,7 @@
                         </td>
                         <td class="<?=$classe;?>" width="50px;" ><div class="bt_link">
                             <a  href="<?=  base_url()?>internacao/internacao/imprimirevolucaointernacao/<?=$item->internacao_evolucao_id;?>">
-                                <b>relatorio</b>
+                                <b>Relatorio</b>
                             </a>
                             </div>    
                         </td>

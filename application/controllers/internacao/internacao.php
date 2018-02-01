@@ -8,6 +8,7 @@ class internacao extends BaseController {
         parent::__construct();
         $this->load->model('emergencia/solicita_acolhimento_model', 'acolhimento');
         $this->load->model('cadastro/paciente_model', 'paciente');
+        $this->load->model('farmacia/produto_model', 'produto_m');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/laudo_model', 'laudo_m');
         $this->load->model('internacao/internacao_model', 'internacao_m');
@@ -20,12 +21,10 @@ class internacao extends BaseController {
     }
 
     public function index() {
-
         $this->pesquisar();
     }
 
     public function pesquisar($args = array()) {
-
         $this->loadView('internacao/listarinternacao');
     }
 
@@ -65,21 +64,6 @@ class internacao extends BaseController {
         $this->loadView('emergencia/solicitacoes-paciente', $data);
     }
 
-    function listarinternacao() {
-
-        $data['paciente'] = $this->internacao_m->listar();
-        echo var_dump($data['paciente']);
-        die;
-
-        $horario = date(" Y-m-d H:i:s");
-
-        $hour = substr($horario, 11, 3);
-        $minutes = substr($horario, 15, 2);
-        $seconds = substr($horario, 18, 4);
-
-        $this->loadView('emergencia/solicitacoes-paciente', $data);
-    }
-
     function acoes($paciente_id) {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['internacao'] = $this->internacao_m->listarinternacao($paciente_id);
@@ -103,6 +87,8 @@ class internacao extends BaseController {
 //        die;
         if ($data['numero'] == 0) {
             $data['paciente'] = $this->paciente->listardados($paciente_id);
+            $data['medicos'] = $this->operador_m->listarmedicos();
+//            var_dump($data['medico']); die;
 //            if ($data['paciente'][0]->cep == '' || $data['paciente'][0]->cns == '') {
 //                $data['mensagem'] = 'CEP ou CNS obrigatorio';
 //                $this->session->set_flashdata('message', $data['mensagem']);
@@ -113,7 +99,7 @@ class internacao extends BaseController {
         } else {
             $data['mensagem'] = 'Paciente ja possui internacao';
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "internacao/internacao/");
+            redirect(base_url() . "internacao/internacao/pesquisar");
         }
     }
 
@@ -171,8 +157,11 @@ class internacao extends BaseController {
     }
 
     function mostrarnovasaidapaciente($internacao_id) {
+
         $data['paciente'] = $this->motivosaida->mostrarnovasaidapaciente($internacao_id);
-        $data['saida'] = $this->motivosaida->listamotivosaida();
+        $data['motivosaida'] = $this->motivosaida->listamotivosaidapacientes($internacao_id);
+//        echo "<pre>";
+//        var_dump($internacao_id, $data['paciente']); die;
         $this->loadView('internacao/mostrarnovasaidapaciente', $data);
     }
 
@@ -196,25 +185,23 @@ class internacao extends BaseController {
         $this->loadView('internacao/cadastrarleito');
     }
 
-    function pesquisarevolucao($internacao_id) {
-
-        $data['internacao_id'] = $internacao_id;
-        $data['lista'] = $this->internacao_m->listarEvolucao($internacao_id);
-
-        $this->loadView('internacao/internacao-lista-evolucao', $data);
-    }
-
-    function imprimirevolucaointernacao($internacao_evolucao_id) {
-        
-        $data['lista'] = $this->internacao_m->imprimirevolucaointernacao($internacao_evolucao_id);
-        $data['empresa'] = $this->internacao_m->empresa();
-//        echo var_dump($data['lista']); die;
-        $this->load->View('internacao/internacao-imprimirrae', $data);
-    }
-    
-    function novoevolucaointernacao($internacao_id) {
+    function evolucaointernacao($internacao_id) {
         $data['internacao_id'] = $internacao_id;
         $this->loadView('internacao/evolucaointernacao', $data);
+    }
+
+    function listarevolucaointernacao($internacao_id) {
+        $data['lista'] = $this->internacao_m->listarevolucoes($internacao_id);
+        $data['internacao_id'] = $internacao_id;
+        $this->loadView('internacao/evolucaointernacao-lista', $data);
+    }
+
+    function editarevolucaointernacao($internacao_evolucao_id, $internacao_id) {
+        $data['lista'] = $this->internacao_m->editarevolucaointernacao($internacao_evolucao_id);
+//        var_dump( $data['lista']); die;
+        $data['internacao_id'] = $internacao_id;
+        $data['internacao_evolucao_id'] = $internacao_evolucao_id;
+        $this->loadView('internacao/evolucaointernacaoeditar', $data);
     }
 
     function novomotivosaida() {
@@ -283,34 +270,23 @@ class internacao extends BaseController {
 
     function gravarevolucaointernacao($internacao_id) {
         $_POST["internacao_id"] = $internacao_id;
+        $data["internacao_id"] = $internacao_id;
         $this->internacao_m->gravarevolucaointernacao();
-
         if ($_POST['solicitasaida'] == 'on') {
             $data['paciente'] = $this->motivosaida->mostrarnovasaidapaciente($internacao_id);
-
-            $this->loadView('internacao/mostrarnovasaidapaciente', $data);
+//            $this->loadView('internacao/mostrarnovasaidapaciente', $data);
+            redirect(base_url() . "internacao/internacao/mostrarnovasaidapaciente/$internacao_id", $data);
         } else {
-            if ($return == 0) {
-                $data['mensagem'] = 'Evolução gravada com sucesso';
-            } else {
-                $data['mensagem'] = 'Erro ao gravar Evolução';
-            }
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "internacao/internacao/pesquisarevolucao/$internacao_id", $data);
+            redirect(base_url() . "internacao/internacao/listarevolucaointernacao/$internacao_id", $data);
         }
     }
 
     function excluirevolucaointernacao($internacao_evolucao_id, $internacao_id) {
-        
+        $_POST["internacao_evolucao_id"] = $internacao_evolucao_id;
+        $data['internacao_id'] = $internacao_id;
         $this->internacao_m->excluirevolucaointernacao($internacao_evolucao_id);
 
-        if ($return == 0) {
-            $data['mensagem'] = 'Evolução excluida com sucesso';
-        } else {
-            $data['mensagem'] = 'Erro ao excluir Evolução';
-        }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "internacao/internacao/pesquisarevolucao/$internacao_id", $data);
+        redirect(base_url() . "internacao/internacao/listarevolucaointernacao/$internacao_id", $data);
     }
 
     function gravarsaida() {
@@ -334,7 +310,7 @@ class internacao extends BaseController {
             $data['mensagem'] = 'Erro ao gravar movimentacao';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "internacao/internacao");
+        redirect(base_url() . "internacao/internacao/pacientesinternados/Todas");
     }
 
     function gravarinternacaonutricao($paciente_id) {
@@ -476,23 +452,32 @@ class internacao extends BaseController {
         $this->loadView('internacao/transferirpaciente', $data);
     }
 
-    function prescricaopaciente($internacao_id, $prescricao_id = null) {
+    function prescricaopaciente($internacao_id) {
         $data['usafarmacia'] = count($this->internacao_m->usafarmacia());
         $data['medicamentos'] = $this->internacao_m->listamedicamentointernacao($internacao_id);
         $data['internacao_id'] = $internacao_id;
         if ($data['usafarmacia'] > 0) {
-            $data["prescricao_id"] = ($prescricao_id != null) ? $prescricao_id : '';
             $this->loadView('internacao/prescricaopacientefarmacia', $data);
         } else {
-            $data['lista'] = $this->internacao_m->listarautocompletemodelosreceita();
+//            $data['lista'] = $this->exametemp->listarautocompletemodelosreceita();
 //        $data['contador'] = $this->laudo->contadorlistarreceita($ambulatorio_laudo_id);
-            $data['receita'] = $this->internacao_m->listarreceitainternacao($internacao_id);
-//            var_dump($data['receita']);
-//            die;
+            $data['receita'] = $this->laudo_m->listarreceitainternacao($internacao_id);
             $data['operadores'] = $this->operador_m->listarmedicos();
             $data['paciente'] = $this->internacao_m->listardadosreceituario($internacao_id);
+
+            $data['internacao_id'] = $internacao_id;
             $this->load->View('internacao/receituarioconsulta-form', $data);
         }
+    }
+
+    function carregarprescricaopaciente($internacao_prescricao_id, $internacao_id) {
+        $data['usafarmacia'] = count($this->internacao_m->usafarmacia());
+        $data['medicamentos'] = $this->internacao_m->carregarprescricaopaciente($internacao_prescricao_id);
+        $data['internacao_id'] = $internacao_id;
+//        var_dump($data['medicamentos']); die;
+        $data['internacao_prescricao_id'] = $internacao_prescricao_id;
+
+        $this->loadView('internacao/carregarprescricaopaciente', $data);
     }
 
     function transferirpaciente() {
@@ -519,56 +504,29 @@ class internacao extends BaseController {
         $this->loadView('internacao/permutapaciente', $data);
     }
 
-    function impressaoreceita($ambulatorio_laudo_id) {
-
-
-        $this->load->plugin('mpdf');
-        $data['laudo'] = $this->internacao_m->listarreceitaimpressao($ambulatorio_laudo_id);
-        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-
-        $dataFuturo = date("Y-m-d");
-        $dataAtual = $data['laudo']['0']->nascimento;
-        $date_time = new DateTime($dataAtual);
-        $diff = $date_time->diff(new DateTime($dataFuturo));
-        $teste = $diff->format('%Ya %mm %dd');
-        //GERAL        
-        $filename = "laudo.pdf";
-        $cabecalho = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
-        $rodape = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
-        $html = $this->load->view('ambulatorio/impressaoreceituario', $data, true);
-        pdf($html, $filename, $cabecalho, $rodape);
-        $this->load->View('internacao/impressaoreceituario', $data);
-    }
-
-    function editarcarregarreceituario($internacao_id, $ambulatorio_receituario_id) {
-//        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
-//        $data['obj'] = $obj_laudo;
-        $data['paciente'] = $this->internacao_m->listardadosreceituario($internacao_id);
-
-        $data['receita'] = $this->internacao_m->listareditarreceita($ambulatorio_receituario_id);
-        $data['operadores'] = $this->operador_m->listarmedicos();
-//        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-
-        $data['internacao_id'] = $internacao_id;
-        $this->load->View('internacao/editarreceituarioconsulta-form', $data);
-    }
-
-    function editarreceituario($ambulatorio_laudo_id) {
-        $internacao_id = $_POST['internacao_id'];
-        $this->internacao_m->editarreceituario($ambulatorio_laudo_id);
-        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "internacao/internacao/prescricaopaciente/$internacao_id");
-    }
-
     function gravarprescricaoenteralnormal($internacao_id) {
         $this->internacao_m->gravarprescricaoenteralnormal($internacao_id);
         redirect(base_url() . "internacao/internacao/prescricaonormalenteral/$internacao_id");
     }
 
     function gravarprescricaofarmacia($internacao_id) {
-        $prescricao_id = $this->internacao_m->gravarprescricaofarmacia($internacao_id);
-        redirect(base_url() . "internacao/internacao/prescricaopaciente/$internacao_id/$prescricao_id");
+        $this->internacao_m->gravarprescricaofarmacia($internacao_id);
+//        $this->prescricaopaciente($internacao_id);
+        redirect(base_url() . "internacao/internacao/prescricaopaciente/$internacao_id");
+//        redirect(base_url() . "internacao/internacao/prescricaopacientefarmacia/$internacao_id");
+    }
+    
+    function cancelarprescricaopaciente($internacao_prescricao_id, $internacao_id) {
+        $this->internacao_m->cancelarprescricaopaciente($internacao_prescricao_id);
+//        $this->prescricaopaciente($internacao_id);
+        redirect(base_url() . "internacao/internacao/prescricaopaciente/$internacao_id");
+//        redirect(base_url() . "internacao/internacao/prescricaopacientefarmacia/$internacao_id");
+    }
+    
+    function confirmarprescricaofarmacia($internacao_prescricao_id,$internacao_id) {
+        $this->internacao_m->confirmarprescricaofarmacia($internacao_prescricao_id);
+//        $this->prescricaopaciente($internacao_id);
+        redirect(base_url() . "internacao/internacao/prescricaopaciente/$internacao_id");
     }
 
     function gravarreceituariointernacao($internacao_id) {

@@ -41,7 +41,7 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->paciente_id; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->data_cadastro; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo date("d/m/Y H:i:s",strtotime($item->data_cadastro)); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->paciente; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->estado; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->unidade; ?></td>

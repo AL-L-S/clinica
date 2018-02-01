@@ -11,8 +11,8 @@
             <legend>Dados do Motivo de saida</legend>
             <div>
                 <label>Nome</label>                      
-                <input type ="hidden" name ="internacao_motivosaida_id" value ="<?= @$obj->_internacao_motivosaida_id; ?>" id ="txtinternacao_motivosaida_id"/>
-                <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= @$obj->_nome; ?>" />
+                <input  type ="hidden" name ="internacao_motivosaida_id" value ="<?= @$obj->_internacao_motivosaida_id; ?>" id ="txtinternacao_motivosaida_id"/>
+                <input required type="text" id="txtNome" name="nome"  class="texto09" value="<?= @$obj->_nome; ?>" />
             </div>
             
         </fieldset>
@@ -27,11 +27,22 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-        jQuery('#form_unidade').validate( {
+        jQuery('#form_paciente').validate( {
             rules: {
                 nome: {
                     required: true,
                     minlength: 3
+                },
+                endereco: {
+                    required: true
+                },
+                cep: {
+                    required: true
+                },
+                cns: {
+                    maxLength:15
+                }, rg: {
+                    maxLength:20
                 }
    
             },
@@ -39,9 +50,19 @@
                 nome: {
                     required: "*",
                     minlength: "*"
+                },
+                endereco: {
+                    required: "*"
+                },
+                cep: {
+                    required: "*"
+                },
+                cns: {
+                    required: "Tamanho m&acute;ximo do campo CNS é de 15 caracteres"
+                },
+                rg: {
+                    maxlength: "Tamanho m&acute;ximo do campo RG é de 20 caracteres"
                 }
-                
-
             }
         });
     });

@@ -109,11 +109,11 @@ class unidade_model extends BaseModel {
                            p.nascimento,
                            il.nome as leito');
         $this->db->from('tb_internacao i, tb_paciente p, tb_internacao_leito il');
-        $this->db->where('i.leito', $leito_id);
         $this->db->where('i.leito = il.internacao_leito_id');
+        $this->db->where('p.paciente_id = i.paciente_id');
+        $this->db->where('i.leito', $leito_id);
         $this->db->where('il.ativo', 'f');
         $this->db->where('i.ativo', 't');
-        $this->db->where('p.paciente_id = i.paciente_id');
         
         $return = $this->db->get();
         return $return->result();

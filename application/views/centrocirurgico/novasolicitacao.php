@@ -30,14 +30,20 @@
                     <dd>
                         <select  name="medicoagenda" id="medicoagenda" class="size4" required="true">
                             <option value="">Selecione</option>
-                                <? foreach ($medicos as $item) : ?>
-                                    <option value="<?= $item->operador_id; ?>" <?= ( @$laudo[0]->medico_parecer1 == $item->operador_id ) ? 'selected' : ''?>>
+                            <? foreach ($medicos as $item) : ?>
+                                <option value="<?= $item->operador_id; ?>" <?= ( @$laudo[0]->medico_parecer1 == $item->operador_id ) ? 'selected' : '' ?>>
                                     <?= $item->nome; ?>
-                                    </option>
-                                <? endforeach; ?>
+                                </option>
+                            <? endforeach; ?>
                         </select>
                     </dd>
-                    
+                    <dt>
+                        <label>Data da Cirurgia *</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="data_prevista" id="data_prevista" class="texto02" value=""/>
+                    </dd>
+
                     <dt>
                         <label>Hospital *</label>
                     </dt>
@@ -59,9 +65,9 @@
                             <input type="radio" name="leito" id="apt" value="APARTAMENTO" required/> <label for="apt">Apartamento</label>
                         </div>
                     </dd>
-                    
 
-                    
+
+
                     <dt>
                         <label for="orcamento">Orçamento</label>
                     </dt>
@@ -79,7 +85,11 @@
     </div>
 </div> <!-- Final da DIV content -->
 
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
 
@@ -89,7 +99,7 @@
 
 
     $(function () {
-        $("#txtdata_prevista").datepicker({
+        $("#data_prevista").datepicker({
             autosize: true,
             changeYear: true,
             changeMonth: true,
@@ -129,6 +139,14 @@
             select: function (event, ui) {
                 $("#txtNome").val(ui.item.value);
                 $("#txtNomeid").val(ui.item.id);
+                if (ui.item.leito == 'ENFERMARIA') {
+                    $("#enf").attr('checked', true);
+                    $("#apt").attr('checked', false);
+                } else if (ui.item.leito == 'APARTAMENTO') {
+                    $("#apt").attr('checked', true);
+                    $("#enf").attr('checked', false);
+                }
+
                 return false;
             }
         });

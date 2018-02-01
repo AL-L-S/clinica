@@ -31,6 +31,28 @@ class produto_model extends Model {
         return $return->result();
     }
 
+    function autocompleteprodutofarmacia($parametro = null) {
+        $this->db->select('farmacia_produto_id,
+                           descricao');
+        if ($parametro != null) {
+            $this->db->where('descricao ilike', $parametro . "%");
+        }
+        $this->db->from('tb_farmacia_produto');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function autocompleteprodutofarmaciafracionamento($parametro = null) {
+        $this->db->select('farmacia_produto_id,
+                           descricao');
+        if ($parametro != null) {
+            $this->db->where('descricao ilike', $parametro . "%");
+        }
+        $this->db->from('tb_farmacia_produto');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listar($args = array()) {
         $this->db->select('p.estoque_produto_id,
                             p.descricao,
@@ -103,7 +125,7 @@ class produto_model extends Model {
             $this->db->set('estoque_minimo', $_POST['minimo']);
             $this->db->set('unidade_id', $_POST['unidade']);
             $this->db->set('sub_classe_id', $_POST['sub']);
-            if($_POST['procedimentoID'] != ''){
+            if ($_POST['procedimentoID'] != '') {
                 $this->db->set('procedimento_id', $_POST['procedimentoID']);
             }
             $horario = date("Y-m-d H:i:s");

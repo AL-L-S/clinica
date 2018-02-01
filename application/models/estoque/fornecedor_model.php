@@ -54,6 +54,21 @@ class fornecedor_model extends Model {
         return $return->result();
     }
 
+    function autocompletefornecedorfarmacia($parametro = null) {
+        $this->db->select('farmacia_fornecedor_id,
+                            fantasia,
+                            razao_social,
+                            cnpj');
+        $this->db->from('tb_farmacia_fornecedor');
+        $this->db->where('ativo', 'true');
+        if ($parametro != null) {
+            $this->db->where('fantasia ilike', "%" . $parametro . "%");
+//            $this->db->where('cnpj', $parametro . "%");
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listartipo() {
         $this->db->select('tipo_logradouro_id,
                             descricao');

@@ -1,5 +1,17 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->      
     <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaorcamento" method="post">
+                <fieldset>
+            <legend>Outras Opções</legend>   
+            <div class="bt_link">
+                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacao/<?= @$solicitacao_id; ?>">Cadastrar</a>
+            </div>
+            <div class="bt_link">
+                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= @$solicitacao_id; ?>">Equipe</a>
+            </div>
+<!--            <div class="bt_link">
+                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= @$solicitacao_id; ?>">Orçamento</a>
+            </div>-->
+        </fieldset>
         <fieldset >
             <legend>Dados da Solicitacao</legend>
 

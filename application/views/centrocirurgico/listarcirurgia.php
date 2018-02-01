@@ -22,8 +22,9 @@
                 <thead>
                 <tr>
                     <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Data Solicitação</th>
                     <th class="tabela_header">Data Prevista</th>
-                    <th class="tabela_header">Detalhes</th>
+                    <th style="text-align: center;" colspan="2" class="tabela_header">Detalhes</th>
 
                 </tr>
                 </thead>
@@ -45,6 +46,7 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>                              
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo date("d/m/Y H:i:s",strtotime($item->data_cadastro)); ?></td>                              
                                 <td class="<?php echo $estilo_linha; ?>">
                                                             <?$ano= substr($item->data_prevista,0,4);?>
                                                             <?$mes= substr($item->data_prevista,5,2);?>
@@ -53,6 +55,9 @@
                                                             <?$datafinal= $dia . '/' . $mes . '/' . $ano . $hora; ?>
                                     
                                                             <?php echo$datafinal?></strong></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/editarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Editar</a></div>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
                                             <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>">Imprimir</a></div>
                                 </td>

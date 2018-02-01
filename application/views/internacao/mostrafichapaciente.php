@@ -1,6 +1,6 @@
-<?php if( count($paciente) == 0){ 
+<?php if(@$paciente[0] == ''){ 
     echo "<p>Não há paciente neste leito.</p>";
-} else {?>
+} else { ?>
 
 <div class="content ficha_ceatox">
         <div>
@@ -19,12 +19,12 @@
                     
                     
                     <div>
-                        <label>data da Internacao</label>                      
-                        <input type="text" id="data_internacao" name="data_internacao"  class="texto09" value="<?= $paciente[0]->data_internacao; ?>" readonly/>
+                        <label>Data da Internacao</label>                      
+                        <input type="text" id="data_internacao" name="data_internacao"  class="texto09" value="<?= date("d/m/Y H:i:s",strtotime($paciente[0]->data_internacao)); ?>" readonly/>
                     </div>
                     
                     <div>
-                        <label>data de Nascimento</label>                      
+                        <label>Data de Nascimento</label>                      
                         <input type="text" id="data_nascimento" name="data_nascimento"  class="texto09" value="<?= date('d/m/Y',  strtotime($paciente[0]->nascimento)); ?>" readonly/>
                     </div>
                     
@@ -40,12 +40,13 @@
                     <tr>
                     <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostratransferirpaciente/<?= $paciente[0]->paciente_id ?>">Transferir Leito</a></div></td>
                     <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostrapermutapaciente/<?= $paciente[0]->paciente_id ?>">Permuta</a></div></td>
-                    <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostrarnovasaidapaciente/<?= $paciente[0]->internacao_id ?>">Saida</a></div></td>
+                    <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostrarnovasaidapaciente/<?= $paciente[0]->internacao_id ?>">Saída</a></div></td>
                     </tr>
                     <tr>
-                    <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/prescricaopaciente/<?= $paciente[0]->internacao_id ?>">Prescricao</a></div></td> 
-                    <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacirurgia/<?= $paciente[0]->internacao_id ?>">Solicitar Cirurgia</a></div></td> 
-                    <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/evolucaointernacao/<?= $paciente[0]->internacao_id ?>">Evolucao</a></div></td> 
+                    <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/prescricaopaciente/<?= $paciente[0]->internacao_id ?>">Prescrição</a></div></td> 
+                    <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/novasolicitacaointernacao/<?= $paciente[0]->internacao_id ?>/<?= $paciente[0]->paciente_id ?>">Solicitar Cirurgia</a></div></td> 
+                    <!--<td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/evolucaointernacao/<?= $paciente[0]->internacao_id ?>">Evolucao</a></div></td>--> 
+                    <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/listarevolucaointernacao/<?= $paciente[0]->internacao_id ?>"> Evolução</a></div></td> 
                     </tr>    
                 </table>            
                 </div>
@@ -55,7 +56,7 @@
     
  <div class="clear"></div>
 </div>
-<?}?>
+<? } ?>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>

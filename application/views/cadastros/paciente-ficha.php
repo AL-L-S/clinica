@@ -60,7 +60,7 @@
                 <label>CPF</label>
 
 
-                <input type="text" <?if($empresapermissoes[0]->cpf_obrigatorio == 't'){?>required <?}?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" />
+                <input type="text" <? if ($empresapermissoes[0]->cpf_obrigatorio == 't') { ?>required <? } ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" />
             </div>
             <div>
                 <label>RG</label>
@@ -247,6 +247,21 @@
                 </select>
             </div>
             <div>
+                <label>Leito</label>
+
+
+                <select name="leito" id="leito" class="size2">
+                    <option value='' >Selecione</option>
+                    <option value='ENFERMARIA' <? if (@$obj->_leito == 'ENFERMARIA') {
+                                  echo 'selected';
+                              } ?>>ENFERMARIA</option>
+                    <option value='APARTAMENTO'<? if (@$obj->_leito == 'APARTAMENTO') {
+                                  echo 'selected';
+                              } ?>>APARTAMENTO</option>
+
+                </select>
+            </div>
+            <div>
                 <label>N&uacute;mero</label>
 
 
@@ -284,8 +299,8 @@
                     endif;
                     ?>>Parda</option>
                     <option value=5 <?
-                    if (@$obj->_raca_cor == 5):echo 'selected';
-                    endif;
+                            if (@$obj->_raca_cor == 5):echo 'selected';
+                            endif;
                     ?>>Ind&iacute;gena</option>
                 </select>
             </div>
@@ -315,8 +330,8 @@
                     endif;
                     ?>>Viuvo</option>
                     <option value=5 <?
-                    if (@$obj->_estado_civil == 5):echo 'selected';
-                    endif;
+                            if (@$obj->_estado_civil == 5):echo 'selected';
+                            endif;
                     ?>>Outros</option>
                 </select>
             </div>
@@ -333,8 +348,8 @@
                     endif;
                     ?>>Fundamental-Incompleto </option>
                     <option value=2 <?
-                    if (@$obj->_escolaridade_id == 2):echo 'selected';
-                    endif;
+                            if (@$obj->_escolaridade_id == 2):echo 'selected';
+                            endif;
                     ?>>Fundamental-Completo</option>
 
                     <option value=3 <?

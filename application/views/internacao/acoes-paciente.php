@@ -22,7 +22,7 @@
     <div>
         <form name="form_paciente" id="form_paciente" action="<?= base_url() ?>cadastros/pacientes/gravar" method="post">
             <fieldset>
-                <legend>Dados do paciente</legend>
+                <legend>Dados do Pacienete</legend>
                 <div>
                     <label>Nome</label>                      
                     <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>

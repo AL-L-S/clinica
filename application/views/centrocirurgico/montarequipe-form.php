@@ -18,7 +18,7 @@
                 <select name="funcao" id="funcao" class="texto03" required>
                     <option value="">SELECIONE</option>
                     <? foreach ($grau_participacao as $value) : ?>
-                        <option value="<?= $value->grau_id ?>"><?= $value->grau_participacao ?></option>
+                        <option value="<?= $value->codigo ?>"><?= $value->grau_participacao ?></option>
                     <? endforeach; ?>
                 </select>
             </div>

@@ -113,7 +113,6 @@ class paciente_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-   
 
     function listardados($paciente_id) {
         $this->db->select('tp.tipo_logradouro_id as codigo_logradouro,co.nome as nome_convenio, co.convenio_id as convenio,tp.descricao,p.*,c.estado, c.nome as cidade_desc,c.municipio_id as cidade_cod');
@@ -125,7 +124,7 @@ class paciente_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-   
+
     function relatoriocancelamento($paciente_id) {
 
         $this->db->select('ac.agenda_exames_id,
@@ -152,14 +151,14 @@ class paciente_model extends BaseModel {
         $this->db->join('tb_ambulatorio_cancelamento ca', 'ca.ambulatorio_cancelamento_id = ac.ambulatorio_cancelamento_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ac.operador_cadastro', 'left');
         $this->db->where("ac.paciente_id ", $paciente_id);
-        
+
         $this->db->orderby('c.convenio_id');
         $this->db->orderby('ac.data_cadastro');
         $this->db->orderby('p.nome');
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function relatoriocancelamentocontador($paciente_id) {
 
         $this->db->select('ac.agenda_exames_id');
@@ -169,7 +168,7 @@ class paciente_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where("ac.paciente_id ", $paciente_id);
-        
+
         $return = $this->db->count_all_results();
         return $return;
     }
@@ -274,6 +273,7 @@ class paciente_model extends BaseModel {
             $this->_convenionumero = $return[0]->convenionumero;
             $this->_data_emissao = $return[0]->data_emissao;
             $this->_indicacao = $return[0]->indicacao;
+            $this->_leito = $return[0]->leito;
         }
     }
 
@@ -323,7 +323,7 @@ class paciente_model extends BaseModel {
                 $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
             }
             if ($_POST['nascimento'] != '') {
-                $this->db->set('nascimento', date("Y-m-d", strtotime( str_replace("/", "-", $_POST['nascimento']) ) ) );
+                $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
             }
 //            if ($_POST['data_emissao'] != '') {
 //                $this->db->set('data_emissao', $_POST['data_emissao']);
@@ -349,6 +349,10 @@ class paciente_model extends BaseModel {
             if ($_POST['estado_civil_id'] != '') {
                 $this->db->set('estado_civil_id', $_POST['estado_civil_id']);
             }
+            if($_POST['leito'] != ''){
+             $this->db->set('leito', $_POST['leito']);   
+            }
+            
             $this->db->set('nome_pai', $_POST['nome_pai']);
             $this->db->set('nome_mae', $_POST['nome_mae']);
             $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
