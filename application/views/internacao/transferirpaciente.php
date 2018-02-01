@@ -25,8 +25,8 @@
                 
                 <div>
                 <label>Unidade</label>
-                <select name="unidade" id="unidade">
-                    <option>Selecione</option>
+                <select name="unidade" id="unidade" required>
+                    <option value="">Selecione</option>
                     <? foreach($unidades as $item){?>
                     <option value="<?= $item->internacao_unidade_id?>"><? echo $item->unidade; ?></option>    
                     <?}?>                    
@@ -35,8 +35,8 @@
                 
                 <div>
                 <label >Leito</label>
-                <select name="novo_leito" id="novo_leito">
-                    <option>Selecione</option> 
+                <select name="novo_leito" id="novo_leito" required>
+                    <option value="">Selecione</option> 
                 </select>
                 </div> 
                 
@@ -66,7 +66,7 @@
                             $('.carregando').hide();
                         });
                     } else {
-                        $('#novo_leito').html('<option value="">uuu</option>');
+                        $('#novo_leito').html('<option value=""></option>');
                     }
                 });
             });

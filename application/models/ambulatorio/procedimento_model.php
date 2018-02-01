@@ -46,8 +46,7 @@ class procedimento_model extends Model {
 
         return $this->db;
     }
-    
-    
+
     function listaresponsavelorcamento($orcamento_id) {
 //        var_dump($paciente_id);die;
         $horario = date("Y-m-d");
@@ -59,8 +58,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-    
+
     function listarorcamentosrecepcao($orcamento_id) {
 //        var_dump($paciente_id);die;
         $horario = date("Y-m-d");
@@ -120,7 +118,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimento2() {
         $this->db->select('procedimento_tuss_id,
                             nome,
@@ -131,7 +129,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimento3() {
         $this->db->select('procedimento_tuss_id,
                             nome,
@@ -143,7 +141,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimentoagrupados($procedimento_agrupador_id) {
         $this->db->select('procedimentos_agrupados_ambulatorial_id as procedimento_agrupador_id,
                             pt.nome,
@@ -159,57 +157,54 @@ class procedimento_model extends Model {
         return $return->result();
     }
 
-    
     function gravaragrupadorprocedimento() {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            
+
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('grupo', 'AGRUPADOR');
             $this->db->set('agrupador', 't');
             $this->db->set('codigo', '');
             $this->db->set('qtde', 1);
-            
-            if( $_POST['txtprocedimentotussid'] == '0' || $_POST['txtprocedimentotussid'] == ''){
+
+            if ($_POST['txtprocedimentotussid'] == '0' || $_POST['txtprocedimentotussid'] == '') {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_procedimento_tuss');
                 $procedimento_agrupador_id = $this->db->insert_id();
-            }
-            else{
+            } else {
                 $procedimento_agrupador_id = $_POST['txtprocedimentotussid'];
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->where('procedimento_tuss_id', $procedimento_agrupador_id );
+                $this->db->where('procedimento_tuss_id', $procedimento_agrupador_id);
                 $this->db->update('tb_procedimento_tuss');
             }
-            
+
             foreach ($_POST['add_agrupador'] as $key => $value) {
 
-                if ($_POST['add_agrupador'][$key] != "" ) { // insert
+                if ($_POST['add_agrupador'][$key] != "") { // insert
                     $this->db->select('procedimentos_agrupados_ambulatorial_id');
                     $this->db->from('tb_procedimentos_agrupados_ambulatorial');
                     $this->db->where('procedimento_agrupador_id', $procedimento_agrupador_id);
                     $this->db->where('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
                     $this->db->where("ativo", 't');
                     $return = $this->db->get()->result();
-                    
-                    if( count($return) == 0 ){
-                        
+
+                    if (count($return) == 0) {
+
                         $this->db->set('procedimento_agrupador_id', $procedimento_agrupador_id);
                         $this->db->set('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
                         $this->db->set('data_cadastro', $horario);
                         $this->db->set('operador_cadastro', $operador_id);
                         $this->db->insert('tb_procedimentos_agrupados_ambulatorial');
                     }
-                    
-                } else{
+                } else {
                     continue;
                 }
             }
 
-            
+
             return $procedimento_agrupador_id;
         } catch (Exception $exc) {
             return -1;
@@ -435,6 +430,18 @@ class procedimento_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimentointernacaoautocomplete($parametro = null) {
+        $this->db->select('pt.procedimento_tuss_id,
+                           pt.nome');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->where('pt.ativo', 'true');
+        if ($parametro != null) {
+            $this->db->where("(pt.nome ilike '%$parametro%' OR pt.codigo ilike '%$parametro%')");
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarprocedimentocirurgia2autocomplete($parametro = null, $parametro2 = null) {
         $this->db->select('pc.procedimento_convenio_id,
                            pc.valortotal,
@@ -611,8 +618,8 @@ class procedimento_model extends Model {
             } else {
                 $this->db->set('revisao', 'f');
             }
-            
-            
+
+
             if ($_POST['procedimento_associacao'] != "" && $_POST['grupo'] == "RETORNO") {
                 $this->db->set('associacao_procedimento_tuss_id', $_POST['procedimento_associacao']);
                 $this->db->set('retorno_dias', $_POST['diasRetorno']);
@@ -620,7 +627,7 @@ class procedimento_model extends Model {
                 $this->db->set('associacao_procedimento_tuss_id', null);
                 $this->db->set('retorno_dias', null);
             }
-            
+
             if (isset($_POST['salaPreparo'])) {
                 $this->db->set('sala_preparo', 't');
             } else {
@@ -631,14 +638,14 @@ class procedimento_model extends Model {
             if ($_POST['txtperc_medico'] != '') {
                 $this->db->set('perc_medico', str_replace(",", ".", $_POST['txtperc_medico']));
             }
-            
+
             if ($_POST['txtperc_revisor'] != '') {
                 $this->db->set('valor_revisor', str_replace(",", ".", $_POST['txtperc_revisor']));
             }
             if ($_POST['percentual_revisor'] != '') {
                 $this->db->set('percentual_revisor', $_POST['percentual_revisor']);
             }
-            
+
             if ($_POST['txtperc_laboratorio'] != '') {
                 $this->db->set('valor_laboratorio', str_replace(",", ".", $_POST['txtperc_laboratorio']));
             }
@@ -695,7 +702,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function gravartuss() {
         try {
 
@@ -703,8 +710,8 @@ class procedimento_model extends Model {
             if ($_POST['txtvalorbri'] != "") {
                 if ($_POST['tuss_id'] != "") {
                     $tuss_id = $_POST['tuss_id'];
-                    $valor_bri =  str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri']));
-                    
+                    $valor_bri = str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri']));
+
                     $sql = "UPDATE ponto.tb_procedimento_convenio pc
                             SET 
                             valorch= $valor_bri, valortotal= $valor_bri
@@ -751,31 +758,30 @@ class procedimento_model extends Model {
             return -1;
         }
     }
-    
+
     function gravarajustevalores() {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            if(isset($_POST['ajuste'])){
+            if (isset($_POST['ajuste'])) {
                 $vlr = str_replace(",", ".", $_POST['ajuste_percentual']);
                 $sql = "UPDATE ponto.tb_procedimento_tuss
                         SET perc_medico = (perc_medico + (perc_medico * ( {$vlr} / 100) ) )
                         WHERE grupo = '{$_POST['grupo']}' ";
 //                die($sql);
-            }
-            else{
+            } else {
                 $vlr = str_replace(",", ".", $_POST['txtperc_medico']);
                 $sql = "UPDATE ponto.tb_procedimento_tuss
                         SET perc_medico = {$vlr}, percentual = '{$_POST['percentual']}'
                         WHERE grupo = '{$_POST['grupo']}' ";
             }
-            
+
             $this->db->query($sql);
-            
         } catch (Exception $exc) {
             return false;
         }
     }
+
     function gravarprocedimentoconveniovalor($procedimento_tuss_id) {
         try {
             $horario = date("Y-m-d H:i:s");

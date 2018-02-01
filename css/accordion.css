@@ -1,0 +1,46 @@
+/* Style the buttons that are used to open and close the accordion panel */
+button.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    min-width: 350px;
+    text-align: left;
+    border: #000;
+    outline: none;
+    transition: 0.2s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+button.accordion.active, button.accordion:hover {
+    background-color: #ddd;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+
+
+/* The "show" class is added to the accordion panel when the user clicks on one of the buttons. This will show the panel content */
+
+div.panel {
+    padding: 0 20px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.2s ease-in-out;
+    opacity: 0;
+}
+
+div.panel.show {
+    opacity: 1;
+    max-height: 1000px; /*Whatever you like, as long as its more than the height of the content (on all screen sizes) */
+    width: 350px;
+}
+
+
+#div.accordion { 
+    position: absolute; 
+    left: 90px; 
+    /* posiciona a 90px para a esquerda */ 
+    top: 70px; 
+    /* posiciona a 70px para baixo */ 
+}

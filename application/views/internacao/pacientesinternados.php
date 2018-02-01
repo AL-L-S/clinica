@@ -27,6 +27,6 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-//  function popup(internacao_id){ window.open('<?= base_url() ?>internacao/internacao/mostraenfermarialeito/'+internacao_id,'popup','width=800,height=600,scrolling=auto,top=0,left=0') }
-</script> 
+
+</script>
 

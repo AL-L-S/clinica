@@ -8,7 +8,7 @@
     <h3 class="h3_title">Cadastro de Unidade</h3>
     <form name="form_unidade" id="form_unidade" action="<?= base_url() ?>internacao/internacao/gravarunidade" method="post">
          <fieldset>
-            <legend>Dados do paciente</legend>
+            <legend>Dados do Pacienete</legend>
             <div>
                 <label>Nome</label>                      
                 <input type ="hidden" name ="internacao_unidade_id" value ="<?= @$obj->_internacao_unidade_id; ?>" id ="txtinternacao_unidade_id"/>

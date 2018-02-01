@@ -12,16 +12,16 @@
             <div>
                 <label>Nome</label>                      
                 <input type ="hidden" name ="internacao_leito_id" value ="<?= @$obj->_internacao_leito_id; ?>" id ="txtinternacao_leito_id"/>
-                <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= @$obj->_nome; ?>" />
+                <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= @$obj->_nome; ?>" required />
             </div>
             <div>
                 <label>Enfermaria</label>
                 <input type="hidden" id="txtEnfermariaID" class="texto_id" name="EnfermariaID" value="<?= @$obj->_enfermaria_id; ?>" readonly="true" />
-                <input type="text" id="txtEnfermaria" class="texto06" name="txtEnfermaria" value="<?= @$obj->_enfermaria; ?>" />
+                <input type="text" id="txtEnfermaria" class="texto06" name="txtEnfermaria" value="<?= @$obj->_enfermaria; ?>" required/>
             </div>
             <div>
                 <label>Tipo</label>
-                <select name="tipo" id="txtTipo" class="size2" selected="<?= @$obj->_tipo; ?>">
+                <select name="tipo" id="txtTipo" class="size2" selected="<?= @$obj->_tipo; ?>" required>
                     <option value=Idoso <?
                             if (@$obj->_tipo == 'Idoso'):echo 'selected';
                             endif;
@@ -52,23 +52,23 @@
                 <label>Condi&ccedil;&atilde;o do leito</label>
                 <select name="condicao" id="txtcondicao" class="size2" selected="<?= @$obj->_condicao; ?>">
                     <option value=Vago <?
-                            if (@$obj->_tipo == 'Vago'):echo 'selected';
+                            if (@$obj->_condicao == 'Vago'):echo 'selected';
                             endif;
                                         ?>>Vago</option>
                     <option value=Manutencao <?
-                            if (@$obj->_tipo == 'Manutencao'):echo 'selected';
+                            if (@$obj->_condicao == 'Manutencao'):echo 'selected';
                             endif;
                                         ?>>Manutencao</option>
                     <option value=Higienizacao <?
-                            if (@$obj->_tipo == 'Higienizacao'):echo 'selected';
+                            if (@$obj->_condicao == 'Higienizacao'):echo 'selected';
                             endif;
                                         ?>>Higienizacao</option>
                     <option value=Fechado <?
-                            if (@$obj->_tipo == 'Fechado'):echo 'selected';
+                            if (@$obj->_condicao == 'Fechado'):echo 'selected';
                             endif;
 ?>>Fechado</option>
                     <option value=Cirurgico <?
-                            if (@$obj->_tipo == 'Cirurgico'):echo 'selected';
+                            if (@$obj->_condicao == 'Cirurgico'):echo 'selected';
                             endif;
 ?>>Cirurgico</option>
                 </select>

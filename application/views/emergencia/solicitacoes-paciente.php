@@ -140,6 +140,7 @@
                 <tr>
                     <? if ($internacao == 't') { ?>
                         <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/novointernacao/<?= $paciente_id ?>">Internação</a></div></td>
+                        <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/novosolicitacaointernacao/<?= $paciente_id ?>">Sol.Internação</a></div></td>
                     <? } ?>
                 </tr>
             </table>            

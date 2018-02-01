@@ -38,7 +38,7 @@
                     </table>
                 </fieldset>
                 <div class="bt_link_new">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>protoatendimento/modeloreceita');" >
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modeloreceita');" >
                                                 Modelo Receituario</a></div>
                 <div>
 
@@ -48,15 +48,15 @@
                             <label>Modelos</label>
                             <select name="exame" id="exame" class="size2" >
                                 <option value='' >selecione</option>
-                                <?php foreach ($lista as $item) { ?>
-                                    <option value="<?= $item->protoatendimento_modelo_receita_id; ?>" ><?php echo $item->nome; ?></option>
-                                <?php } ?>
+                                <?php // foreach ($lista as $item) { ?>
+                                    <option value="<? // php echo $item->ambulatorio_modelo_receita_id; ?>" ><?php // echo $item->nome; ?></option>
+                                <?php // } ?>
                             </select>
 
                         </div>
                         <div>
                             <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $receituario_id ?>"/>
-                            <input type="hidden" id="internacao_id" name="internacao_id" value="<?= $internacao_id ?>"/>
+                            <input type="hidden" id="ambulatorio_laudo_id" name="ambulatorio_laudo_id" value="<?= $internacao_id ?>"/>
                             <input type="hidden" id="medico" name="medico" value="<?= $operador_id ?>"/>
                             <input type="hidden" id="paciente_id" name="paciente_id" value="<?= $paciente_id ?>"/>
                             <input type="hidden" id="procedimento" name="procedimento" value="<?= $procedimento_id ?>"/>
@@ -108,11 +108,11 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>internacao/internacao/impressaoreceita/<?=  $item->ambulatorio_receituario_id ; ?>');">Imprimir
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceita/<?=  $item->ambulatorio_receituario_id ; ?>');">Imprimir
                                         </a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>internacao/internacao/editarcarregarreceituario/<?= $internacao_id ?>/<?= $item->ambulatorio_receituario_id; ?>');">Editar
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituario/<?= $internacao_id ?>/<?= $item->ambulatorio_receituario_id; ?>');">Editar
                                         </a></div>
                                 </td>
 

@@ -11,17 +11,17 @@
             <legend>Dados do Enfermaria</legend>
             <div>
                 <label>Nome</label>                      
-                <input type ="hidden" name ="internacao_enfermaria_id" value ="<?= @$obj->_internacao_enfermaria_id; ?>" id ="txtinternacao_enfermaria_id"/>
-                <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= @$obj->_nome; ?>" />
+                <input type ="hidden" name ="internacao_enfermaria_id" value ="<?= @$obj->_internacao_enfermaria_id; ?>" id ="txtinternacao_enfermaria_id" />
+                <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= @$obj->_nome; ?>" required/>
             </div>
             <div>
                 <label>Localizacao</label>
-                <input type="text" name="localizacao" id="txtlocalizacao" class="texto06" value="<?= @$obj->_localizacao; ?>" />
+                <input type="text" name="localizacao" id="txtlocalizacao" class="texto06" value="<?= @$obj->_localizacao; ?>" required/>
             </div>
             <div>
                 <label>Unidade</label>
                 <input type="hidden" id="txtUnidadeID" class="texto_id" name="UnidadeID" value="<?= @$obj->_unidade; ?>" readonly="true" />
-                <input type="text" id="txtUnidade" class="texto06" name="txtUnidade" value="<?= @$obj->_unidade_nome; ?>" />
+                <input type="text" id="txtUnidade" class="texto06" name="txtUnidade" value="<?= @$obj->_unidade_nome; ?>" required/>
             </div>
             <div>
                 <label>Tipo</label>

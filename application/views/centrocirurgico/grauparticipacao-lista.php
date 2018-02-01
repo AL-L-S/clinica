@@ -35,7 +35,7 @@
                 ?>
                 <tbody>
                     <?php
-                        $lista = $this->centrocirurgico_m->listargrauparticipacao($_GET)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->centrocirurgico_m->listargrauparticipacao($_GET)->orderby('codigo')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";

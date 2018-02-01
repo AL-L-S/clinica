@@ -114,7 +114,7 @@ class Operador_model extends BaseModel {
             $convenio_id = $_POST['convenio_id'];
             $empresa_id_origem = $_POST['empresa_id_origem'];
             $empresa_id_destino = $_POST['empresa_id_destino'];
-            
+
             $this->db->select('ambulatorio_convenio_operador_id');
             $this->db->from('tb_ambulatorio_convenio_operador');
             $this->db->where('ativo', 't');
@@ -122,8 +122,8 @@ class Operador_model extends BaseModel {
             $this->db->where('convenio_id', $convenio_id);
             $this->db->where('empresa_id', $empresa_id_destino);
             $return = $this->db->get()->result();
-            
-            if( count($return) == 0 ){
+
+            if (count($return) == 0) {
                 $this->db->set('operador_id', $operador_id);
                 $this->db->set('convenio_id', $convenio_id);
                 $this->db->set('empresa_id', $empresa_id_destino);
@@ -133,7 +133,7 @@ class Operador_model extends BaseModel {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_ambulatorio_convenio_operador');
             }
-            
+
             $this->db->select('cop.procedimento_convenio_id');
             $this->db->from('tb_convenio_operador_procedimento cop');
             $this->db->where('cop.ativo', 't');
@@ -141,12 +141,12 @@ class Operador_model extends BaseModel {
             $this->db->where('cop.convenio_id', $convenio_id);
             $this->db->where('cop.empresa_id', $empresa_id_origem);
             $return = $this->db->get()->result();
-            
-            if( count($return) > 0 ){
-                
+
+            if (count($return) > 0) {
+
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
-                
+
                 foreach ($return as $value) {
                     $this->db->set('operador', $operador_id);
                     $this->db->set('convenio_id', $convenio_id);
@@ -157,7 +157,6 @@ class Operador_model extends BaseModel {
                     $this->db->insert('tb_convenio_operador_procedimento');
                 }
             }
-            
         } catch (Exception $exc) {
             return -1;
         }
@@ -354,7 +353,7 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimentoconvenio($convenio_id) {
         $this->db->select('pc.procedimento_convenio_id,
                             pt.nome as procedimento,
@@ -364,13 +363,13 @@ class Operador_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id');
         $this->db->where('pc.convenio_id', $convenio_id);
-        
+
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
         if ($procedimento_multiempresa == 't') {
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->where('pc.empresa_id', $empresa_id);
         }
-        
+
         $this->db->where('pc.ativo', 't');
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
@@ -664,6 +663,7 @@ class Operador_model extends BaseModel {
 
     function gravar() {
         try {
+
             if ($_POST['criarcredor'] == "on") {
                 $this->db->set('razao_social', $_POST['nome']);
                 $this->db->set('cep', $_POST['cep']);
@@ -692,7 +692,12 @@ class Operador_model extends BaseModel {
                 $financeiro_credor_devedor_id = $this->db->insert_id();
             }
 
+//            var_dump($_POST['txtcolor']);
+//            die;
+            if ($_POST['txtcolor'] != '' && $_POST['txtcolor'] != '#000000') {
 
+                $this->db->set('cor_mapa', $_POST['txtcolor']);
+            }
             /* inicia o mapeamento no banco */
             $this->db->set('nome', $_POST['nome']);
             $this->db->set('sexo', $_POST['sexo']);
@@ -1115,6 +1120,7 @@ class Operador_model extends BaseModel {
                                 o.iss,
                                 o.valor_base,
                                 o.cep,
+                                o.cor_mapa,
                                 o.cbo_ocupacao_id,
                                 o.solicitante,
                                 m.nome as cidade_nome,
@@ -1132,6 +1138,7 @@ class Operador_model extends BaseModel {
             $this->_senha = $return[0]->senha;
             $this->_perfil_id = $return[0]->perfil_id;
             $this->_ativo = $return[0]->ativo;
+            $this->_cor_mapa = $return[0]->cor_mapa;
             $this->_nome = $return[0]->nome;
             $this->_cns = $return[0]->cns;
             $this->_conselho = $return[0]->conselho;

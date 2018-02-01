@@ -1,5 +1,20 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->      
     <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/autorizarsolicitacaocirurgica" method="post">
+        <fieldset>
+            <legend>Outras Opções</legend>   
+            <div class="bt_link">
+                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacaoeditar/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>">Cadastrar</a>
+            </div>
+            <div class="bt_link">
+                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>">Equipe</a>
+            </div>
+            <div class="bt_link">
+                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>">Orçamento</a>
+            </div>
+            <div class="bt_link">
+                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamentoconvenio/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>">Guia Convênio</a>
+            </div>
+        </fieldset>
         <fieldset >
             <legend>Dados da Solicitacao</legend>
 
@@ -14,31 +29,35 @@
                 <label>Telefone</label>
                 <input type="text" id="telefone" class="texto02" name="telefone" value="<?= @$solicitacao[0]->telefone; ?>" readonly="true"/>
             </div>
-            
+
             <div>
                 <label>Solicitante</label>
                 <input type="text"  id="solicitante" class="texto02" name="solicitante" value="<?= @$solicitacao[0]->solicitante; ?>" readonly="true"/>
             </div>
-            
+
             <div>
                 <label>Convenio</label>
                 <input type="text"  id="convenio" class="texto02" name="convenio" value="<?= @$solicitacao[0]->convenio; ?>" readonly="true"/>
             </div>
-            
+
             <div>
                 <label>Hospital</label>
                 <input type="text"  id="hospital" class="texto02" name="hospital" value="<?= @$solicitacao[0]->hospital; ?>" readonly="true"/>
             </div>
 
         </fieldset>
-        
+
         <fieldset>
             <legend>Autorizar Procedimentos</legend>
-            
+
             <fieldset>
                 <div>
                     <label>Data Cirurgia</label>
-                    <input type="text" name="txtdata" id="txtdata" alt="date" class="texto02" required/>
+                    <input type="text" name="txtdata" id="txtdata" alt="date" class="texto02" value="<?
+                    if (@$solicitacao[0]->data_prevista != '') {
+                        echo date("d/m/Y", strtotime(@$solicitacao[0]->data_prevista));
+                    }
+                    ?>" required/>
                 </div>
                 <div>
                     <label>Hora</label>
@@ -52,14 +71,17 @@
                     <label>Forma Pagamento</label>
                     <select name="formapamento" id="formapamento" class="size2">
                         <option value="">Selecione</option>
-                        <? foreach ($forma_pagamento as $item) : 
-                            if($item->forma_pagamento_id == 1000) continue; ?>
+                        <?
+                        foreach ($forma_pagamento as $item) :
+                            if ($item->forma_pagamento_id == 1000)
+                                continue;
+                            ?>
                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                         <? endforeach; ?>
                     </select>
                 </div>
             </fieldset>
-            
+
             <fieldset>
                 <legend>Via</legend>
                 <div id="via">
@@ -67,7 +89,7 @@
                     <input type="radio" name="via" id="d" value="D" required/> <label for="d">Via Diferente</label>
                 </div>
             </fieldset>
-            
+
             <fieldset>
                 <legend>Procedimentos</legend>
                 <table id="table_agente_toxico" border="0">
@@ -82,12 +104,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?
-                    $estilo_linha = "tabela_content01";
-                    $i = 0;
-                    foreach ($procedimentos as $item) {
-                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                        ?>
+                        <?
+                        $estilo_linha = "tabela_content01";
+                        $i = 0;
+                        foreach ($procedimentos as $item) {
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="hidden" name="procedimento_convenio_id[<?= $i; ?>]" value="<?= $item->procedimento_convenio_id; ?>" />
@@ -95,7 +117,8 @@
                                     <?= $item->procedimento; ?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <input type="number" id="valor" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
+                                    <input type="number" id="valor_total<?= $i; ?>" name="valor_total[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
+                                    <input type="hidden" id="valor<?= $i; ?>" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
                                 </td> 
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="text" name="qtde[<?= $i; ?>]" id="qtde" alt="integer" class="texto01" value="1" required=""/>
@@ -108,7 +131,7 @@
                             <?
                             $i++;
                         }
-                    ?>
+                        ?>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -118,13 +141,13 @@
                     </tfoot>
                 </table> 
             </fieldset>
-            
+
             <hr/>
-            
+
             <button type="submit" name="btnEnviar">Enviar</button>
             <button type="reset" name="btnLimpar">Limpar</button>
         </fieldset>
-        
+
     </form>
 </div> <!-- Final da DIV content -->
 <style>
@@ -136,33 +159,35 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
-            $(function() {
-                $("#txtdata").datepicker({
-                    autosize: true,
-                    changeYear: true,
-                    changeMonth: true,
-                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                    buttonImage: '<?= base_url() ?>img/form/date.png',
-                    dateFormat: 'dd/mm/yy'
-                });
-            });
-            
-            $(function () {
-                $('#procedimento1').change(function () {
-                    if ($(this).val()) {
-                        $('.carregando').show();
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
-                            options = "";
-                            options += j[0].valortotal;
-                            document.getElementById("valor1").value = options.replace(".", ",");
-                            $('.carregando').hide();
-                        });
-                    } else {
-                        $('#valor1').html('value=""');
-                    }
-                });
-            });
+    $(function () {
+        $("#txtdata").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
+
+    $(function () {
+        $('#valor').blur(function () {
+
+        });
+    });
+    $(function () {
+
+        $('#desconto').blur(function () {
+            desconto = $('#desconto').val();
+<? for ($b = 0; $b < $i; $b++) { ?>
+                valor_destacado<?= $b ?> = $('#valor<?= $b ?>').val();
+                valor<?= $b ?> = valor_destacado<?= $b ?> - (valor_destacado<?= $b ?> * (desconto / 100));
+                //               alert(valor<?= $b ?>);
+                $('#valor_total<?= $b ?>').val(valor<?= $b ?>);
+<? } ?>
+        });
+    });
 
 
 </script>

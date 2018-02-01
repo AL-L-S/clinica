@@ -65,6 +65,108 @@ class Autocomplete extends Controller {
         echo json_encode($var);
     }
 
+    function procedimentoconveniocirurgico() {
+
+        if (isset($_GET['convenio1'])) {
+            $result = $this->centrocirurgico->listarautocompleteprocedimentoscirurgico($_GET['convenio1']);
+        } else {
+            $result = $this->centrocirurgico->listarautocompleteprocedimentoscirurgico();
+        }
+        echo json_encode($result);
+    }
+
+    function produtofarmacia() {
+
+        if (isset($_GET['term'])) {
+            $result = $this->produto_m->autocompleteprodutofarmacia($_GET['term']);
+        } else {
+            $result = $this->produto_m->autocompleteprodutofarmacia();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->descricao;
+            $retorno['id'] = $item->farmacia_produto_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function fornecedorfarmacia() {
+
+        if (isset($_GET['term'])) {
+            $result = $this->fornecedor_m->autocompletefornecedorfarmacia($_GET['term']);
+        } else {
+            $result = $this->fornecedor_m->autocompletefornecedorfarmacia();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->fantasia;
+            $retorno['id'] = $item->farmacia_fornecedor_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function prescricaomedicamento() {
+
+        if (isset($_GET['term'])) {
+            $result = $this->internacao_m->listarautocompletemedicamentoprescricao($_GET['term']);
+        } else {
+            $result = $this->internacao_m->listarautocompletemedicamentoprescricao();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->descricao;
+            $retorno['id'] = $item->farmacia_produto_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function saldofarmacia() {
+
+        if (isset($_GET['entrada_id'])) {
+            $result = $this->saida_farmacia_m->listarsaldoprodutofarmaciaautocomplete($_GET['entrada_id']);
+        } else {
+            $result = $this->saida_farmacia_m->listarsaldoprodutofarmaciaautocomplete();
+        }
+//        var_dump($result); die;
+        foreach ($result as $item) {
+            $retorno['value'] = $item->total;
+//            $retorno['id'] = $item->estoque_produto_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function saidaprescricaofarmacia() {
+
+        if (isset($_GET['prescricao_id'])) {
+            $result = $this->saida_farmacia_m->listarsaidaprescricaofarmaciaautocomplete($_GET['prescricao_id']);
+        } else {
+            $result = $this->saida_farmacia_m->listarsaidaprescricaofarmaciaautocomplete();
+        }
+//        var_dump($result); die;
+        foreach ($result as $item) {
+            $retorno['value'] = $item->total;
+//            $retorno['id'] = $item->estoque_produto_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function produtofarmaciafracionamento() {
+
+        if (isset($_GET['term'])) {
+            $result = $this->produto_m->autocompleteprodutofarmaciafracionamento($_GET['term']);
+        } else {
+            $result = $this->produto_m->autocompleteprodutofarmaciafracionamento();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->descricao;
+            $retorno['id'] = $item->farmacia_produto_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
     function listarhorarioagendawebconvenio() {
         header('Access-Control-Allow-Origin: *');
 //        var_dump($_GET); die;
@@ -168,6 +270,36 @@ class Autocomplete extends Controller {
         die;
     }
 
+//    function unidadeleito() {
+//
+//        if (isset($_GET['unidade'])) {
+//            $result = $this->internacao_m->listaleitointarnacao($_GET['unidade']);
+//        } else {
+//            $result = $this->internacao_m->listaleitointarnacao();
+//        }
+//        echo json_encode($result);
+//    }
+
+    function unidadeleito2() {
+
+        if (isset($_GET['unidade'])) {
+            $result = $this->internacao_m->listaleitointarnacao2($_GET['unidade']);
+        } else {
+            $result = $this->internacao_m->listaleitointarnacao2();
+        }
+        echo json_encode($result);
+    }
+
+    function unidadepaciente() {
+
+        if (isset($_GET['unidade'])) {
+            $result = $this->internacao_m->listapacienteunidade($_GET['unidade']);
+        } else {
+            $result = $this->internacao_m->listapacienteunidade();
+        }
+        echo json_encode($result);
+    }
+
     function listarmedicoweb() {
         header('Access-Control-Allow-Origin: *');
 //        var_dump($_GET); die;
@@ -250,7 +382,7 @@ class Autocomplete extends Controller {
     function validaretornoprocedimentoinverso() {
         $result = array();
 
-        
+
         if (isset($_GET['paciente_id']) && isset($_GET['procedimento_id'])) {
             $result = $this->exametemp->validaretornoprocedimentoinverso($_GET['paciente_id'], $_GET['procedimento_id']);
         }
@@ -396,6 +528,20 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarhorariosgeral();
         }
         echo json_encode($result);
+    }
+
+    function listarprocedimentointernacaoautocomplete() {
+        if (isset($_GET['term'])) {
+            $result = $this->procedimento->listarprocedimentoautocomplete($_GET['term']);
+        } else {
+            $result = $this->procedimento->listarprocedimentoautocomplete();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->nome;
+            $retorno['id'] = $item->procedimento_tuss_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
     }
 
     function listarprocedimentoautocomplete() {
@@ -1234,7 +1380,7 @@ class Autocomplete extends Controller {
     }
 
     function listargruposala() {
-        if ( isset($_GET['sala']) ) {
+        if (isset($_GET['sala'])) {
             $result = $this->exametemp->listarautocompletegruposala($_GET['sala']);
         }
 
@@ -1294,7 +1440,7 @@ class Autocomplete extends Controller {
         $forma = $_GET['formapamento1'];
         if (isset($forma)) {
             $result = $this->formapagamento->buscarformapagamentoorcamento($forma);
-        } 
+        }
         echo json_encode($result);
     }
 

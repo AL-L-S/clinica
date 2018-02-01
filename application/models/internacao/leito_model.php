@@ -119,7 +119,6 @@ class leito_model extends BaseModel {
         join ponto.tb_internacao_enfermaria as ie on ie.internacao_enfermaria_id = il.enfermaria_id
         join ponto.tb_internacao_unidade as iu on iu.internacao_unidade_id = ie.unidade_id
         where il.ativo = true and il.condicao != 'Cirurgico'
-        and il.excluido = 'f' 
         and (il.nome ilike '%$parametro%'
         or ie.nome ilike '%$parametro%'
         or iu.nome ilike '%$parametro%')

@@ -15,25 +15,32 @@
                     </div>
                     
                     <div>
-                        <label> Leito</label>
+                        <label>ID Leito</label>
                         <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->leito; ?>" readonly/>
                     </div>
                     
                     
                     
                     <div>
-                        <label>Data da Internacao</label>                      
-                        <input type="text" id="data_internacao" name="data_internacao"  class="texto09" value="<?php echo substr($paciente['0']->data_internacao, 8, 2) . '/' . substr($paciente['0']->data_internacao, 5, 2) . '/' . substr($paciente['0']->data_internacao, 0, 4); ?>" readonly/>
+                        <label>data da Internacao</label>                      
+                        <input type="text" id="data_internacao" name="data_internacao"  class="texto09" value="<?= date("d/m/Y H:i:s",strtotime($paciente[0]->data_internacao)); ?>" readonly/>
                     </div>
                     
                     <div>
-                        <label>Data de Saída</label>                      
-                        <input type="text" id="data_nascimento" name="data_nascimento"  class="texto09" value="<?php echo substr($paciente['0']->data_saida, 8, 2) . '/' . substr($paciente['0']->data_saida, 5, 2) . '/' . substr($paciente['0']->data_saida, 0, 4); ?>" readonly/>
+                        <label>data de Nascimento</label>                      
+                        <input type="text" id="data_nascimento" name="data_nascimento"  class="texto09" value="<?=  date("d/m/Y",strtotime($paciente[0]->nascimento)); ?>" readonly/>
                     </div>
                     
-                   
+                    <div>
+                        <label>Sexo</label>
+                        <input type="text" id="sexo" name="sexo"  class="texto09" value="<?=$paciente[0]->sexo == 'M'? "Masculino": "Feminino"; ?>" readonly/>
+                    </div> 
                     
-                     
+                     <div>
+                                             
+                        <input type="hidden" id="txtidpaciente" name="idpaciente"  class="texto09" value="<?= $paciente[0]->paciente_id ?>" readonly/>
+                    </div>
+                    
                     
                     </fieldset>
                         
@@ -41,32 +48,24 @@
                         <?if($paciente[0]->motivo_saida ==''){?>
                           <div>
                         <label>Motivo de Saida</label>
-                        <input type="text"  name="leito" id="leito" class="texto09" value="Transferencia" readonly/>
+                        <input type="text"  name="leito" id="leito" class="texto09" value="Transferencia - <?=$paciente[0]->hospital_transferencia?>" readonly/>
                         </div>  
                         <?}
                         else{?>
                         <div> 
                             <label>Motivo de Saida</label>
                                
-                        <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->motivo_saida; ?>" readonly/>
+                        <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->motivosaida; ?>" readonly/>
                         </div> 
                         <?}?>
-                        <div>
-                         <? if($paciente[0]->hospital_transferencia == null) {?><?
-                             
-                         } else { ?>
-                          <label> Hospital de Transferência</label>                   
-                        <input type="text" id="txtidpaciente" name="idpaciente"  class="texto09" value="<?= $paciente[0]->hospital_transferencia ?>" readonly/>
-                    </div>
-                    <?}?>
                         
     
-                        <div>
+                    <div>
                         <label>Observações</label>
-                        <textarea  cols="" rows="" name="observacao" id="txtobservacao" class="texto_area" readonly><?= $paciente[0]->observacao_saida; ?></textarea>
+                        
+                        <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->observacao_saida; ?>" readonly/>
                     </div>
                 </fieldset>
-               
                         
                 </form>
                 

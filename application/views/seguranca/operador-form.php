@@ -43,6 +43,10 @@
                     <input type="text" id="txtconselho" name="conselho"  class="texto04" value="<?= @$obj->_conselho; ?>" />
                 </div>
                 <div>
+                    <label>Cor do Mapa</label>
+                    <input type="color" id="txtcolor" name="txtcolor"  class="texto04" value="<?= @$obj->_cor_mapa; ?>" />
+                </div>
+                <div>
                     <label>CPF *</label>
 
 

@@ -28,6 +28,7 @@
     <h4>CONVÊNIO: <?= $solicitacao[0]->convenio; ?></h4>
     <h4>MÉDICO SOLICITANTE: <?= $solicitacao[0]->solicitante; ?></h4>
     <h4>HOSPITAL: <?= $solicitacao[0]->hospital; ?></h4>
+    <h4>LEITO: <?= $solicitacao[0]->leito; ?></h4>
     <br>
     <?
     $total_geral = 0;

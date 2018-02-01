@@ -41,7 +41,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->paciente_id; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo substr($item->data_saida, 8,2) . '-' . substr($item->data_saida, 5,2) . '-' . substr($item->data_saida, 0,4) . ' ' . substr($item->data_saida, 11,8); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo substr($item->data_saida, 8,2) . '/' . substr($item->data_saida, 5,2) . '/' . substr($item->data_saida, 0,4) . ' ' . substr($item->data_saida, 11,8); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">

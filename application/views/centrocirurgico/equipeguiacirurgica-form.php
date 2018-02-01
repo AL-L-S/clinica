@@ -48,7 +48,7 @@
                     <tr>
                         <th class="tabela_header">Médico</th>
                         <th class="tabela_header">Função</th>
-                        <!--<th class="tabela_header" width="30px;" ><center></center></th>-->
+                        <th class="tabela_header" width="30px;" ><center></center></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -60,10 +60,10 @@
                         <tr>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?php echo $item->funcao; ?></td>
-<!--                            <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
-                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiritemequipe/<?= $item->agenda_exame_equipe_id; ?>" class="delete">
+                            <td class="<?php echo $estilo_linha; ?>" width="30px;" style="width: 60px;">
+                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluiroperadorequipecirurgica/<?= @$guia_id; ?>/<?= $item->funcao_id; ?>" class="delete">
                                 </a>
-                            </td>-->
+                            </td>
 
                         </tr>
                     </tbody>
