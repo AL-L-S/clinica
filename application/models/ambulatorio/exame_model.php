@@ -1761,7 +1761,7 @@ class exame_model extends Model {
         $this->db->join('tb_convenio co', 'co.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
-        if (isset($args['grupo'])) {
+        if (isset($args['grupo']) && strlen($args['nome']) > 0) {
             $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = an.exame_sala_id', 'left');
         }
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
@@ -1793,7 +1793,7 @@ class exame_model extends Model {
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
-        if (isset($args['grupo'])) {
+        if (isset($args['grupo']) && strlen($args['nome']) > 0) {
             $this->db->where('esg.grupo', $args['grupo']);
             $this->db->where('esg.ativo', 't');
         }
@@ -1888,7 +1888,7 @@ class exame_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio co', 'co.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
-        if (isset($args['grupo'])) {
+        if (isset($args['grupo']) && strlen($args['nome']) > 0) {
             $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = an.exame_sala_id', 'left');
         }
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
@@ -1921,7 +1921,7 @@ class exame_model extends Model {
         if (isset($args['medico']) && strlen($args['medico']) > 0) {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
-        if (isset($args['grupo'])) {
+        if (isset($args['grupo']) && strlen($args['nome']) > 0) {
             $this->db->where('esg.grupo', $args['grupo']);
             $this->db->where('esg.ativo', 't');
         }
