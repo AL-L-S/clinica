@@ -194,6 +194,12 @@ class centrocirurgico extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
     }
+    function excluirsolicitacaoprocedimentoeditar($solicitacao_procedimento_id, $solicitacao) {
+        $this->solicitacirurgia_m->excluirsolicitacaoprocedimento($solicitacao_procedimento_id);
+        $data['mensagem'] = 'Procedimento removido com sucesso';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditar/$solicitacao");
+    }
 
     function novo($paciente_id) {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
@@ -487,7 +493,32 @@ class centrocirurgico extends BaseController {
         }
     }
 
+    function gravarsolicitacaoprocedimentosalterar() {
+//        var_dump($_POST); die;
+        $solicitacao = $_POST['solicitacao_id'];
+
+
+        if ($_POST['procedimentoID'] != '') {
+            $verifica = count($this->solicitacirurgia_m->verificasolicitacaoprocedimentorepetidos());
+            if ($verifica == 0) {
+                if ($this->solicitacirurgia_m->gravarsolicitacaoprocedimento()) {
+                    $data['mensagem'] = 'Procedimento adicionado com Sucesso';
+                } else {
+                    $data['mensagem'] = 'Erro ao gravar Procedimento';
+                }
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar Procedimento. Procedimento nao selecionado ou invalido.';
+        }
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditar/$solicitacao");
+    }
+
     function gravarsolicitacaoprocedimentos() {
+//        var_dump($_POST); die;
         $solicitacao = $_POST['solicitacao_id'];
 
         if ($_POST['tipo'] == 'procedimento') {
@@ -530,7 +561,7 @@ class centrocirurgico extends BaseController {
         $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentos($solicitacao_id);
         $this->loadView('centrocirurgico/solicitacaoprocedimentos-form', $data);
     }
-    
+
     function carregarsolicitacaoeditar($solicitacao_id) {
 
         $data['solicitacao_id'] = $solicitacao_id;
