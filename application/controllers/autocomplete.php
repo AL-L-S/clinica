@@ -2411,6 +2411,15 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function agendaempresasala() {
+        $result = array();
+        if (isset($_GET['txtempresa'])) {
+            $result = $this->exametemp->listarautocompleteagendaempresasala($_GET['txtempresa']);
+        }
+
+        echo json_encode($result);
+    }
+
     function grupoempresasala() {
 //        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtgrupo'])) {

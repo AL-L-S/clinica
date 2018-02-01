@@ -25,10 +25,10 @@
                         <label>Grupo</label>
                     </dt>                    
                     <dd>                       
-                        <select name="grupo" id="grupo" class="size4" required>
-                            <option value="">SELECIONE</option>
-                            <!--<option>TODOS</option>-->                           
-                            <? foreach ($grupo as $value) : ?>
+                        <select name="grupo" id="grupo" class="size4">
+                            <option value="">SELECIONE</option>       
+                            <? foreach ($grupo as $value) : 
+                                if($value->nome == 'AGRUPADOR') { continue; }?>
                                 <option value="<?= $value->nome; ?>"><?php echo $value->nome; ?></option>
                             <? endforeach; /* $value->ambulatorio_grupo_id; */ ?>
 
@@ -185,7 +185,7 @@
 
     $(function () {
         $('#grupo').change(function () {
-            if ($('#covenio').val() != 'SELECIONE' && $('#grupo').val() != 'TODOS') {
+            if ($('#grupo').val()) {
                 $('.carregando').show();
                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#covenio').val()}, function (j) {
 //                    alert('teste');
@@ -201,22 +201,18 @@
                     $('.carregando').hide();
                 });
             } else {
-
-                if ($('#grupo').val() == 'TODOS') {
-                    $('.carregando').show();
-                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenio', {covenio: $('#covenio').val(), ajax: true}, function (j) {
-                        options = '<option value="">TODOS</option>';
-                        for (var c = 0; c < j.length; c++) {
-                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                        }
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenio', {covenio: $('#covenio').val(), ajax: true}, function (j) {
+                    options = '<option value="">TODOS</option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                    }
 //                        $('#procedimento').html(options).show();
 
-                        $('#procedimento option').remove();
-                        $('#procedimento').append(options);
-                        $("#procedimento").trigger("chosen:updated");
-                        $('.carregando').hide();
-                    });
-                }
+                    $('#procedimento option').remove();
+                    $('#procedimento').append(options);
+                    $("#procedimento").trigger("chosen:updated");
+                    $('.carregando').hide();
+                });
 
             }
         });

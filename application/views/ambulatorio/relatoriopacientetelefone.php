@@ -1,12 +1,24 @@
+<meta charset="utf8">
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
         <h3><a href="#">Gerar relatorio Paciente Telefone</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>ambulatorio/exame/gerarelatoriopacientetelefone">
                 <dl>
-                   
                     <dt>
-                    <label>Convenio</label>
+                        <label>Data inicio</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
+                    </dd>
+                    <dt>
+                        <label>Data fim</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
+                    </dd>
+                    <dt>
+                        <label>Convenio</label>
                     </dt>
                     <dd>
                         <select name="convenio" id="convenio" class="size2">
@@ -17,7 +29,7 @@
                             <? endforeach; ?>
                         </select>
                     </dd>
-                     <dt>
+                    <dt>
                         <label>Grupo</label>
                     </dt>
                     <dd>
@@ -47,24 +59,15 @@
                             </select>
                         </dd>
                     </div>
-
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Gerar Planilha</label>
                     </dt>
                     <dd>
-                        <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
-                    </dd>
-                    <dt>
-                    <label>Data fim</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
-                    </dd>
-                    
+                        <select name="gera_planilha" id="gera_planilha" class="size2">
+                            <option value='NAO'>NÃO</option>
+                            <option value='SIM'>SIM</option>
                         </select>
                     </dd>
-                    
-                    <dt>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>

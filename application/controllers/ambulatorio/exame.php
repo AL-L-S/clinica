@@ -403,7 +403,22 @@ class Exame extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['relatorio'] = $this->exame->gerarelatoriopacientetelefone();
-        $this->load->View('ambulatorio/impressaorelatoriopacientetelefone', $data);
+        if($_POST['gera_planilha'] == 'SIM') {
+            
+            $html = $this->load->View('ambulatorio/impressaorelatoriopacientetelefone', $data, true);
+            $filename = "Relatorio ". $_POST['txtdata_inicio'] . " a " .$_POST['txtdata_fim'];
+            
+            // Configurações header para forçar o download
+            header ("Content-type: application/x-msexcel; charset=utf-8");
+            header ("Content-Disposition: attachment; filename=\"{$filename}\"" );
+            header ("Content-Description: PHP Generated Data" );
+            
+            // Envia o conteúdo do arquivo
+            echo $html;
+            exit;            
+        } else {
+            $this->load->View('ambulatorio/impressaorelatoriopacientetelefone', $data);
+        }
     }
 
     function gerarelatoriomedicoagendaconsultas() {
@@ -3292,7 +3307,11 @@ class Exame extends BaseController {
           <ans:loteGuias>
              <ans:numeroLote>" . $b . "</ans:numeroLote>
                 <ans:guiasTISS>";
-                    $contador = count($listarpacienete);
+                    $contador = 0;
+                    foreach($listarpacienete as $pac){
+                        $contador += $pac->contador;
+                    }
+                    
                     foreach ($listarpacienete as $value) {
                         if ($value->convenionumero == '') {
                             $numerodacarteira = '0000000';
@@ -3604,7 +3623,7 @@ class Exame extends BaseController {
                                         $rodape = "";
                                     }
                                 } else {
-                                    if ($i == 80) {
+                                    if ($i == 100) {
                                         $contador = $contador - $i;
 
                                         $i = 0;
@@ -3625,7 +3644,7 @@ class Exame extends BaseController {
                                         $corpo = "";
                                         $rodape = "";
                                     }
-                                    if ($contador < 80 && $contador == $i) {
+                                    if ($contador < 100 && $contador == $i) {
                                         $i = 0;
                                         $rodape = "   </ans:guiasTISS>
           </ans:loteGuias>
@@ -3769,7 +3788,7 @@ class Exame extends BaseController {
                                 $rodape = "";
                             }
                         } else {
-                            if ($i == 80) {
+                            if ($i == 100) {
                                 $contador = $contador - $i;
                                 $b++;
                                 $i = 0;
@@ -3789,7 +3808,7 @@ class Exame extends BaseController {
                                 $corpo = "";
                                 $rodape = "";
                             }
-                            if ($contador < 80 && $contador == $i) {
+                            if ($contador < 100 && $contador == $i) {
 
                                 $i = 0;
                                 $rodape = "   </ans:guiasTISS>
@@ -3839,7 +3858,12 @@ class Exame extends BaseController {
           <ans:loteGuias>
              <ans:numeroLote>" . $b . "</ans:numeroLote>
                 <ans:guiasTISS>";
-                    $contador = count($listarpacienete);
+                    
+                    $contador = 0;
+                    foreach($listarpacienete as $pac){
+                        $contador += $pac->contador;
+                    }
+                    
                     foreach ($listarpacienete as $value) {
 
                         if ($value->guiaconvenio == '') {
@@ -4138,7 +4162,7 @@ class Exame extends BaseController {
                                     }
                                 } else {
 
-                                    if ($i == 80) {
+                                    if ($i == 100) {
                                         $contador = $contador - $i;
 
                                         $i = 0;
@@ -4162,7 +4186,7 @@ class Exame extends BaseController {
                                         $rodape = "";
                                     }
 
-                                    if ($contador < 80 && $contador == $i) {
+                                    if ($contador < 100 && $contador == $i) {
                                         $i = 0;
                                         $rodape = "   </ans:guiasTISS>
 
@@ -4312,7 +4336,7 @@ class Exame extends BaseController {
                                 $rodape = "";
                             }
                         } else {
-                            if ($i == 80) {
+                            if ($i == 100) {
                                 $contador = $contador - $i;
                                 $i = 0;
                                 $rodape = "</ans:guiasTISS>
@@ -4333,7 +4357,7 @@ class Exame extends BaseController {
                                 $corpo = "";
                                 $rodape = "";
                             }
-                            if ($contador < 80 && $contador == $i) {
+                            if ($contador < 100 && $contador == $i) {
                                 $i = 0;
                                 $rodape = "   </ans:guiasTISS>
 
@@ -4389,7 +4413,12 @@ class Exame extends BaseController {
           <ans:loteGuias>
              <ans:numeroLote>" . $b . "</ans:numeroLote>
                 <ans:guiasTISS>";
-                    $contador = count($listarpacienete);
+                    
+                    $contador = 0;
+                    foreach($listarpacienete as $pac){
+                        $contador += $pac->contador;
+                    }
+                    
                     foreach ($listarpacienete as $value) {
 //
 //                        if ($value->guiaconvenio == '') {
@@ -4616,7 +4645,7 @@ class Exame extends BaseController {
                       </ans:guiaSP-SADT>";
                                 }
 
-                                if ($i == 80) {
+                                if ($i == 100) {
                                     $contador = $contador - $i;
 
                                     $i = 0;
@@ -4637,7 +4666,7 @@ class Exame extends BaseController {
                                     $corpo = "";
                                     $rodape = "";
                                 }
-                                if ($contador < 80 && $contador == $i) {
+                                if ($contador < 100 && $contador == $i) {
                                     $i = 0;
                                     $rodape = "   </ans:guiasTISS>
           </ans:loteGuias>
@@ -4658,7 +4687,8 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } else {
+                } 
+                else {
 
 
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -4742,7 +4772,7 @@ class Exame extends BaseController {
                         </ans:procedimento>
                     </ans:dadosAtendimento>
                 </ans:guiaConsulta>";
-                        if ($i == 80) {
+                        if ($i == 100) {
                             $contador = $contador - $i;
                             $b++;
                             $i = 0;
@@ -4762,7 +4792,7 @@ class Exame extends BaseController {
                             $corpo = "";
                             $rodape = "";
                         }
-                        if ($contador < 80 && $contador == $i) {
+                        if ($contador < 100 && $contador == $i) {
 
                             $i = 0;
                             $rodape = "   </ans:guiasTISS>
@@ -4812,7 +4842,11 @@ class Exame extends BaseController {
       <ans:loteGuias>
          <ans:numeroLote>" . $b . "</ans:numeroLote>
             <ans:guiasTISS>";
-                    $contador = count($listarpacienete);
+                    $contador = 0;
+                    foreach($listarpacienete as $pac){
+                        $contador += $pac->contador;
+                    }
+                    
                     foreach ($listarpacienete as $value) {
                         if ($value->convenionumero == '') {
                             $numerodacarteira = '0000000';
@@ -4827,7 +4861,7 @@ class Exame extends BaseController {
                             } else {
                                 $guianumero = $item->guiaconvenio;
                             }
-
+                            
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $i++;
                                 $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
@@ -4942,7 +4976,8 @@ class Exame extends BaseController {
                      <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                   </ans:valorTotal>
                   </ans:guiaSP-SADT>";
-                                } else {
+                                } 
+                                else {
                                     $corpo = $corpo . "
                                                       <ans:guiaSP-SADT>
                       <ans:cabecalhoGuia>
@@ -5029,9 +5064,8 @@ class Exame extends BaseController {
                   </ans:valorTotal>
                   </ans:guiaSP-SADT>";
                                 }
-
-
-                                if ($i == 80) {
+                                
+                                if ($i == 100) {
                                     $contador = $contador - $i;
 
                                     $i = 0;
@@ -5055,7 +5089,8 @@ class Exame extends BaseController {
                                     $rodape = "";
                                 }
 
-                                if ($contador < 80 && $contador == $i) {
+                                if ($contador < 100 && $contador == $i) {
+                                    
                                     $i = 0;
                                     $rodape = "   </ans:guiasTISS>
          
@@ -5163,7 +5198,7 @@ class Exame extends BaseController {
                     </ans:procedimento>
                 </ans:dadosAtendimento>
             </ans:guiaConsulta>";
-                        if ($i == 80) {
+                        if ($i == 100) {
                             $contador = $contador - $i;
                             $i = 0;
                             $rodape = "</ans:guiasTISS>
@@ -5184,7 +5219,7 @@ class Exame extends BaseController {
                             $corpo = "";
                             $rodape = "";
                         }
-                        if ($contador < 80 && $contador == $i) {
+                        if ($contador < 100 && $contador == $i) {
                             $i = 0;
                             $rodape = "   </ans:guiasTISS>
          
@@ -5229,7 +5264,6 @@ class Exame extends BaseController {
                 unlink($arquivonome);
             }
         }
-//        die('morreu');
         $data['mensagem'] = 'Sucesso ao gerar arquivo.';
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/faturamentoexamexml", $data);

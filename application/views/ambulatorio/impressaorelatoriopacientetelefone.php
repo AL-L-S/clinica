@@ -13,11 +13,12 @@
 
             <th class="tabela_header" width="350px;">Paciente</th>
             <th class="tabela_header">Grupo</th>
-            <th class="tabela_header">Convênio</th>
+            <th class="tabela_header">Convenio</th>
             <th class="tabela_header" width="450px;">Pocedimento</th>
             <th class="tabela_header">Telefone</th>
+            <th class="tabela_header">Email</th>
             <th class="tabela_header">Data</th>
-            <th class="tabela_header">Previsão Retorno</th>
+            <th class="tabela_header">Previsao Retorno</th>
 
         </tr>
     </thead>
@@ -65,6 +66,7 @@
                     <td><?= $item->convenio; ?></td>
                     <td><?= $item->nome; ?></td>
                     <td ><?= $telefone; ?></td>
+                    <td ><?= $item->email; ?></td>
                     <td><?= date("d/m/Y", strtotime($item->data)); ?></td>
                     <td><? 
                         if( $item->dias_retorno != "" ){

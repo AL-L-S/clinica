@@ -50,11 +50,11 @@ class Agenda extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }
 
-    function alterarsalahorarioagenda($horario_id, $agenda_id, $sala_id = null) {
+    function alterarsalahorarioagenda($horario_id, $agenda_id, $empresa_id, $sala_id = null) {
         $data['horario_id'] = $horario_id;
         $data['agenda_id'] = $agenda_id;
         $data['sala_id'] = $sala_id;
-        $data['salas'] = $this->exame->listartodassalas();
+        $data['salas'] = $this->exame->listartodassalasagenda($empresa_id);
         $this->load->view('ambulatorio/alterarsalahorarioagenda-form', $data);
     }
 
@@ -310,15 +310,16 @@ class Agenda extends BaseController {
     function novohorarioagendacriada($agenda_id) {
         $data['agenda_id'] = $agenda_id;
         $data['empresas'] = $this->agenda->listarempresa();
-        $data['salas'] = $this->exame->listartodassalas();
+//        $data['salas'] = $this->exame->listartodassalas();
         $data['horarios'] = $this->agenda->listarhorarioagendaeditadas($agenda_id);
+//        echo "<pre>"; var_dump($data['horarios']); die;
         $this->loadView('ambulatorio/horarioagendacriada-form', $data);
     }
 
     function novohorarioagenda($agenda_id) {
         $data['agenda_id'] = $agenda_id;
         $data['empresas'] = $this->agenda->listarempresa();
-        $data['salas'] = $this->exame->listartodassalas();
+//        $data['salas'] = $this->exame->listartodassalas();
         $data['lista'] = $this->agenda->listarhorarioagendacriado($agenda_id);
         $this->loadView('ambulatorio/horarioagenda-form', $data);
     }

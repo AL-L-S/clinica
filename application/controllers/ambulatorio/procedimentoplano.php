@@ -294,16 +294,15 @@ class Procedimentoplano extends BaseController {
     }
 
     function impressaoorcamentorecepcao($orcamento) {
-        $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+        $data['emissao'] = date("d-m-Y");
         $data['impressaoorcamento'] = $this->guia->listarconfiguracaoimpressaoorcamento($empresa_id);
         $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['cabecalho'] = @$data['cabecalhoconfig'][0]->cabecalho;
         $data['rodape'] = @$data['cabecalhoconfig'][0]->rodape;
         $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
-//        var_dump($data['exames']); die;
 
         if ($data['permissoes'][0]->orcamento_config == 't') {
             $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);
@@ -365,7 +364,7 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['convenio_id'] = $convenio_id;
 //        $data['procedimento'] = $this->procedimentoplano->listarprocedimentopercentuallaboratorio();
-        $data['grupo'] = $this->procedimentoplano->listargrupolaboratorial();
+        $data['grupo'] = $this->procedimentoplano->listargrupo();
         $data['laboratorios'] = $this->laboratorio->listarlaboratorios();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/procedimentopercentuallaboratorio-form', $data);

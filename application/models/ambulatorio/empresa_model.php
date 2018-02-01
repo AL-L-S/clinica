@@ -254,6 +254,7 @@ class empresa_model extends Model {
                             numero_indentificacao_sms,
                             enviar_excedentes,
                             endereco_externo,
+                            remetente_sms,
                             mensagem_revisao, 
                             mensagem_confirmacao, 
                             mensagem_agradecimento,
@@ -696,6 +697,7 @@ class empresa_model extends Model {
                 $this->db->set('enviar_excedentes', 'f');
             }
 
+            $this->db->set('remetente_sms', $_POST['remetente_sms']);
             $this->db->set('mensagem_confirmacao', $_POST['txtMensagemConfirmacao']);
             $this->db->set('mensagem_agradecimento', $_POST['txtMensagemAgradecimento']);
             $this->db->set('mensagem_aniversariante', $_POST['txtMensagemAniversariantes']);

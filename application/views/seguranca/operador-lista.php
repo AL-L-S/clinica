@@ -1,3 +1,7 @@
+<? 
+$empresa_id = $this->session->userdata('empresa_id');
+$empresapermissao = $this->guia->listarempresasaladepermissao(); 
+?>
 <div class="content"> <!-- Inicio da DIV content -->
     <? $perfil_id = $this->session->userdata('perfil_id'); ?>
     <div class="bt_link_new">
@@ -120,12 +124,13 @@
                                         </a>
                                     </div>
                                 </td>
-
+                                <? if (@$empresapermissao[0]->desativar_personalizacao_impressao == 'f'){ ?>
                                 <td class="<?php echo $estilo_linha; ?>"><div class="bt_link" style="width: 60pt;">
                                         <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "seguranca/operador/anexarlogo/$item->operador_id"; ?> ', '_blank');">Logo
                                         </a>
                                     </div>
                                 </td>
+                                <? } ?>
 
             <? if ($perfil_id != 5) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">

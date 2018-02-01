@@ -6841,22 +6841,29 @@ class guia_model extends Model {
                             oi.valor_total,
                             oi.quantidade,
                             oi.valor,
+                            oi.data_cadastro,
                             (oi.valor_ajustado * oi.quantidade) as valor_total_ajustado,
                             p.nome as paciente,
                             p.sexo,
+                            p.paciente_id,
+                            p.cpf,
+                            p.nascimento,
                             oi.orcamento_id,
                             c.nome as convenio,
                             pc.convenio_id,
                             c.dinheiro,
+                            pt.descricao_procedimento,
                             pt.codigo,
                             pt.grupo,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            fp.nome as forma_pagamento');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
         $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = oi.operador_cadastro', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = oi.forma_pagamento', 'left');
         $this->db->where("oi.orcamento_id", $orcamento);
         $this->db->where("oi.ativo", 't');
         $this->db->orderby('oi.ambulatorio_orcamento_item_id');

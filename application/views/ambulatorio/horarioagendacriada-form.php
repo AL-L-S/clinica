@@ -26,8 +26,8 @@
                             <th>Fim do intervalo</th>
                             <th>Tempo Consulta</th>
                             <th>QTDE Consulta</th>
-                            <th>Sala</th>
                             <th>Empresa</th>
+                            <th>Sala</th>
                             <!--<th>Ações</th>-->
 
                         </tr>
@@ -51,16 +51,6 @@
                             <td><input type='text' id="txtTempoconsulta1" name="txtTempoconsulta[1]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text' id="txtQtdeconsulta1" name="txtQtdeconsulta[1]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='sala[1]' id="sala1" class='size2' >
-                                    <option value="" ></option>
-                                    <? foreach ($salas as $row) : ?>
-                                        <option value="<?= $row->exame_sala_id ?>">
-                                            <?= $row->nome ?>
-                                        </option> 
-                                    <? endforeach; ?>
-                                </select>
-                            </td>
-                            <td>                
                                 <select name='empresa[1]' id="empresa1" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -71,6 +61,11 @@
 //                                    endif;
                                         ?>><?= $row->nome ?></option> 
                                             <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
+                                <select name='sala[1]' id="sala1" class='size2' >
+                                    <option value="" ></option>
                                 </select>
                             </td>
 
@@ -96,16 +91,6 @@
                             <td><input type='text'  id="txtTempoconsulta2" name="txtTempoconsulta[2]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta2" name="txtQtdeconsulta[2]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='sala[2]' id="sala2" class='size2' >
-                                    <option value="" ></option>
-                                    <? foreach ($salas as $row) : ?>
-                                        <option value="<?= $row->exame_sala_id ?>">
-                                            <?= $row->nome ?>
-                                        </option> 
-                                    <? endforeach; ?>
-                                </select>
-                            </td>
-                            <td>                
                                 <select name='empresa[2]' id="empresa2" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -116,6 +101,11 @@
 //                                    endif;
                                         ?>><?= $row->nome ?></option> 
                                             <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
+                                <select name='sala[2]' id="sala2" class='size2' >
+                                    <option value="" ></option>
                                 </select>
                             </td>
 
@@ -141,16 +131,6 @@
                             <td><input type='text'  id="txtTempoconsulta3" name="txtTempoconsulta[3]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta3" name="txtQtdeconsulta[3]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='sala[3]' id="sala3" class='size2' >
-                                    <option value="" ></option>
-                                    <? foreach ($salas as $row) : ?>
-                                        <option value="<?= $row->exame_sala_id ?>">
-                                            <?= $row->nome ?>
-                                        </option> 
-                                    <? endforeach; ?>
-                                </select>
-                            </td>
-                            <td>                
                                 <select name='empresa[3]' id="empresa3" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -161,6 +141,11 @@
 //                                    endif;
                                         ?>><?= $row->nome ?></option> 
                                             <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
+                                <select name='sala[3]' id="sala3" class='size2' >
+                                    <option value="" ></option>
                                 </select>
                             </td>
 
@@ -186,16 +171,6 @@
                             <td><input type='text'  id="txtTempoconsulta4" name="txtTempoconsulta[4]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta4" name="txtQtdeconsulta[4]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='sala[4]' id="sala4" class='size2' >
-                                    <option value="" ></option>
-                                    <? foreach ($salas as $row) : ?>
-                                        <option value="<?= $row->exame_sala_id ?>">
-                                            <?= $row->nome ?>
-                                        </option> 
-                                    <? endforeach; ?>
-                                </select>
-                            </td>
-                            <td>                
                                 <select name='empresa[4]' id="empresa4" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -206,6 +181,11 @@
 //                                    endif;
                                         ?>><?= $row->nome ?></option> 
                                             <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
+                                <select name='sala[4]' id="sala4" class='size2' >
+                                    <option value="" ></option>
                                 </select>
                             </td>
 
@@ -231,16 +211,6 @@
                             <td><input type='text'  id="txtTempoconsulta5" name="txtTempoconsulta[5]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta5" name="txtQtdeconsulta[5]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='sala[5]' id="sala5" class='size2' >
-                                    <option value="" ></option>
-                                    <? foreach ($salas as $row) : ?>
-                                        <option value="<?= $row->exame_sala_id ?>">
-                                            <?= $row->nome ?>
-                                        </option> 
-                                    <? endforeach; ?>
-                                </select>
-                            </td>
-                            <td>                
                                 <select name='empresa[5]' id="empresa5" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -251,6 +221,11 @@
 //                                    endif;
                                         ?>><?= $row->nome ?></option> 
                                             <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
+                                <select name='sala[5]' id="sala5" class='size2' >
+                                    <option value="" ></option>
                                 </select>
                             </td>
 
@@ -276,16 +251,6 @@
                             <td><input type='text'  id="txtTempoconsulta6" name="txtTempoconsulta[6]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta6" name="txtQtdeconsulta[6]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='sala[6]' id="sala6" class='size2' >
-                                    <option value="" ></option>
-                                    <? foreach ($salas as $row) : ?>
-                                        <option value="<?= $row->exame_sala_id ?>">
-                                            <?= $row->nome ?>
-                                        </option> 
-                                    <? endforeach; ?>
-                                </select>
-                            </td>
-                            <td>                
                                 <select name='empresa[6]' id="empresa6" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -296,6 +261,11 @@
 //                                    endif;
                                         ?>><?= $row->nome ?></option> 
                                             <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
+                                <select name='sala[6]' id="sala6" class='size2' >
+                                    <option value="" ></option>
                                 </select>
                             </td>
 
@@ -321,16 +291,6 @@
                             <td><input type='text'  id="txtTempoconsulta7" name="txtTempoconsulta[7]" class='size1' data-container="body" data-toggle="popover" data-placement="left" data-content="Digite o tempo de consulta em minutos. Não digite letras, por favor. (Clique novamente no campo para sumir esta mensagem)" /></td>
                             <td><input type='text'  id="txtQtdeconsulta7" name="txtQtdeconsulta[7]" value='0' class='size1' /></td>
                             <td>                
-                                <select name='sala[7]' id="sala7" class='size2' >
-                                    <option value="" ></option>
-                                    <? foreach ($salas as $row) : ?>
-                                        <option value="<?= $row->exame_sala_id ?>">
-                                            <?= $row->nome ?>
-                                        </option> 
-                                    <? endforeach; ?>
-                                </select>
-                            </td>
-                            <td>                
                                 <select name='empresa[7]' id="empresa7" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
@@ -341,6 +301,11 @@
 //                                    endif;
                                         ?>><?= $row->nome ?></option> 
                                             <? endforeach; ?>
+                                </select>
+                            </td>
+                            <td>                
+                                <select name='sala[7]' id="sala7" class='size2' >
+                                    <option value="" ></option>
                                 </select>
                             </td>
 
@@ -371,14 +336,15 @@
                                     <th class="tabela_header">Fim do intervalo</th>
                                     <th class="tabela_header">Tempo consulta</th>
                                     <!--<th class="tabela_header">Obs</th>-->
-                                    <th class="tabela_header">Sala</th>
                                     <th class="tabela_header">Empresa</th>
+                                    <th class="tabela_header">Sala</th>
                                     <th class="tabela_header">&nbsp;</th>
                                 </tr>
                             </thead>
                             <?
                             $estilo_linha = "tabela_content01";
                             foreach ($horarios as $item) {
+                                
                                 ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                                 ?>
                                 <tbody>
@@ -390,8 +356,8 @@
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->intervalofim; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->tempoconsulta; ?></td>
                                         <!--<td class="<?php echo $estilo_linha; ?>"><?= $item->observacoes; ?></td>-->
-                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
+                                        <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                             <a target="_blank" href="<?= base_url() ?>ambulatorio/agenda/excluirhorarioagendaeditada/<?= $item->horarioagenda_editada_id ?>">
                                                 <img border="0" title="Excluir" alt="Excluir"
@@ -476,6 +442,35 @@
                 }
             });
         });
+        
+        $("#empresa<?= $i ?>").change(function(){
+            if($("#empresa<?= $i ?>").val()){
+                $.getJSON('<?= base_url() ?>autocomplete/agendaempresasala', {txtempresa: $("#empresa<?= $i ?>").val(), ajax: true}, function (j) {
+                    var options = '<option value=""></option>';
+                    for (var c = 0; c < j.length; c++) {
+                        options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                    }
+                    $("#sala<?= $i ?>").html(options).show();
+                    $('.carregando').hide();
+                });
+            }
+            else{
+                var options = '<option value=""></option>';
+                $("#sala<?= $i ?>").html(options).show();
+            }
+        });
+        
+        // Caso so tenha uma empresa, ele ja deve carregar todas as salas dessa empresa.
+        if($("#empresa<?= $i ?>").val()){
+            $.getJSON('<?= base_url() ?>autocomplete/agendaempresasala', {txtempresa: $("#empresa<?= $i ?>").val(), ajax: true}, function (j) {
+                var options = '<option value=""></option>';
+                for (var c = 0; c < j.length; c++) {
+                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                }
+                $("#sala<?= $i ?>").html(options).show();
+                $('.carregando').hide();
+            });
+        }
     <? } ?>
 
 

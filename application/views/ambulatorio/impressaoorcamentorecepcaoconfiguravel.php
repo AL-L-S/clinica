@@ -1,4 +1,4 @@
-<meta charset="utf8">
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <style>
     .negrito{
         font-weight: bold;
@@ -25,9 +25,9 @@ foreach ($exames as $item) {
     $total = $total + $item->valor_total;
     $totalCartao = $totalCartao + $item->valor_total_ajustado;
     
-    $procedimentos = $procedimentos . "<tr><td width='25%;'>" . utf8_decode($item->procedimento) . "</td>
-                <td width='10%;'>" . utf8_decode($item->descricao_procedimento) . "</td>
-                <td width='10%;'>" . utf8_decode($item->quantidade) . "</td>
+    $procedimentos = $procedimentos . "<tr><td width='25%;'>" . $item->procedimento . "</td>
+                <td width='10%;'>" . $item->descricao_procedimento . "</td>
+                <td width='10%;'>" . $item->quantidade . "</td>
                 <td width='10%;'>" . number_format($item->valor, 2, ',', '.') . "</td>
                 <td width='10%;'>" . $item->grupo . "</td>
                 <td width='10%;'>" . $item->convenio . "</td>

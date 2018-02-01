@@ -133,7 +133,8 @@ class agenda_model extends Model {
                            h.observacoes,
                            h.horarioagenda_editada_id,
                            h.sala_id,
-                           e.nome as sala');
+                           h.empresa_id,
+                           s.nome as sala');
         $this->db->from('tb_horarioagenda_editada h');
         $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
         $this->db->join('tb_exame_sala s', 's.exame_sala_id = h.sala_id', 'left');
@@ -2393,6 +2394,7 @@ class agenda_model extends Model {
                            h.observacoes,
                            h.horarioagenda_id,
                            s.nome as sala,
+                           h.empresa_id,
                            h.sala_id');
         $this->db->from('tb_horarioagenda h');
         $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
@@ -2416,6 +2418,7 @@ class agenda_model extends Model {
                            h.empresa_id,
                            h.observacoes,
                            h.horarioagenda_id,
+                           h.empresa_id,
                            s.nome as sala,
                            h.sala_id');
         $this->db->from('tb_horarioagenda h');
@@ -2775,7 +2778,7 @@ class agenda_model extends Model {
                 $tempoconsulta = $_POST['txtTempoconsulta'][$i];
                 $qtdeconsulta = $_POST['txtQtdeconsulta'][$i];
                 $empresa_id = $_POST['empresa'][$i];
-                $sala_id = $_POST['sala_id'][$i];
+                $sala_id = $_POST['sala'][$i];
 
                 if ($horaentrada1 != '') {
 

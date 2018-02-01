@@ -4123,7 +4123,7 @@ class exametemp_model extends Model {
                     }
                 }
                 if ($confimado == "on" && $procedimento_tuss_id > 0) {
-
+                    
                     foreach ($_POST['convenio'] as $itemconvenio) {
                         $w++;
                         if ($i == $w) {
@@ -4282,10 +4282,9 @@ class exametemp_model extends Model {
                     if ($_POST['ordenador'] != "") {
                         $this->db->set('ordenador', $_POST['ordenador']);
                     }
-//                    if ($indicacao != "") {
-//                        
-//                    }
-                    $this->db->set('medico_solicitante', $medico_id);
+                    if ($medico_id != "") {
+                        $this->db->set('medico_solicitante', $medico_id);
+                    }
                     if ($medicoexecutante != "") {
                         $this->db->set('medico_agenda', $medicoexecutante);
                         $this->db->set('medico_consulta_id', $medicoexecutante);
@@ -6517,6 +6516,17 @@ class exametemp_model extends Model {
         }
 
         $this->db->groupby("e.empresa_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompleteagendaempresasala($empresa_id) {
+        
+        $this->db->select('es.exame_sala_id, es.nome');
+        $this->db->from('tb_exame_sala es');
+        $this->db->where('es.excluido', 'f');
+        $this->db->where('es.empresa_id', $empresa_id);
+        $this->db->orderby('es.nome');
         $return = $this->db->get();
         return $return->result();
     }

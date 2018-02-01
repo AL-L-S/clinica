@@ -909,7 +909,18 @@ class Guia extends BaseController {
         }
         
         $paciente_id = $_POST['txtpaciente_id'];
-        if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+        
+        if ($_POST['crm1'] == '') {
+            $data['mensagem'] = 'Favor, selecione um medico solicitante da lista.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            if (isset($_POST['guia_id'])) {
+                $guia_id = $_POST['guia_id'];
+                redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$guia_id");
+            } else {
+                redirect(base_url() . "ambulatorio/guia/novo/$paciente_id");
+            }
+        }
+        elseif ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
             if (isset($_POST['guia_id'])) {
@@ -966,11 +977,21 @@ class Guia extends BaseController {
                 $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
             }
             $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
-//            var_dump($grupo); die;
             if ($grupo == 'LABORATORIAL') {
                 $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
             } else {
                 $percentual_laboratorio = array();
+            }
+            
+            if ($_POST['crm1'] == '' && $grupo != 'CONSULTA') {
+                $data['mensagem'] = 'Favor, selecione um medico solicitante da lista.';
+                $this->session->set_flashdata('message', $data['mensagem']);
+                if (isset($_POST['guia_id'])) {
+                    $guia_id = $_POST['guia_id'];
+                    redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$guia_id");
+                } else {
+                    redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id");
+                }
             }
 
 
@@ -1092,7 +1113,16 @@ class Guia extends BaseController {
 //        var_dump($percentual); die;
         $i = 1;
         $paciente_id = $_POST['txtpaciente_id'];
-        if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+        if ($_POST['crm1'] == '') {
+            $data['mensagem'] = 'Favor, selecione um medico solicitante da lista.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            if (isset($_POST['guia_id'])) {
+                $guia_id = $_POST['guia_id'];
+                redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$guia_id");
+            } else {
+                redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id");
+            }
+        } elseif ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
             if (isset($_POST['guia_id'])) {
@@ -3377,10 +3407,19 @@ class Guia extends BaseController {
 
     function listarprocedimentosorcamento($ambulatorio_orcamento_id, $empresa_id) {
         $data['emissao'] = date("d-m-Y");
-//        $empresa_id = $this->session->userdata('empresa_id');
         $data['exames'] = $this->guia->listarexamesrelatorioorcamento($ambulatorio_orcamento_id);
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
-        $this->load->View('ambulatorio/impressaorelatorioorcamentoprocedimento', $data);
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+        $data['impressaoorcamento'] = $this->guia->listarconfiguracaoimpressaoorcamento($empresa_id);
+        $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['cabecalho'] = @$data['cabecalhoconfig'][0]->cabecalho;
+        $data['rodape'] = @$data['cabecalhoconfig'][0]->rodape;
+        
+        if ($data['permissoes'][0]->orcamento_config == 't') {
+            $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);
+        } else {
+            $this->load->View('ambulatorio/impressaorelatorioorcamentoprocedimento', $data);
+        }
     }
 
     function procedimentoguianotaform($ambulatorio_guia_id, $valorguia, $valor = 0.00) {
