@@ -109,7 +109,8 @@ class guia_model extends Model {
                             oftamologia,
                             carregar_modelo_receituario,
                             retirar_botao_ficha,
-                            ep.desabilitar_trava_retorno');
+                            ep.desabilitar_trava_retorno,
+                            ep.desativar_personalizacao_impressao');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
@@ -10839,6 +10840,22 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saidas');
+            $saida_id = $this->db->insert_id();
+            
+            $this->db->set('valor', -$_POST['valor']);
+            $this->db->set('conta', $_POST['conta']);
+            $this->db->set('nome', $_POST['valor']);
+            $this->db->set('saida_id', $saida_id);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('data_cadastro', $horario);
+            if ($data_contaspagar == 't') {
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
+            } else {
+                $this->db->set('data', $data);
+            }
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_saldo');
         }
     }
 

@@ -5,7 +5,7 @@
         }*/
 
 </style>
-<? if($empresapermissao[0]->desativar_personalizacao_impressao != 't') {
+<? if($empresapermissoes[0]->desativar_personalizacao_impressao != 't') {
     
     if (file_exists("./upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".png")) {
         $caminho_background = base_url() . "upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".png";
