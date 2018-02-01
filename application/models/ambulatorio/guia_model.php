@@ -5189,7 +5189,7 @@ class guia_model extends Model {
         return $return[0]->valor_total;
     }
 
-    function relatoriocaixapersonalizadoprocedimentosvalortotal($guia_id) {
+    function relatoriocaixapersonalizadoprocedimentosvalortotal($guia_id, $operador_faturamento) {
 
         $this->db->select('sum(ae.quantidade * ae.valor) as valor_total');
         $this->db->from('tb_agenda_exames ae');
@@ -5210,8 +5210,8 @@ class guia_model extends Model {
             $this->db->where("ae.empresa_id", $_POST['empresa']);
         }
 
-        if ($_POST['operador'] != '0' && $_POST['operador'] != '') {
-            $this->db->where("ae.operador_faturamento", $_POST['operador']);
+        if ($operador_faturamento != '') {
+            $this->db->where("ae.operador_faturamento", $operador_faturamento);
         }
         $this->db->where('c.dinheiro', "t");
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
@@ -5443,7 +5443,8 @@ class guia_model extends Model {
         
         $this->db->where("ae.operador_faturamento", $operador_faturamento);
         
-        $this->db->orderby('ae.guia_id');
+        // SEMPRE DEIXE guia_id EM PRIMEIRO! Do contrário o relatorio de caixa personalizado não irá funcionar.
+        $this->db->orderby('ae.guia_id'); 
         $this->db->orderby('ae.operador_faturamento');
         $this->db->orderby('ae.operador_autorizacao');
         $this->db->orderby('ae.data');
