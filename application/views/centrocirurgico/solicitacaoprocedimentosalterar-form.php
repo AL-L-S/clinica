@@ -164,17 +164,10 @@
     }
 </style>
 
-<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>
-<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
-<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
-<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
-<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
-<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
-<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
 
@@ -200,50 +193,50 @@
                     });
 
 
-//                    if ($('#convenio1').val() != '') {
-////                            alert('asdsd');
-//                        $('.carregando').show();
-//                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniocirurgico', {convenio1: $('#convenio1').val(), ajax: true}, function (j) {
-//                            var options = '<option value=""></option>';
-//                            for (var c = 0; c < j.length; c++) {
-//                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-//
-//                            }
-//
-////                    $('#procedimento1').html(options).show();
-//                            $('#procedimento1 option').remove();
-//                            $('#procedimento1').append(options);
-//                            $("#procedimento1").trigger("chosen:updated");
-//                            $('.carregando').hide();
-//
-//                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $('#procedimento1').val(), ajax: true}, function (j) {
-//                                options = "";
-//                                options += j[0].valortotal;
-//                                document.getElementById("valor1").value = options
-//                                $('.carregando').hide();
-//                            });
-//                        });
-//                    } else {
-//                        $('#procedimento1').html('<option value="">-- Escolha um exame --</option>');
-//                    }
+                    if ($('#convenio1').val() != '') {
+//                            alert('asdsd');
+                        $('.carregando').show();
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniocirurgico', {convenio1: $('#convenio1').val(), ajax: true}, function (j) {
+                            var options = '<option value=""></option>';
+                            for (var c = 0; c < j.length; c++) {
+                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+
+                            }
+
+//                    $('#procedimento1').html(options).show();
+                            $('#procedimento1 option').remove();
+                            $('#procedimento1').append(options);
+                            $("#procedimento1").trigger("chosen:updated");
+                            $('.carregando').hide();
+
+                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $('#procedimento1').val(), ajax: true}, function (j) {
+                                options = "";
+                                options += j[0].valortotal;
+                                document.getElementById("valor1").value = options
+                                $('.carregando').hide();
+                            });
+                        });
+                    } else {
+                        $('#procedimento1').html('<option value="">-- Escolha um exame --</option>');
+                    }
 
 
 
-//                    $(function () {
-//                        $('#procedimento1').change(function () {
-//                            if ($(this).val()) {
-//                                $('.carregando').show();
-//                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
-//                                    options = "";
-//                                    options += j[0].valortotal;
-//                                    document.getElementById("valor1").value = options
-//                                    $('.carregando').hide();
-//                                });
-//                            } else {
-//                                $('#valor1').html('value=""');
-//                            }
-//                        });
-//                    });
+                    $(function () {
+                        $('#procedimento1').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                    options = "";
+                                    options += j[0].valortotal;
+                                    document.getElementById("valor1").value = options
+                                    $('.carregando').hide();
+                                });
+                            } else {
+                                $('#valor1').html('value=""');
+                            }
+                        });
+                    });
 
 
                 

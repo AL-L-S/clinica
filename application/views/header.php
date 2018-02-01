@@ -765,11 +765,11 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-                    <li><span class="folder">Farmácia</span>
+<!--                    <li><span class="folder">Farmácia</span>
                         <ul><? if ($perfil_id == 1 || $perfil_id == 8) { ?>
-                                                <li><span class="folder">Rotinas</span>                                                 <!--<li><span class="file"><a href="<?= base_url() ?>farmacia/solicitacao">Manter Solicitacao</a></span></li>-->
+                                                <li><span class="folder">Rotinas</span>                                                 <li><span class="file"><a href="<?= base_url() ?>farmacia/solicitacao">Manter Solicitacao</a></span></li>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada">Manter Entrada</a></span></ul>
-                                    <!--<ul><span class="file"><a href="<?= base_url() ?>farmacia/menu">Manter Menu</a></span></ul>-->
+                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/menu">Manter Menu</a></span></ul>
 
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/armazem">Manter Armazem</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/fornecedor">Manter Fornecedor</a></span></ul>
@@ -778,7 +778,7 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/saida">Saida por paciente</a></span></ul>
                                 </li> 
                                 <li><span class="folder">Relatórios</span>        
-                                    <!--<ul><span class="file"><a href="<?= base_url() ?>farmacia/culente">Manter Setor</a></span></ul>-->
+                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/culente">Manter Setor</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatorioentradaarmazem">Relatorio Entrada Produtos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriosaidaarmazem">Relatorio Saida Produtos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriosaldoarmazem">Relatorio Saldo Produtos/Entrada</a></span></ul>
@@ -786,11 +786,11 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriominimo">Relatorio farmacia Minimo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatorioprodutos">Relatorio Produtos</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriofornecedores">Relatorio Fornecedores</a></span></ul>
-                                    <!--<li><span class="file"><a href="<?= base_url() ?>seguranca/operador/operadorsetor">Listar Operadores</a></span></li>-->
+                                    <li><span class="file"><a href="<?= base_url() ?>seguranca/operador/operadorsetor">Listar Operadores</a></span></li>
                                 </li> 
                             <? } ?>
                         </ul>
-                    </li>
+                    </li>-->
 
                     <? if ($financeiro == 't' && ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || $perfil_id == 18 || ($perfil_id == 5 && $gerente_contasapagar == 't'))) { ?>
 
@@ -1103,12 +1103,12 @@ function debug($object) {
                                     </li> 
                                 <? } ?>
 
-                                <li><span class="folder">Farmacia</span>
+<!--                                <li><span class="folder">Farmácia</span>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/tipo">Manter Tipo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/classe">Manter Classe</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/subclasse">Manter Sub-Classe</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>farmacia/unidade">Manter Medida</a></span></ul>
-                                </li>
+                                </li>-->
                                 <? if ($financeiro == 't') { ?>
                                     <li><span class="folder">Financeiro</span>
                                         <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>

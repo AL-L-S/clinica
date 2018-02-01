@@ -533,6 +533,7 @@ class exametemp_model extends Model {
         }
         $this->db->where("ae.data >", $data_passado);
         $this->db->where("ae.data <", $data_futuro);
+        $this->db->where('ae.bloqueado', 'f');
         if (isset($empresa_id)) {
             $this->db->where("ae.empresa_id", $empresa_id);
         } else {
