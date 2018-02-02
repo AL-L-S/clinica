@@ -86,6 +86,8 @@
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
 <!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"></script>
 <script type="text/javascript">
 
 //    $("#quantidade").prop('max','5');
@@ -127,7 +129,8 @@
             }
         });
     });
-
+    moment.locale('pt-br');
+    
     $(function () {
         $('#produto').change(function () {
             if ($(this).val()) {
@@ -137,9 +140,15 @@
                 $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentrada', {produto: $(this).val(), armazem: $("#armazem").val()}, function (j) {
                     var options = '<option value=""></option>';
                     for (var i = 0; i < j.length; i++) {
-                        if (j[i].total < 0)
+                        if (j[i].total <= 0){
                             continue;
-                        options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total + '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
+                        }
+                        if(j[i].validade != null){
+                        var data = moment(j[i].validade).format('DD/MM/YYYY');   
+                        }else{
+                        var data = '';  
+                        }
+                        options += '<option value="' + j[i].estoque_produto_id + '">QTDE: ' + j[i].total + '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
                     }
                     $('#entrada').html(options).show();
                     $('.carregando').hide();
@@ -149,6 +158,19 @@
             }
         });
     });
+
+    function dataAtualFormatada() {
+        var data = new Date();
+        var dia = data.getDate();
+        if (dia.toString().length == 1)
+            dia = "0" + dia;
+        var mes = data.getMonth() + 1;
+        if (mes.toString().length == 1)
+            mes = "0" + mes;
+        var ano = data.getFullYear();
+        return dia + "/" + mes + "/" + ano;
+    }
+
 
     $(function () {
         $('#entrada').change(function () {
