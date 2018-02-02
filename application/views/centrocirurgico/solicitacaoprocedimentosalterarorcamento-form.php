@@ -1,6 +1,6 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
-    <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaoprocedimentosalterar" method="post">
+    <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaoprocedimentosalterarorcamento" method="post">
         <?
         $perfil_id = $this->session->userdata('perfil_id');
         ?>
@@ -94,11 +94,11 @@
             <!-- NAO REMOVA ESSE FIELDSET POIS O JAVASCRIPT IRA FUNCIONAR NELE!!! -->
         </fieldset>
 
-        <fieldset > 
+<!--        <fieldset > 
             <div class="bt_link">                                  
                 <a onclick="javascript: return confirm('Deseja realmente Liberar a solicitacao?');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/liberar/<?= $solicitacao_id ?>/<?= $dados[0]->orcamento ?>">Liberar</a>
             </div>
-        </fieldset>
+        </fieldset>-->
 
     </form>
     <?
@@ -125,7 +125,7 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                 <center>
-                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaoprocedimentoeditar/<?= $item->solicitacao_procedimento_id; ?>/<?= $solicitacao_id; ?>" class="delete">
+                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaoprocedimentoeditarorcamento/<?= $item->solicitacao_procedimento_id; ?>/<?= $solicitacao_id; ?>" class="delete">
                     </a>
                 </center>
                         </td>

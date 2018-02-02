@@ -194,11 +194,26 @@ class centrocirurgico extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
     }
+
     function excluirsolicitacaoprocedimentoeditar($solicitacao_procedimento_id, $solicitacao) {
         $this->solicitacirurgia_m->excluirsolicitacaoprocedimento($solicitacao_procedimento_id);
         $data['mensagem'] = 'Procedimento removido com sucesso';
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditar/$solicitacao");
+    }
+
+    function excluirsolicitacaoprocedimentoeditarorcamento($solicitacao_procedimento_id, $solicitacao) {
+        $this->solicitacirurgia_m->excluirsolicitacaoprocedimento($solicitacao_procedimento_id);
+        $data['mensagem'] = 'Procedimento removido com sucesso';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditarorcamento/$solicitacao");
+    }
+
+    function excluirsolicitacaoprocedimentoeditarconvenio($solicitacao_procedimento_id, $solicitacao) {
+        $this->solicitacirurgia_m->excluirsolicitacaoprocedimento($solicitacao_procedimento_id);
+        $data['mensagem'] = 'Procedimento removido com sucesso';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditarconvenio/$solicitacao");
     }
 
     function novo($paciente_id) {
@@ -294,6 +309,7 @@ class centrocirurgico extends BaseController {
         $data['solicitacao'] = $this->solicitacirurgia_m->listardadossolicitacaoautorizar($solicitacao_id);
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['procedimentos'] = $this->solicitacirurgia_m->listarprocedimentosolicitacaocirurgica($solicitacao_id);
+//        var_dump($data['procedimentos']); die;
         $this->loadView('centrocirurgico/autorizarcirurgia', $data);
     }
 
@@ -310,7 +326,7 @@ class centrocirurgico extends BaseController {
         $data['empresa'] = $this->solicitacirurgia_m->burcarempresa();
         $data['procedimentos'] = $this->solicitacirurgia_m->impressaoorcamento($solicitacao_id);
         $data['solicitacao'] = $this->solicitacirurgia_m->listardadossolicitacaoorcamentoimpressao($solicitacao_id);
-//        echo "<pre>"; var_dump($data['solicitacao']); die;
+//        echo "<pre>"; var_dump($data['procedimentos']); die;
         $this->load->view('centrocirurgico/impressaoorcamento', $data);
     }
 
@@ -493,7 +509,7 @@ class centrocirurgico extends BaseController {
         }
     }
 
-    function gravarsolicitacaoprocedimentosalterar() {
+    function gravarsolicitacaoprocedimentosalterarorcamento() {
 //        var_dump($_POST); die;
         $solicitacao = $_POST['solicitacao_id'];
 
@@ -501,13 +517,64 @@ class centrocirurgico extends BaseController {
         if ($_POST['procedimentoID'] != '') {
             $verifica = count($this->solicitacirurgia_m->verificasolicitacaoprocedimentorepetidos());
             if ($verifica == 0) {
-                if ($this->solicitacirurgia_m->gravarsolicitacaoprocedimento()) {
+                $valor = $this->solicitacirurgia_m->listarvalorprocedimentocadastrar();
+                if ($this->solicitacirurgia_m->gravarsolicitacaoprocedimentoalterar($valor)) {
                     $data['mensagem'] = 'Procedimento adicionado com Sucesso';
                 } else {
                     $data['mensagem'] = 'Erro ao gravar Procedimento';
                 }
                 $this->session->set_flashdata('message', $data['mensagem']);
-                redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
+                redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditarorcamento/$solicitacao");
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar Procedimento. Procedimento nao selecionado ou invalido.';
+        }
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditarorcamento/$solicitacao");
+    }
+
+    function gravarsolicitacaoprocedimentosalterarconvenio() {
+//        var_dump($_POST); die;
+        $solicitacao = $_POST['solicitacao_id'];
+
+
+        if ($_POST['procedimentoID'] != '') {
+            $verifica = count($this->solicitacirurgia_m->verificasolicitacaoprocedimentorepetidos());
+            $valor = $this->solicitacirurgia_m->listarvalorprocedimentocadastrar();
+            if ($verifica == 0) {
+                if ($this->solicitacirurgia_m->gravarsolicitacaoprocedimentoalterar($valor)) {
+                    $data['mensagem'] = 'Procedimento adicionado com Sucesso';
+                } else {
+                    $data['mensagem'] = 'Erro ao gravar Procedimento';
+                }
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditarconvenio/$solicitacao");
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar Procedimento. Procedimento nao selecionado ou invalido.';
+        }
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditarconvenio/$solicitacao");
+    }
+
+    function gravarsolicitacaoprocedimentosalterar() {
+//        var_dump($_POST); die;
+        $solicitacao = $_POST['solicitacao_id'];
+
+
+        if ($_POST['procedimentoID'] != '') {
+            $valor = $this->solicitacirurgia_m->listarvalorprocedimentocadastrar();
+            $verifica = count($this->solicitacirurgia_m->verificasolicitacaoprocedimentorepetidos());
+            if ($verifica == 0) {
+                if ($this->solicitacirurgia_m->gravarsolicitacaoprocedimentoalterar($valor)) {
+                    $data['mensagem'] = 'Procedimento adicionado com Sucesso';
+                } else {
+                    $data['mensagem'] = 'Erro ao gravar Procedimento';
+                }
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditar/$solicitacao");
             }
         } else {
             $data['mensagem'] = 'Erro ao gravar Procedimento. Procedimento nao selecionado ou invalido.';
@@ -518,14 +585,19 @@ class centrocirurgico extends BaseController {
     }
 
     function gravarsolicitacaoprocedimentos() {
-//        var_dump($_POST); die;
+
         $solicitacao = $_POST['solicitacao_id'];
 
         if ($_POST['tipo'] == 'procedimento') {
+
             if ($_POST['procedimentoID'] != '') {
+                $valor = $this->solicitacirurgia_m->listarvalorprocedimentocadastrar();
+//                var_dump($valor);
+//                die;
+                
                 $verifica = count($this->solicitacirurgia_m->verificasolicitacaoprocedimentorepetidos());
                 if ($verifica == 0) {
-                    if ($this->solicitacirurgia_m->gravarsolicitacaoprocedimento()) {
+                    if ($this->solicitacirurgia_m->gravarsolicitacaoprocedimento($valor)) {
                         $data['mensagem'] = 'Procedimento adicionado com Sucesso';
                     } else {
                         $data['mensagem'] = 'Erro ao gravar Procedimento';
@@ -538,11 +610,13 @@ class centrocirurgico extends BaseController {
             }
         } elseif ($_POST['tipo'] == 'agrupador') {
             $procedimentos = $this->solicitacirurgia_m->listarprocedimentosagrupador($_POST['agrupador_id']);
+//            var_dump($procedimentos); die;
             foreach ($procedimentos as $item) {
                 $_POST['procedimentoID'] = $item->procedimento_id;
+                $valor = $this->solicitacirurgia_m->listarvalorprocedimentocadastrar();
                 $verifica = count($this->solicitacirurgia_m->verificasolicitacaoprocedimentorepetidos());
                 if ($verifica == 0) {
-                    $this->solicitacirurgia_m->gravarsolicitacaoprocedimento();
+                    $this->solicitacirurgia_m->gravarsolicitacaoprocedimento($valor);
                 }
             }
         }
@@ -560,6 +634,28 @@ class centrocirurgico extends BaseController {
         $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador($data['dados'][0]->convenio_id);
         $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentos($solicitacao_id);
         $this->loadView('centrocirurgico/solicitacaoprocedimentos-form', $data);
+    }
+
+    function carregarsolicitacaoeditarorcamento($solicitacao_id) {
+
+        $data['solicitacao_id'] = $solicitacao_id;
+        $data['dados'] = $this->centrocirurgico_m->listarsolicitacoes3($solicitacao_id);
+        $data['convenios'] = $this->solicitacirurgia_m->listarconveniosdinheiro();
+        $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaoprocedimento($data['dados'][0]->convenio_id);
+        $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador($data['dados'][0]->convenio_id);
+        $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentosorcamento($solicitacao_id);
+        $this->loadView('centrocirurgico/solicitacaoprocedimentosalterarorcamento-form', $data);
+    }
+
+    function carregarsolicitacaoeditarconvenio($solicitacao_id) {
+
+        $data['solicitacao_id'] = $solicitacao_id;
+        $data['dados'] = $this->centrocirurgico_m->listarsolicitacoes3($solicitacao_id);
+        $data['convenios'] = $this->solicitacirurgia_m->listarconvenios();
+        $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaoprocedimento($data['dados'][0]->convenio_id);
+        $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador($data['dados'][0]->convenio_id);
+        $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentosconvenio($solicitacao_id);
+        $this->loadView('centrocirurgico/solicitacaoprocedimentosalterarconvenio-form', $data);
     }
 
     function carregarsolicitacaoeditar($solicitacao_id) {

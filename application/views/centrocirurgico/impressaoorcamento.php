@@ -52,10 +52,16 @@
             <tbody>
                 <? foreach ($procedimentos as $value) { ?>
                     <tr>
-                        <td colspan="4" class="procedimentoNome">Procedimento: <?= $value->procedimento ?></td>
+                        <td colspan="2" class="procedimentoNome">Procedimento: <?= $value->procedimento ?></td>
+                        <td colspan="2" class="procedimentoNome">Convênio: <?= $value->convenio ?></td>
                     </tr>
                     <? 
-                    $participacao = $this->solicitacirurgia_m->listarprocedimentoorcamentofuncao($value->cirurgia_procedimento_id); 
+                    
+                    if($value->equipe_particular == 't' && $value->dinheiro == 'f'){
+                       $participacao = $this->solicitacirurgia_m->listarprocedimentoorcamentoconveniofuncao($value->cirurgia_procedimento_id); 
+                    }else{
+                       $participacao = $this->solicitacirurgia_m->listarprocedimentoorcamentofuncao($value->cirurgia_procedimento_id);
+                    }
                     foreach ($participacao as $item) { 
                         $total_geral += (float)$item->valor; ?>
                         <tr>

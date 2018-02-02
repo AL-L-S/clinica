@@ -85,8 +85,8 @@
             <fieldset>
                 <legend>Via</legend>
                 <div id="via">
-                    <input type="radio" name="via" id="m" value="M" required/> <label for="m">Mesma Via</label>
-                    <input type="radio" name="via" id="d" value="D" required/> <label for="d">Via Diferente</label>
+                    <input type="radio" name="via" id="m" <? if(@$solicitacao[0]->via == 'M'){echo 'checked';} ?> value="M" required/> <label for="m">Mesma Via</label>
+                    <input type="radio" name="via" id="d" <? if(@$solicitacao[0]->via == 'D'){echo 'checked';} ?>  value="D" required/> <label for="d">Via Diferente</label>
                 </div>
             </fieldset>
 
@@ -97,8 +97,9 @@
 
                         <tr>
                             <th class="tabela_header">Procedimento</th>
+                            <th class="tabela_header">Convênio</th>
                             <th class="tabela_header">Valor</th>
-                            <th class="tabela_header">Quantidade</th>
+                            <!--<th class="tabela_header">Quantidade</th>-->
                             <th class="tabela_header">Horario Especial</th>
                             <th class="tabela_header"></th>
                         </tr>
@@ -117,12 +118,15 @@
                                     <?= $item->procedimento; ?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
+                                    <?= $item->convenio; ?>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
                                     <input type="number" id="valor_total<?= $i; ?>" name="valor_total[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
                                     <input type="hidden" id="valor<?= $i; ?>" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
                                 </td> 
-                                <td class="<?php echo $estilo_linha; ?>">
+<!--                                <td class="<?php echo $estilo_linha; ?>">
                                     <input type="text" name="qtde[<?= $i; ?>]" id="qtde" alt="integer" class="texto01" value="1" required=""/>
-                                </td>
+                                </td>-->
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="checkbox" name="horEspecial[<?= $i; ?>]">
                                 </td>                            

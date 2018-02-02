@@ -3,7 +3,7 @@
                 <fieldset>
             <legend>Outras Opções</legend>   
             <div class="bt_link">
-                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacao/<?= @$solicitacao_id; ?>">Cadastrar</a>
+                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacaoeditarorcamento/<?= @$solicitacao_id; ?>">Cadastrar</a>
             </div>
             <div class="bt_link">
                 <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= @$solicitacao_id; ?>">Equipe</a>
@@ -57,8 +57,8 @@
             <fieldset>
                 <legend>Via</legend>
                 <div id="via">
-                    <input type="radio" name="via" id="m" value="M" required/> <label for="m">Mesma Via</label>
-                    <input type="radio" name="via" id="d" value="D" required/> <label for="d">Via Diferente</label>
+                    <input type="radio" name="via" id="m" <? if(@$solicitacao[0]->via == 'M'){echo 'checked';} ?> value="M" required/> <label for="m">Mesma Via</label>
+                    <input type="radio" name="via" id="d" <? if(@$solicitacao[0]->via == 'D'){echo 'checked';} ?>  value="D" required/> <label for="d">Via Diferente</label>
                 </div>
             </fieldset>
             
@@ -69,6 +69,7 @@
 
                         <tr>
                             <th class="tabela_header">Procedimento</th>
+                            <th class="tabela_header">Convênio</th>
                             <th class="tabela_header">Valor</th>
                             <th class="tabela_header">Quantidade</th>
                             <th class="tabela_header">Horario Especial</th>
@@ -87,6 +88,9 @@
                                     <input type="hidden" name="procedimento_convenio_id[<?= $i; ?>]" value="<?= $item->procedimento_convenio_id; ?>" />
                                     <input type="hidden" name="cirurgia_procedimento_id[<?= $i; ?>]" value="<?= $item->solicitacao_cirurgia_procedimento_id; ?>" />
                                     <?= $item->procedimento; ?>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <?= $item->convenio; ?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="number" id="valor" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
