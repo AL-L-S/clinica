@@ -185,7 +185,7 @@
 
 
                                     $verificador = true;
-                                    $valTotal = $this->guia->relatoriocaixapersonalizadoprocedimentosvalortotal($item->guia_id);
+                                    $valTotal = $this->guia->relatoriocaixapersonalizadoprocedimentosvalortotal($item->guia_id, $item->operador_faturamento);
                                     $desconto_tot = 0;
 
                                     $data = array();
@@ -326,11 +326,13 @@
                                 <!-- FIM DO CORPO -->
 
                                 <?
-                                if (isset($relatorioprocedimentos[$t + 1]->guia_id) && @$relatorioprocedimentos[$t + 1]->guia_id == $item->guia_id) {
+                                if (isset($listaProcOp[$t + 1]->guia_id) && $listaProcOp[$t + 1]->guia_id == $item->guia_id) {
                                     continue;
+                                    
                                 } else {/* RESUMO GUIA */
+                                    
                                     if (!$verificador):
-//            }
+                                        
                                         $TOTALCARTAO = 0;
                                         $QTDECARTAO = 0;
                                         $TOTALDINHEIRO = 0;

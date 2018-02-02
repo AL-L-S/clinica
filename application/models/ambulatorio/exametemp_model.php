@@ -3676,7 +3676,7 @@ class exametemp_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->set('empresa_id', $empresa_id);
-            $this->db->set('tipo', 'FISIOTERAPIA');
+            $this->db->set('tipo', 'ESPECIALIDADE');
             $this->db->set('ativo', 'f');
             $this->db->set('cancelada', 'f');
             $this->db->set('confirmado', 'f');
@@ -3712,7 +3712,7 @@ class exametemp_model extends Model {
             foreach ($agenda as $item) {
 
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('tipo', 'FISIOTERAPIA');
+                $this->db->set('tipo', 'ESPECIALIDADE');
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
                 $this->db->set('confirmado', 'f');
@@ -3933,7 +3933,7 @@ class exametemp_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->set('empresa_id', $empresa_id);
-            $this->db->set('tipo', 'FISIOTERAPIA');
+            $this->db->set('tipo', 'ESPECIALIDADE');
             $this->db->set('ativo', 'f');
             $this->db->set('situacao', 'OK');
             $this->db->set('observacoes', 'reservado');
@@ -4801,7 +4801,7 @@ class exametemp_model extends Model {
                     for ($index = 2; $index <= $qtde; $index++) {
                         $this->db->set('convenio_id', $convenio);
                         $this->db->set('empresa_id', $empresa_id);
-                        $this->db->set('tipo', 'FISIOTERAPIA');
+                        $this->db->set('tipo', 'ESPECIALIDADE');
                         if ($_POST['ordenador'] != "") {
                             $this->db->set('ordenador', $_POST['ordenador']);
                         }
@@ -5110,7 +5110,7 @@ class exametemp_model extends Model {
                         if ($agrupador_fisioterapia != '') {
                             $this->db->set('convenio_id', $convenio);
                             $this->db->set('empresa_id', $empresa_id);
-                            $this->db->set('tipo', 'FISIOTERAPIA');
+                            $this->db->set('tipo', 'ESPECIALIDADE');
                             if ($_POST['ordenador'] != "") {
                                 $this->db->set('ordenador', $_POST['ordenador']);
                             }

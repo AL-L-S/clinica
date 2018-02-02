@@ -109,7 +109,8 @@ class guia_model extends Model {
                             oftamologia,
                             carregar_modelo_receituario,
                             retirar_botao_ficha,
-                            ep.desabilitar_trava_retorno');
+                            ep.desabilitar_trava_retorno,
+                            ep.desativar_personalizacao_impressao');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
@@ -5188,7 +5189,7 @@ class guia_model extends Model {
         return $return[0]->valor_total;
     }
 
-    function relatoriocaixapersonalizadoprocedimentosvalortotal($guia_id) {
+    function relatoriocaixapersonalizadoprocedimentosvalortotal($guia_id, $operador_faturamento) {
 
         $this->db->select('sum(ae.quantidade * ae.valor) as valor_total');
         $this->db->from('tb_agenda_exames ae');
@@ -5209,8 +5210,8 @@ class guia_model extends Model {
             $this->db->where("ae.empresa_id", $_POST['empresa']);
         }
 
-        if ($_POST['operador'] != '0' && $_POST['operador'] != '') {
-            $this->db->where("ae.operador_faturamento", $_POST['operador']);
+        if ($operador_faturamento != '') {
+            $this->db->where("ae.operador_faturamento", $operador_faturamento);
         }
         $this->db->where('c.dinheiro', "t");
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
@@ -5442,7 +5443,8 @@ class guia_model extends Model {
         
         $this->db->where("ae.operador_faturamento", $operador_faturamento);
         
-        $this->db->orderby('ae.guia_id');
+        // SEMPRE DEIXE guia_id EM PRIMEIRO! Do contrário o relatorio de caixa personalizado não irá funcionar.
+        $this->db->orderby('ae.guia_id'); 
         $this->db->orderby('ae.operador_faturamento');
         $this->db->orderby('ae.operador_autorizacao');
         $this->db->orderby('ae.data');
@@ -10839,6 +10841,22 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saidas');
+            $saida_id = $this->db->insert_id();
+            
+            $this->db->set('valor', -$_POST['valor']);
+            $this->db->set('conta', $_POST['conta']);
+            $this->db->set('nome', $_POST['valor']);
+            $this->db->set('saida_id', $saida_id);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('data_cadastro', $horario);
+            if ($data_contaspagar == 't') {
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
+            } else {
+                $this->db->set('data', $data);
+            }
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_saldo');
         }
     }
 

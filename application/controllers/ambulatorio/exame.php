@@ -3239,13 +3239,13 @@ class Exame extends BaseController {
 
         $codigoUF = $this->utilitario->codigo_uf($empresa[0]->codigo_ibge, 'codigo');
 
-        $cnpjxml = $listarexame[0]->codigoidentificador;
-        $razao_socialxml = $empresa[0]->razao_socialxml;
-        $registroans = $listarexame[0]->registroans;
+        $cnpjxml = @$listarexame[0]->codigoidentificador;
+        $razao_socialxml = @$empresa[0]->razao_socialxml;
+        $registroans = @$listarexame[0]->registroans;
         $cpfxml = $empresa[0]->cpfxml;
         $cnpj = $empresa[0]->cnpj;
         $cnes = $empresa[0]->cnes;
-        $convenio = $listarexame[0]->convenio;
+        $convenio = @$listarexame[0]->convenio;
         $versao = $_POST['xml'];
         $modelo = $_POST['modelo'];
 
