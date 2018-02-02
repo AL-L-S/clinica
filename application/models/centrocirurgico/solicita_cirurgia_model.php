@@ -939,7 +939,7 @@ class solicita_cirurgia_model extends BaseModel {
     function impressaoorcamento($solicitacao_id) {
 
         $this->db->set('situacao', 'ENCAMINHADO_PACIENTE');
-        $this->db->set('situacao_convenio', 'ENCAMINHADO_CONVENIO');
+//        $this->db->set('situacao_convenio', 'ENCAMINHADO_CONVENIO');
         $this->db->set('encaminhado_paciente', 't');
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->update('tb_solicitacao_cirurgia');
@@ -1939,7 +1939,7 @@ class solicita_cirurgia_model extends BaseModel {
 
             $this->db->set('via', $_POST['via']);
 //            $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
-            $this->db->set('situacao_convenio', 'ORCAMENTO_COMPLETO');
+            $this->db->set('situacao_convenio', 'GUIA_FEITA');
 //            $this->db->set('orcamentoconvenio_completo', 't');
             $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
             $this->db->update('tb_solicitacao_cirurgia');
@@ -1960,6 +1960,8 @@ class solicita_cirurgia_model extends BaseModel {
                 $valor = (float) $_POST['valor'][$key];
                 if (@$_POST['equipe_particular'][$key] == 'on') {
                     $this->db->set('equipe_particular', 't');
+                }else{
+                    $this->db->set('equipe_particular', 'f');
                 }
 
                 $this->db->set('horario_especial', (isset($_POST['horEspecial'][$key]) ? 't' : 'f'));
