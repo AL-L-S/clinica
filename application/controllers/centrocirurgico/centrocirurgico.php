@@ -818,7 +818,7 @@ class centrocirurgico extends BaseController {
 //        die;
 
         $var = Array();
-        $i = 24;
+        $i = 0;
 //            $result2 = $this->exametemp->listarhorarioscalendarioocupado();
 
         foreach ($result as $item) {
@@ -841,8 +841,8 @@ class centrocirurgico extends BaseController {
 
             $retorno['id'] = $i;
             $retorno['solicitacao_id'] = $item->solicitacao_cirurgia_id;
-            $retorno['title'] = " Cirurgião: $item->cirurgiao | Hospital: $item->hospital | Paciente: $item->nome | Convênio: $item->convenio | Fornecedor :  | Anestesista : $anestesista | Telefone: $item->celular/$item->telefone | Idade : $idade ";
-            $retorno['texto'] = " Cirurgião: $item->cirurgiao  \n \n Hospital: $item->hospital  \n \n Paciente: $item->nome  \n \n Convênio: $item->convenio  \n \n Fornecedor :  \n \n Anestesista  : $anestesista  \n \n Telefone: $item->celular/$item->telefone  \n \n Idade : $idade ";
+            $retorno['title'] = " Cirurgião: $item->cirurgiao | Hospital: $item->hospital | Paciente: $item->nome | Convênio: $item->convenio | Fornecedor :  | Anestesista : $anestesista | Telefone: $item->celular / $item->telefone | Idade : $idade ";
+            $retorno['texto'] = " Cirurgião: $item->cirurgiao  \n \n Hospital: $item->hospital  \n \n Paciente: $item->nome  \n \n Convênio: $item->convenio  \n \n Fornecedor :  \n \n Anestesista  : $anestesista  \n \n Telefone: $item->celular / $item->telefone  \n \n Idade : $idade ";
 
 
             $retorno['start'] = date("Y-m-d", strtotime($item->data_prevista)) . "T" . date("H:i:s", strtotime($item->hora_prevista));

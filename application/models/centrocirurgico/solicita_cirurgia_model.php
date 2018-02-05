@@ -521,6 +521,7 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->select('pt.nome as procedimento,
                            pt.codigo,
                            scp.valor as valortotal,
+                           scp.via,
                            c.nome as convenio,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
@@ -542,6 +543,7 @@ class solicita_cirurgia_model extends BaseModel {
                            pt.codigo,
                            pc.valortotal,
                            scp.valor as valortotal,
+                           scp.via,
                            c.nome as convenio,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
@@ -562,6 +564,7 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->select('pt.nome as procedimento,
                            pt.codigo,
                            scp.valor as valortotal,
+                           scp.via,
                            c.nome as convenio,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
@@ -584,6 +587,7 @@ class solicita_cirurgia_model extends BaseModel {
                            c.nome as convenio,
                            c.dinheiro,
                            scp.valor,
+                           scp.via,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
         $this->db->from('tb_solicitacao_cirurgia sc');
@@ -976,6 +980,7 @@ class solicita_cirurgia_model extends BaseModel {
             // Trazendo os procedimentos
             $this->db->select(' horario_especial,
                                 valor,
+                                via,
                                 equipe_particular,
                                 solicitacao_cirurgia_procedimento_id');
             $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
@@ -1053,13 +1058,13 @@ class solicita_cirurgia_model extends BaseModel {
                     $valProcedimento = ( $item->horario_especial == 't' ) ? ($valor) + ($valor * $horario_especial) : $valor;
 
                     if ($solicitacao[0]->leito == 'ENFERMARIA') {// LEITO DE ENFERMARIA
-                        if ($_POST['via'] == 'D') {// VIA DIFERENTE
+                        if ($item->via == 'D') {// VIA DIFERENTE
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $enfermaria_via_diferente['maior'];
                             } else {
                                 $valMedicoProc = ($valProcedimento * $enfermaria_via_diferente['base']);
                             }
-                        } elseif ($_POST['via'] == 'M') {// MESMA VIA
+                        } elseif ($item->via == 'M') {// MESMA VIA
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $enfermaria_mesma_via['maior'];
                             } else {
@@ -1067,13 +1072,13 @@ class solicita_cirurgia_model extends BaseModel {
                             }
                         }
                     } else { //APARTAMENTO
-                        if ($_POST['via'] == 'D') {// VIA DIFERENTE
+                        if ($item->via == 'D') {// VIA DIFERENTE
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $apartamento_via_diferente['maior'];
                             } else {
                                 $valMedicoProc = ($valProcedimento * $apartamento_via_diferente['base']);
                             }
-                        } elseif ($_POST['via'] == 'M') {// MESMA VIA
+                        } elseif ($item->via == 'M') {// MESMA VIA
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $apartamento_mesma_via['maior'];
                             } else {
@@ -1147,6 +1152,7 @@ class solicita_cirurgia_model extends BaseModel {
             // Trazendo os procedimentos
             $this->db->select(' scp.horario_especial,
                                 scp.valor,
+                                scp.via,
                                 scp.solicitacao_cirurgia_procedimento_id');
             $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
             $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
@@ -1222,13 +1228,13 @@ class solicita_cirurgia_model extends BaseModel {
                     $valProcedimento = ( $item->horario_especial == 't' ) ? ($valor) + ($valor * $horario_especial) : $valor;
 
                     if ($solicitacao[0]->leito == 'ENFERMARIA') {// LEITO DE ENFERMARIA
-                        if ($_POST['via'] == 'D') {// VIA DIFERENTE
+                        if ($item->via == 'D') {// VIA DIFERENTE
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $enfermaria_via_diferente['maior'];
                             } else {
                                 $valMedicoProc = ($valProcedimento * $enfermaria_via_diferente['base']);
                             }
-                        } elseif ($_POST['via'] == 'M') {// MESMA VIA
+                        } elseif ($item->via == 'M') {// MESMA VIA
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $enfermaria_mesma_via['maior'];
                             } else {
@@ -1236,13 +1242,13 @@ class solicita_cirurgia_model extends BaseModel {
                             }
                         }
                     } else { //APARTAMENTO
-                        if ($_POST['via'] == 'D') {// VIA DIFERENTE
+                        if ($item->via == 'D') {// VIA DIFERENTE
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $apartamento_via_diferente['maior'];
                             } else {
                                 $valMedicoProc = ($valProcedimento * $apartamento_via_diferente['base']);
                             }
-                        } elseif ($_POST['via'] == 'M') {// MESMA VIA
+                        } elseif ($item->via == 'M') {// MESMA VIA
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $apartamento_mesma_via['maior'];
                             } else {
@@ -1540,6 +1546,7 @@ class solicita_cirurgia_model extends BaseModel {
                                 a.data,
                                 a.guia_id,
                                 a.tipo,
+                                a.via,
                                 a.horario_especial,
                                 a.procedimento_tuss_id,
                                 a.valor_total,
@@ -1563,13 +1570,13 @@ class solicita_cirurgia_model extends BaseModel {
                     $valProcedimento = ($procedimentos[$i]->horario_especial == 't') ? ($valor) + ($valor * $horario_especial) : $valor;
 
                     if ($guia->leito == 'ENFERMARIA') {// LEITO DE ENFERMARIA
-                        if ($guia->via == 'D') {// VIA DIFERENTE
+                        if ($procedimentos[$i]->via == 'D') {// VIA DIFERENTE
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $enfermaria_via_diferente['maior'];
                             } else {
                                 $valMedicoProc = ($valProcedimento * $enfermaria_via_diferente['base']);
                             }
-                        } elseif ($guia->via == 'M') {// MESMA VIA
+                        } elseif ($procedimentos[$i]->via == 'M') {// MESMA VIA
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $enfermaria_mesma_via['maior'];
                             } else {
@@ -1577,13 +1584,13 @@ class solicita_cirurgia_model extends BaseModel {
                             }
                         }
                     } else { //APARTAMENTO
-                        if ($guia->via == 'D') {// VIA DIFERENTE
+                        if ($procedimentos[$i]->via == 'D') {// VIA DIFERENTE
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $apartamento_via_diferente['maior'];
                             } else {
                                 $valMedicoProc = ($valProcedimento * $apartamento_via_diferente['base']);
                             }
-                        } elseif ($guia->via == 'M') {// MESMA VIA
+                        } elseif ($procedimentos[$i]->via == 'M') {// MESMA VIA
                             if ($i == 0) {
                                 $valMedicoProc = $valProcedimento * $apartamento_mesma_via['maior'];
                             } else {
@@ -1791,6 +1798,7 @@ class solicita_cirurgia_model extends BaseModel {
             // Trazendo os procedimentos
             $this->db->select(' horario_especial,
                                 valor,
+                                via,
                                 desconto,
                                 solicitacao_cirurgia_procedimento_id,
                                 procedimento_tuss_id');
@@ -1808,7 +1816,7 @@ class solicita_cirurgia_model extends BaseModel {
             $solicitacao = $this->db->get()->result();
 
             /* GRAVANDO OS PROCEDIMENTOS NA GUIA */
-            $this->db->set('via', $_POST['via']);
+//            $this->db->set('via', $_POST['via']);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('equipe', 't');
             $this->db->set('tipo', 'CIRURGICO');
@@ -1829,6 +1837,7 @@ class solicita_cirurgia_model extends BaseModel {
                 $this->db->set('cancelada', 'f');
                 $this->db->set('confirmado', 't');
                 $this->db->set('valor', $item->valor);
+                $this->db->set('via', $item->via);
                 $this->db->set('valor_total', ( $item->valor - ($item->valor * $item->desconto) / 100));
 
                 if ($_POST['formapamento'] != '') {
@@ -1882,11 +1891,12 @@ class solicita_cirurgia_model extends BaseModel {
                 $valor = $_POST['valor_total'][$i];
                 $desconto = $_POST['desconto'];
                 $cirurgia_procedimento_id = $_POST['cirurgia_procedimento_id'][$i];
-                $horEspecial = $_POST['horEspecial'][$i];
+                $horEspecial = @$_POST['horEspecial'][$i];
 
                 $this->db->set('horario_especial', $horEspecial);
                 $this->db->set('desconto', $desconto);
                 $this->db->set('valor', $valor);
+                $this->db->set('via', $_POST['via'][$i]);
                 $this->db->where('solicitacao_cirurgia_procedimento_id', $cirurgia_procedimento_id);
                 $this->db->update('tb_solicitacao_cirurgia_procedimento');
 
@@ -1898,7 +1908,7 @@ class solicita_cirurgia_model extends BaseModel {
             $operador_id = $this->session->userdata('operador_id');
 
             $this->db->set('autorizado', 't');
-            $this->db->set('via', $_POST['via']);
+//            $this->db->set('via', $_POST['via']);
             $this->db->set('data_prevista', $_POST['txtdata']);
             $this->db->set('hora_prevista', $_POST['hora']);
             $this->db->set('hora_prevista_fim', $_POST['hora_fim']);
@@ -1943,7 +1953,7 @@ class solicita_cirurgia_model extends BaseModel {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            $this->db->set('via', $_POST['via']);
+//            $this->db->set('via', $_POST['via']);
 //            $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
             $this->db->set('situacao_convenio', 'GUIA_FEITA');
 //            $this->db->set('orcamentoconvenio_completo', 't');
@@ -1972,6 +1982,7 @@ class solicita_cirurgia_model extends BaseModel {
 
                 $this->db->set('horario_especial', (isset($_POST['horEspecial'][$key]) ? 't' : 'f'));
                 $this->db->set('valor', $valor);
+                $this->db->set('via', $_POST['via'][$key]);
                 $this->db->where('solicitacao_cirurgia_procedimento_id', $_POST['cirurgia_procedimento_id'][$key]);
                 $this->db->update('tb_solicitacao_cirurgia_procedimento');
             }
@@ -2005,7 +2016,7 @@ class solicita_cirurgia_model extends BaseModel {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            $this->db->set('via', $_POST['via']);
+//            $this->db->set('via', $_POST['via']);
             $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
             $this->db->set('situacao_convenio', 'ORCAMENTO_COMPLETO');
             $this->db->set('orcamento_completo', 't');
@@ -2028,6 +2039,7 @@ class solicita_cirurgia_model extends BaseModel {
                 $valor = (float) $_POST['valor'][$key];
 
                 $this->db->set('horario_especial', (isset($_POST['horEspecial'][$key]) ? 't' : 'f'));
+                $this->db->set('via', $_POST['via'][$key]);
                 $this->db->set('valor', $valor);
                 $this->db->where('solicitacao_cirurgia_procedimento_id', $_POST['cirurgia_procedimento_id'][$key]);
                 $this->db->update('tb_solicitacao_cirurgia_procedimento');

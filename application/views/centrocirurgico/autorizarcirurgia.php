@@ -94,13 +94,21 @@
                 </div>
             </fieldset>
 
-            <fieldset>
-                <legend>Via</legend>
-                <div id="via">
-                    <input type="radio" name="via" id="m" <? if(@$solicitacao[0]->via == 'M'){echo 'checked';} ?> value="M" required/> <label for="m">Mesma Via</label>
-                    <input type="radio" name="via" id="d" <? if(@$solicitacao[0]->via == 'D'){echo 'checked';} ?>  value="D" required/> <label for="d">Via Diferente</label>
-                </div>
-            </fieldset>
+            <!--            <fieldset>
+                            <legend>Via</legend>
+                            <div id="via">
+                                <input type="radio" name="via" id="m" <?
+            if (@$solicitacao[0]->via == 'M') {
+                echo 'checked';
+            }
+            ?> value="M" required/> <label for="m">Mesma Via</label>
+                                <input type="radio" name="via" id="d" <?
+            if (@$solicitacao[0]->via == 'D') {
+                echo 'checked';
+            }
+            ?>  value="D" required/> <label for="d">Via Diferente</label>
+                            </div>
+                        </fieldset>-->
 
             <fieldset>
                 <legend>Procedimentos</legend>
@@ -113,7 +121,7 @@
                             <th class="tabela_header">Valor</th>
                             <!--<th class="tabela_header">Quantidade</th>-->
                             <th class="tabela_header">Horario Especial</th>
-                            <th class="tabela_header"></th>
+                            <th class="tabela_header" colspan="2">Via</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,30 +132,45 @@
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>">
+                                <td  class="<?php echo $estilo_linha; ?>">
                                     <input type="hidden" name="procedimento_convenio_id[<?= $i; ?>]" value="<?= $item->procedimento_convenio_id; ?>" />
                                     <input type="hidden" name="cirurgia_procedimento_id[<?= $i; ?>]" value="<?= $item->solicitacao_cirurgia_procedimento_id; ?>" />
-                                    <?= $item->procedimento; ?>
+    <?= $item->procedimento; ?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <?= $item->convenio; ?>
+    <?= $item->convenio; ?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="number" id="valor_total<?= $i; ?>" name="valor_total[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
                                     <input type="hidden" id="valor<?= $i; ?>" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
                                 </td> 
-<!--                                <td class="<?php echo $estilo_linha; ?>">
+    <!--                                <td class="<?php echo $estilo_linha; ?>">
                                     <input type="text" name="qtde[<?= $i; ?>]" id="qtde" alt="integer" class="texto01" value="1" required=""/>
                                 </td>-->
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="checkbox" name="horEspecial[<?= $i; ?>]">
                                 </td>                            
+                                <td style="width: 280px" class="<?php echo $estilo_linha; ?>">
+                                    <div id="via">
+                                        <input type="radio" name="via[<?= $i; ?>]" id="m" <?
+                                               if ($item->via == 'M') {
+                                                   echo 'checked';
+                                               }
+                                               ?> value="M" required/> <label for="m">Mesma Via</label>
+                                        <input type="radio" name="via[<?= $i; ?>]" id="d" <?
+                                               if ($item->via == 'D') {
+                                                   echo 'checked';
+                                               }
+                                               ?>  value="D" required/> <label for="d">Via Diferente</label>
+                                    </div>
+                                </td>                            
+
 
                             </tr>
-                            <?
-                            $i++;
-                        }
-                        ?>
+    <?
+    $i++;
+}
+?>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -167,7 +190,7 @@
     </form>
 </div> <!-- Final da DIV content -->
 <style>
-    div#via label { color: black; font-weight: bolder; font-size: 12pt; }
+    div#via label { color: black;}
     div#via label, div#via input{ display: inline-block; }
 </style>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
