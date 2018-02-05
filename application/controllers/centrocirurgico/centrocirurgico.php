@@ -594,7 +594,7 @@ class centrocirurgico extends BaseController {
                 $valor = $this->solicitacirurgia_m->listarvalorprocedimentocadastrar();
 //                var_dump($valor);
 //                die;
-                
+
                 $verifica = count($this->solicitacirurgia_m->verificasolicitacaoprocedimentorepetidos());
                 if ($verifica == 0) {
                     if ($this->solicitacirurgia_m->gravarsolicitacaoprocedimento($valor)) {
@@ -818,17 +818,40 @@ class centrocirurgico extends BaseController {
 //        die;
 
         $var = Array();
-        $i = 0;
+        $i = 24;
 //            $result2 = $this->exametemp->listarhorarioscalendarioocupado();
 
         foreach ($result as $item) {
             $i++;
+            $data_atual = date("Y-m-d");
+            if ($item->nascimento != '') {
+                $idade = $data_atual - date("Y-m-d", strtotime($item->nascimento));
+            } else {
+                $idade = '';
+            }
+            $anestesista_select = $this->centrocirurgico_m->listacalendarioanestesistaautocomplete($item->solicitacao_cirurgia_id);
+            if(count($anestesista_select) > 0){
+                $anestesista = $anestesista_select[0]->nome;
+            }else{
+                $anestesista = '';
+            }
+//            var_dump($anestesista); die;
+            
+//            var_dump(date("Y-m-d",strtotime($item->nascimento))); die;
+
             $retorno['id'] = $i;
-            $retorno['title'] = "Paciente:" . $item->nome . " | Convênio: " . $item->convenio . " | Cirurgião: " . $item->cirurgiao;
+            $retorno['solicitacao_id'] = $item->solicitacao_cirurgia_id;
+            $retorno['title'] = " Cirurgião: $item->cirurgiao | Hospital: $item->hospital | Paciente: $item->nome | Convênio: $item->convenio | Fornecedor :  | Anestesista : $anestesista | Telefone: $item->celular/$item->telefone | Idade : $idade ";
+            $retorno['texto'] = " Cirurgião: $item->cirurgiao  \n \n Hospital: $item->hospital  \n \n Paciente: $item->nome  \n \n Convênio: $item->convenio  \n \n Fornecedor :  \n \n Anestesista  : $anestesista  \n \n Telefone: $item->celular/$item->telefone  \n \n Idade : $idade ";
 
 
             $retorno['start'] = date("Y-m-d", strtotime($item->data_prevista)) . "T" . date("H:i:s", strtotime($item->hora_prevista));
-            $retorno['end'] = date("Y-m-d", strtotime($item->data_prevista)) . "T" . date("H:i:s", strtotime($item->hora_prevista));
+            if ($item->hora_prevista_fim != '') {
+                $retorno['end'] = date("Y-m-d", strtotime($item->data_prevista)) . "T" . date("H:i:s", strtotime($item->hora_prevista_fim));
+            } else {
+                $retorno['end'] = date("Y-m-d", strtotime($item->data_prevista)) . "T" . date("H:i:s", strtotime($item->hora_prevista));
+            }
+
 //            $retorno['start'] = date("Y-m-d",strtotime($item->data_prevista));
 //            $retorno['end'] = date("Y-m-d",strtotime($item->data_prevista));
             if ($item->cor_mapa != '') {

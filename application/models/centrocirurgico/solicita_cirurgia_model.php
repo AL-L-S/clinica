@@ -434,6 +434,7 @@ class solicita_cirurgia_model extends BaseModel {
                            p.telefone,
                            sc.data_prevista,
                            sc.hora_prevista,
+                           sc.hora_prevista_fim,
                            sc.solicitacao_cirurgia_id,
                            sc.via,
                            sc.guia_id,
@@ -660,6 +661,7 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->where('ec.solicitacao_cirurgia_id', $solicitacaocirurgia_id);
         $this->db->where('ec.ativo', 't');
         $this->db->where('gp.ativo', 't');
+        $this->db->orderby("gp.codigo");
 
         $return = $this->db->get();
         return $return->result();
@@ -675,6 +677,8 @@ class solicita_cirurgia_model extends BaseModel {
             $empresa_id = $this->session->userdata('empresa_id');
 
             $this->db->set('data_prevista', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_prevista']))));
+            $this->db->set('hora_prevista', date("H:i:s", strtotime(str_replace('/', '-', $_POST['hora_inicio']))));
+            $this->db->set('hora_prevista_fim', date("H:i:s", strtotime(str_replace('/', '-', $_POST['hora_fim']))));
             $this->db->set('leito', $_POST['leito']);
             $this->db->set('paciente_id', $_POST['txtNomeid']);
             $this->db->set('medico_solicitante', $_POST['medicoagenda']);
@@ -1838,6 +1842,7 @@ class solicita_cirurgia_model extends BaseModel {
                 $this->db->set('quantidade', 1);
                 $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
                 $this->db->set('inicio', $_POST['hora']);
+                $this->db->set('fim', $_POST['hora_fim']);
                 $this->db->set('procedimento_tuss_id', $item->procedimento_tuss_id);
                 $this->db->set('guia_id', $ambulatorio_guia_id);
 
@@ -1896,6 +1901,7 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('via', $_POST['via']);
             $this->db->set('data_prevista', $_POST['txtdata']);
             $this->db->set('hora_prevista', $_POST['hora']);
+            $this->db->set('hora_prevista_fim', $_POST['hora_fim']);
             $this->db->set('situacao', 'FATURAMENTO_PENDENTE');
             $this->db->set('situacao_convenio', 'FATURAMENTO_PENDENTE');
             $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);

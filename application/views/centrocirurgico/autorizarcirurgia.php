@@ -60,8 +60,20 @@
                     ?>" required/>
                 </div>
                 <div>
-                    <label>Hora</label>
-                    <input type="text" name="hora" id="hora" alt="99:99" class="texto02" required/>
+                    <label>Hora Inicio</label>
+                    <input type="text" name="hora" id="hora" alt="99:99" class="texto02" value="<?
+                    if (@$solicitacao[0]->hora_prevista != '') {
+                        echo date("H:i", strtotime(@$solicitacao[0]->hora_prevista));
+                    }
+                    ?>" required/>
+                </div>
+                <div>
+                    <label>Hora Fim</label>
+                    <input type="text" name="hora_fim" id="hora_fim" alt="99:99" class="texto02" value="<?
+                    if (@$solicitacao[0]->hora_prevista_fim != '') {
+                        echo date("H:i", strtotime(@$solicitacao[0]->hora_prevista_fim));
+                    }
+                    ?>" required/>
                 </div>
                 <div>
                     <label>Desconto (%)</label>

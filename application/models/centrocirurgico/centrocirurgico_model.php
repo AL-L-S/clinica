@@ -773,37 +773,61 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
     function listarcirurgiacalendario($medico = null) {
 
         $this->db->select('
+                            sc.solicitacao_cirurgia_id,
                             p.nome,
+                            p.celular,
+                            p.telefone,
+                            p.nascimento,
                             o2.nome as cirurgiao,
                             o2.cor_mapa,
                             c.nome as convenio,
-                            sc.autorizado,
+                            h.nome as hospital,
                             sc.hora_prevista,
+                            sc.hora_prevista_fim,
                             sc.data_prevista');
         $this->db->from('tb_solicitacao_cirurgia sc');
-        $this->db->join('tb_agenda_exame_equipe aee', 'aee.guia_id = sc.guia_id', 'left');
+        $this->db->join('tb_equipe_cirurgia_operadores eco', 'eco.solicitacao_cirurgia_id = sc.solicitacao_cirurgia_id', 'left');
         $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id', 'left');
+        $this->db->join('tb_hospital h', 'h.hospital_id = sc.hospital_id', 'left');
         $this->db->join('tb_convenio c', 'sc.convenio = c.convenio_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = sc.medico_solicitante', 'left');
-        $this->db->join('tb_operador o2', 'o2.operador_id = aee.operador_responsavel', 'left');
+        $this->db->join('tb_operador o2', 'o2.operador_id = eco.operador_responsavel', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id ', 'left');
-        $this->db->where('aee.funcao', '0');
-        $this->db->where('aee.ativo', 't');
+        $this->db->where('eco.funcao', '0');
+        $this->db->where('eco.ativo', 't');
         $this->db->where('sc.ativo', 't');
         $this->db->where('sc.excluido', 'f');
-        $this->db->where('sc.autorizado', 't');
+//        $this->db->where('sc.autorizado', 't');
         if ($medico != null) {
-            $this->db->where('aee.operador_responsavel', $medico);
+            $this->db->where('eco.operador_responsavel', $medico);
         }
-        $this->db->groupby('p.nome,
+        $this->db->groupby('
+                            sc.solicitacao_cirurgia_id,
+                            p.nome,
+                            p.celular,
+                            p.telefone,
+                            p.nascimento,
                             o2.nome,
                             c.nome,
                             o2.cor_mapa,
-                            sc.autorizado,
+                            h.nome,
                             sc.hora_prevista,
+                            sc.hora_prevista_fim,
                             sc.data_prevista');
 
 
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listacalendarioanestesistaautocomplete($solicitacao_id) {
+        $this->db->select('o.nome');
+        $this->db->from('tb_equipe_cirurgia_operadores eco');
+        $this->db->join('tb_operador o', 'o.operador_id = eco.operador_responsavel', 'left');
+        $this->db->where('eco.ativo', 'true');
+        $this->db->where('eco.funcao', 6);
+        $this->db->where('eco.solicitacao_cirurgia_id', $solicitacao_id);
 
         $return = $this->db->get();
         return $return->result();
