@@ -20,7 +20,7 @@
             }
             ?>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Recomendação</th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Promotor</th>
             </tr>
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
@@ -33,11 +33,11 @@
 
             <? if ($indicacao == "0") { ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODAS RECOMENDAÇÕES</th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">TODOS OS PROMOTORES</th>
                 </tr>
             <? } else { ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">RECOMENDAÇÃO: <?= $indicacao; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PROMOTOR: <?= $indicacao; ?></th>
                 </tr>
             <? } ?>
             <tr>
@@ -64,7 +64,7 @@
             <thead>
                 <tr>
                     <th class="tabela_teste">Nome</th>
-                    <th class="tabela_teste">Recomendação</th>
+                    <th class="tabela_teste">Promotor</th>
                     <th class="tabela_teste">Procedimento</th>
                     <th class="tabela_teste">Valor do Promotor</th>
                     <th class="tabela_teste">Valor Recebido R$</th>
@@ -94,8 +94,7 @@
                     $i++;
                     $qtdetotal++;
                     $valor_total = $item->valor_total;
-                    ?>
-                    <?
+                    
                     if ($item->percentual_promotor == "t") {
                         $simbolopercebtual = " %";
 
@@ -140,7 +139,7 @@
         <table border="1">
             <thead>
                 <tr>
-                    <th class="tabela_teste">Recomendação</th>
+                    <th class="tabela_teste">Promotor</th>
                     <th class="tabela_teste">Qtde</th>
                     <th class="tabela_teste">Valor R$</th>
                 </tr>

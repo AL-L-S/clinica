@@ -4100,7 +4100,6 @@ class guia_model extends Model {
                             al.situacao as situacaolaudo,
                             tu.classificacao,
                             lab.nome as laboratorio,
-                            lab.nome as laboratorio,
                             pi.nome as indicacao,
                             ops.nome as medicosolicitante,
                             c.nome as convenio,

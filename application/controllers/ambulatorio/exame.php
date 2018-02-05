@@ -3228,6 +3228,7 @@ class Exame extends BaseController {
     function gerarxml() {
 
         $total = 0;
+        
         $listarpacienete = $this->exame->listarpacientesxmlfaturamento();
         $listarexame = $this->exame->listargxmlfaturamento();
         $listarexames = $this->exame->listarxmlfaturamentoexames();
@@ -3252,7 +3253,7 @@ class Exame extends BaseController {
         $limite = ($_POST['limite'] == '0') ? false : true;
 
         if ($_POST['tipo'] != 0) {
-            $classificacao = $listarexame[0]->classificacao;
+            $classificacao = @$listarexame[0]->classificacao;
         } else {
             $classificacao = 'TODOS';
         }
@@ -3282,7 +3283,7 @@ class Exame extends BaseController {
         if ($versao == '3.03.01' || $versao == '3.03.02') {
             if ($modelo == 'cpf') {
 
-                if ($listarexame[0]->grupo != 'CONSULTA') {
+                if (@$listarexame[0]->grupo != 'CONSULTA' && count($listarexame) > 0) {
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
        <ans:cabecalho>
@@ -3666,175 +3667,177 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
+                }
                 else {
-                    $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
-    <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
-       <ans:cabecalho>
-          <ans:identificacaoTransacao>
-             <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-             <ans:sequencialTransacao>" . $j . "</ans:sequencialTransacao>
-             <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
-             <ans:horaRegistroTransacao>" . $hora . "</ans:horaRegistroTransacao>
-          </ans:identificacaoTransacao>
-          <ans:origem>
-             <ans:identificacaoPrestador>
-                <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-             </ans:identificacaoPrestador>
-          </ans:origem>
-          <ans:destino>
-             <ans:registroANS>" . $registroans . "</ans:registroANS>
-          </ans:destino>
-          <ans:Padrao>" . $versao . "</ans:Padrao>
-       </ans:cabecalho>
-       <ans:prestadorParaOperadora>
-          <ans:loteGuias>
-             <ans:numeroLote>" . $b . "</ans:numeroLote>
-                <ans:guiasTISS>";
-                    $contador = count($listarexame);
-                    foreach ($listarexame as $value) {
-                        
-                        $tabela = '22';
-//                        $valorProcedimento = $value->valor;
-//                        $valorMaterial = 0.00;
-//                        $valorMedicamento = 0.00;
+                    if( count($listarexame) > 0 ) {
+                        $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
+        <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
+           <ans:cabecalho>
+              <ans:identificacaoTransacao>
+                 <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
+                 <ans:sequencialTransacao>" . $j . "</ans:sequencialTransacao>
+                 <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
+                 <ans:horaRegistroTransacao>" . $hora . "</ans:horaRegistroTransacao>
+              </ans:identificacaoTransacao>
+              <ans:origem>
+                 <ans:identificacaoPrestador>
+                    <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                 </ans:identificacaoPrestador>
+              </ans:origem>
+              <ans:destino>
+                 <ans:registroANS>" . $registroans . "</ans:registroANS>
+              </ans:destino>
+              <ans:Padrao>" . $versao . "</ans:Padrao>
+           </ans:cabecalho>
+           <ans:prestadorParaOperadora>
+              <ans:loteGuias>
+                 <ans:numeroLote>" . $b . "</ans:numeroLote>
+                    <ans:guiasTISS>";
+                        $contador = count($listarexame);
+                        foreach ($listarexame as $value) {
 
-                        if ($value->grupo == "MATERIAL") { //caso seja material
-                            $tabela = '19';
-                            $codDespesa = '03';
-//                            $valorMaterial = $value->valor;
-//                            $valorProcedimento = 0.00;
-                        } elseif ($value->grupo == "MEDICAMENTO") { //caso seja medicamento
-                            $tabela = '20';
-                            $codDespesa = '02';
-//                            $valorMedicamento = $value->valor;
-//                            $valorProcedimento = 0.00;
-                        }
+                            $tabela = '22';
+    //                        $valorProcedimento = $value->valor;
+    //                        $valorMaterial = 0.00;
+    //                        $valorMedicamento = 0.00;
 
-                        if ($value->convenionumero == '') {
-                            $numerodacarteira = '0000000';
-                        } else {
-                            $numerodacarteira = $value->convenionumero;
-                        }
-                        if ($value->medico == '') {
-                            $medico = 'ADMINISTRADOR';
-                        } else {
-                            $medico = $value->medico;
-                        }
-                        if ($value->conselho == '') {
-                            $conselho = '0000000';
-                        } else {
-                            $conselho = $value->conselho;
-                        }
-                        if ($value->guiaconvenio == '') {
-                            $guianumero = '0000000';
-                        } else {
-                            $guianumero = $value->guiaconvenio;
-                        }
-                        $corpo = $corpo . "
-                <ans:guiaConsulta>
-                    <ans:cabecalhoConsulta>
-                        <ans:registroANS>" . $registroans . "</ans:registroANS>
-                        <ans:numeroGuiaPrestador>" . (($value->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $value->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
-                    </ans:cabecalhoConsulta>
-                    <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
-                    <ans:dadosBeneficiario>
-                        <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
-                        <ans:atendimentoRN>N</ans:atendimentoRN>
-                        <ans:nomeBeneficiario>" . $value->paciente . "</ans:nomeBeneficiario>
-                    </ans:dadosBeneficiario>
-                    <ans:contratadoExecutante>
-                        <ans:codigoPrestadorNaOperadora>" . $cpfxml . "</ans:codigoPrestadorNaOperadora>
-                        <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
-                        <ans:CNES>" . $cnes . "</ans:CNES>
-                    </ans:contratadoExecutante>
-                    <ans:profissionalExecutante>
-                        <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>
-                        <ans:conselhoProfissional>06</ans:conselhoProfissional>
-                        <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
-                        <ans:UF>15</ans:UF>
-                        <ans:CBOS>225120</ans:CBOS>
-                    </ans:profissionalExecutante>
-                    <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
-                    <ans:dadosAtendimento>
-                        <ans:dataAtendimento>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAtendimento>
-                        <ans:tipoConsulta>1</ans:tipoConsulta>
-                        <ans:procedimento>
-                            <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
-                            <ans:codigoProcedimento>" . $value->codigo . "</ans:codigoProcedimento>
-                            <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
-                        </ans:procedimento>
-                    </ans:dadosAtendimento>
-                </ans:guiaConsulta>";
-                        if (!$limite) {
-                            if ($totExames == count($listarexames)) {
-                                $contador = $contador - $i;
-                                $b++;
-                                $i = 0;
-                                $rodape = "</ans:guiasTISS>
-        </ans:loteGuias>
-    </ans:prestadorParaOperadora>
-    <ans:epilogo>
-    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
-    </ans:epilogo>
-    </ans:mensagemTISS>";
-
-                                $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                                $xml = $cabecalho . $corpo . $rodape;
-                                $fp = fopen($nome, "w+");
-                                fwrite($fp, $xml . "\n");
-                                fclose($fp);
-                                $corpo = "";
-                                $rodape = "";
+                            if ($value->grupo == "MATERIAL") { //caso seja material
+                                $tabela = '19';
+                                $codDespesa = '03';
+    //                            $valorMaterial = $value->valor;
+    //                            $valorProcedimento = 0.00;
+                            } elseif ($value->grupo == "MEDICAMENTO") { //caso seja medicamento
+                                $tabela = '20';
+                                $codDespesa = '02';
+    //                            $valorMedicamento = $value->valor;
+    //                            $valorProcedimento = 0.00;
                             }
-                        } else {
-                            if ($i == 100) {
-                                $contador = $contador - $i;
-                                $b++;
-                                $i = 0;
-                                $rodape = "</ans:guiasTISS>
-        </ans:loteGuias>
-    </ans:prestadorParaOperadora>
-    <ans:epilogo>
-    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
-    </ans:epilogo>
-    </ans:mensagemTISS>";
 
-                                $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                                $xml = $cabecalho . $corpo . $rodape;
-                                $fp = fopen($nome, "w+");
-                                fwrite($fp, $xml . "\n");
-                                fclose($fp);
-                                $corpo = "";
-                                $rodape = "";
+                            if ($value->convenionumero == '') {
+                                $numerodacarteira = '0000000';
+                            } else {
+                                $numerodacarteira = $value->convenionumero;
                             }
-                            if ($contador < 100 && $contador == $i) {
+                            if ($value->medico == '') {
+                                $medico = 'ADMINISTRADOR';
+                            } else {
+                                $medico = $value->medico;
+                            }
+                            if ($value->conselho == '') {
+                                $conselho = '0000000';
+                            } else {
+                                $conselho = $value->conselho;
+                            }
+                            if ($value->guiaconvenio == '') {
+                                $guianumero = '0000000';
+                            } else {
+                                $guianumero = $value->guiaconvenio;
+                            }
+                            $corpo = $corpo . "
+                    <ans:guiaConsulta>
+                        <ans:cabecalhoConsulta>
+                            <ans:registroANS>" . $registroans . "</ans:registroANS>
+                            <ans:numeroGuiaPrestador>" . (($value->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $value->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
+                        </ans:cabecalhoConsulta>
+                        <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
+                        <ans:dadosBeneficiario>
+                            <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
+                            <ans:atendimentoRN>N</ans:atendimentoRN>
+                            <ans:nomeBeneficiario>" . $value->paciente . "</ans:nomeBeneficiario>
+                        </ans:dadosBeneficiario>
+                        <ans:contratadoExecutante>
+                            <ans:codigoPrestadorNaOperadora>" . $cpfxml . "</ans:codigoPrestadorNaOperadora>
+                            <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                            <ans:CNES>" . $cnes . "</ans:CNES>
+                        </ans:contratadoExecutante>
+                        <ans:profissionalExecutante>
+                            <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
+                            <ans:UF>15</ans:UF>
+                            <ans:CBOS>225120</ans:CBOS>
+                        </ans:profissionalExecutante>
+                        <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+                        <ans:dadosAtendimento>
+                            <ans:dataAtendimento>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAtendimento>
+                            <ans:tipoConsulta>1</ans:tipoConsulta>
+                            <ans:procedimento>
+                                <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
+                                <ans:codigoProcedimento>" . $value->codigo . "</ans:codigoProcedimento>
+                                <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
+                            </ans:procedimento>
+                        </ans:dadosAtendimento>
+                    </ans:guiaConsulta>";
+                            if (!$limite) {
+                                if ($totExames == count($listarexames)) {
+                                    $contador = $contador - $i;
+                                    $b++;
+                                    $i = 0;
+                                    $rodape = "</ans:guiasTISS>
+            </ans:loteGuias>
+        </ans:prestadorParaOperadora>
+        <ans:epilogo>
+        <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+        </ans:epilogo>
+        </ans:mensagemTISS>";
 
-                                $i = 0;
-                                $rodape = "   </ans:guiasTISS>
+                                    $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                    $xml = $cabecalho . $corpo . $rodape;
+                                    $fp = fopen($nome, "w+");
+                                    fwrite($fp, $xml . "\n");
+                                    fclose($fp);
+                                    $corpo = "";
+                                    $rodape = "";
+                                }
+                            } else {
+                                if ($i == 100) {
+                                    $contador = $contador - $i;
+                                    $b++;
+                                    $i = 0;
+                                    $rodape = "</ans:guiasTISS>
+            </ans:loteGuias>
+        </ans:prestadorParaOperadora>
+        <ans:epilogo>
+        <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+        </ans:epilogo>
+        </ans:mensagemTISS>";
+
+                                    $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                    $xml = $cabecalho . $corpo . $rodape;
+                                    $fp = fopen($nome, "w+");
+                                    fwrite($fp, $xml . "\n");
+                                    fclose($fp);
+                                    $corpo = "";
+                                    $rodape = "";
+                                }
+                                if ($contador < 100 && $contador == $i) {
+
+                                    $i = 0;
+                                    $rodape = "   </ans:guiasTISS>
 
 
-        </ans:loteGuias>
-    </ans:prestadorParaOperadora>
-    <ans:epilogo>
-    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
-    </ans:epilogo>
-    </ans:mensagemTISS>";
-                                $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                                $xml = $cabecalho . $corpo . $rodape;
-                                $fp = fopen($nome, "w+");
-                                fwrite($fp, $xml . "\n");
-                                fclose($fp);
-                                $b++;
-                                $corpo = "";
-                                $rodape = "";
+            </ans:loteGuias>
+        </ans:prestadorParaOperadora>
+        <ans:epilogo>
+        <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+        </ans:epilogo>
+        </ans:mensagemTISS>";
+                                    $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                    $xml = $cabecalho . $corpo . $rodape;
+                                    $fp = fopen($nome, "w+");
+                                    fwrite($fp, $xml . "\n");
+                                    fclose($fp);
+                                    $b++;
+                                    $corpo = "";
+                                    $rodape = "";
+                                }
                             }
                         }
                     }
                 }
             } 
             else {
-                if ($listarexame[0]->grupo != 'CONSULTA') {
+                if (@$listarexame[0]->grupo != 'CONSULTA' && count($listarexame) > 0) {
                     $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
        <ans:cabecalho>
@@ -3865,12 +3868,6 @@ class Exame extends BaseController {
                     }
                     
                     foreach ($listarpacienete as $value) {
-
-                        if ($value->guiaconvenio == '') {
-                            $guianumero = '0000000';
-                        } else {
-                            $guianumero = $value->guiaconvenio;
-                        }
                         if ($value->convenionumero == '') {
                             $numerodacarteira = '0000000';
                         } else {
@@ -3878,6 +3875,12 @@ class Exame extends BaseController {
                         }
 
                         foreach ($listarexames as $item) {
+                            if ($item->guiaconvenio == '') {
+                                $guianumero = '0000000';
+                            } else {
+                                $guianumero = $item->guiaconvenio;
+                            }
+
                             if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                 $tabela = '22';
 
@@ -4212,171 +4215,171 @@ class Exame extends BaseController {
                     }
                 } 
                 else {
-
-                    $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
-    <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
-       <ans:cabecalho>
-          <ans:identificacaoTransacao>
-             <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
-             <ans:sequencialTransacao>" . $j . "</ans:sequencialTransacao>
-             <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
-             <ans:horaRegistroTransacao>" . $hora . "</ans:horaRegistroTransacao>
-          </ans:identificacaoTransacao>
-          <ans:origem>
-             <ans:identificacaoPrestador>
-                <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-             </ans:identificacaoPrestador>
-          </ans:origem>
-          <ans:destino>
-             <ans:registroANS>" . $registroans . "</ans:registroANS>
-          </ans:destino>
-          <ans:Padrao>" . $versao . "</ans:Padrao>
-       </ans:cabecalho>
-       <ans:prestadorParaOperadora>
-          <ans:loteGuias>
-             <ans:numeroLote>" . $b . "</ans:numeroLote>
-                <ans:guiasTISS>";
-                    $contador = count($listarexame);
+                    if( count($listarexame) > 0 ) {
+                        $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
+        <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
+           <ans:cabecalho>
+              <ans:identificacaoTransacao>
+                 <ans:tipoTransacao>ENVIO_LOTE_GUIAS</ans:tipoTransacao>
+                 <ans:sequencialTransacao>" . $j . "</ans:sequencialTransacao>
+                 <ans:dataRegistroTransacao>" . substr($listarexame[0]->data_autorizacao, 0, 10) . "</ans:dataRegistroTransacao>
+                 <ans:horaRegistroTransacao>" . $hora . "</ans:horaRegistroTransacao>
+              </ans:identificacaoTransacao>
+              <ans:origem>
+                 <ans:identificacaoPrestador>
+                    <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                 </ans:identificacaoPrestador>
+              </ans:origem>
+              <ans:destino>
+                 <ans:registroANS>" . $registroans . "</ans:registroANS>
+              </ans:destino>
+              <ans:Padrao>" . $versao . "</ans:Padrao>
+           </ans:cabecalho>
+           <ans:prestadorParaOperadora>
+              <ans:loteGuias>
+                 <ans:numeroLote>" . $b . "</ans:numeroLote>
+                    <ans:guiasTISS>";
+                        $contador = count($listarexame);
                         
-//                    var_dump($listarexame);die;
-                    foreach ($listarexame as $value) {
-                        $tabela = '22';
-//                        $valorProcedimento = $value->valor;
-//                        $valorMaterial = 0.00;
-//                        $valorMedicamento = 0.00;
+                        foreach ($listarexame as $value) {
+                            $tabela = '22';
+    //                        $valorProcedimento = $value->valor;
+    //                        $valorMaterial = 0.00;
+    //                        $valorMedicamento = 0.00;
 
-                        if ($value->grupo == "MATERIAL") { //caso seja material
-                            $tabela = '19';
-                            $codDespesa = '03';
-//                            $valorMaterial = $value->valor;
-//                            $valorProcedimento = 0.00;
-                        } elseif ($value->grupo == "MEDICAMENTO") { //caso seja medicamento
-                            $tabela = '20';
-                            $codDespesa = '02';
-//                            $valorMedicamento = $value->valor;
-//                            $valorProcedimento = 0.00;
-                        }
-                        $i++;
-                        $totExames++;
-                        if ($value->convenionumero == '') {
-                            $numerodacarteira = '0000000';
-                        } else {
-                            $numerodacarteira = $value->convenionumero;
-                        }
-                        if ($value->medico == '') {
-                            $medico = 'ADMINISTRADOR';
-                        } else {
-                            $medico = $value->medico;
-                        }
-                        if ($value->conselho == '') {
-                            $conselho = '0000000';
-                        } else {
-                            $conselho = $value->conselho;
-                        }
-                        if ($value->guiaconvenio == '') {
-                            $guianumero = '0000000';
-                        } else {
-                            $guianumero = $value->guiaconvenio;
-                        }
-                        $corpo = $corpo . "
-                <ans:guiaConsulta>
-                    <ans:cabecalhoConsulta>
-                        <ans:registroANS>" . $registroans . "</ans:registroANS>
-                        <ans:numeroGuiaPrestador>" . (($value->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $value->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
-                    </ans:cabecalhoConsulta>
-                    <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
-                    <ans:dadosBeneficiario>
-                        <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
-                        <ans:atendimentoRN>N</ans:atendimentoRN>
-                        <ans:nomeBeneficiario>" . $value->paciente . "</ans:nomeBeneficiario>
-                    </ans:dadosBeneficiario>
-                    <ans:contratadoExecutante>
-                        <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
-                        <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
-                        <ans:CNES>" . $cnes . "</ans:CNES>
-                    </ans:contratadoExecutante>
-                    <ans:profissionalExecutante>
-                        <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>
-                        <ans:conselhoProfissional>06</ans:conselhoProfissional>
-                        <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
-                        <ans:UF>15</ans:UF>
-                        <ans:CBOS>225120</ans:CBOS>
-                    </ans:profissionalExecutante>
-                    <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
-                    <ans:dadosAtendimento>
-                        <ans:dataAtendimento>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAtendimento>
-                        <ans:tipoConsulta>1</ans:tipoConsulta>
-                        <ans:procedimento>
-                            <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
-                            <ans:codigoProcedimento>" . $value->codigo . "</ans:codigoProcedimento>
-                            <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
-                        </ans:procedimento>
-                    </ans:dadosAtendimento>
-                </ans:guiaConsulta>";
-                        if (!$limite) {
-                            if ($totExames == count($listarexames)) {
-                                $contador = $contador - $i;
-                                $b++;
-                                $i = 0;
-                                $rodape = "</ans:guiasTISS>
-        </ans:loteGuias>
-    </ans:prestadorParaOperadora>
-    <ans:epilogo>
-    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
-    </ans:epilogo>
-    </ans:mensagemTISS>";
-
-                                $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                                $xml = $cabecalho . $corpo . $rodape;
-                                $fp = fopen($nome, "w+");
-                                fwrite($fp, $xml . "\n");
-                                fclose($fp);
-//                                var_dump($xml);die;
-                                $corpo = "";
-                                $rodape = "";
+                            if ($value->grupo == "MATERIAL") { //caso seja material
+                                $tabela = '19';
+                                $codDespesa = '03';
+    //                            $valorMaterial = $value->valor;
+    //                            $valorProcedimento = 0.00;
+                            } elseif ($value->grupo == "MEDICAMENTO") { //caso seja medicamento
+                                $tabela = '20';
+                                $codDespesa = '02';
+    //                            $valorMedicamento = $value->valor;
+    //                            $valorProcedimento = 0.00;
                             }
-                        } else {
-                            if ($i == 100) {
-                                $contador = $contador - $i;
-                                $i = 0;
-                                $rodape = "</ans:guiasTISS>
-        </ans:loteGuias>
-    </ans:prestadorParaOperadora>
-    <ans:epilogo>
-    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
-    </ans:epilogo>
-    </ans:mensagemTISS>
-    ";
-
-                                $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                                $xml = $cabecalho . $corpo . $rodape;
-                                $fp = fopen($nome, "w+");
-                                fwrite($fp, $xml . "\n");
-                                fclose($fp);
-                                $b++;
-                                $corpo = "";
-                                $rodape = "";
+                            $i++;
+                            $totExames++;
+                            if ($value->convenionumero == '') {
+                                $numerodacarteira = '0000000';
+                            } else {
+                                $numerodacarteira = $value->convenionumero;
                             }
-                            if ($contador < 100 && $contador == $i) {
-                                $i = 0;
-                                $rodape = "   </ans:guiasTISS>
+                            if ($value->medico == '') {
+                                $medico = 'ADMINISTRADOR';
+                            } else {
+                                $medico = $value->medico;
+                            }
+                            if ($value->conselho == '') {
+                                $conselho = '0000000';
+                            } else {
+                                $conselho = $value->conselho;
+                            }
+                            if ($value->guiaconvenio == '') {
+                                $guianumero = '0000000';
+                            } else {
+                                $guianumero = $value->guiaconvenio;
+                            }
+                            $corpo = $corpo . "
+                    <ans:guiaConsulta>
+                        <ans:cabecalhoConsulta>
+                            <ans:registroANS>" . $registroans . "</ans:registroANS>
+                            <ans:numeroGuiaPrestador>" . (($value->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $value->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
+                        </ans:cabecalhoConsulta>
+                        <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
+                        <ans:dadosBeneficiario>
+                            <ans:numeroCarteira>" . $numerodacarteira . "</ans:numeroCarteira>
+                            <ans:atendimentoRN>N</ans:atendimentoRN>
+                            <ans:nomeBeneficiario>" . $value->paciente . "</ans:nomeBeneficiario>
+                        </ans:dadosBeneficiario>
+                        <ans:contratadoExecutante>
+                            <ans:codigoPrestadorNaOperadora>" . $cnpjxml . "</ans:codigoPrestadorNaOperadora>
+                            <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                            <ans:CNES>" . $cnes . "</ans:CNES>
+                        </ans:contratadoExecutante>
+                        <ans:profissionalExecutante>
+                            <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>
+                            <ans:conselhoProfissional>06</ans:conselhoProfissional>
+                            <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
+                            <ans:UF>15</ans:UF>
+                            <ans:CBOS>225120</ans:CBOS>
+                        </ans:profissionalExecutante>
+                        <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
+                        <ans:dadosAtendimento>
+                            <ans:dataAtendimento>" . substr($value->data_autorizacao, 0, 10) . "</ans:dataAtendimento>
+                            <ans:tipoConsulta>1</ans:tipoConsulta>
+                            <ans:procedimento>
+                                <ans:codigoTabela>" . $tabela . "</ans:codigoTabela>
+                                <ans:codigoProcedimento>" . $value->codigo . "</ans:codigoProcedimento>
+                                <ans:valorProcedimento>" . $value->valor . "</ans:valorProcedimento>
+                            </ans:procedimento>
+                        </ans:dadosAtendimento>
+                    </ans:guiaConsulta>";
+                            if (!$limite) {
+                                if ($totExames == count($listarexames)) {
+                                    $contador = $contador - $i;
+                                    $b++;
+                                    $i = 0;
+                                    $rodape = "</ans:guiasTISS>
+            </ans:loteGuias>
+        </ans:prestadorParaOperadora>
+        <ans:epilogo>
+        <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+        </ans:epilogo>
+        </ans:mensagemTISS>";
+
+                                    $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                    $xml = $cabecalho . $corpo . $rodape;
+                                    $fp = fopen($nome, "w+");
+                                    fwrite($fp, $xml . "\n");
+                                    fclose($fp);
+    //                                var_dump($xml);die;
+                                    $corpo = "";
+                                    $rodape = "";
+                                }
+                            } else {
+                                if ($i == 100) {
+                                    $contador = $contador - $i;
+                                    $i = 0;
+                                    $rodape = "</ans:guiasTISS>
+            </ans:loteGuias>
+        </ans:prestadorParaOperadora>
+        <ans:epilogo>
+        <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+        </ans:epilogo>
+        </ans:mensagemTISS>
+        ";
+
+                                    $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                    $xml = $cabecalho . $corpo . $rodape;
+                                    $fp = fopen($nome, "w+");
+                                    fwrite($fp, $xml . "\n");
+                                    fclose($fp);
+                                    $b++;
+                                    $corpo = "";
+                                    $rodape = "";
+                                }
+                                if ($contador < 100 && $contador == $i) {
+                                    $i = 0;
+                                    $rodape = "   </ans:guiasTISS>
 
 
-        </ans:loteGuias>
-    </ans:prestadorParaOperadora>
-    <ans:epilogo>
-    <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
-    </ans:epilogo>
-    </ans:mensagemTISS>
-    ";
-                                $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
-                                $xml = $cabecalho . $corpo . $rodape;
-                                $fp = fopen($nome, "w+");
-                                fwrite($fp, $xml . "\n");
-                                fclose($fp);
-                                $b++;
-                                $corpo = "";
-                                $rodape = "";
+            </ans:loteGuias>
+        </ans:prestadorParaOperadora>
+        <ans:epilogo>
+        <ans:hash>e2eadfe09fd6750a184902545aa41771</ans:hash>
+        </ans:epilogo>
+        </ans:mensagemTISS>
+        ";
+                                    $nome = "./upload/cr/" . $convenio . "/" . $zero . $b . "_" . $nomearquivoconsulta . ".xml";
+                                    $xml = $cabecalho . $corpo . $rodape;
+                                    $fp = fopen($nome, "w+");
+                                    fwrite($fp, $xml . "\n");
+                                    fclose($fp);
+                                    $b++;
+                                    $corpo = "";
+                                    $rodape = "";
+                                }
                             }
                         }
                     }
@@ -5245,23 +5248,25 @@ class Exame extends BaseController {
             }
         }
         
-        $this->exame->gravarlote($b);
-        $zip = new ZipArchive;
-        $this->load->helper('directory');
-        $arquivo_pasta = directory_map("./upload/cr/$convenio/");
-        if ($arquivo_pasta != false) {
-            foreach ($arquivo_pasta as $value) {
-                $deletar[] = "./upload/cr/$convenio/$value";
-            }
-            foreach ($arquivo_pasta as $value) {
-                $zip->open("./upload/cr/$convenio/$value.zip", ZipArchive::CREATE);
-                $zip->addFile("./upload/cr/$convenio/$value", "$value");
-//           $deletarxml = "./upload/cr/$convenio/$value";
-//           unlink($deletarxml);
-            }
-            $zip->close();
-            foreach ($deletar as $arquivonome) {
-                unlink($arquivonome);
+        if( count($listarexame) > 0 ) {
+            $this->exame->gravarlote($b);
+            $zip = new ZipArchive;
+            $this->load->helper('directory');
+            $arquivo_pasta = directory_map("./upload/cr/$convenio/");
+            if ($arquivo_pasta != false) {
+                foreach ($arquivo_pasta as $value) {
+                    $deletar[] = "./upload/cr/$convenio/$value";
+                }
+                foreach ($arquivo_pasta as $value) {
+                    $zip->open("./upload/cr/$convenio/$value.zip", ZipArchive::CREATE);
+                    $zip->addFile("./upload/cr/$convenio/$value", "$value");
+    //           $deletarxml = "./upload/cr/$convenio/$value";
+    //           unlink($deletarxml);
+                }
+                $zip->close();
+                foreach ($deletar as $arquivonome) {
+                    unlink($arquivonome);
+                }
             }
         }
         $data['mensagem'] = 'Sucesso ao gerar arquivo.';

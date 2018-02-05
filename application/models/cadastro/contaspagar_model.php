@@ -131,7 +131,136 @@ class contaspagar_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    
+    function relatorioprevisaolaboratoriocontaspagar() {
 
+        $this->db->select(" ae.percentual_laboratorio,
+                            ae.valor_laboratorio,
+                            ae.data,
+                            ae.valor_total,
+                            lab.nome as laboratorio,
+                            ae.laboratorio_id,
+                            aef.confirmacao_previsao_labotorio,
+                            lab.conta_id,
+                            lab.credor_devedor_id,
+                            lab.tipo_id,
+                            lab.classe");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = ae.laboratorio_id', 'left');
+        $this->db->join('tb_agenda_exames_flag aef', 'aef.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+        $this->db->where('ae.laboratorio_id is not null');
+        if ($_POST['empresa'] != "") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['conta'] != "0") {
+            $this->db->where('lab.conta_id', $_POST['conta']);
+        }
+        if ($_POST['credordevedor'] != "0") {
+            $this->db->where('lab.credor_devedor_id', $_POST['credordevedor']);
+        }
+        if ($_POST['tipo'] != "0") {
+            $this->db->where('lab.tipo_id', $_POST['tipo']);
+        }
+        if ($_POST['classe'] != "") {
+            $this->db->where('lab.classe', $_POST['classe']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatorioprevisaopromotorcontaspagar() {
+
+        $this->db->select(' ae.valor_promotor,
+                            ae.percentual_promotor, 
+                            ae.valor_total,
+                            pi.nome as promotor,
+                            ae.indicacao,
+                            aef.confirmacao_previsao_promotor');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_agenda_exames_flag aef', 'aef.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+        $this->db->where('ae.indicacao is not null');
+        if ($_POST['empresa'] != "") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('pi.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatorioprevisaomedicacontaspagar() {
+        
+        $this->db->select(" ae.valor_total,
+                            pc.procedimento_tuss_id,
+                            pc.procedimento_convenio_id,
+                            pt.perc_medico,
+                            pt.percentual,
+                            ae.medico_agenda,
+                            op.nome as medico,
+                            op.taxa_administracao,
+                            (
+                                SELECT mc.valor FROM ponto.tb_procedimento_percentual_medico_convenio mc
+                                INNER JOIN ponto.tb_procedimento_percentual_medico m 
+                                ON m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+                                WHERE m.procedimento_tuss_id = pc.procedimento_convenio_id
+                                AND m.ativo = 't'
+                                AND mc.medico = ae.medico_agenda
+                                AND mc.ativo = 't'
+                                LIMIT 1
+                            ) AS perc_medico_excecao,
+                            (
+                                SELECT mc.percentual FROM ponto.tb_procedimento_percentual_medico_convenio mc
+                                INNER JOIN ponto.tb_procedimento_percentual_medico m 
+                                ON m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+                                WHERE m.procedimento_tuss_id = pc.procedimento_convenio_id
+                                AND m.ativo = 't'
+                                AND mc.medico = ae.medico_agenda
+                                AND mc.ativo = 't'
+                                LIMIT 1
+                            ) AS percentual_excecao,
+                            aef.confirmacao_previsao_medico");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.medico_agenda', 'left');
+        $this->db->join('tb_agenda_exames_flag aef', 'aef.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+//        $this->db->where('c.dinheiro', 't');
+        if ($_POST['empresa'] != "") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['conta'] != "0") {
+            $this->db->where('op.conta_id', $_POST['conta']);
+        }
+        if ($_POST['credordevedor'] != "0") {
+            $this->db->where('op.credor_devedor_id', $_POST['credordevedor']);
+        }
+        if ($_POST['tipo'] != "0") {
+            $this->db->where('op.tipo_id', $_POST['tipo']);
+        }
+        if ($_POST['classe'] != "") {
+            $this->db->where('op.classe', $_POST['classe']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function relatoriocontaspagarcontador() {
         $this->db->select('fc.financeiro_contaspagar_id');
         $this->db->from('tb_financeiro_contaspagar fc');
@@ -192,6 +321,48 @@ class contaspagar_model extends Model {
             return -1;
         else
             return 0;
+    }
+
+    function confirmarprevisaolaboratorio() {
+        try {
+//            echo "<pre>";
+//            var_dump($_GET); die;
+            
+            $observacao = "Previsao laboratorial " . $_GET['txtdata_inicio'] . " a " . $_GET['txtdata_fim'] . " (" . $_GET["laboratorio_nome"] . ")";
+            $this->db->set('valor', $_GET['valor']);
+            $this->db->set('credor', $_GET['credordevedor']);
+            $this->db->set('data', date("Y-m-d", strtotime( str_replace('/','-', $_GET['data'] ) ) ) );
+            $this->db->set('parcela', 1);
+            $this->db->set('tipo', $_GET['tipo']);
+            $this->db->set('empresa_id', $_GET['empresa']);
+            $this->db->set('classe', $_GET['classe']);
+            $this->db->set('conta', $_GET['conta']);
+            $this->db->set('observacao', $observacao);
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_financeiro_contaspagar');
+            
+            $sql = "UPDATE ponto.tb_agenda_exames_flag SET confirmacao_previsao_labotorio = 't' 
+                    WHERE agenda_exames_id IN (
+                        SELECT ae.agenda_exames_id FROM ponto.tb_agenda_exames ae 
+                        LEFT JOIN ponto.tb_laboratorio lab ON lab.laboratorio_id = ae.laboratorio_id
+                        WHERE ae.empresa_id = " . $_GET['empresa'] . "
+                        AND ae.data >= " . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_inicio']) ) ) . "
+                        AND ae.data <= " . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_fim']) ) ) . "
+                        AND lab.credor_devedor_id = " . $_GET['credordevedor'] . "
+                        AND lab.laboratorio_id = " . $_GET['laboratorio_id'] . "
+                        AND lab.conta_id = " . $_GET['conta'] . "
+                        AND lab.tipo_id = " . $_GET['tipo'] . "
+                        AND lab.classe = " . $_GET['conta'] . "
+                    )";
+            
+            $this->db->query($sql);
+            
+        } catch (Exception $exc) {
+            return -1;
+        }
     }
 
     function gravarconfirmacao() {

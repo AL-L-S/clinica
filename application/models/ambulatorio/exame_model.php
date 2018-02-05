@@ -5589,7 +5589,10 @@ class exame_model extends Model {
         $this->db->where('ae.ativo', 'false');
         $this->db->where('ae.cancelada', 'false');
         if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
-            $this->db->where('ae.data >=', $_POST['datainicio']);
+            $this->db->where('ae.data_faturar >=', $_POST['datainicio']);
+        }
+        if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
+            $this->db->where('ae.data_faturar <=', $_POST['datafim']);
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
@@ -5609,9 +5612,6 @@ class exame_model extends Model {
         }
         if ($_POST['medico'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medico']);
-        }
-        if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
-            $this->db->where('ae.data <=', $_POST['datafim']);
         }
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
@@ -5646,9 +5646,14 @@ class exame_model extends Model {
         $this->db->where("c.dinheiro", 'f');
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
+        
         if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
-            $this->db->where('ae.data >=', $_POST['datainicio']);
+            $this->db->where('ae.data_faturar >=', $_POST['datainicio']);
         }
+        if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
+            $this->db->where('ae.data_faturar <=', $_POST['datafim']);
+        }
+        
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -5667,9 +5672,6 @@ class exame_model extends Model {
         }
         if ($_POST['medico'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medico']);
-        }
-        if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
-            $this->db->where('ae.data <=', $_POST['datafim']);
         }
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
@@ -5719,7 +5721,10 @@ class exame_model extends Model {
         $this->db->where('ae.ativo', 'false');
         $this->db->where('ae.cancelada', 'false');
         if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
-            $this->db->where('ae.data >=', $_POST['datainicio']);
+            $this->db->where('ae.data_faturar >=', $_POST['datainicio']);
+        }
+        if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
+            $this->db->where('ae.data_faturar <=', $_POST['datafim']);
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
@@ -5739,9 +5744,6 @@ class exame_model extends Model {
         }
         if ($_POST['medico'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medico']);
-        }
-        if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
-            $this->db->where('ae.data <=', $_POST['datafim']);
         }
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);

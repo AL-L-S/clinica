@@ -83,28 +83,52 @@
                             <td style='text-align: right;'><font size="-2"><?= number_format($item->valor_total, 2, ",", "."); ?></td>
                         <? } ?>
                         <?
-                        if ($item->percentual == "t") {
-                            $simbolopercebtual = " %";
-                            if ($testearray > 0) {
+                        if ($testearray > 0) {
+                            if($percentual[0]->percentual == 't'){
                                 $valorpercentualmedico = $percentual[0]->valor;
-                            } else {
-                                $valorpercentualmedico = $item->perc_medico;
+                                $perc = ($item->valor_total) * ($valorpercentualmedico / 100);
                             }
-//                             - ((float) $item->valor_total * ((float) $item->taxa_administracao / 100))
-                            $perc = ($item->valor_total) * ($valorpercentualmedico / 100);
-                            $totalperc = $totalperc + $perc;
-                            $totalgeral = $totalgeral + $item->valor_total;
-                        } else {
-                            $simbolopercebtual = "";
-                            if ($testearray > 0) {
+                            else{
                                 $valorpercentualmedico = $percentual[0]->valor;
-                            } else {
-                                $valorpercentualmedico = $item->perc_medico;
+                                $perc = $valorpercentualmedico;
                             }
-                            $perc = $valorpercentualmedico;
                             $totalperc = $totalperc + $perc;
                             $totalgeral = $totalgeral + $item->valor_total;
                         }
+                        else {
+                            if ($item->percentual == "t") {
+                                $valorpercentualmedico = $item->perc_medico;
+                                $perc = ($item->valor_total) * ($valorpercentualmedico / 100);
+                            }
+                            else{
+                                $valorpercentualmedico = $item->perc_medico;
+                                $perc = $valorpercentualmedico;
+                            }
+                            $totalperc = $totalperc + $perc;
+                            $totalgeral = $totalgeral + $item->valor_total;
+                        }
+//                        if ($item->percentual == "t") {
+//                            $simbolopercebtual = " %";
+//                            if ($testearray > 0) {
+//                                $valorpercentualmedico = $percentual[0]->valor;
+//                            } else {
+//                                $valorpercentualmedico = $item->perc_medico;
+//                            }
+////                             - ((float) $item->valor_total * ((float) $item->taxa_administracao / 100))
+//                            $perc = ($item->valor_total) * ($valorpercentualmedico / 100);
+//                            $totalperc = $totalperc + $perc;
+//                            $totalgeral = $totalgeral + $item->valor_total;
+//                        } else {
+//                            $simbolopercebtual = "";
+//                            if ($testearray > 0) {
+//                                $valorpercentualmedico = $percentual[0]->valor;
+//                            } else {
+//                                $valorpercentualmedico = $item->perc_medico;
+//                            }
+//                            $perc = $valorpercentualmedico;
+//                            $totalperc = $totalperc + $perc;
+//                            $totalgeral = $totalgeral + $item->valor_total;
+//                        }
                         ?>
                         <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
 

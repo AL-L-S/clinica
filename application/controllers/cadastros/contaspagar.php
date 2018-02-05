@@ -90,6 +90,11 @@ class Contaspagar extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/contaspagar/$relatorio/");
     }
+    
+    function confirmarprevisaolaboratorio() {
+        $this->contaspagar->confirmarprevisaolaboratorio();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
 
     function relatoriocontaspagar() {
         $data['conta'] = $this->forma->listarforma();
@@ -108,11 +113,15 @@ class Contaspagar extends BaseController {
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->contaspagar->relatoriocontaspagar();
+        $data['relatoriomedico'] = $this->contaspagar->relatorioprevisaomedicacontaspagar();
+        $data['relatoriopromotor'] = $this->contaspagar->relatorioprevisaopromotorcontaspagar();
+        $data['relatoriolaboratorio'] = $this->contaspagar->relatorioprevisaolaboratoriocontaspagar();
         $data['contador'] = $this->contaspagar->relatoriocontaspagarcontador();
 
         if ($_POST['email'] == "NAO") {
             $this->load->View('cadastros/impressaorelatoriocontaspagar', $data);
-        } elseif ($_POST['email'] == "SIM") {
+        } 
+        elseif ($_POST['email'] == "SIM") {
             if (count($data['tipo']) > 0) {
                 $tipo = "TIPO:" . $data['tipo'][0]->descricao;
             } else {

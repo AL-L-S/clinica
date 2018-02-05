@@ -1054,7 +1054,7 @@ class procedimentoplano_model extends Model {
     }
 
     function buscarlaboratoriopercentual($procedimento_percentual_laboratorio_convenio_id) {
-        $this->db->select('o.nome,
+        $this->db->select('lab.nome,
                             mc.valor,
                             mc.percentual,
                             mc.dia_recebimento,
@@ -1063,11 +1063,11 @@ class procedimentoplano_model extends Model {
                             mc.tempo_recebimento');
         $this->db->from('tb_procedimento_percentual_laboratorio_convenio mc');
         $this->db->join('tb_procedimento_percentual_laboratorio pm', 'pm.procedimento_percentual_laboratorio_id = mc.procedimento_percentual_laboratorio_id ', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = mc.laboratorio', 'left');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = mc.laboratorio', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pm.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("mc.ativo", 't');
-        $this->db->where("o.ativo", 't');
+        $this->db->where("lab.ativo", 't');
         $this->db->where("mc.procedimento_percentual_laboratorio_convenio_id", $procedimento_percentual_laboratorio_convenio_id);
         $return = $this->db->get();
         return $return->result();
@@ -3338,7 +3338,7 @@ class procedimentoplano_model extends Model {
 
     function gravarpercentuallaboratorio() {
         try {
-            echo "<pre>";
+//            echo "<pre>";
 //            var_dump($_POST);
 //            die;
 //            if($_POST['covenio'] != ''){
@@ -3359,7 +3359,7 @@ class procedimentoplano_model extends Model {
                 $array_procedimentos[] = $item->procedimento_convenio_id;
             }
 //            var_dump($result[0]->procedimento_convenio_id);
-            $teste = in_array(23566, $array_procedimentos);
+//            $teste = in_array(23566, $array_procedimentos);
 //            var_dump($teste);
 //            var_dump($array_procedimentos);
 //            die;

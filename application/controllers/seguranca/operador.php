@@ -416,7 +416,17 @@ class Operador extends BaseController {
 
     function gravaroperadorconvenio() {
         $operador_id = $_POST['txtoperador_id'];
-        $this->operador_m->gravaroperadorconvenio();
+        $verifica = $this->operador_m->gravaroperadorconvenio();
+        if ($verifica == '-1') {
+            $data['mensagem'] = 'Erro ao cadastrar Convênio. Operação cancelada.';
+        } 
+        elseif($verifica == '-2') {
+            $data['mensagem'] = 'Convênio ja cadastrado.';
+        }
+        else {
+            $data['mensagem'] = 'Convênio cadastrado com sucesso.'; 
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/operadorconvenio/$operador_id");
     }
 

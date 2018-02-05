@@ -1,20 +1,22 @@
 <?
 $grupos = $this->indicacao->listargrupoindicacao();
+$termo = ($this->session->userdata('recomendacao_configuravel') == "t") ? "Promotor" : "Indicação";
 ?>
+
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>ambulatorio/indicacao/carregarindicacao/0">
-            Nova Indicação
+            <?= ($termo == "Promotor") ? "Novo " : "Nova " ;?><?= $termo ?>
         </a>
     </div>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Indicação/Recomendação</a></h3>
+        <h3 class="singular"><a href="#">Manter <?= $termo ?></a></h3>
         <div>
             <table>
                 <thead>
                     <form method="get" action="<?= base_url() ?>ambulatorio/indicacao/pesquisar">
                         <tr>
-                            <th colspan="" class="tabela_title">Nome/Registro</th>
+                            <th colspan="" class="tabela_title">Nome / Registro</th>
                             <th colspan="" class="tabela_title">Grupo</th>
                             <th colspan="" class="tabela_title"></th>
                         </tr>
