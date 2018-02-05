@@ -51,42 +51,50 @@
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             $situacao = '';
-                            if ($item->situacao == 'ENCAMINHADO_CONVENIO') {
-                                $situacao = "<font color='blue'>ENCAMINHADO PARA O CONVÊNIO";
-                            } elseif ($item->situacao == 'GUIA_FEITA') {
-                                $situacao = "<font color='green'>GUIA FEITA";
-                            } elseif ($item->situacao == 'ENCAMINHADO_PACIENTE') {
-                                $situacao = "<font color='green'>ENCAMINHADO PARA O PACIENTE";
-                            } elseif ($item->situacao == 'ORCAMENTO_COMPLETO') {
-                                $situacao = "<font color='green'>ORÇAMENTO COMPLETO";
-                            } elseif ($item->situacao == 'ORCAMENTO_INCOMPLETO') {
-                                $situacao = "<font color='blue'>ORÇAMENTO EM ABERTO";
-                            } elseif ($item->situacao == 'EQUIPE_MONTADA') {
-                                $situacao = "<font color='green'>EQUIPE MONTADA";
-                            } elseif ($item->situacao == 'EQUIPE_NAO_MONTADA') {
-                                $situacao = "<font color='blue'>EQUIPE EM ABERTO";
-                            } elseif ($item->situacao == 'LIBERADA') {
-                                $situacao = "<font color='green'>LIBERADA";
+                            if ($item->orcamento == 't') {
+                                if ($item->situacao == 'ENCAMINHADO_CONVENIO') {
+                                    $situacao = "<font color='blue'>ENCAMINHADO PARA O CONVÊNIO";
+                                } elseif ($item->situacao == 'GUIA_FEITA') {
+                                    $situacao = "<font color='green'>GUIA FEITA";
+                                } elseif ($item->situacao == 'ENCAMINHADO_PACIENTE') {
+                                    $situacao = "<font color='green'>ENCAMINHADO PARA O PACIENTE";
+                                } elseif ($item->situacao == 'ORCAMENTO_COMPLETO') {
+                                    $situacao = "<font color='green'>ORÇAMENTO COMPLETO";
+                                } elseif ($item->situacao == 'ORCAMENTO_INCOMPLETO') {
+                                    $situacao = "<font color='blue'>ORÇAMENTO EM ABERTO";
+                                } elseif ($item->situacao == 'EQUIPE_MONTADA') {
+                                    $situacao = "<font color='green'>EQUIPE MONTADA";
+                                } elseif ($item->situacao == 'EQUIPE_NAO_MONTADA') {
+                                    $situacao = "<font color='blue'>EQUIPE EM ABERTO";
+                                } elseif ($item->situacao == 'LIBERADA') {
+                                    $situacao = "<font color='green'>LIBERADA";
+                                } else {
+                                    $situacao = "<font color='blue'>ABERTA";
+                                }
                             } else {
-                                $situacao = "<font color='blue'>ABERTA";
+                                $situacao = '';
                             }
 
+
                             $situacao_convenio = '';
-                            if ($item->situacao_convenio == 'ENCAMINHADO_CONVENIO') {
-                                $situacao_convenio = "<font color='blue'>ENCAMINHADO PARA O CONVÊNIO";
-                            } elseif ($item->situacao_convenio == 'GUIA_FEITA') {
-                                $situacao_convenio = "<font color='green'>GUIA FEITA";
-                            } elseif ($item->situacao_convenio == 'ENCAMINHADO_PACIENTE') {
-                                $situacao_convenio = "<font color='green'>ENCAMINHADO PARA O PACIENTE";
-                            } elseif ($item->situacao_convenio == 'EQUIPE_MONTADA') {
-                                $situacao_convenio = "<font color='green'>EQUIPE MONTADA";
-                            } elseif ($item->situacao_convenio == 'EQUIPE_NAO_MONTADA') {
-                                $situacao_convenio = "<font color='blue'>EQUIPE EM ABERTO";
-                            } elseif ($item->situacao_convenio == 'LIBERADA') {
-                                $situacao_convenio = "<font color='green'>LIBERADA";
-                            } else {
-                                $situacao_convenio = "<font color='blue'>ABERTA";
-                            }
+//                            if ($item->dinheiro == 'f') {
+                                if ($item->situacao_convenio == 'ENCAMINHADO_CONVENIO') {
+                                    $situacao_convenio = "<font color='blue'>ENCAMINHADO PARA O CONVÊNIO";
+                                } elseif ($item->situacao_convenio == 'GUIA_FEITA') {
+                                    $situacao_convenio = "<font color='green'>GUIA FEITA";
+                                } elseif ($item->situacao_convenio == 'ENCAMINHADO_PACIENTE') {
+                                    $situacao_convenio = "<font color='green'>ENCAMINHADO PARA O PACIENTE";
+                                } elseif ($item->situacao_convenio == 'EQUIPE_MONTADA') {
+                                    $situacao_convenio = "<font color='green'>EQUIPE MONTADA";
+                                } elseif ($item->situacao_convenio == 'EQUIPE_NAO_MONTADA') {
+                                    $situacao_convenio = "<font color='blue'>EQUIPE EM ABERTO";
+                                } elseif ($item->situacao_convenio == 'LIBERADA') {
+                                    $situacao_convenio = "<font color='green'>LIBERADA";
+                                } else {
+                                    $situacao_convenio = "<font color='blue'>ABERTA";
+                                }
+//                            }
+
 //                            var_dump($situacao); die;
 
 
@@ -149,12 +157,12 @@
                                         <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/importarquivos/<?= $item->solicitacao_cirurgia_id; ?>">Arquivos</a></div>
                                 </td>
                                 <? if ($item->orcamento == 'f' || $item->situacao == 'ABERTA') { ?>
-                        <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                    </td>-->
+                                    <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                                </td>-->
                                 <? } ?>
                                 <? if ($item->orcamento_completo == 'f' && $item->orcamento == 'f' && $item->equipe_montada == 't') { ?>
-                            <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                    </td>-->
+                                        <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                                </td>-->
                                 <? } ?>
 
                             </tr>

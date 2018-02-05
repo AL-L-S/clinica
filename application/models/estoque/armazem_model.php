@@ -69,9 +69,9 @@ class armazem_model extends Model {
     }
 
     function armazemtransferenciaentradajson($produto = null, $armazem = null) {
-        $this->db->select('ep.estoque_entrada_id,
+        $this->db->select('
                             p.descricao,
-                            ep.validade,
+                            p.estoque_produto_id,
                             ea.descricao as armazem,
                             sum(ep.quantidade) as total');
         $this->db->from('tb_estoque_saldo ep');
@@ -81,8 +81,8 @@ class armazem_model extends Model {
         $this->db->where('ep.ativo', 'true');
         $this->db->where('ep.armazem_id', $armazem);
         $this->db->where('ep.produto_id', $produto);
-        $this->db->groupby('ep.estoque_entrada_id, p.descricao, ep.validade, ea.descricao');
-        $this->db->orderby('ep.validade');
+        $this->db->groupby('ea.descricao, p.descricao, p.estoque_produto_id');
+//        $this->db->orderby('ep.validade');
         $return = $this->db->get();
         return $return->result();
     }
@@ -201,6 +201,8 @@ class armazem_model extends Model {
             $this->db->groupby('ea.descricao, ef.fantasia, ep.descricao');
             $this->db->orderby('ea.descricao, ef.fantasia, ep.descricao');
             $saldo = $this->db->get()->result();
+            echo '<pre>';
+            var_dump($saldo); die;
 
             
             $this->db->select('e.estoque_entrada_id,

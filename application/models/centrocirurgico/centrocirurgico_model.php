@@ -711,6 +711,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
                             sc.liberada,
                             sc.orcamento_completo,
                             c.nome as convenio,
+                            c.dinheiro,
                             c.convenio_id,
                             o.nome as medico,
                             o2.nome as medico_solicitante,

@@ -119,9 +119,10 @@ class solicita_cirurgia_model extends BaseModel {
     }
 
     function listarprocedimentosagrupador($agrupador) {
-        $this->db->select('procedimento_tuss_id as procedimento_id');
-        $this->db->from('tb_procedimentos_agrupados');
-        $this->db->where('ativo', 't');
+        $this->db->select('pa.procedimento_tuss_id as procedimento_id, pc.valortotal');
+        $this->db->from('tb_procedimentos_agrupados pa');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pa.procedimento_tuss_id ');
+        $this->db->where('pa.ativo', 't');
         $this->db->where('agrupador_id', $agrupador);
         $return = $this->db->get();
         return $return->result();
@@ -133,6 +134,15 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->where('ativo', 't');
         $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
         $this->db->where('procedimento_tuss_id', $_POST['procedimentoID']);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarvalorprocedimentocadastrar() {
+        $this->db->select('valortotal');
+        $this->db->from('tb_procedimento_convenio');
+        $this->db->where('ativo', 't');
+        $this->db->where('procedimento_convenio_id', $_POST['procedimentoID']);
         $return = $this->db->get();
         return $return->result();
     }
@@ -266,6 +276,36 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where('scp.ativo', 'true');
+        $this->db->where('scp.solicitacao_cirurgia_id', $solicitacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarsolicitacaosprocedimentosorcamento($solicitacao_id) {
+        $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id,
+                           c.nome as convenio,
+                           pt.nome');
+        $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('scp.ativo', 'true');
+        $this->db->where('c.dinheiro', 'true');
+        $this->db->where('scp.solicitacao_cirurgia_id', $solicitacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarsolicitacaosprocedimentosconvenio($solicitacao_id) {
+        $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id,
+                           c.nome as convenio,
+                           pt.nome');
+        $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('scp.ativo', 'true');
+        $this->db->where('c.dinheiro', 'false');
         $this->db->where('scp.solicitacao_cirurgia_id', $solicitacao_id);
         $return = $this->db->get();
         return $return->result();
@@ -418,6 +458,7 @@ class solicita_cirurgia_model extends BaseModel {
                            p.nome as paciente,
                            p.celular,
                            sc.leito,
+                           sc.via,
                            p.telefone,
                            h.nome as hospital,
                            h.valor_taxa,
@@ -437,6 +478,7 @@ class solicita_cirurgia_model extends BaseModel {
     function listardadossolicitacaoorcamento($solicitacao_id) {
         $this->db->select('sc.paciente_id,
                            p.nome as paciente,
+                           sc.via,
                            p.celular,
                            p.telefone,
                            h.nome as hospital,
@@ -457,6 +499,7 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->select('sc.paciente_id,
                            p.nome as paciente,
                            p.celular,
+                           sc.via,
                            p.telefone,
                            h.nome as hospital,
                            c.nome as convenio,
@@ -476,7 +519,8 @@ class solicita_cirurgia_model extends BaseModel {
     function listarprocedimentosolicitacaocirurgicaorcamento($solicitacao_id) {
         $this->db->select('pt.nome as procedimento,
                            pt.codigo,
-                           pc.valortotal,
+                           scp.valor as valortotal,
+                           c.nome as convenio,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
         $this->db->from('tb_solicitacao_cirurgia sc');
@@ -496,6 +540,8 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->select('pt.nome as procedimento,
                            pt.codigo,
                            pc.valortotal,
+                           scp.valor as valortotal,
+                           c.nome as convenio,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
         $this->db->from('tb_solicitacao_cirurgia sc');
@@ -514,7 +560,8 @@ class solicita_cirurgia_model extends BaseModel {
     function listarprocedimentosolicitacaocirurgicaconvenio($solicitacao_id) {
         $this->db->select('pt.nome as procedimento,
                            pt.codigo,
-                           pc.valortotal,
+                           scp.valor as valortotal,
+                           c.nome as convenio,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
         $this->db->from('tb_solicitacao_cirurgia sc');
@@ -571,6 +618,20 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->from('tb_convenio c');
         $this->db->where("c.ativo", 'true');
 //        $this->db->where("c.dinheiro", 'false');
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
+    }
+
+    function listarconveniosdinheiro() {
+
+        $this->db->select(' c.convenio_id,
+                            c.nome');
+        $this->db->from('tb_convenio c');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("c.dinheiro", 'true');
         $this->db->orderby("c.nome");
         $query = $this->db->get();
         $return = $query->result();
@@ -686,7 +747,31 @@ class solicita_cirurgia_model extends BaseModel {
         }
     }
 
-    function gravarsolicitacaoprocedimento() {
+    function gravarsolicitacaoprocedimento($valor) {
+
+        try {
+//            var_dump($valor);die;
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('valor', $valor[0]->valortotal);
+            $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+            $this->db->set('procedimento_tuss_id', $_POST['procedimentoID']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_solicitacao_cirurgia_procedimento');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            }
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravarsolicitacaoprocedimentoalterar() {
 
         try {
 //            var_dump($_POST['procedimento_id']);die;
@@ -694,6 +779,7 @@ class solicita_cirurgia_model extends BaseModel {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
+            $this->db->set('valor', $_POST['valor1']);
             $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
             $this->db->set('procedimento_tuss_id', $_POST['procedimentoID']);
             $this->db->set('data_cadastro', $horario);
@@ -834,11 +920,26 @@ class solicita_cirurgia_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarprocedimentoorcamentoconveniofuncao($cirurgia_procedimento_id) {
+        $this->db->select('o.nome as medico,
+                           soe.valor,
+                           gp.codigo,
+                           gp.descricao');
+        $this->db->from('tb_solicitacao_orcamento_convenio_equipe soe');
+        $this->db->join('tb_operador o', 'o.operador_id = soe.operador_responsavel', 'left');
+        $this->db->join('tb_grau_participacao gp', 'gp.codigo = soe.funcao', 'left');
+        $this->db->where('soe.solicitacao_cirurgia_procedimento_id', $cirurgia_procedimento_id);
+        $this->db->where('soe.ativo', 'true');
+        $this->db->where('gp.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function impressaoorcamento($solicitacao_id) {
 
         $this->db->set('situacao', 'ENCAMINHADO_PACIENTE');
-        $this->db->set('situacao_convenio', 'ENCAMINHADO_CONVENIO');
+//        $this->db->set('situacao_convenio', 'ENCAMINHADO_CONVENIO');
         $this->db->set('encaminhado_paciente', 't');
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->update('tb_solicitacao_cirurgia');
@@ -846,11 +947,16 @@ class solicita_cirurgia_model extends BaseModel {
 
         $this->db->select('pt.nome as procedimento,
                            scp.solicitacao_cirurgia_procedimento_id as cirurgia_procedimento_id,
+                           c.dinheiro,
+                           c.nome as convenio,
+                           scp.equipe_particular,
                            scp.valor');
         $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where('scp.ativo', 'true');
+        $this->db->where('(c.dinheiro = true OR scp.equipe_particular = true)');
         $this->db->where('scp.solicitacao_cirurgia_id', $solicitacao_id);
         $return = $this->db->get();
         return $return->result();
@@ -866,6 +972,7 @@ class solicita_cirurgia_model extends BaseModel {
             // Trazendo os procedimentos
             $this->db->select(' horario_especial,
                                 valor,
+                                equipe_particular,
                                 solicitacao_cirurgia_procedimento_id');
             $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
             $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
@@ -933,7 +1040,7 @@ class solicita_cirurgia_model extends BaseModel {
             }
 
             $valMedico = 0;
-
+//            var_dump($procedimentos); die;
             foreach ($equipe as $value) {
                 $i = 0;
 
@@ -1001,7 +1108,9 @@ class solicita_cirurgia_model extends BaseModel {
 //                    die;
                     $horario = date("Y-m-d H:i:s");
                     $operador_id = $this->session->userdata('operador_id');
-
+                    if ($item->equipe_particular == 't') {
+                        $this->db->set('particular', 't');
+                    }
                     $this->db->set('operador_responsavel', $value->operador_responsavel);
                     $this->db->set('solicitacao_orcamento_convenio_id', $orcamento_convenio_id);
                     $this->db->set('solicitacao_cirurgia_procedimento_id', $item->solicitacao_cirurgia_procedimento_id);
@@ -1011,6 +1120,8 @@ class solicita_cirurgia_model extends BaseModel {
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_solicitacao_orcamento_convenio_equipe');
+
+
 
                     $i++;
                 }
@@ -1030,11 +1141,14 @@ class solicita_cirurgia_model extends BaseModel {
             $operador_id = $this->session->userdata('operador_id');
 
             // Trazendo os procedimentos
-            $this->db->select(' horario_especial,
-                                valor,
-                                solicitacao_cirurgia_procedimento_id');
-            $this->db->from('tb_solicitacao_cirurgia_procedimento');
-            $this->db->where("ativo", 't');
+            $this->db->select(' scp.horario_especial,
+                                scp.valor,
+                                scp.solicitacao_cirurgia_procedimento_id');
+            $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
+            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
+            $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+            $this->db->where("scp.ativo", 't');
+            $this->db->where("c.dinheiro", 't');
             $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
             $this->db->orderby('valor DESC');
             $procedimentos = $this->db->get()->result();
@@ -1425,11 +1539,13 @@ class solicita_cirurgia_model extends BaseModel {
                                 a.horario_especial,
                                 a.procedimento_tuss_id,
                                 a.valor_total,
+                                spc.equipe_particular,
                                 pt.nome as procedimento,
                                 c.nome as convenio,
                                 a.observacoes');
             $this->db->from('tb_agenda_exames a');
             $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+            $this->db->join('tb_solicitacao_cirurgia_procedimento spc', 'spc.agenda_exames_id = a.agenda_exames_id', 'left');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
             $this->db->where("a.guia_id", $guia_id);
@@ -1502,7 +1618,9 @@ class solicita_cirurgia_model extends BaseModel {
 
                     $horario = date("Y-m-d H:i:s");
                     $operador_id = $this->session->userdata('operador_id');
-
+                    if ($procedimentos[$i]->equipe_particular == 't') {
+                        $this->db->set('equipe_particular', 't');
+                    }
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->set('operador_responsavel', $item->operador_responsavel);
@@ -1820,13 +1938,14 @@ class solicita_cirurgia_model extends BaseModel {
             $operador_id = $this->session->userdata('operador_id');
 
             $this->db->set('via', $_POST['via']);
-            $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
-            $this->db->set('situacao_convenio', 'ORCAMENTO_COMPLETO');
+//            $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
+            $this->db->set('situacao_convenio', 'GUIA_FEITA');
 //            $this->db->set('orcamentoconvenio_completo', 't');
             $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
             $this->db->update('tb_solicitacao_cirurgia');
 
             $_POST['desconto'] = (float) $_POST['desconto'];
+
 
             $this->db->set('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
             $this->db->set('data_cadastro', $horario);
@@ -1836,9 +1955,14 @@ class solicita_cirurgia_model extends BaseModel {
 
 
 
-
+//            var_dump($_POST); die;
             foreach ($_POST['cirurgia_procedimento_id'] as $key => $item) {
                 $valor = (float) $_POST['valor'][$key];
+                if (@$_POST['equipe_particular'][$key] == 'on') {
+                    $this->db->set('equipe_particular', 't');
+                }else{
+                    $this->db->set('equipe_particular', 'f');
+                }
 
                 $this->db->set('horario_especial', (isset($_POST['horEspecial'][$key]) ? 't' : 'f'));
                 $this->db->set('valor', $valor);
@@ -1862,12 +1986,16 @@ class solicita_cirurgia_model extends BaseModel {
             $solicitacao = $this->db->get()->result();
             @$solicitacao_orcamento_id = $solicitacao[0]->solicitacao_orcamento_id;
 
-//            var_dump($solicitacao_orcamento_id);
-//            die;
+
 
             $this->db->where('solicitacao_orcamento_id', @$solicitacao_orcamento_id);
             $this->db->delete('tb_solicitacao_orcamento');
-
+            
+            $this->db->set('ativo', 'f');
+            $this->db->where('solicitacao_orcamento_id', @$solicitacao_orcamento_id);
+            $this->db->update('tb_solicitacao_orcamento_equipe');
+//            var_dump($solicitacao_orcamento_id);
+//            die;
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 

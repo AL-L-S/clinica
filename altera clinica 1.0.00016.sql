@@ -1292,3 +1292,14 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
+
+-- 01/02/2018
+
+ALTER TABLE ponto.tb_solicitacao_orcamento_equipe ADD COLUMN solicitacao_orcamento_convenio_id integer;
+
+ALTER TABLE ponto.tb_solicitacao_orcamento_convenio_equipe ADD COLUMN particular boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia_procedimento ADD COLUMN equipe_particular boolean DEFAULT false;
+
+
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN equipe_particular boolean DEFAULT false;
