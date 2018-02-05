@@ -96,7 +96,7 @@
                                     ?>><?= $item->nome; ?></option>
                                         <? endforeach; ?>
                             </select></dd>
-                        <dt>Recomendação</dt>
+                        <dt>Promotor</dt>
                         <dd><select name="indicacao" id="indicacao" class="size4" >
                                 <option value='' >Selecione</option>
                                 <?php

@@ -54,7 +54,7 @@
                 ?>
                 <thead>
                     <tr>
-                        <th class="tabela_header">Medico</th>
+                        <th class="tabela_header">Laboratório</th>
                         <th class="tabela_header" width="40px;">Valor</th>
                         <td class="tabela_header" width="90px;"></td>
                         <th class="tabela_header">Procedimento</th>

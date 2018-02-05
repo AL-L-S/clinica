@@ -1,5 +1,5 @@
 <div class="content ficha_ceatox">
-    <h3 class="singular"><a href="#">Nova Indicação/Recomendação</a></h3>
+    <h3 class="singular"><a href="#">Nova Indicação/Promotor</a></h3>
     <form name="form_indicacao" id="form_indicacao" action="<?= base_url() ?>ambulatorio/indicacao/gravar" method="post">
         <fieldset>
             <div>

@@ -32,7 +32,7 @@
                     </dt>
                     <dd>
                         <select name="tipo" id="tipo" class="size2">
-                            <option value=0>TODOS</option>
+                            <option value='0'>TODOS</option>
                             <? foreach ($tipo as $value) : ?>
                                 <option value="<?= $value->tipo_entradas_saida_id; ?>" ><?php echo $value->descricao; ?></option>
                             <? endforeach; ?>

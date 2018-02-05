@@ -1,4 +1,6 @@
-
+<?
+$termo = ($this->session->userdata('recomendacao_configuravel') == "t") ? "Promotor" : "Indicação";
+?>
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>ambulatorio/indicacao/carregargrupoindicacao/0">
@@ -6,7 +8,7 @@
         </a>
     </div>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Grupo Indicação/Recomendação</a></h3>
+        <h3 class="singular"><a href="#">Manter Grupo <?= $termo ?></a></h3>
         <div>
             <table>
                 <thead>

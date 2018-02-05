@@ -829,7 +829,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatorioentradagrupo">Relatorio Entrada Conta</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/contaspagar/relatoriocontaspagar">Relatorio Contas a pagar</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/contasreceber/relatoriocontasreceber">Relatorio Contas a Receber</a></span></ul>
-                                        <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriomovitamentacao">Relatorio Moviten&ccedil;&atilde;o</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriomovitamentacao">Relatorio Movimentação</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriovalormedio">Relatorio Valor Medio</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorionotafiscal">Relatorio Nota</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioresumogeral">Relatorio Resumo</a></span></ul>
@@ -856,7 +856,7 @@ function debug($object) {
                                         <? if ($this->session->userdata('recomendacao_configuravel') != "t") { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacao">Relatorio Indicacao Cadastro</a></span></ul>
                                         <? } ?>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacaoexames">Relatorio Recomendação</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacaoexames">Relatorio Promotor</a></span></ul>
 
                                         <?
                                     }
@@ -1012,8 +1012,8 @@ function debug($object) {
                                         <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/horario">Manter Horarios</a></span></ul>-->
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
                                         <? if ($this->session->userdata('recomendacao_configuravel') == "t") { ?>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter Recomendação</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Recomendação</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter Promotor</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Promotor</a></span></ul>
                                         <? } ?>
         <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>-->
                                     <? } ?>

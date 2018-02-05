@@ -287,7 +287,6 @@ class Procedimentoplano extends BaseController {
         } else {
             $html = $this->load->View('ambulatorio/impressaoorcamentorecepcao', $data, true);
         }
-        $html = utf8_decode($html);
         $tipo = 'ORÇAMENTO';
         $this->guia->gravarfiladeimpressao($html, $tipo, $paciente, $paciente_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");

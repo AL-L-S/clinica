@@ -245,7 +245,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <th class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
                                 <th class="tabela_header">Qtde</th>
                                 <th class="tabela_header">Pagamento</th>
-                                <th class="tabela_header">Recomendação</th>
+                                <th class="tabela_header">Promotor</th>
                                 <th class="tabela_header">Entrega</th>
                                 <th class="tabela_header">Ordenador</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->

@@ -68,9 +68,9 @@ class Indicacao extends BaseController {
 
     function excluir($exame_indicacao_id) {
         if ($this->indicacao->excluir($exame_indicacao_id)) {
-            $mensagem = 'Sucesso ao excluir a Indicacao';
+            $mensagem = 'Sucesso ao excluir este item.';
         } else {
-            $mensagem = 'Erro ao excluir a indicacao. Opera&ccedil;&atilde;o cancelada.';
+            $mensagem = 'Erro ao excluir este item. Opera&ccedil;&atilde;o cancelada.';
         }
 
         $this->session->set_flashdata('message', $mensagem);
