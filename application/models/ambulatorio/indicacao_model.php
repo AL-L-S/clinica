@@ -125,6 +125,31 @@ class indicacao_model extends Model {
 
     function gravar() {
         try {
+            
+            if ($this->session->userdata('recomendacao_configuravel') == "t") {
+                
+                if ($_POST['criarcredor'] == "on") {
+                    $this->db->set('razao_social', $_POST['txtNome']);
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_financeiro_credor_devedor');
+                    $credor_devedor_id = $this->db->insert_id();
+                }
+            
+                if ($_POST['conta'] != "") {
+                    $this->db->set('conta_id', $_POST['conta']);
+                }
+                if ($_POST['criarcredor'] == "on") {
+                    $this->db->set('credor_devedor_id', $credor_devedor_id);
+                } elseif ($_POST['credor_devedor'] != "") {
+                    $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
+                }
+                $this->db->set('classe', $_POST['classe']);
+                $this->db->set('tipo_id', $_POST['tipo']);
+            }
+            
             /* inicia o mapeamento no banco */
             $paciente_indicacao_id = $_POST['paciente_indicacao_id'];
             $this->db->set('registro', $_POST['registro']);
@@ -164,7 +189,11 @@ class indicacao_model extends Model {
             $this->db->select('paciente_indicacao_id,
                                 aml.nome,
                                 aml.registro,
-                                grupo_id');
+                                grupo_id,
+                                aml.credor_devedor_id,
+                                aml.conta_id,
+                                aml.classe,
+                                aml.tipo_id');
             $this->db->from('tb_paciente_indicacao aml');
             $this->db->where("paciente_indicacao_id", $paciente_indicacao_id);
             $query = $this->db->get();
@@ -173,6 +202,10 @@ class indicacao_model extends Model {
             $this->_nome = $return[0]->nome;
             $this->_grupo_id = $return[0]->grupo_id;
             $this->_registro = $return[0]->registro;
+            $this->_credor_devedor_id = $return[0]->credor_devedor_id;
+            $this->_conta_id = $return[0]->conta_id;
+            $this->_classe = $return[0]->classe;
+            $this->_tipo_id = $return[0]->tipo_id;
         } else {
             $this->_paciente_indicacao_id = null;
         }

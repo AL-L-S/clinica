@@ -811,14 +811,15 @@ class laudo_model extends Model {
 
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select(' o.nome as medico,
-                            an.nome_chamada as sala,
-                            an.painel_id,
+                            an.exame_sala_id,
                             cbo.descricao,
+                            e.numero_empresa_painel,
                             p.nome as paciente');
         $this->db->from('tb_agenda_exames ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ag.procedimento_tuss_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ag.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = an.empresa_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_consulta_id', 'left');
@@ -826,6 +827,14 @@ class laudo_model extends Model {
         $this->db->where('ag.agenda_exames_id', $agenda_exames_id);
         $return = $this->db->get()->result();
 
+        
+        $this->db->select(' nome_chamada,
+                            painel_id');
+        $this->db->from('tb_exame_sala_painel');
+        $this->db->where('exame_sala_id', $return[0]->exame_sala_id);
+        $this->db->where('ativo', 't');
+        $paineis = $this->db->get()->result();
+        
         $config['hostname'] = "localhost";
         $config['username'] = "postgres";
         $config['password'] = "123456";
@@ -839,24 +848,26 @@ class laudo_model extends Model {
         $config['char_set'] = "utf8";
         $config['dbcollat'] = "utf8_general_ci";
         $DB1 = $this->load->database($config, TRUE);
-//            $DB1 = $this->load->database('group_one', TRUE);
-        $salas = $return[0]->sala;
-        $data = date("Y-m-d H:i:s");
-        $medico = $return[0]->descricao;
-        if ($return[0]->painel_id != '') {
-            $painel_id = $return[0]->painel_id;
-        } else {
-            $painel_id = 1;
+        
+        foreach ($paineis as $value) {
+            $salas = $value->nome_chamada;
+            $data = date("Y-m-d H:i:s");
+            $medico = $return[0]->descricao;
+            if ($value->painel_id != '') {
+                $painel_id = $return[0]->numero_empresa_painel . $value->painel_id;
+            } else {
+                $painel_id = $return[0]->numero_empresa_painel . 1;
+            }
+
+            $paciente = $return[0]->paciente;
+            $superior = 'Paciente: ' . $paciente;
+            $inferior = $salas . ' ' . $medico;
+            $sql = "INSERT INTO chamado(
+                data, linha_inferior, linha_superior, setor_id)
+        VALUES ('$data', '$inferior', '$superior', $painel_id);";
+            $DB1->query($sql);
+            
         }
-
-
-        $paciente = $return[0]->paciente;
-        $superior = 'Paciente: ' . $paciente;
-        $inferior = $salas . ' ' . $medico;
-        $sql = "INSERT INTO chamado(
-            data, linha_inferior, linha_superior, setor_id)
-    VALUES ('$data', '$inferior', '$superior', $painel_id);";
-        $DB1->query($sql);
     }
 
     function chamada($ambulatorio_laudo_id) {
@@ -864,16 +875,17 @@ class laudo_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ag.ambulatorio_laudo_id,
                             o.nome as medico,
-                            an.nome_chamada as sala,
-                            an.painel_id,
+                            an.exame_sala_id,
                             cbo.descricao,
-                            p.nome as paciente');
+                            p.nome as paciente,
+                            e.numero_empresa_painel');
         $this->db->from('tb_ambulatorio_laudo ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
         $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ag.procedimento_tuss_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = age.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = an.empresa_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
@@ -881,6 +893,15 @@ class laudo_model extends Model {
         $this->db->where('ag.ambulatorio_laudo_id', $ambulatorio_laudo_id);
         $return = $this->db->get()->result();
 
+        
+        $this->db->select(' nome_chamada,
+                            painel_id');
+        $this->db->from('tb_exame_sala_painel');
+        $this->db->where('exame_sala_id', $return[0]->exame_sala_id);
+        $this->db->where('ativo', 't');
+        $paineis = $this->db->get()->result();
+        
+        
         $config['hostname'] = "localhost";
         $config['username'] = "postgres";
         $config['password'] = "123456";
@@ -894,24 +915,26 @@ class laudo_model extends Model {
         $config['char_set'] = "utf8";
         $config['dbcollat'] = "utf8_general_ci";
         $DB1 = $this->load->database($config, TRUE);
-//            $DB1 = $this->load->database('group_one', TRUE);
-        $salas = $return[0]->sala;
-        $data = date("Y-m-d H:i:s");
-        $medico = $return[0]->descricao;
-        if ($return[0]->painel_id != '') {
-            $painel_id = $return[0]->painel_id;
-        } else {
-            $painel_id = 1;
+        
+        foreach ($paineis as $value) {
+            $salas = $value->nome_chamada;
+            $data = date("Y-m-d H:i:s");
+            $medico = $return[0]->descricao;
+            if ($value->painel_id != '') {
+                $painel_id = $return[0]->numero_empresa_painel . $value->painel_id;
+            } else {
+                $painel_id = $return[0]->numero_empresa_painel . 1;
+            }
+
+            $paciente = $return[0]->paciente;
+            $superior = 'Paciente: ' . $paciente;
+            $inferior = $salas . ' ' . $medico;
+            $sql = "INSERT INTO chamado(
+                data, linha_inferior, linha_superior, setor_id)
+        VALUES ('$data', '$inferior', '$superior', $painel_id);";
+            $DB1->query($sql);
+            
         }
-
-
-        $paciente = $return[0]->paciente;
-        $superior = 'Paciente: ' . $paciente;
-        $inferior = $salas . ' ' . $medico;
-        $sql = "INSERT INTO chamado(
-            data, linha_inferior, linha_superior, setor_id)
-    VALUES ('$data', '$inferior', '$superior', $painel_id);";
-        $DB1->query($sql);
     }
 
     function chamadaconsulta($ambulatorio_laudo_id) {
@@ -919,23 +942,32 @@ class laudo_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ag.ambulatorio_laudo_id,
                             o.nome as medico,
-                            an.nome_chamada as sala,
-                            an.painel_id,
+                            an.exame_sala_id,
                             cbo.descricao,
-                            p.nome as paciente');
+                            p.nome as paciente,
+                            e.numero_empresa_painel');
         $this->db->from('tb_ambulatorio_laudo ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
         $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ag.procedimento_tuss_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = age.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = an.empresa_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
         $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
         $this->db->where('ag.ambulatorio_laudo_id', $ambulatorio_laudo_id);
         $return = $this->db->get()->result();
-
+        
+        $this->db->select(' nome_chamada,
+                            painel_id');
+        $this->db->from('tb_exame_sala_painel');
+        $this->db->where('exame_sala_id', $return[0]->exame_sala_id);
+        $this->db->where('ativo', 't');
+        $paineis = $this->db->get()->result();
+        
+        
         $config['hostname'] = "localhost";
         $config['username'] = "postgres";
         $config['password'] = "123456";
@@ -950,23 +982,25 @@ class laudo_model extends Model {
         $config['dbcollat'] = "utf8_general_ci";
         $DB1 = $this->load->database($config, TRUE);
 //            $DB1 = $this->load->database('group_one', TRUE);
-        $salas = $return[0]->sala;
-        $data = date("Y-m-d H:i:s");
-        $medico = $return[0]->descricao;
-        if ($return[0]->painel_id != '') {
-            $painel_id = $return[0]->painel_id;
-        } else {
-            $painel_id = 1;
+        foreach ($paineis as $value) {
+            $salas = $value->nome_chamada;
+            $data = date("Y-m-d H:i:s");
+            $medico = $return[0]->descricao;
+            if ($value->painel_id != '') {
+                $painel_id = $return[0]->numero_empresa_painel . $value->painel_id;
+            } else {
+                $painel_id = $return[0]->numero_empresa_painel . 1;
+            }
+
+            $paciente = $return[0]->paciente;
+            $superior = 'Paciente: ' . $paciente;
+            $inferior = $salas . ' ' . $medico;
+            $sql = "INSERT INTO chamado(
+                data, linha_inferior, linha_superior, setor_id)
+        VALUES ('$data', '$inferior', '$superior', $painel_id);";
+            $DB1->query($sql);
+            
         }
-
-
-        $paciente = $return[0]->paciente;
-        $superior = 'Paciente: ' . $paciente;
-        $inferior = $salas . ' ' . $medico;
-        $sql = "INSERT INTO chamado(
-            data, linha_inferior, linha_superior, setor_id)
-    VALUES ('$data', '$inferior', '$superior', $painel_id);";
-        $DB1->query($sql);
     }
 
     function editaranaminesehistorico() {

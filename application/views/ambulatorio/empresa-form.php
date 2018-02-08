@@ -110,7 +110,6 @@
                     </dd>
 
                     <? if ($this->session->userdata('operador_id') == 1) { ?>
-
                         <dt>
                             <label>Serviço de SMS</label>
                         </dt>
@@ -164,6 +163,12 @@
                         </dt>
                         <dd>
                             <input type="text" id="endereco_externo" class="texto08" name="endereco_externo" value="<?= @$obj->_endereco_externo; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Numero Empresa (Painel)</label>
+                        </dt>
+                        <dd>
+                            <input type="text" id="numero_empresa_painel" name="numero_empresa_painel" class="texto05" value="<?= @$obj->_numero_empresa_painel; ?>" />
                         </dd>
                         <dt>
                             <label title="Habilitar Modulo de Imagem.">Imagem</label>

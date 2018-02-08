@@ -156,6 +156,11 @@ class armazem_model extends Model {
             /* inicia o mapeamento no banco */
             $estoque_armazem_id = $_POST['txtestoquearmazemid'];
             $this->db->set('descricao', $_POST['txtNome']);
+            if( isset($_POST['visivel_solicitacao']) ){
+                $this->db->set('visivel_solicitacao', 't');
+            } else {
+                $this->db->set('visivel_solicitacao', 'f');
+            }
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -378,13 +383,14 @@ class armazem_model extends Model {
     private function instanciar($estoque_armazem_id) {
 
         if ($estoque_armazem_id != 0) {
-            $this->db->select('estoque_armazem_id, descricao');
+            $this->db->select('estoque_armazem_id, descricao, visivel_solicitacao');
             $this->db->from('tb_estoque_armazem');
             $this->db->where("estoque_armazem_id", $estoque_armazem_id);
             $query = $this->db->get();
             $return = $query->result();
             $this->_estoque_armazem_id = $estoque_armazem_id;
             $this->_descricao = $return[0]->descricao;
+            $this->_visivel_solicitacao = $return[0]->visivel_solicitacao;
         } else {
             $this->_estoque_armazem_id = null;
         }

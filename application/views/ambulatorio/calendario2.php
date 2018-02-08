@@ -797,7 +797,6 @@ if (@$_GET['sala'] != '') {
         });
     }
 
-
     if ($('#grupo').val()) {
 
 //        alert($('#grupo').val());
@@ -805,15 +804,13 @@ if (@$_GET['sala'] != '') {
 //                                                        alert('teste_parada');
         $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
             options = '<option value=""></option>';
-//                    alert(j);
-            var empresa_atual = <?= $empresa_atual ?>;
+            var empresa_atual = '<?= ($empresa_atual != '' ? $empresa_atual :'') ?>';
             for (var c = 0; c < j.length; c++) {
                 if (empresa_atual == j[c].empresa_id) {
                     options += '<option selected value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
                 } else {
                     options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
                 }
-
 
             }
             $('#empresa').html(options).show();
@@ -914,6 +911,7 @@ if (@$_GET['sala'] != '') {
         ]
 
     });
+    
     $(function () {
         $('#grupo').change(function () {
 

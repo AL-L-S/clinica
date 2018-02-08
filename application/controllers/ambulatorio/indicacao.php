@@ -18,6 +18,10 @@ class Indicacao extends BaseController {
         $this->load->model('ambulatorio/indicacao_model', 'indicacao');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
+        $this->load->model('cadastro/convenio_model', 'convenio');
+        $this->load->model('cadastro/tipo_model', 'tipo');
+        $this->load->model('cadastro/forma_model', 'forma');
+        $this->load->model('cadastro/classe_model', 'classe');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -51,7 +55,8 @@ class Indicacao extends BaseController {
         $obj_indicacao = new indicacao_model($exame_indicacao_id);
         $data['obj'] = $obj_indicacao;
         $data['grupo'] = $this->indicacao->listargrupoindicacao();
-//        $this->load->View('ambulatorio/indicacao-form', $data);
+        
+        
         $this->loadView('ambulatorio/indicacao-form', $data);
     }
 

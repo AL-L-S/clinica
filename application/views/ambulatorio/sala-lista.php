@@ -11,7 +11,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="5" class="tabela_title">
+                        <th colspan="8" class="tabela_title">
                             <form method="get" action="<?= base_url() ?>ambulatorio/sala/pesquisar">
                                 <input type="text" name="nome" class="texto10 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                                 <button type="submit" id="enviar">Pesquisar</button>
@@ -21,7 +21,7 @@
                     <tr>
                         <th class="tabela_header">Nome</th>
                         <!--<th class="tabela_header">Tipo</th>-->
-                        <th class="tabela_header" colspan="4">Detalhes</th>
+                        <th class="tabela_header" colspan="8">Detalhes</th>
                     </tr>
                 </thead>
                 <?php
@@ -54,6 +54,9 @@
                             <?}?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/sala/carregarsalagrupo/<?= $item->exame_sala_id ?>">Grupo</a></div>
+                            </td>
+                            <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                <a href="<?= base_url() ?>ambulatorio/sala/carregarsalapainel/<?= $item->exame_sala_id ?>">Painel</a></div>
                             </td>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/sala/excluirsala/<?= $item->exame_sala_id ?>">Excluir</a></div>

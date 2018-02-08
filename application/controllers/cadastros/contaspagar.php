@@ -91,6 +91,16 @@ class Contaspagar extends BaseController {
         redirect(base_url() . "cadastros/contaspagar/$relatorio/");
     }
     
+    function confirmarprevisaopromotor() {
+        $this->contaspagar->confirmarprevisaopromotor();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+    function confirmarprevisaomedico() {
+        $this->contaspagar->confirmarprevisaomedico();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
     function confirmarprevisaolaboratorio() {
         $this->contaspagar->confirmarprevisaolaboratorio();
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
@@ -113,9 +123,16 @@ class Contaspagar extends BaseController {
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->contaspagar->relatoriocontaspagar();
-        $data['relatoriomedico'] = $this->contaspagar->relatorioprevisaomedicacontaspagar();
-        $data['relatoriopromotor'] = $this->contaspagar->relatorioprevisaopromotorcontaspagar();
-        $data['relatoriolaboratorio'] = $this->contaspagar->relatorioprevisaolaboratoriocontaspagar();
+        
+        if($_POST['previsao'] == 'SIM'){
+            $data['relatoriomedico'] = $this->contaspagar->relatorioprevisaomedicacontaspagar();
+            $data['relatoriopromotor'] = $this->contaspagar->relatorioprevisaopromotorcontaspagar();
+            $data['relatoriolaboratorio'] = $this->contaspagar->relatorioprevisaolaboratoriocontaspagar();
+        } else {
+            $data['relatoriomedico'] = array();
+            $data['relatoriopromotor'] = array();
+            $data['relatoriolaboratorio'] = array();  
+        }
         $data['contador'] = $this->contaspagar->relatoriocontaspagarcontador();
 
         if ($_POST['email'] == "NAO") {

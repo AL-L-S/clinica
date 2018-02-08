@@ -12,6 +12,14 @@
                         <input type="hidden" name="txtestoquearmazemid" class="texto10" value="<?= @$obj->_estoque_armazem_id; ?>" />
                         <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_descricao; ?>" />
                     </dd>
+                    
+                    <dt>
+                        <label>&nbsp;</label>
+                    </dt>
+                    <dd>
+                        <input type="checkbox" name="visivel_solicitacao" id="visivel_solicitacao" <?= (@$obj->_visivel_solicitacao == 't')?"checked":""; ?>/>
+                        <label for="visivel_solicitacao">Tornar armazém visivel ao criar uma solicitação.</label>
+                    </dd>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

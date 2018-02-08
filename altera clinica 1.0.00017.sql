@@ -40,12 +40,44 @@ SELECT insereValor();
 
 
 -- Dia 03/02/2018
-CREATE TABLE ponto.tb_agenda_exames_flag
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN confirmacao_previsao_labotorio boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN confirmacao_previsao_promotor boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN confirmacao_previsao_medico boolean DEFAULT false;
+
+-- Dia 05/02/2018
+ALTER TABLE ponto.tb_empresa ADD COLUMN numero_empresa_painel integer;
+
+CREATE TABLE ponto.tb_exame_sala_painel
 (
-  agenda_exames_flag_id serial NOT NULL,
-  agenda_exames_id integer,
-  confirmacao_previsao_labotorio boolean DEFAULT false,
-  confirmacao_previsao_promotor boolean DEFAULT false,
-  confirmacao_previsao_medico boolean DEFAULT false,
-  CONSTRAINT tb_agenda_exames_flag_pkey PRIMARY KEY (agenda_exames_flag_id)
+  exame_sala_painel_id serial NOT NULL,
+  nome_chamada character varying(200),
+  exame_sala_id integer,
+  painel_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_exame_sala_painel_pkey PRIMARY KEY (exame_sala_painel_id)
 );
+
+INSERT INTO ponto.tb_exame_sala_painel(exame_sala_id, nome_chamada, painel_id)
+SELECT exame_sala_id, nome_chamada, painel_id FROM ponto.tb_exame_sala
+WHERE exame_sala_id NOT IN ( SELECT exame_sala_id FROM ponto.tb_exame_sala_painel )
+AND painel_id IS NOT NULL;
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000017');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000017', '1.0.000017');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();
