@@ -49,6 +49,17 @@ class sala_model extends Model {
         return $return->result();
     }
 
+    function carregarsalapainel($sala_id) {
+
+        $this->db->select('exame_sala_painel_id,
+                            nome_chamada, painel_id');
+        $this->db->from('tb_exame_sala_painel');
+        $this->db->where('exame_sala_id', $sala_id);
+        $this->db->where('ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function carregarsalagrupo($sala_id) {
 
         $this->db->select('exame_sala_grupo_id,
@@ -81,6 +92,22 @@ class sala_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('exame_sala_id', $exame_sala_id);
         $this->db->update('tb_exame_sala');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
+    function excluirsalapainel($sala_painel_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('exame_sala_painel_id', $sala_painel_id);
+        $this->db->update('tb_exame_sala_painel');
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return false;
@@ -121,6 +148,32 @@ class sala_model extends Model {
             return true;
     }
 
+    function gravarsalapainel() {
+        try {
+            $this->db->select('exame_sala_id');
+            $this->db->from('tb_exame_sala_painel');
+            $this->db->where('ativo', 't');
+            $this->db->where('painel_id', $_POST['painel_numero']);
+            $this->db->where('exame_sala_id', $_POST['exame_sala_id']);
+            $return = $this->db->get()->result();
+            
+            if ( count($return) == 0 ) {
+                $this->db->set('nome_chamada', $_POST['txtnomechamada']);
+                $this->db->set('painel_id', $_POST['painel_numero']);
+                $this->db->set('exame_sala_id', $_POST['exame_sala_id']);
+
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_exame_sala_painel');
+            }
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarsalagrupo() {
         try {
 
@@ -155,9 +208,9 @@ class sala_model extends Model {
             
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('nome', $_POST['txtNome']);
-            $this->db->set('nome_chamada', $_POST['txtnomechamada']);
+//            $this->db->set('nome_chamada', $_POST['txtnomechamada']);
 //            $this->db->set('tipo', $_POST['tipo']);
-            $this->db->set('painel_id', $_POST['painel_id']);
+//            $this->db->set('painel_id', $_POST['painel_id']);
 //            $this->db->set('grupo', $_POST['grupo']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');

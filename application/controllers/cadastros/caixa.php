@@ -102,11 +102,11 @@ class Caixa extends BaseController {
     }
 
     function gravarentrada() {
-        if ($_POST['devedor'] == '') {
-            $mensagem = 'É necessário selecionar o item no campo Receber de: ';
-            $this->session->set_flashdata('message', $mensagem);
-            redirect(base_url() . "cadastros/caixa/novaentrada");
-        }
+//        if ($_POST['devedor'] == '') {
+//            $mensagem = 'É necessário selecionar o item no campo Receber de: ';
+//            $this->session->set_flashdata('message', $mensagem);
+//            redirect(base_url() . "cadastros/caixa/novaentrada");
+//        }
 
         $caixa_id = $this->caixa->gravarentrada();
         if ($caixa_id == "-1") {
@@ -118,11 +118,11 @@ class Caixa extends BaseController {
     }
 
     function gravarsaida() {
-        if ($_POST['devedor'] == '') {
-            $mensagem = 'É necessário selecionar o item no campo Pagar a: ';
-            $this->session->set_flashdata('message', $mensagem);
-            redirect(base_url() . "cadastros/caixa/novasaida");
-        }
+//        if ($_POST['devedor'] == '') {
+//            $mensagem = 'É necessário selecionar o item no campo Pagar a: ';
+//            $this->session->set_flashdata('message', $mensagem);
+//            redirect(base_url() . "cadastros/caixa/novasaida");
+//        }
         $caixa_id = $this->caixa->gravarsaida();
         if ($caixa_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Saida. Opera&ccedil;&atilde;o cancelada.';

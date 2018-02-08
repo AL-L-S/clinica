@@ -12,12 +12,12 @@
                         <input type="hidden" name="txtexamesalaid" class="texto10" value="<?= @$obj->_exame_sala_id; ?>" />
                         <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_nome; ?>" />
                     </dd>
-                    <dt>
+<!--                    <dt>
                         <label>Nome Chamada</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtnomechamada" class="texto10" value="<?= @$obj->_nome_chamada; ?>" />
-                    </dd>
+                    </dd>-->
 <!--                    <dt>
                         <label>Tipo de sala</label>
                     </dt>
@@ -63,7 +63,7 @@
                                     <? // } ?>
                         </select>
                     </dd>-->
-                    <dt>
+<!--                    <dt>
                         <label>Painel</label>
                     </dt>
                     <dd>
@@ -82,7 +82,7 @@
                             ?>
                             
                         </select>
-                    </dd>
+                    </dd>-->
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

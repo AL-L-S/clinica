@@ -83,6 +83,110 @@ class contasreceber_model extends Model {
         return $this->db;
     }
 
+    function confirmarprevisaorecebimentoconvenio() {
+        try {
+            
+            $data = date("Y-m-d");
+            $convenio_id = $_GET['convenio_id'];
+            
+            $this->db->select('ir, pis, cofins, csll, iss, valor_base, entrega, pagamento');
+            $this->db->from('tb_convenio');
+            $this->db->where("convenio_id", $convenio_id);
+            $query = $this->db->get();
+
+            $returno = $query->result();
+            $pagamento = $returno[0]->pagamento;
+            $pagamentodata = substr($data, 0, 7) . "-" . $returno[0]->entrega;
+            $data30 = date('Y-m-d', strtotime("+$pagamento days", strtotime($pagamentodata)));
+            
+            $ir = $returno[0]->ir / 100;
+            $pis = $returno[0]->pis / 100;
+            $cofins = $returno[0]->cofins / 100;
+            $csll = $returno[0]->csll / 100;
+            $iss = $returno[0]->iss / 100;
+            $valor_base = $returno[0]->valor_base;
+            
+            $dineiro = $_GET['valor'];
+            $dineirodescontado = $dineiro;
+            
+            if ($dineiro >= $valor_base) {
+                $dineirodescontado = $dineirodescontado - ($dineiro * $ir);
+            }
+            $dineirodescontado = $dineirodescontado - ($dineiro * $pis);
+            $dineirodescontado = $dineirodescontado - ($dineiro * $cofins);
+            $dineirodescontado = $dineirodescontado - ($dineiro * $csll);
+            $dineirodescontado = $dineirodescontado - ($dineiro * $iss);
+            
+            if ($pagamento != "" || $pagamentodata != "") {
+                $observacao = "Previsão Convênio " . $_GET['txtdata_inicio'] . " a " . $_GET['txtdata_fim'] . " Convênio: " . $_GET["convenio_nome"];            
+
+                $this->db->set('valor', $dineirodescontado);
+                $this->db->set('devedor', $_GET['credordevedor']);
+                $this->db->set('data', $data30);
+                $this->db->set('tipo', 'FATURADO CONVENIO');
+                $this->db->set('empresa_id', $_GET['empresa']);
+                $this->db->set('conta', $_GET['conta']);
+                $this->db->set('observacao', $observacao);
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_contasreceber');
+                
+                $sql = "UPDATE ponto.tb_agenda_exames SET confirmacao_recebimento_convenio = 't' 
+                        WHERE agenda_exames_id IN (
+                            SELECT ae.agenda_exames_id FROM ponto.tb_agenda_exames ae 
+                            LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
+                            LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
+                            LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
+                            WHERE c.convenio_id = " . $_GET['convenio_id'] . "
+                            AND ae.empresa_id = " . $_GET['empresa'] . "
+                            AND pt.grupo != 'CIRURGICO'
+                            AND ae.confirmado = 't'
+                            AND c.dinheiro = 'f'
+                            AND ae.data_faturar >= '" . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_inicio']) ) ) . "'
+                            AND ae.data_faturar <= '" . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_fim']) ) ) . "'
+                        )";
+
+
+                $this->db->query($sql);
+                
+            }
+            
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function relatorioprevisaoconveniocontasreceber() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select(' ae.valor_total,
+                            c.nome as convenio,
+                            credor_devedor_id,
+                            c.convenio_id,
+                            c.conta_id,
+                            ae.confirmacao_recebimento_convenio');
+        $this->db->from('tb_ambulatorio_guia g');
+        $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("c.dinheiro", 'f');
+        $this->db->where("ae.confirmado", 't');
+        $this->db->where('pt.grupo !=', 'CIRURGICO');
+        $this->db->where('ae.cancelada', 'f');
+        
+        if ($_POST['empresa'] != "") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        
+        $this->db->orderby('c.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function relatoriocontasreceber() {
          if ($_POST['tipo'] > 0) {
             $this->db->select('

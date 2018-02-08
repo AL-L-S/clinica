@@ -2,6 +2,7 @@
     <h3 class="singular"><a href="#">Nova Indicação/Promotor</a></h3>
     <form name="form_indicacao" id="form_indicacao" action="<?= base_url() ?>ambulatorio/indicacao/gravar" method="post">
         <fieldset>
+            <legend>Dados do Promotor</legend>
             <div>
                 <label>Nome</label>
                 <input type="hidden" name="paciente_indicacao_id" class="texto10" value="<?= @$obj->_paciente_indicacao_id; ?>" />
@@ -21,6 +22,91 @@
                 </select>
             </div>
         </fieldset>
+        <? 
+        if ($this->session->userdata('recomendacao_configuravel') == "t") { 
+            
+            $credor_devedor = $this->convenio->listarcredordevedor();
+            $conta = $this->forma->listarforma();
+            $tipo = $this->tipo->listartipo();
+            $classe = $this->classe->listarclasse();?>
+        
+            <fieldset>
+                <legend>Financeiro</legend>
+                <div>
+                    <label>Criar Credor</label>
+                    <input type="checkbox" name="criarcredor"/></div>
+
+                <div>
+                    <label>Credor / Devedor</label>
+                    <select name="credor_devedor" id="credor_devedor" class="size2" >
+                        <option value='' >Selecione</option>
+                        <?php
+                        $credor_devedor = $this->convenio->listarcredordevedor();
+                        foreach ($credor_devedor as $item) {
+                            ?>
+
+                            <option   value =<?php echo $item->financeiro_credor_devedor_id; ?> <?
+                            if (@$obj->_credor_devedor_id == $item->financeiro_credor_devedor_id):echo 'selected';
+                            endif;
+                            ?>><?php echo $item->razao_social; ?></option>
+                                      <?php
+                                  }
+                                  ?> 
+                    </select>
+                </div>
+                <div>
+                    <label>Conta</label>
+                    <select name="conta" id="conta" class="size2" >
+                        <option value='' >Selecione</option>
+                        <?php
+                        $conta = $this->forma->listarforma();
+                        foreach ($conta as $item) {
+                            ?>
+
+                            <option   value =<?php echo $item->forma_entradas_saida_id; ?> <?
+                            if (@$obj->_conta_id == $item->forma_entradas_saida_id):echo 'selected';
+                            endif;
+                            ?>><?php echo $item->descricao; ?></option>
+                                      <?php
+                                  }
+                                  ?> 
+                    </select>
+                </div>
+                <div>
+                    <label>Tipo</label>
+                    <select name="tipo" id="tipo" class="size2">
+                        <option value='' >Selecione</option>
+                        <?php
+                        $tipo = $this->tipo->listartipo();
+
+                        foreach ($tipo as $item) {
+                            ?>
+
+                            <option   value = "<?= $item->descricao; ?>" <?
+                            if (@$obj->_tipo_id == $item->descricao):echo 'selected';
+                            endif;
+                            ?>><?php echo $item->descricao; ?></option>
+                                      <?php
+                                  }
+                                  ?> 
+                    </select>
+                </div>
+                <div>
+                    <label>Classe</label>
+                    <select name="classe" id="classe" class="size2">
+                        <option value="">Selecione</option>
+                        <? foreach ($classe as $value) : ?>
+                            <option value="<?= $value->descricao; ?>"
+                            <?
+                            if ($value->descricao == @$obj->_classe):echo'selected';
+                            endif;
+                            ?>
+                                    ><?php echo $value->descricao; ?></option>
+                                <? endforeach; ?>
+                    </select>
+                </div>
+            </fieldset>
+        <? } ?>
         <hr>
         <button type="submit" name="btnEnviar">Enviar</button>
         <button type="reset" name="btnLimpar">Limpar</button>

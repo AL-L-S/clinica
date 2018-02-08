@@ -901,12 +901,12 @@ class Guia extends BaseController {
         if (count($percentual) == 0) {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
         }
-        $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
-        if ($grupo == 'LABORATORIAL') {
-            $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
-        } else {
-            $percentual_laboratorio = array();
-        }
+//        $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
+//        if ($grupo == 'LABORATORIAL') {
+        $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
+//        } else {
+//            $percentual_laboratorio = array();
+//        }
         
         $paciente_id = $_POST['txtpaciente_id'];
         
@@ -976,12 +976,12 @@ class Guia extends BaseController {
             if (count($percentual) == 0) {
                 $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
             }
-            $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
-            if ($grupo == 'LABORATORIAL') {
-                $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
-            } else {
-                $percentual_laboratorio = array();
-            }
+//            $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
+//            if ($grupo == 'LABORATORIAL') {
+            $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
+//            } else {
+//                $percentual_laboratorio = array();
+//            }
             
             if ($_POST['crm1'] == '' && $grupo != 'CONSULTA') {
                 $data['mensagem'] = 'Favor, selecione um medico solicitante da lista.';
@@ -1073,7 +1073,9 @@ class Guia extends BaseController {
         if (count($percentual) == 0) {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
         }
-//        var_dump($percentual); die;
+        
+        $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
+//        var_dump($percentual_laboratorio); die;
         $paciente_id = $_POST['txtpaciente_id'];
 
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
@@ -1095,7 +1097,7 @@ class Guia extends BaseController {
                 } else {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 }
-                $this->guia->gravarconsulta($ambulatorio_guia, $percentual);
+                $this->guia->gravarconsulta($ambulatorio_guia, $percentual, $percentual_laboratorio);
             }
             //        $this->gerardicom($ambulatorio_guia);
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -1261,12 +1263,12 @@ class Guia extends BaseController {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
         }
         // Caso seja um procedimento laboratorial
-        $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
-        if ($grupo == 'LABORATORIAL') {
-            $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
-        } else {
-            $percentual_laboratorio = array();
-        }
+//        $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
+//        if ($grupo == 'LABORATORIAL') {
+        $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
+//        } else {
+//            $percentual_laboratorio = array();
+//        }
         
         $dadosantigos = $this->guia->listardadosantigoseditarvalor($agenda_exames_id);
         $ambulatorio_guia_id = $this->guia->valorexames($percentual, $percentual_laboratorio);
@@ -1827,7 +1829,6 @@ class Guia extends BaseController {
                 if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
                     $this->guia->descontacreditopaciente();
                 }
-//                var_dump($_POST['valorcredito']);die;
 
                 if ($ambulatorio_guia_id == "-1") {
                     $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
@@ -1994,7 +1995,22 @@ class Guia extends BaseController {
             $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
         }
         $data['relatorio'] = $this->guia->relatorioexamesconferencia();
-        $this->load->View('ambulatorio/impressaorelatorioconferencia', $data);
+        if($_POST['planilha'] == "SIM"){
+            $html = $this->load->View('ambulatorio/impressaorelatorioconferencia', $data, true);
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+            header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Pragma: no-cache");
+            header("Content-type: application/x-msexcel");
+            header("Content-Disposition: attachment; filename=\"Relatorio.xls\"");
+            header("Content-Description: PHP Generated Data");
+            // Envia o conteúdo do arquivo
+            echo $html;
+            exit;
+        }
+        else{
+            $this->load->View('ambulatorio/impressaorelatorioconferencia', $data);
+        }
     }
 
     function gerarelatoriorecolhimento() {

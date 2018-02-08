@@ -719,6 +719,8 @@ class caixa_model extends Model {
     function gravarentrada() {
         try {
             $empresa_id = $this->session->userdata('empresa_id');
+            $operador_id = $this->session->userdata('operador_id');
+            $horario = date("Y-m-d H:i:s");
 
             $_POST['inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio'])));
             //busca tipo
@@ -730,11 +732,23 @@ class caixa_model extends Model {
             $return = $this->db->get();
             $result = $return->result();
             $tipo = $result[0]->descricao;
-
+            
+            if($_POST['devedor'] == ""){
+                
+                $this->db->set('razao_social', $_POST['devedorlabel']);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_credor_devedor');
+                $devedor = $this->db->insert_id();
+            }
+            else{
+                $devedor = $_POST['devedor'];
+            }
+            
             /* inicia o mapeamento no banco */
+            $operador_id = $this->session->userdata('operador_id');
             $horario = date("Y-m-d H:i:s");
             $data = date("Y-m-d");
-            $operador_id = $this->session->userdata('operador_id');
             $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
             $inicio = $_POST['inicio'];
             $dia = substr($inicio, 0, 2);
@@ -745,7 +759,7 @@ class caixa_model extends Model {
             $this->db->set('tipo', $tipo);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('classe', $_POST['classe']);
-            $this->db->set('nome', $_POST['devedor']);
+            $this->db->set('nome', $devedor);
             $this->db->set('conta', $_POST['conta']);
             $this->db->set('observacao', $_POST['Observacao']);
             $this->db->set('data_cadastro', $horario);
@@ -759,7 +773,7 @@ class caixa_model extends Model {
                 $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
             $this->db->set('entrada_id', $entradas_id);
             $this->db->set('conta', $_POST['conta']);
-            $this->db->set('nome', $_POST['devedor']);
+            $this->db->set('nome', $devedor);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio']))));
             $this->db->set('operador_cadastro', $operador_id);
@@ -776,6 +790,18 @@ class caixa_model extends Model {
         try {
             $empresa_id = $this->session->userdata('empresa_id');
             $_POST['inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio'])));
+             if($_POST['devedor'] == ""){
+                
+                $this->db->set('razao_social', $_POST['devedorlabel']);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_credor_devedor');
+                $devedor = $this->db->insert_id();
+            }
+            else{
+                $devedor = $_POST['devedor'];
+            }
+            
             //busca tipo
             $this->db->select('t.descricao');
             $this->db->from('tb_tipo_entradas_saida t');
@@ -802,7 +828,7 @@ class caixa_model extends Model {
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('classe', $_POST['classe']);
                 $this->db->set('conta', $_POST['conta']);
-                $this->db->set('nome', $_POST['devedor']);
+                $this->db->set('nome', $devedor);
                 $this->db->set('observacao', $_POST['Observacao']);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -815,7 +841,7 @@ class caixa_model extends Model {
                     $valor = str_replace(",", ".", str_replace(".", "", $_POST['valor']));
                 $this->db->set('valor', -$valor);
                 $this->db->set('conta', $_POST['conta']);
-                $this->db->set('nome', $_POST['devedor']);
+                $this->db->set('nome', $devedor);
                 $this->db->set('saida_id', $saida_id);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
@@ -838,7 +864,7 @@ class caixa_model extends Model {
                 $this->db->set('tipo', $tipo);
                 $this->db->set('classe', $_POST['classe']);
                 $this->db->set('conta', $_POST['conta']);
-                $this->db->set('nome', $_POST['devedor']);
+                $this->db->set('nome', $devedor);
                 $this->db->set('observacao', $_POST['Observacao']);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('empresa_id', $empresa_id);
@@ -853,7 +879,7 @@ class caixa_model extends Model {
                 $valor = str_replace(",", ".", str_replace(".", "", $_POST['valor']));
                 $this->db->set('valor', -$valor);
                 $this->db->set('conta', $_POST['conta']);
-                $this->db->set('nome', $_POST['devedor']);
+                $this->db->set('nome', $devedor);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('data', $_POST['inicio']);
                 $this->db->set('empresa_id', $empresa_id);

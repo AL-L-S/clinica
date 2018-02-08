@@ -101,6 +101,11 @@ class Contasreceber extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/contasreceber/$relatorio/");
     }
+    
+    function confirmarprevisaorecebimentoconvenio() {
+        $this->contasreceber->confirmarprevisaorecebimentoconvenio();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
 
     function relatoriocontasreceber() {
         $data['conta'] = $this->forma->listarforma();
@@ -120,8 +125,14 @@ class Contasreceber extends BaseController {
 //        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 
         $data['relatorio'] = $this->contasreceber->relatoriocontasreceber();
-        $data['contador'] = $this->contasreceber->relatoriocontasrecebercontador();
-
+        
+        if($_POST['previsao'] == 'SIM'){
+            $data['relatorioconvenio'] = $this->contasreceber->relatorioprevisaoconveniocontasreceber();
+        }
+        else{
+            $data['relatorioconvenio'] = array();
+        }
+        
         if ($_POST['email'] == "NAO") {
             $this->load->View('cadastros/impressaorelatoriocontasreceber', $data);
         } elseif ($_POST['email'] == "SIM") {

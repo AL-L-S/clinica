@@ -792,6 +792,9 @@ class empresa_model extends Model {
             if ($_POST['impressao_recibo'] != "") {
                 $this->db->set('impressao_recibo', $_POST['impressao_recibo']);
             }
+            if ($_POST['numero_empresa_painel'] != "") {
+                $this->db->set('numero_empresa_painel', (int)$_POST['numero_empresa_painel']);
+            }
             if ($_POST['impressao_declaracao'] != "") {
                 $this->db->set('impressao_declaracao', $_POST['impressao_declaracao']);
             }
@@ -1431,7 +1434,8 @@ class empresa_model extends Model {
                                ep.recomendacao_obrigatorio,
                                ep.caixa_personalizado,
                                ep.carregar_modelo_receituario,
-                               ep.desabilitar_trava_retorno');
+                               ep.desabilitar_trava_retorno,
+                               f.numero_empresa_painel');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
@@ -1527,6 +1531,7 @@ class empresa_model extends Model {
             $this->_carregar_modelo_receituario = $return[0]->carregar_modelo_receituario;
             $this->_caixa_personalizado = $return[0]->caixa_personalizado;
             $this->_desabilitar_trava_retorno = $return[0]->desabilitar_trava_retorno;
+            $this->_numero_empresa_painel = $return[0]->numero_empresa_painel;
         } else {
             $this->_empresa_id = null;
         }

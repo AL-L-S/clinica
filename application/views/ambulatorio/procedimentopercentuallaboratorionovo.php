@@ -1,7 +1,7 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastro de Honor&aacute;rios M&eacute;dicos</a></h3>
+        <h3 class="singular"><a href="#">Cadastro de Honor&aacute;rios Laboratóriais</a></h3>
         <div>
             <form name="form_procedimentonovolaboratorio" id="form_procedimentonovolaboratorio" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarnovolaboratorio/<?= $procedimento_percentual_laboratorio_id ?>/<?= $convenio_id ?>" method="post" onSubmit="enviardados();">
 

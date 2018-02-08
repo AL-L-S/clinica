@@ -12000,7 +12000,7 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function gravarconsulta($ambulatorio_guia_id, $percentual) {
+    function gravarconsulta($ambulatorio_guia_id, $percentual, $percentual_laboratorio) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -12036,6 +12036,13 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
+            
+            if (count($percentual_laboratorio) > 0) {
+                $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
+                $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
+                $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
+            }
+                
             if ($_POST['medicoagenda'] != "") {
                 $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
                 $this->db->set('medico_agenda', $_POST['medicoagenda']);

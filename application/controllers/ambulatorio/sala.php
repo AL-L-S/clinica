@@ -65,6 +65,18 @@ class Sala extends BaseController {
         redirect(base_url() . "ambulatorio/sala");
     }
 
+    function carregarsalapainel($exame_sala_id) {
+        $data['exame_sala_id'] = $exame_sala_id;
+        $data['paineis'] = $this->sala->carregarsalapainel($exame_sala_id);
+        $this->loadView('ambulatorio/salapainel-form', $data);
+    }
+
+    function gravarsalapainel() {
+        $exame_sala_id = $_POST['exame_sala_id'];
+        $this->sala->gravarsalapainel();
+        redirect(base_url() . "ambulatorio/sala/carregarsalapainel/" . $exame_sala_id);
+    }
+
     function carregarsalagrupo($exame_sala_id) {
         $data['exame_sala_id'] = $exame_sala_id;
         $data['grupos'] = $this->procedimento->listargrupos();
@@ -84,6 +96,17 @@ class Sala extends BaseController {
         redirect(base_url() . "ambulatorio/sala/carregarsalagrupo/" . $exame_sala_id);
     }
     
+    function excluirsalapainel($sala_painel_id, $sala_id) {
+        if ($this->sala->excluirsalapainel($sala_painel_id)) {
+            $mensagem = 'Sucesso ao excluir o Painel.';
+        } else {
+            $mensagem = 'Erro ao excluir o Painel. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/sala/carregarsalapainel/" . $sala_id);
+    }
+    
     function excluirsalagrupo($sala_grupo_id, $sala_id) {
         if ($this->sala->excluirsalagrupo($sala_grupo_id)) {
             $mensagem = 'Sucesso ao excluir o Grupo.';
@@ -99,11 +122,15 @@ class Sala extends BaseController {
         $exame_sala_id = $this->sala->gravar();
         if ($exame_sala_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Sala. Opera&ccedil;&atilde;o cancelada.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/sala");
+            
         } else {
             $data['mensagem'] = 'Sucesso ao gravar a Sala.';
         }
+        
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/sala");
+        redirect(base_url() . "ambulatorio/sala/carregarsalapainel/$exame_sala_id");
     }
 
     function ativar($exame_sala_id) {

@@ -47,6 +47,15 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Previsão Recebimento</label>
+                    </dt>
+                    <dd>
+                        <select name="previsao" id="previsao" class="size2">
+                            <option value="NAO">NÃO</option>                           
+                            <option value="SIM">SIM</option>                           
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Data inicio</label>
                     </dt>
                     <dd>

@@ -386,7 +386,7 @@ label2 {
 }
 .content dl dt {
     float:left;
-    min-width:160px;
+    min-width:200px;
     line-height:30px;
 }
 .content dl dd {
