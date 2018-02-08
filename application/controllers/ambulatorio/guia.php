@@ -1995,7 +1995,22 @@ class Guia extends BaseController {
             $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
         }
         $data['relatorio'] = $this->guia->relatorioexamesconferencia();
-        $this->load->View('ambulatorio/impressaorelatorioconferencia', $data);
+        if($_POST['planilha'] == "SIM"){
+            $html = $this->load->View('ambulatorio/impressaorelatorioconferencia', $data, true);
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+            header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Pragma: no-cache");
+            header("Content-type: application/x-msexcel");
+            header("Content-Disposition: attachment; filename=\"Relatorio.xls\"");
+            header("Content-Description: PHP Generated Data");
+            // Envia o conteúdo do arquivo
+            echo $html;
+            exit;
+        }
+        else{
+            $this->load->View('ambulatorio/impressaorelatorioconferencia', $data);
+        }
     }
 
     function gerarelatoriorecolhimento() {

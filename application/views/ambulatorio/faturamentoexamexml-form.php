@@ -111,7 +111,7 @@
                         </select>
                     </dd>
                     
-<!--                    <dt>
+                    <dt>
                         <label>Unir Exame e Consulta</label>
                     </dt>
                     <dd>
@@ -119,7 +119,7 @@
                             <option value='NAO'>NÃO</option>
                             <option value='SIM' >SIM</option>
                         </select>
-                    </dd>-->
+                    </dd>
                     <dt>
                     <dt>
                         <label>Medico</label>

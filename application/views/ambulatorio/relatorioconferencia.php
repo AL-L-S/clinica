@@ -185,6 +185,16 @@
                             <option value="0">TODOS</option>
                         </select>
                     </dd>
+
+                    <dt>
+                    <label>Gerar Planilha</label>
+                    </dt>
+                    <dd>
+                        <select name="planilha" id="planilha" class="size2">
+                            <option value="NAO">NÃO</option>
+                            <option value="SIM">SIM</option>
+                        </select>
+                    </dd>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>
