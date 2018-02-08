@@ -110,6 +110,16 @@
                             <option value='SIM' >SIM</option>
                         </select>
                     </dd>
+                    
+<!--                    <dt>
+                        <label>Unir Exame e Consulta</label>
+                    </dt>
+                    <dd>
+                        <select name="unir_exame_consulta" id="unir_exame_consulta" class="size2">
+                            <option value='NAO'>NÃO</option>
+                            <option value='SIM' >SIM</option>
+                        </select>
+                    </dd>-->
                     <dt>
                     <dt>
                         <label>Medico</label>

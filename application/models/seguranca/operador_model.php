@@ -808,6 +808,10 @@ class Operador_model extends BaseModel {
             } elseif ($_POST['credor_devedor'] != "") {
                 $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
+            
+            $this->db->set('cabecalho', $_POST['cabecalho']);
+            $this->db->set('rodape', $_POST['rodape']);
+            
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('tipo_id', $_POST['tipo']);
             if ($_POST['txtconsulta'] != null) {
