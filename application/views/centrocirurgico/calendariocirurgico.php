@@ -358,8 +358,18 @@ if (@$_GET['sala'] != '') {
             var data = date.format();
 //            cell.css("background-color", "#BCD2EE");
             window.open('<?= base_url() ?>centrocirurgico/centrocirurgico/mapacirurgico?&medico=' + $('#medico').val() + '&data=' + moment(data).format('DD%2FMM%2FYYYY') + '', '_self');
+//            alert('Event: ' + calEvent.title);
 
 
+        },
+        eventClick: function (calEvent, jsEvent, view) {
+
+            alert(calEvent.texto);
+//            alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+//            alert('View: ' + view.name);
+
+            // change the border color just for fun
+//            $(this).css('border-color', 'red');
 
         },
 //        eventDragStop: function (date, jsEvent, view) {

@@ -61,6 +61,10 @@ CREATE TABLE ponto.tb_exame_sala_painel
   CONSTRAINT tb_exame_sala_painel_pkey PRIMARY KEY (exame_sala_painel_id)
 );
 
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN hora_prevista_fim time without time zone;
+ALTER TABLE ponto.tb_solicitacao_cirurgia_procedimento ADD COLUMN via character varying(100);
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN via character varying(100);
+
 INSERT INTO ponto.tb_exame_sala_painel(exame_sala_id, nome_chamada, painel_id)
 SELECT exame_sala_id, nome_chamada, painel_id FROM ponto.tb_exame_sala
 WHERE exame_sala_id NOT IN ( SELECT exame_sala_id FROM ponto.tb_exame_sala_painel )

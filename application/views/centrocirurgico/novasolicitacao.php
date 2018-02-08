@@ -43,6 +43,18 @@
                     <dd>
                         <input type="text" name="data_prevista" id="data_prevista" class="texto02" value=""/>
                     </dd>
+                    <dt>
+                        <label>Hora de Inicio *</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="hora_inicio" alt="99:99" id="hora_inicio" class="texto02" required value=""/>
+                    </dd>
+                    <dt>
+                        <label>Hora de fim *</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="hora_fim" alt="99:99" id="hora_fim" class="texto02" required value=""/>
+                    </dd>
 
                     <dt>
                         <label>Hospital *</label>
