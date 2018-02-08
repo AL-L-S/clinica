@@ -56,3 +56,5 @@ ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN hora_prevista_fim time with
 ALTER TABLE ponto.tb_solicitacao_cirurgia_procedimento ADD COLUMN via character varying(100);
 
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN via character varying(100);
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN equipe_particular boolean DEFAULT false;

@@ -8,6 +8,7 @@ class centrocirurgico extends BaseController {
         parent::__construct();
         $this->load->model('emergencia/solicita_acolhimento_model', 'acolhimento');
         $this->load->model('cadastro/paciente_model', 'paciente');
+        $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('internacao/internacao_model', 'internacao_m');
         $this->load->model('internacao/unidade_model', 'unidade_m');
         $this->load->model('internacao/motivosaida_model', 'motivosaida');
@@ -85,6 +86,104 @@ class centrocirurgico extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
+
+    function faturarprocedimentos($solicitacao_id,$guia_id, $financeiro_grupo_id = null) {
+        $data['exame'][0] = new stdClass();
+        $data['solicitacao_id'] = $solicitacao_id;
+        // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
+        // A linha acima inicia o Objeto antes de atribuir um valor
+        if (isset($financeiro_grupo_id)) {
+            $data['forma_pagamento'] = $this->centrocirurgico_m->formadepagamentoguiaprocedimentos($guia_id, $financeiro_grupo_id);
+            $data['exame'] = $this->centrocirurgico_m->listarexameguiaformaprocedimentos($guia_id, $financeiro_grupo_id);
+        } else {
+            $data['forma_pagamento'] = $this->centrocirurgico_m->formadepagamento();
+            $data['exame1'] = $this->centrocirurgico_m->listarexameguiaprocedimentos($guia_id);
+            $data['exame2'] = $this->centrocirurgico_m->listarexameguiaformaprocedimentos($guia_id, $financeiro_grupo_id);
+            $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
+        }
+//        echo '<pre>';
+//        var_dump($data['exame']); die;
+
+        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
+        $data['guia_id'] = $guia_id;
+        $data['valor'] = 0.00;
+
+        $this->load->View('centrocirurgico/faturarprocedimentoscirurgicos-form', $data);
+    }
+    
+    function gravarfaturadoprocedimentos() {
+//        var_dump($_POST); die;
+        $resulta = $_POST['valortotal'];
+        if ($resulta == "0.00") {
+
+            $erro = false;
+            if ($_POST['valorMinimo1'] != '' && ( ((float) $_POST['valorMinimo1']) > ((float) $_POST['valor1']) / $_POST['parcela1'] ) && $_POST['parcela1'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 1 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo2'] != '' && ( ((float) $_POST['valorMinimo2']) > ((float) $_POST['valor2']) / $_POST['parcela2'] ) && $_POST['parcela2'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 2 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo3'] != '' && ( ((float) $_POST['valorMinimo3']) > ((float) $_POST['valor3']) / $_POST['parcela3'] ) && $_POST['parcela3'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 3 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo4'] != '' && ( ((float) $_POST['valorMinimo4']) > ((float) $_POST['valor4']) / $_POST['parcela4'] ) && $_POST['parcela4'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 4 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo4'] != '' && $_POST['valorMinimo3'] != '' && $_POST['valorMinimo2'] != '' && $_POST['valorMinimo1'] != '') {
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+
+            $_POST['parcela1'] = ($_POST['parcela1'] == '' || $_POST['parcela1'] == 0) ? 1 : $_POST['parcela1'];
+            $_POST['parcela2'] = ($_POST['parcela2'] == '' || $_POST['parcela2'] == 0) ? 1 : $_POST['parcela2'];
+            $_POST['parcela3'] = ($_POST['parcela3'] == '' || $_POST['parcela3'] == 0) ? 1 : $_POST['parcela3'];
+            $_POST['parcela4'] = ($_POST['parcela4'] == '' || $_POST['parcela4'] == 0) ? 1 : $_POST['parcela4'];
+
+            if (!$erro) {
+                $ambulatorio_guia_id = $this->centrocirurgico_m->gravarfaturamentototalprocedimentos();
+
+
+                if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
+//                    $this->guia->descontacreditopaciente();
+                }
+//                var_dump($_POST['valorcredito']);die;
+
+                if ($ambulatorio_guia_id == "-1") {
+                    $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
+                } else {
+                    $data['mensagem'] = 'Sucesso ao gravar faturamento.';
+                }
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+            } else {
+                $mensagem = $data['mensagem'];
+                echo "<html>
+                    <meta charset='UTF-8'>
+        <script type='text/javascript'>
+        
+        alert('$mensagem');
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>";
+//                echo "<meta charset='UTF-8'><script>alert('$mensagem');</script>";
+            }
+        } else {
+            $this->load->View('ambulatorio/erro');
+        }
+    }
+    
 
     function importarquivos($solicitacao_cirurgia_id) {
         $this->load->helper('directory');
@@ -829,20 +928,30 @@ class centrocirurgico extends BaseController {
             } else {
                 $idade = '';
             }
+            if ($item->autorizado == 't') {
+                $situacao = 'Autorizada';
+            } else {
+                $situacao = 'Solicitada';
+            }
             $anestesista_select = $this->centrocirurgico_m->listacalendarioanestesistaautocomplete($item->solicitacao_cirurgia_id);
-            if(count($anestesista_select) > 0){
+            $procedimento_select = $this->centrocirurgico_m->listacalendarioprocedimentoautocomplete($item->solicitacao_cirurgia_id);
+            if (count($anestesista_select) > 0) {
                 $anestesista = $anestesista_select[0]->nome;
-            }else{
+            } else {
                 $anestesista = '';
             }
-//            var_dump($anestesista); die;
-            
+            if (count($procedimento_select) > 0) {
+                $procedimento = $procedimento_select[0]->nome;
+            } else {
+                $procedimento = '';
+            }
+//            var_dump($procedimento); die;
 //            var_dump(date("Y-m-d",strtotime($item->nascimento))); die;
 
             $retorno['id'] = $i;
             $retorno['solicitacao_id'] = $item->solicitacao_cirurgia_id;
-            $retorno['title'] = " Cirurgião: $item->cirurgiao | Hospital: $item->hospital | Paciente: $item->nome | Convênio: $item->convenio | Fornecedor :  | Anestesista : $anestesista | Telefone: $item->celular / $item->telefone | Idade : $idade ";
-            $retorno['texto'] = " Cirurgião: $item->cirurgiao  \n \n Hospital: $item->hospital  \n \n Paciente: $item->nome  \n \n Convênio: $item->convenio  \n \n Fornecedor :  \n \n Anestesista  : $anestesista  \n \n Telefone: $item->celular / $item->telefone  \n \n Idade : $idade ";
+            $retorno['title'] = "Situação: $situacao \n \nCirurgião: $item->cirurgiao | Hospital: $item->hospital | Paciente: $item->nome | Convênio: $item->convenio | Procedimento: $procedimento | Fornecedor :  | Anestesista : $anestesista | Telefone: $item->celular / $item->telefone | Idade : $idade ";
+            $retorno['texto'] = "Situação:  $situacao \n \nCirurgião: $item->cirurgiao \n \nHospital: $item->hospital  \n \nPaciente: $item->nome  \n \nConvênio: $item->convenio  \n \nProcedimento: $procedimento \n \nFornecedor :  \n \nAnestesista  : $anestesista  \n \n Telefone: $item->celular / $item->telefone  \n \n Idade : $idade ";
 
 
             $retorno['start'] = date("Y-m-d", strtotime($item->data_prevista)) . "T" . date("H:i:s", strtotime($item->hora_prevista));
@@ -904,6 +1013,48 @@ class centrocirurgico extends BaseController {
         $data['solicitacao'] = $this->solicitacirurgia_m->listardadossolicitacaoorcamentoconvenio($solicitacao_id);
         $data['procedimentos'] = $this->solicitacirurgia_m->listarprocedimentosolicitacaocirurgicaconvenio($solicitacao_id);
         $this->loadView('centrocirurgico/solicitacarorcamentoconvenio-form', $data);
+    }
+
+    function gerarelatoriocaixacirurgico() {
+        $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
+        $data['medico'] = $this->operador_m->listaroperador($_POST['medico']);
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+//        $data['grupo'] = $_POST['grupo'];
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->centrocirurgico_m->relatoriocaixacirurgico();
+//        echo '<pre>';
+//        var_dump($data['relatorio']); die;
+        $data['formapagamento'] = $this->formapagamento->listarforma();
+        $this->load->View('ambulatorio/impressaorelatoriocaixacirurgico', $data);
+    }
+
+    function relatoriocaixacirurgico() {
+        $data['operadores'] = $this->operador_m->listartecnicos();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+//        $data['grupos'] = $this->procedimento->listargrupos();
+//        $data['procedimentos'] = $this->procedimento->listarprocedimentos();
+//        $data['grupomedico'] = $this->grupomedico->listargrupomedicos();
+        $this->loadView('ambulatorio/relatoriocaixacirurgico', $data);
+    }
+
+    function fecharcaixacirurgico() {
+//        echo '<pre>';
+//        var_dump($_POST); die;
+        $caixa = $this->centrocirurgico_m->fecharcaixacirurgico();
+//        $this->guia->fecharcaixacredito();
+//        echo 'mostre algo';
+//        die;
+        if ($caixa == "-1") {
+            $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
+        } elseif ($caixa == 10) {
+            $data['mensagem'] = 'Erro ao fechar caixa. Forma de pagamento não configurada corretamente.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao fechar caixa.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/relatoriocaixacirurgico", $data);
     }
 
     function montarequipe($solicitacaocirurgia_id) {

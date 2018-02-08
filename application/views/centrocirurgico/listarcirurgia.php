@@ -22,9 +22,10 @@
                 <thead>
                 <tr>
                     <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Situação</th>
                     <th class="tabela_header">Data Solicitação</th>
                     <th class="tabela_header">Data Prevista</th>
-                    <th style="text-align: center;" colspan="2" class="tabela_header">Detalhes</th>
+                    <th style="text-align: center;" colspan="4" class="tabela_header">Detalhes</th>
 
                 </tr>
                 </thead>
@@ -42,10 +43,19 @@
                         $lista = $this->centrocirurgico_m->listarcirurgia($_GET)->orderby('p.nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
+                            $situacao = '';
+                            if($item->situacao == 'FATURAMENTO_PENDENTE'){
+                              $situacao = "<span style='color:red'>Faturamento</span>";  
+                            }elseif($item->situacao == 'AGUARDANDO'){
+                                $situacao = "<span style='color:#ff8400'>Aguardando</span>";   
+                            }elseif($item->situacao == 'REALIZADA'){
+                                $situacao = "<span style='color:green'>Realizada</span>";
+                            }
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>                              
+                                <td  class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>                              
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $situacao; ?></td>                              
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo date("d/m/Y H:i:s",strtotime($item->data_cadastro)); ?></td>                              
                                 <td class="<?php echo $estilo_linha; ?>">
                                                             <?$ano= substr($item->data_prevista,0,4);?>
@@ -55,6 +65,12 @@
                                                             <?$datafinal= $dia . '/' . $mes . '/' . $ano . $hora; ?>
                                     
                                                             <?php echo$datafinal?></strong></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                        <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/faturarprocedimentos/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->guia_id; ?>" target="_blank">Faturar</a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/editarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Confirmar</a></div>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
                                             <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/editarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Editar</a></div>
                                 </td>
@@ -69,7 +85,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="7">
+                        <th class="tabela_footer" colspan="9">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

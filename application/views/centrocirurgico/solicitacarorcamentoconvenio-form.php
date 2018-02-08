@@ -54,7 +54,7 @@
                             </div>
                         </fieldset>-->
 
-            <fieldset>
+<!--            <fieldset>
                 <legend>Via</legend>
                 <div id="via">
                     <input type="radio" name="via" id="m" <?
@@ -68,7 +68,7 @@
                     }
                     ?>  value="D" required/> <label for="d">Via Diferente</label>
                 </div>
-            </fieldset>
+            </fieldset>-->
 
             <fieldset>
                 <legend>Procedimentos</legend>
