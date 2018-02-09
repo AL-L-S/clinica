@@ -4,7 +4,7 @@
         <div>
             <table style="margin-bottom: 5pt;">
                 <thead>
-                    <form method="get" action="<?php echo base_url() ?>centrocirurgico/centrocirurgico/pesquisarcirurgia">   
+                <form method="get" action="<?php echo base_url() ?>centrocirurgico/centrocirurgico/pesquisarcirurgia">   
                     <tr>
                         <th class="tabela_title"><label for="nome">Nome</label></th>
                         <th class="tabela_title"><label for="txtdata_cirurgia">Data</label></th>
@@ -15,19 +15,19 @@
                         <th><input type="text" name="txtdata_cirurgia" id="txtdata_cirurgia" alt="date"/></th>
                         <th><button type="submit" name="enviar">Pesquisar</button></th>
                     </tr>
-                    </form>
+                </form>
                 </thead>
             </table>
             <table>
                 <thead>
-                <tr>
-                    <th class="tabela_header">Nome</th>
-                    <th class="tabela_header">Situação</th>
-                    <th class="tabela_header">Data Solicitação</th>
-                    <th class="tabela_header">Data Prevista</th>
-                    <th style="text-align: center;" colspan="4" class="tabela_header">Detalhes</th>
+                    <tr>
+                        <th class="tabela_header">Nome</th>
+                        <th class="tabela_header">Situação</th>
+                        <th class="tabela_header">Data Solicitação</th>
+                        <th class="tabela_header">Data Prevista</th>
+                        <th style="text-align: center;" colspan="4" class="tabela_header">Detalhes</th>
 
-                </tr>
+                    </tr>
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
@@ -44,11 +44,11 @@
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             $situacao = '';
-                            if($item->situacao == 'FATURAMENTO_PENDENTE'){
-                              $situacao = "<span style='color:red'>Faturamento</span>";  
-                            }elseif($item->situacao == 'AGUARDANDO'){
-                                $situacao = "<span style='color:#ff8400'>Aguardando</span>";   
-                            }elseif($item->situacao == 'REALIZADA'){
+                            if ($item->situacao == 'FATURAMENTO_PENDENTE') {
+                                $situacao = "<span style='color:red'>Faturamento</span>";
+                            } elseif ($item->situacao == 'AGUARDANDO') {
+                                $situacao = "<span style='color:#ff8400'>Aguardando</span>";
+                            } elseif ($item->situacao == 'REALIZADA') {
                                 $situacao = "<span style='color:green'>Realizada</span>";
                             }
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -56,26 +56,34 @@
                             <tr>
                                 <td  class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>                              
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $situacao; ?></td>                              
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo date("d/m/Y H:i:s",strtotime($item->data_cadastro)); ?></td>                              
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo date("d/m/Y H:i:s", strtotime($item->data_cadastro)); ?></td>                              
                                 <td class="<?php echo $estilo_linha; ?>">
-                                                            <?$ano= substr($item->data_prevista,0,4);?>
-                                                            <?$mes= substr($item->data_prevista,5,2);?>
-                                                            <?$dia= substr($item->data_prevista,8,2);?>
-                                                            <?$hora= substr($item->data_prevista,10,10);?>
-                                                            <?$datafinal= $dia . '/' . $mes . '/' . $ano . $hora; ?>
-                                    
-                                                            <?php echo$datafinal?></strong></td>
+                                    <? $ano = substr($item->data_prevista, 0, 4); ?>
+                                    <? $mes = substr($item->data_prevista, 5, 2); ?>
+                                    <? $dia = substr($item->data_prevista, 8, 2); ?>
+                                    <? $hora = substr($item->data_prevista, 10, 10); ?>
+                                    <? $datafinal = $dia . '/' . $mes . '/' . $ano . $hora; ?>
+
+                                    <?php echo$datafinal ?></strong></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
                                         <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/faturarprocedimentos/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->guia_id; ?>" target="_blank">Faturar</a></div>
                                 </td>
+                                <? if ($item->situacao == 'AGUARDANDO') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <a  onclick="javascript: return confirm('Deseja confirmar a execução da cirgugia?  ');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/confirmarcirurgia/<?= $item->solicitacao_cirurgia_id ?>">Confirmar</a></div>
+                                    </td>   
+                                <? }else{?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                            <!--<a  onclick="javascript: return confirm('Deseja realmente excluir o convenio?\n\nObs: Irá excluir também os procedimentos associados ao convenio  ');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/confirmarcirurgia/<?= $item->solicitacao_cirurgia_id ?>">Confirmar</a></div>-->
+                                    </td> 
+                                <?}
+                                ?>
+
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
-                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/editarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Confirmar</a></div>
+                                        <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/editarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Editar</a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
-                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/editarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Editar</a></div>
-                                </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
-                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>">Imprimir</a></div>
+                                        <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>">Imprimir</a></div>
                                 </td>
                             </tr>
                         </tbody>
