@@ -85,3 +85,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN via character varying(100);
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN equipe_particular boolean DEFAULT false;

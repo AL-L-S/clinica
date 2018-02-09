@@ -925,6 +925,7 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->where('soe.solicitacao_cirurgia_procedimento_id', $cirurgia_procedimento_id);
         $this->db->where('soe.ativo', 'true');
         $this->db->where('gp.ativo', 'true');
+        $this->db->orderby('soe.funcao');
         $return = $this->db->get();
         return $return->result();
     }
@@ -940,6 +941,7 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->where('soe.solicitacao_cirurgia_procedimento_id', $cirurgia_procedimento_id);
         $this->db->where('soe.ativo', 'true');
         $this->db->where('gp.ativo', 'true');
+        $this->db->orderby('soe.funcao');
         $return = $this->db->get();
         return $return->result();
     }
@@ -1467,6 +1469,11 @@ class solicita_cirurgia_model extends BaseModel {
                     $this->db->set('valor', $val);
                     $this->db->set('funcao', $item->codigo);
                     $this->db->insert('tb_agenda_exame_equipe');
+                    
+                    $sql = "UPDATE ponto.tb_agenda_exames
+                            SET valor_total = valor_total + $val, valor = valor + $val 
+                            WHERE agenda_exames_id = {$procedimentos[$i]->agenda_exames_id};";
+                    $this->db->query($sql); 
                 }
             }
 
@@ -1640,6 +1647,13 @@ class solicita_cirurgia_model extends BaseModel {
                     $this->db->set('valor', $val);
                     $this->db->set('funcao', $item->codigo);
                     $this->db->insert('tb_agenda_exame_equipe');
+                    
+                    $sql = "UPDATE ponto.tb_agenda_exames
+                            SET valor_total = valor_total + $val, valor = valor + $val 
+                            WHERE agenda_exames_id = {$procedimentos[$i]->agenda_exames_id};";
+                    $this->db->query($sql);        
+                    
+                    
                 }
             }
 
@@ -1757,6 +1771,7 @@ class solicita_cirurgia_model extends BaseModel {
                 $this->db->set('situacao', 'OK');
                 $this->db->set('quantidade', 1);
                 $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
+                $this->db->set('data_faturar', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
                 $this->db->set('inicio', $_POST['hora']);
                 $this->db->set('procedimento_tuss_id', $item->procedimento_tuss_id);
                 $this->db->set('guia_id', $ambulatorio_guia_id);
@@ -1798,6 +1813,7 @@ class solicita_cirurgia_model extends BaseModel {
             // Trazendo os procedimentos
             $this->db->select(' horario_especial,
                                 valor,
+                                equipe_particular,
                                 via,
                                 desconto,
                                 solicitacao_cirurgia_procedimento_id,
@@ -1850,6 +1866,7 @@ class solicita_cirurgia_model extends BaseModel {
                 $this->db->set('situacao', 'OK');
                 $this->db->set('quantidade', 1);
                 $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
+                $this->db->set('data_faturar', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
                 $this->db->set('inicio', $_POST['hora']);
                 $this->db->set('fim', $_POST['hora_fim']);
                 $this->db->set('procedimento_tuss_id', $item->procedimento_tuss_id);
@@ -1859,6 +1876,12 @@ class solicita_cirurgia_model extends BaseModel {
                     $this->db->set('horario_especial', 't');
                 } else {
                     $this->db->set('horario_especial', 'f');
+                }
+                
+                if ($item->equipe_particular == 't') {
+                    $this->db->set('equipe_particular', 't');
+                } else {
+                    $this->db->set('equipe_particular', 'f');
                 }
 
                 $this->db->set('data_autorizacao', $horario);
@@ -2018,7 +2041,7 @@ class solicita_cirurgia_model extends BaseModel {
 
 //            $this->db->set('via', $_POST['via']);
             $this->db->set('situacao', 'ORCAMENTO_COMPLETO');
-            $this->db->set('situacao_convenio', 'ORCAMENTO_COMPLETO');
+//            $this->db->set('situacao_convenio', 'ORCAMENTO_COMPLETO');
             $this->db->set('orcamento_completo', 't');
             $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
             $this->db->update('tb_solicitacao_cirurgia');

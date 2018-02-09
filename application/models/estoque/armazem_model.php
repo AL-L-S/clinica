@@ -206,8 +206,8 @@ class armazem_model extends Model {
             $this->db->groupby('ea.descricao, ef.fantasia, ep.descricao');
             $this->db->orderby('ea.descricao, ef.fantasia, ep.descricao');
             $saldo = $this->db->get()->result();
-            echo '<pre>';
-            var_dump($saldo); die;
+//            echo '<pre>';
+//            var_dump($saldo); die;
 
             
             $this->db->select('e.estoque_entrada_id,

@@ -407,7 +407,8 @@ if (@$_GET['sala'] != '') {
 
             // any other sources...
 
-        ]
+        ],
+        timeFormat: 'H:mm'
 
     });
     $(function () {
