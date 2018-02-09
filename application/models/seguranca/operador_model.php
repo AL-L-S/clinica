@@ -811,6 +811,7 @@ class Operador_model extends BaseModel {
             
             $this->db->set('cabecalho', $_POST['cabecalho']);
             $this->db->set('rodape', $_POST['rodape']);
+            $this->db->set('timbrado', $_POST['timbrado']);
             
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('tipo_id', $_POST['tipo']);
@@ -1176,6 +1177,9 @@ class Operador_model extends BaseModel {
                                 o.cor_mapa,
                                 o.cbo_ocupacao_id,
                                 o.solicitante,
+                                o.cabecalho,
+                                o.rodape,
+                                o.timbrado,
                                 m.nome as cidade_nome,
                                 c.descricao as cbo_nome,
                                 o.carimbo');
@@ -1225,6 +1229,9 @@ class Operador_model extends BaseModel {
             $this->_valor_base = $return[0]->valor_base;
             $this->_carimbo = $return[0]->carimbo;
             $this->_curriculo = $return[0]->curriculo;
+            $this->_cabecalho = $return[0]->cabecalho;
+            $this->_rodape = $return[0]->rodape;
+            $this->_timbrado = $return[0]->timbrado;
             $this->_solicitante = $return[0]->solicitante;
         }
     }

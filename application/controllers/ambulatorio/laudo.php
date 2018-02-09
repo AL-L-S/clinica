@@ -961,8 +961,6 @@ class Laudo extends BaseController {
             
             $filename = "laudo.pdf";
             if ($data['impressaolaudo'][0]->cabecalho == 't') {
-                die;
-
                 if ($data['empresa'][0]->cabecalho_config == 't') {
                     if ($data['cabecalhomedico'][0]->cabecalho != '') {
                         $cabecalho = $data['cabecalhomedico'][0]->cabecalho;
@@ -970,13 +968,13 @@ class Laudo extends BaseController {
                         $cabecalho = "$cabecalho_config";
                     }
                 } else {
-                    
                     $cabecalho = "<table><tr><td><img width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr></table>";
                 }
             } else {
                 $cabecalho = '';
             }
-            if (file_exists("upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . ".jpg")) {
+            
+            if (file_exists("upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . ".jpg") && $data['cabecalhomedico'][0]->cabecalho == '') {
                 $cabecalho = '<img width="300px" height="50px" src="upload/operadorLOGO/' . $data['laudo'][0]->medico_parecer1 . '.jpg"/>';
             }
             
@@ -1003,18 +1001,17 @@ class Laudo extends BaseController {
                     $rodape_config = str_replace("_assinatura_", $assinatura, $rodape_config);
                     $rodape = $rodape_config;
                 } else {
-                    $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+                    if (!file_exists("upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . ".jpg")) {
+                        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+                    }
                 }
             } else {
                 $rodape = "";
             }
 
             $html = $this->load->view('ambulatorio/impressaolaudoconfiguravel', $data, true);
-//            echo $cabecalho . $html . $rodape;
-//            var_dump($cabecalho);
-//            die;
+            
             pdf($html, $filename, $cabecalho, $rodape);
-//            $this->load->View('ambulatorio/impressaolaudo_1', $data);
         }
         else{ // CASO O LAUDO NÃO CONFIGURÁVEL
     //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1399,7 +1396,7 @@ class Laudo extends BaseController {
                     $cabecalho = "$cabecalho_config<table><tr><td></td></tr><tr><td>Nome:" . $data['laudo']['0']->paciente . "<br>Solicitante: Dr(a). " . $data['laudo']['0']->solicitante . "<br>Emiss&atilde;o: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr></table>";
                 } else {
                     if (file_exists("upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . ".jpg")) {
-                        $img = '<img width="300px" height="50px" src="upload/operadorLOGO/' . $data['laudo'][0]->medico_parecer1 . '.jpg"/>';
+                        $img = '<img width="700px" src="upload/operadorLOGO/' . $data['laudo'][0]->medico_parecer1 . '.jpg"/>';
                     }
                     else{
                         $img = "<img align = 'left'  width='1000px' height='180px' src='img/cabecalho.jpg'>";
@@ -1412,7 +1409,9 @@ class Laudo extends BaseController {
     //                $cabecalho = $cabecalho_config;
                     $rodape = $rodape_config;
                 } else {
-                    $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+                    if(!file_exists("upload/operadorLOGO/" . $data['laudo'][0]->medico_parecer1 . ".jpg")){
+                        $rodape = "<img align = 'left'  width='1000px' height='100px' src='img/rodape.jpg'>";
+                    }
                 }
 
 
