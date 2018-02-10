@@ -46,7 +46,7 @@
                             <th class="tabela_header">F. de Pagamento</th>
                             <th class="tabela_header">Qtde*</th>
                             <th class="tabela_header">V. Unit</th>
-                            <th class="tabela_header">V. Cartão</th>
+                            <th class="tabela_header">V. Ajuste</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -138,7 +138,7 @@
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Descrição</th>
                                 <th class="tabela_header">V. Total</th>
-                                <th class="tabela_header">V. Cartão</th>
+                                <th class="tabela_header">V. Ajuste</th>
                                 <th class="tabela_header"></th>
                             </tr>
                         </thead>
@@ -169,41 +169,42 @@
                             </tbody>
                             <?
                         }
-                    }
                     ?>
-                    <tfoot>
-                        <tr>
-                            <th class="tabela_footer" colspan="">
-                                Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
-                            </th>
-                            <th class="tabela_footer" colspan="2">
-                                Valor Total Cartao: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
-                            </th>
-                            <th colspan="" align="center">
-                    <center>
-                        <div class="bt_linkf">
-                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/impressaoorcamentorecepcao/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
-                            </a></div>
-                    </center>
-                    </th>
-                    <th colspan="2" align="center">
-                    <center>
-                        <div class="bt_linkf">
-                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/orcamentorecepcaofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão
-                            </a></div>
-                    </center>
-                    </th>
-                    <th colspan="2" align="center">
-                    <center>
-                        <div class="bt_linkf">
-                            <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
-                        </div>
-                    </center>
-                    </th>
-                    </tr>
-                    </tfoot>
-                </table> 
-
+                        <tfoot>
+                            <tr>
+                                <th class="tabela_footer" colspan="">
+                                    Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
+                                </th>
+                                <th class="tabela_footer" colspan="2">
+                                    Valor Total Ajustado: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
+                                </th>
+                                <th colspan="" align="center">
+                        <center>
+                            <div class="bt_linkf">
+                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/impressaoorcamentorecepcao/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
+                                </a></div>
+                        </center>
+                        </th>
+                        <th colspan="2" align="center">
+                        <center>
+                            <div class="bt_linkf">
+                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/orcamentorecepcaofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão
+                                </a></div>
+                        </center>
+                        </th>
+                        <th colspan="2" align="center">
+                        <center>
+                            <div class="bt_linkf">
+                                <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
+                            </div>
+                        </center>
+                        </th>
+                        </tr>
+                        </tfoot>
+                    </table> 
+                    <?
+                }
+            ?>
             </fieldset>
         </form>
     </div>
@@ -439,9 +440,9 @@
                                                         $('.carregando').hide();
                                                     });
                                                 }
-                                                else{
-                                                    $("#ajustevalor1").val($("#valor1").val());
-                                                }
+//                                                else{
+//                                                    $("#ajustevalor1").val($("#valor1").val());
+//                                                }
                                                 
                                                 $('.carregando').hide();
                                             });
@@ -488,7 +489,7 @@
                                             });
                                         }
                                         else{
-                                            $("#ajustevalor1").val($("#valor1").val());
+                                            $("#ajustevalor1").val('');
                                         }
                                     });
                                 });

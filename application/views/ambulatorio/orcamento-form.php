@@ -69,7 +69,7 @@
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">V. Unit</th>
-                                <th class="tabela_header">V. Cartão</th>
+                                <th class="tabela_header">V. Ajuste</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
                             </tr>
                         </thead>
@@ -161,7 +161,7 @@
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Descriçao</th>
                                 <th class="tabela_header">V. Total</th>
-                                <th class="tabela_header">V. Cartão</th>
+                                <th class="tabela_header">V. Ajuste</th>
                                 <th class="tabela_header"></th>
                             </tr>
                         </thead>
@@ -191,38 +191,40 @@
                             </tbody>
                             <?
                         }
-                    }
                     ?>
-                    <tfoot>
-                        <tr>
-                            <th class="tabela_footer" colspan="">
-                                Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
-                            </th>
-                            <th class="tabela_footer" colspan="2">
-                                Valor Total Cartao: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
-                            </th>
-                            <th colspan="1" align="center"><center><div class="bt_linkf">
-                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
+                        <tfoot>
+                            <tr>
+                                <th class="tabela_footer" colspan="">
+                                    Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
+                                </th>
+                                <th class="tabela_footer" colspan="2">
+                                    Valor Total Ajustado: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
+                                </th>
+                                <th colspan="1" align="center"><center><div class="bt_linkf">
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
 
-                                </a></div></center>
-                            </th>
-                            <th colspan="2" align="center">
-                                <center>
-                                    <div class="bt_linkf">
-                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/orcamentocadastrofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão</a>
-                                    </div>
-                                </center>
-                            </th>
-                            <th colspan="2" align="center">
-                                <center>
-                                    <div class="bt_linkf">
-                                        <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
-                                    </div>
-                                </center>
-                            </th>
-                        </tr>
-                    </tfoot>
-                </table> 
+                                    </a></div></center>
+                                </th>
+                                <th colspan="2" align="center">
+                                    <center>
+                                        <div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/orcamentocadastrofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão</a>
+                                        </div>
+                                    </center>
+                                </th>
+                                <th colspan="2" align="center">
+                                    <center>
+                                        <div class="bt_linkf">
+                                            <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
+                                        </div>
+                                    </center>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table> 
+                    <?
+                }
+            ?>
 
             </fieldset>
 
@@ -391,9 +393,9 @@
                                                         $('.carregando').hide();
                                                     });
                                                 }
-                                                else{
-                                                    $("#ajustevalor1").val($("#valor1").val());
-                                                }
+//                                                else{
+//                                                    $("#ajustevalor1").val(0);
+//                                                }
                                                 $('.carregando').hide();
                                             });
                                         } else {
@@ -418,7 +420,7 @@
                                             });
                                         }
                                         else{
-                                            $("#ajustevalor1").val($("#valor1").val());
+                                            $("#ajustevalor1").val('');
                                         }
                                     });
                                 });

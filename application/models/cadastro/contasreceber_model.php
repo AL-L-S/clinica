@@ -158,7 +158,8 @@ class contasreceber_model extends Model {
 
     function relatorioprevisaoconveniocontasreceber() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select(' pc.valortotal as valor_total,
+        $this->db->select(' pc.valortotal as valor_procedimento,
+                            ae.valor_total,
                             c.nome as convenio,
                             credor_devedor_id,
                             c.convenio_id,

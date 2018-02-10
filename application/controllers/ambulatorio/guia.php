@@ -386,15 +386,18 @@ class Guia extends BaseController {
             if ($grupo == "CONSULTA") {
                 $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
             }
-            if ($grupo == "FISIOTERAPIA" || $grupo == "ESPECIALIDADE" || $grupo == "ODONTOLOGIA") {
+            elseif ($grupo == "FISIOTERAPIA" || $grupo == "ESPECIALIDADE" || $grupo == "ODONTOLOGIA") {
                 $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
             }
-            if ($data['exame'][0]->tipo == "EXAME") {
+            elseif ($data['exame'][0]->tipo == "EXAME") {
                 if ($dinheiro == "t") {
                     $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
                 } else {
                     $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
                 }
+            }
+            else{
+                $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
             }
         }
 
@@ -1574,7 +1577,7 @@ class Guia extends BaseController {
         if ($resulta == "0.00") {
             $ambulatorio_guia_id = $this->guia->gravarfaturamento();
 
-            if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
+            if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
                 $this->guia->descontacreditopaciente();
             }
 
@@ -1825,8 +1828,7 @@ class Guia extends BaseController {
             if (!$erro) {
                 $ambulatorio_guia_id = $this->guia->gravarfaturamentototalprocedimentos();
 
-
-                if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
+                if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
                     $this->guia->descontacreditopaciente();
                 }
 

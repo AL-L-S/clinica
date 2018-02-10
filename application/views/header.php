@@ -867,7 +867,7 @@ function debug($object) {
                                     <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 6 || $perfil_id == 17) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconveniofinanceiro">Relatorio Produção Médica</a></span></ul>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriolaboratorioconveniofinanceiro">Relatorio Produção Laboratorial</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriolaboratorioconveniofinanceiro">Relatorio Produção Lab. Terceirizado</a></span></ul>
                                         <?
                                     }
                                     ?>
@@ -1039,7 +1039,7 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/gerarelatorioprocedimentotuss">Relatorio Procedimentos TUSS</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoconvenio">Manter grupo convenio</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/convenio">Manter convenio</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>cadastros/laboratorio">Manter Laboratório</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>cadastros/laboratorio">Manter Lab. Terceirizado</a></span></ul>
                                         <? } ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano">Manter Procedimentos Convenio</a></span></ul>
                                         <? if ($perfil_id != 10) { ?> 
@@ -1047,7 +1047,7 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentual">Manter Percentual M&eacute;dico</a></span></ul>
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">Manter Percentual M&eacute;dico</a></span></ul>-->
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">Manter Percentual Promotor</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentuallaboratorio">Manter Percentual Laboratório</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentuallaboratorio">Manter Percentual Lab. Terceirizado</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificacao</a></span></ul>
                                         <? } ?>
                                     <? } ?>

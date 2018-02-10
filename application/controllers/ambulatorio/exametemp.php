@@ -273,6 +273,7 @@ class Exametemp extends BaseController {
     function listarcredito($paciente_id) {
 
         $data['paciente_id'] = $paciente_id;
+        $data['permissoes'] = $this->guia->listarempresapermissoes();
         $data['valortotal'] = $this->exametemp->listarsaldocreditopaciente($paciente_id);
 
         $this->loadView('ambulatorio/carregarcredito-lista', $data);
@@ -345,6 +346,7 @@ class Exametemp extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['permissoes'] = $this->guia->listarempresapermissoes();
         $this->loadView('ambulatorio/novocredito-form', $data);
     }
 
@@ -384,13 +386,18 @@ class Exametemp extends BaseController {
     }
     
     function excluircredito($credito_id, $paciente_id) {
-        $this->exametemp->excluircredito($credito_id);
-//        var_dump($paciente_id);
-//        die;
-//        $credito_id = $_POST['credito_id'];
-//        $paciente_id = $_POST['paciente_teste_id'];
-//        $data['agenda_exames_id'] = $agenda_exames_id;
-//        $this->load->View('ambulatorio/faturar-form', $data);
+        $verificar = $this->exametemp->excluircredito($credito_id);
+        if ($verificar == -1) {
+            $data['mensagem'] = 'Erro ao excluir o Crédito. Opera&ccedil;&atilde;o cancelada.';
+        } 
+        elseif ($verificar == -2) {
+            $data['mensagem'] = 'Erro ao excluir. Crédito já utilizado.';
+        }
+        else {
+            $data['mensagem'] = 'Sucesso ao excluir o Crédito.';
+        }
+        
+        $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
     }
 

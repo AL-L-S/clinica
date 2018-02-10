@@ -110,6 +110,7 @@ class guia_model extends Model {
                             carregar_modelo_receituario,
                             retirar_botao_ficha,
                             ep.desabilitar_trava_retorno,
+                            ep.associa_credito_procedimento,
                             ep.desativar_personalizacao_impressao');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
@@ -6267,6 +6268,7 @@ class guia_model extends Model {
                             nota_fiscal,
                             recibo,
                             valor_guia,
+                            numero_nota_fiscal,
                             observacoes');
         $this->db->from('tb_ambulatorio_guia');
         $this->db->where("ambulatorio_guia_id", $guia_id);
@@ -8217,7 +8219,22 @@ class guia_model extends Model {
     }
 
     function descontacreditopaciente() {
-        $this->db->set('valor', (-1) * (float) $_POST['valorcredito']);
+        if ($_POST['formapamento1'] == 1000) {
+            $valor = $_POST['valor1'];
+        }
+        elseif ($_POST['formapamento2'] == 1000) {
+            $valor = $_POST['valor2'];        
+        }
+        elseif ($_POST['formapamento3'] == 1000) {
+            $valor = $_POST['valor3'];        
+        }
+        elseif ($_POST['formapamento4'] == 1000) {
+            $valor = $_POST['valor4'];        
+        }
+        else{
+            $valor = 0;
+        }
+        $this->db->set('valor', (-1) * (float) $valor);
         $this->db->set('paciente_id', $_POST['paciente_id']);
 
         $horario = date("Y-m-d H:i:s");
@@ -11932,9 +11949,10 @@ ORDER BY ae.agenda_exames_id)";
 
             $data = date("Y-m-d");
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
-
+            if($_POST['ajustevalor1'] != ''){
+                $this->db->set('valor_ajustado', $_POST['ajustevalor1']);
+            }
             $this->db->set('valor', $_POST['valor1']);
-            $this->db->set('valor_ajustado', $_POST['ajustevalor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);
             $this->db->set('quantidade', $_POST['qtde1']);
@@ -11976,8 +11994,11 @@ ORDER BY ae.agenda_exames_id)";
             if ($_POST['formapamento'] != '') {
                 $this->db->set('forma_pagamento', $_POST['formapamento']);
             }
+            if ($_POST['ajustevalor1'] != '') {
+                $this->db->set('valor_ajustado', $_POST['ajustevalor1']);
+            }
+            
             $this->db->set('valor', $_POST['valor1']);
-            $this->db->set('valor_ajustado', $_POST['ajustevalor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);
             $this->db->set('quantidade', $_POST['qtde1']);

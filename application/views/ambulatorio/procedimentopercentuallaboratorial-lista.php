@@ -24,7 +24,7 @@
         </tr>
     </table>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Procedimento Honor&aacute;rios Laboratório</a></h3>
+        <h3 class="singular"><a href="#">Manter Procedimento Honor&aacute;rios Laboratório Terceirizado</a></h3>
         <div>
             <table>
                 <thead>

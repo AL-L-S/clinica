@@ -10,3 +10,6 @@ ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN conta_id integer;
 ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN classe character varying(60);
 ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN tipo_id character varying(60);
 
+-- Dia 10/02/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN associa_credito_procedimento boolean DEFAULT true;
+
