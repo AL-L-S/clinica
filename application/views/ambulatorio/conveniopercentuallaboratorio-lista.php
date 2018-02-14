@@ -19,7 +19,7 @@
         </tr>
     </table>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Convenio Honor&aacute;rios Laboratório</a></h3>
+        <h3 class="singular"><a href="#">Manter Convenio Honor&aacute;rios Laboratório Terceirizado</a></h3>
         <div>
             <? $convenio = $this->convenio->listardados(); ?>
             <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentuallaboratorio">

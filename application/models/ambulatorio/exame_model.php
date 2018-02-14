@@ -4614,8 +4614,27 @@ class exame_model extends Model {
                 $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
             }
             if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
-                $this->db->where('ae.situacao', $args['situacao']);
-            } if (isset($args['medico']) && strlen($args['medico']) > 0) {
+                if ($args['situacao'] == "BLOQUEADO") {
+                    $this->db->where('ae.bloqueado', 't');
+                }
+                if ($args['situacao'] == "LIVRE") {
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.situacao', 'LIVRE');
+                }
+                if ($args['situacao'] == "OK") {
+                    $this->db->where('ae.situacao', 'OK');
+                }
+                if ($args['situacao'] == "FALTOU") {
+                    date_default_timezone_set('America/Fortaleza');
+                    $data_atual = date('Y-m-d');
+                    $this->db->where('ae.data <', $data_atual);
+                    $this->db->where('ae.situacao', 'OK');
+                    $this->db->where('ae.realizada', 'f');
+                    $this->db->where('ae.bloqueado', 'f');
+                    $this->db->where('ae.operador_atualizacao is not null');
+                }
+            }
+            if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }
         }

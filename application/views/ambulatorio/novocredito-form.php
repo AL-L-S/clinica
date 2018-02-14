@@ -32,48 +32,55 @@
 
                 <fieldset>
                     <table>
-                        <tr>
-                            <td>Convenio</td>
-                            <td>
-                                <select name="convenio1" id="convenio1" class="size2" required>
-                                    <option value="">Selecione</option>
-                                    <? foreach ($convenio as $item) : ?>
-                                        <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
-                                    <? endforeach; ?>
-                                </select>
-                            </td>
-                        </tr>
+                        <? if(@$permissoes[0]->associa_credito_procedimento == 't'){ ?>
+                            <tr>
+                                <td>Convenio</td>
+                                <td>
+                                    <select name="convenio1" id="convenio1" class="size2" required>
+                                        <option value="">Selecione</option>
+                                        <? foreach ($convenio as $item) : ?>
+                                            <option value="<?= $item->convenio_id; ?>"><?= $item->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td>Procedimento</td>
+                                <td>
+                                    <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                                        <option value="">Selecione</option>
+                                    </select>
+        <!--                            <select  name="procedimento1" id="procedimento1" class="size8" required>
+                                        <option value="">-- Escolha um procedimento --</option>
+                                    </select>-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Valor Unitario</td>
+                                <td><input type="text" name="valor1" id="valor1" class="texto02" readonly="" required/></td>
+                            </tr>
+                            
+                        <? } 
+                        else { ?>
+                            <tr>
+                                <td>Valor Unitario</td>
+                                <td><input type="text" name="valor1" id="valor1" class="texto02" alt="decimal" required/></td>
+                            </tr>                            
+                        <? } ?>
+                        <!--<tr>
                         
-                        <tr>
-                        
-                        <td>Procedimento</td>
-                        <td>
-                            <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
-                                <option value="">Selecione</option>
-                            </select>
-<!--                            <select  name="procedimento1" id="procedimento1" class="size8" required>
-                                <option value="">-- Escolha um procedimento --</option>
-                            </select>-->
-                        </td>
-                        </tr>
-                        <tr>
-                        
-<!--                        <td>Forma de Pagamento</td>
+                        <td>Forma de Pagamento</td>
                         <td>
                             <select name="forma_pagamento" id="forma_pagamento" class="size2" required>
                                 <option value="">Selecione</option>
-                                <? foreach ($forma_pagamento as $item) : //Não vai mostrar forma de pagamento credito.
-                                    if ($item->forma_pagamento_id == 1000 ) continue; ?>
+                                <? // foreach ($forma_pagamento as $item) : //Não vai mostrar forma de pagamento credito.
+//                                    if ($item->forma_pagamento_id == 1000 ) continue; ?>
                                     <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                <? endforeach; ?>
+                                <? // endforeach; ?>
                             </select>
                         </td>-->
-                        </tr>
-                        <tr>
-                        
-                        <td>Valor Unitario</td>
-                        <td><input type="text" name="valor1" id="valor1" class="texto01" readonly="" required/></td>
-                        
                         </tr>
                     </table>
                     

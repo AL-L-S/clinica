@@ -171,9 +171,23 @@
 
                 <div>
                     <label>Nascimento</label>
-
-
                     <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
+                </div>
+                
+                <div>
+                    <label>Idade</label>
+                    <? 
+                    if($paciente['0']->nascimento != '') { 
+                        $data_atual = date('Y-m-d');
+                        $data1 = new DateTime($data_atual);
+                        $data2 = new DateTime($paciente[0]->nascimento);
+
+                        $intervalo = $data1->diff($data2);
+                        ?>
+                        <input type="text" name="idade" id="idade" class="texto02" readonly value="<?= $intervalo->y ?> ano(s)"/>
+                    <? } else { ?>
+                        <input type="text" name="nascimento" id="txtNascimento" class="texto01" readonly/>
+                    <? } ?>
                 </div>
 
 
@@ -218,7 +232,7 @@
 
                     <input type="text" name="rg"  id="txtDocumento" class="texto04" maxlength="20" value="<?= $paciente['0']->rg; ?>" readonly/>
                 </div>
-                <div>
+<!--                <div>
                     <label>UF Expedidor</label>
 
 
@@ -238,7 +252,7 @@
 
 
                         <input type="text"   name="titulo_eleitor" id="txtTituloEleitor" class="texto02" value="<?= $paciente['0']->titulo_eleitor; ?>" readonly/>
-                    </div>
+                    </div>-->
 
 
 

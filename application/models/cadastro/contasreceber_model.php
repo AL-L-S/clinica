@@ -142,10 +142,8 @@ class contasreceber_model extends Model {
                             WHERE c.convenio_id = " . $_GET['convenio_id'] . "
                             AND ae.empresa_id = " . $_GET['empresa'] . "
                             AND pt.grupo != 'CIRURGICO'
-                            AND ae.confirmado = 't'
-                            AND c.dinheiro = 'f'
-                            AND ae.data_faturar >= '" . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_inicio']) ) ) . "'
-                            AND ae.data_faturar <= '" . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_fim']) ) ) . "'
+                            AND ae.data >= '" . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_inicio']) ) ) . "'
+                            AND ae.data <= '" . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_fim']) ) ) . "'
                         )";
 
 
@@ -160,21 +158,20 @@ class contasreceber_model extends Model {
 
     function relatorioprevisaoconveniocontasreceber() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select(' ae.valor_total,
+        $this->db->select(' pc.valortotal as valor_procedimento,
+                            ae.valor_total,
                             c.nome as convenio,
                             credor_devedor_id,
                             c.convenio_id,
                             c.conta_id,
                             ae.confirmacao_recebimento_convenio');
-        $this->db->from('tb_ambulatorio_guia g');
-        $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+        $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where("c.dinheiro", 'f');
-        $this->db->where("ae.confirmado", 't');
         $this->db->where('pt.grupo !=', 'CIRURGICO');
         $this->db->where('ae.cancelada', 'f');
         
@@ -184,6 +181,7 @@ class contasreceber_model extends Model {
         
         $this->db->orderby('c.nome');
         $return = $this->db->get();
+        
         return $return->result();
     }
 

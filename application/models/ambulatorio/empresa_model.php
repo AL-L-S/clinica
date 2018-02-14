@@ -766,6 +766,17 @@ class empresa_model extends Model {
 
     function gravar() {
         try {
+            // Ativando/Desativando o Crédito
+            if (isset($_POST['credito'])) {
+                $this->db->set('ativo', 't');
+                $this->db->where('forma_pagamento_id', 1000);
+                $this->db->update('tb_forma_pagamento');
+            } else {
+                $this->db->set('ativo', 'f');
+                $this->db->where('forma_pagamento_id', 1000);
+                $this->db->update('tb_forma_pagamento');
+            }
+            
             /* inicia o mapeamento no banco */
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
@@ -1149,6 +1160,12 @@ class empresa_model extends Model {
                     $this->db->set('desabilitar_trava_retorno', 'f');
                 }
 
+                if (isset($_POST['associa_credito_procedimento'])) {
+                    $this->db->set('associa_credito_procedimento', 't');
+                } else {
+                    $this->db->set('associa_credito_procedimento', 'f');
+                }
+
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -1331,6 +1348,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('desabilitar_trava_retorno', 'f');
                 }
+
+                if (isset($_POST['associa_credito_procedimento'])) {
+                    $this->db->set('associa_credito_procedimento', 't');
+                } else {
+                    $this->db->set('associa_credito_procedimento', 'f');
+                }
                 
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
@@ -1435,6 +1458,7 @@ class empresa_model extends Model {
                                ep.caixa_personalizado,
                                ep.carregar_modelo_receituario,
                                ep.desabilitar_trava_retorno,
+                               ep.associa_credito_procedimento,
                                f.numero_empresa_painel');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -1532,6 +1556,7 @@ class empresa_model extends Model {
             $this->_caixa_personalizado = $return[0]->caixa_personalizado;
             $this->_desabilitar_trava_retorno = $return[0]->desabilitar_trava_retorno;
             $this->_numero_empresa_painel = $return[0]->numero_empresa_painel;
+            $this->_associa_credito_procedimento = $return[0]->associa_credito_procedimento;
         } else {
             $this->_empresa_id = null;
         }

@@ -21,7 +21,7 @@
     <? } else { ?>
         <h4>TODAS OS CREDORES</h4>
     <? } ?>
-    <h4>RELATORIO DE SAIDA</h4>
+    <h4>RELATORIO CONTAS A RECEBER</h4>
     <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     <hr>
     <?
@@ -74,8 +74,15 @@
                 
                 $previsaoConvenio[$item->convenio_id]["nome"] = $item->convenio;
                 $previsaoConvenio[$item->convenio_id]["credor_devedor_id"] = $item->credor_devedor_id;
-                $previsaoConvenio[$item->convenio_id]["conta_id"] = $item->conta_id;                
-                $previsaoConvenio[$item->convenio_id]["valor"] = @$previsaoConvenio[$item->convenio_id]["valor"] + $item->valor_total;
+                $previsaoConvenio[$item->convenio_id]["conta_id"] = $item->conta_id;       
+                
+                if($item->valor_total != ''){
+                    $valor = $item->valor_total;
+                } else{
+                    $valor = $item->valor_procedimento;
+                }
+                
+                $previsaoConvenio[$item->convenio_id]["valor"] = @$previsaoConvenio[$item->convenio_id]["valor"] + $valor;
                 
                 if ( $item->confirmacao_recebimento_convenio == 't' ){
                     @$previsaoConvenio[$item->convenio_id]["confirmado"]++;

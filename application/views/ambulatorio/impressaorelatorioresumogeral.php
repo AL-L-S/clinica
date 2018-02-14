@@ -451,7 +451,7 @@
     </table>
     <? if (count($relatoriocredito) > 0) { ?>
         <br>
-        <table border="1">
+        <table border="1" cellspacing="0" cellpadding="5">
             <tr>
                 <td colspan="6"><center><font size="-1"><B>PACIENTES CRÉDITO</B></center></td>
             </tr>

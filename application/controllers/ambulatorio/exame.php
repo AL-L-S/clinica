@@ -3386,10 +3386,10 @@ class Exame extends BaseController {
                      <ans:atendimentoRN>S</ans:atendimentoRN>
                  <ans:nomeBeneficiario>" . $value->paciente . "</ans:nomeBeneficiario>
               </ans:dadosBeneficiario>
-                                              <ans:dadosSolicitante>
-                 <ans:contratadoSolicitante>
-                       <ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>
-                    <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+              <ans:dadosSolicitante>
+                 <ans:contratadoSolicitante>" .
+                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>"):("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
+                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                  </ans:contratadoSolicitante>
                  <ans:profissionalSolicitante>
                     <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
@@ -3405,9 +3405,9 @@ class Exame extends BaseController {
                  <ans:indicacaoClinica>I</ans:indicacaoClinica>
               </ans:dadosSolicitacao>
               <ans:dadosExecutante>
-                    <ans:contratadoExecutante>
-                    <ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>
-                 <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                 <ans:contratadoExecutante>" .
+                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>"):("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
+                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                  </ans:contratadoExecutante>
                  <ans:CNES>" . $cnes . "</ans:CNES>
               </ans:dadosExecutante>
@@ -3494,9 +3494,9 @@ class Exame extends BaseController {
                  <ans:nomeBeneficiario>" . $value->paciente . "</ans:nomeBeneficiario>
               </ans:dadosBeneficiario>
                                               <ans:dadosSolicitante>
-                 <ans:contratadoSolicitante>
-                       <ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>
-                    <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                 <ans:contratadoSolicitante>" .
+                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>"):("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
+                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                  </ans:contratadoSolicitante>
                  <ans:profissionalSolicitante>
                     <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
@@ -3512,9 +3512,9 @@ class Exame extends BaseController {
                  <ans:indicacaoClinica>I</ans:indicacaoClinica>
               </ans:dadosSolicitacao>
               <ans:dadosExecutante>
-                    <ans:contratadoExecutante>
-                    <ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>
-                 <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                    <ans:contratadoExecutante>" .
+                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>"):("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
+                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                  </ans:contratadoExecutante>
                  <ans:CNES>" . $cnes . "</ans:CNES>
               </ans:dadosExecutante>
@@ -3795,8 +3795,8 @@ class Exame extends BaseController {
 
                           <ans:dadosExecutante>
                              <ans:contratadoExecutante>
-                             <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
-                             <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                                 <ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>
+                                 <ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                              </ans:contratadoExecutante>
                              <ans:CNES>" . $cnes . "</ans:CNES>
                           </ans:dadosExecutante>

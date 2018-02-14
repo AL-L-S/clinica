@@ -71,7 +71,7 @@
                                 <input type="integer" style="width: 150px;" name="txtvalorguia" id="txtvalorguiainput" value="<?= number_format($exame[0]->total, 2, ",", ".") ?>" alt="decimal"/>
                             </td>
                             <td>
-                                <input type="text" style="width: 150px;" name="numero_nota_fiscal" id="numero_nota_fiscal"/>
+                                <input type="text" style="width: 150px;" name="numero_nota_fiscal" id="numero_nota_fiscal" value="<?= @$guia_id[0]->numero_nota_fiscal?>"/>
                             </td>
                         </tr>
 
@@ -79,12 +79,6 @@
 
 
                     </table>
-                    <dl class="dl_desconto_lista">
-
-
-
-                    </dl>    
-
                     <hr/>
                     <button type="submit" name="btnEnviar">enviar</button>
             </form>

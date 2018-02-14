@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar Relatório Produção Laboratorial</a></h3>
+        <h3><a href="#">Gerar Relatório Produção Laboratorio Terceirizado</a></h3>
         <div>
             <form name="form_paciente" id="form_paciente"  method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatoriolaboratorioconveniofinanceiro">
                 <dl>

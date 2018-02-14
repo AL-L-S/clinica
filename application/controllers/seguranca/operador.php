@@ -384,13 +384,30 @@ class Operador extends BaseController {
         redirect(base_url() . "seguranca/operador/anexarimagem/$operador_id");
     }
 
-    function operadorconvenio($operador_id) {
+    function operadorconvenioempresa($operador_id) {
+        $data['operador'] = $this->operador_m->listarCada($operador_id);
+        $data['empresa'] = $this->operador_m->listarempresasconvenio();
+        $this->loadView('seguranca/operadorconvenioempresa-form', $data);
+    }
+
+    function operadorconvenio($operador_id, $empresa_id) {
 
         $data['operador'] = $this->operador_m->listarCada($operador_id);
+        $data['empresa_id'] = $empresa_id;
         $data['convenio'] = $this->convenio->listardados();
-        $data['convenios'] = $this->operador_m->listarconveniooperador($operador_id);
+        $data['convenios'] = $this->operador_m->listarconveniooperador($operador_id, $empresa_id);
         $data['empresa'] = $this->operador_m->listarempresasconvenio();
         $this->loadView('seguranca/operadorconvenio-form', $data);
+    }
+
+    function copiaroperadorconvenioempresa($empresa_id, $operador_id) {
+        $data['operador_id'] = $operador_id;
+        $data['empresa_id'] = $empresa_id;
+        $data['operador'] = $this->operador_m->listarCada($operador_id);
+        $data['empresaOrigem'] = $this->operador_m->listarempresaconvenioorigem($empresa_id);
+        
+        $data['empresas'] = $this->operador_m->listarempresasconvenio();
+        $this->loadView('seguranca/copiaroperadorconvenioempresa-form', $data);
     }
 
     function copiaroperadorconvenio($convenio_id, $operador_id, $empresa_id) {
@@ -409,6 +426,11 @@ class Operador extends BaseController {
         $this->loadView('seguranca/operadorconvenioprocedimento-form', $data);
     }
 
+    function gravarcopiaroperadorconvenioempresa() {
+        $this->operador_m->gravarcopiaroperadorconvenioempresa();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function gravarcopiaroperadorconvenio() {
         $this->operador_m->gravarcopiaroperadorconvenio();
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
@@ -416,6 +438,7 @@ class Operador extends BaseController {
 
     function gravaroperadorconvenio() {
         $operador_id = $_POST['txtoperador_id'];
+        $empresa_id = $_POST['empresa'];
         $verifica = $this->operador_m->gravaroperadorconvenio();
         if ($verifica == '-1') {
             $data['mensagem'] = 'Erro ao cadastrar Convênio. Operação cancelada.';
@@ -427,7 +450,7 @@ class Operador extends BaseController {
             $data['mensagem'] = 'Convênio cadastrado com sucesso.'; 
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "seguranca/operador/operadorconvenio/$operador_id");
+        redirect(base_url() . "seguranca/operador/operadorconvenio/$operador_id/$empresa_id");
     }
 
     function gravaroperadorconvenioprocedimento() {

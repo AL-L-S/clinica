@@ -22,6 +22,7 @@
                         <? if ($perfil_id != 4) { ?>
                             <th class="tabela_title">Medico</th>
                         <? } ?>
+                        <th class="tabela_title">Situação</th>
                         <th class="tabela_title">Data</th>
                         <th colspan="1" class="tabela_title">Nome</th>
                         <th colspan="1" class="tabela_title">Procedimento</th>
@@ -54,6 +55,32 @@
                                 </select>
                             </th>
                         <? } ?>
+                            
+                        <th class="tabela_title">
+                            <select name="situacao" id="situacao" class="size1">
+                                <option value=""></option>
+                                <option value="BLOQUEADO" <?
+                                if (@$_GET['situacao'] == "BLOQUEADO") {
+                                    echo 'selected';
+                                }
+                                ?>>BLOQUEADO</option>
+                                <option value="FALTOU" <?
+                                if (@$_GET['situacao'] == "FALTOU") {
+                                    echo 'selected';
+                                }
+                                ?>>FALTOU</option>
+                                <option value="OK" <?
+                                if (@$_GET['situacao'] == "OK") {
+                                    echo 'selected';
+                                }
+                                ?>>OCUPADO</option>
+                                <option value="LIVRE" <?
+                                if (@$_GET['situacao'] == "LIVRE") {
+                                    echo 'selected';
+                                }
+                                ?>>VAGO</option>
+                            </select>
+                        </th>
                         <th class="tabela_title">
                             <input type="text"  id="data" alt="date" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
                         </th>
@@ -111,26 +138,26 @@
                     <tr>
                         <th class="tabela_header" >Status</th>
                         <th class="tabela_header" width="250px;">Nome</th>
-                        <th class="tabela_header" width="250px;">Espera</th>
-                        <th class="tabela_header" width="60px;">Convenio</th>
-                        <th class="tabela_header" width="60px;">Agenda</th>
+                        <th class="tabela_header" width="60px;">Espera</th>
+                        <th class="tabela_header" width="100px;">Convenio</th>
+                        <th class="tabela_header" width="80px;">Agenda</th>
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header">OBS</th>
                         <th class="tabela_header" colspan="8"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
                 </thead>
                 <?php
-                $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->exame->listarmultifuncaogeral($_GET);
-                $total = $consulta->count_all_results();
-                $limit = 100;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+                $limit = 100;
+                $url = $this->utilitario->build_query_params(current_url(), $_GET);
+                $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada)->limit($limit, $pagina)->get()->result();
+                $total = count($lista);
 
                 if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada)->limit($limit, $pagina)->get()->result();
+//                        $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada)->limit($limit, $pagina)->get()->result();
 //                        echo '<pre>';
 //                        var_dump($lista); die;
                         $estilo_linha = "tabela_content01";
@@ -194,7 +221,7 @@
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente; ?></td>
                                 <? } ?>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data)) . " " . $item->inicio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?
                                     if ($item->data_autorizacao != '') {
                                         echo date("H:i:s", strtotime($item->data_autorizacao));

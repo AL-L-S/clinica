@@ -37,8 +37,12 @@ $perfil_id = $this->session->userdata('perfil_id');
                 <tr>
                     <th class="tabela_header">Paciente</th>
                     <th class="tabela_header">Data</th>
-                    <th class="tabela_header">Procedimento</th>
-                    <th class="tabela_header">Convênio</th>
+                    
+                    <? if(@$permissoes[0]->associa_credito_procedimento == 't') {?>
+                        <th class="tabela_header">Procedimento</th>
+                        <th class="tabela_header">Convênio</th>
+                    <? } ?>
+                        
                     <th class="tabela_header">Valor (R$)</th>
                     <th class="tabela_header" width="70px;" colspan="3"><center>Detalhes</center></th>
                 </tr>
@@ -63,8 +67,11 @@ $perfil_id = $this->session->userdata('perfil_id');
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data)); ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                
+                                <? if(@$permissoes[0]->associa_credito_procedimento == 't') {?>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", ""); ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
@@ -72,7 +79,7 @@ $perfil_id = $this->session->userdata('perfil_id');
                                 </td>
                                 <?if($perfil_id == 1){?>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/exametemp/excluircredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>">Excluir</a></div>
+                                        <a onclick="javascript: return confirm('Deseja realmente excluir esse crédito?')"href="<?= base_url() ?>ambulatorio/exametemp/excluircredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>">Excluir</a></div>
                                 </td>    
                                 <?}?>
                                 

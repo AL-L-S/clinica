@@ -70,6 +70,10 @@ SELECT exame_sala_id, nome_chamada, painel_id FROM ponto.tb_exame_sala
 WHERE exame_sala_id NOT IN ( SELECT exame_sala_id FROM ponto.tb_exame_sala_painel )
 AND painel_id IS NOT NULL;
 
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN via character varying(100);
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN equipe_particular boolean DEFAULT false;
+
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
 DECLARE
@@ -85,6 +89,3 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
-ALTER TABLE ponto.tb_agenda_exames ADD COLUMN via character varying(100);
-
-ALTER TABLE ponto.tb_agenda_exames ADD COLUMN equipe_particular boolean DEFAULT false;

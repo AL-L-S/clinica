@@ -24,7 +24,7 @@
             </tr>
 
             <tr>
-                <td ><b><font size = -1>Paciente: <?= $exames['0']->paciente; ?></b></td>
+                <td ><b><font size = -1>Paciente: <?= @$exames['0']->paciente; ?></b></td>
                 <td ></td>
             </tr>
         </tbody>
@@ -38,7 +38,7 @@
             <td class="negrito">Grupo</td>
             <td class="negrito">Convenio</td>
             <td class="negrito">Valor</td>
-            <td class="negrito">Valor Cartão</td>
+            <td class="negrito">Valor Ajuste</td>
         </tr>
         <?
         $total = 0;
@@ -67,7 +67,7 @@
                     <span class="negrito">Total:</span> <?= number_format($total, 2, ',', '.') ?>
                 </td>
                 <td colspan="">
-                    <span class="negrito">Total Cartão:</span> <?= number_format($totalCartao, 2, ',', '.') ?>
+                    <span class="negrito">Total Ajustado:</span> <?= number_format($totalCartao, 2, ',', '.') ?>
                 </td>
             </tr>
             <tr>
