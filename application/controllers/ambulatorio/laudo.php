@@ -2736,9 +2736,9 @@ class Laudo extends BaseController {
 
     function gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id) {
         $this->load->plugin('mpdf');
-
+//        var_dump($ambulatorio_laudo_id, $exame_id, $sala_id); die;
         $listarexame = $this->laudo->listarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id);
-
+//        var_dump($listarexame); die;
         if (count($listarexame) > 0) {
             $empresa = $this->exame->listarcnpj();
 
@@ -3049,7 +3049,9 @@ class Laudo extends BaseController {
 
             if ($validar == '1') {
                 $gravar = $this->laudo->gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id, $procedimento_tuss_id);
+//                var_dump($gravar); die;
                 if ($gravar == 0) {
+//                    echo 'teste'; die;
                     $this->gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id);
                 }
                 $messagem = 2;

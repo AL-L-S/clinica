@@ -55,6 +55,10 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/hospital-lista');
     }
 
+    public function pesquisarfornecedormaterial($args = array()) {
+        $this->loadView('centrocirurgico/fornecedormaterial-lista');
+    }
+
     public function pesquisarequipecirurgica($args = array()) {
         $this->loadView('centrocirurgico/equipecirurgica-lista');
     }
@@ -87,7 +91,7 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
 
-    function faturarprocedimentos($solicitacao_id,$guia_id, $financeiro_grupo_id = null) {
+    function faturarprocedimentos($solicitacao_id, $guia_id, $financeiro_grupo_id = null) {
         $data['exame'][0] = new stdClass();
         $data['solicitacao_id'] = $solicitacao_id;
         // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
@@ -110,7 +114,7 @@ class centrocirurgico extends BaseController {
 
         $this->load->View('centrocirurgico/faturarprocedimentoscirurgicos-form', $data);
     }
-    
+
     function gravarfaturadoprocedimentos() {
 //        var_dump($_POST); die;
         $resulta = $_POST['valortotal'];
@@ -183,7 +187,6 @@ class centrocirurgico extends BaseController {
             $this->load->View('ambulatorio/erro');
         }
     }
-    
 
     function importarquivos($solicitacao_cirurgia_id) {
         $this->load->helper('directory');
@@ -280,6 +283,13 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarequipecirurgica");
     }
 
+    function confirmarcirurgia($solicitacao_id) {
+        $this->centrocirurgico_m->confirmarcirurgia($solicitacao_id);
+        $data['mensagem'] = 'Cirurgia confirmada';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarequipecirurgica");
+    }
+
     function excluirsolicitacaocirurgia($solicitacao_id) {
         $this->solicitacirurgia_m->excluirsolicitacaocirurgia($solicitacao_id);
         $data['mensagem'] = 'Solicitacao excluida com sucesso';
@@ -292,6 +302,13 @@ class centrocirurgico extends BaseController {
         $data['mensagem'] = 'Procedimento removido com sucesso';
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacao/$solicitacao");
+    }
+
+    function excluirsolicitacaomaterial($solicitacao_procedimento_id, $solicitacao) {
+        $this->solicitacirurgia_m->excluirsolicitacaomaterial($solicitacao_procedimento_id);
+        $data['mensagem'] = 'Material removido com sucesso';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaomaterial/$solicitacao");
     }
 
     function excluirsolicitacaoprocedimentoeditar($solicitacao_procedimento_id, $solicitacao) {
@@ -683,6 +700,19 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaoeditar/$solicitacao");
     }
 
+    function gravarsolicitacaomateriais() {
+//        var_dump($_POST); die;
+        $solicitacao = $_POST['solicitacao_id'];
+
+        if ($this->solicitacirurgia_m->gravarsolicitacaomateriais()) {
+            $data['mensagem'] = 'Material adicionado com Sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao gravar Material';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaomaterial/$solicitacao");
+    }
+
     function gravarsolicitacaoprocedimentos() {
 
         $solicitacao = $_POST['solicitacao_id'];
@@ -768,6 +798,19 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/solicitacaoprocedimentosalterar-form', $data);
     }
 
+    function carregarsolicitacaomaterial($solicitacao_id) {
+
+        $data['solicitacao_id'] = $solicitacao_id;
+        $data['fornecedor'] = $this->centrocirurgico_m->listarfornecedorsolicitacao();
+        $data['dados'] = $this->centrocirurgico_m->listarsolicitacoes3($solicitacao_id);
+        $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaomaterial();
+
+        $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosmateriais($solicitacao_id);
+//        echo '<pre>';
+//        var_dump($data); die;
+        $this->loadView('centrocirurgico/solicitacaomateriais-form', $data);
+    }
+
     function editarprocedimentossolicitacaocirurgia($solicitacao_id, $guia_id) {
         $data['solicitacao_id'] = $solicitacao_id;
         $data['guia_id'] = $guia_id;
@@ -785,6 +828,14 @@ class centrocirurgico extends BaseController {
         $data['hospital'] = $this->centrocirurgico_m->instanciarhospitais($hospital_id);
 //        echo "<pre>";var_dump($data['hospital'] );die;
         $this->loadView('centrocirurgico/hospital-form', $data);
+    }
+
+    function carregarfornecedormaterial($fornecedormaterial_id) {
+
+        $data['fornecedormaterial_id'] = $fornecedormaterial_id;
+        $data['fornecedormaterial'] = $this->centrocirurgico_m->instanciarfornecedormaterial($fornecedormaterial_id);
+//        echo "<pre>";var_dump($data['fornecedormaterial'] );die;
+        $this->loadView('centrocirurgico/fornecedormaterial-form', $data);
     }
 
     function gravarequipeoperadores() {
@@ -816,6 +867,17 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarhospitais");
     }
 
+    function gravarfornecedormaterial() {
+        $hospital_id = $this->centrocirurgico_m->gravarfornecedormaterial();
+        if ($empresa_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar Fornecedor. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar Fornecedor.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarfornecedormaterial");
+    }
+
     function excluirgrauparticipacao($grau_participacao_id) {
         $this->centrocirurgico_m->excluirgrauparticipacao($grau_participacao_id);
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisargrauparticipacao");
@@ -824,6 +886,11 @@ class centrocirurgico extends BaseController {
     function excluirhospital($hospital_id) {
         $this->centrocirurgico_m->excluirhospital($hospital_id);
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarhospitais");
+    }
+
+    function excluirfornecedormaterial($hospital_id) {
+        $this->centrocirurgico_m->excluirfornecedormaterial($hospital_id);
+        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisarfornecedormaterial");
     }
 
     function excluiritemorcamento($orcamento_id, $solicitacao_id, $convenio_id) {
@@ -950,8 +1017,8 @@ class centrocirurgico extends BaseController {
 
             $retorno['id'] = $i;
             $retorno['solicitacao_id'] = $item->solicitacao_cirurgia_id;
-            $retorno['title'] = "Situação: $situacao \n \nCirurgião: $item->cirurgiao | Hospital: $item->hospital | Paciente: $item->nome | Convênio: $item->convenio | Procedimento: $procedimento | Fornecedor :  | Anestesista : $anestesista | Telefone: $item->celular / $item->telefone | Idade : $idade ";
-            $retorno['texto'] = "Situação:  $situacao \n \nCirurgião: $item->cirurgiao \n \nHospital: $item->hospital  \n \nPaciente: $item->nome  \n \nConvênio: $item->convenio  \n \nProcedimento: $procedimento \n \nFornecedor :  \n \nAnestesista  : $anestesista  \n \n Telefone: $item->celular / $item->telefone  \n \n Idade : $idade ";
+            $retorno['title'] = "Situação: $situacao \n \nCirurgião: $item->cirurgiao | Hospital: $item->hospital | Paciente: $item->nome | Convênio: $item->convenio | Procedimento: $procedimento | Fornecedor : $item->fornecedor  | Anestesista : $anestesista | Telefone: $item->celular / $item->telefone | Idade : $idade ";
+            $retorno['texto'] = "Situação:  $situacao \n \nCirurgião: $item->cirurgiao \n \nHospital: $item->hospital  \n \nPaciente: $item->nome  \n \nConvênio: $item->convenio  \n \nProcedimento: $procedimento \n \nFornecedor : $item->fornecedor  \n \nAnestesista  : $anestesista  \n \n Telefone: $item->celular / $item->telefone  \n \n Idade : $idade ";
 
 
             $retorno['start'] = date("Y-m-d", strtotime($item->data_prevista)) . "T" . date("H:i:s", strtotime($item->hora_prevista));

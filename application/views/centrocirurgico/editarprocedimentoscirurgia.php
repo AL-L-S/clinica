@@ -63,12 +63,8 @@
                     </tr>
                     <tr>
                         <td>Convenio</td>
-                        <td><select  name="convenio1" id="convenio1" class="size2"  required=""<?
-                            if ($perfil_id != 1) {
-                                echo 'disabled';
-                            }
-                            ?>>
-                                <option value="-1">Selecione</option>
+                        <td><select  name="convenio1" id="convenio1" class="size2"  required="">
+                                <option value="">Selecione</option>
                                 <? foreach ($convenios as $item) : ?>
                                     <option value="<?= $item->convenio_id; ?>" ><?= $item->nome; ?></option>
                                 <? endforeach; ?>
@@ -77,7 +73,7 @@
                     <tr>
                         <td>Procedimento</td>
                         <td>
-                            <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                            <select required name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                                 <option value="">Selecione</option>
                             </select>
                         </td>
@@ -91,16 +87,12 @@
                             ?> class="texto01"/></td>
                     </tr>
                     <tr>
-                        <td>Pagamento</td>
-                        <td><select  name="formapamento" id="formapamento" class="size2"  <?
-                            if ($perfil_id != 1) {
-                                echo 'disabled';
-                            }
-                            ?>>
-                                <option value="0">Selecione</option>
-                                <? foreach ($forma_pagamento as $item) : ?>
-                                    <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                <? endforeach; ?>
+                        <td>Via</td>
+                        <td><select  name="via" id="via" class="size2" required>
+                                <option value="">Selecione</option>
+                                <option value="M">Mesma Via</option>
+                                <option value="D">Via Diferente</option>
+
                             </select>
                         </td>
                     </tr>
@@ -126,6 +118,7 @@
                     <tr>
                         <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">Convênio</th>
+                        <th class="tabela_header">Via</th>
                         <th class="tabela_header">Valor</th>
                         <!--<th class="tabela_header">Quantidade</th>-->
                         <!--<th class="tabela_header">Horario Especial</th>-->
@@ -147,6 +140,9 @@
                             </td>
                             <td class="<?php echo $estilo_linha; ?>">
                                 <?= $item->convenio; ?>
+                            </td>
+                            <td class="<?php echo $estilo_linha; ?>">
+                                <?if($item->via == 'M'){echo 'Mesma Via';}else{echo 'Via Diferente';} ?>
                             </td>
                             <td class="<?php echo $estilo_linha; ?>">
                                 R$ <?= number_format(@$item->valor, 2, ',', '.'); ?>
