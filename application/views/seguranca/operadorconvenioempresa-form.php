@@ -1,9 +1,4 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <div class="bt_link_voltar">
-        <a href="<?= base_url() ?>seguranca/operador/operadorconvenioempresa/<?= $operador[0]->operador_id; ?>">
-            Voltar
-        </a>
-    </div>
     <div class="clear"></div>
     <form name="form_menuitens" id="form_menuitens" action="<?= base_url() ?>seguranca/operador/gravaroperadorconvenio" method="post">
         <fieldset>
@@ -14,61 +9,38 @@
                 <input type="text" name="txtNome" class="texto10 bestupper" value="<?= $operador[0]->operador; ?>"  readonly />
             </div>
         </fieldset>
-        <fieldset>
-            <legend>Cadastrar convenio</legend>
-            <div>
-                <label>Convenio</label>
-                <select name="convenio_id" id="convenio_id" class="size4">
-                    <? foreach ($convenio as $value) : ?>
-                        <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
-                    <? endforeach; ?>
-                </select>
-            </div>
-            <div>
-                <input type="hidden" name="empresa" value="<?= $empresa_id; ?>" />
-            </div>
-            <div>
-                <label>&nbsp;</label>
-                <button type="submit" name="btnEnviar">Adicionar</button>
-            </div>
-        </fieldset>
     </form>
             
         <fieldset>
     <?
-    $contador = count($convenios);
+    $contador = count($empresa);
     if ($contador > 0) {
         ?>
         <table id="table_agente_toxico" border="0">
             <thead>
 
                 <tr>
-                    <th class="tabela_header">Convenio</th>
                     <th class="tabela_header">Empresa</th>
                     <th class="tabela_header" colspan="3">&nbsp;</th>
                 </tr>
             </thead>
             <?
             $estilo_linha = "tabela_content01";
-            foreach ($convenios as $item) {
+            foreach ($empresa as $item) {
                 ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                 ?>
                 <tbody>
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
-                        <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
-                        <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                            <a href="<?= base_url() ?>seguranca/operador/operadorconvenioprocedimento/<?= $item->convenio_id; ?>/<?= $item->operador_id; ?>/<?= $item->empresa_id; ?>">Procedimentos
-                            </a></div>
+                        <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                            <div class="bt_link">
+                                <a target="_blank" href="<?= base_url() ?>seguranca/operador/copiaroperadorconvenioempresa/<?= $item->empresa_id; ?>/<?= $operador[0]->operador_id; ?>">Replicar</a>
+                            </div>
                         </td>
-                        <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                                <a target="_blank" href="<?= base_url() ?>seguranca/operador/copiaroperadorconvenio/<?= $item->convenio_id; ?>/<?= $item->operador_id; ?>/<?= $item->empresa_id; ?>">Replicar
-                            </a></div>
-                        </td>
-                        <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                            <a href="<?= base_url() ?>seguranca/operador/excluiroperadorconvenio/<?= $item->ambulatorio_convenio_operador_id; ?>/<?= $item->operador_id; ?>">Excluir
-                            </a></div>
-
+                        <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                            <div class="bt_link">
+                                <a href="<?= base_url() ?>seguranca/operador/operadorconvenio/<?= $operador[0]->operador_id; ?>/<?= $item->empresa_id; ?>">Convênio</a>
+                            </div>
                         </td>
                     </tr>
 

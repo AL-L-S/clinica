@@ -79,12 +79,6 @@
 
 
                     </table>
-                    <dl class="dl_desconto_lista">
-
-
-
-                    </dl>    
-
                     <hr/>
                     <button type="submit" name="btnEnviar">enviar</button>
             </form>

@@ -184,7 +184,7 @@
 
                         $intervalo = $data1->diff($data2);
                         ?>
-                        <input type="text" name="idade" id="idade" class="texto02" readonly value="<?= $intervalo->y ?> anos"/>
+                        <input type="text" name="idade" id="idade" class="texto02" readonly value="<?= $intervalo->y ?> ano(s)"/>
                     <? } else { ?>
                         <input type="text" name="nascimento" id="txtNascimento" class="texto01" readonly/>
                     <? } ?>

@@ -1,4 +1,10 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
+    
+    <div class="bt_link_voltar">
+        <a href="<?= base_url() ?>seguranca/operador/operadorconvenio/<?= @$operador[0]->operador_id; ?>/<?= @$empresa_id; ?>">
+            Voltar
+        </a>
+    </div>
     <div class="clear"></div>
     <form name="form_menuitens" id="form_menuitens" action="<?= base_url() ?>seguranca/operador/gravaroperadorconvenioprocedimento" method="post">
         <fieldset>

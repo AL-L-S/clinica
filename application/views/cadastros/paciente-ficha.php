@@ -11,9 +11,12 @@
             </div>
             <div>
                 <label>Nascimento*</label>
-                <input type="text" name="nascimento" id="txtNascimento" class="texto02" required="true" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" />
+                <input type="text" name="nascimento" id="txtNascimento" class="texto02" required="true" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" onblur="calculoIdade()"/>
             </div>
-
+            <div>
+                <label>Idade</label>
+                <input type="text" name="idade2" id="idade2" class="texto02" readonly/>
+            </div>
 
 
             <div>
@@ -624,5 +627,22 @@
             }
         });
     });
+    
+    function calculoIdade() {
+        var data = document.getElementById("txtNascimento").value;
+        var ano = data.substring(6, 12);
+        var idade = new Date().getFullYear() - ano;
+        
+        var dtAtual = new Date();
+        var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
+        
+        if ( dtAtual < aniversario ) {
+            idade--;
+        }
+        
+        document.getElementById("idade2").value = idade + " ano(s)";
+    }
+
+    calculoIdade();
 
 </script>
