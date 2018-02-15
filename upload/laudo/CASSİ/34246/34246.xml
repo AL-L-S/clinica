@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+                            <NAJA>
+                                <NJ_CodPaciente>34246</NJ_CodPaciente>
+                                <NJ_NomePaciente>TESTE - CONSULTA</NJ_NomePaciente>
+                                <NJ_Laudo>52664</NJ_Laudo>
+                                <NJ_LocalLaudo>./upload/laudoCASSİ/34246</NJ_LocalLaudo>
+                                <NJ_FormatoLaudo>RTF</NJ_FormatoLaudo>
+                                <NJ_NomeMedicoLaudante>ADMINISTRADOR MÉDICO</NJ_NomeMedicoLaudante>
+                               <NJ_Detalhes><NJ_Exame>
+                            <NJ_Accessionnumber></NJ_Accessionnumber>                            
+                            <NJ_NomeExame></NJ_NomeExame>
+                       </NJ_Exame></NJ_Detalhes>
+                       </NAJA>

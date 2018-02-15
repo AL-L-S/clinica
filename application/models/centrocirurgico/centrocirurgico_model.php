@@ -71,14 +71,15 @@ class centrocirurgico_model extends BaseModel {
                             sc.solicitacao_cirurgia_id,
                             sc.data_prevista,
                             sc.orcamento,
+                            sc.fornecedor_id,
                             c.nome as convenio,
                             c.convenio_id,
                             o.nome as medico,
                             sc.situacao');
         $this->db->from('tb_solicitacao_cirurgia sc');
-        $this->db->where('sc.ativo', 't');
-        $this->db->where('sc.excluido', 'f');
-        $this->db->where('sc.autorizado', 'f');
+//        $this->db->where('sc.ativo', 't');
+//        $this->db->where('sc.excluido', 'f');
+//        $this->db->where('sc.autorizado', 'f');
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
@@ -105,6 +106,34 @@ class centrocirurgico_model extends BaseModel {
                                c.estado,
                                cep');
         $this->db->from('tb_hospital f');
+        $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
+        $this->db->where('f.ativo', 't');
+        if ($args) {
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('f.nome ilike', $args['nome'] . "%", 'left');
+            }
+        }
+        return $this->db;
+    }
+
+    function listarfornecedormaterial($args = array()) {
+
+        $this->db->select('fornecedor_material_id, 
+                               f.nome,
+                               razao_social,
+                               cnpj,
+                               celular,
+                               telefone,
+                               cep,
+                               logradouro,
+                               numero,
+                               bairro,
+                               cnes,
+                               f.municipio_id,
+                               c.nome as municipio,
+                               c.estado,
+                               cep');
+        $this->db->from('tb_fornecedor_material f');
         $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
         $this->db->where('f.ativo', 't');
         if ($args) {
@@ -425,6 +454,16 @@ class centrocirurgico_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarfornecedorsolicitacao() {
+        $this->db->select('fornecedor_material_id, 
+                               f.nome');
+        $this->db->from('tb_fornecedor_material f');
+        $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
+        $this->db->where('f.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarconveniocirurgiaorcamento() {
         $this->db->select('convenio_id,
@@ -671,6 +710,31 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
             }
         }
         return $this->db;
+    }
+
+    function instanciarfornecedormaterial($fornecedor_material_id) {
+
+        $this->db->select('fornecedor_material_id, 
+                               f.nome,
+                               razao_social,
+                               cnpj,
+                               celular,
+                               telefone,
+                               cep,
+                               logradouro,
+                               numero,
+                               bairro,
+                               cnes,
+                               f.municipio_id,
+                               c.nome as municipio,
+                               c.estado,
+                               f.valor_taxa,
+                               cep');
+        $this->db->from('tb_fornecedor_material f');
+        $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
+        $this->db->where('f.fornecedor_material_id', $fornecedor_material_id);
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function instanciarhospitais($hospital_id) {
@@ -1252,6 +1316,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
                             p.celular,
                             p.telefone,
                             p.nascimento,
+                            fm.nome as fornecedor,
                             o2.nome as cirurgiao,
                             o2.cor_mapa,
                             c.nome as convenio,
@@ -1264,6 +1329,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
         $this->db->join('tb_equipe_cirurgia_operadores eco', 'eco.solicitacao_cirurgia_id = sc.solicitacao_cirurgia_id', 'left');
         $this->db->join('tb_internacao i', 'i.internacao_id = sc.internacao_id', 'left');
         $this->db->join('tb_hospital h', 'h.hospital_id = sc.hospital_id', 'left');
+        $this->db->join('tb_fornecedor_material fm', 'fm.fornecedor_material_id = sc.fornecedor_id', 'left');
         $this->db->join('tb_convenio c', 'sc.convenio = c.convenio_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = sc.medico_solicitante', 'left');
         $this->db->join('tb_operador o2', 'o2.operador_id = eco.operador_responsavel', 'left');
@@ -1282,6 +1348,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
                             p.celular,
                             p.telefone,
                             p.nascimento,
+                            fm.nome,
                             o2.nome,
                             c.nome,
                             sc.autorizado,
@@ -2126,6 +2193,50 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
+    function gravarfornecedormaterial() {
+        try {
+            /* inicia o mapeamento no banco */
+            $this->db->set('nome', $_POST['txtNome']);
+
+            if ($_POST['txtCNPJ'] != '') {
+                $this->db->set('cnpj', str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ']))));
+            }
+            $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
+            $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
+            if ($_POST['municipio_id'] != '') {
+                $this->db->set('municipio_id', $_POST['municipio_id']);
+            }
+            $this->db->set('cep', $_POST['cep']);
+            $this->db->set('logradouro', $_POST['endereco']);
+            $this->db->set('numero', $_POST['numero']);
+            $this->db->set('bairro', $_POST['bairro']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['txtempresaid'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_fornecedor_material');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $fornecedor_material_id = $this->db->insert_id();
+            }
+            else { // update
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $fornecedor_material_id = $_POST['txtempresaid'];
+                $this->db->where('fornecedor_material_id', $fornecedor_material_id);
+                $this->db->update('tb_fornecedor_material');
+            }
+            return $fornecedor_material_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarhospital() {
         try {
             /* inicia o mapeamento no banco */
@@ -2200,6 +2311,21 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
+    function confirmarcirurgia($solicitacao_id) {
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('situacao', 'REALIZADA');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+            $this->db->update('tb_solicitacao_cirurgia');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function excluirgrauparticipacao($grau_participacao_id) {
         try {
 
@@ -2210,6 +2336,21 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->where('grau_participacao_id', $grau_participacao_id);
             $this->db->update('tb_grau_participacao');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function excluirfornecedormaterial($hospital_id) {
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('fornecedor_material_id', $hospital_id);
+            $this->db->update('tb_fornecedor_material');
         } catch (Exception $exc) {
             return -1;
         }
