@@ -11,7 +11,8 @@
             </div>
             <div>
                 <label>Nascimento*</label>
-                <input type="text" name="nascimento" id="txtNascimento" class="texto02" required="true" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" onblur="calculoIdade()"/>
+                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" onblur="calculoIdade()"
+                       <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_nascimento == 't') ? 'required' : '' ?>/>
             </div>
             <div>
                 <label>Idade</label>
@@ -33,7 +34,7 @@
             </div>
             <div>
                 <label>Sexo</label>
-                <select name="sexo" id="txtSexo" class="size1" required="">
+                <select name="sexo" id="txtSexo" class="size1" <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_sexo == 't') ? 'required' : '' ?>>
                     <option value="" <?
                     if (@$obj->_sexo == ""):echo 'selected';
                     endif;
@@ -63,7 +64,7 @@
                 <label>CPF</label>
 
 
-                <input type="text" <? if ($empresapermissoes[0]->cpf_obrigatorio == 't') { ?>required <? } ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" />
+                <input type="text" <? if ($empresapermissoes[0]->cpf_obrigatorio == 't') { ?>required <? } ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_cpf == 't') ? 'required' : '' ?>/>
             </div>
             <div>
                 <label>RG</label>
@@ -170,7 +171,7 @@
 
 
                 <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_cidade; ?>" readonly="true" />
-                <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_cidade_nome; ?>" />
+                <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_cidade_nome; ?>"  <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_municipio == 't') ? 'required' : '' ?>/>
             </div>
             <div>
                 <label>CEP</label>
@@ -215,7 +216,7 @@
                 }
                 ?>
 
-                <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$telefone; ?>" required="true" />
+                <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$telefone; ?>" <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_telefone == 't') ? 'required' : '' ?>/>
             </div>
             <div>
                 <label>Telefone 2</label>
@@ -630,19 +631,22 @@
     
     function calculoIdade() {
         var data = document.getElementById("txtNascimento").value;
-        var ano = data.substring(6, 12);
-        var idade = new Date().getFullYear() - ano;
         
-        var dtAtual = new Date();
-        var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
-        
-        if ( dtAtual < aniversario ) {
-            idade--;
-        }
-        
-        document.getElementById("idade2").value = idade + " ano(s)";
-    }
+        if ( data != '' && data != '//' ) {
+            
+            var ano = data.substring(6, 12);
+            var idade = new Date().getFullYear() - ano;
 
+            var dtAtual = new Date();
+            var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
+
+            if ( dtAtual < aniversario ) {
+                idade--;
+            }
+
+            document.getElementById("idade2").value = idade + " ano(s)";
+        }
+    }
     calculoIdade();
 
 </script>

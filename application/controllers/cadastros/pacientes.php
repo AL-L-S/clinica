@@ -39,6 +39,7 @@ class pacientes extends BaseController {
         $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
         $data['listaLogradouro'] = $this->paciente->listaTipoLogradouro();
         $data['listaconvenio'] = $this->paciente->listaconvenio();
+        $data['empresaPermissao'] = $this->guia->listarempresapermissoes();
         $this->loadView('cadastros/paciente-ficha', $data);
     }
 

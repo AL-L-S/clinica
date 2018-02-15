@@ -169,6 +169,7 @@ class contaspagar_model extends Model {
         }
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('ae.data');
         $this->db->orderby('lab.nome');
         $return = $this->db->get();
         return $return->result();
@@ -179,6 +180,7 @@ class contaspagar_model extends Model {
         $this->db->select(' ae.valor_promotor,
                             ae.percentual_promotor, 
                             ae.valor_total,
+                            ae.data,
                             pi.nome as promotor,
                             ae.indicacao,
                             ae.confirmacao_previsao_promotor,
@@ -210,6 +212,7 @@ class contaspagar_model extends Model {
         }
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('ae.data');
         $this->db->orderby('pi.nome');
         $return = $this->db->get();
         return $return->result();
@@ -250,7 +253,8 @@ class contaspagar_model extends Model {
                             op.conta_id,
                             op.credor_devedor_id,
                             op.classe,
-                            ae.confirmacao_previsao_medico");
+                            ae.confirmacao_previsao_medico,
+                            ae.data");
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -276,6 +280,7 @@ class contaspagar_model extends Model {
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         
+        $this->db->orderby('ae.data');
         $this->db->orderby('op.nome');
         $return = $this->db->get();
         return $return->result();

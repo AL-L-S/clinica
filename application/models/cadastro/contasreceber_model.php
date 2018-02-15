@@ -133,6 +133,8 @@ class contasreceber_model extends Model {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_contasreceber');
                 
+                $periodoAnterior = date("Y-m-d", strtotime("-1 month", strtotime($_GET['periodo_aquisicao'])));;
+                
                 $sql = "UPDATE ponto.tb_agenda_exames SET confirmacao_recebimento_convenio = 't' 
                         WHERE agenda_exames_id IN (
                             SELECT ae.agenda_exames_id FROM ponto.tb_agenda_exames ae 
@@ -142,8 +144,8 @@ class contasreceber_model extends Model {
                             WHERE c.convenio_id = " . $_GET['convenio_id'] . "
                             AND ae.empresa_id = " . $_GET['empresa'] . "
                             AND pt.grupo != 'CIRURGICO'
-                            AND ae.data >= '" . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_inicio']) ) ) . "'
-                            AND ae.data <= '" . date("Y-m-d", strtotime( str_replace('/','-', $_GET['txtdata_fim']) ) ) . "'
+                            AND ae.data >= '" . $periodoAnterior . "'
+                            AND ae.data <= '" . $_GET['periodo_aquisicao'] . "'
                         )";
 
 
@@ -160,8 +162,10 @@ class contasreceber_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select(' pc.valortotal as valor_procedimento,
                             ae.valor_total,
+                            ae.data,
                             c.nome as convenio,
                             credor_devedor_id,
+                            c.dia_aquisicao,
                             c.convenio_id,
                             c.conta_id,
                             ae.confirmacao_recebimento_convenio');
@@ -172,6 +176,7 @@ class contasreceber_model extends Model {
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where("c.dinheiro", 'f');
+        $this->db->where("c.dia_aquisicao IS NOT NULL");
         $this->db->where('pt.grupo !=', 'CIRURGICO');
         $this->db->where('ae.cancelada', 'f');
         
@@ -179,6 +184,7 @@ class contasreceber_model extends Model {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
         
+        $this->db->orderby('ae.data');
         $this->db->orderby('c.nome');
         $return = $this->db->get();
         

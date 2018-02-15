@@ -111,7 +111,12 @@ class guia_model extends Model {
                             retirar_botao_ficha,
                             ep.desabilitar_trava_retorno,
                             ep.associa_credito_procedimento,
-                            ep.desativar_personalizacao_impressao');
+                            ep.desativar_personalizacao_impressao,
+                            ep.campos_obrigatorios_pac_cpf,
+                            ep.campos_obrigatorios_pac_sexo,
+                            ep.campos_obrigatorios_pac_nascimento,
+                            ep.campos_obrigatorios_pac_telefone,
+                            ep.campos_obrigatorios_pac_municipio');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
@@ -1075,12 +1080,12 @@ class guia_model extends Model {
                             ae.fim,
                             ae.ativo,
                             ae.valor,
+                            ae.valor_total,
                             ae.situacao,
                             c.nome as convenio,
                             ae.guia_id,
                             pc.valortotal,
                             ae.quantidade,
-                            ae.valor_total,
                             ae.autorizacao,
                             ae.paciente_id,
                             p.nome as paciente,

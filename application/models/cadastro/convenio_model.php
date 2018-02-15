@@ -874,6 +874,12 @@ class Convenio_model extends Model {
             if ($_POST['pagamento'] != "") {
                 $this->db->set('pagamento', $_POST['pagamento']);
             }
+            if ($_POST['dia_aquisicao'] != "") {
+                $this->db->set('dia_aquisicao', $_POST['dia_aquisicao']);
+            }
+            else{
+                $this->db->set('dia_aquisicao', null);
+            }
             $this->db->set('logradouro', $_POST['endereco']);
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
@@ -1014,7 +1020,8 @@ class Convenio_model extends Model {
                                 co.associacao_percentual,
                                 co.associacao_convenio_id,
                                 co.razao_social,
-                                co.guia_prestador_unico');
+                                co.guia_prestador_unico,
+                                co.dia_aquisicao');
             $this->db->from('tb_convenio co');
             $this->db->join('tb_municipio c', 'c.municipio_id = co.municipio_id', 'left');
             $this->db->join('tb_tipo_logradouro tp', 'tp.tipo_logradouro_id = co.tipo_logradouro_id', 'left');
@@ -1063,6 +1070,7 @@ class Convenio_model extends Model {
             $this->_associacao_percentual = $return[0]->associacao_percentual;
             $this->_associacao_convenio_id = $return[0]->associacao_convenio_id;
             $this->_guia_prestador_unico = $return[0]->guia_prestador_unico;
+            $this->_dia_aquisicao = $return[0]->dia_aquisicao;
         } else {
             $this->_convenio_id = null;
         }

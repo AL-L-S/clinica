@@ -487,6 +487,7 @@ class Empresa extends BaseController {
     }
 
     function gravar() {
+//        var_dump($_POST['campos_obrigatorio']); die;
         $empresa_id = $this->empresa->gravar();
         if ($empresa_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Empresa. Opera&ccedil;&atilde;o cancelada.';

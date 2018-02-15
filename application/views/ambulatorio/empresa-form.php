@@ -170,6 +170,20 @@
                         <dd>
                             <input type="text" id="numero_empresa_painel" name="numero_empresa_painel" class="texto05" value="<?= @$obj->_numero_empresa_painel; ?>" />
                         </dd>
+                        <div>
+                            <dt>
+                                <label title="Definir os campos que serao obrigatorios no cadastro de paciente.">Campos Obrigatorios</label>
+                            </dt>
+                            <dd>
+                                <select name="campos_obrigatorio[]" style="width: 47%;" class="chosen-select" data-placeholder="Selecione os campos..." multiple>
+                                    <option value="dt_nascimento" <?= (@$obj->_campos_obrigatorios_pac_nascimento == 't') ? 'selected' : ''; ?>>Nascimento</option>
+                                    <option value="sexo" <?= (@$obj->_campos_obrigatorios_pac_sexo == 't') ? 'selected' : ''; ?>>Sexo</option>
+                                    <option value="cpf" <?= (@$obj->_campos_obrigatorios_pac_cpf == 't') ? 'selected' : ''; ?>>CPF</option>
+                                    <option value="telefone" <?= (@$obj->_campos_obrigatorios_pac_telefone == 't') ? 'selected' : ''; ?>>Telefone</option>
+                                    <option value="municipio" <?= (@$obj->_campos_obrigatorios_pac_municipio == 't') ? 'selected' : ''; ?>>Municipio</option>
+                                </select>
+                            </dd>
+                        </div>
                         <dt>
                             <label title="Habilitar Modulo de Imagem.">Imagem</label>
                         </dt>
@@ -553,10 +567,16 @@
 </div> <!-- Final da DIV content -->
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript">
-    $('#btnVoltar').click(function () {
-        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-    });
+//    $('#btnVoltar').click(function () {
+//        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
+//    });
 
     $(function () {
         $("#accordion").accordion();

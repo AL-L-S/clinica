@@ -13,3 +13,11 @@ ALTER TABLE ponto.tb_paciente_indicacao ADD COLUMN tipo_id character varying(60)
 -- Dia 10/02/2018
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN associa_credito_procedimento boolean DEFAULT true;
 
+-- Dia 15/02/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_obrigatorios_pac_cpf boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_obrigatorios_pac_sexo boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_obrigatorios_pac_nascimento boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_obrigatorios_pac_telefone boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_obrigatorios_pac_municipio boolean DEFAULT false;
+ALTER TABLE ponto.tb_convenio ADD COLUMN dia_aquisicao integer;
+
