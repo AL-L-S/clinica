@@ -461,9 +461,14 @@ class Operador extends BaseController {
         redirect(base_url() . "seguranca/operador/operadorconvenioprocedimento/$convenio_id/$operador_id/$empresa_id");
     }
 
-    function excluiroperadorconvenio($ambulatorio_convenio_operador_id, $operador_id) {
+    function excluiroperadorconvenioempresa($operador_id, $empresa_id) {
+        $this->operador_m->excluiroperadorconvenioempresa($operador_id, $empresa_id);
+        redirect(base_url() . "seguranca/operador/operadorconvenioempresa/$operador_id");
+    }
+
+    function excluiroperadorconvenio($ambulatorio_convenio_operador_id, $operador_id, $empresa_id) {
         $this->operador_m->excluiroperadorconvenio($ambulatorio_convenio_operador_id);
-        redirect(base_url() . "seguranca/operador/operadorconvenio/$operador_id");
+        redirect(base_url() . "seguranca/operador/operadorconvenio/$operador_id/$empresa_id");
     }
 
     function excluiroperadorconvenioprocedimento($convenio_operador_procedimento_id, $convenio_id, $operador_id, $empresa_id) {

@@ -111,3 +111,21 @@ ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN data_faturamento timestamp w
 ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN operador_faturamento integer;
 
 ALTER TABLE ponto.tb_ambulatorio_desconto ADD COLUMN agenda_exame_equipe_id integer;
+
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000018');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000018', '1.0.000018');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();

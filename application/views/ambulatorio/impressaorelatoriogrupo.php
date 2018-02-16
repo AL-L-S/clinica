@@ -1,3 +1,4 @@
+<meta charset="utf8"/>
 <div class="content"> <!-- Inicio da DIV content -->
     <?
     $i = 0;
@@ -118,10 +119,14 @@
                 foreach ($relatorio as $itens) :
                     $valortotal = $valortotal + $itens->valor;
                 endforeach;
+                
+                $resumoPagamento = array();
 
                 foreach ($relatorio as $item) :
                     $i++;
-
+                    
+                    $resumoPagamento[$item->grupo]["valor"] = @$resumoPagamento[$item->grupo]["valor"] + $item->valor;
+                    $resumoPagamento[$item->grupo]["quantidade"] = @$resumoPagamento[$item->grupo]["quantidade"] + $item->quantidade;
 
                     if ($i == 1 || $item->convenio == $convenio) {
                         if ($i == 1) {
@@ -139,62 +144,6 @@
                             <td><font size="-2"><?= number_format($item->valor, 2, ',', '.') ?></td>
                         </tr>
                         <?php
-                        if ($item->grupo == "RX") {
-                            $RAIOX = $RAIOX + $item->valor;
-                            $NUMERORAIOX = $NUMERORAIOX + $item->quantidade;
-                        }
-                        if ($item->grupo == "US") {
-                            $US = $US + $item->valor;
-                            $NUMEROUS = $NUMEROUS + $item->quantidade;
-                        }
-                        if ($item->grupo == "DENSITOMETRIA") {
-                            $DENSITOMETRIA = $DENSITOMETRIA + $item->valor;
-                            $NUMERODENSITOMETRIA = $NUMERODENSITOMETRIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "MAMOGRAFIA") {
-                            $MAMOGRAFIA = $MAMOGRAFIA + $item->valor;
-                            $NUMEROMAMOGRAFIA = $NUMEROMAMOGRAFIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "RM") {
-                            $RM = $RM + $item->valor;
-                            $NUMERORM = $NUMERORM + $item->quantidade;
-                        }
-                        if ($item->grupo == "AUDIOMETRIA") {
-                            $AUDIOMETRIA = $AUDIOMETRIA + $item->valor;
-                            $NUMEROAUDIOMETRIA = $NUMEROAUDIOMETRIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "ELETROCARDIOGRAMA") {
-                            $ELETROCARDIOGRAMA = $ELETROCARDIOGRAMA + $item->valor;
-                            $NUMEROELETROCARDIOGRAMA = $NUMEROELETROCARDIOGRAMA + $item->quantidade;
-                        }
-                        if ($item->grupo == "ELETROENCEFALOGRAMA") {
-                            $ELETROENCEFALOGRAMA = $ELETROENCEFALOGRAMA + $item->valor;
-                            $NUMEROELETROENCEFALOGRAMA = $NUMEROELETROENCEFALOGRAMA + $item->quantidade;
-                        }
-                        if ($item->grupo == "ESPIROMETRIA") {
-                            $ESPIROMETRIA = $ESPIROMETRIA + $item->valor;
-                            $NUMEROESPIROMETRIA = $NUMEROESPIROMETRIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "FISIOTERAPIA") {
-                            $FISIOTERAPIA = $FISIOTERAPIA + $item->valor;
-                            $NUMEROFISIOTERAPIA = $NUMEROFISIOTERAPIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "ECOCARDIOGRAMA") {
-                            $ECOCARDIOGRAMA = $ECOCARDIOGRAMA + $item->valor;
-                            $NUMEROECOCARDIOGRAMA = $NUMEROECOCARDIOGRAMA + $item->quantidade;
-                        }
-                        if ($item->grupo == "LABORATORIAL") {
-                            $LABORATORIAL = $LABORATORIAL + $item->valor;
-                            $NUMEROLABORATORIAL = $NUMEROLABORATORIAL + $item->quantidade;
-                        }
-                        if ($item->grupo == "TOMOGRAFIA") {
-                            $TOMOGRAFIA = $TOMOGRAFIA + $item->valor;
-                            $NUMEROTOMOGRAFIA = $NUMEROTOMOGRAFIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "CONSULTA") {
-                            $CONSULTA = $CONSULTA + $item->valor;
-                            $NUMEROCONSULTA = $NUMEROCONSULTA + $item->quantidade;
-                        }
                         $qtde = $qtde + $item->quantidade;
                         $qtdetotal = $qtdetotal + $item->quantidade;
                         $valor = $valor + $item->valor;
@@ -226,66 +175,6 @@
 
                         <?
                         $convenio = $item->convenio;
-                        if ($item->grupo == "RX") {
-                            $RAIOX = $RAIOX + $item->valor;
-                            $NUMERORAIOX = $NUMERORAIOX + $item->quantidade;
-                        }
-                        if ($item->grupo == "US") {
-                            $US = $US + $item->valor;
-                            $NUMEROUS = $NUMEROUS + $item->quantidade;
-                        }
-                        if ($item->grupo == "DENSITOMETRIA") {
-                            $DENSITOMETRIA = $DENSITOMETRIA + $item->valor;
-                            $NUMERODENSITOMETRIA = $NUMERODENSITOMETRIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "MAMOGRAFIA") {
-                            $MAMOGRAFIA = $MAMOGRAFIA + $item->valor;
-                            $NUMEROMAMOGRAFIA = $NUMEROMAMOGRAFIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "RM") {
-                            $RM = $RM + $item->valor;
-                            $NUMERORM = $NUMERORM + $item->quantidade;
-                        }
-                        if ($item->grupo == "AUDIOMETRIA") {
-                            $AUDIOMETRIA = $AUDIOMETRIA + $item->valor;
-                            $NUMEROAUDIOMETRIA = $NUMEROAUDIOMETRIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "ELETROCARDIOGRAMA") {
-                            $ELETROCARDIOGRAMA = $ELETROCARDIOGRAMA + $item->valor;
-                            $NUMEROELETROCARDIOGRAMA = $NUMEROELETROCARDIOGRAMA + $item->quantidade;
-                        }
-                        if ($item->grupo == "ELETROENCEFALOGRAMA") {
-                            $ELETROENCEFALOGRAMA = $ELETROENCEFALOGRAMA + $item->valor;
-                            $NUMEROELETROENCEFALOGRAMA = $NUMEROELETROENCEFALOGRAMA + $item->quantidade;
-                        }
-                        if ($item->grupo == "ESPIROMETRIA") {
-                            $ESPIROMETRIA = $ESPIROMETRIA + $item->valor;
-                            $NUMEROESPIROMETRIA = $NUMEROESPIROMETRIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "LABORATORIAL") {
-                            $LABORATORIAL = $LABORATORIAL + $item->valor;
-                            $NUMEROLABORATORIAL = $NUMEROLABORATORIAL + $item->quantidade;
-                        }
-                        if ($item->grupo == "FISIOTERAPIA") {
-                            $FISIOTERAPIA = $FISIOTERAPIA + $item->valor;
-                            $NUMEROFISIOTERAPIA = $NUMEROFISIOTERAPIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "ECOCARDIOGRAMA") {
-                            $ECOCARDIOGRAMA = $ECOCARDIOGRAMA + $item->valor;
-                            $NUMEROECOCARDIOGRAMA = $NUMEROECOCARDIOGRAMA + $item->quantidade;
-                        }
-                        if ($item->grupo == "LABORATORIAL") {
-                            $LABORATORIAL = $LABORATORIAL + $item->valor;
-                            $NUMEROLABORATORIAL = $NUMEROLABORATORIAL + $item->quantidade;
-                        }
-                        if ($item->grupo == "TOMOGRAFIA") {
-                            $TOMOGRAFIA = $TOMOGRAFIA + $item->valor;
-                            $NUMEROTOMOGRAFIA = $NUMEROTOMOGRAFIA + $item->quantidade;
-                        }
-                        if ($item->grupo == "CONSULTA") {
-                            $CONSULTA = $CONSULTA + $item->valor;
-                            $NUMEROCONSULTA = $NUMEROCONSULTA + $item->quantidade;
-                        }
                         $qtde = 0;
                         $qtde = $qtde + $item->quantidade;
                         $qtdetotal = $qtdetotal + $item->quantidade;
@@ -314,98 +203,22 @@
                 <tbody>
                     <tr>
                         <td width="140px;" colspan="4" bgcolor="#C0C0C0"><center><font size="-1">Resumo da Clinica</center></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">RAIOX</td>
-                    <td width="140px;"><font size="-1"><?= $NUMERORAIOX; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"> <?= number_format($RAIOX, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">US</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROUS; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"> <?= number_format($US, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">DENSITOMETRIA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMERODENSITOMETRIA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($DENSITOMETRIA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">MAMOGRAFIA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROMAMOGRAFIA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($MAMOGRAFIA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">RM</td>
-                    <td width="140px;"><font size="-1"><?= $NUMERORM; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($RM, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">AUDIOMETRIA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROAUDIOMETRIA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($AUDIOMETRIA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">ELETROCARDIOGRAMA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROELETROCARDIOGRAMA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($ELETROCARDIOGRAMA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">ELETROENCEFALOGRAMA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROELETROENCEFALOGRAMA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($ELETROENCEFALOGRAMA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">ESPIROMETRIA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROESPIROMETRIA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($ESPIROMETRIA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">LABORATORIAL</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROLABORATORIAL; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($LABORATORIAL, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">FISIOTERAPIA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROFISIOTERAPIA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($FISIOTERAPIA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">ECOCARDIOGRAMA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROECOCARDIOGRAMA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($ECOCARDIOGRAMA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">TOMOGRAFIA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROTOMOGRAFIA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($TOMOGRAFIA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">CONSULTA</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROCONSULTA; ?></td>
-                    <td><font size="-2"></td>
-                    <td width="200px;"><font size="-1"><?= number_format($CONSULTA, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                <tr>
-                    <td width="140px;" bgcolor="#C0C0C0"><font size="-1">TOTAL GERAL</td>
-                    <td width="140px;" bgcolor="#C0C0C0"><font size="-1"><?= $qtdetotal; ?></td>
-                    <td><font size="-2" bgcolor="#C0C0C0"></td>
-                    <td width="200px;" bgcolor="#C0C0C0"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
-                </tr>
+                    </tr>
+                    <? foreach ($resumoPagamento as $key => $resumo) { ?>
+                        <tr>
+                            <td width="140px;"><font size="-1"><?= @$key; ?></td>
+                            <td width="140px;"><font size="-1"><?= @$resumo['quantidade']; ?></td>
+                            <td><font size="-2"></td>
+                            <td width="200px;"><font size="-1"> <?= number_format($resumo['valor'], 2, ',', '.'); ?></td>
+                        </tr>
+                        
+                    <? } ?>
+                    <tr>
+                        <td width="140px;" bgcolor="#C0C0C0"><font size="-1">TOTAL GERAL</td>
+                        <td width="140px;" bgcolor="#C0C0C0"><font size="-1"><?= $qtdetotal; ?></td>
+                        <td><font size="-2" bgcolor="#C0C0C0"></td>
+                        <td width="200px;" bgcolor="#C0C0C0"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
+                    </tr>
                 </tbody>
 
             </table>
