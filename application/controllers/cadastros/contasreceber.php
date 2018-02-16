@@ -234,18 +234,24 @@ class Contasreceber extends BaseController {
         $contador = 0;
         $a = 0;
         $c = 0;
+        if ($_POST['devedor'] == "") {
+            $devedor_id = $this->contasreceber->gravardevedor();
+        }
+        else{
+            $devedor_id = $_POST['credor'];
+        }
         if ($_POST['financeiro_contasreceber_id'] == '') {
-            if ($_POST['devedor'] == '') {
-                $mensagem = 'É necessário selecionar o item no campo Receber de: ';
-                $this->session->set_flashdata('message', $mensagem);
-                redirect(base_url() . "cadastros/contasreceber/carregar/0");
-            }
+//            if ($_POST['devedor'] == '') {
+//                $mensagem = 'É necessário selecionar o item no campo Receber de: ';
+//                $this->session->set_flashdata('message', $mensagem);
+//                redirect(base_url() . "cadastros/contasreceber/carregar/0");
+//            }
             if ($repetir == '' || $repetir == 1) {
 
-                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
             } elseif ($repetir >= 2) {
                 if (date("d", strtotime($dia)) != 29 && date("d", strtotime($dia)) != 30 && date("d", strtotime($dia)) != 31) {
-                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                 } else {
 
                     if (date("d", strtotime($dia)) == 29) {
@@ -266,36 +272,36 @@ class Contasreceber extends BaseController {
                             if (date("m", strtotime($dia)) == 01) {
                                 $a ++;
                                 if ($c == 0) {
-                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                                     $parcela++;
                                 }
                                 $dia = date('Y-m-d', strtotime("-1 day", strtotime($dia)));
 
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
 
-                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                             } elseif (date("m", strtotime($dia)) == 02) {
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
                                 $dia = date('Y-m-d', strtotime("+1 day", strtotime($dia)));
 
-                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                             } else {
                                 if ($a == 0) {
-                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                                     $parcela++;
                                 }
                                 $a++;
                                 $c++;
 
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
-                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                             }
                             $parcela++;
                         } elseif ($contador == 30) {
                             if (date("m", strtotime($dia)) == 01) {
                                 $a ++;
                                 if ($c == 0) {
-                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                                     $parcela++;
                                 }
 
@@ -303,16 +309,16 @@ class Contasreceber extends BaseController {
 
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
 
-                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                             } elseif (date("m", strtotime($dia)) == 02) {
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
                                 $dia = date('Y-m-d', strtotime("+2 day", strtotime($dia)));
 
-                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                             } else {
                                 if ($a == 0) {
 //                                    var_dump($dia); die;
-                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                    $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                                     $parcela++;
                                 }
                                 $a++;
@@ -320,7 +326,7 @@ class Contasreceber extends BaseController {
 
                                 $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
                                 
-                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                                $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                                 
                             }
                             $parcela++;
@@ -328,12 +334,12 @@ class Contasreceber extends BaseController {
                     } else {
                         $dia = date('Y-m-d', strtotime("+1 month", strtotime($dia)));
                         $parcela = $index;
-                        $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+                        $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
                     }
                 }
             }
         } else {
-            $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela);
+            $financeiro_contasreceber_id = $this->contasreceber->gravar($dia, $parcela, $devedor_id);
         }
         if ($financeiro_contasreceber_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Contas a recebr. Opera&ccedil;&atilde;o cancelada.';

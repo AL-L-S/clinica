@@ -511,7 +511,23 @@ class contaspagar_model extends Model {
         }
     }
 
-    function gravar($dia, $parcela) {
+    function gravarcredor() {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('razao_social', $_POST['credorlabel']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_financeiro_credor_devedor');
+            $credor = $this->db->insert_id();
+            return $credor;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravar($dia, $parcela, $credor) {
         try {
             $empresa_id = $this->session->userdata('empresa_id');
             //busca tipo
@@ -534,7 +550,7 @@ class contaspagar_model extends Model {
             /* inicia o mapeamento no banco */
             $financeiro_contaspagar_id = $_POST['financeiro_contaspagar_id'];
             $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
-            $this->db->set('credor', $_POST['credor']);
+            $this->db->set('credor', $credor);
             $this->db->set('data', $dia);
             $this->db->set('parcela', $parcela);
             $this->db->set('tipo', $tipo);

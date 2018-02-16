@@ -88,6 +88,7 @@ class solicitacao_model extends Model {
         $this->db->where('esc.estoque_solicitacao_setor_id', $estoque_solicitacao_id);
         $this->db->where('ep.ativo', 'true');
         $this->db->where('emp.ativo', 'true');
+        $this->db->orderby('ep.descricao');
         $return = $this->db->get();
         return $return->result();
     }
@@ -119,6 +120,7 @@ class solicitacao_model extends Model {
         $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = ep.armazem_id');
         $this->db->where('esi.estoque_solicitacao_itens_id', $estoque_solicitacao_itens_id);
         $this->db->where('ep.ativo', 'true');
+        $this->db->where('ea.visivel_solicitacao', 'true');
         $this->db->groupby('ep.estoque_entrada_id, p.descricao, ep.validade, ea.descricao');
         $this->db->orderby('ep.validade');
         $return = $this->db->get();

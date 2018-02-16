@@ -1111,13 +1111,10 @@ class Guia extends BaseController {
     function gravarprocedimentosfisioterapia() {
         $procedimentopercentual = $_POST['procedimento1'];
         $medicopercentual = $_POST['medicoagenda'];
-        $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
-        if (count($percentual) == 0) {
-            $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
-        }
 //        var_dump($percentual); die;
         $i = 1;
         $paciente_id = $_POST['txtpaciente_id'];
+//        die('teste');
         if ($_POST['crm1'] == '') {
             $data['mensagem'] = 'Favor, selecione um medico solicitante da lista.';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -1137,6 +1134,12 @@ class Guia extends BaseController {
                 redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id");
             }
         } else {
+            
+            $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+            if (count($percentual) == 0) {
+                $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+            }
+            
             $resultadoguia = $this->guia->listarguia($paciente_id);
 
             //verifica se existem sessões abertas

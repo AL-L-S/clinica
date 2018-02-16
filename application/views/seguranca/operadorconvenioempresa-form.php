@@ -42,6 +42,12 @@
                                 <a href="<?= base_url() ?>seguranca/operador/operadorconvenio/<?= $operador[0]->operador_id; ?>/<?= $item->empresa_id; ?>">Convênio</a>
                             </div>
                         </td>
+                        <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                            <div class="bt_link">
+                            <a onclick="javascript: return confirm('Deseja realmente excluir todos os procedimentos associados a essa empresa?');" 
+                               href="<?= base_url() ?>seguranca/operador/excluiroperadorconvenioempresa/<?= $operador[0]->operador_id; ?>/<?= $item->empresa_id; ?>">Excluir</a>
+                            </div>
+                        </td>
                     </tr>
 
                 </tbody>

@@ -354,7 +354,23 @@ class contasreceber_model extends Model {
         }
     }
 
-    function gravar($dia, $parcela) {
+    function gravardevedor() {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('razao_social', $_POST['devedorlabel']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_financeiro_credor_devedor');
+            $credor = $this->db->insert_id();
+            return $credor;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravar($dia, $parcela, $devedor_id) {
         try {
             $empresa_id = $this->session->userdata('empresa_id');
             //busca tipo
@@ -373,7 +389,7 @@ class contasreceber_model extends Model {
             /* inicia o mapeamento no banco */
             $financeiro_contasreceber_id = $_POST['financeiro_contasreceber_id'];
             $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
-            $this->db->set('devedor', $_POST['devedor']);
+            $this->db->set('devedor', $devedor_id);
             $this->db->set('data', $dia);
             $this->db->set('parcela', $parcela);
             $this->db->set('tipo', $tipo);
