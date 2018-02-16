@@ -2,38 +2,103 @@
 $valor_medico_total = 0;
 $valor_laboratorio_total = 0;
 $valor_promotor_total = 0;
-foreach ($relatoriomedico as $item) {
 
-    if ($item->perc_medico_excecao != "") {
-        $valor = ($item->percentual_excecao == 't') ? $item->valor_total * ($item->perc_medico_excecao / 100) : $item->perc_medico_excecao;
-    } else {
-        $valor = ($item->percentual == 't') ? $item->valor_total * ($item->perc_medico / 100) : $item->perc_medico;
-    }
-    $valor_medico_total = $valor_medico_total + $valor;
-}
+$valormes_medico_total = 0;
+$valormes_laboratorio_total = 0;
+$valormes_promotor_total = 0;
 
-foreach ($relatoriopromotor as $item) {
+$valor_recebimento = 0;
+$valormes_recebimento = 0;
 
-    if ($item->percentual_promotor == 't') {
-        $valor = $item->valor_total * ($item->valor_promotor / 100);
-    } else {
-        $valor = $item->valor_promotor;
-    }
-    $valor_promotor_total = $valor_promotor_total + $valor;
-}
-
-
-foreach ($relatoriolaboratorio as $item) {
-    if ($item->percentual_laboratorio == 't') {
-        $valor = $item->valor_total * ($item->valor_laboratorio / 100);
-    } else {
-        $valor = $item->valor_laboratorio;
-    }
-    $valor_laboratorio_total = $valor_laboratorio_total + $valor;
-}
+//foreach ($relatoriomedico as $item) {
+//
+//    if ($item->perc_medico_excecao != "") {
+//        $valor = ($item->percentual_excecao == 't') ? $item->valor_total * ($item->perc_medico_excecao / 100) : $item->perc_medico_excecao;
+//    } else {
+//        $valor = ($item->percentual == 't') ? $item->valor_total * ($item->perc_medico / 100) : $item->perc_medico;
+//    }
+//    $valor_medico_total = $valor_medico_total + $valor;
+//}
+//
+//foreach ($relatoriopromotor as $item) {
+//
+//    if ($item->percentual_promotor == 't') {
+//        $valor = $item->valor_total * ($item->valor_promotor / 100);
+//    } else {
+//        $valor = $item->valor_promotor;
+//    }
+//    $valor_promotor_total = $valor_promotor_total + $valor;
+//}
+//
+//
+//foreach ($relatoriolaboratorio as $item) {
+//    if ($item->percentual_laboratorio == 't') {
+//        $valor = $item->valor_total * ($item->valor_laboratorio / 100);
+//    } else {
+//        $valor = $item->valor_laboratorio;
+//    }
+//    $valor_laboratorio_total = $valor_laboratorio_total + $valor;
+//}
+//
+//foreach ($relatorioconvenio as $item) {
+//
+//    if ($item->valor_total != '') {
+//        $valor = $item->valor_total;
+//    } else {
+//        $valor = $item->valor_procedimento;
+//    }
+//
+//    $valor_recebimento = $valor_recebimento + $valor;
+//
+//}
+//
+//
+//foreach ($relatoriomesmedico as $item) {
+//
+//    if ($item->perc_medico_excecao != "") {
+//        $valor = ($item->percentual_excecao == 't') ? $item->valor_total * ($item->perc_medico_excecao / 100) : $item->perc_medico_excecao;
+//    } else {
+//        $valor = ($item->percentual == 't') ? $item->valor_total * ($item->perc_medico / 100) : $item->perc_medico;
+//    }
+//    $valormes_medico_total = $valormes_medico_total + $valor;
+//}
+//
+//foreach ($relatoriomespromotor as $item) {
+//
+//    if ($item->percentual_promotor == 't') {
+//        $valor = $item->valor_total * ($item->valor_promotor / 100);
+//    } else {
+//        $valor = $item->valor_promotor;
+//    }
+//    $valormes_promotor_total = $valormes_promotor_total + $valor;
+//}
+//
+//
+//foreach ($relatoriomeslaboratorio as $item) {
+//    if ($item->percentual_laboratorio == 't') {
+//        $valor = $item->valor_total * ($item->valor_laboratorio / 100);
+//    } else {
+//        $valor = $item->valor_laboratorio;
+//    }
+//    $valormes_laboratorio_total = $valormes_laboratorio_total + $valor;
+//}
+//
+//
+//foreach ($relatoriomesconvenio as $item) {
+//
+//    if ($item->valor_total != '') {
+//        $valor = $item->valor_total;
+//    } else {
+//        $valor = $item->valor_procedimento;
+//    }
+//
+//    $valormes_recebimento = $valormes_recebimento + $valor;
+//
+//}
 
 $valor_total_pagamento = $valor_medico_total + $valor_laboratorio_total + $valor_promotor_total;
-//var_dump($valor_medico_total);
+$valormes_total_pagamento = $valormes_medico_total + $valormes_laboratorio_total + $valormes_promotor_total;
+//var_dump($valor_recebimento);
 //die;
 ?>
 
@@ -84,35 +149,36 @@ $valor_total_pagamento = $valor_medico_total + $valor_laboratorio_total + $valor
                 </table>
             </form>
             <table>
-                <tr>
-                    <td style="width: 50%;">
-                        <table>
-                            <tr>
+              <tr>
+               <td style="width: 33%;">
+                 <table>
+                     <tr>
 
-                                <th class="tabela_header" ><center>Entradas/Saidas</center></th>
-                </tr>
-                <tr>
-                    <td><div id="contas" style="height: 250px;"></div></td>
-                </tr>
-                <tr>
-                    <!--<td><div id="contas" style="height: 250px;"></div></td>-->
-                    <td >Entradas :<span style="color:#2cc990; "> VERDE</span></td>
-                </tr>
-                <tr>
-                    <!--<td><div id="contas" style="height: 250px;"></div></td>-->
-                    <td >Saidas :<span style="color:#e3000e; "> VERMELHO</span></td>
-                </tr>
-                <tr>
-                    <!--<td><div id="contas" style="height: 250px;"></div></td>-->
-                    <td >Contas a Receber :<span style="color:#2c82c9; "> AZUL</span></td>
-                </tr>
-                <tr>
-                    <!--<td><div id="contas" style="height: 250px;"></div></td>-->
-                    <td >Contas a Pagar :<span style="color:#a8a237; "> AMARELO</span></td>
-                </tr>
-            </table>   
-            </td>
-            <td>
+                       <th class="tabela_header" ><center>Entradas/Saidas Período</center></th>
+                     </tr>
+                     <tr>
+                         <td><div id="contas" style="height: 250px;"></div></td>
+                     </tr>
+                     <tr>
+                         <!--<td><div id="contas" style="height: 250px;"></div></td>-->
+                         <td >Entradas :<span style="color:#2cc990; "> VERDE</span></td>
+                     </tr>
+                     <tr>
+                         <!--<td><div id="contas" style="height: 250px;"></div></td>-->
+                         <td >Saidas :<span style="color:#e3000e; "> VERMELHO</span></td>
+                     </tr>
+                     <tr>
+                         <!--<td><div id="contas" style="height: 250px;"></div></td>-->
+                         <td >Contas a Receber :<span style="color:#2c82c9; "> AZUL</span></td>
+                     </tr>
+                     <tr>
+                         <!--<td><div id="contas" style="height: 250px;"></div></td>-->
+                         <td >Contas a Pagar :<span style="color:#a8a237; "> AMARELO</span></td>
+                     </tr>
+                 </table>   
+               </td>
+               
+               <td style="width: 33%;<?if(date("m") == date("m", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])))){echo 'display:none'; }?>">
                 <table>
                     <tr>
                            <!--<th class="tabela_header">Nome</th>-->
@@ -124,54 +190,25 @@ $valor_total_pagamento = $valor_medico_total + $valor_laboratorio_total + $valor
                     </tr>
 
                 </table>    
-            </td>
-            </tr>
-            </table>
-
-            <table>
-                <tr>
-                    <td style="width: 50%;">
-                        <table>
-                            <tr>
-
-                                <th class="tabela_header" ><center>Previsão/Pagamento</center></th>
-                </tr>
-                <tr>
-                    <td><div id="recebimento" style="height: 250px;"></div></td>
-                </tr>
-                <tr>
-                    <!--<td><div id="contas" style="height: 250px;"></div></td>-->
-                    <td >Recebimento :<span style="color:#2cc990; "> VERDE</span></td>
-                </tr>
-                <tr>
-                    <!--<td><div id="contas" style="height: 250px;"></div></td>-->
-                    <td >Pagamento :<span style="color:#e3000e; "> VERMELHO</span></td>
-                </tr>
-<!--                <tr>
-                    <td><div id="contas" style="height: 250px;"></div></td>
-                    <td >Contas a Receber :<span style="color:#2c82c9; "> AZUL</span></td>
-                </tr>
-                <tr>
-                    <td><div id="contas" style="height: 250px;"></div></td>
-                    <td >Contas a Pagar :<span style="color:#a8a237; "> AMARELO</span></td>
-                </tr>-->
-            </table>   
-            </td>
-            <td>
+               </td>
+               
+            <td style="width: 33%">
                 <table>
                     <tr>
                            <!--<th class="tabela_header">Nome</th>-->
                            <!--<th class="tabela_header">Tipo</th>-->
-                        <th class="tabela_header" ><center>Previsão/Pagamento (Mês: <?= date("m", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio']))); ?>)</center></th>
+                        <th class="tabela_header" ><center>Entradas/Saidas (Mês Atual)</center></th>
                     </tr>
                     <tr>
-                        <td><div id="recebimentomes" style="height: 250px;"></div></td>
+                        <td><div id="contamesatual" style="height: 250px;"></div></td>
                     </tr>
 
                 </table>    
             </td>
             </tr>
             </table>
+
+
 
 
 
@@ -218,6 +255,8 @@ $valor_total_pagamento = $valor_medico_total + $valor_laboratorio_total + $valor
         $contasreceber_formatado = 0;
     }
 
+    // VALORES POR MES ESCOLHIDO NA DATA
+
     if ($saidames[0]->valor_total > 0) {
         $saidames_valor = $saidames[0]->valor_total;
         $saidames_formatado = number_format($saidames[0]->valor_total, 2, ",", ".");
@@ -248,6 +287,41 @@ $valor_total_pagamento = $valor_medico_total + $valor_laboratorio_total + $valor
     } else {
         $contasrecebermes_valor = 0;
         $contasrecebermes_formatado = 0;
+    }
+
+    // VALORES DO MES ATUAL
+
+
+    if ($saidamesatual[0]->valor_total > 0) {
+        $saidamesatual_valor = $saidamesatual[0]->valor_total;
+        $saidamesatual_formatado = number_format($saidamesatual[0]->valor_total, 2, ",", ".");
+    } else {
+        $saidamesatual_valor = 0;
+        $saidamesatual_formatado = 0;
+    }
+
+    if ($entradamesatual[0]->valor_total > 0) {
+        $entradamesatual_valor = $entradamesatual[0]->valor_total;
+        $entradamesatual_formatado = number_format($entradamesatual[0]->valor_total, 2, ",", ".");
+    } else {
+        $entradamesatual_valor = 0;
+        $entradamesatual_formatado = 0;
+    }
+
+    if ($contaspagarmesatual[0]->valor_total > 0) {
+        $contaspagarmesatual_valor = $contaspagarmesatual[0]->valor_total;
+        $contaspagarmesatual_formatado = number_format($contaspagarmesatual[0]->valor_total, 2, ",", ".");
+    } else {
+        $contaspagarmesatual_valor = 0;
+        $contaspagarmesatual_formatado = 0;
+    }
+
+    if ($contasrecebermesatual[0]->valor_total > 0) {
+        $contasrecebermesatual_valor = $contasrecebermesatual[0]->valor_total;
+        $contasrecebermesatual_formatado = number_format($contasrecebermesatual[0]->valor_total, 2, ",", ".");
+    } else {
+        $contasrecebermesatual_valor = 0;
+        $contasrecebermesatual_formatado = 0;
     }
     ?>
 </div> <!-- Final da DIV content -->
@@ -327,18 +401,21 @@ $valor_total_pagamento = $valor_medico_total + $valor_laboratorio_total + $valor
             return data.formatted;
         }
     });
-    
-    new Morris.Donut({
-        element: 'recebimento',
-        data: [
-            {label: "Pagamento", value: <?= $valor_total_pagamento; ?>, formatted: 'R$: <?= number_format($valor_total_pagamento, 2, ",", "."); ?>'},
-            {label: "Recebimento", value: <?= $valor_total_pagamento; ?>, formatted: 'R$: <?=  number_format($valor_total_pagamento, 2, ",", "."); ?>'}
 
+    new Morris.Donut({
+        element: 'contamesatual',
+        data: [
+            {label: "Saidas", value: <?= $saidamesatual_valor; ?>, formatted: 'R$: <?= $saidamesatual_formatado; ?>'},
+            {label: "Contas a Pagar", value: <?= $contaspagarmesatual_valor; ?>, formatted: 'R$: <?= $contaspagarmesatual_formatado; ?>'},
+            {label: "Contas a Receber", value: <?= $contasrecebermesatual_valor; ?>, formatted: 'R$: <?= $contasrecebermesatual_formatado; ?>'},
+            {label: "Entradas", value: <?= $entradamesatual_valor; ?>, formatted: 'R$: <?= $entradamesatual_formatado; ?>'}
 
 
         ],
         colors: [
             '#E3000E',
+            '#EEE657',
+            '#2C82C9',
             '#2CC990'
         ],
         formatter: function (x, data) {
@@ -346,6 +423,41 @@ $valor_total_pagamento = $valor_medico_total + $valor_laboratorio_total + $valor
         }
     });
 
+//    new Morris.Donut({
+//        element: 'recebimento',
+//        data: [
+//            {label: "Pagamento", value: <?= $valor_total_pagamento; ?>, formatted: 'R$: <?= number_format($valor_total_pagamento, 2, ",", "."); ?>'},
+//            {label: "Recebimento", value: <?= $valor_recebimento; ?>, formatted: 'R$: <?= number_format($valor_recebimento, 2, ",", "."); ?>'}
+//
+//
+//
+//        ],
+//        colors: [
+//            '#E3000E',
+//            '#2CC990'
+//        ],
+//        formatter: function (x, data) {
+//            return data.formatted;
+//        }
+//    });
+//    new Morris.Donut({
+//        element: 'recebimentomes',
+//        data: [
+//            {label: "Pagamento", value: <?= $valormes_total_pagamento; ?>, formatted: 'R$: <?= number_format($valormes_total_pagamento, 2, ",", "."); ?>'},
+//            {label: "Recebimento", value: <?= $valormes_recebimento; ?>, formatted: 'R$: <?= number_format($valormes_recebimento, 2, ",", "."); ?>'}
+//
+//
+//
+//        ],
+//        colors: [
+//            '#E3000E',
+//            '#2CC990'
+//        ],
+//        formatter: function (x, data) {
+//            return data.formatted;
+//        }
+//    });
+//
 
 
 </script>
