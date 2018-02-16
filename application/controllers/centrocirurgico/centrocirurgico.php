@@ -115,6 +115,30 @@ class centrocirurgico extends BaseController {
         $this->load->View('centrocirurgico/faturarprocedimentoscirurgicos-form', $data);
     }
 
+    function faturarequipe($solicitacao_id, $guia_id, $financeiro_grupo_id = null) {
+        $data['exame'][0] = new stdClass();
+        $data['solicitacao_id'] = $solicitacao_id;
+        // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
+        // A linha acima inicia o Objeto antes de atribuir um valor
+        if (isset($financeiro_grupo_id)) {
+            $data['forma_pagamento'] = $this->centrocirurgico_m->formadepagamentoguiaprocedimentos($guia_id, $financeiro_grupo_id);
+            $data['exame'] = $this->centrocirurgico_m->listarexameguiaformaequipe($guia_id, $financeiro_grupo_id);
+        } else {
+            $data['forma_pagamento'] = $this->centrocirurgico_m->formadepagamento();
+            $data['exame1'] = $this->centrocirurgico_m->listarexameguiaequipe($guia_id);
+            $data['exame2'] = $this->centrocirurgico_m->listarexameguiaformaequipe($guia_id, $financeiro_grupo_id);
+            $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
+        }
+//        echo '<pre>';
+//        var_dump($data['exame1']); die;
+
+        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
+        $data['guia_id'] = $guia_id;
+        $data['valor'] = 0.00;
+
+        $this->load->View('centrocirurgico/faturarequipecirurgicos-form', $data);
+    }
+
     function gravarfaturadoprocedimentos() {
 //        var_dump($_POST); die;
         $resulta = $_POST['valortotal'];
@@ -153,6 +177,79 @@ class centrocirurgico extends BaseController {
 
             if (!$erro) {
                 $ambulatorio_guia_id = $this->centrocirurgico_m->gravarfaturamentototalprocedimentos();
+
+
+                if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
+//                    $this->guia->descontacreditopaciente();
+                }
+//                var_dump($_POST['valorcredito']);die;
+
+                if ($ambulatorio_guia_id == "-1") {
+                    $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
+                } else {
+                    $data['mensagem'] = 'Sucesso ao gravar faturamento.';
+                }
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+            } else {
+                $mensagem = $data['mensagem'];
+                echo "<html>
+                    <meta charset='UTF-8'>
+        <script type='text/javascript'>
+        
+        alert('$mensagem');
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>";
+//                echo "<meta charset='UTF-8'><script>alert('$mensagem');</script>";
+            }
+        } else {
+            $this->load->View('ambulatorio/erro');
+        }
+    }
+
+    function gravarfaturadoequipe() {
+//        var_dump($_POST); die;
+        $resulta = $_POST['valortotal'];
+        if ($resulta == "0.00") {
+
+            $erro = false;
+            if ($_POST['valorMinimo1'] != '' && ( ((float) $_POST['valorMinimo1']) > ((float) $_POST['valor1']) / $_POST['parcela1'] ) && $_POST['parcela1'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 1 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo2'] != '' && ( ((float) $_POST['valorMinimo2']) > ((float) $_POST['valor2']) / $_POST['parcela2'] ) && $_POST['parcela2'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 2 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo3'] != '' && ( ((float) $_POST['valorMinimo3']) > ((float) $_POST['valor3']) / $_POST['parcela3'] ) && $_POST['parcela3'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 3 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo4'] != '' && ( ((float) $_POST['valorMinimo4']) > ((float) $_POST['valor4']) / $_POST['parcela4'] ) && $_POST['parcela4'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 4 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo4'] != '' && $_POST['valorMinimo3'] != '' && $_POST['valorMinimo2'] != '' && $_POST['valorMinimo1'] != '') {
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+
+            $_POST['parcela1'] = ($_POST['parcela1'] == '' || $_POST['parcela1'] == 0) ? 1 : $_POST['parcela1'];
+            $_POST['parcela2'] = ($_POST['parcela2'] == '' || $_POST['parcela2'] == 0) ? 1 : $_POST['parcela2'];
+            $_POST['parcela3'] = ($_POST['parcela3'] == '' || $_POST['parcela3'] == 0) ? 1 : $_POST['parcela3'];
+            $_POST['parcela4'] = ($_POST['parcela4'] == '' || $_POST['parcela4'] == 0) ? 1 : $_POST['parcela4'];
+
+            if (!$erro) {
+                $ambulatorio_guia_id = $this->centrocirurgico_m->gravarfaturamentototalequipe();
 
 
                 if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
@@ -1093,7 +1190,7 @@ class centrocirurgico extends BaseController {
 //        echo '<pre>';
 //        var_dump($data['relatorio']); die;
         $data['formapagamento'] = $this->formapagamento->listarforma();
-        $this->load->View('ambulatorio/impressaorelatoriocaixacirurgico', $data);
+        $this->load->View('centrocirurgico/impressaorelatoriocaixacirurgico', $data);
     }
 
     function relatoriocaixacirurgico() {

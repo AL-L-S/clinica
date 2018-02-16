@@ -4,6 +4,7 @@
             <legend>Outras Opções</legend>
             <div class="bt_link"><a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/cadastrarequipeguiacirurgicasolicitacao/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>/<?= $solicitacao[0]->guia_id; ?>">Equipe</a></div>
             <div class="bt_link"><a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/editarprocedimentoscirurgia/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>/<?= $solicitacao[0]->guia_id; ?>">Procedimentos</a></div>
+            <div class="bt_link"><a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacaomaterial/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>/<?= $solicitacao[0]->guia_id; ?>">Material</a></div>
         </fieldset>
         <fieldset >
             <legend>Dados da Solicitacao</legend>
@@ -49,9 +50,15 @@
 } ?>" required/>
                 </div>
                 <div>
-                    <label>Hora</label>
+                    <label>Hora Inicio</label>
                     <input type="text" name="hora" id="hora" alt="99:99" class="texto02" value="<? if (@$solicitacao[0]->hora_prevista != '') {
     echo date("H:i", strtotime(@$solicitacao[0]->hora_prevista));
+} ?>" required/>
+                </div>
+                <div>
+                    <label>Hora Fim</label>
+                    <input type="text" name="hora_fim" id="hora_fim" alt="99:99" class="texto02" value="<? if (@$solicitacao[0]->hora_prevista_fim != '') {
+    echo date("H:i", strtotime(@$solicitacao[0]->hora_prevista_fim));
 } ?>" required/>
                 </div>
                 <!--                <div>
@@ -73,7 +80,7 @@
                                 </div>-->
             </fieldset>
 
-            <fieldset>
+<!--            <fieldset>
                 <legend>Via</legend>
                 <div id="via">
                     <input <? if (@$solicitacao[0]->via == 'M') {
@@ -83,7 +90,7 @@
     echo 'checked';
 } ?> type="radio" name="via" id="d" value="D" required/> <label for="d">Via Diferente</label>
                 </div>
-            </fieldset>
+            </fieldset>-->
 
 
 

@@ -176,10 +176,10 @@ class caixa_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = s.operador_cadastro', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = s.operador_caixa', 'left');
         $this->db->where('s.ativo', 't');
-        if($_POST['empresa'] > 0){
-        $this->db->where('s.empresa_id', $_POST['empresa']);    
+        if ($_POST['empresa'] > 0) {
+            $this->db->where('s.empresa_id', $_POST['empresa']);
         }
-        
+
         $this->db->where('s.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where('s.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $return = $this->db->get();
@@ -234,6 +234,415 @@ class caixa_model extends Model {
         $this->db->where('s.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('s.data');
         $this->db->orderby('fcd.razao_social');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceirosaida() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_saidas s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceiroentrada() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_entradas s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceirocontaspagar() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_financeiro_contaspagar s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceirocontasreceber() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_financeiro_contasreceber s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceiromessaida() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-t", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_saidas s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceiromesentrada() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-t", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_entradas s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceiromescontaspagar() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-t", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_financeiro_contaspagar s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceiromescontasreceber() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-t", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_financeiro_contasreceber s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceirorecebimento() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-t", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_financeiro_contasreceber s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatorioprevisaolaboratoriocontaspagar() {
+
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select(" ae.percentual_laboratorio,
+                            ae.valor_laboratorio,
+                            ae.data,
+                            ae.valor_total,
+                            lab.nome as laboratorio,
+                            ae.laboratorio_id,
+                            ae.confirmacao_previsao_labotorio,
+                            lab.conta_id,
+                            lab.credor_devedor_id,
+                            lab.tipo,
+                            lab.classe");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = ae.laboratorio_id', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+        $this->db->where('ae.laboratorio_id is not null');
+
+        $this->db->where("ae.data >=", $data_inicio);
+        $this->db->where("ae.data <=", $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('ae.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }
+        $this->db->orderby('lab.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatorioprevisaopromotorcontaspagar() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select(' ae.valor_promotor,
+                            ae.percentual_promotor, 
+                            ae.valor_total,
+                            pi.nome as promotor,
+                            ae.indicacao,
+                            ae.confirmacao_previsao_promotor,
+                            pi.credor_devedor_id,
+                            pi.conta_id,
+                            pi.classe,
+                            pi.tipo_id');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+        $this->db->where('ae.indicacao is not null');
+
+        $this->db->where("ae.data >=", $data_inicio);
+        $this->db->where("ae.data <=", $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('ae.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }
+        $this->db->orderby('pi.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatorioprevisaomedicacontaspagar() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select(" ae.valor_total,
+                            pc.procedimento_tuss_id,
+                            pc.procedimento_convenio_id,
+                            pt.perc_medico,
+                            pt.percentual,
+                            ae.medico_agenda,
+                            op.nome as medico,
+                            op.taxa_administracao,
+                            (
+                                SELECT mc.valor FROM ponto.tb_procedimento_percentual_medico_convenio mc
+                                INNER JOIN ponto.tb_procedimento_percentual_medico m 
+                                ON m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+                                WHERE m.procedimento_tuss_id = pc.procedimento_convenio_id
+                                AND m.ativo = 't'
+                                AND mc.medico = ae.medico_agenda
+                                AND mc.ativo = 't'
+                                LIMIT 1
+                            ) AS perc_medico_excecao,
+                            (
+                                SELECT mc.percentual FROM ponto.tb_procedimento_percentual_medico_convenio mc
+                                INNER JOIN ponto.tb_procedimento_percentual_medico m 
+                                ON m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+                                WHERE m.procedimento_tuss_id = pc.procedimento_convenio_id
+                                AND m.ativo = 't'
+                                AND mc.medico = ae.medico_agenda
+                                AND mc.ativo = 't'
+                                LIMIT 1
+                            ) AS percentual_excecao,
+                            ae.confirmacao_previsao_medico,
+                            op.tipo_id,
+                            op.conta_id,
+                            op.credor_devedor_id,
+                            op.classe,
+                            ae.confirmacao_previsao_medico");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.medico_agenda', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+//        $this->db->where('c.dinheiro', 't');
+
+        $this->db->where("ae.data >=", $data_inicio);
+        $this->db->where("ae.data <=", $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('ae.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }
+        $this->db->orderby('op.nome');
         $return = $this->db->get();
         return $return->result();
     }
@@ -732,19 +1141,18 @@ class caixa_model extends Model {
             $return = $this->db->get();
             $result = $return->result();
             $tipo = $result[0]->descricao;
-            
-            if($_POST['devedor'] == ""){
-                
+
+            if ($_POST['devedor'] == "") {
+
                 $this->db->set('razao_social', $_POST['devedorlabel']);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_credor_devedor');
                 $devedor = $this->db->insert_id();
-            }
-            else{
+            } else {
                 $devedor = $_POST['devedor'];
             }
-            
+
             /* inicia o mapeamento no banco */
             $operador_id = $this->session->userdata('operador_id');
             $horario = date("Y-m-d H:i:s");
@@ -790,18 +1198,17 @@ class caixa_model extends Model {
         try {
             $empresa_id = $this->session->userdata('empresa_id');
             $_POST['inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio'])));
-             if($_POST['devedor'] == ""){
-                
+            if ($_POST['devedor'] == "") {
+
                 $this->db->set('razao_social', $_POST['devedorlabel']);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_credor_devedor');
                 $devedor = $this->db->insert_id();
-            }
-            else{
+            } else {
                 $devedor = $_POST['devedor'];
             }
-            
+
             //busca tipo
             $this->db->select('t.descricao');
             $this->db->from('tb_tipo_entradas_saida t');
@@ -1107,7 +1514,7 @@ class caixa_model extends Model {
         $this->db->where('entradas_id', $entrada);
         $return = $this->db->get()->result();
 //        var_dump($return); die;
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
 //        var_dump($horario); die;
@@ -1122,7 +1529,7 @@ class caixa_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('entradas_id', $entrada);
         $this->db->update('tb_entradas');
-         if ($return[0]->transferencia_id != '') {
+        if ($return[0]->transferencia_id != '') {
 
             $this->db->set('ativo', 'f');
             $this->db->set('data_atualizacao', $horario);
