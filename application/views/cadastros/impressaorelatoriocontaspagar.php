@@ -139,13 +139,13 @@
                             $previsaoMedicos = Array();
 
                             foreach ($relatoriomedico as $item) {
-                                $previsaoMedicos[$item->medico_agenda]["nome"] = $item->medico;
-                                $previsaoMedicos[$item->medico_agenda]["conta_id"] = $item->conta_id;
-                                $previsaoMedicos[$item->medico_agenda]["credor_devedor_id"] = $item->credor_devedor_id;
-                                $previsaoMedicos[$item->medico_agenda]["tipo"] = $item->tipo_id;
-                                $previsaoMedicos[$item->medico_agenda]["classe"] = $item->classe;
+                                $previsaoMedicos[$item->data][$item->medico_agenda]["nome"] = $item->medico;
+                                $previsaoMedicos[$item->data][$item->medico_agenda]["conta_id"] = $item->conta_id;
+                                $previsaoMedicos[$item->data][$item->medico_agenda]["credor_devedor_id"] = $item->credor_devedor_id;
+                                $previsaoMedicos[$item->data][$item->medico_agenda]["tipo"] = $item->tipo_id;
+                                $previsaoMedicos[$item->data][$item->medico_agenda]["classe"] = $item->classe;
                                 if ( $item->confirmacao_previsao_medico == 't' ){
-                                    @$previsaoMedicos[$item->medico_agenda]["confirmado"]++;
+                                    @$previsaoMedicos[$item->data][$item->medico_agenda]["confirmado"]++;
                                 }
 
                                 if($item->perc_medico_excecao != ""){
@@ -154,7 +154,7 @@
                                 else{
                                     $valor = ($item->percentual == 't') ?  $item->valor_total * ($item->perc_medico / 100) : $item->perc_medico;
                                 }
-                                $previsaoMedicos[$item->medico_agenda]["valor"] = @$previsaoMedicos[$item->medico_agenda]["valor"] + $valor;
+                                $previsaoMedicos[$item->data][$item->medico_agenda]["valor"] = @$previsaoMedicos[$item->data][$item->medico_agenda]["valor"] + $valor;
                             }
 
                             ?>
@@ -171,63 +171,71 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    foreach ($previsaoMedicos as $key => $item) :
-                                        if($item["valor"] != 0) {
-                                        ?>
+                                    foreach ($previsaoMedicos as $key2 => $medicos) : ?>
                                         <tr>
-                                            <td ><?= $item["nome"]; ?></td>
-                                            <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
-                                            <td style="text-align: center">
-                                                <? 
-                                                if ( ($_POST['empresa'] != '') ) {
-                                                    if ( !isset($item["confirmado"]) ) {
-                                                        if ($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
-                                                        <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaomedico" target="_blank">
-                                                            <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
-                                                            <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
-                                                            <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
-                                                            <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
-                                                            <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
-                                                            <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
-                                                            <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
-                                                            <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
-                                                            <input type="hidden" name="medico_id" value="<?= $key ?>"/>
-                                                            <input type="hidden" name="medico_nome" value="<?= $item["nome"] ?>"/>
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label for="dataMed<?= $i ?>">Data</label>
-                                                                        <input type="text" name="data" alt="date" id="dataMed<?= $i ?>"
-                                                                           value="<?= ($_POST['txtdata_inicio'] == $_POST['txtdata_fim']) ? $_POST['txtdata_inicio'] : ""?>"
-                                                                           style="width: 50%" required=""/>
-                                                                    </td>
-                                                                    <td align="center"><button type="submit">Confirmar</button></td>
-                                                                </tr>
-                                                                <tr>
-                                                                </tr>
-                                                            </table>
-
-                                                        </form>
-                                                    <?  }
-                                                        else{
-                                                            if($item["credor_devedor_id"] == ''){
-                                                                echo "Credor/Devedor não informado";
-                                                            } else{
-                                                                echo "Conta não informada";
-                                                            }
-                                                        }
-                                                    }
-                                                    else{
-                                                        echo "Valor já confirmado";
-                                                    }
-                                                }
-                                                else {
-                                                    echo "Selecione uma empresa";
-                                                } ?>
-                                            </td>
+                                            <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
                                         </tr>
-                                        <? }
-                                    endforeach; ?>
+                                    <?
+                                        foreach ($medicos as $key => $item) :
+                                            if ($item["valor"] != 0) {
+                                                ?>
+                                                <tr>
+                                                    <td ><?= $item["nome"]; ?></td>
+                                                    <td style="text-align: right"><?= number_format($item["valor"], 2, ",", "."); ?></td>
+                                                    <td style="text-align: center">
+                                                        <?
+                                                        if (($_POST['empresa'] != '')) {
+                                                            if (!isset($item["confirmado"])) {
+                                                                if ($item["credor_devedor_id"] != '' && $item["conta_id"] != '') {
+                                                                    ?>
+                                                                    <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaomedico" target="_blank">
+                                                                        <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
+                                                                        <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
+                                                                        <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
+                                                                        <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
+                                                                        <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
+                                                                        <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
+                                                                        <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
+                                                                        <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
+                                                                        <input type="hidden" name="medico_id" value="<?= $key ?>"/>
+                                                                        <input type="hidden" name="medico_nome" value="<?= $item["nome"] ?>"/>
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <label for="dataMed<?= $i ?>">Data</label>
+                                                                                    <input type="text" name="data" alt="date" id="dataMed<?= $i ?>"
+                                                                                           value="<?= date("d/m/Y", strtotime($key2)); ?>"
+                                                                                           style="width: 50%" required=""/>
+                                                                                </td>
+                                                                                <td align="center"><button type="submit">Confirmar</button></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                            </tr>
+                                                                        </table>
+
+                                                                    </form>
+                                                                <?
+                                                                } else {
+                                                                    if ($item["credor_devedor_id"] == '') {
+                                                                        echo "Credor/Devedor não informado";
+                                                                    } else {
+                                                                        echo "Conta não informada";
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                echo "Valor já confirmado";
+                                                            }
+                                                        } else {
+                                                            echo "Selecione uma empresa";
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                            <?
+                                            }
+                                        endforeach;
+                                    endforeach;
+                                    ?>
                                 </tbody>
 
                             </table>
@@ -241,13 +249,13 @@
                             $previsaoPromotor = Array();
 
                             foreach ($relatoriopromotor as $item) {
-                                $previsaoPromotor[$item->indicacao]["nome"] = $item->promotor;
-                                $previsaoPromotor[$item->indicacao]["conta_id"] = $item->conta_id;
-                                $previsaoPromotor[$item->indicacao]["credor_devedor_id"] = $item->credor_devedor_id;
-                                $previsaoPromotor[$item->indicacao]["tipo"] = $item->tipo_id;
-                                $previsaoPromotor[$item->indicacao]["classe"] = $item->classe;
+                                $previsaoPromotor[$item->data][$item->indicacao]["nome"] = $item->promotor;
+                                $previsaoPromotor[$item->data][$item->indicacao]["conta_id"] = $item->conta_id;
+                                $previsaoPromotor[$item->data][$item->indicacao]["credor_devedor_id"] = $item->credor_devedor_id;
+                                $previsaoPromotor[$item->data][$item->indicacao]["tipo"] = $item->tipo_id;
+                                $previsaoPromotor[$item->data][$item->indicacao]["classe"] = $item->classe;
                                 if ( $item->confirmacao_previsao_promotor == 't' ){
-                                    @$previsaoPromotor[$item->indicacao]["confirmado"]++;
+                                    @$previsaoPromotor[$item->data][$item->indicacao]["confirmado"]++;
                                 }
 
 
@@ -257,7 +265,7 @@
                                 else{
                                     $valor = $item->valor_promotor;
                                 }
-                                $previsaoPromotor[$item->indicacao]["valor"] = @$previsaoPromotor[$item->indicacao]["valor"] + $valor;
+                                $previsaoPromotor[$item->data][$item->indicacao]["valor"] = @$previsaoPromotor[$item->data][$item->indicacao]["valor"] + $valor;
                             }
 
                             ?>
@@ -274,63 +282,71 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    foreach ($previsaoPromotor as $key => $item) :
-                                        if($item["valor"] != 0) {
-                                        ?>
+                                    
+                                    foreach ($previsaoPromotor as $key2 => $promotores) : ?>
                                         <tr>
-                                            <td ><?= $item["nome"]; ?></td>
-                                            <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
-                                            <td style="text-align: center">
-                                                <? 
-                                                if ( ($_POST['empresa'] != '') ) {
-                                                    if ( !isset($item["confirmado"]) ) {
-                                                        if ($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
-                                                        <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaopromotor" target="_blank">
-                                                            <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
-                                                            <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
-                                                            <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
-                                                            <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
-                                                            <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
-                                                            <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
-                                                            <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
-                                                            <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
-                                                            <input type="hidden" name="promotor_id" value="<?= $key ?>"/>
-                                                            <input type="hidden" name="promotor_nome" value="<?= $item["nome"] ?>"/>
-                                                            <table>
-                                                                <tr>
-                                                                    <td>
-                                                                        <label for="dataPro<?= $i ?>">Data</label>
-                                                                        <input type="text" name="data" alt="date" id="dataPro<?= $i ?>"
-                                                                           value="<?= ($_POST['txtdata_inicio'] == $_POST['txtdata_fim']) ? $_POST['txtdata_inicio'] : ""?>"
-                                                                           style="width: 50%" required=""/>
-                                                                    </td>
-                                                                    <td align="center"><button type="submit">Confirmar</button></td>
-                                                                </tr>
-                                                                <tr>
-                                                                </tr>
-                                                            </table>
+                                            <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
+                                        </tr>
+                                    <?
+                                        foreach ($promotores as $key => $item) :
+                                            if($item["valor"] != 0) {
+                                            ?>
+                                            <tr>
+                                                <td ><?= $item["nome"]; ?></td>
+                                                <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
+                                                <td style="text-align: center">
+                                                    <? 
+                                                    if ( ($_POST['empresa'] != '') ) {
+                                                        if ( !isset($item["confirmado"]) ) {
+                                                            if ($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
+                                                            <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaopromotor" target="_blank">
+                                                                <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
+                                                                <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
+                                                                <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
+                                                                <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
+                                                                <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
+                                                                <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
+                                                                <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
+                                                                <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
+                                                                <input type="hidden" name="promotor_id" value="<?= $key ?>"/>
+                                                                <input type="hidden" name="promotor_nome" value="<?= $item["nome"] ?>"/>
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <label for="dataPro<?= $i ?>">Data</label>
+                                                                            <input type="text" name="data" alt="date" id="dataPro<?= $i ?>"
+                                                                               value="<?= date("d/m/Y", strtotime($key2)); ?>"
+                                                                               style="width: 50%" required=""/>
+                                                                        </td>
+                                                                        <td align="center"><button type="submit">Confirmar</button></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                    </tr>
+                                                                </table>
 
-                                                        </form>
-                                                    <?  }
-                                                        else{
-                                                            if($item["credor_devedor_id"] == ''){
-                                                                echo "Credor/Devedor não informado";
-                                                            } else{
-                                                                echo "Conta não informada";
+                                                            </form>
+                                                        <?  }
+                                                            else{
+                                                                if($item["credor_devedor_id"] == ''){
+                                                                    echo "Credor/Devedor não informado";
+                                                                } else{
+                                                                    echo "Conta não informada";
+                                                                }
                                                             }
                                                         }
+                                                        else{
+                                                            echo "Valor já confirmado";
+                                                        }
                                                     }
-                                                    else{
-                                                        echo "Valor já confirmado";
-                                                    }
-                                                }
-                                                else {
-                                                    echo "Selecione uma empresa";
-                                                } ?>
-                                            </td>
-                                        </tr>
-                                        <? }
-                                    endforeach; ?>
+                                                    else {
+                                                        echo "Selecione uma empresa";
+                                                    } ?>
+                                                </td>
+                                            </tr>
+                                            <? }
+                                        endforeach; 
+                                    endforeach; 
+                                    ?>
                                 </tbody>
 
                             </table>
@@ -348,13 +364,13 @@
             $previsaoLaboratorio = Array();
 
             foreach ($relatoriolaboratorio as $item) {
-                $previsaoLaboratorio[$item->laboratorio_id]["nome"] = $item->laboratorio;
-                $previsaoLaboratorio[$item->laboratorio_id]["conta_id"] = $item->conta_id;
-                $previsaoLaboratorio[$item->laboratorio_id]["credor_devedor_id"] = $item->credor_devedor_id;
-                $previsaoLaboratorio[$item->laboratorio_id]["tipo"] = $item->tipo;
-                $previsaoLaboratorio[$item->laboratorio_id]["classe"] = $item->classe;
+                $previsaoLaboratorio[$item->data][$item->laboratorio_id]["nome"] = $item->laboratorio;
+                $previsaoLaboratorio[$item->data][$item->laboratorio_id]["conta_id"] = $item->conta_id;
+                $previsaoLaboratorio[$item->data][$item->laboratorio_id]["credor_devedor_id"] = $item->credor_devedor_id;
+                $previsaoLaboratorio[$item->data][$item->laboratorio_id]["tipo"] = $item->tipo;
+                $previsaoLaboratorio[$item->data][$item->laboratorio_id]["classe"] = $item->classe;
                 if($item->confirmacao_previsao_labotorio == 't'){
-                    @$previsaoLaboratorio[$item->laboratorio_id]["confirmado"]++;
+                    @$previsaoLaboratorio[$item->data][$item->laboratorio_id]["confirmado"]++;
                 }
                 
                 if($item->percentual_laboratorio == 't'){
@@ -363,7 +379,7 @@
                 else{
                     $valor = $item->valor_laboratorio;
                 }
-                $previsaoLaboratorio[$item->laboratorio_id]["valor"] = @$previsaoLaboratorio[$item->laboratorio_id]["valor"] + $valor;
+                $previsaoLaboratorio[$item->data][$item->laboratorio_id]["valor"] = @$previsaoLaboratorio[$item->data][$item->laboratorio_id]["valor"] + $valor;
             }
 
             ?>
@@ -383,65 +399,73 @@
                 <tbody>
                     <?php
                     $i = 0;
-                    foreach ($previsaoLaboratorio as $key => $item) :
-                        $i++;
                     
-                        if($item["valor"] != 0) {
-                        ?>
-                            <tr>
-                                <td ><?= $item["nome"]; ?></td>
-                                <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
-                                <td style="text-align: center">
-                                    <? 
-                                    if ( ($_POST['empresa'] != '') ) {
-                                        if ( !isset($item["confirmado"]) ) {
-                                            if($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
-                                                <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaolaboratorio" target="_blank">
-                                                    <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
-                                                    <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
-                                                    <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
-                                                    <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
-                                                    <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
-                                                    <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
-                                                    <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
-                                                    <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
-                                                    <input type="hidden" name="laboratorio_id" value="<?= $key ?>"/>
-                                                    <input type="hidden" name="laboratorio_nome" value="<?= $item["nome"] ?>"/>
-                                                    <table>
-                                                        <tr>
-                                                            <td>
-                                                                <label for="dataLab<?= $i ?>">Data</label>
-                                                                <input type="text" name="data" alt="date" id="dataLab<?= $i ?>"
-                                                                   value="<?= ($_POST['txtdata_inicio'] == $_POST['txtdata_fim']) ? $_POST['txtdata_inicio'] : ""?>"
-                                                                   style="width: 50%" required=""/>
-                                                            </td>
-                                                            <td align="center"><button type="submit">Confirmar</button></td>
-                                                        </tr>
-                                                        <tr>
-                                                        </tr>
-                                                    </table>
+                    foreach ($previsaoLaboratorio as $key2 => $laboratorios) : ?>
+                        <tr>
+                            <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
+                        </tr>
+                    <?
+                        foreach ($laboratorios as $key => $item) :
+                            $i++;
 
-                                                </form>
-                                        <?  }
-                                            else{
-                                                if($item["credor_devedor_id"] == ''){
-                                                    echo "Credor/Devedor não informado";
-                                                } else{
-                                                    echo "Conta não informada";
+                            if($item["valor"] != 0) {
+                            ?>
+                                <tr>
+                                    <td ><?= $item["nome"]; ?></td>
+                                    <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
+                                    <td style="text-align: center">
+                                        <? 
+                                        if ( ($_POST['empresa'] != '') ) {
+                                            if ( !isset($item["confirmado"]) ) {
+                                                if($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
+                                                    <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaolaboratorio" target="_blank">
+                                                        <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
+                                                        <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
+                                                        <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
+                                                        <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
+                                                        <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
+                                                        <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
+                                                        <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
+                                                        <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
+                                                        <input type="hidden" name="laboratorio_id" value="<?= $key ?>"/>
+                                                        <input type="hidden" name="laboratorio_nome" value="<?= $item["nome"] ?>"/>
+                                                        <table>
+                                                            <tr>
+                                                                <td>
+                                                                    <label for="dataLab<?= $i ?>">Data</label>
+                                                                    <input type="text" name="data" alt="date" id="dataLab<?= $i ?>"
+                                                                       value="<?= date("d/m/Y", strtotime($key2)); ?>"
+                                                                       style="width: 50%" required=""/>
+                                                                </td>
+                                                                <td align="center"><button type="submit">Confirmar</button></td>
+                                                            </tr>
+                                                            <tr>
+                                                            </tr>
+                                                        </table>
+
+                                                    </form>
+                                            <?  }
+                                                else{
+                                                    if($item["credor_devedor_id"] == ''){
+                                                        echo "Credor/Devedor não informado";
+                                                    } else{
+                                                        echo "Conta não informada";
+                                                    }
                                                 }
                                             }
+                                            else{
+                                                echo "Valor já confirmado";
+                                            }
                                         }
-                                        else{
-                                            echo "Valor já confirmado";
-                                        }
-                                    }
-                                    else {
-                                        echo "Selecione uma empresa";
-                                    } ?>
-                                </td>
-                            </tr>
-                        <? }
-                    endforeach; ?>
+                                        else {
+                                            echo "Selecione uma empresa";
+                                        } ?>
+                                    </td>
+                                </tr>
+                            <? }
+                        endforeach; 
+                    endforeach; 
+                    ?>
                 </tbody>
 
             </table>

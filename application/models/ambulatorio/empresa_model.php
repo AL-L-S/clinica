@@ -1165,6 +1165,36 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('associa_credito_procedimento', 'f');
                 }
+                
+                if(in_array("dt_nascimento", $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_nascimento', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_nascimento', 'f');
+                }
+                
+                if(in_array('sexo', $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_sexo', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_sexo', 'f');
+                }
+                
+                if(in_array('cpf', $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_cpf', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_cpf', 'f');
+                }
+                
+                if(in_array('telefone', $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_telefone', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_telefone', 'f');
+                }
+                
+                if(in_array('municipio', $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_municipio', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_municipio', 'f');
+                }
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
@@ -1355,6 +1385,36 @@ class empresa_model extends Model {
                     $this->db->set('associa_credito_procedimento', 'f');
                 }
                 
+                if(in_array("dt_nascimento", $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_nascimento', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_nascimento', 'f');
+                }
+                
+                if(in_array('sexo', $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_sexo', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_sexo', 'f');
+                }
+                
+                if(in_array('cpf', $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_cpf', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_cpf', 'f');
+                }
+                
+                if(in_array('telefone', $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_telefone', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_telefone', 'f');
+                }
+                
+                if(in_array('municipio', $_POST['campos_obrigatorio'])){
+                    $this->db->set('campos_obrigatorios_pac_municipio', 't');
+                } else {
+                    $this->db->set('campos_obrigatorios_pac_municipio', 'f');
+                }
+                
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('empresa_id', $empresa_id);
@@ -1459,7 +1519,12 @@ class empresa_model extends Model {
                                ep.carregar_modelo_receituario,
                                ep.desabilitar_trava_retorno,
                                ep.associa_credito_procedimento,
-                               f.numero_empresa_painel');
+                               f.numero_empresa_painel,
+                               ep.campos_obrigatorios_pac_cpf,
+                               ep.campos_obrigatorios_pac_sexo,
+                               ep.campos_obrigatorios_pac_nascimento,
+                               ep.campos_obrigatorios_pac_telefone,
+                               ep.campos_obrigatorios_pac_municipio');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
@@ -1557,6 +1622,11 @@ class empresa_model extends Model {
             $this->_desabilitar_trava_retorno = $return[0]->desabilitar_trava_retorno;
             $this->_numero_empresa_painel = $return[0]->numero_empresa_painel;
             $this->_associa_credito_procedimento = $return[0]->associa_credito_procedimento;
+            $this->_campos_obrigatorios_pac_municipio = $return[0]->campos_obrigatorios_pac_municipio;
+            $this->_campos_obrigatorios_pac_telefone = $return[0]->campos_obrigatorios_pac_telefone;
+            $this->_campos_obrigatorios_pac_nascimento = $return[0]->campos_obrigatorios_pac_nascimento;
+            $this->_campos_obrigatorios_pac_sexo = $return[0]->campos_obrigatorios_pac_sexo;
+            $this->_campos_obrigatorios_pac_cpf = $return[0]->campos_obrigatorios_pac_cpf;
         } else {
             $this->_empresa_id = null;
         }
