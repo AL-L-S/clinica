@@ -133,46 +133,52 @@
                         </tr>
                     <?
                         foreach ($convenios as $key => $item) :
-                            if($item["valor"] != 0) {
                             ?>
                             <tr>
                                 <td ><?= $item["nome"]; ?></td>
                                 <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
                                 <td style="text-align: center">
                                     <? 
-                                    if ( ($_POST['empresa'] != '') ) {
-                                        if ( !isset($item["confirmado"]) ) {
-                                            if ($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
-                                            <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contasreceber/confirmarprevisaorecebimentoconvenio" target="_blank">
-                                                <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
-                                                <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
-                                                <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
-                                                <input type="hidden" name="periodo_aquisicao" value="<?= $key2 ?>"/>
-                                                <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
-                                                <input type="hidden" name="convenio_id" value="<?= $key ?>"/>
-                                                <input type="hidden" name="convenio_nome" value="<?= $item["nome"] ?>"/>
-                                                <button type="submit">Confirmar</button>
+                                    
+//                                    if($item["valor"] != 0) {
+                                        if ( ($_POST['empresa'] != '') ) {
+                                            if ( !isset($item["confirmado"]) ) {
+                                                if ($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
+                                                <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contasreceber/confirmarprevisaorecebimentoconvenio" target="_blank">
+                                                    <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
+                                                    <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
+                                                    <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
+                                                    <input type="hidden" name="periodo_aquisicao" value="<?= $key2 ?>"/>
+                                                    <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
+                                                    <input type="hidden" name="convenio_id" value="<?= $key ?>"/>
+                                                    <input type="hidden" name="convenio_nome" value="<?= $item["nome"] ?>"/>
+                                                    <button type="submit">Confirmar</button>
 
-                                            </form>
-                                        <?  }
-                                            else{
-                                                if($item["credor_devedor_id"] == ''){
-                                                    echo "Credor/Devedor não informado";
-                                                } else{
-                                                    echo "Conta não informada";
+                                                </form>
+                                            <?  }
+                                                else{
+                                                    if($item["credor_devedor_id"] == ''){
+                                                        echo "Credor/Devedor não informado";
+                                                    } else{
+                                                        echo "Conta não informada";
+                                                    }
                                                 }
                                             }
+                                            else{
+                                                echo "Valor já confirmado";
+                                            }
                                         }
-                                        else{
-                                            echo "Valor já confirmado";
+                                        else {
+                                            echo "Selecione uma empresa";
                                         }
-                                    }
-                                    else {
-                                        echo "Selecione uma empresa";
-                                    } ?>
+//                                    }
+//                                    else {
+//                                        echo "Selecione uma empresa";
+//                                    }
+                                    ?>
                                 </td>
                             </tr>
-                            <? }
+                            <? 
                         endforeach; 
                     endforeach; 
                     ?>

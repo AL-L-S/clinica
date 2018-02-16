@@ -177,7 +177,7 @@
                                         </tr>
                                     <?
                                         foreach ($medicos as $key => $item) :
-                                            if ($item["valor"] != 0) {
+//                                            if ($item["valor"] != 0) {
                                                 ?>
                                                 <tr>
                                                     <td ><?= $item["nome"]; ?></td>
@@ -232,7 +232,7 @@
                                                     </td>
                                                 </tr>
                                             <?
-                                            }
+//                                            }
                                         endforeach;
                                     endforeach;
                                     ?>
@@ -289,7 +289,7 @@
                                         </tr>
                                     <?
                                         foreach ($promotores as $key => $item) :
-                                            if($item["valor"] != 0) {
+//                                            if($item["valor"] != 0) {
                                             ?>
                                             <tr>
                                                 <td ><?= $item["nome"]; ?></td>
@@ -343,7 +343,7 @@
                                                     } ?>
                                                 </td>
                                             </tr>
-                                            <? }
+                                            <? // }
                                         endforeach; 
                                     endforeach; 
                                     ?>
@@ -408,7 +408,7 @@
                         foreach ($laboratorios as $key => $item) :
                             $i++;
 
-                            if($item["valor"] != 0) {
+//                            if($item["valor"] != 0) {
                             ?>
                                 <tr>
                                     <td ><?= $item["nome"]; ?></td>
@@ -462,7 +462,7 @@
                                         } ?>
                                     </td>
                                 </tr>
-                            <? }
+                            <? // }
                         endforeach; 
                     endforeach; 
                     ?>
