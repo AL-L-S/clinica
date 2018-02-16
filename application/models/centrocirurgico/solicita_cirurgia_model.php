@@ -840,7 +840,7 @@ class solicita_cirurgia_model extends BaseModel {
         try {
 //            var_dump($_POST);
 //            die;
-            $this->db->set('fornecedor_id',  $_POST['fornecedor_id']);
+            $this->db->set('fornecedor_id', $_POST['fornecedor_id']);
             $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
             $this->db->update('tb_solicitacao_cirurgia');
 
@@ -1002,6 +1002,30 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->where('soe.ativo', 'true');
         $this->db->where('gp.ativo', 'true');
         $this->db->orderby('soe.funcao');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimentoorcamentoconveniofuncaocaixa($cirurgia_procedimento_id) {
+        $this->db->select('o.nome as medico,
+                           aee.*,
+                           gp.codigo,
+                           f.nome as forma_pagamento,
+                           f2.nome as forma_pagamento_2,
+                           f3.nome as forma_pagamento_3,
+                           f4.nome as forma_pagamento_4,
+                           gp.descricao');
+        $this->db->from('tb_agenda_exame_equipe aee');
+        $this->db->join('tb_operador o', 'o.operador_id = aee.operador_responsavel', 'left');
+        $this->db->join('tb_grau_participacao gp', 'gp.codigo = aee.funcao', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = aee.forma_pagamento1', 'left');
+        $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = aee.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = aee.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = aee.forma_pagamento4', 'left');
+        $this->db->where('aee.agenda_exames_id', $cirurgia_procedimento_id);
+        $this->db->where('aee.ativo', 'true');
+        $this->db->where('gp.ativo', 'true');
+        $this->db->orderby('aee.funcao');
         $return = $this->db->get();
         return $return->result();
     }
@@ -1215,12 +1239,13 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->select(' scp.horario_especial,
                                 scp.valor,
                                 scp.via,
+                                c.dinheiro,
                                 scp.solicitacao_cirurgia_procedimento_id');
             $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
             $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
             $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
             $this->db->where("scp.ativo", 't');
-            $this->db->where("c.dinheiro", 't');
+//            $this->db->where("c.dinheiro", 't');
             $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
             $this->db->orderby('valor DESC');
             $procedimentos = $this->db->get()->result();
@@ -1321,45 +1346,46 @@ class solicita_cirurgia_model extends BaseModel {
 
                     //VALOR DO CIRURGIAO/ANESTESISTA
                     $valMedico = $valMedicoProc;
+                    if ($item->dinheiro == 't') {
 
-                    if ((int) $value->funcao != 0) {
-                        $this->db->select('valor');
-                        $this->db->from('tb_centrocirurgico_percentual_funcao');
-                        $this->db->where("funcao", $value->funcao);
-                        $query = $this->db->get();
-                        $return2 = $query->result();
+                        if ((int) $value->funcao != 0) {
+                            $this->db->select('valor');
+                            $this->db->from('tb_centrocirurgico_percentual_funcao');
+                            $this->db->where("funcao", $value->funcao);
+                            $query = $this->db->get();
+                            $return2 = $query->result();
 
-                        $this->db->select('valor');
-                        $this->db->from('tb_centrocirurgico_percentual_funcao');
-                        $this->db->where("funcao", 0);
-                        $query_0 = $this->db->get();
-                        $return_0 = $query_0->result();
-                        //DEFININDO OS VALORES
-                        $val_cirurgiao = number_format($valMedico * ($return_0[0]->valor / 100), 2, '.', '');
-                        $val = number_format($val_cirurgiao * ($return2[0]->valor / 100), 2, '.', '');
-                    } else {
-                        $this->db->select('valor');
-                        $this->db->from('tb_centrocirurgico_percentual_funcao');
-                        $this->db->where("funcao", $value->funcao);
-                        $query = $this->db->get();
-                        $return2 = $query->result();
-                        $val = number_format($valMedico * ($return2[0]->valor / 100), 2, '.', '');
-                    }
+                            $this->db->select('valor');
+                            $this->db->from('tb_centrocirurgico_percentual_funcao');
+                            $this->db->where("funcao", 0);
+                            $query_0 = $this->db->get();
+                            $return_0 = $query_0->result();
+                            //DEFININDO OS VALORES
+                            $val_cirurgiao = number_format($valMedico * ($return_0[0]->valor / 100), 2, '.', '');
+                            $val = number_format($val_cirurgiao * ($return2[0]->valor / 100), 2, '.', '');
+                        } else {
+                            $this->db->select('valor');
+                            $this->db->from('tb_centrocirurgico_percentual_funcao');
+                            $this->db->where("funcao", $value->funcao);
+                            $query = $this->db->get();
+                            $return2 = $query->result();
+                            $val = number_format($valMedico * ($return2[0]->valor / 100), 2, '.', '');
+                        }
 //                    var_dump($val);
 //                    die;
-                    $horario = date("Y-m-d H:i:s");
-                    $operador_id = $this->session->userdata('operador_id');
+                        $horario = date("Y-m-d H:i:s");
+                        $operador_id = $this->session->userdata('operador_id');
 
-                    $this->db->set('operador_responsavel', $value->operador_responsavel);
-                    $this->db->set('solicitacao_orcamento_id', $orcamento_id);
-                    $this->db->set('solicitacao_cirurgia_procedimento_id', $item->solicitacao_cirurgia_procedimento_id);
-                    $this->db->set('valor', $val);
-                    $this->db->set('funcao', $value->funcao);
+                        $this->db->set('operador_responsavel', $value->operador_responsavel);
+                        $this->db->set('solicitacao_orcamento_id', $orcamento_id);
+                        $this->db->set('solicitacao_cirurgia_procedimento_id', $item->solicitacao_cirurgia_procedimento_id);
+                        $this->db->set('valor', $val);
+                        $this->db->set('funcao', $value->funcao);
 
-                    $this->db->set('data_cadastro', $horario);
-                    $this->db->set('operador_cadastro', $operador_id);
-                    $this->db->insert('tb_solicitacao_orcamento_equipe');
-
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_solicitacao_orcamento_equipe');
+                    }
                     $i++;
                 }
             }
@@ -1743,12 +1769,14 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('via', $_POST['via']);
             $this->db->set('data_prevista', $_POST['txtdata']);
             $this->db->set('hora_prevista', date("H:i:s", strtotime($_POST['hora'])));
-            $this->db->set('situacao', 'FATURAMENTO_PENDENTE');
-            $this->db->set('situacao_convenio', 'FATURAMENTO_PENDENTE');
+            $this->db->set('hora_prevista_fim', date("H:i:s", strtotime($_POST['hora_fim'])));
+//            $this->db->set('situacao', 'FATURAMENTO_PENDENTE');
+//            $this->db->set('situacao_convenio', 'FATURAMENTO_PENDENTE');
             $this->db->where('solicitacao_cirurgia_id', $_POST['txtsolcitacao_id']);
             $this->db->update('tb_solicitacao_cirurgia');
 
             $this->db->set('inicio', $_POST['hora']);
+            $this->db->set('fim', $_POST['hora_fim']);
             $this->db->set('data', $_POST['txtdata']);
             $this->db->where('guia_id', $solicitacao[0]->guia_id);
             $this->db->update('tb_agenda_exames');

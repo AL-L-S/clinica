@@ -109,7 +109,7 @@
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="checkbox" name="horEspecial[<?= $i; ?>]">
                                 </td>
-                                <td style="width: 280px" class="<?php echo $estilo_linha; ?>">
+                                <td style="width: 300px" class="<?php echo $estilo_linha; ?>">
                                     <div id="via">
                                         <input type="radio" name="via[<?= $i; ?>]" id="m<?= $i; ?>" <?
                                         if ($item->via == 'M') {

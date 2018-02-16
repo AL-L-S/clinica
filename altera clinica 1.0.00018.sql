@@ -78,3 +78,36 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_obrigatorios_pac_telef
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_obrigatorios_pac_municipio boolean DEFAULT false;
 ALTER TABLE ponto.tb_convenio ADD COLUMN dia_aquisicao integer;
 
+-- 15/02/2018
+
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN parcelas1 integer DEFAULT 1;
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN parcelas2 integer DEFAULT 1;
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN parcelas3 integer DEFAULT 1;
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN parcelas4 integer DEFAULT 1;
+
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN desconto numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN desconto_ajuste1 numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN desconto_ajuste2 numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN desconto_ajuste3 numeric(10,2);
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN desconto_ajuste4 numeric(10,2);
+
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN faturado boolean DEFAULT false;
+
+
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN forma_pagamento1 integer;
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN valor1 numeric(10,2) DEFAULT 0;
+
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN forma_pagamento2 integer;
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN valor2 numeric(10,2) DEFAULT 0;
+
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN forma_pagamento3 integer;
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN valor3 numeric(10,2) DEFAULT 0;
+
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN forma_pagamento4 integer;
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN valor4 numeric(10,2) DEFAULT 0;
+
+
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN data_faturamento timestamp without time zone;
+ALTER TABLE ponto.tb_agenda_exame_equipe ADD COLUMN operador_faturamento integer;
+
+ALTER TABLE ponto.tb_ambulatorio_desconto ADD COLUMN agenda_exame_equipe_id integer;

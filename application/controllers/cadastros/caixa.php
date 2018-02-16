@@ -78,6 +78,32 @@ class Caixa extends BaseController {
         $this->loadView('cadastros/transferencia-form', $data);
     }
 
+    function painelfinanceiro() {
+//        $data['conta'] = $this->forma->listarforma();
+
+        $data['saida'] = $this->caixa->painelfinanceirosaida();
+//        var_dump($data['saida']); 
+//        die;
+        $data['entrada'] = $this->caixa->painelfinanceiroentrada();
+        $data['contaspagar'] = $this->caixa->painelfinanceirocontaspagar();
+        $data['contasreceber'] = $this->caixa->painelfinanceirocontasreceber();
+
+        $data['saidames'] = $this->caixa->painelfinanceiromessaida();
+//        var_dump($data['saida']); 
+//        die;
+        $data['entradames'] = $this->caixa->painelfinanceiromesentrada();
+        $data['contaspagarmes'] = $this->caixa->painelfinanceiromescontaspagar();
+        $data['contasrecebermes'] = $this->caixa->painelfinanceiromescontasreceber();
+
+
+        $data['relatoriomedico'] = $this->caixa->relatorioprevisaomedicacontaspagar();
+//        echo '<pre>';
+//        var_dump($data['relatoriomedico']); die;
+        $data['relatoriopromotor'] = $this->caixa->relatorioprevisaopromotorcontaspagar();
+        $data['relatoriolaboratorio'] = $this->caixa->relatorioprevisaolaboratoriocontaspagar();
+        $this->loadView('cadastros/painelfinanceiro', $data);
+    }
+
     function novasangria() {
         $data['operador'] = $this->operador->listaradminitradores();
         $data['operadorcaixa'] = $this->operador->listartecnicos();

@@ -25,7 +25,7 @@
                         <th class="tabela_header">Situação</th>
                         <th class="tabela_header">Data Solicitação</th>
                         <th class="tabela_header">Data Prevista</th>
-                        <th style="text-align: center;" colspan="4" class="tabela_header">Detalhes</th>
+                        <th style="text-align: center;" colspan="6" class="tabela_header">Detalhes</th>
 
                     </tr>
                 </thead>
@@ -48,6 +48,8 @@
                                 $situacao = "<span style='color:red'>Faturamento</span>";
                             } elseif ($item->situacao == 'AGUARDANDO') {
                                 $situacao = "<span style='color:#ff8400'>Aguardando</span>";
+                            } elseif ($item->situacao == 'EQUIPE_FATURADA') {
+                                $situacao = "<span style='color:green'>Aguardando</span>";
                             } elseif ($item->situacao == 'REALIZADA') {
                                 $situacao = "<span style='color:green'>Realizada</span>";
                             }
@@ -65,9 +67,12 @@
                                     <? $datafinal = $dia . '/' . $mes . '/' . $ano . $hora; ?>
 
                                     <?php echo$datafinal ?></strong></td>
-                                <? if ($item->situacao != 'REALIZADA') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                    <? if ($item->situacao != 'REALIZADA') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div  class="bt_link">
                                             <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/faturarprocedimentos/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->guia_id; ?>" target="_blank">Faturar</a></div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>"><div style="width: 100px;" class="bt_link">
+                                            <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/faturarequipe/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->guia_id; ?>" target="_blank">Faturar Eq.</a></div>
                                     </td>
                                     <? if ($item->situacao == 'AGUARDANDO') { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
@@ -87,6 +92,9 @@
                                             <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>">Imprimir</a></div>
                                     </td>
                                 <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+
+                                    </td>  
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
 
                                     </td>  

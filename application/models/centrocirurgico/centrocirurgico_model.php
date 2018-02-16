@@ -454,7 +454,7 @@ class centrocirurgico_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarfornecedorsolicitacao() {
         $this->db->select('fornecedor_material_id, 
                                f.nome');
@@ -804,7 +804,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
         $this->db->select('distinct(fp.nome),
                            fp.forma_pagamento_id,
                            fp.parcela_minima');
-        $this->db->from('tb_agenda_exames fae');
+        $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_grupo_formapagamento gf', 'gf.grupo_id = pp.grupo_pagamento_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
@@ -827,6 +827,23 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
         if ($financeiro_grupo_id != null) {
             $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
         }
+        $return = $this->db->get();
+//        var_dump($guia_id); die;
+        return $return->result();
+    }
+
+    function listarexameguiaformaequipe($guia_id) {
+        $this->db->select('sum(aee.valor) as total');
+        $this->db->from('tb_agenda_exame_equipe aee');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = aee.agenda_exames_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("aee.guia_id", $guia_id);
+        $this->db->where("aee.faturado", 'f');
+        $this->db->where("aee.ativo", 't');
+        $this->db->where("(c.dinheiro ='t' = aee.equipe_particular = 't')");
+//        $this->db->where("ae.faturado", 'f');
+
         $return = $this->db->get();
 //        var_dump($guia_id); die;
         return $return->result();
@@ -879,6 +896,22 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
         $this->db->where('ag.tipo', 'CIRURGICO');
         $this->db->where('c.dinheiro', 't');
         $this->db->where("guia_id", $guia_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarexameguiaequipe($guia_id) {
+
+        $this->db->select('sum(aee.valor) as total');
+        $this->db->from('tb_agenda_exame_equipe aee');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = aee.agenda_exames_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where('aee.faturado', 'f');
+        $this->db->where("aee.ativo", 't');
+        $this->db->where("(c.dinheiro = 't' OR aee.equipe_particular = 't')");
+        $this->db->where("aee.guia_id", $guia_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -1270,6 +1303,393 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
         }
     }
 
+    function gravarfaturamentototalequipe() {
+        try {
+
+            if ($_POST['ajuste1'] != "0") {
+                $valor1 = $_POST['valorajuste1'];
+            } else {
+                $valor1 = $_POST['valor1'];
+            }
+            if ($_POST['ajuste2'] != "0") {
+                $valor2 = $_POST['valorajuste2'];
+            } else {
+                $valor2 = $_POST['valor2'];
+            }
+            if ($_POST['ajuste3'] != "0") {
+                $valor3 = $_POST['valorajuste3'];
+            } else {
+                $valor3 = $_POST['valor3'];
+            }
+            if ($_POST['ajuste4'] != "0") {
+                $valor4 = $_POST['valorajuste4'];
+            } else {
+                $valor4 = $_POST['valor4'];
+            }
+            if ($_POST['ajuste1'] != "0" || $_POST['ajuste2'] != "0" || $_POST['ajuste3'] != "0" || $_POST['ajuste4'] != "0") {
+                if ($_POST['valor1'] > $_POST['valorajuste1']) {
+                    $desconto1 = $_POST['valor1'] - $_POST['valorajuste1'];
+                } else {
+                    $desconto1 = $_POST['valorajuste1'] - $_POST['valor1'];
+                }
+                if ($_POST['valor2'] > $_POST['valorajuste2']) {
+                    $desconto2 = $_POST['valor1'] - $_POST['valorajuste1'];
+                } else {
+                    $desconto2 = $_POST['valorajuste2'] - $_POST['valor2'];
+                }
+                if ($_POST['valor3'] > $_POST['valorajuste3']) {
+                    $desconto3 = $_POST['valor3'] - $_POST['valorajuste3'];
+                } else {
+                    $desconto3 = $_POST['valorajuste3'] - $_POST['valor3'];
+                }
+                if ($_POST['valor4'] > $_POST['valorajuste4']) {
+                    $desconto4 = $_POST['valor4'] - $_POST['valorajuste4'];
+                } else {
+                    $desconto4 = $_POST['valorajuste4'] - $_POST['valor4'];
+                }
+
+                $desconto = $desconto1 + $desconto2 + $desconto3 + $desconto4 + $_POST['desconto'];
+            } else {
+                $desconto = $_POST['desconto'];
+            }
+
+//            $desconto = $_POST['desconto'];
+//            $valor1 = $_POST['valor1'];
+//            $valor2 = $_POST['valor2'];
+//            $valor3 = $_POST['valor3'];
+//            $valor4 = $_POST['valor4'];
+
+            $desconto_cartao1 = $_POST['valor1'] - $_POST['valorajuste1'];
+            $desconto_cartao2 = $_POST['valor2'] - $_POST['valorajuste2'];
+            $desconto_cartao3 = $_POST['valor3'] - $_POST['valorajuste3'];
+            $desconto_cartao4 = $_POST['valor4'] - $_POST['valorajuste4'];
+//            echo '<pre>';
+//            var_dump($desconto_cartao1,$desconto_cartao2,$desconto_cartao3,$desconto_cartao4 );
+//            die;
+            $juros = $_POST['juros'];
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $guia = $_POST['guia_id'];
+
+            $this->db->select('aee.agenda_exame_equipe_id, aee.valor as valor_total, aee.guia_id, ae.paciente_id');
+            $this->db->from('tb_agenda_exame_equipe aee');
+            $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = aee.agenda_exames_id', 'left');
+            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+            $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->join('tb_ambulatorio_grupo ag', 'pt.grupo = ag.nome', 'left');
+            if ($_POST['financeiro_grupo_id'] != '') {
+                $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+                $this->db->join('tb_financeiro_grupo fg', 'fg.financeiro_grupo_id = pp.grupo_pagamento_id', 'left');
+                $this->db->where("financeiro_grupo_id", $_POST['financeiro_grupo_id']);
+            }
+            $this->db->where("aee.guia_id", $guia);
+            $this->db->where('aee.faturado', 'f');
+            $this->db->where('ag.tipo', 'CIRURGICO');
+            $this->db->where("(c.dinheiro = 't' OR aee.equipe_particular = 't')");
+            $query = $this->db->get();
+            $returno = $query->result();
+//            echo '<pre>';
+//            var_dump($returno);
+//            die;
+
+            $this->db->set('situacao', 'EQUIPE_FATURADA');
+            $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+            $this->db->update('tb_solicitacao_cirurgia');
+
+            $this->db->set('operador_id', $operador_id);
+            $this->db->set('agenda_exame_equipe_id', $returno[0]->agenda_exame_equipe_id);
+            $this->db->set('valor_total', $desconto);
+            $this->db->set('guia_id', $returno[0]->guia_id);
+            $this->db->set('paciente_id', $returno[0]->paciente_id);
+            $this->db->insert('tb_ambulatorio_desconto');
+
+            $forma1 = $_POST['formapamento1'];
+            $forma2 = $_POST['formapamento2'];
+            $forma3 = $_POST['formapamento3'];
+            $forma4 = $_POST['formapamento4'];
+
+            $id_juros = $returno[0]->agenda_exame_equipe_id;
+            $valortotal_juros = $returno[0]->valor_total + $juros;
+            $valortotal = 0;
+
+            foreach ($returno as $value) {
+                if ($value->valor_total >= $desconto) {
+                    $valortotal = $value->valor_total - $desconto;
+                    $desconto = 0;
+                } else {
+                    $valortotal = 0;
+                    $desconto = $desconto - $value->valor_total;
+                }
+//            echo '<pre>';
+//            var_dump($returno);
+//            var_dump($desconto);
+//            var_dump($valor1);
+//            var_dump($valortotal);
+//            die;
+                $i = 0;
+                if ($valor1 > 0 && $valor1 >= $valortotal) {
+//                    echo 'if1';
+                    $valor1 = $valor1 - $valortotal;
+                    $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                    $this->db->set('valor1', str_replace(",", ".", $valortotal));
+                    $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                    $this->db->set('parcelas1', $_POST['parcela1']);
+                    $this->db->set('valor', str_replace(",", ".", $valortotal));
+                    $this->db->set('data_faturamento', $horario);
+                    $this->db->set('operador_faturamento', $operador_id);
+                    $this->db->set('faturado', 't');
+                    $this->db->where('agenda_exame_equipe_id', $value->agenda_exame_equipe_id);
+                    $this->db->update('tb_agenda_exame_equipe');
+                    $i = 1;
+                } elseif ($i != 1 && $valor2 > 0 && $valor1 < $valortotal && $valor2 >= ($valortotal - $valor1)) {
+//                    echo 'if2';
+                    $valor2 = $valor2 - ($valortotal - $valor1);
+                    $restovalor2 = $valortotal - $valor1;
+                    if ($valor1 > 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+                        $this->db->set('parcelas1', $_POST['parcela1']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento2']);
+                        $this->db->set('valor2', str_replace(",", ".", $restovalor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
+                    }
+                    if ($valor1 == 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento2']);
+                        $this->db->set('valor1', str_replace(",", ".", $restovalor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
+                    }
+                    $this->db->set('data_faturamento', $horario);
+                    $this->db->set('operador_faturamento', $operador_id);
+                    $this->db->set('faturado', 't');
+                    $this->db->set('valor', str_replace(",", ".", $valortotal));
+                    $this->db->where('agenda_exame_equipe_id', $value->agenda_exame_equipe_id);
+                    $this->db->update('tb_agenda_exame_equipe');
+                    $valor1 = 0;
+                    $i = 2;
+                } elseif ($i != 1 && $i != 2 && $valor3 > 0 && $valor2 < $valortotal && $valor3 >= ($valortotal - ($valor1 + $valor2))) {
+//                    echo 'if3';
+                    $valor3 = $valor3 - ($valortotal - ($valor2 + $valor1));
+                    $restovalor3 = $valortotal - ($valor2 + $valor1);
+                    if ($valor1 > 0 && $valor2 > 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento2']);
+                        $this->db->set('valor2', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
+                        $this->db->set('forma_pagamento3', $_POST['formapamento3']);
+                        $this->db->set('valor3', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas3', $_POST['parcela3']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+                    }
+                    if ($valor1 == 0 && $valor2 > 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento2']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento3']);
+                        $this->db->set('valor2', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+//                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+//                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                    }
+                    if ($valor2 == 0 && $valor1 > 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento3']);
+                        $this->db->set('valor2', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+//                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+//                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                    }
+                    if ($valor2 == 0 && $valor1 == 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento3']);
+                        $this->db->set('valor1', str_replace(",", ".", $restovalor3));
+                        $this->db->set('parcelas1', $_POST['parcela3']);
+                    }
+                    $this->db->set('data_faturamento', $horario);
+                    $this->db->set('operador_faturamento', $operador_id);
+                    $this->db->set('valor', str_replace(",", ".", $valortotal));
+                    $this->db->set('faturado', 't');
+                    $this->db->where('agenda_exame_equipe_id', $value->agenda_exame_equipe_id);
+                    $this->db->update('tb_agenda_exame_equipe');
+                    $valor2 = 0;
+                    $valor1 = 0;
+                    $i = 3;
+                } elseif ($i != 1 && $i != 2 && $i != 3 && $valor2 < ($valortotal - $valor1) && $valor3 < ($valortotal - ($valor1 + $valor2)) && $valor4 >= ($valortotal - ($valor1 + $valor2 + $valor3))) {
+//                    echo 'if4';
+                    $valor4 = $valor4 - ($valortotal - ($valor3 + $valor2 + $valor1));
+                    $restovalor4 = $valortotal - ($valor3 + $valor2 + $valor1);
+                    if ($valor1 > 0 && $valor2 > 0 && $valor3 > 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento2']);
+                        $this->db->set('valor2', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
+                        $this->db->set('forma_pagamento3', $_POST['formapamento3']);
+                        $this->db->set('valor3', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
+                        $this->db->set('forma_pagamento4', $_POST['formapamento4']);
+                        $this->db->set('valor4', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas4', $_POST['parcela4']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                    }
+                    if ($valor1 == 0 && $valor2 > 0 && $valor3 > 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento2']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor2));
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+//                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                        $this->db->set('parcelas1', $_POST['parcela2']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento3']);
+                        $this->db->set('valor2', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
+                        $this->db->set('forma_pagamento3', $_POST['formapamento4']);
+                        $this->db->set('valor3', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas3', $_POST['parcela4']);
+                    }
+                    if ($valor2 == 0 && $valor1 > 0 && $valor3 > 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento3']);
+                        $this->db->set('valor2', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas2', $_POST['parcela3']);
+                        $this->db->set('forma_pagamento3', $_POST['formapamento4']);
+                        $this->db->set('valor3', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas3', $_POST['parcela4']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+//                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                    }
+                    if ($valor2 > 0 && $valor1 > 0 && $valor3 == 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento2']);
+                        $this->db->set('valor2', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas2', $_POST['parcela2']);
+                        $this->db->set('forma_pagamento3', $_POST['formapamento4']);
+                        $this->db->set('valor3', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas3', $_POST['parcela4']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+//                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                    }
+                    if ($valor2 == 0 && $valor1 == 0 && $valor3 > 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento3']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor3));
+                        $this->db->set('parcelas1', $_POST['parcela3']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento4']);
+                        $this->db->set('valor2', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas2', $_POST['parcela4']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+//                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+//                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                    }
+                    if ($valor2 == 0 && $valor1 > 0 && $valor3 == 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor1));
+                        $this->db->set('parcelas1', $_POST['parcela1']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento4']);
+                        $this->db->set('valor2', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas2', $_POST['parcela4']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+//                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+//                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                    }
+                    if ($valor2 > 0 && $valor1 == 0 && $valor3 == 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento2']);
+                        $this->db->set('valor1', str_replace(",", ".", $valor2));
+                        $this->db->set('parcelas1', $_POST['parcela2']);
+                        $this->db->set('forma_pagamento2', $_POST['formapamento4']);
+                        $this->db->set('valor2', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas2', $_POST['parcela4']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+//                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+//                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                    }
+                    if ($valor2 == 0 && $valor1 == 0 && $valor3 == 0) {
+                        $this->db->set('forma_pagamento1', $_POST['formapamento4']);
+                        $this->db->set('valor1', str_replace(",", ".", $restovalor4));
+                        $this->db->set('parcelas1', $_POST['parcela4']);
+                        $this->db->set('desconto_ajuste1', $desconto_cartao1);
+//                        $this->db->set('desconto_ajuste2', $desconto_cartao2);
+//                        $this->db->set('desconto_ajuste3', $desconto_cartao3);
+//                        $this->db->set('desconto_ajuste4', $desconto_cartao4);
+                    }
+                    $this->db->set('data_faturamento', $horario);
+                    $this->db->set('operador_faturamento', $operador_id);
+                    $this->db->set('valor', str_replace(",", ".", $valortotal));
+                    $this->db->set('faturado', 't');
+                    $this->db->where('agenda_exame_equipe_id', $value->agenda_exame_equipe_id);
+                    $this->db->update('tb_agenda_exame_equipe');
+                    $valor2 = 0;
+                    $valor1 = 0;
+                    $valor3 = 0;
+                    $i = 4;
+                }
+                if ($juros > 0) {
+                    if ($_POST['formapamento1'] == 3) {
+                        $formajuros = 3;
+                    }
+                    if ($_POST['formapamento1'] == 4) {
+                        $formajuros = 4;
+                    }
+                    if ($_POST['formapamento1'] == 5) {
+                        $formajuros = 5;
+                    }
+                    if ($_POST['formapamento1'] == 6) {
+                        $formajuros = 6;
+                    }
+                    if ($_POST['formapamento2'] == 3) {
+                        $formajuros = 3;
+                    }
+                    if ($_POST['formapamento2'] == 4) {
+                        $formajuros = 4;
+                    }
+                    if ($_POST['formapamento2'] == 5) {
+                        $formajuros = 5;
+                    }
+                    if ($_POST['formapamento2'] == 6) {
+                        $formajuros = 6;
+                    }
+
+                    $this->db->set('forma_pagamento4', $formajuros);
+                    $this->db->set('valor', $valortotal_juros);
+                    $this->db->set('valor4', $juros);
+                    $this->db->where('agenda_exame_equipe_id', $value->agenda_exame_equipe_id);
+                    $this->db->update('tb_agenda_exame_equipe');
+                }
+                /* inicia o mapeamento no banco */
+            }
+//            die;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function listarcirurgia($args = array()) {
 
         $this->db->select(' p.paciente_id,
@@ -1408,6 +1828,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
                             ae.situacao,
                             pt.grupo,
                             c.nome as convenio,
+                            c.dinheiro,
                             ae.guia_id,
                             pc.valortotal,
                             ae.quantidade,
@@ -1462,7 +1883,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamento', 'left');
 //        $this->db->where('ae.cancelada', 'false');
         $this->db->where('aee.funcao', 0);
-        $this->db->where('c.dinheiro', "t");
+        $this->db->where("(c.dinheiro = 't' OR ae.equipe_particular = 't')");
         $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->where('ag.tipo', 'CIRURGICO');
