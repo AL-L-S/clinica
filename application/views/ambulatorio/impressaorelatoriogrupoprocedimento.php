@@ -1,3 +1,4 @@
+<meta charset="utf8"/>
 <div class="content"> <!-- Inicio da DIV content -->
     <?
     $i = 0;
