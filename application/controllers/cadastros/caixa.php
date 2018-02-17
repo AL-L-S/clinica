@@ -82,25 +82,38 @@ class Caixa extends BaseController {
 //        $data['conta'] = $this->forma->listarforma();
 
         $data['saida'] = $this->caixa->painelfinanceirosaida();
-//        var_dump($data['saida']); 
-//        die;
+
         $data['entrada'] = $this->caixa->painelfinanceiroentrada();
         $data['contaspagar'] = $this->caixa->painelfinanceirocontaspagar();
         $data['contasreceber'] = $this->caixa->painelfinanceirocontasreceber();
 
         $data['saidames'] = $this->caixa->painelfinanceiromessaida();
-//        var_dump($data['saida']); 
-//        die;
         $data['entradames'] = $this->caixa->painelfinanceiromesentrada();
         $data['contaspagarmes'] = $this->caixa->painelfinanceiromescontaspagar();
         $data['contasrecebermes'] = $this->caixa->painelfinanceiromescontasreceber();
 
+        $data['saidamesatual'] = $this->caixa->painelfinanceiromesatualsaida();
+        $data['entradamesatual'] = $this->caixa->painelfinanceiromesatualentrada();
+        $data['contaspagarmesatual'] = $this->caixa->painelfinanceiromesatualcontaspagar();
+        $data['contasrecebermesatual'] = $this->caixa->painelfinanceiromesatualcontasreceber();
 
-        $data['relatoriomedico'] = $this->caixa->relatorioprevisaomedicacontaspagar();
+
+//        var_dump($data['contasrecebermes']);
+//        die;
+        
+//        $data['relatoriomedico'] = $this->caixa->relatorioprevisaomedicacontaspagar();
+//        $data['relatoriopromotor'] = $this->caixa->relatorioprevisaopromotorcontaspagar();
+//        $data['relatoriolaboratorio'] = $this->caixa->relatorioprevisaolaboratoriocontaspagar();
+//        $data['relatorioconvenio'] = $this->caixa->relatorioprevisaoconveniocontasreceber();
+//        
+//        $data['relatoriomesmedico'] = $this->caixa->relatoriomesprevisaomedicacontaspagar();
+//        $data['relatoriomespromotor'] = $this->caixa->relatoriomesprevisaopromotorcontaspagar();
+//        $data['relatoriomeslaboratorio'] = $this->caixa->relatoriomesprevisaolaboratoriocontaspagar();
+//        $data['relatoriomesconvenio'] = $this->caixa->relatoriomesprevisaoconveniocontasreceber();
 //        echo '<pre>';
-//        var_dump($data['relatoriomedico']); die;
-        $data['relatoriopromotor'] = $this->caixa->relatorioprevisaopromotorcontaspagar();
-        $data['relatoriolaboratorio'] = $this->caixa->relatorioprevisaolaboratoriocontaspagar();
+//        var_dump($data['relatoriomedico']);
+//        die;
+
         $this->loadView('cadastros/painelfinanceiro', $data);
     }
 

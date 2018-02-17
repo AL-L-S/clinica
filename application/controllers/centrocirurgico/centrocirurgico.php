@@ -102,8 +102,8 @@ class centrocirurgico extends BaseController {
         } else {
             $data['forma_pagamento'] = $this->centrocirurgico_m->formadepagamento();
             $data['exame1'] = $this->centrocirurgico_m->listarexameguiaprocedimentos($guia_id);
-            $data['exame2'] = $this->centrocirurgico_m->listarexameguiaformaprocedimentos($guia_id, $financeiro_grupo_id);
-            $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
+//            $data['exame2'] = $this->centrocirurgico_m->listarexameguiaformaprocedimentos($guia_id, $financeiro_grupo_id);
+            $data['exame'][0]->total = $data['exame1'][0]->total;
         }
 //        echo '<pre>';
 //        var_dump($data['exame']); die;
@@ -126,8 +126,8 @@ class centrocirurgico extends BaseController {
         } else {
             $data['forma_pagamento'] = $this->centrocirurgico_m->formadepagamento();
             $data['exame1'] = $this->centrocirurgico_m->listarexameguiaequipe($guia_id);
-            $data['exame2'] = $this->centrocirurgico_m->listarexameguiaformaequipe($guia_id, $financeiro_grupo_id);
-            $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
+//            $data['exame2'] = $this->centrocirurgico_m->listarexameguiaformaequipe($guia_id, $financeiro_grupo_id);
+            $data['exame'][0]->total = $data['exame1'][0]->total;
         }
 //        echo '<pre>';
 //        var_dump($data['exame1']); die;

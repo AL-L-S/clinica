@@ -465,9 +465,92 @@ class caixa_model extends Model {
         return $return->result();
     }
 
+    function painelfinanceiromesatualsaida() {
+
+        $data_inicio = date('Y-m-01');
+        $data_fim = date('Y-m-t');
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_saidas s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceiromesatualentrada() {
+        $data_inicio = date('Y-m-01');
+        $data_fim = date('Y-m-t');
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_entradas s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceiromesatualcontaspagar() {
+        $data_inicio = date('Y-m-01');
+        $data_fim = date('Y-m-t');
+
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_financeiro_contaspagar s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function painelfinanceiromesatualcontasreceber() {
+        $data_inicio = date('Y-m-01');
+        $data_fim = date('Y-m-t');
+
+        $this->db->select('sum(s.valor) as valor_total');
+        $this->db->from('tb_financeiro_contasreceber s');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.data >=', $data_inicio);
+        $this->db->where('s.data <=', $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("s.empresa_id", $empresa_id);
+        }
+//        $this->db->groupby('s.valor');
+        $return = $this->db->get()->result();
+//        var_dump($return); die;
+        return $return;
+    }
+
     function painelfinanceirorecebimento() {
         if (@$_GET['txtdata_inicio'] != '') {
-            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+            $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
         } else {
             $data_inicio = date('Y-m-01');
         }
@@ -496,7 +579,7 @@ class caixa_model extends Model {
     function relatorioprevisaolaboratoriocontaspagar() {
 
         if (@$_GET['txtdata_inicio'] != '') {
-            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+            $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
         } else {
             $data_inicio = date('Y-m-01');
         }
@@ -539,7 +622,7 @@ class caixa_model extends Model {
 
     function relatorioprevisaopromotorcontaspagar() {
         if (@$_GET['txtdata_inicio'] != '') {
-            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+            $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
         } else {
             $data_inicio = date('Y-m-01');
         }
@@ -582,7 +665,7 @@ class caixa_model extends Model {
 
     function relatorioprevisaomedicacontaspagar() {
         if (@$_GET['txtdata_inicio'] != '') {
-            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+            $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
         } else {
             $data_inicio = date('Y-m-01');
         }
@@ -644,6 +727,252 @@ class caixa_model extends Model {
         }
         $this->db->orderby('op.nome');
         $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatorioprevisaoconveniocontasreceber() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select(' pc.valortotal as valor_procedimento,
+                            ae.valor_total,
+                            ae.data,
+                            c.nome as convenio,
+                            credor_devedor_id,
+                            c.dia_aquisicao,
+                            c.convenio_id,
+                            c.conta_id,
+                            ae.confirmacao_recebimento_convenio');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("ae.data >=", $data_inicio);
+        $this->db->where("ae.data <=", $data_fim);
+        $this->db->where("c.dinheiro", 'f');
+        $this->db->where("c.dia_aquisicao IS NOT NULL");
+        $this->db->where('pt.grupo !=', 'CIRURGICO');
+        $this->db->where('pt.grupo !=', 'OPME');
+        $this->db->where('ae.cancelada', 'f');
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('ae.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }
+
+        $this->db->orderby('ae.data');
+        $this->db->orderby('c.nome');
+        $return = $this->db->get();
+
+        return $return->result();
+    }
+
+    function relatoriomesprevisaolaboratoriocontaspagar() {
+
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-t", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select(" ae.percentual_laboratorio,
+                            ae.valor_laboratorio,
+                            ae.data,
+                            ae.valor_total,
+                            lab.nome as laboratorio,
+                            ae.laboratorio_id,
+                            ae.confirmacao_previsao_labotorio,
+                            lab.conta_id,
+                            lab.credor_devedor_id,
+                            lab.tipo,
+                            lab.classe");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = ae.laboratorio_id', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+        $this->db->where('ae.laboratorio_id is not null');
+
+        $this->db->where("ae.data >=", $data_inicio);
+        $this->db->where("ae.data <=", $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('ae.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }
+        $this->db->orderby('lab.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriomesprevisaopromotorcontaspagar() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-t", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select(' ae.valor_promotor,
+                            ae.percentual_promotor, 
+                            ae.valor_total,
+                            pi.nome as promotor,
+                            ae.indicacao,
+                            ae.confirmacao_previsao_promotor,
+                            pi.credor_devedor_id,
+                            pi.conta_id,
+                            pi.classe,
+                            pi.tipo_id');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+        $this->db->where('ae.indicacao is not null');
+
+        $this->db->where("ae.data >=", $data_inicio);
+        $this->db->where("ae.data <=", $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('ae.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }
+        $this->db->orderby('pi.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriomesprevisaomedicacontaspagar() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-t", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+
+        $this->db->select(" ae.valor_total,
+                            pc.procedimento_tuss_id,
+                            pc.procedimento_convenio_id,
+                            pt.perc_medico,
+                            pt.percentual,
+                            ae.medico_agenda,
+                            op.nome as medico,
+                            op.taxa_administracao,
+                            (
+                                SELECT mc.valor FROM ponto.tb_procedimento_percentual_medico_convenio mc
+                                INNER JOIN ponto.tb_procedimento_percentual_medico m 
+                                ON m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+                                WHERE m.procedimento_tuss_id = pc.procedimento_convenio_id
+                                AND m.ativo = 't'
+                                AND mc.medico = ae.medico_agenda
+                                AND mc.ativo = 't'
+                                LIMIT 1
+                            ) AS perc_medico_excecao,
+                            (
+                                SELECT mc.percentual FROM ponto.tb_procedimento_percentual_medico_convenio mc
+                                INNER JOIN ponto.tb_procedimento_percentual_medico m 
+                                ON m.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id
+                                WHERE m.procedimento_tuss_id = pc.procedimento_convenio_id
+                                AND m.ativo = 't'
+                                AND mc.medico = ae.medico_agenda
+                                AND mc.ativo = 't'
+                                LIMIT 1
+                            ) AS percentual_excecao,
+                            ae.confirmacao_previsao_medico,
+                            op.tipo_id,
+                            op.conta_id,
+                            op.credor_devedor_id,
+                            op.classe,
+                            ae.confirmacao_previsao_medico");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.medico_agenda', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+//        $this->db->where('c.dinheiro', 't');
+
+        $this->db->where("ae.data >=", $data_inicio);
+        $this->db->where("ae.data <=", $data_fim);
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('ae.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }
+        $this->db->orderby('op.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriomesprevisaoconveniocontasreceber() {
+        if (@$_GET['txtdata_inicio'] != '') {
+            $data_inicio = date("Y-m-01", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])));
+        } else {
+            $data_inicio = date('Y-m-01');
+        }
+        if (@$_GET['txtdata_fim'] != '') {
+            $data_fim = date("Y-m-t", strtotime(str_replace('/', '-', @$_GET['txtdata_fim'])));
+        } else {
+            $data_fim = date('Y-m-t');
+        }
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select(' pc.valortotal as valor_procedimento,
+                            ae.valor_total,
+                            ae.data,
+                            c.nome as convenio,
+                            credor_devedor_id,
+                            c.dia_aquisicao,
+                            c.convenio_id,
+                            c.conta_id,
+                            ae.confirmacao_recebimento_convenio');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("ae.data >=", $data_inicio);
+        $this->db->where("ae.data <=", $data_fim);
+        $this->db->where("c.dinheiro", 'f');
+        $this->db->where("c.dia_aquisicao IS NOT NULL");
+        $this->db->where('pt.grupo !=', 'CIRURGICO');
+        $this->db->where('pt.grupo !=', 'OPME');
+        $this->db->where('ae.cancelada', 'f');
+        $empresa_id = $this->session->userdata('empresa_id');
+        if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
+            $this->db->where('ae.empresa_id', $args['txtempresa']);
+        } else {
+            $this->db->where("ae.empresa_id", $empresa_id);
+        }
+
+        $this->db->orderby('ae.data');
+        $this->db->orderby('c.nome');
+        $return = $this->db->get();
+
         return $return->result();
     }
 

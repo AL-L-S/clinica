@@ -71,7 +71,7 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;"><div  class="bt_link">
                                             <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/faturarprocedimentos/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->guia_id; ?>" target="_blank">Faturar</a></div>
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>"><div style="width: 100px;" class="bt_link">
+                                    <td class="<?php echo $estilo_linha; ?>" style="width: 100px;"><div style="width: 100px;" class="bt_link">
                                             <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/faturarequipe/<?= $item->solicitacao_cirurgia_id; ?>/<?= $item->guia_id; ?>" target="_blank">Faturar Eq.</a></div>
                                     </td>
                                     <? if ($item->situacao == 'AGUARDANDO') { ?>
@@ -79,7 +79,7 @@
                                                 <a  onclick="javascript: return confirm('Deseja confirmar a execução da cirgugia?  ');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/confirmarcirurgia/<?= $item->solicitacao_cirurgia_id ?>">Confirmar</a></div>
                                         </td>   
                                     <? } else { ?>
-                                        <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+                                        <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
                                                 <!--<a  onclick="javascript: return confirm('Deseja realmente excluir o convenio?\n\nObs: Irá excluir também os procedimentos associados ao convenio  ');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/confirmarcirurgia/<?= $item->solicitacao_cirurgia_id ?>">Confirmar</a></div>-->
                                         </td> 
                                     <? }
@@ -88,9 +88,9 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
                                             <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/editarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Editar</a></div>
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
+<!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
                                             <a  href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaoorcamento/<?= $item->solicitacao_cirurgia_id; ?>">Imprimir</a></div>
-                                    </td>
+                                    </td>-->
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
 
