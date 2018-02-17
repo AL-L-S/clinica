@@ -2287,7 +2287,7 @@ class Exame extends BaseController {
         $data['agenda_id'] = $agenda_id;
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
-//        $data['salas'] = $this->exame->listartodassalas();
+        $data['empresaPermissao'] = $this->guia->listarempresapermissoes();
         $data['tipo'] = $this->tipoconsulta->listartodos();
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
         $this->loadView('ambulatorio/geral-form', $data);
@@ -2297,7 +2297,7 @@ class Exame extends BaseController {
         $data['agenda_id'] = $agenda_id;
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
-//        $data['salas'] = $this->exame->listartodassalas();
+        $data['empresaPermissao'] = $this->guia->listarempresapermissoes();
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
         $this->loadView('ambulatorio/exame-form', $data);
     }
@@ -2307,7 +2307,7 @@ class Exame extends BaseController {
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
-//        var_dump($data['horarioagenda']); die;
+        $data['empresaPermissao'] = $this->guia->listarempresapermissoes();
         $data['tipo'] = $this->tipoconsulta->listartodos();
         $this->loadView('ambulatorio/consulta-form', $data);
     }
@@ -2317,6 +2317,7 @@ class Exame extends BaseController {
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
+        $data['empresaPermissao'] = $this->guia->listarempresapermissoes();
         $data['tipo'] = $this->agenda->listarespecialidades();
         $this->loadView('ambulatorio/especializacao-form', $data);
     }

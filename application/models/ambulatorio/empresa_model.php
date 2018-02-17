@@ -1196,6 +1196,12 @@ class empresa_model extends Model {
                     $this->db->set('campos_obrigatorios_pac_municipio', 'f');
                 }
 
+                if (isset($_POST['repetir_horarios_agenda'])) {
+                    $this->db->set('repetir_horarios_agenda', 't');
+                } else {
+                    $this->db->set('repetir_horarios_agenda', 'f');
+                }                
+
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -1414,6 +1420,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('campos_obrigatorios_pac_municipio', 'f');
                 }
+
+                if (isset($_POST['repetir_horarios_agenda'])) {
+                    $this->db->set('repetir_horarios_agenda', 't');
+                } else {
+                    $this->db->set('repetir_horarios_agenda', 'f');
+                }   
                 
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
@@ -1524,7 +1536,9 @@ class empresa_model extends Model {
                                ep.campos_obrigatorios_pac_sexo,
                                ep.campos_obrigatorios_pac_nascimento,
                                ep.campos_obrigatorios_pac_telefone,
-                               ep.campos_obrigatorios_pac_municipio');
+                               ep.campos_obrigatorios_pac_municipio,
+                               ep.repetir_horarios_agenda
+                               ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
@@ -1627,6 +1641,7 @@ class empresa_model extends Model {
             $this->_campos_obrigatorios_pac_nascimento = $return[0]->campos_obrigatorios_pac_nascimento;
             $this->_campos_obrigatorios_pac_sexo = $return[0]->campos_obrigatorios_pac_sexo;
             $this->_campos_obrigatorios_pac_cpf = $return[0]->campos_obrigatorios_pac_cpf;
+            $this->_repetir_horarios_agenda = $return[0]->repetir_horarios_agenda;
         } else {
             $this->_empresa_id = null;
         }

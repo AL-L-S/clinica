@@ -116,7 +116,8 @@ class guia_model extends Model {
                             ep.campos_obrigatorios_pac_sexo,
                             ep.campos_obrigatorios_pac_nascimento,
                             ep.campos_obrigatorios_pac_telefone,
-                            ep.campos_obrigatorios_pac_municipio');
+                            ep.campos_obrigatorios_pac_municipio,
+                            ep.repetir_horarios_agenda');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
