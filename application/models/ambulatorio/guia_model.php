@@ -110,6 +110,7 @@ class guia_model extends Model {
                             carregar_modelo_receituario,
                             retirar_botao_ficha,
                             ep.desabilitar_trava_retorno,
+                            ep.conjuge,
                             ep.associa_credito_procedimento,
                             ep.desativar_personalizacao_impressao,
                             ep.campos_obrigatorios_pac_cpf,

@@ -254,7 +254,7 @@ class laudo_model extends Model {
     function listarempresatipoxml() {
         $empresa_id = $this->session->userdata('empresa_id');
 
-        $this->db->select('t.nome');
+        $this->db->select('t.nome, e.impressao_tipo');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_tipo_xml t', 't.tipo_xml_id = e.tipo_xml_id', 'left');
         $this->db->where("t.ativo", 't');
@@ -757,6 +757,8 @@ class laudo_model extends Model {
                             p.convenionumero,
                             p.nome as paciente,
                             p.nascimento,
+                            p.sexo,
+                            p.paciente_id,
                             op.nome as medicosolicitante,
                             op.conselho as conselhosolicitante,
                             o.nome as medico,
@@ -766,7 +768,9 @@ class laudo_model extends Model {
                             ae.data_autorizacao,
                             ae.data_realizacao,                            
                             tu.descricao as procedimento,
-                            ae.data,
+                            al.data,
+                            al.medico_parecer1,
+                            al.medico_parecer2,
                             pt.grupo,
                             c.nome as convenio,
                             tuc.nome as classificacao,

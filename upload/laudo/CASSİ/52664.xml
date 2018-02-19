@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+                      <S_LINE>
+                      <SL_TIPO>RP</SL_TIPO>
+                      <SL_TITULO>TESTE - CONSULTA-1998-08-08</SL_TITULO>
+                      <SL_SN>O</SL_SN>
+                      <SL_CHAVE></SL_CHAVE>
+                      <SL_SENHA></SL_SENHA>                      
+                      <SL_COD_DOC>52664</SL_COD_DOC>                      
+                      <SL_FORMATO>PDF</SL_FORMATO>
+                      <SL_DATA_REALIZACAO>2016-12-29T 10:14:03 </SL_DATA_REALIZACAO>
+                        <SL_OPER>
+                           <OPER_REGANS>346659</OPER_REGANS>
+                           <OPER_NUMCARTEIRA>0000000</OPER_NUMCARTEIRA>
+                           <OPER_NUMGUIA>0000000
+                                <OPER_EXAME>20103301</OPER_EXAME></OPER_NUMGUIA></SL_OPER>
+                       <SL_TEXTO>Dr. Daniel Romero
+Traumato-Ortopedia / Cirurgia da M&atilde;o
+CRM: 10688
+&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ATESTADO MDICO
+&nbsp;
+&nbsp;
+&nbsp;
+PACIENTE SUBMETIDA A TRATAMENTO CIRRGICO DE RESSEC&Ccedil;&Atilde;O TUMORAL NO PUNHO DIREITO HOJE. NECESSITA DE AFASTAMENTO DE SUAS ATIVIDADES LABORAIS POR PERODO DE 15 (QUINZE) DIAS.
+&nbsp;
+&nbsp;
+&nbsp;
+CID: M71.3
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+Fortaleza, 01 de dezembro de 2016.</SL_TEXTO>
+                    </S_LINE>

@@ -42,6 +42,7 @@ class empresa_model extends Model {
         if ($operador_id != 1) {
             $this->db->where('empresa_id', $empresa_id);
         }
+        $this->db->where('ativo', 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', $args['nome'] . "%");
         }
@@ -646,6 +647,17 @@ class empresa_model extends Model {
             return true;
     }
 
+    function excluirempresa($servidor_id) {
+        $this->db->set('ativo', 'f');
+        $this->db->where('empresa_id', $servidor_id);
+        $this->db->update('tb_empresa');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
     function gravarlogomarca() {
         try {
             if (isset($_POST['mostrarLogo'])) {
@@ -776,7 +788,7 @@ class empresa_model extends Model {
                 $this->db->where('forma_pagamento_id', 1000);
                 $this->db->update('tb_forma_pagamento');
             }
-            
+
             /* inicia o mapeamento no banco */
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
@@ -804,7 +816,7 @@ class empresa_model extends Model {
                 $this->db->set('impressao_recibo', $_POST['impressao_recibo']);
             }
             if ($_POST['numero_empresa_painel'] != "") {
-                $this->db->set('numero_empresa_painel', (int)$_POST['numero_empresa_painel']);
+                $this->db->set('numero_empresa_painel', (int) $_POST['numero_empresa_painel']);
             }
             if ($_POST['impressao_declaracao'] != "") {
                 $this->db->set('impressao_declaracao', $_POST['impressao_declaracao']);
@@ -1015,6 +1027,11 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('valor_autorizar', 'f');
                 }
+                if (isset($_POST['conjuge'])) {
+                    $this->db->set('conjuge', 't');
+                } else {
+                    $this->db->set('conjuge', 'f');
+                }
                 if (isset($_POST['gerente_contasapagar'])) {
                     $this->db->set('gerente_contasapagar', 't');
                 } else {
@@ -1165,32 +1182,32 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('associa_credito_procedimento', 'f');
                 }
-                
-                if(in_array("dt_nascimento", $_POST['campos_obrigatorio'])){
+
+                if (in_array("dt_nascimento", $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_nascimento', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_nascimento', 'f');
                 }
-                
-                if(in_array('sexo', $_POST['campos_obrigatorio'])){
+
+                if (in_array('sexo', $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_sexo', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_sexo', 'f');
                 }
-                
-                if(in_array('cpf', $_POST['campos_obrigatorio'])){
+
+                if (in_array('cpf', $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_cpf', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_cpf', 'f');
                 }
-                
-                if(in_array('telefone', $_POST['campos_obrigatorio'])){
+
+                if (in_array('telefone', $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_telefone', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_telefone', 'f');
                 }
-                
-                if(in_array('municipio', $_POST['campos_obrigatorio'])){
+
+                if (in_array('municipio', $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_municipio', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_municipio', 'f');
@@ -1223,6 +1240,11 @@ class empresa_model extends Model {
                     $this->db->set('valor_autorizar', 't');
                 } else {
                     $this->db->set('valor_autorizar', 'f');
+                }
+                if (isset($_POST['conjuge'])) {
+                    $this->db->set('conjuge', 't');
+                } else {
+                    $this->db->set('conjuge', 'f');
                 }
                 if (isset($_POST['gerente_contasapagar'])) {
                     $this->db->set('gerente_contasapagar', 't');
@@ -1366,7 +1388,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('carregar_modelo_receituario', 'f');
                 }
-                
+
                 if (isset($_POST['caixa_personalizado'])) {
                     $this->db->set('caixa_personalizado', 't');
                 } else {
@@ -1384,37 +1406,37 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('associa_credito_procedimento', 'f');
                 }
-                
-                if(in_array("dt_nascimento", $_POST['campos_obrigatorio'])){
+
+                if (in_array("dt_nascimento", $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_nascimento', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_nascimento', 'f');
                 }
-                
-                if(in_array('sexo', $_POST['campos_obrigatorio'])){
+
+                if (in_array('sexo', $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_sexo', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_sexo', 'f');
                 }
-                
-                if(in_array('cpf', $_POST['campos_obrigatorio'])){
+
+                if (in_array('cpf', $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_cpf', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_cpf', 'f');
                 }
-                
-                if(in_array('telefone', $_POST['campos_obrigatorio'])){
+
+                if (in_array('telefone', $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_telefone', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_telefone', 'f');
                 }
-                
-                if(in_array('municipio', $_POST['campos_obrigatorio'])){
+
+                if (in_array('municipio', $_POST['campos_obrigatorio'])) {
                     $this->db->set('campos_obrigatorios_pac_municipio', 't');
                 } else {
                     $this->db->set('campos_obrigatorios_pac_municipio', 'f');
                 }
-                
+
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('empresa_id', $empresa_id);
@@ -1519,6 +1541,7 @@ class empresa_model extends Model {
                                ep.carregar_modelo_receituario,
                                ep.desabilitar_trava_retorno,
                                ep.associa_credito_procedimento,
+                               ep.conjuge,
                                f.numero_empresa_painel,
                                ep.campos_obrigatorios_pac_cpf,
                                ep.campos_obrigatorios_pac_sexo,
@@ -1539,6 +1562,7 @@ class empresa_model extends Model {
             $this->_telefone = $return[0]->telefone;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
+            $this->_conjuge = $return[0]->conjuge;
             $this->_horario_seg_sex = $return[0]->horario_seg_sex;
             $this->_horario_sab = $return[0]->horario_sab;
             $this->_logradouro = $return[0]->logradouro;

@@ -105,7 +105,7 @@ $valormes_total_pagamento = $valormes_medico_total + $valormes_laboratorio_total
 <div class="content"> <!-- Inicio da DIV content -->
 
     <div id="accordion">
-        <h3 class="singular"><a href="#">Paine Financeiro</a></h3>
+        <h3 class="singular"><a href="#">Painel Financeiro</a></h3>
         <div>
             <form method="get" action="<?= base_url() ?>cadastros/caixa/painelfinanceiro">
                 <table border="1">

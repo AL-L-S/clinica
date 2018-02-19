@@ -113,7 +113,7 @@ class Solicitacao extends BaseController {
 //        
 //        $_POST['txtqtde'] = (int) $_POST['txtqtde'];
 //        $_POST['qtdedisponivel'] = (int) $_POST['qtdedisponivel'];
-//        var_dump($_POST['qtdedisponivel']); die;
+        var_dump($_POST['qtdedisponivel']); die;
         
         if($_POST['produto_id'] == ''){
             $data['mensagem'] = 'Insira um produto valido.';

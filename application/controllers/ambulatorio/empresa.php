@@ -452,6 +452,17 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/configuraracessoexterno/$empresa_id");
     }
+    
+    function excluirempresa($servidor_id, $empresa_id) {
+        if ($this->empresa->excluirempresa($servidor_id)) {
+            $mensagem = 'Sucesso ao desativar a empresa';
+        } else {
+            $mensagem = 'Erro ao excluir a empresa. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa");
+    }
 
     function gravarconfiguracaoemail() {
         $empresa_id = $this->empresa->gravarconfiguracaoemail();

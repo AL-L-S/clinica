@@ -555,6 +555,12 @@
                         <dd>
                             <input type="checkbox" id="associa_credito_procedimento" name="associa_credito_procedimento" <? if (@$obj->_associa_credito_procedimento == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Nome do cônjuge e data de nascimento do mesmo">Nome do cônjuge</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="conjuge" name="conjuge" <? if (@$obj->_conjuge == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

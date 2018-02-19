@@ -73,6 +73,7 @@ class solicitacao_model extends Model {
         $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = esi.produto_id');
         $this->db->where('esi.ativo', 'true');
         $this->db->where('esi.solicitacao_cliente_id', $estoque_solicitacao_id);
+        $this->db->orderby('ep.descricao');
         $return = $this->db->get();
         return $return->result();
     }

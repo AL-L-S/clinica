@@ -12,7 +12,7 @@
             <div>
                 <label>Nascimento*</label>
                 <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" onblur="calculoIdade()"
-                       <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_nascimento == 't') ? 'required' : '' ?>/>
+                       <?= (@$empresapermissoes[0]->campos_obrigatorios_pac_nascimento == 't') ? 'required' : '' ?>/>
             </div>
             <div>
                 <label>Idade</label>
@@ -28,13 +28,28 @@
                 <label>Nome do Pai</label>
                 <input type="text"  name="nome_pai" id="txtNomePai" class="texto06" value="<?= @$obj->_nomepai; ?>" />
             </div>
+            <?
+//            var_dump(@$empresapermissoes); die;
+            ?>
+            <? if (@$empresapermissoes[0]->conjuge == 't') { ?>
+
+                <div>
+                    <label>Nome do Cônjuge</label>
+                    <input type="text"  name="nome_conjuge" id="nome_conjuge" class="texto06" value="<?= @$obj->_nome_conjuge; ?>" />
+                </div>
+                <div>
+                    <label>Nascimento do Cônjuge</label>
+                    <input type="text" name="nascimento_conjuge" id="nascimento_conjuge" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento_conjuge, 8, 2) . '/' . substr(@$obj->_nascimento_conjuge, 5, 2) . '/' . substr(@$obj->_nascimento_conjuge, 0, 4); ?>" />
+
+                </div>
+            <? } ?>
             <div>
                 <label>Email</label>
                 <input type="text" id="txtCns" name="cns"  class="texto06" value="<?= @$obj->_cns; ?>" />
             </div>
             <div>
                 <label>Sexo</label>
-                <select name="sexo" id="txtSexo" class="size1" <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_sexo == 't') ? 'required' : '' ?>>
+                <select name="sexo" id="txtSexo" class="size1" <?= (@$empresapermissoes[0]->campos_obrigatorios_pac_sexo == 't') ? 'required' : '' ?>>
                     <option value="" <?
                     if (@$obj->_sexo == ""):echo 'selected';
                     endif;
@@ -64,7 +79,7 @@
                 <label>CPF</label>
 
 
-                <input type="text" <? if ($empresapermissoes[0]->cpf_obrigatorio == 't') { ?>required <? } ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_cpf == 't') ? 'required' : '' ?>/>
+                <input type="text" <? if ($empresapermissoes[0]->cpf_obrigatorio == 't') { ?>required <? } ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" <?= (@$empresapermissoes[0]->campos_obrigatorios_pac_cpf == 't') ? 'required' : '' ?>/>
             </div>
             <div>
                 <label>RG</label>
@@ -171,7 +186,7 @@
 
 
                 <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_cidade; ?>" readonly="true" />
-                <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_cidade_nome; ?>"  <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_municipio == 't') ? 'required' : '' ?>/>
+                <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_cidade_nome; ?>"  <?= (@$empresapermissoes[0]->campos_obrigatorios_pac_municipio == 't') ? 'required' : '' ?>/>
             </div>
             <div>
                 <label>CEP</label>
@@ -216,7 +231,7 @@
                 }
                 ?>
 
-                <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$telefone; ?>" <?= (@$empresaPermissao[0]->campos_obrigatorios_pac_telefone == 't') ? 'required' : '' ?>/>
+                <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$telefone; ?>" <?= (@$empresapermissoes[0]->campos_obrigatorios_pac_telefone == 't') ? 'required' : '' ?>/>
             </div>
             <div>
                 <label>Telefone 2</label>
@@ -256,12 +271,16 @@
 
                 <select name="leito" id="leito" class="size2">
                     <option value='' >Selecione</option>
-                    <option value='ENFERMARIA' <? if (@$obj->_leito == 'ENFERMARIA') {
-                                  echo 'selected';
-                              } ?>>ENFERMARIA</option>
-                    <option value='APARTAMENTO'<? if (@$obj->_leito == 'APARTAMENTO') {
-                                  echo 'selected';
-                              } ?>>APARTAMENTO</option>
+                    <option value='ENFERMARIA' <?
+                    if (@$obj->_leito == 'ENFERMARIA') {
+                        echo 'selected';
+                    }
+                    ?>>ENFERMARIA</option>
+                    <option value='APARTAMENTO'<?
+                    if (@$obj->_leito == 'APARTAMENTO') {
+                        echo 'selected';
+                    }
+                    ?>>APARTAMENTO</option>
 
                 </select>
             </div>
@@ -270,6 +289,14 @@
 
 
                 <input type="text" id="txtconvenionumero" class="texto03" name="convenionumero" value="<?= @$obj->_convenionumero; ?>" />
+            </div>
+            <div>
+                <label>Vencimento Carteira</label>
+
+
+                <input type="text" id="vencimento_carteira" class="texto03" name="vencimento_carteira" value="<? if (@$obj->_vencimento_carteira != '') {
+                                echo date("d/m/Y", strtotime(@$obj->_vencimento_carteira));
+                            } ?>" />
             </div>
             <div>
                 <label>Ocupa&ccedil;&atilde;o</label>
@@ -283,29 +310,29 @@
                 <select name="raca_cor" id="txtRacaCor" class="size2">
 
                     <option value=0  <?
-                    if (@$obj->_raca_cor == 0):echo 'selected';
-                    endif;
-                    ?>>Selecione</option>
+                            if (@$obj->_raca_cor == 0):echo 'selected';
+                            endif;
+                            ?>>Selecione</option>
                     <option value=1 <?
-                    if (@$obj->_raca_cor == 1):echo 'selected';
-                    endif;
-                    ?>>Branca</option>
+                            if (@$obj->_raca_cor == 1):echo 'selected';
+                            endif;
+                            ?>>Branca</option>
                     <option value=2 <?
-                    if (@$obj->_raca_cor == 2):echo 'selected';
-                    endif;
-                    ?>>Amarela</option>
+                            if (@$obj->_raca_cor == 2):echo 'selected';
+                            endif;
+                            ?>>Amarela</option>
                     <option value=3 <?
-                    if (@$obj->_raca_cor == 3):echo 'selected';
-                    endif;
-                    ?>>Preta</option>
+                            if (@$obj->_raca_cor == 3):echo 'selected';
+                            endif;
+                            ?>>Preta</option>
                     <option value=4 <?
-                    if (@$obj->_raca_cor == 4):echo 'selected';
-                    endif;
-                    ?>>Parda</option>
+                            if (@$obj->_raca_cor == 4):echo 'selected';
+                            endif;
+                            ?>>Parda</option>
                     <option value=5 <?
                             if (@$obj->_raca_cor == 5):echo 'selected';
                             endif;
-                    ?>>Ind&iacute;gena</option>
+                            ?>>Ind&iacute;gena</option>
                 </select>
             </div>
             <div>
@@ -314,29 +341,29 @@
 
                 <select name="estado_civil_id" id="txtEstadoCivil" class="size2" selected="<?= @$obj->_estado_civil; ?>">
                     <option value=0 <?
-                    if (@$obj->_estado_civil == 0):echo 'selected';
-                    endif;
-                    ?>>Selecione</option>
+                            if (@$obj->_estado_civil == 0):echo 'selected';
+                            endif;
+                            ?>>Selecione</option>
                     <option value=1 <?
-                    if (@$obj->_estado_civil == 1):echo 'selected';
-                    endif;
-                    ?>>Solteiro</option>
+                            if (@$obj->_estado_civil == 1):echo 'selected';
+                            endif;
+                            ?>>Solteiro</option>
                     <option value=2 <?
-                    if (@$obj->_estado_civil == 2):echo 'selected';
-                    endif;
-                    ?>>Casado</option>
+                            if (@$obj->_estado_civil == 2):echo 'selected';
+                            endif;
+                            ?>>Casado</option>
                     <option value=3 <?
-                    if (@$obj->_estado_civil == 3):echo 'selected';
-                    endif;
-                    ?>>Divorciado</option>
+                            if (@$obj->_estado_civil == 3):echo 'selected';
+                            endif;
+                            ?>>Divorciado</option>
                     <option value=4 <?
-                    if (@$obj->_estado_civil == 4):echo 'selected';
-                    endif;
-                    ?>>Viuvo</option>
+                            if (@$obj->_estado_civil == 4):echo 'selected';
+                            endif;
+                            ?>>Viuvo</option>
                     <option value=5 <?
                             if (@$obj->_estado_civil == 5):echo 'selected';
                             endif;
-                    ?>>Outros</option>
+                            ?>>Outros</option>
                 </select>
             </div>
             <div>
@@ -344,44 +371,48 @@
 
                 <select name="escolaridade" id="escolaridade" class="size2" selected="<?= @$obj->_escolaridade_id; ?>">
                     <option value=0 <?
-                    if (@$obj->_escolaridade_id == 0):echo 'selected';
-                    endif;
-                    ?>>Selecione</option>
+                            if (@$obj->_escolaridade_id == 0):echo 'selected';
+                            endif;
+                            ?>>Selecione</option>
                     <option value=1 <?
-                    if (@$obj->_escolaridade_id == 1):echo 'selected';
-                    endif;
-                    ?>>Fundamental-Incompleto </option>
+                            if (@$obj->_escolaridade_id == 1):echo 'selected';
+                            endif;
+                            ?>>Fundamental-Incompleto </option>
                     <option value=2 <?
                             if (@$obj->_escolaridade_id == 2):echo 'selected';
                             endif;
-                    ?>>Fundamental-Completo</option>
+                            ?>>Fundamental-Completo</option>
 
                     <option value=3 <?
-                    if (@$obj->_escolaridade_id == 3):echo 'selected';
-                    endif;
-                    ?>>Médio 
+                            if (@$obj->_escolaridade_id == 3):echo 'selected';
+                            endif;
+                            ?>>Médio 
                         -
                         Incompleto</option>
                     <option value=4 <?
-                    if (@$obj->_escolaridade_id == 4):echo 'selected';
-                    endif;
-                    ?>>Médio 
+                            if (@$obj->_escolaridade_id == 4):echo 'selected';
+                            endif;
+                            ?>>Médio 
                         -
                         Completo
                     </option>
                     <option value=5 <?
-                    if (@$obj->_escolaridade_id == 5):echo 'selected';
-                    endif;
-                    ?>>Superior 
+                            if (@$obj->_escolaridade_id == 5):echo 'selected';
+                            endif;
+                            ?>>Superior 
                         -
                         Incompleto</option>
                     <option value=6 <?
-                    if (@$obj->_escolaridade_id == 6):echo 'selected';
-                    endif;
-                    ?>>Superior-Completo </option>
+                            if (@$obj->_escolaridade_id == 6):echo 'selected';
+                            endif;
+                            ?>>Superior-Completo </option>
 
 
                 </select>
+            </div>
+            <div>
+                <label>Instagram (ex: @testeclini79)</label>
+                <input type="text" id="instagram" class="texto04" name="instagram" value="<?= @$obj->_instagram; ?>" />
             </div>
         </fieldset>
         <fieldset>
@@ -397,6 +428,11 @@
             <div id="results">A imagem capturada aparece aqui...</div>
 
         </fieldset>
+        <!--        <fieldset>
+                    <legend>Outros</legend>
+                    
+        
+                </fieldset>-->
         <button type="submit">Enviar</button>
         <button type="reset">Limpar</button>
 
@@ -495,6 +531,18 @@
 //    mascaraTelefone(form_paciente.txtTelefone);
 //    mascaraTelefone(form_paciente.txtwhatsapp);
 //    mascaraTelefone(form_paciente.txtCelular);
+    $(function () {
+        $("#vencimento_carteira").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
+
     jQuery("#txtwhatsapp")
             .mask("(99) 9999-9999?9")
             .focusout(function (event) {
@@ -628,19 +676,19 @@
             }
         });
     });
-    
+
     function calculoIdade() {
         var data = document.getElementById("txtNascimento").value;
-        
-        if ( data != '' && data != '//' ) {
-            
+
+        if (data != '' && data != '//') {
+
             var ano = data.substring(6, 12);
             var idade = new Date().getFullYear() - ano;
 
             var dtAtual = new Date();
             var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
 
-            if ( dtAtual < aniversario ) {
+            if (dtAtual < aniversario) {
                 idade--;
             }
 

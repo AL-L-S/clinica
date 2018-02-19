@@ -22,7 +22,7 @@
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">CNPJ</th>
                         <th class="tabela_header">Raz&atilde;o social</th>
-                        <th class="tabela_header" colspan="6"><center>Detalhes</center></th>
+                        <th class="tabela_header" colspan="7"><center>Detalhes</center></th>
                 </tr>
                 </thead>
                 <?php
@@ -65,10 +65,11 @@
                                     <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
                                             <a href="<?= base_url() ?>ambulatorio/empresa/configuraracessoexterno/<?= $item->empresa_id ?>">Acesso Multiempresa</a></div>
                                     </td>
-<!--                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
-                                            <a href="<?= base_url() ?>ambulatorio/empresa/anexarimagemlogo/<?= $item->empresa_id ?>">Logo Sistema</a></div>
-                                    </td>-->
-                               <? endif; ?>
+
+            <!--                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                    <a href="<?= base_url() ?>ambulatorio/empresa/anexarimagemlogo/<?= $item->empresa_id ?>">Logo Sistema</a></div>
+            </td>-->
+                                <? endif; ?>
                                 <?
 //                                $perfil_id = $this->session->userdata('perfil_id');
                                 if ($operador_id == 1):
@@ -76,7 +77,12 @@
                                     <td class="<?php echo $estilo_linha; ?>"><div class="bt_link" style="">
                                             <a style="" href="<?= base_url() ?>ambulatorio/empresa/configurarpacs/<?= $item->empresa_id ?>">PACS</a></div>
                                     </td>
-                               <? endif; ?>
+                                <? endif; ?>
+                                <? if (count($lista) > 1 && $perfil_id == 1) { ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><div class="bt_link">
+                                            <a style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente desativar a empresa?');" href="<?= base_url() ?>ambulatorio/empresa/excluirempresa/<?= $item->empresa_id ?>">Desativar</a></div>
+                                    </td>    
+                                <? } ?>
                             </tr>
 
                         </tbody>
@@ -86,8 +92,8 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="9">
-<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                        <th class="tabela_footer" colspan="10">
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>

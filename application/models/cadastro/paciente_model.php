@@ -242,6 +242,7 @@ class paciente_model extends BaseModel {
             $this->_cbo_ocupacao_id = $return[0]->profissao;
             $this->_documento = $return[0]->rg;
             $this->_estado_id_expedidor = $return[0]->uf_rg;
+            $this->_vencimento_carteira = $return[0]->vencimento_carteira;
             $this->_titulo_eleitor = $return[0]->titulo_eleitor;
             $this->_raca_cor = $return[0]->raca_cor;
             $this->_sexo = $return[0]->sexo;
@@ -249,8 +250,11 @@ class paciente_model extends BaseModel {
             $this->_escolaridade_id = $return[0]->escolaridade_id;
             $this->_nomepai = $return[0]->nome_pai;
             $this->_nomemae = $return[0]->nome_mae;
+            $this->_nome_conjuge = $return[0]->nome_conjuge;
+            $this->_nascimento_conjuge = $return[0]->nascimento_conjuge;
             $this->_celular = $return[0]->celular;
             $this->_whatsapp = $return[0]->whatsapp;
+            $this->_instagram = $return[0]->instagram;
             $this->_telefone = $return[0]->telefone;
             $this->_telefoneresp = $return[0]->telefoneresp;
             $this->_nomeresp = $return[0]->nomeresp;
@@ -335,6 +339,18 @@ class paciente_model extends BaseModel {
             $this->db->set('cns', $_POST['cns']);
             if ($_POST['indicacao'] != '') {
                 $this->db->set('indicacao', $_POST['indicacao']);
+            }
+            if ($_POST['instagram'] != '') {
+                $this->db->set('instagram', $_POST['instagram']);
+            }
+            if ($_POST['nome_conjuge'] != '') {
+                $this->db->set('nome_conjuge', $_POST['nome_conjuge']);
+            }
+            if ($_POST['nascimento_conjuge'] != '') {
+                $this->db->set('nascimento_conjuge', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento_conjuge']))));
+            }
+            if ($_POST['vencimento_carteira'] != '') {
+                $this->db->set('vencimento_carteira', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['vencimento_carteira']))));
             }
             if ($_POST['escolaridade'] != '') {
                 $this->db->set('escolaridade_id', $_POST['escolaridade']);
