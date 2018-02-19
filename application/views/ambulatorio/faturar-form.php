@@ -1,3 +1,26 @@
+<?
+    $usouCredito = false;
+    $id = null;
+    
+    if(@$exame[0]->forma_pagamento  == 1000) {
+        $usouCredito = true;
+        $id = '1';
+    }
+    if(@$exame[0]->forma_pagamento2 == 1000) { 
+        $usouCredito = true;
+        $id = '2';
+    }
+    if(@$exame[0]->forma_pagamento3 == 1000) { 
+        $usouCredito = true;
+        $id = '3';
+    }
+    if(@$exame[0]->forma_pagamento4 == 1000) { 
+        $usouCredito = true;
+        $id = '4';
+    }
+        
+        
+?>
 <body bgcolor="#C0C0C0">
     <div class="content"> <!-- Inicio da DIV content -->
         <h3 class="singular">Faturar</h3>
@@ -108,12 +131,14 @@
                             <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->valor; ?>"/>
                             <input type="hidden" name="novovalortotal" id="novovalortotal">
                             <input type="hidden" name="valorcredito" id="valorcredito" value="0">
-                            <input type="hidden" name="paciente_id" id="paciente_id">
+                            <input type="hidden" name="paciente_id" id="paciente_id" value="<?= $exame[0]->paciente_id; ?>">
                         </dd>
                     </dl>    
 
                     <hr/>
-                    <button type="submit" name="btnEnviar" >Enviar</button>
+                    <button type="submit" name="btnEnviar" id="btnEnviar" <?= $usouCredito ? "disabled='true'" : '' ?>>
+                        Enviar
+                    </button>
             </form>
             </fieldset>
         </div>
@@ -129,7 +154,16 @@
 
 
                                     $(document).ready(function () {
-
+                                        
+                                        <? if ($usouCredito) { ?>
+                                            $(function () {
+                                                $('#formapamento<?= $id ?>').change(function () {
+                                                    $('#btnEnviar').removeAttr('disabled');
+                                                });
+                                            });
+                                            
+                                        <? } ?>
+                                        
                                         function multiplica()
                                         {
                                             total = 0;
