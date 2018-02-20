@@ -821,6 +821,44 @@ class Guia extends BaseController {
         redirect(base_url() . "ambulatorio/guia/relatoriocaixa", $data);
     }
 
+    function fecharpromotor() {
+        if ($_POST['conta'] == '') {
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter uma Conta associada ao cadastro do promotor';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/relatorioindicacaoexames", $data);
+        }
+
+        if ($_POST['nome'] == '') {
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter um Credor associado ao cadastro do promotor.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/relatorioindicacaoexames", $data);
+        }
+
+        if ($_POST['tipo'] == '') {
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter um Tipo associado ao cadastro do promotor.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/relatorioindicacaoexames", $data);
+        }
+
+        if ($_POST['classe'] == '') {
+            $data['mensagem'] = 'Para fechar o caixa é necessário ter uma Classe associada ao cadastro do promotor.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/relatorioindicacaoexames", $data);
+        }
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data_contaspagar = $data['empresa'][0]->data_contaspagar;
+        $caixa = $this->guia->fecharpromotor($data_contaspagar);
+        if ($caixa == "-1") {
+            $data['mensagem'] = 'Erro ao fechar a produção do promotor. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao fechar a produção do promotor.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/guia/relatorioindicacaoexames", $data);
+    }
+
     function fecharmedico() {
         if ($_POST['conta'] == '') {
             $data['mensagem'] = 'Para fechar o caixa é necessário ter uma Conta associada ao cadastro do médico';
@@ -2746,7 +2784,7 @@ class Guia extends BaseController {
 
         if ($_POST['indicacao'] != '0') {
             $data['indicacao'] = $this->guia->listacadaindicacao($_POST['indicacao']);
-            $data['indicacao'] = $data['indicacao'][0]->indicacao;
+//            $data['indicacao'] = $data['indicacao'][0]->indicacao;
         } else {
             $data['indicacao'] = '0';
         }
