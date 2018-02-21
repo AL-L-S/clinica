@@ -479,7 +479,7 @@
                         <dt>
                             <label title="Ativando essa flag, o preço procedimento aparece para a Recepção">Perfis da recepção Preço Procedimento</label>
                         </dt>
-                        
+
                         <dd>
                             <input type="checkbox" id="orcamento_recepcao" name="orcamento_recepcao" <? if (@$obj->_orcamento_recepcao == 't') echo "checked"; ?>/> 
                         </dd>
@@ -556,7 +556,22 @@
                             <input type="checkbox" id="associa_credito_procedimento" name="associa_credito_procedimento" <? if (@$obj->_associa_credito_procedimento == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
-                            <label title="Nome do cônjuge e data de nascimento do mesmo">Nome do cônjuge</label>
+                            <label title="Ativando essa flag, no momento de criar a agenda, aparece uma opçao para o usuario informar quantas vezes ele ira querer repetir os horarios.">Permitir criação de horarios repetidos na agenda.</label>
+
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="repetir_horarios_agenda" name="repetir_horarios_agenda" <? if (@$obj->_repetir_horarios_agenda == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                        <label title="O laudo só vai ser editado pelo nosso operador">Laudo Sigiloso</label>
+                           
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="laudo_sigiloso" name="laudo_sigiloso" <? if (@$obj->_laudo_sigiloso == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+
+                             <label title="Nome do cônjuge e data de nascimento do mesmo">Nome do cônjuge</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="conjuge" name="conjuge" <? if (@$obj->_conjuge == 't') echo "checked"; ?>/> 

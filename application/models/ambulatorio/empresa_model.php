@@ -1213,6 +1213,17 @@ class empresa_model extends Model {
                     $this->db->set('campos_obrigatorios_pac_municipio', 'f');
                 }
 
+                if (isset($_POST['repetir_horarios_agenda'])) {
+                    $this->db->set('repetir_horarios_agenda', 't');
+                } else {
+                    $this->db->set('repetir_horarios_agenda', 'f');
+                }
+                if (isset($_POST['laudo_sigiloso'])) {
+                    $this->db->set('laudo_sigiloso', 't');
+                } else {
+                    $this->db->set('laudo_sigiloso', 'f');
+                }
+
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -1245,6 +1256,11 @@ class empresa_model extends Model {
                     $this->db->set('conjuge', 't');
                 } else {
                     $this->db->set('conjuge', 'f');
+                }
+                if (isset($_POST['laudo_sigiloso'])) {
+                    $this->db->set('laudo_sigiloso', 't');
+                } else {
+                    $this->db->set('laudo_sigiloso', 'f');
                 }
                 if (isset($_POST['gerente_contasapagar'])) {
                     $this->db->set('gerente_contasapagar', 't');
@@ -1437,6 +1453,12 @@ class empresa_model extends Model {
                     $this->db->set('campos_obrigatorios_pac_municipio', 'f');
                 }
 
+                if (isset($_POST['repetir_horarios_agenda'])) {
+                    $this->db->set('repetir_horarios_agenda', 't');
+                } else {
+                    $this->db->set('repetir_horarios_agenda', 'f');
+                }
+
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('empresa_id', $empresa_id);
@@ -1542,12 +1564,15 @@ class empresa_model extends Model {
                                ep.desabilitar_trava_retorno,
                                ep.associa_credito_procedimento,
                                ep.conjuge,
+                               ep.laudo_sigiloso,
                                f.numero_empresa_painel,
                                ep.campos_obrigatorios_pac_cpf,
                                ep.campos_obrigatorios_pac_sexo,
                                ep.campos_obrigatorios_pac_nascimento,
                                ep.campos_obrigatorios_pac_telefone,
-                               ep.campos_obrigatorios_pac_municipio');
+                               ep.campos_obrigatorios_pac_municipio,
+                               ep.repetir_horarios_agenda
+                               ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = f.empresa_id', 'left');
@@ -1562,6 +1587,7 @@ class empresa_model extends Model {
             $this->_telefone = $return[0]->telefone;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
+            $this->_laudo_sigiloso = $return[0]->laudo_sigiloso;
             $this->_conjuge = $return[0]->conjuge;
             $this->_horario_seg_sex = $return[0]->horario_seg_sex;
             $this->_horario_sab = $return[0]->horario_sab;
@@ -1651,6 +1677,7 @@ class empresa_model extends Model {
             $this->_campos_obrigatorios_pac_nascimento = $return[0]->campos_obrigatorios_pac_nascimento;
             $this->_campos_obrigatorios_pac_sexo = $return[0]->campos_obrigatorios_pac_sexo;
             $this->_campos_obrigatorios_pac_cpf = $return[0]->campos_obrigatorios_pac_cpf;
+            $this->_repetir_horarios_agenda = $return[0]->repetir_horarios_agenda;
         } else {
             $this->_empresa_id = null;
         }

@@ -531,6 +531,7 @@ class Exame extends BaseController {
 
     function autorizarsessaofisioterapia($paciente_id) {
         $data['lista'] = $this->exame->autorizarsessaofisioterapia($paciente_id);
+//        var_dump($data['lista']); die;
         $data['paciente_id'] = $paciente_id;
         $this->loadView('ambulatorio/autorizarsessaofisioterapia', $data);
     }
@@ -2287,7 +2288,7 @@ class Exame extends BaseController {
         $data['agenda_id'] = $agenda_id;
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
-//        $data['salas'] = $this->exame->listartodassalas();
+        $data['empresaPermissao'] = $this->guia->listarempresapermissoes();
         $data['tipo'] = $this->tipoconsulta->listartodos();
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
         $this->loadView('ambulatorio/geral-form', $data);
@@ -2297,7 +2298,7 @@ class Exame extends BaseController {
         $data['agenda_id'] = $agenda_id;
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
-//        $data['salas'] = $this->exame->listartodassalas();
+        $data['empresaPermissao'] = $this->guia->listarempresapermissoes();
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
         $this->loadView('ambulatorio/exame-form', $data);
     }
@@ -2307,7 +2308,7 @@ class Exame extends BaseController {
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
-//        var_dump($data['horarioagenda']); die;
+        $data['empresaPermissao'] = $this->guia->listarempresapermissoes();
         $data['tipo'] = $this->tipoconsulta->listartodos();
         $this->loadView('ambulatorio/consulta-form', $data);
     }
@@ -2317,6 +2318,7 @@ class Exame extends BaseController {
         $data['medico'] = $this->exame->listarmedico();
         $data['agenda'] = $this->agenda->listaratribuiragenda($agenda_id);
         $data['horarioagenda'] = $this->agenda->listarhorarioagenda($agenda_id);
+        $data['empresaPermissao'] = $this->guia->listarempresapermissoes();
         $data['tipo'] = $this->agenda->listarespecialidades();
         $this->loadView('ambulatorio/especializacao-form', $data);
     }
@@ -3249,6 +3251,7 @@ class Exame extends BaseController {
         $convenio = @$listarexame[0]->convenio;
         $versao = $_POST['xml'];
         $modelo = $_POST['modelo'];
+//        var_dump($_POST); die;
 
         $limite = ($_POST['limite'] == '0') ? false : true;
 

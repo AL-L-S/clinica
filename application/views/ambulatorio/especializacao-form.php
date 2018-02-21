@@ -65,6 +65,19 @@
                         </select>
                     </dd>
                     
+                    <? if (@$empresaPermissao[0]->repetir_horarios_agenda == 't') { 
+                        // Obs: Essa funcionalidade esta implementada diretamente no model. ?>
+                        <div title="Essa opção permitir que você repita os horarios na criação da agenda. Por padrão o sistema irá criar apenas um horário.
+                                    Contudo, caso seja necessario criar uma agenda com dois ou mais horarios (por exemplo, dois horarios de 08:00) esse valor deve ser alterado.">
+                            <dt>
+                                <label>Quantidade horarios</label>
+                            </dt>
+                            <dd>
+                                <input type="number" id="numero_repeticao" name="numero_repeticao" min="1" value="1" class="size1" required=""/>
+                            </dd>
+                        </div>
+                    <? } ?>
+                    
                 </dl>    
 
                 <hr/>

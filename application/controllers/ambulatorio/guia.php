@@ -1760,7 +1760,7 @@ class Guia extends BaseController {
 
 //                var_dump($_POST['guia_id']);die;
 
-                if ($_POST['valorcredito'] != '' && $_POST['valorcredito'] != '0') {
+                if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
                     $this->guia->descontacreditopaciente();
                 }
 
