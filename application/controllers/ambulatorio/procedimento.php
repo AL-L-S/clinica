@@ -35,7 +35,7 @@ class Procedimento extends BaseController {
         $data["limite_paginacao"] = $limite;
         $this->loadView('ambulatorio/procedimento-lista', $data);
     }
-    
+
     function procedimentoconveniovalor($procedimento_tuss_id) {
 
         $data['procedimento'] = $this->procedimento->listarprocedimentoprodutovalor($procedimento_tuss_id);
@@ -44,34 +44,34 @@ class Procedimento extends BaseController {
 //        var_dump($data['valor']); die;
         $this->loadView('ambulatorio/procedimentoconveniovalor-form', $data);
     }
-    
+
     function gravarprocedimentoconveniovalor($procedimento_tuss_id) {
-        
+
         $this->procedimento->gravarprocedimentoconveniovalor($procedimento_tuss_id);
         redirect(base_url() . "ambulatorio/procedimento/procedimentoconveniovalor/$procedimento_tuss_id");
     }
-    
+
     function excluirprocedimentoconveniovalor($procedimento_convenio_produto_valor_id, $procedimento_tuss_id) {
-        
+
         $this->procedimento->excluirprocedimentoconveniovalor($procedimento_convenio_produto_valor_id);
-        
+
         redirect(base_url() . "ambulatorio/procedimento/procedimentoconveniovalor/$procedimento_tuss_id");
     }
 
     function pesquisartuss($args = array()) {
         $this->loadView('ambulatorio/procedimentotuss-lista', $args);
     }
-    
+
     function carregarajustevalores() {
         $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/ajustevalores-form', $data);
     }
-    
+
 //    function carregarajustevalores() {
 //        $data['grupos'] = $this->procedimento->listargrupos();
 //        $this->loadView('ambulatorio/ajustevalores-form', $data);
 //    }
-    
+
     function gravarajustevalores() {
         $verifica = $this->procedimento->gravarajustevalores();
         if ($verifica) {
@@ -122,7 +122,7 @@ class Procedimento extends BaseController {
 
     function relatorioprocedimento() {
         $data['grupos'] = $this->procedimento->listargrupos();
-        $this->loadView('ambulatorio/relatorioprocedimento' , $data);
+        $this->loadView('ambulatorio/relatorioprocedimento', $data);
     }
 
     function relatorioprocedimentoconvenio() {
@@ -152,10 +152,26 @@ class Procedimento extends BaseController {
         $data['convenios'] = $this->guia->listardados($_POST['convenio']);
         $data['conveniotipo'] = $_POST['convenio'];
         $data['relatorio'] = $this->procedimento->relatorioprocedimentoconvenio();
-        $html = $this->load->view('ambulatorio/impressaorelatorioprocedimentoconvenio', $data, true);
-        
+        if ($_POST['planilha'] == '1') {
+
+            $html = $this->load->view('ambulatorio/impressaorelatorioprocedimentoconvenio', $data, true);
+            $horario = date('d-m-Y');
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+            header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Pragma: no-cache");
+            header("Content-type: application/x-msexcel");
+            header("Content-Disposition: attachment; filename=\"Procedimentos {$data['relatorio'][0]->convenio} $horario.xls\"");
+            header("Content-Description: PHP Generated Data");
+            // Envia o conteúdo do arquivo
+            echo $html;
+            exit;
+        } else {
+            $this->load->View('ambulatorio/impressaorelatorioprocedimentoconvenio', $data);
+        }
+
+
 //        pdf($html, $filename, $cabecalho, $rodape, $grupo);
-        $this->load->View('ambulatorio/impressaorelatorioprocedimentoconvenio', $data);
     }
 
     function gerarelatorioprocedimentotuss() {
@@ -164,7 +180,7 @@ class Procedimento extends BaseController {
         $this->load->View('ambulatorio/impressaorelatorioprocedimentotuss', $data);
     }
 
-    function excluirprocedimentoagrupado( $procedimento_agrupador_id, $procedimento_id ) {
+    function excluirprocedimentoagrupado($procedimento_agrupador_id, $procedimento_id) {
         if ($this->procedimento->excluirprocedimentoagrupado($procedimento_agrupador_id)) {
             $mensagem = 'Sucesso ao excluir desagrupar o Procedimento';
         } else {
@@ -199,18 +215,18 @@ class Procedimento extends BaseController {
 
     function gravaragrupadorprocedimento() {
         $procedimento_tuss_id = $this->procedimento->gravaragrupadorprocedimento();
-        
+
         $data['mensagem'] = 'Sucesso ao gravar o Agrupador.';
         $this->session->set_flashdata('message', $data['mensagem']);
-        
+
         redirect(base_url() . "ambulatorio/procedimento");
     }
 
     function gravar() {
         $procedimento_tuss_id = $this->procedimento->gravar();
-        if($procedimento_tuss_id == "0") {
+        if ($procedimento_tuss_id == "0") {
             $data['mensagem'] = 'Erro ao gravar o Procedimento. Procedimento ja cadastrado.';
-        }elseif ($procedimento_tuss_id == "-1") {
+        } elseif ($procedimento_tuss_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar o Procedimento. Opera&ccedil;&atilde;o cancelada.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar o Procedimento.';

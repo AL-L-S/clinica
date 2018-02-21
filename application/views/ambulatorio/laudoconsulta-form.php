@@ -45,6 +45,20 @@
     } else {
         $altura = @$laudo_peso[0]->altura;
     }
+
+
+    $laudo_sigiloso = $this->session->userdata('laudo_sigiloso');
+    $operador_id = $this->session->userdata('operador_id');
+    if (@$obj->_status == 'FINALIZADO' && $laudo_sigiloso == 't' && $operador_id != 3) {
+        $readonly = 1;
+    } else {
+        $readonly = 0;
+    }
+    if (@$obj->_status == 'FINALIZADO' && $laudo_sigiloso == 't') {
+        $adendo = true;
+    } else {
+        $adendo = false;
+    }
 //    var_dump($altura, $peso); die;
     ?>
 
@@ -73,8 +87,8 @@
 
                         <tr>
                             <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
-                            
-                            <!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
+
+<!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
                         </tr>
                         <tr>
                             <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
@@ -83,29 +97,29 @@
                 </fieldset>
                 <table>
                     <tr>
-                    <td >
-                        <div class="bt_link_new">
-                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
-                                Chamar</a>
-                        </div>
-                    </td>
-                    
-                    <td>
-                        <div class="bt_link_new">
-                            <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
-                                Editar</a></div>
-                    </td>
-                    
-                        <? if (@$obj->_status != 'FINALIZADO') { ?>
-                        <td>
+                        <td >
                             <div class="bt_link_new">
-                                <a onclick="javascript: return confirm('Deseja realmente deixar o atendimento pendente?');" href="<?= base_url() ?>ambulatorio/laudo/pendenteespecialidade/<?= $exame_id ?>" >
-                                    Pendente
-                                </a>
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
+                                    Chamar</a>
                             </div>
                         </td>
+
+                        <td>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
+                                    Editar</a></div>
+                        </td>
+
+                        <? if (@$obj->_status != 'FINALIZADO') { ?>
+                            <td>
+                                <div class="bt_link_new">
+                                    <a onclick="javascript: return confirm('Deseja realmente deixar o atendimento pendente?');" href="<?= base_url() ?>ambulatorio/laudo/pendenteespecialidade/<?= $exame_id ?>" >
+                                        Pendente
+                                    </a>
+                                </div>
+                            </td>
                         <? } ?>
-                        
+
                         <td>
                             <div class="bt_link_new">
                                 <a href="<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>" >
@@ -113,13 +127,13 @@
                                 </a>
                             </div>
                         </td>
-                    <td>
-                        <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
-                        <!--                                        impressaolaudo -->
-                    
-                    </td>
-                    
-                        
+                        <td>
+                            <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
+                            <!--                                        impressaolaudo -->
+
+                        </td>
+
+
                     </tr>
                 </table>
                 <div>
@@ -264,8 +278,8 @@
 
                                 <div>
                                     <table>
-                                        <tr><td rowspan="7" >
-                                                <textarea id="laudo" name="laudo" rows="30" cols="80" style="width: 80%"><?= @$obj->_texto; ?></textarea></td>
+                                        <tr><td rowspan="8" >
+                                                <textarea id="laudo" name="laudo" rows="30" cols="80" style="width: 100%"><?= @$obj->_texto; ?></textarea></td>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                         Receituario</a></div>
@@ -273,6 +287,12 @@
                                             <td rowspan="5" ><center>
                                             <font color="#FF0000" size="6" face="Arial Black"><span id="clock1"></span><script>setTimeout('getSecs()', 1000);</script></font></center>
                                         </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="40px;"><div class="bt_link_new">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaohistoricoescolhermedico/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
+                                                        Imprimir Histórico</a></div>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td width="40px;"><div class="bt_link_new">
@@ -311,6 +331,20 @@
                                                         AIH</a></div>
                                             </td>
                                         </tr>
+
+                                        <? if ($adendo) { ?>
+                                            <tr>
+                                                <td>
+                                                    <div>
+                                                        <label><h3>Adendo</h3></label>
+                                                        <textarea id="adendo" name="adendo" class="adendo" rows="30" cols="80" style="width: 80%"></textarea>
+                                                    </div>  
+                                                </td>
+                                            </tr>
+                                        <? }
+                                        ?>
+
+
                                         <tr>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');" >
@@ -329,7 +363,7 @@
                                             ?>><?= $value->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select>
-                                    <? if($empresapermissao[0]->desativar_personalizacao_impressao != 't') { ?>
+                                    <? if ($empresapermissao[0]->desativar_personalizacao_impressao != 't') { ?>
                                         <?php
                                         if (@$obj->_assinatura == "t") {
                                             ?>
@@ -367,9 +401,9 @@
                                         ?> >FINALIZADO</option>
                                     </select>
                                     <input type="hidden" name="status" id="status" value="<?= @$obj->_status; ?>" class="size2" />
-                                    
+
                                     <label style="margin-left: 10pt" for="ret">Retorno?</label>
-                                    <input type="checkbox" name="ret" id="ret" <?=( (int)@$obj->_dias_retorno != '0') ? 'checked' : ''?>/>
+                                    <input type="checkbox" name="ret" id="ret" <?= ( (int) @$obj->_dias_retorno != '0') ? 'checked' : '' ?>/>
                                     <div style="display: inline-block" class="dias_retorno_div">
                                         <input type="text" name="ret_dias" id="ret_dias" value="<?= @$obj->_dias_retorno; ?>" style="width: 80pt" />
                                     </div>
@@ -384,7 +418,7 @@
                             <div <?
                             if ($empresapermissao[0]->oftamologia == 't' && @$obj->_grupo == 'OFTALMOLOGIA') {
                                 echo "style='display:inline;'";
-                            }else{
+                            } else {
                                 echo "style='display:none;'";
                             }
                             ?> id="tabs-1">
@@ -425,10 +459,10 @@
                                                             <option value=""> </option>
                                                             <? foreach ($listaracuidadeoe as $value) : ?>
                                                                 <option value="<?= $value->nome; ?>"<?
-                                                                        if (@$obj->_acuidade_oe == $value->nome):echo "selected = 'true'";
-                                                                        endif;
-                                                                        ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                if (@$obj->_acuidade_oe == $value->nome):echo "selected = 'true'";
+                                                                endif;
+                                                                ?>><?= $value->nome; ?></option>
+                                                                    <? endforeach; ?>
                                                         </select> 
                                                     </td>
                                                     <td>
@@ -436,10 +470,10 @@
                                                             <option value=""> </option>
                                                             <? foreach ($listaracuidadeod as $value) : ?>
                                                                 <option value="<?= $value->nome; ?>"<?
-                                                                        if (@$obj->_acuidade_od == $value->nome):echo "selected = 'true'";
-                                                                        endif;
-                                                                        ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                if (@$obj->_acuidade_od == $value->nome):echo "selected = 'true'";
+                                                                endif;
+                                                                ?>><?= $value->nome; ?></option>
+                                                                    <? endforeach; ?>
                                                         </select>   
 
                                                     </td>
@@ -539,10 +573,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listarodes as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_od_esferico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_od_esferico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -550,10 +584,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listarodcl as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_od_cilindrico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_od_cilindrico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -561,10 +595,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listarodeixo as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_od_eixo == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_od_eixo == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -572,10 +606,10 @@
                                                                 <option value="Selecione"></option>
                                                                 <? foreach ($listarodav as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_od_av == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_od_av == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
 
@@ -587,10 +621,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaroees as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_oe_esferico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_oe_esferico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -598,10 +632,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaroecl as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_oe_cilindrico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_oe_cilindrico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -609,10 +643,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaroeeixo as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_oe_eixo == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_oe_eixo == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -620,10 +654,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaroeav as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_oe_av == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_oe_av == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                     </tr>
@@ -634,10 +668,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listarades as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_ad_esferico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_ad_esferico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -645,10 +679,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaradcl as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_ad_cilindrico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_ad_cilindrico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <!--<td>-->
@@ -781,8 +815,8 @@
                     <fieldset>
                         <legend><b><font size="3" color="red">Historico de consultas</font></b></legend>
                         <div>
-<? foreach ($historico as $item) {
-    ?>
+                            <? foreach ($historico as $item) {
+                                ?>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -823,13 +857,13 @@
                                     </tbody>
                                 </table>
                                 <hr>
-<? }
-?>
+                            <? }
+                            ?>
                         </div>
 
                         <div>
-<? foreach ($historicoantigo as $itens) {
-    ?>
+                            <? foreach ($historicoantigo as $itens) {
+                                ?>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -841,8 +875,8 @@
                                     </tbody>
                                 </table>
                                 <hr>
-<? }
-?>
+                            <? }
+                            ?>
                         </div>
 
                     </fieldset>
@@ -852,8 +886,8 @@
                         <div>
                             <table>
                                 <tbody>
-<? foreach ($historicoexame as $item) {
-    ?>
+                                    <? foreach ($historicoexame as $item) {
+                                        ?>
 
                                         <tr>
                                             <td >Data: <?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
@@ -928,8 +962,8 @@
                                                 none;border-right:none;' colspan="10">&nbsp;</th>
                                         </tr>
 
-<? }
-?>
+                                    <? }
+                                    ?>
                                 </tbody>
                             </table>
                         </div>
@@ -998,21 +1032,21 @@
             jQuery(".dias input").remove();
         }
     });
-    
-    <? if ( (int)@$obj->_dias_retorno != '0') {?>
+
+<? if ((int) @$obj->_dias_retorno != '0') { ?>
         jQuery(".dias_retorno_div").show();
-    <?} else {?>
+<? } else { ?>
         jQuery(".dias_retorno_div").hide();
-    <? } ?>
-        
+<? } ?>
+
     jQuery('#ret').change(function () {
-        if ( this.checked ) {
+        if (this.checked) {
             jQuery(".dias_retorno_div").show();
         } else {
             jQuery(".dias_retorno_div").hide();
         }
     });
-    
+
     jQuery("#Altura").mask("999", {placeholder: " "});
 //                                                    jQuery("#Peso").mask("999", {placeholder: " "});
 
@@ -1362,13 +1396,60 @@
             }
         });
     });
-
+    var readonly = <?= $readonly ?>;
     tinyMCE.init({
         // General options
         mode: "exact",
         elements: "laudo",
         theme: "advanced",
-//                                                        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+        readonly: readonly,
+        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+        menubar: "tools",
+        toolbar: "spellchecker",
+        spellchecker_languages: 'pt_BR',
+        browser_spellcheck: true,
+        theme_url: 'js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js',
+//                                                        external_plugins: 'js/tinymce/jscripts/tiny_mce/plugins/spellchecker/plugin.min.js',
+
+        // Theme options
+        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+        theme_advanced_toolbar_location: "top",
+        theme_advanced_toolbar_align: "left",
+        theme_advanced_statusbar_location: "bottom",
+        theme_advanced_resizing: true,
+        // Example content CSS (should be your site CSS)
+        //                                    content_css : "css/content.css",
+        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+        // Drop lists for link/image/media/template dialogs
+        template_external_list_url: "lists/template_list.js",
+        external_link_list_url: "lists/link_list.js",
+        external_image_list_url: "lists/image_list.js",
+        media_external_list_url: "lists/media_list.js",
+        // Style formats
+        style_formats: [
+            {title: 'Bold text', inline: 'b'},
+            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+            {title: 'Example 1', inline: 'span', classes: 'example1'},
+            {title: 'Example 2', inline: 'span', classes: 'example2'},
+            {title: 'Table styles'},
+            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+        ],
+        // Replace values for the template plugin
+        template_replace_values: {
+            username: "Some User",
+            staffid: "991234"
+        }
+
+    });
+    
+    tinyMCE.init({
+        // General options
+        mode: "exact",
+        elements: "adendo",
+        theme: "advanced",
+       // plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
         menubar: "tools",
         toolbar: "spellchecker",
         spellchecker_languages: 'pt_BR',

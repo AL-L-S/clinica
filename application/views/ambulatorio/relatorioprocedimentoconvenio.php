@@ -28,6 +28,17 @@
 
                         </select>
                     </dd>
+                    <dt>
+                    <label>Gerar Planilha</label>
+                    </dt>
+                    <dd>
+                        <select name="planilha" id="planilha" class="size1" >
+                            <option value='0' >NÃO</option>
+                            <option value='1' >SIM</option>
+
+
+                        </select>
+                    </dd>
                    
                 </dl>
                 <button type="submit" >Pesquisar</button>

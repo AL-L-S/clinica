@@ -939,6 +939,12 @@ class Operador_model extends BaseModel {
             } else {
                 $this->db->set('solicitante', 'f');
             }
+            
+            if (isset($_POST['ocupacao_painel'])) {
+                $this->db->set('ocupacao_painel', 't');
+            } else {
+                $this->db->set('ocupacao_painel', 'f');
+            }
 
             if ($_POST['txtcboID'] != "" && $_POST['txtcbo'] != "") {
                 $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
@@ -1289,6 +1295,7 @@ class Operador_model extends BaseModel {
                                 o.valor_base,
                                 o.cep,
                                 o.cor_mapa,
+                                o.ocupacao_painel,
                                 o.cbo_ocupacao_id,
                                 o.solicitante,
                                 o.cabecalho,
@@ -1311,6 +1318,7 @@ class Operador_model extends BaseModel {
             $this->_ativo = $return[0]->ativo;
             $this->_cor_mapa = $return[0]->cor_mapa;
             $this->_nome = $return[0]->nome;
+            $this->_ocupacao_painel = $return[0]->ocupacao_painel;
             $this->_cns = $return[0]->cns;
             $this->_conselho = $return[0]->conselho;
             $this->_email = $return[0]->email;

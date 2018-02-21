@@ -38,6 +38,7 @@ class login_model extends Model {
                            ep.relatorio_ordem,
                            ep.relatorio_producao,
                            ep.relatorios_recepcao,
+                           ep.laudo_sigiloso,
                            ep.financeiro_cadastro,       
                            ep.caixa_personalizado,       
                            ep.botao_ativar_sala');
@@ -52,6 +53,7 @@ class login_model extends Model {
             $servicoemail = $retorno[0]->servicoemail;
             $empresanome = $retorno[0]->nome;
             $internacao = $retorno[0]->internacao;
+            $laudo_sigiloso = $retorno[0]->laudo_sigiloso;
             $chat = $retorno[0]->chat;
             $centrocirurgico = $retorno[0]->centrocirurgico;
             $relatoriorm = $retorno[0]->relatoriorm;
@@ -113,6 +115,7 @@ class login_model extends Model {
                 'perfil_id' => $return[0]->perfil_id,
                 'perfil' => $return[0]->perfil,
                 'modulo' => $modulo,
+                'laudo_sigiloso' => $laudo_sigiloso,
                 'centrocirurgico' => $centrocirurgico,
                 'gerente_contasapagar' => $gerente_contasapagar,
                 'orcamento_recepcao' => $orcamento_recepcao,

@@ -71,6 +71,7 @@
                     ?>
 
                     <input type="checkbox" name="txtsolicitante" <? if (@$obj->_solicitante == "t") echo 'checked' ?> />Médico Solicitante
+                    <input type="checkbox" name="ocupacao_painel" <? if (@$obj->_ocupacao_painel == "t") echo 'checked' ?> />Ocupação no Painel
                 </div>
             </fieldset>
             <fieldset>

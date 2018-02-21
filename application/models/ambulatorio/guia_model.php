@@ -283,6 +283,7 @@ class guia_model extends Model {
         $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id', 'left');
         $this->db->where('ae.confirmado', 't');
         $this->db->where('pt.nome is not null');
+        $this->db->where('pt.grupo !=', 'CIRURGICO');
         $this->db->where("ae.paciente_id", $paciente_id);
         $this->db->orderby('ae.guia_id');
         $this->db->orderby('ae.agenda_exames_id');
@@ -2174,8 +2175,11 @@ class guia_model extends Model {
 
     function listacadaindicacao() {
 
-        $this->db->select('
-            pi.nome as indicacao');
+        $this->db->select('pi.nome as indicacao,
+                           pi.tipo_id,
+                           pi.classe,
+                           pi.conta_id,
+                           pi.credor_devedor_id');
         $this->db->from('tb_paciente_indicacao pi');
         $this->db->where("pi.paciente_indicacao_id", $_POST['indicacao']);
         $return = $this->db->get();
@@ -5773,6 +5777,7 @@ class guia_model extends Model {
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('pt.home_care', 'f');
         $this->db->where('ae.operador_autorizacao >', 0);
+        $this->db->where('pt.grupo !=', 'CIRURGICO');
         $this->db->where('c.dinheiro', "t");
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
@@ -10826,6 +10831,66 @@ ORDER BY ae.agenda_exames_id)";
         $query = $this->db->get();
 
         return $query->result();
+    }
+
+    function fecharpromotor() {
+        /* inicia o mapeamento no banco */
+        $horario = date("Y-m-d H:i:s");
+        $data = date("Y-m-d");
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+
+//        if ($this->session->userdata('producao_medica_saida') != 't') {
+            if ($data_contaspagar == 't') {
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
+            } else {
+                $this->db->set('data', $data);
+            }
+
+            $this->db->set('valor', $_POST['valor']);
+            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('credor', $_POST['nome']);
+            $this->db->set('conta', $_POST['conta']);
+            $this->db->set('classe', $_POST['classe']);
+            $this->db->set('observacao', $_POST['observacao']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_financeiro_contaspagar');
+//        } else {
+//            if ($data_contaspagar == 't') {
+//                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
+//            } else {
+//                $this->db->set('data', $data);
+//            }
+//
+//            $this->db->set('valor', $_POST['valor']);
+//            $this->db->set('tipo', $_POST['tipo']);
+//            $this->db->set('nome', $_POST['nome']);
+//            $this->db->set('conta', $_POST['conta']);
+//            $this->db->set('classe', $_POST['classe']);
+//            $this->db->set('observacao', $_POST['observacao']);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('empresa_id', $empresa_id);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_saidas');
+//            $saida_id = $this->db->insert_id();
+//
+//            $this->db->set('valor', -$_POST['valor']);
+//            $this->db->set('conta', $_POST['conta']);
+//            $this->db->set('nome', $_POST['valor']);
+//            $this->db->set('saida_id', $saida_id);
+//            $this->db->set('empresa_id', $empresa_id);
+//            $this->db->set('data_cadastro', $horario);
+//            if ($data_contaspagar == 't') {
+//                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
+//            } else {
+//                $this->db->set('data', $data);
+//            }
+//            $this->db->set('empresa_id', $empresa_id);
+//            $this->db->set('operador_cadastro', $operador_id);
+//            $this->db->insert('tb_saldo');
+//        }
     }
 
     function fecharmedico($data_contaspagar) {
