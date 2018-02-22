@@ -1880,7 +1880,8 @@ class exame_model extends Model {
                             al.situacao as situacaolaudo,
                             tel.nome as telefonema_operador,
                             bloc.nome as operador_bloqueio,
-                            desbloc.nome as operador_desbloqueio');
+                            desbloc.nome as operador_desbloqueio,
+                            ae.confirmacao_por_sms');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');

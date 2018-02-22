@@ -302,6 +302,7 @@ class contasreceber_model extends Model {
 
     function gravarconfirmacao() {
         try {
+//            die;
             $_POST['inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio'])));
             /* inicia o mapeamento no banco */
             $financeiro_contasreceber_id = $_POST['financeiro_contasreceber_id'];
@@ -310,7 +311,9 @@ class contasreceber_model extends Model {
             $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
             $this->db->set('contas_receber_id', $financeiro_contasreceber_id);
             $this->db->set('data', $_POST['inicio']);
-            $this->db->set('nome', $_POST['devedor']);
+            if ($_POST['devedor'] != '') {
+                $this->db->set('nome', $_POST['devedor']);
+            }
             $this->db->set('tipo', $_POST['tipo']);
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('conta', $_POST['conta_id']);
@@ -326,7 +329,10 @@ class contasreceber_model extends Model {
                 return -1;
             else
                 $valor = str_replace(",", ".", str_replace(".", "", $_POST['valor']));
-            $this->db->set('nome', $_POST['devedor']);
+            
+            if ($_POST['devedor'] != '') {
+                $this->db->set('nome', $_POST['devedor']);
+            }
             $this->db->set('valor', $valor);
             $this->db->set('entrada_id', $entrada_id);
             $this->db->set('conta', $_POST['conta_id']);

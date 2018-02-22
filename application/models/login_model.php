@@ -221,12 +221,15 @@ class login_model extends Model {
                 $this->db->update('tb_agenda_exames');
 
                 $numero = ($item->celular != '') ? $item->celular : $item->telefone;
-
+                
+                $mensagem = str_replace("_dia_", date("d/m/Y", strtotime($item->data)), $mensagem);
+                $mensagem = str_replace("_horainicio_", substr($item->inicio, 0, 5), $mensagem);
+                        
                 $this->db->set('agenda_exames_id', $item->agenda_exames_id);
                 $this->db->set('paciente_id', $item->paciente_id);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('numero', preg_replace('/[^\d]+/', '', $numero));
-                $this->db->set('mensagem', str_replace("_dia_", date("d/m/Y", strtotime($item->data)), $mensagem));
+                $this->db->set('mensagem', $mensagem);
                 $this->db->set('tipo', 'CONFIRMACAO');
                 $this->db->set('data', $horario);
                 $this->db->insert('tb_sms');
@@ -389,8 +392,8 @@ class login_model extends Model {
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        $this->db->set('telefonema', 't');
-        $this->db->set('data_telefonema', $horario);
+        $this->db->set('confirmacao_por_sms', 't');
+        $this->db->set('data_confirmacao_por_sms', $horario);
         $this->db->set('operador_telefonema', $operador_id);
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $this->db->update('tb_agenda_exames');
@@ -468,7 +471,7 @@ class login_model extends Model {
         $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id');
         $this->db->join('tb_empresa_sms es', 'es.empresa_id = s.empresa_id');
 //        $this->db->where('e.razao_social IS NOT NULL');
-//        $this->db->where('e.cnpj IS NOT NULL');
+        $this->db->where('s.mensagem !=', '');
         $this->db->where('s.enviado', 'f');
         $this->db->where('s.ativo', 't');
         $this->db->where('s.empresa_id', $empresa_id);
@@ -544,7 +547,8 @@ class login_model extends Model {
                            p.nome as paciente,
                            p.celular,
                            p.telefone,
-                           pt.nome');
+                           pt.nome,
+                           ae.inicio');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
