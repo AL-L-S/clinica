@@ -611,6 +611,10 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        if ($_POST['grupotipo'] != '') {
+            $this->db->join('tb_classificacao_grupo_associar ogm', 'tu.classificacao = ogm.operador_id', 'left');
+        }
+
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
@@ -633,6 +637,10 @@ class guia_model extends Model {
 
             $this->db->where("ae.inicio >=", $_POST['horario_inicio']);
             $this->db->where("ae.inicio <=", $_POST['horario_fim']);
+        }
+        if ($_POST['grupotipo'] != '') {
+            $this->db->where('ogm.classificacao_grupo_id', $_POST['grupotipo']);
+            $this->db->where('ogm.ativo', 't');
         }
 
         if ($_POST['grupoconvenio'] != "0") {
@@ -668,8 +676,22 @@ class guia_model extends Model {
         if ($_POST['raca_cor'] == "-1") {
             $this->db->where('p.raca_cor !=', '5');
         }
-        if ($_POST['medico'] != "0") {
-            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        if (isset($_POST['medico'])) {
+            if (in_array("0", $_POST['medico'])) {
+                $todos = true;
+            } else {
+                $todos = false;
+            }
+        } else {
+            $todos = false;
+        }
+        @$medicos = array_unique($_POST['medico']);
+        @$medicos = implode(', ', $medicos);
+//        var_dump($medicos);
+//        die;
+
+        if (count(@$_POST['medico']) != 0 && !$todos) {
+            $this->db->where("al.medico_parecer1 IN ($medicos)");
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
@@ -10841,22 +10863,22 @@ ORDER BY ae.agenda_exames_id)";
         $empresa_id = $this->session->userdata('empresa_id');
 
 //        if ($this->session->userdata('producao_medica_saida') != 't') {
-            if ($data_contaspagar == 't') {
-                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
-            } else {
-                $this->db->set('data', $data);
-            }
+        if ($data_contaspagar == 't') {
+            $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));
+        } else {
+            $this->db->set('data', $data);
+        }
 
-            $this->db->set('valor', $_POST['valor']);
-            $this->db->set('tipo', $_POST['tipo']);
-            $this->db->set('credor', $_POST['nome']);
-            $this->db->set('conta', $_POST['conta']);
-            $this->db->set('classe', $_POST['classe']);
-            $this->db->set('observacao', $_POST['observacao']);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('empresa_id', $empresa_id);
-            $this->db->set('operador_cadastro', $operador_id);
-            $this->db->insert('tb_financeiro_contaspagar');
+        $this->db->set('valor', $_POST['valor']);
+        $this->db->set('tipo', $_POST['tipo']);
+        $this->db->set('credor', $_POST['nome']);
+        $this->db->set('conta', $_POST['conta']);
+        $this->db->set('classe', $_POST['classe']);
+        $this->db->set('observacao', $_POST['observacao']);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_financeiro_contaspagar');
 //        } else {
 //            if ($data_contaspagar == 't') {
 //                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_escolhida']))));

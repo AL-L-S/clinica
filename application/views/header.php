@@ -1050,7 +1050,8 @@ function debug($object) {
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">Manter Percentual M&eacute;dico</a></span></ul>-->
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">Manter Percentual Promotor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentuallaboratorio">Manter Percentual Lab. Terceirizado</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificacao</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificação</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao">Manter Grupo Classificação</a></span></ul>
                                         <? } ?>
                                     <? } ?>
                                 </li>

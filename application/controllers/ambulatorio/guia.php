@@ -31,6 +31,7 @@ class Guia extends BaseController {
         $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico_m');
         $this->load->model('cadastro/grupoconvenio_model', 'grupoconvenio');
         $this->load->model('cadastro/grupomedico_model', 'grupomedico');
+        $this->load->model('cadastro/grupoclassificacao_model', 'grupoclassificacao');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/GExtenso', 'GExtenso');
         $this->load->library('mensagem');
@@ -385,18 +386,15 @@ class Guia extends BaseController {
         elseif ($data['empresa'][0]->impressao_tipo == 5) {// COT CLINICA
             if ($grupo == "CONSULTA") {
                 $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
-            }
-            elseif ($grupo == "FISIOTERAPIA" || $grupo == "ESPECIALIDADE" || $grupo == "ODONTOLOGIA") {
+            } elseif ($grupo == "FISIOTERAPIA" || $grupo == "ESPECIALIDADE" || $grupo == "ODONTOLOGIA") {
                 $this->load->View('ambulatorio/impressaofichafisioterapia', $data);
-            }
-            elseif ($data['exame'][0]->tipo == "EXAME") {
+            } elseif ($data['exame'][0]->tipo == "EXAME") {
                 if ($dinheiro == "t") {
                     $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
                 } else {
                     $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
                 }
-            }
-            else{
+            } else {
                 $this->load->View('ambulatorio/impressaofichaconsultacot', $data);
             }
         }
@@ -458,23 +456,21 @@ class Guia extends BaseController {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
-        
+
         $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
         $data['impressaoorcamento'] = $this->guia->listarconfiguracaoimpressaoorcamento($empresa_id);
         $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
-        $data['cabecalho'] =  @$data['cabecalhoconfig'][0]->cabecalho;
-        $data['rodape'] =  @$data['cabecalhoconfig'][0]->rodape;
+        $data['cabecalho'] = @$data['cabecalhoconfig'][0]->cabecalho;
+        $data['rodape'] = @$data['cabecalhoconfig'][0]->rodape;
 //        var_dump($data['exames']); die;
-        
-        if($data['permissoes'][0]->orcamento_config == 't'){
-           $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);    
-        }elseif($data['empresa'][0]->impressao_orcamento == 1){// MODELO SOLICITADO PELA AME
-           $this->load->View('ambulatorio/impressaoorcamentorecepcao1', $data);    
-        }else{
-           $this->load->View('ambulatorio/impressaoorcamento', $data);    
+
+        if ($data['permissoes'][0]->orcamento_config == 't') {
+            $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);
+        } elseif ($data['empresa'][0]->impressao_orcamento == 1) {// MODELO SOLICITADO PELA AME
+            $this->load->View('ambulatorio/impressaoorcamentorecepcao1', $data);
+        } else {
+            $this->load->View('ambulatorio/impressaoorcamento', $data);
         }
-        
-        
     }
 
     function impressaofichaconvenio($paciente_id, $guia_id, $exames_id) {
@@ -791,7 +787,7 @@ class Guia extends BaseController {
     function fecharcaixapersonalizado() {
         $caixa = $this->guia->fecharcaixapersonalizado();
         $this->guia->fecharcaixapersonalizadocredito();
-        
+
         if ($caixa == "-1") {
             $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
         } elseif ($caixa == 10) {
@@ -896,7 +892,7 @@ class Guia extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/guia/relatoriomedicoconveniofinanceiro", $data);
     }
-    
+
     function fecharlaboratorio() {
         if ($_POST['conta'] == '') {
             $data['mensagem'] = 'Para fechar o caixa é necessário ter uma Conta associada ao cadastro do laboratório';
@@ -948,9 +944,9 @@ class Guia extends BaseController {
 //        } else {
 //            $percentual_laboratorio = array();
 //        }
-        
+
         $paciente_id = $_POST['txtpaciente_id'];
-        
+
         if ($_POST['crm1'] == '') {
             $data['mensagem'] = 'Favor, selecione um medico solicitante da lista.';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -960,8 +956,7 @@ class Guia extends BaseController {
             } else {
                 redirect(base_url() . "ambulatorio/guia/novo/$paciente_id");
             }
-        }
-        elseif ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+        } elseif ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
             if (isset($_POST['guia_id'])) {
@@ -1023,7 +1018,7 @@ class Guia extends BaseController {
 //            } else {
 //                $percentual_laboratorio = array();
 //            }
-            
+
             if ($_POST['crm1'] == '' && $grupo != 'CONSULTA') {
                 $data['mensagem'] = 'Favor, selecione um medico solicitante da lista.';
                 $this->session->set_flashdata('message', $data['mensagem']);
@@ -1114,7 +1109,7 @@ class Guia extends BaseController {
         if (count($percentual) == 0) {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
         }
-        
+
         $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
 //        var_dump($percentual_laboratorio); die;
         $paciente_id = $_POST['txtpaciente_id'];
@@ -1172,12 +1167,12 @@ class Guia extends BaseController {
                 redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id");
             }
         } else {
-            
+
             $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
             if (count($percentual) == 0) {
                 $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
             }
-            
+
             $resultadoguia = $this->guia->listarguia($paciente_id);
 
             //verifica se existem sessões abertas
@@ -1313,7 +1308,7 @@ class Guia extends BaseController {
 //        } else {
 //            $percentual_laboratorio = array();
 //        }
-        
+
         $dadosantigos = $this->guia->listardadosantigoseditarvalor($agenda_exames_id);
         $ambulatorio_guia_id = $this->guia->valorexames($percentual, $percentual_laboratorio);
         if ($ambulatorio_guia_id == "-1") {
@@ -1368,10 +1363,11 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['exames'] = $this->guia->listarexamesorcamento($orcamento);
         $html = $this->load->View('ambulatorio/impressaoorcamento', $data, true);
-
-        $html = utf8_decode($html);
+        $paciente = $data['exames'][0]->paciente;
+        $paciente_id = $data['exames'][0]->paciente_id;
+//        $html = $html;
         $tipo = 'ORÇAMENTO';
-        $this->guia->gravarfiladeimpressao($html, $tipo);
+        $this->guia->gravarfiladeimpressao($html, $tipo, $paciente, $paciente_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
@@ -1954,6 +1950,7 @@ class Guia extends BaseController {
     function relatorioexame() {
         $data['grupo'] = $this->guia->listargrupo();
         $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
+        $data['grupoclassificacao'] = $this->grupoclassificacao->listargrupoclassificacaos();
         $data['procedimentos'] = $this->guia->listarprocedimentos();
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -2024,12 +2021,25 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['grupo'] = $_POST['grupo'];
-        $medicos = $_POST['medico'];
-        if ($medicos != 0) {
-            $data['medico'] = $this->operador_m->listarCada($medicos);
+        @$medicos = $_POST['medico'];
+//        var_dump($medicos);
+//        die;
+        if (isset($medicos)) {
+            if (in_array("0", @$medicos)) {
+                $todos = true;
+            } else {
+                $todos = false;
+            }
+        } else {
+            $todos = false;
+        }
+
+        if (count($medicos) != 0 && !$todos) {
+            $data['medico'] = $this->operador_m->listarVarios($medicos);
         } else {
             $data['medico'] = 0;
         }
+//        var_dump($data['medico']); die;
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
@@ -2038,7 +2048,7 @@ class Guia extends BaseController {
             $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
         }
         $data['relatorio'] = $this->guia->relatorioexamesconferencia();
-        if($_POST['planilha'] == "SIM"){
+        if ($_POST['planilha'] == "SIM") {
             $html = $this->load->View('ambulatorio/impressaorelatorioconferencia', $data, true);
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -2050,8 +2060,7 @@ class Guia extends BaseController {
             // Envia o conteúdo do arquivo
             echo $html;
             exit;
-        }
-        else{
+        } else {
             $this->load->View('ambulatorio/impressaorelatorioconferencia', $data);
         }
     }
@@ -2703,7 +2712,7 @@ class Guia extends BaseController {
         $data['indicacao'] = $this->paciente->listaindicacao();
         $data['empresa'] = $this->guia->listarempresas();
         $data['grupos'] = $this->indicacao->listargrupoindicacao();
-        
+
         $this->loadView('ambulatorio/relatorioindicacaoexames', $data);
     }
 
@@ -3100,7 +3109,7 @@ class Guia extends BaseController {
     function imprimirfiladeimpressao($impressao_id) {
 
         $data['impressao'] = $this->guia->gerarimpressaofiladeimpressao($impressao_id);
-        echo $data['impressao'][0]->texto;
+        echo utf8_decode($data['impressao'][0]->texto);
 //        $this->loadView('ambulatorio/escolhermodelo', $data);
     }
 
@@ -3473,7 +3482,7 @@ class Guia extends BaseController {
         $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['cabecalho'] = @$data['cabecalhoconfig'][0]->cabecalho;
         $data['rodape'] = @$data['cabecalhoconfig'][0]->rodape;
-        
+
         if ($data['permissoes'][0]->orcamento_config == 't') {
             $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);
         } else {
@@ -3629,7 +3638,7 @@ class Guia extends BaseController {
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['procedimentos'] = $this->procedimento->listarprocedimentos();
         $data['grupomedico'] = $this->grupomedico->listargrupomedicos();
-        
+
         $data['empresa'] = $this->guia->listarempresas();
         $data['operadores'] = $this->operador_m->listartecnicos();
         $this->loadView('ambulatorio/relatoriocaixapersonalizado', $data);
@@ -3646,13 +3655,13 @@ class Guia extends BaseController {
         $data['formapagamento'] = $this->formapagamento->listarforma();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['creditos'] = $this->guia->relatoriocaixacreditoslancados();
-        
+
         $data['procNaoFaturados'] = $this->guia->relatoriocaixapersonalizadoprocedimentosnaofaturados();
         $data['operadores'] = $this->guia->relatoriocaixapersonalizadooperadores();
         // Obs: A busca pelos procedimentos é feita na view. (Caso queira alterar a busca, altere as duas funções acima e a que está dentro da view)
-        
+
         $this->load->View('ambulatorio/impressaorelatoriocaixapersonalizando', $data);
-    }    
+    }
 
     function gerarelatoriocaixa() {
         $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
@@ -3792,10 +3801,10 @@ class Guia extends BaseController {
         $data['medico'] = $this->operador_m->listaroperador($_POST['medico']);
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['formapagamento'] = $this->formapagamento->listarformacartao();
-        
+
         $data['operadores'] = $this->guia->relatoriocaixacartaopersonalizadooperadores();
         // Obs: A busca pelos procedimentos é feita na view. (Caso queira alterar a busca, altere as duas funções acima e a que está dentro da view)
-        
+
         $this->load->View('ambulatorio/impressaorelatoriocaixacartaopersonalizado', $data);
     }
 

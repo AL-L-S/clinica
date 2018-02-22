@@ -42,3 +42,32 @@ ALTER TABLE ponto.tb_operador ADD COLUMN ocupacao_painel boolean DEFAULT true;
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN laudo_sigiloso boolean DEFAULT false;
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN adendo text;
+
+
+CREATE TABLE ponto.tb_classificacao_grupo
+(
+  classificacao_grupo_id serial NOT NULL,
+  nome character varying(250),
+  grupo_id integer,
+  empresa_id integer,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_classificacao_grupo_pkey PRIMARY KEY (classificacao_grupo_id)
+);
+
+
+CREATE TABLE ponto.tb_classificacao_grupo_associar
+(
+  classificacao_grupo_associar_id serial NOT NULL,
+  operador_id integer,
+  classificacao_grupo_id integer,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_classificacao_grupo_associar_pkey PRIMARY KEY (classificacao_grupo_associar_id)
+);
