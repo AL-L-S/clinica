@@ -33,16 +33,15 @@ class Login extends Controller {
         $servicosms = $this->session->userdata('servicosms');
         
         if ($servicosms == 't') {
-            $registro_sms_id = $this->login->criandoregistrosms();
 
             $dadosEmpresaSms = $this->login->listarempresasmsdados();
 //                var_dump($dadosEmpresaSms);die;
             // verificando o total de mensagens utilizadas do pacote
             $totalUtilizado = (int) $this->login->totalutilizado();
             $totalPacote = (int) $this->login->listarempresapacote();
-
+            
             if ($totalUtilizado < $totalPacote || $dadosEmpresaSms[0]->enviar_excedentes == "t") {
-
+                
                 //calculando total disponivel
                 $disponivel = $totalPacote - $totalUtilizado;
 
@@ -64,6 +63,7 @@ class Login extends Controller {
 
                 $smsVerificacao = $this->login->verificasms();
                 if (count($smsVerificacao) == 0) {
+//                    var_dump($smsVerificacao); die;
                     if ($disponivel > 0) {
                         //INSERINDO ANIVERSARIANTES NA TABELA DE CONTROLE (ANIVERSARIANTE)
                         $aniversariantes = $this->login->aniversariantes();
@@ -82,6 +82,7 @@ class Login extends Controller {
                 }
                 /* Fim do Bloco */
 
+                $registro_sms_id = $this->login->criandoregistrosms();
                 $this->login->atualizandoregistro($registro_sms_id);
             } else {
                 //Mandar email para o administrador alertando que o pacote foi excedido
@@ -106,6 +107,7 @@ class Login extends Controller {
             
             // Buscando mensagens  no banco que deverao ser mandadas
             $dados = $this->login->listarsms();
+            
             if (count($dados) > 0) {
                 
                 /* INTEGRAÇÃO ZENVIA API */
@@ -115,6 +117,7 @@ class Login extends Controller {
 
                 foreach ($dados as $value) {
                     $numero = $this->utilitario->validaTelefone($value['numero']);
+                    
                     if($numero["valido"]){
                         $sms = new Sms();
                         $sms->setTo($numero["numFor"]);
@@ -123,7 +126,7 @@ class Login extends Controller {
                             $url = $this->utilitario->validaExternoEndereco($value['endereco_externo']) . "login/c/" . $value['agenda_exames_id'];
                             
                             $msg = $value['mensagem'] . " Para confirmar, acesse: " . $url;
-                            $sms->setMsg($msg);
+                            $sms->setMsg(str_replace("  ", " ", $msg));
                         }
                         else {
                             $sms->setMsg($value['mensagem']);
@@ -134,7 +137,7 @@ class Login extends Controller {
                         $smsLote[] = $sms;
                     }
                 }
-                
+//                
                 try {
 //                    $responses = $smsFacade->sendMultiple($smsLote);
                     foreach ($responses as $response) {
@@ -143,11 +146,12 @@ class Login extends Controller {
                     }
                 } catch( Exception $ex ){
                     echo "<pre>";
-                    var_dump($ex->message);
+                    var_dump($ex);
                 }
             }
             
         }
+        
         
     }
 

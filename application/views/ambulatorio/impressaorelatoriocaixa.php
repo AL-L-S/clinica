@@ -1173,20 +1173,20 @@
                                 $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor1;
                                 $numerocredito[$value->nome] ++;
                             }
-                        }
-                        foreach ($formapagamento as $value) {
+//                        }
+//                        foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_2 == $value->nome) {
                                 $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor2;
                                 $numerocredito[$value->nome] ++;
                             }
-                        }
-                        foreach ($formapagamento as $value) {
+//                        }
+//                        foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_3 == $value->nome) {
                                 $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor3;
                                 $numerocredito[$value->nome] ++;
                             }
-                        }
-                        foreach ($formapagamento as $value) {
+//                        }
+//                        foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_4 == $value->nome) {
                                 $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor4;
                                 $numerocredito[$value->nome] ++;

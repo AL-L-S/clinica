@@ -43,6 +43,9 @@ ALTER TABLE ponto.tb_operador ADD COLUMN ocupacao_painel boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN laudo_sigiloso boolean DEFAULT false;
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN adendo text;
 
+-- Dia 22/02/2018
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN confirmacao_por_sms boolean DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_confirmacao_por_sms timestamp without time zone;
 
 CREATE TABLE ponto.tb_classificacao_grupo
 (

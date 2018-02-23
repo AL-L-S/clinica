@@ -10423,7 +10423,7 @@ class guia_model extends Model {
                 }
             }
 
-            if (count($_POST['creditoForma']) > 0) {
+            if (count(@$_POST['creditoForma']) > 0) {
                 //INSERINDO OS CRÉDITOS LANÇADOS HOJE
                 foreach ($_POST['creditoForma'] as $key => $item5) {
                     if ($_POST['creditoForma'][$key] == $value->forma_pagamento_id && $_POST['creditoValor'][$key] != '0.00') {
