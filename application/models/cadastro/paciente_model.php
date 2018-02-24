@@ -114,6 +114,17 @@ class paciente_model extends BaseModel {
         return $return->result();
     }
 
+    function listarCidadesibge($parametro = null) {
+        $this->db->select('municipio_id,
+                           nome,estado');
+        $this->db->where('codigo_ibge', $parametro);
+
+        $this->db->from('tb_municipio');
+        $return = $this->db->get();
+
+        return $return->result();
+    }
+
     function listardados($paciente_id) {
         $this->db->select('tp.tipo_logradouro_id as codigo_logradouro,co.nome as nome_convenio, co.convenio_id as convenio,tp.descricao,p.*,c.estado, c.nome as cidade_desc,c.municipio_id as cidade_cod');
         $this->db->from('tb_paciente p');
@@ -365,10 +376,10 @@ class paciente_model extends BaseModel {
             if ($_POST['estado_civil_id'] != '') {
                 $this->db->set('estado_civil_id', $_POST['estado_civil_id']);
             }
-            if($_POST['leito'] != ''){
-             $this->db->set('leito', $_POST['leito']);   
+            if ($_POST['leito'] != '') {
+                $this->db->set('leito', $_POST['leito']);
             }
-            
+
             $this->db->set('nome_pai', $_POST['nome_pai']);
             $this->db->set('nome_mae', $_POST['nome_mae']);
             $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));

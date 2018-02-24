@@ -2525,6 +2525,19 @@ class Autocomplete extends Controller {
         echo json_encode($var);
     }
 
+    function cidadeibge() {
+
+        if (isset($_GET['ibge'])) {
+            $result = $this->paciente_m->listarCidadesibge($_GET['ibge']);
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->nome . ' - ' . $item->estado;
+            $retorno['id'] = $item->municipio_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
     function produto() {
 
         if (isset($_GET['term'])) {

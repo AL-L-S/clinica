@@ -5,7 +5,7 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioexame">
                 <dl>
                     <dt>
-                    <label>Convenio</label>
+                        <label>Convenio</label>
                     </dt>
                     <dd>
                         <select name="convenio" id="convenio" class="size2">
@@ -18,7 +18,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Grupo Convenio</label>
+                        <label>Grupo Convenio</label>
                     </dt>
                     <dd>
                         <select name="grupoconvenio" id="convenio" class="size2">
@@ -43,7 +43,7 @@
                             <input type="checkbox" name="filtro_hora" id="filtro_hora"><label for="filtro_hora">Filtrar por horario?</label>
                         </dd>
                     </div>
-                    
+
                     <div id="div-filtro-hora">
                         <dt>
                             <label>Hora inicio</label>
@@ -58,19 +58,19 @@
                             <input type="text" name="horario_fim" id="horario_fim" alt="29:99"/>
                         </dd>
                     </div>
-                    
+
                     <dt>
-                    <label>Data De Pesquisa</label>
+                        <label>Data De Pesquisa</label>
                     </dt>
                     <dd>
                         <select name="data_atendimento" id="data_atendimento" class="size2" >
                             <option value='1' >DATA DE ATENDIMENTO</option>
                             <option value='0' >DATA DE FATURAMENTO</option>
-     
+
                         </select>
                     </dd>
                     <dt>
-                    <label>Especialidade</label>
+                        <label>Especialidade</label>
                     </dt>
                     <dd>
                         <select name="grupo" id="grupo" class="size1" >
@@ -82,27 +82,27 @@
 
                         </select>
                     </dd>
-                    
+
                     <dt>
-                    <label>Situação</label>
+                        <label>Situação</label>
                     </dt>
                     <dd>
                         <select name="situacao_faturamento" id="grupo" class="size1" >
                             <option value='' >TODOS</option>
                             <option value='GLOSADO' >GLOSADO</option>
                             <option value='PAGO' >PAGO</option>
-                            
+
                         </select>
                     </dd>
                     <dt>
-                    <label>Procedimento</label>
+                        <label>Procedimento</label>
                     </dt>
                     <dd style="margin-bottom: 5pt">
 <!--                        <select name="procedimentos" id="procedimentos" class="size1" >
                             <option value='0' >TODOS</option>
-                            <? foreach ($procedimentos as $value) : ?>
-                                <option value="<?= $value->procedimento_tuss_id; ?>" ><?php echo $value->nome; ?></option>
-                            <? endforeach; ?>
+                        <? foreach ($procedimentos as $value) : ?>
+                                        <option value="<?= $value->procedimento_tuss_id; ?>" ><?php echo $value->nome; ?></option>
+                        <? endforeach; ?>
 
                         </select>-->
                         <select name="procedimentos" id="procedimentos" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1" required="">
@@ -113,8 +113,9 @@
                         </select>
 
                     </dd>
+                    
                     <dt>
-                    <label>Classificacao</label>
+                        <label>Classificacao</label>
                     </dt>
                     <dd>
                         <select name="classificacao" id="classificacao" class="size1" >
@@ -123,7 +124,16 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Faturamento</label>
+                        <label>Aparecer Valor</label>
+                    </dt>
+                    <dd>
+                        <select name="aparecervalor" id="aparecervalor" class="size1" >
+                            <option value='1' >SIM</option>
+                            <option value='0' >NÃO</option>
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Faturamento</label>
                     </dt>
                     <dd>
                         <select name="faturamento" id="faturamento" class="size1" >
@@ -133,7 +143,18 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Tipo</label>
+                        <label>Grupo Tipo</label>
+                    </dt>
+                    <dd>
+                        <select name="grupotipo" id="grupotipo" class="size2">
+                            <option value='' >SELECIONE</option>
+                            <? foreach ($grupoclassificacao as $value) : ?>
+                                <option value="<?= $value->classificacao_grupo_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Tipo</label>
                     </dt>
                     <dd>
                         <select name="tipo" id="tipo" class="size2">
@@ -146,7 +167,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Ra&ccedil;a / Cor</label>
+                        <label>Ra&ccedil;a / Cor</label>
                     </dt>
                     <dd>
                         <select name="raca_cor" id="txtRacaCor" class="size2">
@@ -161,10 +182,19 @@
                     </dd>
                     <dt>
                     <dt>
-                    <label>Medico</label>
+                        <label>Medico</label>
                     </dt>
-                    <dd>
-                        <select name="medico" id="medico" class="size2">
+                    <!--                    <dd>
+                                            <select name="medico" id="medico" class="size2">
+                                                <option value="0">TODOS</option>
+                    <? foreach ($medicos as $value) : ?>
+                                                            <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
+                    <? endforeach; ?>
+                    
+                                            </select>
+                                        </dd>-->
+                    <dd style="margin-bottom: 9px;">
+                        <select name="medico[]" id="medico" class="chosen-select" data-placeholder="Selecione os médicos (Todos ou vázio trará todos)..." multiple>
                             <option value="0">TODOS</option>
                             <? foreach ($medicos as $value) : ?>
                                 <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
@@ -172,9 +202,13 @@
 
                         </select>
                     </dd>
+<!--                    <div id="testandoobr">
+
+                    </div>-->
+                    <!--<br>-->
 
                     <dt>
-                    <label>Empresa</label>
+                        <label>Empresa</label>
                     </dt>
                     <dd>
                         <select name="empresa" id="empresa" class="size2">
@@ -187,7 +221,7 @@
                     </dd>
 
                     <dt>
-                    <label>Gerar Planilha</label>
+                        <label>Gerar Planilha</label>
                     </dt>
                     <dd>
                         <select name="planilha" id="planilha" class="size2">
@@ -217,24 +251,23 @@
     form { min-height: 400pt; }
 </style>
 <script type="text/javascript">
-    
+
     $('#filtro_hora').change(function () {
         if ($(this).is(":checked")) {
             $("#div-filtro-hora").show();
 //            $("#horario_inicio").prop('required', true);
 //            $("#horario_fim").prop('required', true);
-        }
-        else{
+        } else {
             $("#div-filtro-hora").hide();
 //            $("#horario_inicio").prop('required', false);
 //            $("#horario_fim").prop('required', false);
-            
+
         }
-    });    
+    });
     $("#div-filtro-hora").hide();
-    
-    
-    $(function() {
+
+
+    $(function () {
         $("#txtdata_inicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -246,7 +279,7 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#txtdata_fim").datepicker({
             autosize: true,
             changeYear: true,
@@ -259,7 +292,7 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

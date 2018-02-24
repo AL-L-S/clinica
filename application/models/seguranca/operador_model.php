@@ -109,10 +109,10 @@ class Operador_model extends BaseModel {
     }
 
     function gravarcopiaroperadorconvenioempresa() {
-        try {            
-            $operador_id = (int)$_POST['txtoperador_id'];
-            $empresa_id_origem = (int)$_POST['empresa_id_origem'];
-            $empresa_id_destino = (int)$_POST['empresa_id_destino'];
+        try {
+            $operador_id = (int) $_POST['txtoperador_id'];
+            $empresa_id_origem = (int) $_POST['empresa_id_origem'];
+            $empresa_id_destino = (int) $_POST['empresa_id_destino'];
 
             $this->db->select('convenio_id');
             $this->db->from('tb_ambulatorio_convenio_operador');
@@ -120,10 +120,10 @@ class Operador_model extends BaseModel {
             $this->db->where('operador_id', $operador_id);
             $this->db->where('empresa_id', $empresa_id_origem);
             $return = $this->db->get()->result();
-            
-            foreach($return as $conv){
-                
-                $convenio_id = (int)$conv;
+
+            foreach ($return as $conv) {
+
+                $convenio_id = (int) $conv;
 
                 $this->db->select('ambulatorio_convenio_operador_id');
                 $this->db->from('tb_ambulatorio_convenio_operador');
@@ -167,7 +167,7 @@ class Operador_model extends BaseModel {
                         $this->db->where('procedimento_convenio_id', $value->procedimento_convenio_id);
                         $pr = $this->db->get()->result();
 
-                        if( count($pr) == 0 ){
+                        if (count($pr) == 0) {
                             $this->db->set('operador', $operador_id);
                             $this->db->set('convenio_id', $convenio_id);
                             $this->db->set('empresa_id', $empresa_id_destino);
@@ -232,8 +232,8 @@ class Operador_model extends BaseModel {
                     $this->db->where('empresa_id', $empresa_id_destino);
                     $this->db->where('procedimento_convenio_id', $value->procedimento_convenio_id);
                     $pr = $this->db->get()->result();
-                    
-                    if( count($pr) == 0 ){
+
+                    if (count($pr) == 0) {
                         $this->db->set('operador', $operador_id);
                         $this->db->set('convenio_id', $convenio_id);
                         $this->db->set('empresa_id', $empresa_id_destino);
@@ -258,7 +258,7 @@ class Operador_model extends BaseModel {
             $this->db->where('convenio_id', $_POST['convenio_id']);
             $this->db->where('empresa_id', $_POST['empresa']);
             $return = $this->db->get()->result();
-            
+
             if (count($return) == 0) {
                 /* inicia o mapeamento no banco */
                 $this->db->set('operador_id', $_POST['txtoperador_id']);
@@ -277,7 +277,7 @@ class Operador_model extends BaseModel {
 
                 return $estoque_menu_produtos_id;
             }
-            else{
+            else {
                 return -2;
             }
         } catch (Exception $exc) {
@@ -319,9 +319,9 @@ class Operador_model extends BaseModel {
                     $this->db->where('empresa_id', $_POST['txtempresa_id']);
                     $this->db->where('procedimento_convenio_id', $value->procedimento_convenio_id);
                     $pr = $this->db->get()->result();
-                    
-                    if( count($pr) == 0){
-                
+
+                    if (count($pr) == 0) {
+
                         $this->db->set('operador', $_POST['txtoperador_id']);
                         $this->db->set('convenio_id', $_POST['txtconvenio_id']);
                         $this->db->set('empresa_id', $_POST['txtempresa_id']);
@@ -351,8 +351,8 @@ class Operador_model extends BaseModel {
                 $this->db->where('procedimento_convenio_id', $_POST['procedimento']);
                 $pr = $this->db->get()->result();
 
-                if( count($pr) == 0){
-                    
+                if (count($pr) == 0) {
+
                     $this->db->set('operador', $_POST['txtoperador_id']);
                     $this->db->set('convenio_id', $_POST['txtconvenio_id']);
                     $this->db->set('empresa_id', $_POST['txtempresa_id']);
@@ -367,7 +367,6 @@ class Operador_model extends BaseModel {
                         return -1;
                     else
                         $estoque_menu_produtos_id = $this->db->insert_id();
-                    
                 }
             }
 
@@ -387,7 +386,7 @@ class Operador_model extends BaseModel {
         $this->db->where('operador_id', $operador);
         $this->db->where('empresa_id', $empresa_id);
         $this->db->update('tb_ambulatorio_convenio_operador');
-        
+
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
@@ -478,6 +477,31 @@ class Operador_model extends BaseModel {
         $this->db->from('tb_operador o');
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
         $this->db->where('o.operador_id', $operador_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarVarios($operador_id) {
+        $this->db->select('o.operador_id,
+                               o.usuario,
+                               o.perfil_id,
+                               p.nome,
+                               o.credor_devedor_id,
+                               o.ir,
+                               o.pis,
+                               o.cofins,
+                               o.classe,
+                               o.conta_id,
+                               o.tipo_id,
+                               o.csll,
+                               o.iss,
+                               o.valor_base,
+                               o.nome as operador');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
+        $medicos = array_unique($_POST['medico']);
+        $medicos = implode(', ', $medicos);
+        $this->db->where("o.operador_id IN ($medicos)");
         $return = $this->db->get();
         return $return->result();
     }
@@ -860,11 +884,11 @@ class Operador_model extends BaseModel {
                 $financeiro_credor_devedor_id = $this->db->insert_id();
             }
 
-            
+
             if ($_POST['txtcolor'] != '' && $_POST['txtcolor'] != '#000000') {
                 $this->db->set('cor_mapa', $_POST['txtcolor']);
             }
-            
+
             /* inicia o mapeamento no banco */
             $this->db->set('nome', $_POST['nome']);
             $this->db->set('sexo', $_POST['sexo']);
@@ -926,11 +950,11 @@ class Operador_model extends BaseModel {
             } elseif ($_POST['credor_devedor'] != "") {
                 $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
-            
+
             $this->db->set('cabecalho', $_POST['cabecalho']);
             $this->db->set('rodape', $_POST['rodape']);
             $this->db->set('timbrado', $_POST['timbrado']);
-            
+
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('tipo_id', $_POST['tipo']);
             if ($_POST['txtconsulta'] != null) {
@@ -947,7 +971,7 @@ class Operador_model extends BaseModel {
             } else {
                 $this->db->set('solicitante', 'f');
             }
-            
+
             if (isset($_POST['ocupacao_painel'])) {
                 $this->db->set('ocupacao_painel', 't');
             } else {
@@ -956,11 +980,10 @@ class Operador_model extends BaseModel {
 
             if ($_POST['txtcboID'] != "" && $_POST['txtcbo'] != "") {
                 $this->db->set('cbo_ocupacao_id', $_POST['txtcboID']);
-            }
-            elseif($_POST['txtcbo']== ""){
+            } elseif ($_POST['txtcbo'] == "") {
                 $this->db->set('cbo_ocupacao_id', null);
             }
-            
+
             $this->db->set('usuario', $_POST['txtUsuario']);
             if ($_POST['txtSenha'] != "") {
                 $this->db->set('senha', md5($_POST['txtSenha']));

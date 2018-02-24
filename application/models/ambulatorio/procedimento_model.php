@@ -707,7 +707,7 @@ class procedimento_model extends Model {
         try {
 
             /* inicia o mapeamento no banco */
-            if ($_POST['txtvalorbri'] != "") {
+            if ($_POST['txtvalorbri'] != "" && $_POST['grupo'] != "") {
                 if ($_POST['tuss_id'] != "") {
                     $tuss_id = $_POST['tuss_id'];
                     $valor_bri = str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri']));
