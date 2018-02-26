@@ -409,7 +409,7 @@ class Operador_model extends BaseModel {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('ambulatorio_convenio_operador_id', $ambulatorio_convenio_operador_id);
         $this->db->update('tb_ambulatorio_convenio_operador');
-        
+
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
@@ -1043,6 +1043,124 @@ class Operador_model extends BaseModel {
                     $this->db->where('operador_id', $operador_id);
                     $this->db->update('tb_operador_cbo');
                 }
+            }
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravarfinanceiro() {
+        try {
+
+            if (@$_POST['criarcredor'] == "on") {
+                $this->db->set('razao_social', $_POST['nome']);
+                $this->db->set('cep', $_POST['cep']);
+                if ($_POST['cpf'] != '') {
+                    $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
+                } else {
+                    $this->db->set('cpf', null);
+                }
+                $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
+                $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
+                if ($_POST['tipo_logradouro'] != '') {
+                    $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
+                }
+                if ($_POST['municipio_id'] != '') {
+                    $this->db->set('municipio_id', $_POST['municipio_id']);
+                }
+                $this->db->set('logradouro', $_POST['endereco']);
+                $this->db->set('numero', $_POST['numero']);
+                $this->db->set('bairro', $_POST['bairro']);
+                $this->db->set('complemento', $_POST['complemento']);
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_credor_devedor');
+                $financeiro_credor_devedor_id = $this->db->insert_id();
+            }
+
+            if ($_POST['taxaadm'] != "") {
+                $this->db->set('taxa_administracao', str_replace(",", ".", $_POST['taxaadm']));
+            }
+            if ($_POST['ir'] != "") {
+                $this->db->set('ir', str_replace(",", ".", $_POST['ir']));
+            }
+            if ($_POST['pis'] != "") {
+                $this->db->set('pis', str_replace(",", ".", $_POST['pis']));
+            }
+            if ($_POST['cofins'] != "") {
+                $this->db->set('cofins', str_replace(",", ".", $_POST['cofins']));
+            }
+            if ($_POST['csll'] != "") {
+                $this->db->set('csll', str_replace(",", ".", $_POST['csll']));
+            }
+            if ($_POST['iss'] != "") {
+                $this->db->set('iss', str_replace(",", ".", $_POST['iss']));
+            }
+            if ($_POST['valor_base'] != "") {
+                $this->db->set('valor_base', str_replace(",", ".", $_POST['valor_base']));
+            }
+            if ($_POST['conta'] != "") {
+                $this->db->set('conta_id', $_POST['conta']);
+            }
+            if (@$_POST['criarcredor'] == "on") {
+                $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
+            } elseif ($_POST['credor_devedor'] != "") {
+                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
+            }
+
+
+            $this->db->set('classe', $_POST['classe']);
+            $this->db->set('tipo_id', $_POST['tipo']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['operador_id'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_operador');
+                $operador_id = $this->db->insert_id();
+                $empresa_id = $this->session->userdata('empresa_id');
+
+
+                $this->db->select('empresa_id
+                               
+                               ');
+                $this->db->from('tb_empresa');
+                $this->db->where('ativo', 't');
+                $return = $this->db->get()->result();
+
+                if (count($return) > 0) {
+                    foreach ($return as $value) {
+                        $this->db->set('operador_id', $operador_id);
+                        $this->db->set('empresa_id', $value->empresa_id);
+                        $this->db->insert('tb_operador_empresas');
+                    }
+                }
+
+
+
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") { // erro de banco
+                    return false;
+                }
+
+                return $operador_id;
+            } else { // update
+                $operador_id = $_POST['operador_id'];
+//                var_dump($horario); die;
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('operador_id', $operador_id);
+                $this->db->update('tb_operador');
             }
             $erro = $this->db->_error_message();
             if (trim($erro) != "") { // erro de banco

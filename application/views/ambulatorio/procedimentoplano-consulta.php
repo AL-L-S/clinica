@@ -96,7 +96,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->procedimentoplano->listar($_GET)->orderby('c.nome')->orderby('pt.nome')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->procedimentoplano->listar($_GET)->orderby('c.nome')->orderby('pt.grupo,pt.nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";

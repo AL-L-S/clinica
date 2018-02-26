@@ -2012,6 +2012,7 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['relatorio'] = $this->guia->relatoriogastosala();
+//        var_dump($data['relatorio']); die;
         $this->load->View('ambulatorio/impressaorelatoriogastosala', $data);
     }
 

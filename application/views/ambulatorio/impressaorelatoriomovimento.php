@@ -32,7 +32,7 @@
                 <tr>
                     <th width="100px;" class="tabela_header">Conta</th>
                     <th class="tabela_header">Data</th>
-                    <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Credor/Devedor</th>
                     <th class="tabela_header">Tipo</th>
                     <th class="tabela_header">Classe</th>
                     <th class="tabela_header">Valor</th>

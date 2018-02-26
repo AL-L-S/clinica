@@ -80,11 +80,24 @@ class Operador extends BaseController {
         $data['obj'] = $obj_operador_id;
         $data['classe'] = $this->classe->listarclasse();
         $data['listarPerfil'] = $this->operador_m->listarPerfil();
-        
+
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
-        
+
         $this->loadView('seguranca/operador-form', $data);
+    }
+
+    function alterarfinanceiro($operador_id) {
+//        die;
+        $obj_operador_id = new operador_model($operador_id);
+        $data['obj'] = $obj_operador_id;
+        $data['classe'] = $this->classe->listarclasse();
+        $data['listarPerfil'] = $this->operador_m->listarPerfil();
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
+
+        $this->loadView('seguranca/operadorfinanceiro-form', $data);
     }
 
     function alteraSenha($operador_id) {
@@ -218,6 +231,35 @@ class Operador extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "seguranca/operador", $data);
         }
+    }
+
+    function gravarfinanceiro() {
+        if ($this->operador_m->gravarfinanceiro()) {
+                   echo '<html><meta charset="utf-8">
+        <script type="text/javascript">
+        alert("Operação Efetuada Com Sucesso");
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>';
+        } else {
+                   echo '<html><meta charset="utf-8">
+        <script type="text/javascript">
+        alert("Houve um erro ao tentar alterar as informações");
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>';
+        }
+        $data['lista'] = $this->operador_m->listar($filtro = null, $maximo = null, $inicio = null);
+
+        $this->session->set_flashdata('message', $data['mensagem']);
     }
 
     function base64_to_jpeg($base64_string, $output_file) {
@@ -405,7 +447,7 @@ class Operador extends BaseController {
         $data['empresa_id'] = $empresa_id;
         $data['operador'] = $this->operador_m->listarCada($operador_id);
         $data['empresaOrigem'] = $this->operador_m->listarempresaconvenioorigem($empresa_id);
-        
+
         $data['empresas'] = $this->operador_m->listarempresasconvenio();
         $this->loadView('seguranca/copiaroperadorconvenioempresa-form', $data);
     }
@@ -442,12 +484,10 @@ class Operador extends BaseController {
         $verifica = $this->operador_m->gravaroperadorconvenio();
         if ($verifica == '-1') {
             $data['mensagem'] = 'Erro ao cadastrar Convênio. Operação cancelada.';
-        } 
-        elseif($verifica == '-2') {
+        } elseif ($verifica == '-2') {
             $data['mensagem'] = 'Convênio ja cadastrado.';
-        }
-        else {
-            $data['mensagem'] = 'Convênio cadastrado com sucesso.'; 
+        } else {
+            $data['mensagem'] = 'Convênio cadastrado com sucesso.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/operadorconvenio/$operador_id/$empresa_id");

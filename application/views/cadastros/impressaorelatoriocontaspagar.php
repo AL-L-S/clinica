@@ -3,47 +3,68 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    <?  $i = 0;
-        foreach ($relatoriolaboratorio as $item){
-            $i++;
-            ?>
-            $(function () {
-                $("#dataLab<?= $i ?>").datepicker({
-                    autosize: true,
-                    changeYear: true,
-                    changeMonth: true,
-                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                    buttonImage: '<?= base_url() ?>img/form/date.png',
-                    dateFormat: 'dd/mm/yy'
-                });
-            });
-            $(function () {
-                $("#dataMed<?= $i ?>").datepicker({
-                    autosize: true,
-                    changeYear: true,
-                    changeMonth: true,
-                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                    buttonImage: '<?= base_url() ?>img/form/date.png',
-                    dateFormat: 'dd/mm/yy'
-                });
-            });
-            $(function () {
-                $("#dataPro<?= $i ?>").datepicker({
-                    autosize: true,
-                    changeYear: true,
-                    changeMonth: true,
-                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                    buttonImage: '<?= base_url() ?>img/form/date.png',
-                    dateFormat: 'dd/mm/yy'
-                });
-            });
-            <?
-        }
+<?
+$i = 0;
+foreach ($relatoriolaboratorio as $item) {
+    $i++;
     ?>
-    
+        $(function () {
+            $("#dataLab<?= $i ?>").datepicker({
+                autosize: true,
+                changeYear: true,
+                changeMonth: true,
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonImage: '<?= base_url() ?>img/form/date.png',
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+
+    <?
+}
+?>
+<?
+$i = 0;
+foreach ($relatoriomedico as $item) {
+    $i++;
+    ?>
+
+        $(function () {
+            $("#dataMed<?= $i ?>").datepicker({
+                autosize: true,
+                changeYear: true,
+                changeMonth: true,
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonImage: '<?= base_url() ?>img/form/date.png',
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+
+    <?
+}
+?>
+<?
+$i = 0;
+foreach ($relatoriopromotor as $item) {
+    $i++;
+    ?>
+
+        $(function () {
+            $("#dataPro<?= $i ?>").datepicker({
+                autosize: true,
+                changeYear: true,
+                changeMonth: true,
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonImage: '<?= base_url() ?>img/form/date.png',
+                dateFormat: 'dd/mm/yy'
+            });
+        });
+    <?
+}
+?>
+
 
     (function ($) {
         $(function () {
@@ -80,7 +101,7 @@
         <h4>TODAS OS CREDORES</h4>
     <? } ?>
     <h4>RELATORIO CONTAS A PAGAR</h4>
-    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
+    <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
     <hr>
     <?
     if (count($relatorio) > 0 || count($relatoriomedico) > 0 || count($relatoriopromotor) > 0) {
@@ -125,58 +146,59 @@
             <?
         }
         ?>
-        <?
-        if (count($relatoriomedico) > 0 || count($relatoriopromotor) > 0) { ?>
+        <? if (count($relatoriomedico) > 0 || count($relatoriopromotor) > 0) { ?>
             <br>
             <br>
             <div>
                 <table border="0" cellspacing="10">
                     <tr>
-                    <?
-                    if (count($relatoriomedico) > 0) { ?>
-                        <td style="vertical-align: top">
-                            <?
-                            $previsaoMedicos = Array();
+                        <? if (count($relatoriomedico) > 0) { ?>
+                            <td style="vertical-align: top">
+                                <?
+                                $previsaoMedicos = Array();
 
-                            foreach ($relatoriomedico as $item) {
-                                $previsaoMedicos[$item->data][$item->medico_agenda]["nome"] = $item->medico;
-                                $previsaoMedicos[$item->data][$item->medico_agenda]["conta_id"] = $item->conta_id;
-                                $previsaoMedicos[$item->data][$item->medico_agenda]["credor_devedor_id"] = $item->credor_devedor_id;
-                                $previsaoMedicos[$item->data][$item->medico_agenda]["tipo"] = $item->tipo_id;
-                                $previsaoMedicos[$item->data][$item->medico_agenda]["classe"] = $item->classe;
-                                if ( $item->confirmacao_previsao_medico == 't' ){
-                                    @$previsaoMedicos[$item->data][$item->medico_agenda]["confirmado"]++;
-                                }
+                                foreach ($relatoriomedico as $item) {
+                                    $previsaoMedicos[$item->data][$item->medico_agenda]["nome"] = $item->medico;
+                                    $previsaoMedicos[$item->data][$item->medico_agenda]["conta_id"] = $item->conta_id;
+                                    $previsaoMedicos[$item->data][$item->medico_agenda]["credor_devedor_id"] = $item->credor_devedor_id;
+                                    $previsaoMedicos[$item->data][$item->medico_agenda]["tipo"] = $item->tipo_id;
+                                    $previsaoMedicos[$item->data][$item->medico_agenda]["classe"] = $item->classe;
+                                    if ($item->confirmacao_previsao_medico == 't') {
+                                        @$previsaoMedicos[$item->data][$item->medico_agenda]["confirmado"] ++;
+                                    }
 
-                                if($item->perc_medico_excecao != ""){
-                                    $valor = ($item->percentual_excecao == 't') ?  $item->valor_total * ($item->perc_medico_excecao / 100) : $item->perc_medico_excecao;
+                                    if ($item->perc_medico_excecao != "") {
+                                        $valor = ($item->percentual_excecao == 't') ? $item->valor_total * ($item->perc_medico_excecao / 100) : $item->perc_medico_excecao;
+                                    } else {
+                                        $valor = ($item->percentual == 't') ? $item->valor_total * ($item->perc_medico / 100) : $item->perc_medico;
+                                    }
+                                    $previsaoMedicos[$item->data][$item->medico_agenda]["valor"] = @$previsaoMedicos[$item->data][$item->medico_agenda]["valor"] + $valor;
                                 }
-                                else{
-                                    $valor = ($item->percentual == 't') ?  $item->valor_total * ($item->perc_medico / 100) : $item->perc_medico;
-                                }
-                                $previsaoMedicos[$item->data][$item->medico_agenda]["valor"] = @$previsaoMedicos[$item->data][$item->medico_agenda]["valor"] + $valor;
-                            }
-
-                            ?>
-                            <table border="1" cellspacing="0" cellpadding="5">
-                                <thead>
-                                    <tr>
-                                        <th class="tabela_header" colspan="5" style="background-color: #ccc;">Previsão Médica</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="tabela_header">Médico</th>
-                                        <th class="tabela_header">Valor Previsto</th>
-                                        <th class="tabela_header">Confirmar Pagamento</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    foreach ($previsaoMedicos as $key2 => $medicos) : ?>
+                                ?>
+                                <table border="1" cellspacing="0" cellpadding="5">
+                                    <thead>
                                         <tr>
-                                            <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
+                                            <th class="tabela_header" colspan="5" style="background-color: #ccc;">Previsão Médica</th>
                                         </tr>
-                                    <?
-                                        foreach ($medicos as $key => $item) :
+                                        <tr>
+                                            <th class="tabela_header">Médico</th>
+                                            <th class="tabela_header">Valor Previsto</th>
+                                            <th class="tabela_header">Confirmar Pagamento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $i = 0;
+                                        foreach ($previsaoMedicos as $key2 => $medicos) : 
+                                            $i ++;
+                                            ?>
+                                        
+                                            <tr>
+                                                <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
+                                            </tr>
+                                            <?
+                                            
+                                            foreach ($medicos as $key => $item) :
+                                                
 //                                            if ($item["valor"] != 0) {
                                                 ?>
                                                 <tr>
@@ -214,12 +236,14 @@
                                                                         </table>
 
                                                                     </form>
-                                                                <?
+                                                                    <?
                                                                 } else {
                                                                     if ($item["credor_devedor_id"] == '') {
-                                                                        echo "Credor/Devedor não informado";
-                                                                    } else {
-                                                                        echo "Conta não informada";
+                                                                        ?>
+                                                                        <a target="_blank" href="<?= base_url() . "seguranca/operador/alterarfinanceiro/$key"; ?>">Credor/Devedor não informado</a>
+                                                                    <? } else { ?>
+                                                                        <a target="_blank" href="<?= base_url() . "seguranca/operador/alterarfinanceiro/$key"; ?>">Conta não informada</a>
+                                                                        <?
                                                                     }
                                                                 }
                                                             } else {
@@ -231,135 +255,140 @@
                                                         ?>
                                                     </td>
                                                 </tr>
-                                            <?
+                                                <?
 //                                            }
+                                            endforeach;
                                         endforeach;
-                                    endforeach;
-                                    ?>
-                                </tbody>
+                                        ?>
+                                    </tbody>
 
-                            </table>
-                        </td>
-                        <?
-                    }
-
-                    if (count($relatoriopromotor) > 0) { ?>
-                        <td style="vertical-align: top">
+                                </table>
+                            </td>
                             <?
-                            $previsaoPromotor = Array();
+                        }
 
-                            foreach ($relatoriopromotor as $item) {
-                                $previsaoPromotor[$item->data][$item->indicacao]["nome"] = $item->promotor;
-                                $previsaoPromotor[$item->data][$item->indicacao]["conta_id"] = $item->conta_id;
-                                $previsaoPromotor[$item->data][$item->indicacao]["credor_devedor_id"] = $item->credor_devedor_id;
-                                $previsaoPromotor[$item->data][$item->indicacao]["tipo"] = $item->tipo_id;
-                                $previsaoPromotor[$item->data][$item->indicacao]["classe"] = $item->classe;
-                                if ( $item->confirmacao_previsao_promotor == 't' ){
-                                    @$previsaoPromotor[$item->data][$item->indicacao]["confirmado"]++;
-                                }
-
-
-                                if($item->percentual_promotor == 't'){
-                                    $valor = $item->valor_total * ($item->valor_promotor / 100);
-                                }
-                                else{
-                                    $valor = $item->valor_promotor;
-                                }
-                                $previsaoPromotor[$item->data][$item->indicacao]["valor"] = @$previsaoPromotor[$item->data][$item->indicacao]["valor"] + $valor;
-                            }
-
+                        if (count($relatoriopromotor) > 0) {
                             ?>
-                            <table border="1" cellspacing="0" cellpadding="5">
-                                <thead>
-                                    <tr>
-                                        <th class="tabela_header" colspan="5" style="background-color: #ccc;">Previsão Promotor</th>
-                                    </tr>
-                                    <tr>
-                                        <th class="tabela_header">Promotor</th>
-                                        <th class="tabela_header">Valor Previsto</th>
-                                        <th class="tabela_header">Confirmar Pagamento</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    
-                                    foreach ($previsaoPromotor as $key2 => $promotores) : ?>
+                            <td style="vertical-align: top">
+                                <?
+                                $previsaoPromotor = Array();
+
+                                foreach ($relatoriopromotor as $item) {
+                                    $previsaoPromotor[$item->data][$item->indicacao]["nome"] = $item->promotor;
+                                    $previsaoPromotor[$item->data][$item->indicacao]["conta_id"] = $item->conta_id;
+                                    $previsaoPromotor[$item->data][$item->indicacao]["credor_devedor_id"] = $item->credor_devedor_id;
+                                    $previsaoPromotor[$item->data][$item->indicacao]["tipo"] = $item->tipo_id;
+                                    $previsaoPromotor[$item->data][$item->indicacao]["classe"] = $item->classe;
+                                    if ($item->confirmacao_previsao_promotor == 't') {
+                                        @$previsaoPromotor[$item->data][$item->indicacao]["confirmado"] ++;
+                                    }
+
+
+                                    if ($item->percentual_promotor == 't') {
+                                        $valor = $item->valor_total * ($item->valor_promotor / 100);
+                                    } else {
+                                        $valor = $item->valor_promotor;
+                                    }
+                                    $previsaoPromotor[$item->data][$item->indicacao]["valor"] = @$previsaoPromotor[$item->data][$item->indicacao]["valor"] + $valor;
+                                }
+                                ?>
+                                <table border="1" cellspacing="0" cellpadding="5">
+                                    <thead>
                                         <tr>
-                                            <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
+                                            <th class="tabela_header" colspan="5" style="background-color: #ccc;">Previsão Promotor</th>
                                         </tr>
-                                    <?
-                                        foreach ($promotores as $key => $item) :
-//                                            if($item["valor"] != 0) {
-                                            ?>
+                                        <tr>
+                                            <th class="tabela_header">Promotor</th>
+                                            <th class="tabela_header">Valor Previsto</th>
+                                            <th class="tabela_header">Confirmar Pagamento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $i = 0;
+                                        foreach ($previsaoPromotor as $key2 => $promotores) : ?>
                                             <tr>
-                                                <td ><?= $item["nome"]; ?></td>
-                                                <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
-                                                <td style="text-align: center">
-                                                    <? 
-                                                    if ( ($_POST['empresa'] != '') ) {
-                                                        if ( !isset($item["confirmado"]) ) {
-                                                            if ($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
-                                                            <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaopromotor" target="_blank">
-                                                                <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
-                                                                <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
-                                                                <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
-                                                                <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
-                                                                <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
-                                                                <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
-                                                                <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
-                                                                <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
-                                                                <input type="hidden" name="promotor_id" value="<?= $key ?>"/>
-                                                                <input type="hidden" name="promotor_nome" value="<?= $item["nome"] ?>"/>
-                                                                <table>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <label for="dataPro<?= $i ?>">Data</label>
-                                                                            <input type="text" name="data" alt="date" id="dataPro<?= $i ?>"
-                                                                               value="<?= date("d/m/Y", strtotime($key2)); ?>"
-                                                                               style="width: 50%" required=""/>
-                                                                        </td>
-                                                                        <td align="center"><button type="submit">Confirmar</button></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                    </tr>
-                                                                </table>
-
-                                                            </form>
-                                                        <?  }
-                                                            else{
-                                                                if($item["credor_devedor_id"] == ''){
-                                                                    echo "Credor/Devedor não informado";
-                                                                } else{
-                                                                    echo "Conta não informada";
-                                                                }
-                                                            }
-                                                        }
-                                                        else{
-                                                            echo "Valor já confirmado";
-                                                        }
-                                                    }
-                                                    else {
-                                                        echo "Selecione uma empresa";
-                                                    } ?>
-                                                </td>
+                                                <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
                                             </tr>
-                                            <? // }
-                                        endforeach; 
-                                    endforeach; 
-                                    ?>
-                                </tbody>
+                                            <?
+                                             $i++;
+                                            foreach ($promotores as $key => $item) :
+                                               
+//                                            if($item["valor"] != 0) {
+                                                ?>
+                                                <tr>
+                                                    <td ><?= $item["nome"]; ?></td>
+                                                    <td style="text-align: right"><?= number_format($item["valor"], 2, ",", "."); ?></td>
+                                                    <td style="text-align: center">
+                                                        <?
+                                                        if (($_POST['empresa'] != '')) {
+                                                            if (!isset($item["confirmado"])) {
+                                                                if ($item["credor_devedor_id"] != '' && $item["conta_id"] != '') {
+                                                                    ?>
+                                                                    <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaopromotor" target="_blank">
+                                                                        <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
+                                                                        <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
+                                                                        <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
+                                                                        <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
+                                                                        <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
+                                                                        <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
+                                                                        <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
+                                                                        <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
+                                                                        <input type="hidden" name="promotor_id" value="<?= $key ?>"/>
+                                                                        <input type="hidden" name="promotor_nome" value="<?= $item["nome"] ?>"/>
+                                                                        <table>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <label for="dataPro<?= $i ?>">Data</label>
+                                                                                    <input type="text" name="data" alt="date" id="dataPro<?= $i ?>"
+                                                                                           value="<?= date("d/m/Y", strtotime($key2)); ?>"
+                                                                                           style="width: 50%" required=""/>
+                                                                                </td>
+                                                                                <td align="center"><button type="submit">Confirmar</button></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                            </tr>
+                                                                        </table>
 
-                            </table>
-                        </td>
-                        <?
-                    }
-                    ?>
+                                                                    </form>
+                                                                    <?
+                                                                } else {
+                                                                    if ($item["credor_devedor_id"] == '') {
+                                                                        ?>
+                                                                        <a target="_blank" href="<?= base_url() . "ambulatorio/indicacao/carregarindicacaofinanceiro/$key"; ?>">Credor/Devedor não informado</a>
+                                                                    <? } else { ?>
+                                                                        <a target="_blank" href="<?= base_url() . "ambulatorio/indicacao/carregarindicacaofinanceiro/$key"; ?>">Conta não informada</a>
+                                                                        <?
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                echo "Valor já confirmado";
+                                                            }
+                                                        } else {
+                                                            echo "Selecione uma empresa";
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                                <?
+                                                // }
+                                            endforeach;
+                                        endforeach;
+                                        ?>
+                                    </tbody>
+
+                                </table>
+                            </td>
+                            <?
+                        }
+                        ?>
                     </tr>
                 </table>
             </div>
-        <? 
+            <?
         }
-        if (count($relatoriolaboratorio) > 0) { ?>
+        if (count($relatoriolaboratorio) > 0) {
+            ?>
             <?
             $previsaoLaboratorio = Array();
 
@@ -369,19 +398,17 @@
                 $previsaoLaboratorio[$item->data][$item->laboratorio_id]["credor_devedor_id"] = $item->credor_devedor_id;
                 $previsaoLaboratorio[$item->data][$item->laboratorio_id]["tipo"] = $item->tipo;
                 $previsaoLaboratorio[$item->data][$item->laboratorio_id]["classe"] = $item->classe;
-                if($item->confirmacao_previsao_labotorio == 't'){
-                    @$previsaoLaboratorio[$item->data][$item->laboratorio_id]["confirmado"]++;
+                if ($item->confirmacao_previsao_labotorio == 't') {
+                    @$previsaoLaboratorio[$item->data][$item->laboratorio_id]["confirmado"] ++;
                 }
-                
-                if($item->percentual_laboratorio == 't'){
+
+                if ($item->percentual_laboratorio == 't') {
                     $valor = $item->valor_total * ($item->valor_laboratorio / 100);
-                }
-                else{
+                } else {
                     $valor = $item->valor_laboratorio;
                 }
                 $previsaoLaboratorio[$item->data][$item->laboratorio_id]["valor"] = @$previsaoLaboratorio[$item->data][$item->laboratorio_id]["valor"] + $valor;
             }
-
             ?>
             <br>
             <br>
@@ -398,84 +425,88 @@
                 </thead>
                 <tbody>
                     <?php
+//                    $i = 0;
                     $i = 0;
-                    
-                    foreach ($previsaoLaboratorio as $key2 => $laboratorios) : ?>
+                    foreach ($previsaoLaboratorio as $key2 => $laboratorios) :
+                        $i++;
+                        ?>
                         <tr>
                             <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
                         </tr>
-                    <?
+                        <?
                         foreach ($laboratorios as $key => $item) :
-                            $i++;
+                            
 
 //                            if($item["valor"] != 0) {
                             ?>
-                                <tr>
-                                    <td ><?= $item["nome"]; ?></td>
-                                    <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
-                                    <td style="text-align: center">
-                                        <? 
-                                        if ( ($_POST['empresa'] != '') ) {
-                                            if ( !isset($item["confirmado"]) ) {
-                                                if($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
-                                                    <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaolaboratorio" target="_blank">
-                                                        <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
-                                                        <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
-                                                        <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
-                                                        <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
-                                                        <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
-                                                        <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
-                                                        <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
-                                                        <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
-                                                        <input type="hidden" name="laboratorio_id" value="<?= $key ?>"/>
-                                                        <input type="hidden" name="laboratorio_nome" value="<?= $item["nome"] ?>"/>
-                                                        <table>
-                                                            <tr>
-                                                                <td>
-                                                                    <label for="dataLab<?= $i ?>">Data</label>
-                                                                    <input type="text" name="data" alt="date" id="dataLab<?= $i ?>"
+                            <tr>
+                                <td ><?= $item["nome"]; ?></td>
+                                <td style="text-align: right"><?= number_format($item["valor"], 2, ",", "."); ?></td>
+                                <td style="text-align: center">
+                                    <?
+                                    if (($_POST['empresa'] != '')) {
+                                        if (!isset($item["confirmado"])) {
+                                            if ($item["credor_devedor_id"] != '' && $item["conta_id"] != '') {
+                                                ?>
+                                                <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contaspagar/confirmarprevisaolaboratorio" target="_blank">
+                                                    <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
+                                                    <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
+                                                    <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
+                                                    <input type="hidden" name="tipo" value="<?= $item["tipo"] ?>"/>
+                                                    <input type="hidden" name="classe" value="<?= $item["classe"] ?>"/>
+                                                    <input type="hidden" name="txtdata_inicio" value="<?= $_POST['txtdata_inicio'] ?>"/>
+                                                    <input type="hidden" name="txtdata_fim" value="<?= $_POST['txtdata_fim'] ?>"/>
+                                                    <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
+                                                    <input type="hidden" name="laboratorio_id" value="<?= $key ?>"/>
+                                                    <input type="hidden" name="laboratorio_nome" value="<?= $item["nome"] ?>"/>
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <label for="dataLab<?= $i ?>">Data</label>
+                                                                <input type="text" name="data" alt="date" id="dataLab<?= $i ?>"
                                                                        value="<?= date("d/m/Y", strtotime($key2)); ?>"
                                                                        style="width: 50%" required=""/>
-                                                                </td>
-                                                                <td align="center"><button type="submit">Confirmar</button></td>
-                                                            </tr>
-                                                            <tr>
-                                                            </tr>
-                                                        </table>
+                                                            </td>
+                                                            <td align="center"><button type="submit">Confirmar</button></td>
+                                                        </tr>
+                                                        <tr>
+                                                        </tr>
+                                                    </table>
 
-                                                    </form>
-                                            <?  }
-                                                else{
-                                                    if($item["credor_devedor_id"] == ''){
-                                                        echo "Credor/Devedor não informado";
-                                                    } else{
-                                                        echo "Conta não informada";
-                                                    }
+                                                </form>
+                                                <?
+                                            } else {
+                                                if ($item["credor_devedor_id"] == '') {
+                                                    ?>
+                                                    <a target="_blank" href="<?= base_url() . "cadastros/laboratorio/carregarfinanceiro/$key"; ?>">Credor/Devedor não informado</a>
+                                                <? } else { ?>
+                                                    <a target="_blank" href="<?= base_url() . "cadastros/laboratorio/carregarfinanceiro/$key"; ?>">Conta não informada</a>
+                                                    <?
                                                 }
                                             }
-                                            else{
-                                                echo "Valor já confirmado";
-                                            }
+                                        } else {
+                                            echo "Valor já confirmado";
                                         }
-                                        else {
-                                            echo "Selecione uma empresa";
-                                        } ?>
-                                    </td>
-                                </tr>
-                            <? // }
-                        endforeach; 
-                    endforeach; 
+                                    } else {
+                                        echo "Selecione uma empresa";
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <?
+                            // }
+                        endforeach;
+                    endforeach;
                     ?>
                 </tbody>
 
             </table>
-            
-        <?
+
+            <?
         }
         ?>
-    <?
-    }
-    else {
+        <?
+    } else {
         ?>
         <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
         <?
