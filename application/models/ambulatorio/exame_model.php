@@ -8682,11 +8682,11 @@ class exame_model extends Model {
 
     function gravar($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null) {
         try {
-            $empresa_id = $this->session->userdata('empresa_id');
+            $empresa_atual_id = $this->session->userdata('empresa_id');
             $this->db->select('ep.repetir_horarios_agenda');
             $this->db->from('tb_empresa e');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-            $this->db->where('e.empresa_id', $empresa_id);
+            $this->db->where('e.empresa_id', $empresa_atual_id);
             $return = $this->db->get()->result();
             if ($return[0]->repetir_horarios_agenda == 't') {
                 $total = (int) $_POST['numero_repeticao'];
@@ -8738,11 +8738,11 @@ class exame_model extends Model {
 
     function gravargeral($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null, $tipo) {
         try {
-            $empresa_id = $this->session->userdata('empresa_id');
+            $empresa_atual_id = $this->session->userdata('empresa_id');
             $this->db->select('ep.repetir_horarios_agenda');
             $this->db->from('tb_empresa e');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-            $this->db->where('e.empresa_id', $empresa_id);
+            $this->db->where('e.empresa_id', $empresa_atual_id);
             $return = $this->db->get()->result();
             if ($return[0]->repetir_horarios_agenda == 't') {
                 $total = (int) $_POST['numero_repeticao'];
@@ -8796,11 +8796,11 @@ class exame_model extends Model {
 
     function gravarconsulta($horario_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id) {
         try {
-            $empresa_id = $this->session->userdata('empresa_id');
+            $empresa_atual_id = $this->session->userdata('empresa_id');
             $this->db->select('ep.repetir_horarios_agenda');
             $this->db->from('tb_empresa e');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-            $this->db->where('e.empresa_id', $empresa_id);
+            $this->db->where('e.empresa_id', $empresa_atual_id);
             $return = $this->db->get()->result();
             if ($return[0]->repetir_horarios_agenda == 't') {
                 $total = (int) $_POST['numero_repeticao'];
@@ -8896,11 +8896,11 @@ class exame_model extends Model {
 
     function gravarespecialidade($horario_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $empresa_id, $obs = null) {
         try {
-            $empresa_id = $this->session->userdata('empresa_id');
+            $empresa_atual_id = $this->session->userdata('empresa_id');
             $this->db->select('ep.repetir_horarios_agenda');
             $this->db->from('tb_empresa e');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-            $this->db->where('e.empresa_id', $empresa_id);
+            $this->db->where('e.empresa_id', $empresa_atual_id);
             $return = $this->db->get()->result();
             if ($return[0]->repetir_horarios_agenda == 't') {
                 $total = (int) $_POST['numero_repeticao'];
