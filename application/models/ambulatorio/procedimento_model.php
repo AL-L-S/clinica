@@ -298,7 +298,7 @@ class procedimento_model extends Model {
                             nome,
                             ');
         $this->db->from('tb_ambulatorio_grupo');
-        $this->db->where("tipo !=", 'AGRUPADOR');
+//        $this->db->where("tipo !=", 'AGRUPADOR');
         $this->db->orderby("nome");
         $return = $this->db->get();
         return $return->result();
