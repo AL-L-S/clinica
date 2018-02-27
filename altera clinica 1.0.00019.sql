@@ -78,3 +78,8 @@ CREATE TABLE ponto.tb_classificacao_grupo_associar
 --23/02/2018
 ALTER TABLE ponto.tb_ambulatorio_gasto_sala ADD COLUMN valor numeric(10,2);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN ambulatorio_gasto_sala_id integer;
+
+-- Dia 27/02/2018
+ALTER TABLE ponto.tb_tuss_cbhpm ADD COLUMN porte_descricao text;
+ALTER TABLE ponto.tb_tuss_cbhpm ADD COLUMN valor_porte numeric(10,2);
+ALTER TABLE ponto.tb_tuss_cbhpm ADD COLUMN valor_uco numeric(10,2);
