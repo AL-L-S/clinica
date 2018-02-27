@@ -55,9 +55,18 @@ class Indicacao extends BaseController {
         $obj_indicacao = new indicacao_model($exame_indicacao_id);
         $data['obj'] = $obj_indicacao;
         $data['grupo'] = $this->indicacao->listargrupoindicacao();
-        
-        
+
+
         $this->loadView('ambulatorio/indicacao-form', $data);
+    }
+
+    function carregarindicacaofinanceiro($exame_indicacao_id) {
+        $obj_indicacao = new indicacao_model($exame_indicacao_id);
+        $data['obj'] = $obj_indicacao;
+        $data['grupo'] = $this->indicacao->listargrupoindicacao();
+
+
+        $this->loadView('ambulatorio/indicacaofinanceiro-form', $data);
     }
 
     function excluirgrupo($grupo_id) {
@@ -102,6 +111,35 @@ class Indicacao extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/indicacao");
+    }
+
+    function gravarfinanceiro() {
+        $exame_indicacao_id = $this->indicacao->gravarfinanceiro();
+//        var_dump($exame_indicacao_id); die;
+        if ($exame_indicacao_id == "-1") {
+                   echo '<html><meta charset="utf-8">
+        <script type="text/javascript">
+        alert("Operação Efetuada Com Sucesso");
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>';
+        } else {
+                              echo '<html><meta charset="utf-8">
+        <script type="text/javascript">
+        alert("Operação Efetuada Com Sucesso");
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>';
+        }
+
     }
 
     private function carregarView($data = null, $view = null) {

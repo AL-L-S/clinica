@@ -49,6 +49,14 @@ class Laboratorio extends BaseController {
         $this->loadView('cadastros/laboratorio-form', $data);
     }
 
+    function carregarfinanceiro($laboratorio_id) {
+//        die('morreu');
+        $obj_laboratorio = new laboratorio_model($laboratorio_id);
+        $data['obj'] = $obj_laboratorio;
+        $data['laboratorio'] = $this->laboratorio->listardados();
+        $this->loadView('cadastros/laboratoriofinanceiro-form', $data);
+    }
+
     function copiar($laboratorio_id) {
         $data['laboratorio'] = $this->laboratorio->listarlaboratorioscopiar($laboratorio_id);
         $data['laboratorio_selecionado'] = $this->laboratorio->listarlaboratorioselecionado($laboratorio_id);
@@ -127,6 +135,21 @@ class Laboratorio extends BaseController {
         } else {
             redirect(base_url() . "cadastros/laboratorio");
         }
+    }
+
+    function gravarfinanceiro() {
+        $laboratorio_id = $this->laboratorio->gravarfinanceiro();
+
+        echo '<html><meta charset="utf-8">
+        <script type="text/javascript">
+        alert("Operação Efetuada Com Sucesso");
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>';
     }
 
     function gravarcopia() {

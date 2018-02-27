@@ -478,6 +478,7 @@ class entrada_model extends Model {
         $this->db->select('es.nota_fiscal,
             es.estoque_saida_id,
             es.validade as data,
+            es.ambulatorio_gasto_sala_id,
             ea.descricao as armazem,
             ef.fantasia,
             ( e.valor_compra / e.quantidade) as valor_unitario,

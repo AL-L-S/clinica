@@ -126,7 +126,7 @@ class Contasreceber extends BaseController {
 
         $data['relatorio'] = $this->contasreceber->relatoriocontasreceber();
         
-        if($_POST['previsao'] == 'SIM'){
+        if(@$_POST['previsao'] == 'SIM'){
             $data['relatorioconvenio'] = $this->contasreceber->relatorioprevisaoconveniocontasreceber();
         }
         else{

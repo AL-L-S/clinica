@@ -49,7 +49,7 @@
 
     $laudo_sigiloso = $this->session->userdata('laudo_sigiloso');
     $operador_id = $this->session->userdata('operador_id');
-    if (@$obj->_status == 'FINALIZADO' && $laudo_sigiloso == 't' && $operador_id != 3) {
+    if (@$obj->_status == 'FINALIZADO' && $laudo_sigiloso == 't' && $operador_id != 1) {
         $readonly = 1;
     } else {
         $readonly = 0;
@@ -59,7 +59,7 @@
     } else {
         $adendo = false;
     }
-//    var_dump($altura, $peso); die;
+//    var_dump($laudo_sigiloso); die;
     ?>
 
     <div >

@@ -252,7 +252,7 @@ $agenda = $exame[0]->agenda;
     solid windowtext .5pt;mso-border-right-alt:solid windowtext .5pt;'><font size = -1><center></center></font></td>
 
 <td >&nbsp;</td>
-<td ><font size = -1>Fone: (85) - <?= $exame[0]->telefone; ?></font></td>
+<td ><font size = -1>Fone: <?= $exame[0]->telefoneempresa; ?> - <?= $exame[0]->celularempresa; ?></font></td>
 </tr>
 </table>
 <div style="float:left;">

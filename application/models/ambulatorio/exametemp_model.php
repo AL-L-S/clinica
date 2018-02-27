@@ -23,6 +23,7 @@ class exametemp_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->where('pcr.empresa_id', $empresa_id);
         $this->db->where('pcr.ativo', 'true');
+        $this->db->where('pcr.faturado', 'true');
         $this->db->where('pcr.paciente_id', $paciente_id);
 
         $return = $this->db->get();

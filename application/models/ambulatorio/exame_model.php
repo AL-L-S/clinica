@@ -5667,14 +5667,14 @@ class exame_model extends Model {
         $this->db->where("c.dinheiro", 'f');
         $this->db->where('ae.realizada', 'true');
         $this->db->where('ae.cancelada', 'false');
-        
+
         if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
             $this->db->where('ae.data_faturar >=', $_POST['datainicio']);
         }
         if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
             $this->db->where('ae.data_faturar <=', $_POST['datafim']);
         }
-        
+
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -5830,6 +5830,7 @@ class exame_model extends Model {
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->where('pc.procedimento_tuss_id', $procedimento_id);
         $this->db->where('pc.convenio_id', $convenio_id);
+        $this->db->where('pc.ativo', 't');
         $return = $this->db->get();
         return $return->result();
     }
@@ -5978,7 +5979,7 @@ class exame_model extends Model {
         }
     }
 
-    function gravargastodesala() {
+    function gravargastodesala($valor) {
         $horario = date('Y-m-d');
         $operador_id = $this->session->userdata('operador_id');
 
@@ -6034,6 +6035,7 @@ class exame_model extends Model {
         if ($_POST['descricao'] != '') {
             $this->db->set('descricao', $_POST['descricao']);
         }
+        $this->db->set('valor', $valor);
         $this->db->set('guia_id', $_POST['txtguia_id']);
         $this->db->set('produto_id', $_POST['produto_id']);
         $this->db->set('quantidade', $_POST['txtqtde']);
@@ -6099,6 +6101,7 @@ class exame_model extends Model {
 
             $i++;
         }
+        return $ambulatorio_gasto_sala_id;
     }
 
     function excluirgastodesala($gasto_id) {
@@ -6121,8 +6124,28 @@ class exame_model extends Model {
         $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
         $this->db->update('tb_estoque_saldo');
     }
+    function excluirgastodesalaguia($gasto_id) {
+        $horario = date('Y-m-d');
+        $operador_id = $this->session->userdata('operador_id');
 
-    function faturargastodesala($dados) {
+        $this->db->set('ativo', 'false');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
+        $this->db->update('tb_ambulatorio_gasto_sala');
+
+
+
+        $this->db->set('ativo', 'f');
+        $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
+        $this->db->update('tb_estoque_saida');
+
+        $this->db->set('ativo', 'f');
+        $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
+        $this->db->update('tb_estoque_saldo');
+    }
+
+    function faturargastodesala($dados, $gasto_id) {
         $horario = date('Y-m-d');
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
@@ -6162,6 +6185,7 @@ class exame_model extends Model {
         $this->db->set('data_faturamento', $horario);
         $this->db->set('operador_faturamento', $operador_id);
         $this->db->set('operador_autorizacao', $operador_id);
+        $this->db->set('ambulatorio_gasto_sala_id', $gasto_id);
         $this->db->insert('tb_agenda_exames');
         $agenda_exames_id = $this->db->insert_id();
 
@@ -7729,6 +7753,14 @@ class exame_model extends Model {
         }
     }
 
+    function verificargastodesala() {
+        $this->db->select('ambulatorio_gasto_sala_id');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function cancelartodosfisioterapia($agenda_exames_id) {
         try {
             $horario = date("Y-m-d H:i:s");
@@ -8650,23 +8682,19 @@ class exame_model extends Model {
 
     function gravar($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null) {
         try {
-            if($empresa_id == ''){
-                $empresa_id = $this->session->userdata('empresa_id');
-            }
-            
+            $empresa_atual_id = $this->session->userdata('empresa_id');
             $this->db->select('ep.repetir_horarios_agenda');
             $this->db->from('tb_empresa e');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-            $this->db->where('e.empresa_id', $empresa_id);
+            $this->db->where('e.empresa_id', $empresa_atual_id);
             $return = $this->db->get()->result();
             if ($return[0]->repetir_horarios_agenda == 't') {
-                $total = (int)$_POST['numero_repeticao'];
-            }
-            else {
+                $total = (int) $_POST['numero_repeticao'];
+            } else {
                 $total = 1;
             }
-            
-            for($i = 1; $i <= $total; $i++){
+
+            for ($i = 1; $i <= $total; $i++) {
                 $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
 
                 /* inicia o mapeamento no banco */
@@ -8689,7 +8717,7 @@ class exame_model extends Model {
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
 
-    //            $empresa_id = $this->session->userdata('empresa_id');
+                //            $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('observacoes', $obs);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', 'EXAME');
@@ -8710,24 +8738,20 @@ class exame_model extends Model {
 
     function gravargeral($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs = null, $tipo) {
         try {
-            if ($empresa_id == '') {
-                $empresa_id = $this->session->userdata('empresa_id');
-            }
-            
+            $empresa_atual_id = $this->session->userdata('empresa_id');
             $this->db->select('ep.repetir_horarios_agenda');
             $this->db->from('tb_empresa e');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-            $this->db->where('e.empresa_id', $empresa_id);
+            $this->db->where('e.empresa_id', $empresa_atual_id);
             $return = $this->db->get()->result();
             if ($return[0]->repetir_horarios_agenda == 't') {
-                $total = (int)$_POST['numero_repeticao'];
-            }
-            else {
+                $total = (int) $_POST['numero_repeticao'];
+            } else {
                 $total = 1;
             }
-            
-            for($i = 1; $i <= $total; $i++){
-                
+
+            for ($i = 1; $i <= $total; $i++) {
+
                 $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
 
                 /* inicia o mapeamento no banco */
@@ -8751,7 +8775,7 @@ class exame_model extends Model {
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
 
-    //            $empresa_id = $this->session->userdata('empresa_id');
+                //            $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('observacoes', $obs);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', $tipo);
@@ -8763,7 +8787,6 @@ class exame_model extends Model {
                     return -1;
                 else
                     $agenda_exames_id = $this->db->insert_id();
-                
             }
             return $agenda_exames_id;
         } catch (Exception $exc) {
@@ -8773,22 +8796,19 @@ class exame_model extends Model {
 
     function gravarconsulta($horario_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $observacoes, $empresa_id) {
         try {
-            if ($empresa_id == '') {
-                $empresa_id = $this->session->userdata('empresa_id');
-            }
+            $empresa_atual_id = $this->session->userdata('empresa_id');
             $this->db->select('ep.repetir_horarios_agenda');
             $this->db->from('tb_empresa e');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-            $this->db->where('e.empresa_id', $empresa_id);
+            $this->db->where('e.empresa_id', $empresa_atual_id);
             $return = $this->db->get()->result();
             if ($return[0]->repetir_horarios_agenda == 't') {
-                $total = (int)$_POST['numero_repeticao'];
-            }
-            else {
+                $total = (int) $_POST['numero_repeticao'];
+            } else {
                 $total = 1;
             }
-            
-            for($i = 1; $i <= $total; $i++){
+
+            for ($i = 1; $i <= $total; $i++) {
 
                 $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
                 /* inicia o mapeamento no banco */
@@ -8876,23 +8896,19 @@ class exame_model extends Model {
 
     function gravarespecialidade($horario_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $medico_id, $id, $empresa_id, $obs = null) {
         try {
-            if ($empresa_id == '') {
-                $empresa_id = $this->session->userdata('empresa_id');
-            }
-            
+            $empresa_atual_id = $this->session->userdata('empresa_id');
             $this->db->select('ep.repetir_horarios_agenda');
             $this->db->from('tb_empresa e');
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-            $this->db->where('e.empresa_id', $empresa_id);
+            $this->db->where('e.empresa_id', $empresa_atual_id);
             $return = $this->db->get()->result();
             if ($return[0]->repetir_horarios_agenda == 't') {
-                $total = (int)$_POST['numero_repeticao'];
-            }
-            else {
+                $total = (int) $_POST['numero_repeticao'];
+            } else {
                 $total = 1;
             }
-            
-            for($i = 1; $i <= $total; $i++){
+
+            for ($i = 1; $i <= $total; $i++) {
 
                 $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
                 /* inicia o mapeamento no banco */
@@ -8913,14 +8929,14 @@ class exame_model extends Model {
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
 
-    //            $empresa_id = $this->session->userdata('empresa_id');
+                //            $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('observacoes', $obs);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', 'FISIOTERAPIA');
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_agenda_exames');
-    //            die;
+                //            die;
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") // erro de banco
                     return -1;

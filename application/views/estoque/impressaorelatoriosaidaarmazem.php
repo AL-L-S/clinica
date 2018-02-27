@@ -112,9 +112,11 @@
                             if ($item->nome != '') {
                                 ?>
                                 <td><font size="-2"><?= utf8_decode($item->nome); ?></td> 
-                            <? } else { ?>
+                            <? } elseif($item->ambulatorio_gasto_sala_id != '') { ?>
+                                <td><font size="-2"><?=utf8_decode('GASTO DE SALA')?></td> 
+                            <? }else{?>
                                 <td><font size="-2"><?=utf8_decode('TRANSFERÊNCIA')?></td> 
-                            <? }
+                           <? }
                             ?>
 
 

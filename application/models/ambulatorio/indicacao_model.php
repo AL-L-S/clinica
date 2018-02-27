@@ -183,6 +183,66 @@ class indicacao_model extends Model {
             return -1;
         }
     }
+    function gravarfinanceiro() {
+        try {
+            
+            if ($this->session->userdata('recomendacao_configuravel') == "t") {
+                
+                if (@$_POST['criarcredor'] == "on") {
+                    $this->db->set('razao_social', $_POST['txtNome']);
+                    $horario = date("Y-m-d H:i:s");
+                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_financeiro_credor_devedor');
+                    $credor_devedor_id = $this->db->insert_id();
+                }
+            
+                if ($_POST['conta'] != "") {
+                    $this->db->set('conta_id', $_POST['conta']);
+                }
+                if (@$_POST['criarcredor'] == "on") {
+                    $this->db->set('credor_devedor_id', $credor_devedor_id);
+                } elseif ($_POST['credor_devedor'] != "") {
+                    $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
+                }
+                $this->db->set('classe', $_POST['classe']);
+                $this->db->set('tipo_id', $_POST['tipo']);
+            }
+            
+            /* inicia o mapeamento no banco */
+            $paciente_indicacao_id = $_POST['paciente_indicacao_id'];
+            $this->db->set('registro', $_POST['registro']);
+            $this->db->set('nome', $_POST['txtNome']);
+            
+            if(@$_POST['grupo_id'] != ''){
+                $this->db->set('grupo_id', $_POST['grupo_id']);
+            }
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            if ($_POST['paciente_indicacao_id'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_paciente_indicacao');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $paciente_indicacao_id = $this->db->insert_id();
+            }
+            else { // update
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('paciente_indicacao_id', $paciente_indicacao_id);
+                $this->db->update('tb_paciente_indicacao');
+            }
+            return $paciente_indicacao_id;
+        } catch (Exception $exc) {
+            return 2;
+        }
+    }
 
     private function instanciar($paciente_indicacao_id) {
         if ($paciente_indicacao_id != 0) {

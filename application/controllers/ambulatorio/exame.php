@@ -238,7 +238,7 @@ class Exame extends BaseController {
 
     function relatorioorcamentos() {
         $data['empresa'] = $this->guia->listarempresas();
-        $data["grupos"] = $this->guia->listargruposrelatorioorcamento(); 
+        $data["grupos"] = $this->guia->listargruposrelatorioorcamento();
         $this->loadView('ambulatorio/relatorioorcamentos', $data);
     }
 
@@ -273,26 +273,26 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatoriomedicoordem', $data);
     }
-    
+
     function relatoriopacientetelefone() {
         $data['convenio'] = $this->convenio->listardados();
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['procedimento'] = $this->procedimento->listarprocedimento2();
         $this->loadView('ambulatorio/relatoriopacientetelefone', $data);
     }
-    
+
     function relatoriorevisao() {
         $data['medicos'] = $this->operador_m->listarmedicos();
-        $data["grupos"] = $this->guia->listargruposrelatorioretorno(); 
+        $data["grupos"] = $this->guia->listargruposrelatorioretorno();
         $this->loadView('ambulatorio/relatoriorevisao', $data);
     }
-    
+
     function relatorioretorno() {
         $data['medicos'] = $this->operador_m->listarmedicos();
-        $data["grupos"] = $this->guia->listargruposrelatorioretorno(); 
+        $data["grupos"] = $this->guia->listargruposrelatorioretorno();
         $this->loadView('ambulatorio/relatorioretorno', $data);
     }
-    
+
     function relatorioencaminhamento() {
 //        $data['convenio'] = $this->convenio->listardados();
 //        $data['grupos'] = $this->procedimento->listargrupos();
@@ -300,7 +300,7 @@ class Exame extends BaseController {
 //        $data['procedimento'] = $this->procedimento->listarprocedimento2();
         $this->loadView('ambulatorio/relatorioencaminhamento', $data);
     }
-    
+
     function gerarelatoriorecepcaoagenda() {
         if ($_POST['tipoRelatorio'] == '0') {
             $this->gerarelatoriomedicoagendaconsultas();
@@ -338,84 +338,81 @@ class Exame extends BaseController {
         $data['relatorio'] = $this->exame->listaragendamentoteleoperadora();
         $this->load->View('ambulatorio/impressaorelatorioteleoperadora', $data);
     }
-    
+
     function gravarautorizarorcamento($ambulatorio_orcamento_id) {
         $paciente_id = $this->exame->gravarautorizacaoorcamento($ambulatorio_orcamento_id);
-        if($paciente_id == '-1'){
+        if ($paciente_id == '-1') {
             $mensagem = 'Erro ao autorizar o Orçamento. Opera&ccedil;&atilde;o cancelada.';
             $this->session->set_flashdata('message', $mensagem);
             redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
-        }
-        else{
+        } else {
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
         }
     }
-    
+
     function autorizarorcamento($ambulatorio_orcamento_id) {
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['salas'] = $this->guia->listarsalas();
         $this->load->View('ambulatorio/autorizarorcamento-form', $data);
     }
-    
+
     function autorizarencaminhamento($agenda_exames_id) {
         $paciente_id = $this->exame->gravarencaminhamentoatendimento($agenda_exames_id);
-        if($paciente_id == '-1'){
+        if ($paciente_id == '-1') {
             $mensagem = 'Erro ao autorizar o Encaminhamento. Opera&ccedil;&atilde;o cancelada.';
             $this->session->set_flashdata('message', $mensagem);
             redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
-        }
-        else{
+        } else {
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
         }
 //        die('Criar o exame/consulta e redirecionar pra tela de "autorizar atendimento');
     }
-    
+
     function gerarelatoriorevisao() {
-        
+
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['relatorio'] = $this->exame->gerarelatoriorevisao();
         $data['grupo'] = $_POST['grupo'];
         $this->load->View('ambulatorio/impressaorelatoriorevisao', $data);
     }
-    
-    
+
     function gerarelatorioretorno() {
-        
+
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['relatorio'] = $this->exame->gerarelatorioretorno();
         $data['grupo'] = $_POST['grupo'];
         $this->load->View('ambulatorio/impressaorelatorioretorno', $data);
     }
-    
+
     function gerarelatorioencaminhamento() {
-        
+
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['relatorio'] = $this->exame->gerarelatorioencaminhamento();
         $this->load->View('ambulatorio/impressaorelatorioencaminhamento', $data);
     }
-    
+
     function gerarelatoriopacientetelefone() {
-        
+
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['relatorio'] = $this->exame->gerarelatoriopacientetelefone();
-        if($_POST['gera_planilha'] == 'SIM') {
-            
+        if ($_POST['gera_planilha'] == 'SIM') {
+
             $html = $this->load->View('ambulatorio/impressaorelatoriopacientetelefone', $data, true);
-            $filename = "Relatorio ". $_POST['txtdata_inicio'] . " a " .$_POST['txtdata_fim'];
-            
+            $filename = "Relatorio " . $_POST['txtdata_inicio'] . " a " . $_POST['txtdata_fim'];
+
             // Configurações header para forçar o download
-            header ("Content-type: application/x-msexcel; charset=utf-8");
-            header ("Content-Disposition: attachment; filename=\"{$filename}\"" );
-            header ("Content-Description: PHP Generated Data" );
-            
+            header("Content-type: application/x-msexcel; charset=utf-8");
+            header("Content-Disposition: attachment; filename=\"{$filename}\"");
+            header("Content-Description: PHP Generated Data");
+
             // Envia o conteúdo do arquivo
             echo $html;
-            exit;            
+            exit;
         } else {
             $this->load->View('ambulatorio/impressaorelatoriopacientetelefone', $data);
         }
@@ -952,7 +949,7 @@ class Exame extends BaseController {
     }
 
     function gravartrocarmedico() {
-        
+
         $this->exame->trocarmedico();
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
@@ -1024,7 +1021,7 @@ class Exame extends BaseController {
         $data['procedimento_agrupador_id'] = $procedimento_agrupador_id;
         $this->loadView('ambulatorio/atendimentocancelamentopacote-form', $data);
     }
-    
+
     function guiacancelamento($agenda_exames_id, $paciente_id, $procedimento_tuss_id) {
         $data['motivos'] = $this->motivocancelamento->listartodos();
         $data['agenda_exames_id'] = $agenda_exames_id;
@@ -1301,7 +1298,7 @@ class Exame extends BaseController {
         } else {
             $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
         }
-        
+
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarsalasespera");
     }
@@ -1325,6 +1322,13 @@ class Exame extends BaseController {
     function cancelarmatmed() {
         if ($this->session->userdata('perfil_id') != 12) {
             $verificar = $this->exame->cancelaresperamatmed();
+            $gasto = $this->exame->verificargastodesala();
+            $gasto_id = $gasto[0]->ambulatorio_gasto_sala_id;
+//            var_dump($gasto_id);
+//            die;
+            if ($gasto_id != '') {
+                $this->exame->excluirgastodesalaguia($gasto_id);
+            }
             if ($verificar == "-1") {
                 $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
             } else {
@@ -1629,17 +1633,19 @@ class Exame extends BaseController {
 //        $convenio_id = $_POST['convenio_id'];
         $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
         $convenio_id = $data['agenda_exames'][0]->convenio_id;
-        $this->exame->gravargastodesala();
+        $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id'], $convenio_id);
+        $valor = $data['procedimento'][0]->valortotal;
+//        var_dump($data['procedimento']); die;
+        $gasto_id = $this->exame->gravargastodesala($valor);
         if (isset($_POST['faturar'])) {
-
 
 
             $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
             $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
-            $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id'], $convenio_id);
+
 //            var_dump($data['procedimento']); die;
             if (count($data['procedimento']) > 0) {
-                $this->exame->faturargastodesala($data['procedimento'][0]);
+                $this->exame->faturargastodesala($data['procedimento'][0], $gasto_id);
             }
         }
         redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id");
@@ -1723,7 +1729,7 @@ class Exame extends BaseController {
 
     function importararquivopdf() {
         $ambulatorio_laudo_id = $_POST['ambulatorio_laudo_id'];
-        
+
 //        var_dump($_FILES);
 //        die;
 
@@ -1755,7 +1761,7 @@ class Exame extends BaseController {
                 $data = array('upload_data' => $this->upload->data());
             }
         }
-        
+
         $exame_id = $_POST['exame_id'];
         $sala_id = $_POST['sala_id'];
         redirect(base_url() . "ambulatorio/exame/anexarimagem/$exame_id/$sala_id");
@@ -2349,11 +2355,11 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $intervalo = (int) $_POST['txtintervalo'];
-        
+
         $agenda_id = $_POST['txthorario'];
 //        $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-        
+
         if ($intervalo != '' && $intervalo > 0) {
 
             // Data inicial
@@ -2364,29 +2370,28 @@ class Exame extends BaseController {
 
             // Data equivalente ao ultimo dia da semana da data inicial      
             $datafinal_intervalo = date('Y-m-d', strtotime("+$diasAteFimDaSemana days", strtotime($datainicial)));
-            
+
             while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
 
                 $this->gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
-                
+
                 // Avança o marcador inicial para o primeiro dia da semana seguinte
                 $datainicial_intervalo = date('Y-m-d', strtotime("+" . $intervalo . " week 1 day", strtotime($datafinal_intervalo)));
-                
+
                 // Avança o marcador final para o ultimo dia da semana seguinte
                 $datafinal_intervalo = date('Y-m-d', strtotime("+" . $intervalo + 1 . " week", strtotime($datafinal_intervalo)));
-                
-                if ( strtotime($datafinal_intervalo) >= strtotime($datafinal) ) { 
+
+                if (strtotime($datafinal_intervalo) >= strtotime($datafinal)) {
                     // Caso o marcador final fique maior que a data final informada na criaçao da agenda, ele repoe o valor do marcador
                     // Pela data maxima que a agenda pode ser criada (ou seja, a data que o usuario informou)
-                    $datafinal_intervalo = $datafinal;    
-                    
+                    $datafinal_intervalo = $datafinal;
+
                     // Em seguida ele salva e sai do laço
                     $this->gravargeral($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
                     break; // Se tirar esse trecho, ele irá ficar no loop eternamente
                 }
             }
-        }
-        else {
+        } else {
             $this->gravargeral($datainicial, $datafinal, $agenda_id, $medico_id);
         }
         $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
@@ -2399,11 +2404,11 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $intervalo = (int) $_POST['txtintervalo'];
-        
+
         $agenda_id = $_POST['txthorario'];
         $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-        
+
         if ($intervalo != '' && $intervalo > 0) {
 
             // Data inicial
@@ -2414,22 +2419,22 @@ class Exame extends BaseController {
 
             // Data equivalente ao ultimo dia da semana da data inicial      
             $datafinal_intervalo = date('Y-m-d', strtotime("+$diasAteFimDaSemana days", strtotime($datainicial)));
-            
+
             while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
 
                 $this->gravarespecialidade($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
-                
+
                 // Avança o marcador inicial para o primeiro dia da semana seguinte
                 $datainicial_intervalo = date('Y-m-d', strtotime("+" . $intervalo . " week 1 day", strtotime($datafinal_intervalo)));
-                
+
                 // Avança o marcador final para o ultimo dia da semana seguinte
                 $datafinal_intervalo = date('Y-m-d', strtotime("+" . $intervalo + 1 . " week", strtotime($datafinal_intervalo)));
-                
-                if ( strtotime($datafinal_intervalo) >= strtotime($datafinal) ) { 
+
+                if (strtotime($datafinal_intervalo) >= strtotime($datafinal)) {
                     // Caso o marcador final fique maior que a data final informada na criaçao da agenda, ele repoe o valor do marcador
                     // Pela data maxima que a agenda pode ser criada (ou seja, a data que o usuario informou)
-                    $datafinal_intervalo = $datafinal;    
-                    
+                    $datafinal_intervalo = $datafinal;
+
                     // Em seguida ele salva e sai do laço
                     $this->gravarespecialidade($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
                     break; // Se tirar esse trecho, ele irá ficar no loop eternamente
@@ -2448,11 +2453,11 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $intervalo = (int) $_POST['txtintervalo'];
-        
+
         $agenda_id = $_POST['txthorario'];
         $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-        
+
         if ($intervalo != '' && $intervalo > 0) {
 
             // Data inicial
@@ -2463,22 +2468,22 @@ class Exame extends BaseController {
 
             // Data equivalente ao ultimo dia da semana da data inicial      
             $datafinal_intervalo = date('Y-m-d', strtotime("+$diasAteFimDaSemana days", strtotime($datainicial)));
-            
+
             while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
 
                 $this->gravarconsulta($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
-                
+
                 // Avança o marcador inicial para o primeiro dia da semana seguinte
                 $datainicial_intervalo = date('Y-m-d', strtotime("+" . $intervalo . " week 1 day", strtotime($datafinal_intervalo)));
-                
+
                 // Avança o marcador final para o ultimo dia da semana seguinte
                 $datafinal_intervalo = date('Y-m-d', strtotime("+" . $intervalo + 1 . " week", strtotime($datafinal_intervalo)));
-                
-                if ( strtotime($datafinal_intervalo) >= strtotime($datafinal) ) { 
+
+                if (strtotime($datafinal_intervalo) >= strtotime($datafinal)) {
                     // Caso o marcador final fique maior que a data final informada na criaçao da agenda, ele repoe o valor do marcador
                     // Pela data maxima que a agenda pode ser criada (ou seja, a data que o usuario informou)
-                    $datafinal_intervalo = $datafinal;    
-                    
+                    $datafinal_intervalo = $datafinal;
+
                     // Em seguida ele salva e sai do laço
                     $this->gravarconsulta($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
                     break; // Se tirar esse trecho, ele irá ficar no loop eternamente
@@ -2497,11 +2502,11 @@ class Exame extends BaseController {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
         $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
         $intervalo = (int) $_POST['txtintervalo'];
-        
+
         $agenda_id = $_POST['txthorario'];
 //        $sala_id = $_POST['txtsala'];
         $medico_id = $_POST['txtmedico'];
-        
+
         if ($intervalo != '' && $intervalo > 0) {
 
             // Data inicial
@@ -2512,22 +2517,22 @@ class Exame extends BaseController {
 
             // Data equivalente ao ultimo dia da semana da data inicial      
             $datafinal_intervalo = date('Y-m-d', strtotime("+$diasAteFimDaSemana days", strtotime($datainicial)));
-            
+
             while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
-        
+
                 $this->gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
-                
+
                 // Avança o marcador inicial para o primeiro dia da semana seguinte
                 $datainicial_intervalo = date('Y-m-d', strtotime("+" . $intervalo . " week 1 day", strtotime($datafinal_intervalo)));
-                
+
                 // Avança o marcador final para o ultimo dia da semana seguinte
                 $datafinal_intervalo = date('Y-m-d', strtotime("+" . $intervalo + 1 . " week", strtotime($datafinal_intervalo)));
-                
-                if ( strtotime($datafinal_intervalo) >= strtotime($datafinal) ) { 
+
+                if (strtotime($datafinal_intervalo) >= strtotime($datafinal)) {
                     // Caso o marcador final fique maior que a data final informada na criaçao da agenda, ele repoe o valor do marcador
                     // Pela data maxima que a agenda pode ser criada (ou seja, a data que o usuario informou)
-                    $datafinal_intervalo = $datafinal;    
-                    
+                    $datafinal_intervalo = $datafinal;
+
                     // Em seguida ele salva e sai do laço
                     $this->gravar($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
                     break; // Se tirar esse trecho, ele irá ficar no loop eternamente
@@ -2680,7 +2685,7 @@ class Exame extends BaseController {
         $tipo = $tipo[0]->tipo;
         $horarioagenda = $this->agenda->listarhorarioagendacriacaogeral($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
         $id = 0;
-        
+
         foreach ($horarioagenda as $item) {
 
             $tempoconsulta = $item->tempoconsulta;
@@ -2788,7 +2793,6 @@ class Exame extends BaseController {
         }
 
 //        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
-
 //        $this->session->set_flashdata('message', $data['mensagem']);
 //        redirect(base_url() . "ambulatorio/agenda");
     }
@@ -2910,7 +2914,6 @@ class Exame extends BaseController {
         }
 
 //        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
-
 //        $this->session->set_flashdata('message', $data['mensagem']);
 //        redirect(base_url() . "ambulatorio/agenda");
     }
@@ -3169,7 +3172,6 @@ class Exame extends BaseController {
         }
 
 //        $data['mensagem'] = 'Sucesso ao gravar a Agenda.';
-
 //        $this->session->set_flashdata('message', $data['mensagem']);
 //        redirect(base_url() . "ambulatorio/agenda");
     }
@@ -3230,11 +3232,11 @@ class Exame extends BaseController {
     function gerarxml() {
 
         $total = 0;
-        
+
         $listarpacienete = $this->exame->listarpacientesxmlfaturamento();
         $listarexame = $this->exame->listargxmlfaturamento();
         $listarexames = $this->exame->listarxmlfaturamentoexames();
-        
+
         $horario = date("Y-m-d");
         $hora = date("H:i:s");
         $empresa = $this->exame->listarcnpj();
@@ -3281,8 +3283,8 @@ class Exame extends BaseController {
         $j = $b - 53;
         $zero = '0000000000000000';
         $corpo = "";
-        
-        if($_POST['unir_exame_consulta'] == 'SIM'){
+
+        if ($_POST['unir_exame_consulta'] == 'SIM') {
             $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
                             <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
                             <ans:cabecalho>
@@ -3308,7 +3310,7 @@ class Exame extends BaseController {
                                     <ans:guiasTISS>";
 
             $contador = 0;
-            foreach($listarpacienete as $pac){
+            foreach ($listarpacienete as $pac) {
                 $contador += $pac->contador;
             }
 
@@ -3375,7 +3377,7 @@ class Exame extends BaseController {
                             $corpo = $corpo . "<ans:guiaSP-SADT>
                  <ans:cabecalhoGuia>
                     <ans:registroANS>" . $registroans . "</ans:registroANS>
-                 <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $item->agenda_exames_id)). "</ans:numeroGuiaPrestador>
+                 <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $item->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
                  <ans:guiaPrincipal>1</ans:guiaPrincipal>
               </ans:cabecalhoGuia>
               <ans:dadosAutorizacao>
@@ -3391,8 +3393,8 @@ class Exame extends BaseController {
               </ans:dadosBeneficiario>
               <ans:dadosSolicitante>
                  <ans:contratadoSolicitante>" .
-                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>"):("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
-                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>") : ("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
+                                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                  </ans:contratadoSolicitante>
                  <ans:profissionalSolicitante>
                     <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
@@ -3409,8 +3411,8 @@ class Exame extends BaseController {
               </ans:dadosSolicitacao>
               <ans:dadosExecutante>
                  <ans:contratadoExecutante>" .
-                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>"):("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
-                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>") : ("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
+                                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                  </ans:contratadoExecutante>
                  <ans:CNES>" . $cnes . "</ans:CNES>
               </ans:dadosExecutante>
@@ -3498,8 +3500,8 @@ class Exame extends BaseController {
               </ans:dadosBeneficiario>
                                               <ans:dadosSolicitante>
                  <ans:contratadoSolicitante>" .
-                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>"):("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
-                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>") : ("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
+                                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                  </ans:contratadoSolicitante>
                  <ans:profissionalSolicitante>
                     <ans:nomeProfissional>" . $medicosolicitante . "</ans:nomeProfissional>
@@ -3516,8 +3518,8 @@ class Exame extends BaseController {
               </ans:dadosSolicitacao>
               <ans:dadosExecutante>
                     <ans:contratadoExecutante>" .
-                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>"):("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
-                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
+                                    ( ($modelo == 'cpf') ? ("<ans:cpfContratado>" . $cpfxml . "</ans:cpfContratado>") : ("<ans:cnpjContratado>" . $cnpj . "</ans:cnpjContratado>")) .
+                                    "<ans:nomeContratado>" . $razao_socialxml . "</ans:nomeContratado>
                  </ans:contratadoExecutante>
                  <ans:CNES>" . $cnes . "</ans:CNES>
               </ans:dadosExecutante>
@@ -3657,8 +3659,7 @@ class Exame extends BaseController {
                     }
                 }
             }
-        }
-        else {
+        } else {
             if ($versao == '3.03.01' || $versao == '3.03.02') {
                 if ($modelo == 'cpf') {
 
@@ -3688,7 +3689,7 @@ class Exame extends BaseController {
                  <ans:numeroLote>" . $b . "</ans:numeroLote>
                     <ans:guiasTISS>";
                         $contador = 0;
-                        foreach($listarpacienete as $pac){
+                        foreach ($listarpacienete as $pac) {
                             $contador += $pac->contador;
                         }
 
@@ -3709,7 +3710,7 @@ class Exame extends BaseController {
 
                                 if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                     $tabela = '22';
-    //                                die('morreu');
+                                    //                                die('morreu');
                                     $valorProcedimento = $item->valor_total;
                                     $valorMaterial = 0.00;
                                     $valorMedicamento = 0.00;
@@ -3864,10 +3865,9 @@ class Exame extends BaseController {
                              <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                           </ans:valorTotal>
                           </ans:guiaSP-SADT>";
-                                    } 
-                                    else {
+                                    } else {
 
-    //                                    die('morreu02');
+                                        //                                    die('morreu02');
                                         $corpo = $corpo . "
                     <ans:guiaSP-SADT>
                               <ans:cabecalhoGuia>
@@ -3919,7 +3919,7 @@ class Exame extends BaseController {
                             <ans:tipoConsulta>1</ans:tipoConsulta>
 
                           </ans:dadosAtendimento>" .
-                            ( ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") ? "<ans:procedimentosExecutados>
+                                                ( ($item->grupo != "MATERIAL" && $item->grupo != "MEDICAMENTO") ? "<ans:procedimentosExecutados>
                              <ans:procedimentoExecutado>
                                     <ans:dataExecucao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataExecucao>
                                     <ans:horaInicial>" . substr($data_autorizacao[0]->data_cadastro, 11, 8) . "</ans:horaInicial>
@@ -3945,8 +3945,7 @@ class Exame extends BaseController {
                                         <ans:CBOS>999999</ans:CBOS>
                                     </ans:equipeSadt>
                           </ans:procedimentoExecutado>
-                        </ans:procedimentosExecutados>" 
-                        : "<ans:outrasDespesas>
+                        </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
                                  <ans:despesa>
 
                                     <ans:codigoDespesa>" . $codDespesa . "</ans:codigoDespesa>
@@ -4046,9 +4045,8 @@ class Exame extends BaseController {
                                 }
                             }
                         }
-                    }
-                    else {
-                        if( count($listarexame) > 0 ) {
+                    } else {
+                        if (count($listarexame) > 0) {
                             $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
             <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
                <ans:cabecalho>
@@ -4076,20 +4074,20 @@ class Exame extends BaseController {
                             foreach ($listarexame as $value) {
 
                                 $tabela = '22';
-        //                        $valorProcedimento = $value->valor;
-        //                        $valorMaterial = 0.00;
-        //                        $valorMedicamento = 0.00;
+                                //                        $valorProcedimento = $value->valor;
+                                //                        $valorMaterial = 0.00;
+                                //                        $valorMedicamento = 0.00;
 
                                 if ($value->grupo == "MATERIAL") { //caso seja material
                                     $tabela = '19';
                                     $codDespesa = '03';
-        //                            $valorMaterial = $value->valor;
-        //                            $valorProcedimento = 0.00;
+                                    //                            $valorMaterial = $value->valor;
+                                    //                            $valorProcedimento = 0.00;
                                 } elseif ($value->grupo == "MEDICAMENTO") { //caso seja medicamento
                                     $tabela = '20';
                                     $codDespesa = '02';
-        //                            $valorMedicamento = $value->valor;
-        //                            $valorProcedimento = 0.00;
+                                    //                            $valorMedicamento = $value->valor;
+                                    //                            $valorProcedimento = 0.00;
                                 }
 
                                 if ($value->convenionumero == '') {
@@ -4214,8 +4212,7 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
-                else {
+                } else {
                     if (@$listarexame[0]->grupo != 'CONSULTA' && count($listarexame) > 0) {
                         $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
         <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -4242,7 +4239,7 @@ class Exame extends BaseController {
                     <ans:guiasTISS>";
 
                         $contador = 0;
-                        foreach($listarpacienete as $pac){
+                        foreach ($listarpacienete as $pac) {
                             $contador += $pac->contador;
                         }
 
@@ -4310,7 +4307,7 @@ class Exame extends BaseController {
                                                               <ans:guiaSP-SADT>
                               <ans:cabecalhoGuia>
                                 <ans:registroANS>" . $registroans . "</ans:registroANS>
-                             <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $item->agenda_exames_id)). "</ans:numeroGuiaPrestador>
+                             <ans:numeroGuiaPrestador>" . (($item->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $item->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
                              <ans:guiaPrincipal>1</ans:guiaPrincipal>
                           </ans:cabecalhoGuia>
                           <ans:dadosAutorizacao>
@@ -4592,9 +4589,8 @@ class Exame extends BaseController {
                                 }
                             }
                         }
-                    } 
-                    else {
-                        if( count($listarexame) > 0 ) {
+                    } else {
+                        if (count($listarexame) > 0) {
                             $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
             <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
                <ans:cabecalho>
@@ -4622,20 +4618,20 @@ class Exame extends BaseController {
 
                             foreach ($listarexame as $value) {
                                 $tabela = '22';
-        //                        $valorProcedimento = $value->valor;
-        //                        $valorMaterial = 0.00;
-        //                        $valorMedicamento = 0.00;
+                                //                        $valorProcedimento = $value->valor;
+                                //                        $valorMaterial = 0.00;
+                                //                        $valorMedicamento = 0.00;
 
                                 if ($value->grupo == "MATERIAL") { //caso seja material
                                     $tabela = '19';
                                     $codDespesa = '03';
-        //                            $valorMaterial = $value->valor;
-        //                            $valorProcedimento = 0.00;
+                                    //                            $valorMaterial = $value->valor;
+                                    //                            $valorProcedimento = 0.00;
                                 } elseif ($value->grupo == "MEDICAMENTO") { //caso seja medicamento
                                     $tabela = '20';
                                     $codDespesa = '02';
-        //                            $valorMedicamento = $value->valor;
-        //                            $valorProcedimento = 0.00;
+                                    //                            $valorMedicamento = $value->valor;
+                                    //                            $valorProcedimento = 0.00;
                                 }
                                 $i++;
                                 $totExames++;
@@ -4712,7 +4708,7 @@ class Exame extends BaseController {
                                         $fp = fopen($nome, "w+");
                                         fwrite($fp, $xml . "\n");
                                         fclose($fp);
-        //                                var_dump($xml);die;
+                                        //                                var_dump($xml);die;
                                         $corpo = "";
                                         $rodape = "";
                                     }
@@ -4796,17 +4792,17 @@ class Exame extends BaseController {
                     <ans:guiasTISS>";
 
                         $contador = 0;
-                        foreach($listarpacienete as $pac){
+                        foreach ($listarpacienete as $pac) {
                             $contador += $pac->contador;
                         }
 
                         foreach ($listarpacienete as $value) {
-    //
-    //                        if ($value->guiaconvenio == '') {
-    //                            $guianumero = '0000000';
-    //                        } else {
-    //                            $guianumero = $value->guiaconvenio;
-    //                        }
+                            //
+                            //                        if ($value->guiaconvenio == '') {
+                            //                            $guianumero = '0000000';
+                            //                        } else {
+                            //                            $guianumero = $value->guiaconvenio;
+                            //                        }
                             if ($value->convenionumero == '') {
                                 $numerodacarteira = '0000000';
                             } else {
@@ -5068,8 +5064,7 @@ class Exame extends BaseController {
                                 }
                             }
                         }
-                    } 
-                    else {
+                    } else {
 
 
                         $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -5196,8 +5191,7 @@ class Exame extends BaseController {
                             }
                         }
                     }
-                } 
-                else {
+                } else {
 
                     if ($listarexame[0]->grupo != 'CONSULTA') {
                         $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -5224,7 +5218,7 @@ class Exame extends BaseController {
              <ans:numeroLote>" . $b . "</ans:numeroLote>
                 <ans:guiasTISS>";
                         $contador = 0;
-                        foreach($listarpacienete as $pac){
+                        foreach ($listarpacienete as $pac) {
                             $contador += $pac->contador;
                         }
 
@@ -5357,8 +5351,7 @@ class Exame extends BaseController {
                          <ans:valorTotalGeral>" . $item->valor_total . "</ans:valorTotalGeral>
                       </ans:valorTotal>
                       </ans:guiaSP-SADT>";
-                                    } 
-                                    else {
+                                    } else {
                                         $corpo = $corpo . "
                                                           <ans:guiaSP-SADT>
                           <ans:cabecalhoGuia>
@@ -5494,8 +5487,7 @@ class Exame extends BaseController {
                                 }
                             }
                         }
-                    } 
-                    else {
+                    } else {
 
                         $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
     <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
@@ -5626,8 +5618,8 @@ class Exame extends BaseController {
                 }
             }
         }
-        
-        if( count($listarexame) > 0 ) {
+
+        if (count($listarexame) > 0) {
             $this->exame->gravarlote($b);
             $zip = new ZipArchive;
             $this->load->helper('directory');
@@ -5639,8 +5631,8 @@ class Exame extends BaseController {
                 foreach ($arquivo_pasta as $value) {
                     $zip->open("./upload/cr/$convenio/$value.zip", ZipArchive::CREATE);
                     $zip->addFile("./upload/cr/$convenio/$value", "$value");
-    //           $deletarxml = "./upload/cr/$convenio/$value";
-    //           unlink($deletarxml);
+                    //           $deletarxml = "./upload/cr/$convenio/$value";
+                    //           unlink($deletarxml);
                 }
                 $zip->close();
                 foreach ($deletar as $arquivonome) {

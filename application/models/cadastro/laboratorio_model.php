@@ -917,6 +917,102 @@ class Laboratorio_model extends Model {
             return -1;
         }
     }
+    function gravarfinanceiro() {
+        try {
+            echo '<pre>';
+//            var_dump($_POST); die;
+            if (@$_POST['criarcredor'] == "on") {
+                $this->db->set('razao_social', $_POST['txtNome']);
+                $this->db->set('razao_social', $_POST['txtNome']);
+                $this->db->set('cep', $_POST['cep']);
+                if (@$_POST['cpf'] != '') {
+                    $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
+                } else {
+                    $this->db->set('cpf', null);
+                }
+                $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
+                $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
+                if ($_POST['tipo_logradouro'] != '') {
+                    $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
+                }
+                if ($_POST['municipio_id'] != '') {
+                    $this->db->set('municipio_id', $_POST['municipio_id']);
+                }
+                $this->db->set('logradouro', $_POST['endereco']);
+                $this->db->set('numero', $_POST['numero']);
+                $this->db->set('bairro', $_POST['bairro']);
+                $this->db->set('complemento', $_POST['complemento']);
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_credor_devedor');
+                $financeiro_credor_devedor_id = $this->db->insert_id();
+            }
+
+            /* inicia o mapeamento no banco */
+            $laboratorio_id = $_POST['txtlaboratorio_id'];
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->set('razao_social', $_POST['txtrazaosocial']);
+            $this->db->set('cnpj', $_POST['txtCNPJ']);
+//            $this->db->set('registroans', $_POST['txtregistroans']);
+//            $this->db->set('codigoidentificador', $_POST['txtcodigo']);
+//            var_dump($_POST['laboratorio_associacao']); die;
+
+
+            if ($_POST['conta'] != "") {
+                $this->db->set('conta_id', $_POST['conta']);
+            }
+            if (@$_POST['criarcredor'] == "on") {
+                $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
+            } elseif ($_POST['credor_devedor'] != "") {
+                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
+            }
+            $this->db->set('classe', $_POST['classe']);
+            $this->db->set('tipo', $_POST['tipo']);
+
+
+            $this->db->set('cep', $_POST['cep']);
+            if ($_POST['tipo_logradouro'] != "") {
+                $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
+            }
+
+            $this->db->set('logradouro', $_POST['endereco']);
+            $this->db->set('numero', $_POST['numero']);
+            $this->db->set('bairro', $_POST['bairro']);
+            $this->db->set('complemento', $_POST['complemento']);
+            if ($_POST['municipio_id'] != "") {
+                $this->db->set('municipio_id', $_POST['municipio_id']);
+            }
+            $this->db->set('telefone', $_POST['telefone']);
+            $this->db->set('celular', $_POST['celular']);
+
+            $this->db->set('observacao', $_POST['txtObservacao']);
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['txtlaboratorio_id'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_laboratorio');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $exame_sala_id = $this->db->insert_id();
+            }
+            else { // update
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $exame_sala_id = $_POST['txtlaboratorio_id'];
+                $this->db->where('laboratorio_id', $laboratorio_id);
+                $this->db->update('tb_laboratorio');
+            }
+            return $exame_sala_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
 
     function gravarcopia() {
         try {
