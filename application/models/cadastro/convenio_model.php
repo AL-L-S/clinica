@@ -803,8 +803,21 @@ class Convenio_model extends Model {
         }
     }
     
+    function atualizarValoresProcedimentosCBHPM() {
+        if($_POST['txtconvenio_id']){
+            $valor_por = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']) );
+            $sql = "UPDATE ponto.tb_procedimento_convenio pc
+                    SET 
+                    valorch = ($valor_por * t.valor_porte), valortotal = ($valor_por * t.valor_porte)
+                    FROM ponto.tb_procedimento_tuss pt, ponto.tb_tuss t
+                    WHERE pc.procedimento_tuss_id = pt.procedimento_tuss_id";
+            $this->db->query($sql);
+        }
+    }
+    
     function gravar() {
         try {
+            
             /* inicia o mapeamento no banco */
             $convenio_id = $_POST['txtconvenio_id'];
             $this->db->set('nome', $_POST['txtNome']);
@@ -849,6 +862,9 @@ class Convenio_model extends Model {
             $this->db->set('cep', $_POST['cep']);
             if ($_POST['tipo_logradouro'] != "") {
                 $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
+            }
+            if ($_POST['valor_ajuste_cbhpm'] != "") {
+                $this->db->set('valor_ajuste_cbhpm', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']) ));
             }
             if ($_POST['ir'] != "") {
                 $this->db->set('ir', str_replace(",", ".", $_POST['ir']));
@@ -923,6 +939,7 @@ class Convenio_model extends Model {
                 $this->db->where('convenio_id', $convenio_id);
                 $this->db->update('tb_convenio');
             }
+            
             return $exame_sala_id;
         } catch (Exception $exc) {
             return -1;
@@ -1021,7 +1038,8 @@ class Convenio_model extends Model {
                                 co.associacao_convenio_id,
                                 co.razao_social,
                                 co.guia_prestador_unico,
-                                co.dia_aquisicao');
+                                co.dia_aquisicao,
+                                co.valor_ajuste_cbhpm');
             $this->db->from('tb_convenio co');
             $this->db->join('tb_municipio c', 'c.municipio_id = co.municipio_id', 'left');
             $this->db->join('tb_tipo_logradouro tp', 'tp.tipo_logradouro_id = co.tipo_logradouro_id', 'left');
@@ -1071,6 +1089,7 @@ class Convenio_model extends Model {
             $this->_associacao_convenio_id = $return[0]->associacao_convenio_id;
             $this->_guia_prestador_unico = $return[0]->guia_prestador_unico;
             $this->_dia_aquisicao = $return[0]->dia_aquisicao;
+            $this->_valor_ajuste_cbhpm = $return[0]->valor_ajuste_cbhpm;
         } else {
             $this->_convenio_id = null;
         }

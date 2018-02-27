@@ -31,6 +31,12 @@
                         <input type="text" name="txtvalorbri" alt="decimal" class="texto02" value="<?= $procedimento[0]->valor_bri; ?>"/>
                     </dd>
                     <dt>
+                    <label>Valor Porte</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtvalorporte" alt="decimal" class="texto02" value="<?= $procedimento[0]->valor_porte; ?>"/>
+                    </dd>
+                    <dt>
                     <label>Classificaco</label>
                     </dt>
                     <dd>

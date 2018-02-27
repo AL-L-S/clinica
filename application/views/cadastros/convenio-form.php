@@ -141,6 +141,10 @@
                     </select>
 
                 </div>
+                <div id="ajuste-cbhpm"> 
+                    <label>Ajuste CBHPM</label>
+                    <input type="text" id="valor_ajuste_cbhpm" class="texto02" name="valor_ajuste_cbhpm" alt="decimal" value="<?= @$obj->_valor_ajuste_cbhpm; ?>" />
+                </div>
                 <div>
                     <label>Grupo convenio</label>
                     <select name="grupoconvenio" id="grupoconvenio" class="size2" >
@@ -322,9 +326,12 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    <?if(@$obj->_associado != 't'){?>
+    <? if(@$obj->_associado != 't'){ ?>
         $("#div_associacao").hide();
-    <?}?>
+    <? }
+    if (@$obj->_tabela != "CBHPM"){ ?>
+       $("#ajuste-cbhpm").hide(); 
+    <? } ?>
     $('#associaconvenio').change(function () {
         if ($(this).is(":checked")) {
             $("#div_associacao").show();
@@ -348,10 +355,15 @@
 
     $(function () {
         $('#tipo').change(function () {
+            if($(this).val() == 'CBHPM'){
+                $("#ajuste-cbhpm").show();
+            }else{
+                $("#ajuste-cbhpm").hide();
+            }
+            
             if ($(this).val() == 'PROPRIA' || $(this).val() == 'CBHPM') {
                 $("#procedimento1").prop('required', true);
                 $("#procedimento2").prop('required', true);
-
             } else {
                 $("#procedimento1").prop('required', false);
                 $("#procedimento2").prop('required', false);

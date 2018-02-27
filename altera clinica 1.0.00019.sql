@@ -83,3 +83,4 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN ambulatorio_gasto_sala_id integer;
 ALTER TABLE ponto.tb_tuss ADD COLUMN porte_descricao text;
 ALTER TABLE ponto.tb_tuss ADD COLUMN valor_porte numeric(10,2);
 ALTER TABLE ponto.tb_tuss ADD COLUMN valor_uco numeric(10,2);
+ALTER TABLE ponto.tb_convenio ADD COLUMN valor_ajuste_cbhpm numeric;

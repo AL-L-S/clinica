@@ -24,7 +24,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th colspan="5" class="tabela_title">
+                        <th colspan="7" class="tabela_title">
                             <form method="get" action="<?= base_url() ?>cadastros/convenio/pesquisar">
                                 <input type="text" name="nome" class="texto10 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                                 <button type="submit" id="enviar">Pesquisar</button>
@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th colspan="6" class="tabela_header"><center>Detalhes</center></th>
+                        <th colspan="10" class="tabela_header"><center>Detalhes</center></th>
                     </tr>
                 </thead>
                 <?php
@@ -108,7 +108,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="7">
+                        <th class="tabela_footer" colspan="12">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

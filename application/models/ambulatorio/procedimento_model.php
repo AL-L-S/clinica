@@ -392,6 +392,7 @@ class procedimento_model extends Model {
                             descricao,
                             codigo,
                             valor_bri,
+                            valor_porte,
                             texto,
                             grupo_matmed,
                             classificacao,
@@ -711,6 +712,7 @@ class procedimento_model extends Model {
                 if ($_POST['tuss_id'] != "") {
                     $tuss_id = $_POST['tuss_id'];
                     $valor_bri = str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri']));
+                    $valor_por = str_replace(",", ".", str_replace(".", "", $_POST['txtvalorporte']));
 
                     $sql = "UPDATE ponto.tb_procedimento_convenio pc
                             SET 
@@ -722,6 +724,7 @@ class procedimento_model extends Model {
                     $this->db->query($sql);
                 }
                 $this->db->set('valor_bri', str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri'])));
+                $this->db->set('valor_porte', str_replace(",", ".", str_replace(".", "", $_POST['txtvalorporte'])));
             }
             $this->db->set('descricao', $_POST['txtNome']);
             $this->db->set('codigo', $_POST['procedimento']);
