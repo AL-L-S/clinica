@@ -1,10 +1,24 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
-    <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregarprocedimentotuss/0">
-            Novo Proc. Tuss
-        </a>
-    </div>
+    <table >
+        <tr>
+            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimento/carregarprocedimentotuss/0">
+                        Novo Proc. Tuss
+                    </a>
+                </div>
+            </td>
+<!--            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimento/ajustarportetusschpm">
+                        Ajustar PORTE
+                    </a>
+                </div>
+            </td>-->
+        </tr>
+    </table>
+    
 
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento</a></h3>

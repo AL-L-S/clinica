@@ -804,19 +804,53 @@ class Convenio_model extends Model {
     }
     
     function atualizarValoresProcedimentosCBHPM() {
-        if($_POST['txtconvenio_id']){
+        if ( $_POST['txtconvenio_id'] != '' ) {
+            $convenio_id = $_POST['txtconvenio_id'];
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
             $valor_por = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']) );
-            $sql = "UPDATE ponto.tb_procedimento_convenio pc
-                    SET 
-                    valorch = ($valor_por * t.valor_porte), valortotal = ($valor_por * t.valor_porte)
-                    FROM ponto.tb_procedimento_tuss pt, ponto.tb_tuss t
-                    WHERE pc.procedimento_tuss_id = pt.procedimento_tuss_id";
+            $valor_por = ($valor_por)/100;
+            
+//            var_dump($valor_por);
+//            die;
+            
+            // Inserindo valores antigos na tb_procedimento_convenio_antigo
+            $sql = "INSERT INTO ponto.tb_procedimento_convenio_antigo(procedimento_convenio_id, convenio_id,procedimento_tuss_id,
+                    qtdech,valorch, qtdefilme, valorfilme, qtdeporte, valorporte, qtdeuco,
+                    valoruco, valortotal, empresa_id, data_cadastro, operador_cadastro)
+                    SELECT pc.procedimento_convenio_id, pc.convenio_id,pc.procedimento_tuss_id,
+                    pc.qtdech,pc.valorch, pc.qtdefilme, pc.valorfilme, pc.qtdeporte, pc.valorporte, pc.qtdeuco,
+                    pc.valoruco, pc.valortotal, pc.empresa_id, '$horario', $operador_id
+                    FROM ponto.tb_procedimento_convenio pc
+                    LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                    LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
+                    WHERE pc.convenio_id = $convenio_id
+                    AND pc.ativo = 't'
+                    AND t.tabela = 'CBHPM' ";
+            $this->db->query($sql);
+            
+            // Alterando os valores antigos
+            $sql = "UPDATE ponto.tb_procedimento_convenio pc2
+                    SET valorch = t.valor_porte + ($valor_por * t.valor_porte), valortotal = t.valor_porte + ($valor_por * t.valor_porte)
+                    FROM ponto.tb_procedimento_convenio pc
+                    LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                    LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
+                    WHERE pc.convenio_id = $convenio_id
+                    AND pc.ativo = 't'
+                    AND t.tabela = 'CBHPM' ";
             $this->db->query($sql);
         }
     }
     
     function gravar() {
         try {
+            // Atualiza os valores no procedimento convenio baseado no valor de ajuste informado
+            // E no valor do porte que está la no cadastro do TUSS.
+            if($_POST['tipo'] == 'CBHPM'){ 
+                // Só ira recalcular os valores, se o usuario informar que o convenio usa CBHPM
+                $this->atualizarValoresProcedimentosCBHPM();
+            }
             
             /* inicia o mapeamento no banco */
             $convenio_id = $_POST['txtconvenio_id'];

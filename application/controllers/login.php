@@ -158,7 +158,7 @@ class Login extends Controller {
     function autenticar() {
 
         $usuario = $_POST['txtLogin'];
-        $senha = $_POST['txtSenha'];
+        $senha   = $_POST['txtSenha'];
         $empresa = $_POST['txtempresa'];
 
         //Pegando o nome e versao do navegador

@@ -2219,7 +2219,8 @@ class procedimentoplano_model extends Model {
                 } else {
                     return -2;
                 }
-            } else {
+            } 
+            else {
                 if (isset($_POST['brasindice'])) {
                     $horario = date("Y-m-d H:i:s");
                     $operador_id = $this->session->userdata('operador_id');

@@ -142,7 +142,7 @@
 
                 </div>
                 <div id="ajuste-cbhpm"> 
-                    <label>Ajuste CBHPM</label>
+                    <label>Ajuste CBHPM (%)</label>
                     <input type="text" id="valor_ajuste_cbhpm" class="texto02" name="valor_ajuste_cbhpm" alt="decimal" value="<?= @$obj->_valor_ajuste_cbhpm; ?>" />
                 </div>
                 <div>
