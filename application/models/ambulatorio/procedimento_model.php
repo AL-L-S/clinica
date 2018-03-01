@@ -580,6 +580,49 @@ class procedimento_model extends Model {
         }
     }
 
+    function atualizaprocedimentosconvenioscbhpm($procedimento_tuss_id) {
+        $tuss_id = $_POST['txtprocedimento'];
+        $this->db->select('valor_porte');
+        $this->db->from('tb_tuss');
+        $this->db->where('tuss_id', $tuss_id);
+        $this->db->where("tabela = 'CBHPM'");
+        $return = $this->db->get()->result();
+        
+        if(count($return) != 0){
+
+            $empresa_id = $this->session->userdata('empresa_id');
+            $operador_id = $this->session->userdata('operador_id');
+            $horario = date("Y-m-d H:i:s");
+
+            // Insere procedimentos CBHPM nesse convenio
+            $this->db->select('c.valor_ajuste_cbhpm, c.convenio_id');
+            $this->db->from('tb_convenio c');
+            $this->db->where("c.tabela", 'CBHPM');
+            $this->db->where("c.ativo", 't');
+            $result = $this->db->get()->result();
+
+            if (count($result) > 0) {
+                foreach ($result as $value) {
+                    $this->db->set('convenio_id', $value->convenio_id);
+                    $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
+                    $this->db->set('empresa_id', $empresa_id);
+                    $this->db->set('qtdech', 0);
+                    $this->db->set('valorch', 0);
+                    $this->db->set('qtdefilme', 0);
+                    $this->db->set('valorfilme', 0);
+                    $this->db->set('qtdeporte', 0);
+                    $this->db->set('valorporte', 0);
+                    $this->db->set('qtdeuco', 0);
+                    $this->db->set('valoruco', 0);
+                    $this->db->set('valortotal', (float)( $return[0]->valor_porte + ($return[0]->valor_porte * $value->valor_ajuste_cbhpm / 100) ));
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_procedimento_convenio');
+                }
+            }
+        }
+    }
+    
     function gravar() {
         try {
 
