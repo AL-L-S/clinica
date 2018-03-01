@@ -291,8 +291,9 @@ class Exametemp extends BaseController {
         $data['paciente_id'] = $paciente_id;
 
         $credito = $this->exametemp->gerasaldocredito($paciente_id);
+//        var_dump($credito); die;
         
-        if (@$credito[0]->valor_total == '0,00') {
+        if (@$credito[0]->valor_total == '0.00') {
             $data['extenso'] = 'ZERO';
         } else {
             $valoreditado = str_replace(",", "", str_replace(".", "", @$credito[0]->valor_total));
@@ -310,7 +311,7 @@ class Exametemp extends BaseController {
         $data['paciente_credito_id'] = $paciente_credito_id;
 
         $credito = $this->exametemp->gerarecibocredito($paciente_credito_id);
-
+//        var_dump($credito); die;
         if ($credito[0]->valor == '0,00') {
             $data['extenso'] = 'ZERO';
         } else {

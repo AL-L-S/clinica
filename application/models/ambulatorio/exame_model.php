@@ -6128,6 +6128,7 @@ class exame_model extends Model {
         $this->db->where('ambulatorio_gasto_sala_id', $gasto_id);
         $this->db->update('tb_estoque_saldo');
     }
+
     function excluirgastodesalaguia($gasto_id) {
         $horario = date('Y-m-d');
         $operador_id = $this->session->userdata('operador_id');
@@ -7957,6 +7958,8 @@ class exame_model extends Model {
             $this->db->where('ae.agenda_exames_id', $_POST['txtagenda_exames_id']);
             $this->db->where('(ae.forma_pagamento = 1000 OR ae.forma_pagamento2 = 1000 OR ae.forma_pagamento3 = 1000 OR ae.forma_pagamento4 = 1000)');
             $credito = $this->db->get()->result();
+            var_dump($credito);
+            die;
             if (count($credito) > 0) {
 
 
@@ -7970,7 +7973,8 @@ class exame_model extends Model {
                     $valor_credito = $credito[0]->valor4;
                 }
 
-
+                var_dump($valor_credito);
+                die;
                 $this->db->set('valor', $valor_credito);
                 $this->db->set('procedimento_convenio_id', $credito[0]->procedimento_tuss_id);
                 $this->db->set('paciente_id', $credito[0]->paciente_id);
@@ -8147,7 +8151,18 @@ class exame_model extends Model {
             $this->db->where('ae.agenda_exames_id', $_POST['txtagenda_exames_id']);
             $this->db->where('(ae.forma_pagamento = 1000 OR ae.forma_pagamento2 = 1000 OR ae.forma_pagamento3 = 1000 OR ae.forma_pagamento4 = 1000)');
             $credito = $this->db->get()->result();
+
+
+            $empresa_id = $this->session->userdata('empresa_id');
             if (count($credito) > 0) {
+                $this->db->select('pcr.valor, pcr.paciente_credito_id');
+                $this->db->from('tb_paciente_credito pcr');
+                $this->db->where('pcr.empresa_id', $empresa_id);
+                $this->db->where('pcr.paciente_id', $_POST['txtpaciente_id']);
+                $this->db->where('pcr.ativo', 'true');
+                $this->db->where('pcr.valor <', 0);
+                $return = $this->db->get()->result();
+
 
 
                 if ($credito[0]->forma_pagamento == 1000) {
@@ -8160,25 +8175,127 @@ class exame_model extends Model {
                     $valor_credito = $credito[0]->valor4;
                 }
 
+                $valor_contador = (int) $valor_credito;
+//                var_dump($return); die;
+                foreach ($return as $item) {
+                    $credito_id = $item->paciente_credito_id;
+                    $valor = (int) abs($item->valor);
+//                    var_dump($valor);
+//                    die;
+                    // 100
+                    // 100
+                    if ($valor_contador > 0) {
 
-                $this->db->set('valor', $valor_credito);
-                $this->db->set('procedimento_convenio_id', $credito[0]->procedimento_tuss_id);
-                $this->db->set('paciente_id', $credito[0]->paciente_id);
-                $this->db->set('forma_pagamento_id', 1000);
-                $this->db->set('data', date("Y-m-d"));
+                        if ($valor_contador <= $valor) {
+                           
+                            $valor_novo = $valor - $valor_contador;
+                            $valor_contador = 0;
+//                            if(){
+//                                
+//                            }else{
+//                                
+//                            }
+//                            var_dump(-$valor_novo); die;
+                            $this->db->set('valor', -$valor_novo);
+                            $this->db->where('paciente_credito_id', $credito_id);
+                            $this->db->update('tb_paciente_credito');
+                        } else {
+                            $valor_contador = $valor_contador - $valor;
 
-                $horario = date("Y-m-d H:i:s");
-                $operador_id = $this->session->userdata('operador_id');
-                $empresa_id = $this->session->userdata('empresa_id');
+                            $this->db->set('valor', 0);
+                            $this->db->where('paciente_credito_id', $credito_id);
+                            $this->db->update('tb_paciente_credito');
+                        }
+                    }
+                }
 
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->set('empresa_id', $empresa_id);
+            }
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function creditocancelamentoeditarvalor() {
+        try {
 
-                $this->db->insert('tb_paciente_credito');
-//            echo '<pre>';
-//            var_dump($valor_credito);
-//            die;
+            $this->db->select('ae.agenda_exames_id, 
+                                
+                               ae.paciente_id,
+                               ae.procedimento_tuss_id,
+                               ae.valor1,
+                               ae.valor2,
+                               ae.valor3,
+                               ae.valor4,
+                               ae.forma_pagamento,
+                               ae.forma_pagamento2,
+                               ae.forma_pagamento3,
+                               ae.forma_pagamento4,
+                               ');
+
+
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('ae.agenda_exames_id', $_POST['agenda_exames_id']);
+            $this->db->where('(ae.forma_pagamento = 1000 OR ae.forma_pagamento2 = 1000 OR ae.forma_pagamento3 = 1000 OR ae.forma_pagamento4 = 1000)');
+            $credito = $this->db->get()->result();
+
+//            var_dump($credito); die;
+            $empresa_id = $this->session->userdata('empresa_id');
+            if (count($credito) > 0) {
+                $this->db->select('pcr.valor, pcr.paciente_credito_id');
+                $this->db->from('tb_paciente_credito pcr');
+                $this->db->where('pcr.empresa_id', $empresa_id);
+                $this->db->where('pcr.paciente_id', $_POST['txtpaciente_id']);
+                $this->db->where('pcr.ativo', 'true');
+                $this->db->where('pcr.valor <', 0);
+                $return = $this->db->get()->result();
+
+
+
+                if ($credito[0]->forma_pagamento == 1000) {
+                    $valor_credito = $credito[0]->valor1;
+                } elseif ($credito[0]->forma_pagamento2 == 1000) {
+                    $valor_credito = $credito[0]->valor2;
+                } elseif ($credito[0]->forma_pagamento3 == 1000) {
+                    $valor_credito = $credito[0]->valor3;
+                } else {
+                    $valor_credito = $credito[0]->valor4;
+                }
+
+                $valor_contador = (int) $valor_credito;
+//                var_dump($return); die;
+                foreach ($return as $item) {
+                    $credito_id = $item->paciente_credito_id;
+                    $valor = (int) abs($item->valor);
+//                    var_dump($valor);
+//                    die;
+                    // 100
+                    // 100
+                    if ($valor_contador > 0) {
+
+                        if ($valor_contador <= $valor) {
+                           
+                            $valor_novo = $valor - $valor_contador;
+                            $valor_contador = 0;
+//                            if(){
+//                                
+//                            }else{
+//                                
+//                            }
+//                            var_dump(-$valor_novo); die;
+                            $this->db->set('valor', -$valor_novo);
+                            $this->db->where('paciente_credito_id', $credito_id);
+                            $this->db->update('tb_paciente_credito');
+                        } else {
+                            $valor_contador = $valor_contador - $valor;
+
+                            $this->db->set('valor', 0);
+                            $this->db->where('paciente_credito_id', $credito_id);
+                            $this->db->update('tb_paciente_credito');
+                        }
+                    }
+                }
+
             }
             return 0;
         } catch (Exception $exc) {
