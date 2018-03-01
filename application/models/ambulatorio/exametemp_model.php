@@ -23,7 +23,7 @@ class exametemp_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->where('pcr.empresa_id', $empresa_id);
         $this->db->where('pcr.ativo', 'true');
-        $this->db->where('pcr.faturado', 'true');
+        $this->db->where("(pcr.faturado = 't' OR pcr.valor < 0)");
         $this->db->where('pcr.paciente_id', $paciente_id);
 
         $return = $this->db->get();
@@ -5304,8 +5304,8 @@ class exametemp_model extends Model {
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pcr.procedimento_convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pcr.forma_pagamento_id', 'left');
-        $this->db->join('tb_empresa e', 'e.empresa_id = pcr.empresa_id');
-        $this->db->join('tb_municipio m', 'm.municipio_id = e.municipio_id');
+        $this->db->join('tb_empresa e', 'e.empresa_id = pcr.empresa_id', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = e.municipio_id', 'left');
         $this->db->where("pcr.paciente_credito_id", $paciente_credito_id);
         $query = $this->db->get();
         return $query->result();

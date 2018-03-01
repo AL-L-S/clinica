@@ -1536,6 +1536,7 @@ class Exame extends BaseController {
     }
 
     function cancelarexamegeral() {
+//        var_dump($_POST); die;
         if ($this->session->userdata('perfil_id') != 12) {
             $credito = $this->exame->creditocancelamento();
             $verificar = $this->exame->cancelarexame();

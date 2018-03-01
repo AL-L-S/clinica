@@ -1296,6 +1296,8 @@ class Guia extends BaseController {
         $agenda_exames_id = $_POST['agenda_exames_id'];
         $procedimentopercentual = $_POST['procedimento1'];
         $medicopercentual = $_POST['medico_agenda'];
+        
+        
         // Calcula o Percentual do médico para salvar na agenda_exames
         $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
         if (count($percentual) == 0) {
@@ -1305,10 +1307,12 @@ class Guia extends BaseController {
 //        $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
 //        if ($grupo == 'LABORATORIAL') {
         $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
+        
+        $credito = $this->exame->creditocancelamentoeditarvalor();
 //        } else {
 //            $percentual_laboratorio = array();
 //        }
-
+        
         $dadosantigos = $this->guia->listardadosantigoseditarvalor($agenda_exames_id);
         $ambulatorio_guia_id = $this->guia->valorexames($percentual, $percentual_laboratorio);
         if ($ambulatorio_guia_id == "-1") {
