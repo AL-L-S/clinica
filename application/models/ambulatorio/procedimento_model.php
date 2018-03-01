@@ -298,7 +298,7 @@ class procedimento_model extends Model {
                             nome,
                             ');
         $this->db->from('tb_ambulatorio_grupo');
-        $this->db->where("tipo !=", 'AGRUPADOR');
+//        $this->db->where("tipo !=", 'AGRUPADOR');
         $this->db->orderby("nome");
         $return = $this->db->get();
         return $return->result();
@@ -392,6 +392,8 @@ class procedimento_model extends Model {
                             descricao,
                             codigo,
                             valor_bri,
+                            valor_porte,
+                            porte_descricao,
                             texto,
                             grupo_matmed,
                             classificacao,
@@ -711,6 +713,7 @@ class procedimento_model extends Model {
                 if ($_POST['tuss_id'] != "") {
                     $tuss_id = $_POST['tuss_id'];
                     $valor_bri = str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri']));
+//                    $valor_por = str_replace(",", ".", str_replace(".", "", $_POST['txtvalorporte']));
 
                     $sql = "UPDATE ponto.tb_procedimento_convenio pc
                             SET 
@@ -720,9 +723,23 @@ class procedimento_model extends Model {
                             AND t.tuss_id = pt.tuss_id
                             AND t.tuss_id = $tuss_id";
                     $this->db->query($sql);
+                    
+                    $sql = "UPDATE ponto.tb_procedimento_convenio pc2
+                            SET valorch = t.valor_porte + (c.valor_ajuste_cbhpm * t.valor_porte), 
+                                valortotal = t.valor_porte + (c.valor_ajuste_cbhpm * t.valor_porte)
+                            FROM ponto.tb_procedimento_convenio pc
+                            LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                            LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id
+                            LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
+                            WHERE pc.ativo = 't'
+                            AND c.tabela = 'CBHPM'
+                            AND t.tuss_id = $tuss_id";
+                    $this->db->query($sql);
                 }
                 $this->db->set('valor_bri', str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri'])));
             }
+            $this->db->set('valor_porte', (float)str_replace(",", ".", str_replace(".", "", $_POST['txtvalorporte'])));
+            $this->db->set('porte_descricao', $_POST['descricaoporte']);
             $this->db->set('descricao', $_POST['txtNome']);
             $this->db->set('codigo', $_POST['procedimento']);
             if ($_POST['classificaco'] != '') {

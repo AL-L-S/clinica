@@ -30,6 +30,18 @@
                         <input type="text" alt="decimal" name="txtvalorbri" class="texto02" value=""/>
                     </dd>
                     <dt>
+                    <label>Descricao do Porte</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="descricaoporte" id="descricaoporte" class="size04" value=""/>
+                    </dd>
+                    <dt>
+                    <label>Valor Porte</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtvalorporte" alt="decimal" class="texto02" value=""/>
+                    </dd>
+                    <dt>
                     <label>Classificaco</label>
                     </dt>
                     <dd>

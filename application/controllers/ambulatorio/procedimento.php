@@ -100,6 +100,16 @@ class Procedimento extends BaseController {
         $this->loadView('ambulatorio/agrupadorprocedimento-form', $data);
     }
 
+    function ajustarportetusschpm() {
+        $obj_procedimento = new procedimento_model($procedimento_tuss_id);
+        $data['obj'] = $obj_procedimento;
+        $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $data['laboratorios'] = $this->laboratorio->listarlaboratorios();
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/procedimento-form', $data);
+    }
+
     function carregarprocedimento($procedimento_tuss_id) {
         $obj_procedimento = new procedimento_model($procedimento_tuss_id);
         $data['obj'] = $obj_procedimento;

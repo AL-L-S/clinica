@@ -11782,7 +11782,7 @@ ORDER BY ae.agenda_exames_id)";
         return $tipo[0]->tipo;
     }
 
-    function gravaratendimentoagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado) {
+    function gravaratendimentoagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio) {
         try {
 
             $horario = date("Y-m-d H:i:s");
