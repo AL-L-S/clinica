@@ -392,6 +392,7 @@ class contasreceber_model extends Model {
             } else {
                 $tipo = '';
             }
+//            var_dump($devedor_id); die;
             /* inicia o mapeamento no banco */
             $financeiro_contasreceber_id = $_POST['financeiro_contasreceber_id'];
             $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $_POST['valor'])));
