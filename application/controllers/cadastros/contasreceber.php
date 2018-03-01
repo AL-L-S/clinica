@@ -238,7 +238,7 @@ class Contasreceber extends BaseController {
             $devedor_id = $this->contasreceber->gravardevedor();
         }
         else{
-            $devedor_id = $_POST['credor'];
+            $devedor_id = $_POST['devedor'];
         }
         if ($_POST['financeiro_contasreceber_id'] == '') {
 //            if ($_POST['devedor'] == '') {

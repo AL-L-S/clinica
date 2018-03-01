@@ -761,6 +761,8 @@ class Exame extends BaseController {
             $data['convenios'] = 0;
         }
         $data['listar'] = $this->exame->listarguiafaturamento();
+//        echo '<pre>';
+//        var_dump($data['listar']); die;
         $this->loadView('ambulatorio/faturamentoexame-lista', $data);
     }
 
@@ -1048,6 +1050,16 @@ class Exame extends BaseController {
         $data['procedimento_tuss_id'] = $procedimento_tuss_id;
         $data['agenda_exames_id'] = $agenda_exames_id;
         $this->loadView('ambulatorio/examecancelamento-form', $data);
+    }
+
+    function examecancelamentogeral($exames_id, $sala_id, $agenda_exames_id, $paciente_id, $procedimento_tuss_id) {
+        $data['motivos'] = $this->motivocancelamento->listartodos();
+        $data['exames_id'] = $exames_id;
+        $data['sala_id'] = $sala_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['procedimento_tuss_id'] = $procedimento_tuss_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $this->loadView('ambulatorio/examecancelamentogeral-form', $data);
     }
 
     function enviarsalaesperamedicolaboratorial($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id, $medico_id) {
@@ -1521,6 +1533,23 @@ class Exame extends BaseController {
 
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
+    }
+
+    function cancelarexamegeral() {
+        if ($this->session->userdata('perfil_id') != 12) {
+            $credito = $this->exame->creditocancelamento();
+            $verificar = $this->exame->cancelarexame();
+            if ($verificar == "-1") {
+                $data['mensagem'] = 'Erro ao cancelar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao cancelar o Exame.';
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao cancelar o Exame. Você não possui perfil para realizar essa opera&ccedil;&atilde;o .';
+        }
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function voltarexame($exame_id, $sala_id, $agenda_exames_id) {

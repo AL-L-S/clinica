@@ -1397,7 +1397,7 @@ class Laudo extends BaseController {
             elseif ($data['empresa'][0]->impressao_laudo == 8) {//RONALDO BARREIRA
                 $medicoparecer = $data['laudo']['0']->medico_parecer1;
                 //            echo "<pre>"; var_dump($data['laudo']['0']);die;
-                $cabecalho = "<table><tr><td><center></td></tr>
+                $cabecalho = "<table><tr><td><center><img align = 'left'  width='1000px' height='90px' src='img/cabecalho.jpg'></center></td></tr>
 
                         <tr><td colspan='2'>Exame de: " . $data['laudo']['0']->paciente . "</td></tr>
                         <tr><td>Nascimento: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "----Idade: " . $teste . "</td></tr>

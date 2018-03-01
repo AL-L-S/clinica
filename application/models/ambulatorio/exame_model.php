@@ -4559,7 +4559,7 @@ class exame_model extends Model {
                             ae.procedimento_tuss_id,
                             ae.confirmado,
                             e.exames_id,
-                            e.sala_id,
+                            ae.agenda_exames_nome_id as sala_id,
                             ag.tipo,
                             pt.grupo,
                             c.nome as convenio,
@@ -5388,6 +5388,10 @@ class exame_model extends Model {
                             ae.situacao_faturamento,
                             g.data_criacao,
                             ae.autorizacao,
+                            ae.data_financeiro,
+                            ae.operador_financeiro,
+                            ae.data_antiga,
+                            ae.data_aterardatafaturamento,
                             c.nome,
                             ae.financeiro,
                             pt.nome as procedimento,
@@ -9083,8 +9087,8 @@ LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id
 LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
 WHERE ae.cancelada = 'false' 
 AND ae.confirmado >= 'true' 
-AND ae.data >= '$data_inicio' 
-AND ae.data <= '$data_fim' 
+AND ae.data_faturar >= '$data_inicio' 
+AND ae.data_faturar <= '$data_fim' 
 AND ae.empresa_id = $empresa_id 
 AND c.convenio_id = $convenio_id 
 ORDER BY ae.agenda_exames_id)";
@@ -9101,8 +9105,8 @@ LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id
 LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
 WHERE ae.cancelada = 'false' 
 AND ae.confirmado >= 'true' 
-AND ae.data >= '$data_inicio' 
-AND ae.data <= '$data_fim' 
+AND ae.data_faturar >= '$data_inicio' 
+AND ae.data_faturar <= '$data_fim' 
 AND c.convenio_id = $convenio_id 
 ORDER BY ae.agenda_exames_id)";
             }
