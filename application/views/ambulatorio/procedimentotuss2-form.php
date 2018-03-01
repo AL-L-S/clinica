@@ -33,7 +33,51 @@
                     <label>Descricao do Porte</label>
                     </dt>
                     <dd>
-                        <input type="text" name="descricaoporte" id="descricaoporte" class="size04" value=""/>
+                        <select id="descricaoporte" name="descricaoporte">
+                            <option value="">Selecione</option>
+                            <option>01A</option>
+                            <option>05C</option>
+                            <option>10B</option>
+                            <option>01B</option>
+                            <option>06A</option> 
+                            <option>10C</option>
+                            <option>01C</option>
+                            <option>06B</option>
+                            <option>11A</option>
+                            <option>02A</option>
+                            <option>06C</option>
+                            <option>11B</option>
+                            <option>02B</option>
+                            <option>07A</option>
+                            <option>11C</option>
+                            <option>02C</option>
+                            <option>07B</option>
+                            <option>12A</option>
+                            <option>03A</option>
+                            <option>07C</option>
+                            <option>12B</option>
+                            <option>03B</option>
+                            <option>08A</option>
+                            <option>12C</option>
+                            <option>03C</option>
+                            <option>08B</option>
+                            <option>13A</option>
+                            <option>04A</option>
+                            <option>08C</option>
+                            <option>13B</option>
+                            <option>04B</option>
+                            <option>09A</option>
+                            <option>13C</option>
+                            <option>04C</option>
+                            <option>09B</option>
+                            <option>14A</option>
+                            <option>05A</option>
+                            <option>09C</option>
+                            <option>14B</option>
+                            <option>05B</option>
+                            <option>10A</option>
+                            <option>14C</option>
+                        </select>
                     </dd>
                     <dt>
                     <label>Valor Porte</label>
