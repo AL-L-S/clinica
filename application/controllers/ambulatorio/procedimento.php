@@ -101,13 +101,21 @@ class Procedimento extends BaseController {
     }
 
     function ajustarportetusschpm() {
-        $obj_procedimento = new procedimento_model($procedimento_tuss_id);
-        $data['obj'] = $obj_procedimento;
-        $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
-        $data['grupos'] = $this->procedimento->listargrupos();
-        $data['laboratorios'] = $this->laboratorio->listarlaboratorios();
-        //$this->carregarView($data, 'giah/servidor-form');
-        $this->loadView('ambulatorio/procedimento-form', $data);
+        $this->loadView('ambulatorio/ajustarportetusschpm-form');
+    }
+
+    function gravarajustarportetusschpm() {
+//        echo "<pre>"; 
+//        var_dump($_POST);
+//        die;
+        $procedimento_tuss_id = $this->procedimento->gravarajustarportetusschpm();
+        if ($procedimento_tuss_id == "-1") {
+            $data['mensagem'] = 'Erro ao atualizar os valores. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao atualizar os valores.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/procedimento/pesquisartuss");
     }
 
     function carregarprocedimento($procedimento_tuss_id) {
@@ -246,6 +254,8 @@ class Procedimento extends BaseController {
     }
 
     function gravartuss() {
+//        echo "<pre>";
+//        var_dump($_POST); die;
         $procedimento_tuss_id = $this->procedimento->gravartuss();
         if ($procedimento_tuss_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar o Procedimento. Opera&ccedil;&atilde;o cancelada.';

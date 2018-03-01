@@ -67,7 +67,7 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarconvenioscopiar($convenio_id) {
         $this->db->select('convenio_id,
                             nome,
@@ -80,7 +80,7 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarconvenioselecionado($convenio_id) {
         $this->db->select('convenio_id,
                             nome,
@@ -175,8 +175,6 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-    
 
     function listarprocedimentoconvenioodontograma($convenio_id) {
         $this->db->select(' pc.procedimento_convenio_id,
@@ -218,8 +216,8 @@ class Convenio_model extends Model {
         $this->db->where("convenio_primario_id", $convenio_id);
         $return = $this->db->get();
         $return = $return->result();
-        
-        if(count($return) == 0){
+
+        if (count($return) == 0) {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('ativo', 'f');
@@ -238,7 +236,6 @@ class Convenio_model extends Model {
                 return -1;
             else
                 return $convenio_id;
-
         } else {
             return -2;
         }
@@ -383,7 +380,7 @@ class Convenio_model extends Model {
             }
             $conv_sec = $this->db->get();
             $conv_sec = $conv_sec->result();
-            
+
             // Verifica se há convenios secundarios associados
             if (count($conv_sec) > 0) {
 
@@ -463,7 +460,7 @@ class Convenio_model extends Model {
                     }
                 }
             }
-            
+
             return 1;
         } catch (Exception $exc) {
             return -1;
@@ -479,12 +476,12 @@ class Convenio_model extends Model {
             $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
             $this->db->where('pc.convenio_id', $convenio_id);
             $this->db->where('pc.ativo', 't');
-            foreach($_POST['grupo'] as $key => $item){
-                if ( $_POST['convenio'][$key] != '' && $_POST['valor'][$key] != '' ){
+            foreach ($_POST['grupo'] as $key => $item) {
+                if ($_POST['convenio'][$key] != '' && $_POST['valor'][$key] != '') {
                     $this->db->where('pt.grupo', $_POST['grupo'][$key]);
                 }
             }
-            
+
             $return2 = $this->db->get();
             $result2 = $return2->result();
             if (count($result2) > 0) {
@@ -502,14 +499,14 @@ class Convenio_model extends Model {
                     $this->db->set('qtdeuco', $value->qtdeuco);
                     $this->db->set('valoruco', $value->valoruco);
                     $this->db->set('valortotal', $value->valortotal);
-                    
-                    foreach($_POST['grupo'] as $key => $item){
-                        if ( ($_POST['convenio'][$key] != '' && $_POST['valor'][$key] != '') && $value->grupo == $_POST['grupo'][$key] ){
+
+                    foreach ($_POST['grupo'] as $key => $item) {
+                        if (($_POST['convenio'][$key] != '' && $_POST['valor'][$key] != '') && $value->grupo == $_POST['grupo'][$key]) {
                             $this->db->set('percentual_ch', $_POST['valor'][$key]);
                             break;
                         }
                     }
-                    
+
                     $this->db->set('valortotal', $value->valortotal);
                     $this->db->set('data_cadastro', $data);
                     $this->db->set('operador_cadastro', $operador_id);
@@ -523,20 +520,19 @@ class Convenio_model extends Model {
             return -1;
         }
     }
-    
-    
+
     function removerprocedimentosnaopertenceprincipal($convenio_id) {
-        
-        
+
+
         $operador_id = $this->session->userdata('operador_id');
         $data = date('Y-m-d H:i:s');
-        
+
         try {
 
             $sql = "UPDATE ponto.tb_procedimento_convenio SET ativo = 'f', data_atualizacao = '{$data}', operador_atualizacao = {$operador_id}
                     WHERE convenio_id = {$convenio_id} 
                     AND ativo = 't'";
-                        
+
             $this->db->query($sql);
 
             return 1;
@@ -544,44 +540,43 @@ class Convenio_model extends Model {
             return -1;
         }
     }
-    
+
     function gravarvaloresassociacao($convenio_id) {
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-                
+
         try {
-            
-            foreach($_POST['grupo'] as $key => $n){
-                
-                if ( $_POST['convenio'][$key] != '' && $_POST['valor'][$key] != '' ){
-                    
-                    $this->db->set('grupo', $_POST['grupo'][$key] );
-                    $this->db->set('convenio_primario_id', $_POST['convenio'][$key] );
-                    $this->db->set('convenio_secundario_id', $convenio_id );
-                    $this->db->set('valor_percentual', $_POST['valor'][$key] );
-                    
+
+            foreach ($_POST['grupo'] as $key => $n) {
+
+                if ($_POST['convenio'][$key] != '' && $_POST['valor'][$key] != '') {
+
+                    $this->db->set('grupo', $_POST['grupo'][$key]);
+                    $this->db->set('convenio_primario_id', $_POST['convenio'][$key]);
+                    $this->db->set('convenio_secundario_id', $convenio_id);
+                    $this->db->set('valor_percentual', $_POST['valor'][$key]);
+
                     if ($_POST['convenio_associacao_id'][$key] == "") {// insert
                         $this->db->set('data_cadastro', $horario);
                         $this->db->set('operador_cadastro', $operador_id);
                         $this->db->insert('tb_convenio_secudario_associacao');
-                    }
-                    else { // update
+                    } else { // update
                         $this->db->set('data_atualizacao', $horario);
                         $this->db->set('operador_atualizacao', $operador_id);
                         $this->db->where('convenio_secudario_associacao_id', $_POST['convenio_associacao_id'][$key]);
                         $this->db->update('tb_convenio_secudario_associacao');
                     }
-                    
+
                     $this->db->select('pc.*');
                     $this->db->from('tb_procedimento_convenio pc');
                     $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
-                    $this->db->where('pt.grupo', $_POST['grupo'][$key] );
+                    $this->db->where('pt.grupo', $_POST['grupo'][$key]);
                     $this->db->where('pc.convenio_id', $_POST['convenio'][$key]);
                     $this->db->where('pc.ativo', 't');
                     $return2 = $this->db->get();
                     $result2 = $return2->result();
-                    
+
                     $this->db->set('data_atualizacao', $horario);
                     $this->db->set('operador_atualizacao', $operador_id);
                     $this->db->where('ativo', 'f');
@@ -591,9 +586,9 @@ class Convenio_model extends Model {
                                                                 FROM ponto.tb_procedimento_tuss 
                                                                 WHERE grupo = '{$grupo}')");
                     $this->db->update('tb_procedimento_convenio');
-                    
-                    
-                    if(count($result2) > 0){   
+
+
+                    if (count($result2) > 0) {
                         foreach ($result2 as $value) {
                             $this->db->set('qtdech', $value->qtdech);
                             $this->db->set('valorch', $value->valorch);
@@ -611,20 +606,17 @@ class Convenio_model extends Model {
                             $this->db->insert('tb_procedimento_convenio');
                         }
                     }
-                }
-                
-                else{
-                    if ($_POST['convenio'][$key] == '' && $_POST['convenio_associacao_id'][$key] != ''){
-                        
+                } else {
+                    if ($_POST['convenio'][$key] == '' && $_POST['convenio_associacao_id'][$key] != '') {
+
                         // Buscando os convenios secundarios associados a esse Convenio
                         $this->db->select('convenio_secundario_id, convenio_primario_id, grupo');
                         $this->db->from('tb_convenio_secudario_associacao');
                         $this->db->where('convenio_secudario_associacao_id', $_POST['convenio_associacao_id'][$key]);
                         $return = $this->db->get();
                         $conv_sec = $return->result();
-                        
+
                         foreach ($conv_sec as $value) { // Excluido o proc em todos os planos secundarios
-                            
                             $this->db->set('ativo', 'f');
                             $this->db->set('data_atualizacao', $horario);
                             $this->db->set('operador_atualizacao', $operador_id);
@@ -639,9 +631,8 @@ class Convenio_model extends Model {
                                                     AND pc.ativo = 't'
                                                 )");
                             $this->db->update('tb_procedimento_convenio');
-                            
-                        }                        
-                        
+                        }
+
                         $this->db->set('ativo', 'f');
                         $this->db->set('data_atualizacao', $horario);
                         $this->db->set('operador_atualizacao', $operador_id);
@@ -650,13 +641,13 @@ class Convenio_model extends Model {
                     }
                 }
             }
-            
+
             return 1;
         } catch (Exception $exc) {
             return -1;
         }
     }
-    
+
     function gravardescontoantigo() {
 
 
@@ -791,67 +782,91 @@ class Convenio_model extends Model {
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            
+
             $this->db->set('associacao_percentual', $_POST['valorpercentual']);
             $this->db->set('data_percentual_atualizacao', $horario);
             $this->db->set('operador_percentual_atualizacao', $operador_id);
             $this->db->where('convenio_id', $_POST['convenio_id']);
             $this->db->update('tb_convenio');
-            
         } catch (Exception $exc) {
             return -1;
         }
     }
-    
-    function atualizarValoresProcedimentosCBHPM() {
-        if ( $_POST['txtconvenio_id'] != '' ) {
-            $convenio_id = $_POST['txtconvenio_id'];
-            $horario = date("Y-m-d H:i:s");
-            $operador_id = $this->session->userdata('operador_id');
-            
-            $valor_por = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']) );
-            $valor_por = ($valor_por)/100;
-            
-//            var_dump($valor_por);
-//            die;
-            
-            // Inserindo valores antigos na tb_procedimento_convenio_antigo
-            $sql = "INSERT INTO ponto.tb_procedimento_convenio_antigo(procedimento_convenio_id, convenio_id,procedimento_tuss_id,
-                    qtdech,valorch, qtdefilme, valorfilme, qtdeporte, valorporte, qtdeuco,
-                    valoruco, valortotal, empresa_id, data_cadastro, operador_cadastro)
-                    SELECT pc.procedimento_convenio_id, pc.convenio_id,pc.procedimento_tuss_id,
-                    pc.qtdech,pc.valorch, pc.qtdefilme, pc.valorfilme, pc.qtdeporte, pc.valorporte, pc.qtdeuco,
-                    pc.valoruco, pc.valortotal, pc.empresa_id, '$horario', $operador_id
-                    FROM ponto.tb_procedimento_convenio pc
-                    LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
-                    LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
-                    WHERE pc.convenio_id = $convenio_id
-                    AND pc.ativo = 't'
-                    AND t.tabela = 'CBHPM' ";
-            $this->db->query($sql);
-            
-            // Alterando os valores antigos
-            $sql = "UPDATE ponto.tb_procedimento_convenio pc2
-                    SET valorch = t.valor_porte + ($valor_por * t.valor_porte), valortotal = t.valor_porte + ($valor_por * t.valor_porte)
-                    FROM ponto.tb_procedimento_convenio pc
-                    LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
-                    LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
-                    WHERE pc.convenio_id = $convenio_id
-                    AND pc.ativo = 't'
-                    AND t.tabela = 'CBHPM' ";
-            $this->db->query($sql);
+
+    function atualizarValoresProcedimentosCBHPM($convenio_id) {
+        $valor_por = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']));
+        $valor_por = ($valor_por) / 100;
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $operador_id = $this->session->userdata('operador_id');
+        $horario = date("Y-m-d H:i:s");
+
+        // Insere procedimentos CBHPM nesse convenio
+        $this->db->select('t.valor_porte, pt.procedimento_tuss_id');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->join('tb_tuss t', 't.tuss_id = pt.tuss_id', 'left');
+        $this->db->where("pt.ativo", 't');
+        $this->db->where("t.tabela", 'CBHPM');
+        $this->db->where("pt.procedimento_tuss_id NOT IN (
+            SELECT pc.procedimento_tuss_id FROM ponto.tb_procedimento_convenio pc 
+            WHERE pc.ativo = 't' AND pc.convenio_id = " . (int) $convenio_id . "
+        )");
+        $return = $this->db->get()->result();
+        
+        if (count($return) > 0) {
+            foreach ($return as $value) {
+                $this->db->set('convenio_id', $convenio_id);
+                $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('qtdech', 0);
+                $this->db->set('valorch', 0);
+                $this->db->set('qtdefilme', 0);
+                $this->db->set('valorfilme', 0);
+                $this->db->set('qtdeporte', 0);
+                $this->db->set('valorporte', 0);
+                $this->db->set('qtdeuco', 0);
+                $this->db->set('valoruco', 0);
+                $this->db->set('valortotal', 0);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_procedimento_convenio');
+            }
         }
+
+        // Inserindo valores antigos na tb_procedimento_convenio_antigo
+        $sql = "INSERT INTO ponto.tb_procedimento_convenio_antigo(procedimento_convenio_id, convenio_id,procedimento_tuss_id,
+                qtdech,valorch, qtdefilme, valorfilme, qtdeporte, valorporte, qtdeuco,
+                valoruco, valortotal, empresa_id, data_cadastro, operador_cadastro)
+                SELECT pc.procedimento_convenio_id, pc.convenio_id,pc.procedimento_tuss_id,
+                pc.qtdech,pc.valorch, pc.qtdefilme, pc.valorfilme, pc.qtdeporte, pc.valorporte, pc.qtdeuco,
+                pc.valoruco, pc.valortotal, pc.empresa_id, '$horario', $operador_id
+                FROM ponto.tb_procedimento_convenio pc
+                LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
+                WHERE pc.convenio_id = $convenio_id
+                AND pc.ativo = 't'
+                AND t.tabela = 'CBHPM'";
+        $this->db->query($sql);
+
+        // Alterando os valores antigos
+        $sql = "UPDATE ponto.tb_procedimento_convenio pc2
+                SET valorch = t.valor_porte + ($valor_por * t.valor_porte), 
+                    valortotal = t.valor_porte + ($valor_por * t.valor_porte),
+                    data_atualizacao = '$horario', operador_atualizacao = $operador_id
+                FROM ponto.tb_procedimento_convenio pc
+                LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
+                WHERE pc.convenio_id = $convenio_id
+                AND pc2.procedimento_convenio_id = pc.procedimento_convenio_id
+                AND pc.ativo = 't'
+                AND t.tabela = 'CBHPM' ";
+        $this->db->query($sql);
+        
     }
-    
+
     function gravar() {
         try {
-            // Atualiza os valores no procedimento convenio baseado no valor de ajuste informado
-            // E no valor do porte que está la no cadastro do TUSS.
-            if($_POST['tipo'] == 'CBHPM'){ 
-                // Só ira recalcular os valores, se o usuario informar que o convenio usa CBHPM
-                $this->atualizarValoresProcedimentosCBHPM();
-            }
-            
+
             /* inicia o mapeamento no banco */
             $convenio_id = $_POST['txtconvenio_id'];
             $this->db->set('nome', $_POST['txtNome']);
@@ -859,30 +874,29 @@ class Convenio_model extends Model {
             $this->db->set('cnpj', $_POST['txtCNPJ']);
             $this->db->set('registroans', $_POST['txtregistroans']);
             $this->db->set('codigoidentificador', $_POST['txtcodigo']);
-            
-            
+
+
             if (isset($_POST['guia_prestador_unico'])) {
                 $this->db->set('guia_prestador_unico', 't');
-            } else{
+            } else {
                 $this->db->set('guia_prestador_unico', 'f');
             }
-            
+
             if (isset($_POST['associaconvenio'])) {
                 $this->db->set('associado', 't');
 //                $this->db->set('associacao_percentual', str_replace(",", ".", $_POST['valorpercentual']));
 //                $this->db->set('associacao_convenio_id', $_POST['convenio_associacao']);
-            }
-            else{
+            } else {
                 $this->db->set('associado', 'f');
                 $this->db->set('associacao_percentual', 0);
                 $this->db->set('associacao_convenio_id', null);
             }
-            
+
             if ($_POST['credor_devedor'] != "") {
                 $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
 //            if ($_POST['fidadelidade_endereco_ip'] != "") {
-                $this->db->set('fidelidade_endereco_ip', $_POST['fidelidade_endereco_ip']);
+            $this->db->set('fidelidade_endereco_ip', $_POST['fidelidade_endereco_ip']);
 //            }
             if ($_POST['fidelidade_parceiro_id'] != "") {
                 $this->db->set('fidelidade_parceiro_id', $_POST['fidelidade_parceiro_id']);
@@ -898,7 +912,7 @@ class Convenio_model extends Model {
                 $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
             }
             if ($_POST['valor_ajuste_cbhpm'] != "") {
-                $this->db->set('valor_ajuste_cbhpm', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']) ));
+                $this->db->set('valor_ajuste_cbhpm', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm'])));
             }
             if ($_POST['ir'] != "") {
                 $this->db->set('ir', str_replace(",", ".", $_POST['ir']));
@@ -926,8 +940,7 @@ class Convenio_model extends Model {
             }
             if ($_POST['dia_aquisicao'] != "") {
                 $this->db->set('dia_aquisicao', $_POST['dia_aquisicao']);
-            }
-            else{
+            } else {
                 $this->db->set('dia_aquisicao', null);
             }
             $this->db->set('logradouro', $_POST['endereco']);
@@ -972,6 +985,13 @@ class Convenio_model extends Model {
                 $exame_sala_id = $_POST['txtconvenio_id'];
                 $this->db->where('convenio_id', $convenio_id);
                 $this->db->update('tb_convenio');
+            }
+            
+            /* Atualiza os valores no procedimento convenio baseado no valor de ajuste informado
+              e no valor do porte que está la no cadastro do TUSS. */
+            if ($_POST['tipo'] == 'CBHPM') {
+                // Só ira recalcular os valores, se o usuario informar que o convenio usa CBHPM
+                $this->atualizarValoresProcedimentosCBHPM($exame_sala_id);
             }
             
             return $exame_sala_id;
