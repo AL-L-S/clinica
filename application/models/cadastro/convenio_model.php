@@ -792,8 +792,51 @@ class Convenio_model extends Model {
             return -1;
         }
     }
-
+    
+    function criarProcedimentoCBHPM(){
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $horario = date("Y-m-d H:i:s");
+        
+        $this->db->select('tuss_id, descricao, codigo');
+        $this->db->from('tb_tuss t');
+        $this->db->where("tabela", 'CBHPM');
+        $this->db->where("tuss_id NOT IN (
+                    SELECT pt.tuss_id FROM ponto.tb_procedimento_tuss pt
+                    INNER JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
+                    WHERE t.tabela = 'CBHPM'
+                    AND pt.ativo = 't'
+                )");
+        $return = $this->db->get()->result();
+        
+        
+        if ( count($return) > 0 ){
+            foreach ($return as $item) {
+            
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('nome', $item->descricao);
+                $this->db->set('tuss_id', $item->tuss_id);
+                $this->db->set('codigo', $item->codigo);
+                $this->db->set('descricao', $item->descricao);
+                $this->db->set('revisao', 'f');
+                $this->db->set('associacao_procedimento_tuss_id', null);
+                $this->db->set('retorno_dias', null);
+                $this->db->set('sala_preparo', 'f');
+                $this->db->set('qtde', 1);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_procedimento_tuss');
+                $procedimento_tuss_id = $this->db->insert_id();
+            }
+        }
+        
+    }
+    
     function atualizarValoresProcedimentosCBHPM($convenio_id) {
+        // Cria procedimentos CBHPM que nao estao cadastrados na MANTER PROCEDIMENTO
+        $this->criarProcedimentoCBHPM();
+        
         $valor_por = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']));
         $valor_por = ($valor_por) / 100;
         

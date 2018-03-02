@@ -186,12 +186,6 @@ ALTER TABLE ponto.tb_brasindice_solucao ALTER COLUMN valor_fracionado TYPE numer
 ALTER TABLE ponto.tb_brasindice_solucao ALTER COLUMN quantidade_fracionamento TYPE integer USING (quantidade_fracionamento::integer);
 ALTER TABLE ponto.tb_brasindice_solucao ALTER COLUMN ipi_solucao TYPE numeric(10,2) USING (ipi_solucao::numeric(10,2));
 
-ALTER TABLE ponto.tb_tuss ADD COLUMN tipo text;
-ALTER TABLE ponto.tb_tuss ADD COLUMN tabela text;
-ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_material_id integer;
-ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_solucao_id integer;
-ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_medicamento_id integer;
-
 
 
 

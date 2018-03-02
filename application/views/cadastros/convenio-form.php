@@ -143,7 +143,7 @@
                 </div>
                 <div id="ajuste-cbhpm"> 
                     <label>Ajuste CBHPM (%)</label>
-                    <input type="text" id="valor_ajuste_cbhpm" class="texto02" name="valor_ajuste_cbhpm" alt="decimal" value="<?= @$obj->_valor_ajuste_cbhpm; ?>" />
+                    <input type="number" id="valor_ajuste_cbhpm" class="texto02" name="valor_ajuste_cbhpm" step="0.02" value="<?= @$obj->_valor_ajuste_cbhpm; ?>" />
                 </div>
                 <div>
                     <label>Grupo convenio</label>

@@ -247,6 +247,7 @@ class Procedimento extends BaseController {
         } elseif ($procedimento_tuss_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar o Procedimento. Opera&ccedil;&atilde;o cancelada.';
         } else {
+            $this->procedimento->atualizaprocedimentosconvenioscbhpm($procedimento_tuss_id);
             $data['mensagem'] = 'Sucesso ao gravar o Procedimento.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
