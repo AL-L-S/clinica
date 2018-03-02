@@ -84,3 +84,9 @@ ALTER TABLE ponto.tb_tuss ADD COLUMN porte_descricao text;
 ALTER TABLE ponto.tb_tuss ADD COLUMN valor_porte numeric(10,2);
 ALTER TABLE ponto.tb_tuss ADD COLUMN valor_uco numeric(10,2);
 ALTER TABLE ponto.tb_convenio ADD COLUMN valor_ajuste_cbhpm numeric;
+
+ALTER TABLE ponto.tb_tuss ADD COLUMN tipo text;
+ALTER TABLE ponto.tb_tuss ADD COLUMN tabela text;
+ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_material_id integer;
+ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_solucao_id integer;
+ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_medicamento_id integer;

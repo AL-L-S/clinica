@@ -909,8 +909,10 @@ class procedimentoplano_model extends Model {
         $this->db->from('tb_procedimento_tuss');
         $this->db->orderby('nome');
         $this->db->where("ativo", 't');
-        $this->db->where("grupo !=", 'AGRUPADOR');
-        $return = $this->db->get();
+        $this->db->where("(grupo != 'AGRUPADOR' OR grupo IS NULL)");
+        $return = $this->db->get();  
+//        echo "<pre>";
+//        var_dump($return->result()); die;
         return $return->result();
     }
 
