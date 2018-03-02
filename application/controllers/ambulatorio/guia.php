@@ -3657,7 +3657,7 @@ class Guia extends BaseController {
         $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
         $data['medico'] = $this->operador_m->listaroperador($_POST['medico']);
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
-        $data['formapagamento'] = $this->formapagamento->listarforma();
+        $data['formapagamento'] = $this->formapagamento->listarformanaocredito();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['creditos'] = $this->guia->relatoriocaixacreditoslancados();
 
@@ -3680,7 +3680,7 @@ class Guia extends BaseController {
         $data['relatoriohomecare'] = $this->guia->relatoriocaixahomecare();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['contador'] = $this->guia->relatoriocaixacontador();
-        $data['formapagamento'] = $this->formapagamento->listarforma();
+        $data['formapagamento'] = $this->formapagamento->listarformanaocredito();
         $this->load->View('ambulatorio/impressaorelatoriocaixa', $data);
     }
 

@@ -52,6 +52,7 @@
                         $numero[$value->nome] = 0;
                         $desconto[$value->nome] = 0;
                     }
+//                    var_dump($formapagamento); die;
 
                     $i = 0;
                     $b = 0;
@@ -100,8 +101,10 @@
                         if ($item->faturado == "f" && $item->exame != 'RETORNO') {
                             $faturado = 'f';
                         }
+                        if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
+                            $valortotal = $valortotal + $item->valor_total;
+                        }
 
-                        $valortotal = $valortotal + $item->valor_total;
 
                         if ($i == 1 || $item->nome == $operadorexames) {
 
@@ -130,9 +133,9 @@
                                     <td><font size="-2"><?= $item->paciente; ?></td>
                                 <? } ?>
                                 <? if ($item->exames_id == "") { ?>
-                                    <td><font color="red" size="-2"><?= $item->exame /*. " " . $item->numero_sessao;*/ ?></td>
+                                    <td><font color="red" size="-2"><?= $item->exame /* . " " . $item->numero_sessao; */ ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= $item->exame /*. " " . $item->numero_sessao;*/ ?></td>
+                                    <td><font size="-2"><?= $item->exame /* . " " . $item->numero_sessao; */ ?></td>
                                 <? } ?>
                                 <? if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
                                     <td>
@@ -375,7 +378,9 @@
                                 $NUMEROOUTROS++;
                             }
                             $y++;
-                            $valor = $valor + $item->valor_total;
+                            if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
+                                $valor = $valor + $item->valor_total;
+                            }
                             $paciente = $item->paciente;
                             $operadorexames = $item->nome;
                         } else {
@@ -584,7 +589,9 @@
                                 $pendentes ++;
                             }
                             $valor = 0;
-                            $valor = $valor + $item->valor_total;
+                            if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
+                                $valor = $valor + $item->valor_total;
+                            }
                             $y = 0;
                             $y++;
                         }
@@ -933,7 +940,9 @@
                                 $NUMEROOUTROS++;
                             }
                             $y++;
-                            $valor = $valor + $item->valor_total;
+                            if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
+                                $valor = $valor + $item->valor_total;
+                            }
                             $paciente = $item->paciente;
                             $operadorexames = $item->nome;
                         } else {
@@ -1149,7 +1158,9 @@
                                 $pendentes ++;
                             }
                             $valor = 0;
-                            $valor = $valor + $item->valor_total;
+                            if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
+                                $valor = $valor + $item->valor_total;
+                            }
                             $y = 0;
                             $y++;
                         }
@@ -1235,11 +1246,11 @@
                 <?
 //                $j = 0;
 //                foreach ($creditos as $item) {
-                    ?>
-<!--                    <input type="hidden" class="texto3" name="creditoValor[<?= $j; ?>]" value="<?= $item->valor; ?>"/>
-                    <input type="hidden" class="texto3" name="creditoData[<?= $j; ?>]" value="<?= $item->data; ?>"/>
-                    <input type="hidden" class="texto3" name="creditoForma[<?= $j; ?>]" value="<?= $item->forma_pagamento_id; ?>"/>-->
-                    <? // $j++; ?>
+                ?>
+    <!--                    <input type="hidden" class="texto3" name="creditoValor[<?= $j; ?>]" value="<?= $item->valor; ?>"/>
+                <input type="hidden" class="texto3" name="creditoData[<?= $j; ?>]" value="<?= $item->data; ?>"/>
+                <input type="hidden" class="texto3" name="creditoForma[<?= $j; ?>]" value="<?= $item->forma_pagamento_id; ?>"/>-->
+                <? // $j++; ?>
                 <? // } ?>
 
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>

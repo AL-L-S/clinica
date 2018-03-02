@@ -7348,9 +7348,9 @@ class exame_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $data = date("Y-m-d");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->set('ativo', 'f');
-            $this->db->where('exame_sala_id', $_POST['txtsalas']);
-            $this->db->update('tb_exame_sala');
+//            $this->db->set('ativo', 'f');
+//            $this->db->where('exame_sala_id', $_POST['txtsalas']);
+//            $this->db->update('tb_exame_sala');
 
             $this->db->select('e.procedimento_tuss_id,
                                 e.agenda_exames_id');
