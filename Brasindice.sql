@@ -219,3 +219,40 @@ INSERT INTO ponto.tb_tuss(
 
 
 
+CREATE TABLE ponto.tb_importacao_cirurgia
+(
+       importacao_cirurgia_id serial NOT NULL
+      CIR_Num text,
+      CIR_Data text,
+      CIR_IniPrev text,
+      CIR_FimPrev text,
+      CIR_CON_Cod text,
+      CIR_PAC_Cod text,
+      CIR_NomePac text,
+      CIR_FonePac text,
+      CIR_SCI_Cod text,
+      CIR_TAN_Cod text,
+      CIR_Status text,
+      CIR_ATE_Isn text,
+      CIR_IniReal text,
+      CIR_FimReal text,
+      CIR_MED_Cir text,
+      CIR_MED_Ane text,
+      CIR_Ach text,
+      CIR_DesCir text,
+      CIR_Cong text,
+      CIR_Interc text,
+      CIR_Compl text,
+      CIR_Histop text,
+      CIR_StaCong text,
+      CIR_TCI_Cod text,
+      CIR_DSC_MotCan text,
+      CIR_USU_UsuCan text,
+      CIR_Obs text,
+      CIR_IniAnest text,
+      CIR_FimAnest text,
+      CIR_ClaPotCont text,
+      CIR_NomeMedCir text,
+      CIR_StaFat text,	
+  CONSTRAINT tb_importacao_cirurgia_pkey PRIMARY KEY (importacao_cirurgia_id)
+)

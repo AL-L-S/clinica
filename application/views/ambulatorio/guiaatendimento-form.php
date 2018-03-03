@@ -939,6 +939,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 
                                 $(function () {
                                     $('#procedimento1').change(function () {
+//                                        alert('asdads');
                                         if ($(this).val()) {
                                             $('.carregando').show();
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: $(this).val(), ajax: true}, function (j) {
@@ -951,6 +952,11 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                         $("#valor1").prop('readonly', false);
                                                     } else {
                                                         $("#valor1").prop('readonly', true);
+                                                    }
+                                                    if (j[0].tipo == 'EXAME' || j[0].tipo == 'ESPECIALIDADE' || j[0].tipo == 'FISIOTERAPIA') {
+                                                        $("#medico1").prop('required', true);
+                                                    } else {
+                                                        $("#medico1").prop('required', false);
                                                     }
 <? } ?>
                                                 document.getElementById("valor1").value = options;

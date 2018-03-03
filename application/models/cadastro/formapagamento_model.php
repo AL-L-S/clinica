@@ -69,6 +69,19 @@ class formapagamento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function listarformanaocredito() {
+        $this->db->select('forma_pagamento_id,
+                            nome,
+                            ajuste,
+                            cartao');
+        $this->db->from('tb_forma_pagamento');
+        $this->db->where("ativo", 't');
+        $this->db->where("forma_pagamento_id !=", 1000);
+        $this->db->orderby("nome");
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarformacartao() {
         $this->db->select('forma_pagamento_id,
