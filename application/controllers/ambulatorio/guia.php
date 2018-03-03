@@ -1012,7 +1012,7 @@ class Guia extends BaseController {
             if (count($percentual) == 0) {
                 $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
             }
-//            $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
+            $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
 //            if ($grupo == 'LABORATORIAL') {
             $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
 //            } else {
@@ -3657,7 +3657,7 @@ class Guia extends BaseController {
         $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
         $data['medico'] = $this->operador_m->listaroperador($_POST['medico']);
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
-        $data['formapagamento'] = $this->formapagamento->listarformanaocredito();
+        $data['formapagamento'] = $this->formapagamento->listarforma();
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['creditos'] = $this->guia->relatoriocaixacreditoslancados();
 

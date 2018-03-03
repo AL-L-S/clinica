@@ -345,10 +345,9 @@
                                         }
 
                                         $valortotal = $TOTALDINHEIRO + $TOTALCARTAO;
-                                        if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
-                                            $desconto_tot = $valTotal - $valortotal;
-                                        }
-
+//                                        if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
+                                        $desconto_tot = $valTotal - $valortotal;
+//                                        }
                                         // Resumo Geral do Operador
                                         $resumoDesconto += $desconto_tot;
                                         ?>
@@ -439,11 +438,13 @@
                                     if (@$resumoOperador[$formaPagamentoResumo->nome] == 0 || !isset($resumoOperador[$formaPagamentoResumo->nome])) {
                                         continue;
                                     }
-                                    if ($formaPagamentoResumo->cartao != 'f') {
-                                        $resumoTotalCartao = $resumoTotalCartao + $resumoOperador[$formaPagamentoResumo->nome];
-                                        $resumoQtdeCartao = $resumoQtdeCartao + $numeroOperador[$formaPagamentoResumo->nome];
-                                    } else {
-                                        $resumoDinheiro = $resumoDinheiro + $resumoOperador[$formaPagamentoResumo->nome];
+                                    if ($formaPagamentoResumo->forma_pagamento_id != 1000) {
+                                        if ($formaPagamentoResumo->cartao != 'f') {
+                                            $resumoTotalCartao = $resumoTotalCartao + $resumoOperador[$formaPagamentoResumo->nome];
+                                            $resumoQtdeCartao = $resumoQtdeCartao + $numeroOperador[$formaPagamentoResumo->nome];
+                                        } else {
+                                            $resumoDinheiro = $resumoDinheiro + $resumoOperador[$formaPagamentoResumo->nome];
+                                        }
                                     }
                                     ?>
                                     <tr>
@@ -593,7 +594,7 @@
                         </table>
                     </center>
                 </div>
-    <? } ?>
+            <? } ?>
             <?
             if (count($creditos) > 0) {
                 foreach ($creditos as $item) {
@@ -694,7 +695,8 @@
 
                                     <input type="hidden" class="texto3" name="qtdecredito[<?= $nomeForma; ?>]" value="<?= number_format($datacredito[$value->nome], 2, ',', '.'); ?>"/>
                                     <input type="hidden" class="texto3" name="qtde[<?= $nomeForma; ?>]" value="<?= number_format($caixaOperador[$value->nome], 2, ',', '.'); ?>"/>
-                                <? }
+                                    <?
+                                }
                                 if (count($empresa) > 0) {
                                     ?>
                                     <input type="hidden" class="texto3" name="empresa" value="<?= $empresa[0]->empresa_id; ?>"/>
@@ -711,7 +713,7 @@
                                             <button type="submit" name="btnEnviar">Fechar Caixa</button>
                                         <? } else { ?>
                                             <b>Não é possível fechar caixa por paciente</b>
-                                        <?
+                                            <?
                                         }
                                     } elseif (count($operador) > 0 && $financeiro == 'f') {
                                         ?>
@@ -725,7 +727,7 @@
                                 } else {
                                     ?>
                                     <b>Pendencias de Faturamento / Finalizar exame</b>
-    <? } ?>
+                                <? } ?>
                             </form>
                         </div>
 
@@ -754,12 +756,13 @@
                                             if (@$caixaOperador[$fpCaixa->nome] == 0 || !isset($caixaOperador[$fpCaixa->nome])) {
                                                 continue;
                                             }
-
-                                            if ($fpCaixa->cartao != 'f') {
-                                                $resumoTotalCaixa = $resumoTotalCaixa + $caixaOperador[$fpCaixa->nome];
-                                                $resumoQtdeCaixa = $resumoQtdeCaixa + $caixaOperador[$fpCaixa->nome];
-                                            } else {
-                                                $resumoDinheiro = $resumoDinheiro + $caixaOperador[$fpCaixa->nome];
+                                            if ($fpCaixa->forma_pagamento_id != 1000) {
+                                                if ($fpCaixa->cartao != 'f') {
+                                                    $resumoTotalCaixa = $resumoTotalCaixa + $caixaOperador[$fpCaixa->nome];
+                                                    $resumoQtdeCaixa = $resumoQtdeCaixa + $caixaOperador[$fpCaixa->nome];
+                                                } else {
+                                                    $resumoDinheiro = $resumoDinheiro + $caixaOperador[$fpCaixa->nome];
+                                                }
                                             }
                                             $desconto += (float) $caixaDesconto[$fpCaixa->nome];
                                             ?>
@@ -769,7 +772,7 @@
                                                 <td style="text-align: right"><font size="-1"><?= number_format($caixaOperador[$fpCaixa->nome], 2, ',', '.'); ?></td>
                                                 <td style="text-align: right"><font size="-1"><?= number_format($descontoResumo[$fpCaixa->nome], 2, ',', '.'); ?></td>
                                             </tr>   
-    <? } ?>
+                                        <? } ?>
                                         <tr>
                                             <td colspan="4" align="center" style="background-color: #ddd"><font size="-1">TOTAL</td></tr>
                                         <tr>
@@ -790,7 +793,7 @@
                                         </tr>
                                         <tr>
                                             <td width="140px;" colspan="3"><font size="-1">TOTAL GERAL</td>
-    <? $resumoTotal = $resumoTotalCaixa + $resumoDinheiro + $valPendentes; ?>
+                                            <? $resumoTotal = $resumoTotalCaixa + $resumoDinheiro + $valPendentes; ?>
                                             <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= number_format($resumoTotal, 2, ',', '.'); ?></td>
                                         </tr>
                                     </tbody>
@@ -799,9 +802,10 @@
                         </div> 
                     </td>
                     <td>
-    <? if (count($creditos) > 0) {
-        $i = 0;
-        ?>
+                        <?
+                        if (count($creditos) > 0) {
+                            $i = 0;
+                            ?>
                             <div style="display: inline-block;margin-left: 10px;">
                                 <table border="1">
                                     <tbody>
@@ -852,12 +856,12 @@
 
                                 </table>
                             </div>
-            <? } ?>
+                        <? } ?>
                     </td>
                 </tr>
             </table>
 
-    <? if (count($caixa)) { ?>
+            <? if (count($caixa)) { ?>
                 <div>
                     <table border="1">
                         <thead>
@@ -880,7 +884,7 @@
                                     <td><?= utf8_decode($item->operador_caixa); ?></td>
                                     <td><?= number_format($item->valor, 2, ',', '.'); ?></td>
                                 </tr>
-        <? endforeach; ?>
+                            <? endforeach; ?>
                             <tr>
                                 <th colspan="2" bgcolor="#C0C0C0">Total de Sangria</th>
                             </tr>
@@ -905,8 +909,8 @@
         else {
             ?>
             <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
-<? }
-?>
+        <? }
+        ?>
     </div> <!-- Final da DIV content -->
 </body>
 

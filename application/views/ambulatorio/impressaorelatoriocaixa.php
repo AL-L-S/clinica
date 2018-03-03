@@ -103,6 +103,20 @@
                         }
                         if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
                             $valortotal = $valortotal + $item->valor_total;
+                        } else {
+                            if ($item->forma_pagamento1 == 1000) {
+                                $valorSemCreditoTotal = $item->valor2 + $item->valor3 + $item->valor4;
+                            }
+                            if ($item->forma_pagamento2 == 1000) {
+                                $valorSemCreditoTotal = $item->valor1 + $item->valor3 + $item->valor4;
+                            }
+                            if ($item->forma_pagamento3 == 1000) {
+                                $valorSemCreditoTotal = $item->valor1 + $item->valor2 + $item->valor4;
+                            }
+                            if ($item->forma_pagamento4 == 1000) {
+                                $valorSemCreditoTotal = $item->valor1 + $item->valor2 + $item->valor3;
+                            }
+                            $valortotal = $valortotal + $valorSemCreditoTotal;
                         }
 
 
@@ -378,8 +392,24 @@
                                 $NUMEROOUTROS++;
                             }
                             $y++;
+
                             if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
                                 $valor = $valor + $item->valor_total;
+                            } else {
+                                if ($item->forma_pagamento1 == 1000) {
+                                    $valorSemCredito = $item->valor2 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento2 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento3 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor2 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento4 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor2 + $item->valor3;
+                                }
+
+                                $valor = $valor + $valorSemCredito;
                             }
                             $paciente = $item->paciente;
                             $operadorexames = $item->nome;
@@ -591,6 +621,21 @@
                             $valor = 0;
                             if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
                                 $valor = $valor + $item->valor_total;
+                            } else {
+                                if ($item->forma_pagamento1 == 1000) {
+                                    $valorSemCredito = $item->valor2 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento2 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento3 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor2 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento4 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor2 + $item->valor3;
+                                }
+
+                                $valor = $valor + $valorSemCredito;
                             }
                             $y = 0;
                             $y++;
@@ -942,6 +987,21 @@
                             $y++;
                             if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
                                 $valor = $valor + $item->valor_total;
+                            } else {
+                                if ($item->forma_pagamento1 == 1000) {
+                                    $valorSemCredito = $item->valor2 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento2 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento3 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor2 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento4 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor2 + $item->valor3;
+                                }
+
+                                $valor = $valor + $valorSemCredito;
                             }
                             $paciente = $item->paciente;
                             $operadorexames = $item->nome;
@@ -1160,6 +1220,21 @@
                             $valor = 0;
                             if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
                                 $valor = $valor + $item->valor_total;
+                            } else {
+                                if ($item->forma_pagamento1 == 1000) {
+                                    $valorSemCredito = $item->valor2 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento2 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento3 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor2 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento4 == 1000) {
+                                    $valorSemCredito = $item->valor1 + $item->valor2 + $item->valor3;
+                                }
+
+                                $valor = $valor + $valorSemCredito;
                             }
                             $y = 0;
                             $y++;
@@ -1248,10 +1323,10 @@
 //                foreach ($creditos as $item) {
                 ?>
     <!--                    <input type="hidden" class="texto3" name="creditoValor[<?= $j; ?>]" value="<?= $item->valor; ?>"/>
-                <input type="hidden" class="texto3" name="creditoData[<?= $j; ?>]" value="<?= $item->data; ?>"/>
-                <input type="hidden" class="texto3" name="creditoForma[<?= $j; ?>]" value="<?= $item->forma_pagamento_id; ?>"/>-->
-                <? // $j++; ?>
-                <? // } ?>
+    <input type="hidden" class="texto3" name="creditoData[<?= $j; ?>]" value="<?= $item->data; ?>"/>
+    <input type="hidden" class="texto3" name="creditoForma[<?= $j; ?>]" value="<?= $item->forma_pagamento_id; ?>"/>-->
+                <? // $j++;    ?>
+                <? // }  ?>
 
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
                 <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
@@ -1455,6 +1530,21 @@
 
                 </table>
             </div>
+            <br>
+            <br>
+            <div style="">
+                <table border="1">
+                    <tbody>
+                        <tr>
+                            <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">TOTAL GERAL (Atendimentos + Créditos Lançados)</center></td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td width="1000px;" colspan="3"><font size="-1">Total Geral: <?= number_format($valorcreditototal + $valortotal, 2, ',', '.'); ?></td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
         <? } ?>
         <br>
 
@@ -1540,7 +1630,7 @@
                     </tr>
                 </tbody>
             </table>
-            <? //  var_dump($data[$value->nome]);       ?>
+            <? //  var_dump($data[$value->nome]);          ?>
         <? } ?>
     <? } else {
         ?>

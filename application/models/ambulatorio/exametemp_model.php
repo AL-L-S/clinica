@@ -6646,9 +6646,10 @@ class exametemp_model extends Model {
     }
 
     function listarautocompleteprocedimentosvalor($parametro = null) {
-        $this->db->select('pc.valortotal, pt.qtde, pt.descricao_procedimento, pt.home_care, pt.grupo');
+        $this->db->select('pc.valortotal, pt.qtde, pt.descricao_procedimento, pt.home_care, pt.grupo, ag.tipo');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.procedimento_convenio_id', $parametro);
         $return = $this->db->get();
