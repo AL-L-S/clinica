@@ -819,6 +819,7 @@ class Convenio_model extends Model {
                 $this->db->set('tuss_id', $item->tuss_id);
                 $this->db->set('codigo', $item->codigo);
                 $this->db->set('descricao', $item->descricao);
+                $this->db->set('grupo', 'CIRURGICO');
                 $this->db->set('revisao', 'f');
                 $this->db->set('associacao_procedimento_tuss_id', null);
                 $this->db->set('retorno_dias', null);

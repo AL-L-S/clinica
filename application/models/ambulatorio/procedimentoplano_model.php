@@ -551,6 +551,8 @@ class procedimentoplano_model extends Model {
         $conv_sec = $this->db->get()->result();
 
         if (count($conv_sec) > 0) {
+            /* Irá verificar se os convenio secundários associados a esse convenio (se houver), possuem 
+             * os grupos de todos os procedimentos do agrupador */
 
             $convPrimario = true;
 

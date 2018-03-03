@@ -398,15 +398,15 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarpreparoconvenio/" . $item->convenio_id; ?> ', '_blank', 'width=900,height=400');"><?= $item->convenio; ?></a></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
-
-                                                </a></div>
-                                            <!--                                                </td>
-                                                                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                            <? if(@$item->valor_diferenciado != 't') { ?>
+                                                <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar</a>
+                                                </div>
+                                            <? } ?>
                                             <div class="bt_link">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
-                                                </a></div>
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha</a>
+                                            </div>
                                         </td>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                             <div class="bt_link_new">
@@ -503,15 +503,15 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarpreparoconvenio/" . $item->convenio_id; ?> ', '_blank', 'width=900,height=400');"><?= $item->convenio; ?></a></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar
-
-                                                </a></div>
-                                            <!--                                                </td>
-                                                                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                            <? if(@$item->valor_diferenciado != 't') { ?>
+                                                <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar</a>
+                                                </div>
+                                            <? } ?>
                                             <div class="bt_link">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
-                                                </a></div>
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha</a>
+                                            </div>
                                         </td>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                             <div class="bt_link_new">
@@ -579,6 +579,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
             </fieldset>
             <? if (count(@$exames_pacote) > 0) { ?>
                 <fieldset>
+                    <legend>Pacotes Lançados</legend>
                     <table id="table_agente_toxico" border="0">
                         <thead>
                             <tr>
@@ -587,8 +588,8 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <th class="tabela_header">Sala</th>
                                 <th class="tabela_header">Valor</th>
                                 <th class="tabela_header">Exame</th>
-                                <th class="tabela_header" colspan="2">Descricao</th>
-                                <th class="tabela_header">Pacote</th>
+                                <!--<th class="tabela_header" colspan="2">Descricao</th>-->
+                                <th class="tabela_header" colspan="2">Pacote</th>
                                 <th colspan="4" class="tabela_header">&nbsp;</th>
                             </tr>
                         </thead>
@@ -610,8 +611,10 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
-                                    <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->pacote_nome; ?></td>
+                                    <!--<td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>-->
+                                    <td class="<?php echo $estilo_linha; ?>" colspan="2">
+                                        <?= $item->pacote_nome; ?><?= (@$item->valor_diferenciado == 't') ? " **" : ""; ?>
+                                    </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                         <div class="bt_link_new">
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/atendimentocancelamentopacote/<?= $guia ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>');">Cancelar Pacote
@@ -644,16 +647,17 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
     ?>
                         <tfoot>
                             <tr>
-                                <th class="tabela_footer" colspan="6">
+                                <th class="tabela_footer" colspan="5">
                                     Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                 </th>
-    <? if ($perfil_id != 11) { ?>
+                                <th class="tabela_footer">** = Valor diferenciado</th>
+<!--    <? if ($perfil_id != 11) { ?>
 
                             <? if ($perfil_id == 1 || $faturado == 0) {
                                 if ($botao_faturar_guia == 't') {
                                     ?>
                                             <th colspan="2" align="center"><center><div class="bt_linkf">
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
+                                            <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
 
                                             </a></div></center></th>
             <? }
@@ -661,7 +665,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                 ?>
                                     <th colspan="2" align="center">    
                                         <div class="bt_linkf">
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+                                            <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
 
                                             </a></div></center>
                                     </th>
@@ -669,7 +673,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         }
                     }
                 }
-                ?>
+                ?>-->
                         </tr>
                         </tfoot>
                     </table> 

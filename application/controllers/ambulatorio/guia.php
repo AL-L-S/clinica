@@ -1054,24 +1054,39 @@ class Guia extends BaseController {
                         $pacoteProc = $this->guia->listarprocedimentospacote($_POST['procedimento1']);
 
                         /* Caso a pessoa tenha dado um valor diferenciado para o pacote, para descobrir o valor unitario,
-                         * ele vai pegar o valor total do pacote e dividir pela quantidade de procedimentos do pacote */
-                        if ($pacoteProc[0]->valor_pacote_diferenciado != 't') {
+                         * ele vai pegar o valor total do pacote e dividir para os procedimentos do pacote */
+                        if ($pacoteProc[0]->valor_pacote_diferenciado == 't') {
+                            $vl_pacote = 0;
                             $valorTotal = 0;
                             foreach ($pacoteProc as $value) {
                                 $valorTotal += $value->valortotal;
                             }
                         }
-
+                        
+                        $i = 0;
+                        $totPro = count($pacoteProc);
                         foreach ($pacoteProc as $value) {
 
-                            if ($value->valor_pacote_diferenciado != 't') {
-                                // Caso seja um valor diferenciado, ele vai descobrir o valor unitário
-                                $valor = $valorTotal / count($pacoteProc);
+                            if ($value->valor_pacote_diferenciado == 't') {
+                                /* Caso seja um valor diferenciado, ele vai descobrir o valor unitário.
+                                 * Para isso, usa-se a seguinte regra: se antes o proc valia 15% do total do pacote,
+                                 * entao, mesmo com um valor diferenciado, ele deve continuar valendo 15% do total. */
+                                $valor = round ( ($value->valor_pacote * $value->valortotal)/ $valorTotal );
+                                $vl_pacote += $valor;
+                                
+                                if ( $i == $totPro - 1 ) { 
+                                    /* Caso tenha acontecido alguma diferença no valor informado na criaçao do pacote 
+                                     * para o valor aqui calculado (geralmente ocorre uma diferença de alguns centavos)
+                                     * ele acrescenta essa diferença no ultimo procedimento. */
+                                    
+                                    $diferenca = (float)$value->valor_pacote - (float)$vl_pacote;
+                                    $valor += $diferenca;
+                                }
                             } else {
                                 $valor = $value->valortotal;
                             }
-
-                            $this->guia->gravaratendimentoagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio);
+                            $i++;
+                            $this->guia->gravaratendimentoagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo);
                         }
                     }
                 }

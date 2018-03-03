@@ -90,3 +90,20 @@ ALTER TABLE ponto.tb_tuss ADD COLUMN tabela text;
 ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_material_id integer;
 ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_solucao_id integer;
 ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_medicamento_id integer;
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000019');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000019', '1.0.000019');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();

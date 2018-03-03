@@ -1454,6 +1454,7 @@ class exametemp_model extends Model {
                             pt.nome as procedimento,
                             fp.forma_pagamento_id,
                             pt2.nome as pacote_nome,
+                            apt.valor_diferenciado,
                             ae.agrupador_pacote_id,
                             pp.grupo_pagamento_id');
         $this->db->from('tb_agenda_exames ae');
@@ -1513,7 +1514,8 @@ class exametemp_model extends Model {
                             ae.ordenador,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
-                            fp.forma_pagamento_id');
+                            fp.forma_pagamento_id,
+                            apt.valor_diferenciado');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -1524,6 +1526,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = pc.procedimento_convenio_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = pp.forma_pagamento_id', 'left');
+        $this->db->join('tb_agrupador_pacote_temp apt', 'apt.agrupador_pacote_temp_id = ae.agrupador_pacote_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.ativo', 'false');
@@ -1888,7 +1891,8 @@ class exametemp_model extends Model {
                             pt.descricao_procedimento,
                             ae.ordenador,
                             ae.procedimento_tuss_id,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            apt.valor_diferenciado');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -1897,6 +1901,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_agrupador_pacote_temp apt', 'apt.agrupador_pacote_temp_id = ae.agrupador_pacote_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.ativo', 'false');
@@ -1942,7 +1947,8 @@ class exametemp_model extends Model {
                             pt.descricao_procedimento,
                             ae.ordenador,
                             ae.procedimento_tuss_id,
-                            pt.nome as procedimento');
+                            pt.nome as procedimento,
+                            apt.valor_diferenciado');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -1951,6 +1957,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_agrupador_pacote_temp apt', 'apt.agrupador_pacote_temp_id = ae.agrupador_pacote_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
 //        $this->db->where('pt.grupo !=', 'CONSULTA');

@@ -11733,7 +11733,7 @@ ORDER BY ae.agenda_exames_id)";
         $query = $this->db->get();
         $procedimentos = $query->result();
 
-        if ($procedimentos[0]->valor_pacote_diferenciado == 't') {
+        if ($procedimentos[0]->valor_pacote_diferenciado == 'f') {
             $valor = 0;
             foreach ($procedimentos as $value) {
                 $valor += (float) $value->valortotal;
@@ -11758,14 +11758,17 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->select(" pc.valortotal as valor_pacote,
                             pc.valor_pacote_diferenciado,
                             pc2.valortotal,
-                            pc2.procedimento_convenio_id");
+                            pc2.procedimento_convenio_id,
+                            pt.grupo");
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimentos_agrupados_ambulatorial pa', 'pa.procedimento_agrupador_id = pc.procedimento_tuss_id');
         $this->db->join('tb_procedimento_convenio pc2', 'pc2.procedimento_tuss_id = pa.procedimento_tuss_id');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc2.procedimento_tuss_id');
         $this->db->where("pc.procedimento_convenio_id", $procedimento_convenio_id);
         $this->db->where("pc2.convenio_id = pc.convenio_id");
         $this->db->where("pa.ativo", 't');
         $this->db->where("pc2.ativo", 't');
+        $this->db->orderby("pc2.valortotal");
         $query = $this->db->get();
         return $query->result();
     }
@@ -11782,7 +11785,7 @@ ORDER BY ae.agenda_exames_id)";
         return $tipo[0]->tipo;
     }
 
-    function gravaratendimentoagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio) {
+    function gravaratendimentoagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio, $grupo) {
         try {
 
             $horario = date("Y-m-d H:i:s");
@@ -11819,7 +11822,13 @@ ORDER BY ae.agenda_exames_id)";
                         $this->db->set('indicacao', $_POST['indicacao']);
                     }
                 }
-
+                
+                if (count($percentual_laboratorio) > 0) {
+                    $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
+                    $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
+                    $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
+                }
+                
                 $hora = date("H:i:s");
                 $data = date("Y-m-d");
 
@@ -11859,10 +11868,8 @@ ORDER BY ae.agenda_exames_id)";
                 }
                 if ($medico_id != "") {
                     $this->db->set('medico_solicitante', $medico_id);
-                    $this->db->set('tipo', 'EXAME');
-                } else {
-                    $this->db->set('tipo', 'CONSULTA');
-                }
+                } 
+                $this->db->set('tipo', $grupo);
                 $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
                 $this->db->set('inicio', $hora);
                 $this->db->set('fim', $hora);

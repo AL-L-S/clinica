@@ -885,6 +885,7 @@ class procedimento_model extends Model {
             $this->db->set('tuss_id', $tuss_id);
             $this->db->set('codigo', $retorno[0]->codigo);
             $this->db->set('descricao', $retorno[0]->descricao);
+            $this->db->set('grupo', 'CIRURGICO');
             $this->db->set('revisao', 'f');
             $this->db->set('associacao_procedimento_tuss_id', null);
             $this->db->set('retorno_dias', null);
