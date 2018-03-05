@@ -752,7 +752,7 @@ class Operador_model extends BaseModel {
                                o.nome,
                                o.perfil_id');
         $this->db->from('tb_operador o');
-        $this->db->where('medico', 'true');
+        $this->db->where("(solicitante = true OR medico = true)");
         $this->db->where('o.ativo', 'true');
         $this->db->orderby('o.nome');
         $return = $this->db->get();

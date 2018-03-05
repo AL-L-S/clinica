@@ -21,72 +21,76 @@
     <? } ?>
     <hr>
     <?
-    if (count($relatorio) > 0 || count($relatoriohomecare) > 0) {
+    if (count($relatorio) > 0 || count($relatoriohomecare) > 0 || count($creditos) > 0) {
         ?>
         <table >
-            <thead>
-                <tr>
-                    <th class="tabela_header"><font size="-1">Atendimento</th>
-                    <th class="tabela_header"><font size="-1">Emissao</th>
-                    <th class="tabela_header"><font size="-1">Paciente</th>
-                    <th class="tabela_header"><font size="-1">Exame</th>
-                    <th class="tabela_header"><font size="-1">F. Pagamento</th>
-                    <th class="tabela_header" style="text-align: right"><font size="-1">Parcelas</th>
-                    <th class="tabela_header" style="text-align: right"><font size="-1">QTDE</th>
-                    <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">V. Total</th>
-                    <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">Desconto</th>
-                    <!--<th class="tabela_teste" width="80px;"style="text-align: right"><font size="-1">Total Geral</th>-->
-                </tr>
-            </thead>
+            <? if (count($relatorio) > 0) { ?>
+                <thead>
+                    <tr>
+                        <th class="tabela_header"><font size="-1">Atendimento</th>
+                        <th class="tabela_header"><font size="-1">Emissao</th>
+                        <th class="tabela_header"><font size="-1">Paciente</th>
+                        <th class="tabela_header"><font size="-1">Exame</th>
+                        <th class="tabela_header"><font size="-1">F. Pagamento</th>
+                        <th class="tabela_header" style="text-align: right"><font size="-1">Parcelas</th>
+                        <th class="tabela_header" style="text-align: right"><font size="-1">QTDE</th>
+                        <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">V. Total</th>
+                        <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">Desconto</th>
+                        <!--<th class="tabela_teste" width="80px;"style="text-align: right"><font size="-1">Total Geral</th>-->
+                    </tr>
+                </thead>
+            <? } ?>
 
             <tbody>
                 <?php
+                foreach ($formapagamento as $value) {
+                    $data[$value->nome] = 0;
+                    $datacredito[$value->nome] = 0;
+                    $numerocredito[$value->nome] = 0;
+                    $descontocredito[$value->nome] = 0;
+                    $numero[$value->nome] = 0;
+                    $desconto[$value->nome] = 0;
+                }
+
+                $i = 0;
+                $b = 0;
+                $valor = 0;
+                $valortotal = 0;
+                $convenio = "";
+                $y = 0;
+                $DINHEIRO = 0;
+                $NUMERODINHEIRO = 0;
+                $DEBITO_CONTA = 0;
+                $NUMERODEBITO_CONTA = 0;
+                $CARTAOVISA = 0;
+                $NUMEROCARTAOVISA = 0;
+                $CARTAOMASTER = 0;
+                $NUMEROCARTAOMASTER = 0;
+                $CARTAOHIPER = 0;
+                $CARTAOCREDITO = 0;
+                $NUMEROCARTAOCREDITO;
+                $NUMEROCARTAOHIPER = 0;
+                $CARTAOELO = 0;
+                $NUMEROCARTAOELO = 0;
+                $CHEQUE = 0;
+                $NUMEROCHEQUE = 0;
+                $OUTROS = 0;
+                $NUMEROOUTROS = 0;
+                $financeiro = 'f';
+                $faturado = 't';
+                $valoroperador = 0;
+                $qtdepaciente = 0;
+                $qtdeexame = 0;
+                $operadorexames = "";
+                $paciente = "";
+                $exame = "";
+                $pendentes = 0;
                 if (count($relatorio) > 0) {
 
 
-                    foreach ($formapagamento as $value) {
-                        $data[$value->nome] = 0;
-                        $datacredito[$value->nome] = 0;
-                        $numerocredito[$value->nome] = 0;
-                        $descontocredito[$value->nome] = 0;
-                        $numero[$value->nome] = 0;
-                        $desconto[$value->nome] = 0;
-                    }
 //                    var_dump($formapagamento); die;
 
-                    $i = 0;
-                    $b = 0;
-                    $valor = 0;
-                    $valortotal = 0;
-                    $convenio = "";
-                    $y = 0;
-                    $DINHEIRO = 0;
-                    $NUMERODINHEIRO = 0;
-                    $DEBITO_CONTA = 0;
-                    $NUMERODEBITO_CONTA = 0;
-                    $CARTAOVISA = 0;
-                    $NUMEROCARTAOVISA = 0;
-                    $CARTAOMASTER = 0;
-                    $NUMEROCARTAOMASTER = 0;
-                    $CARTAOHIPER = 0;
-                    $CARTAOCREDITO = 0;
-                    $NUMEROCARTAOCREDITO;
-                    $NUMEROCARTAOHIPER = 0;
-                    $CARTAOELO = 0;
-                    $NUMEROCARTAOELO = 0;
-                    $CHEQUE = 0;
-                    $NUMEROCHEQUE = 0;
-                    $OUTROS = 0;
-                    $NUMEROOUTROS = 0;
-                    $financeiro = 'f';
-                    $faturado = 't';
-                    $valoroperador = 0;
-                    $qtdepaciente = 0;
-                    $qtdeexame = 0;
-                    $operadorexames = "";
-                    $paciente = "";
-                    $exame = "";
-                    $pendentes = 0;
+
 
                     foreach ($relatorio as $item) {
 
@@ -1247,9 +1251,14 @@
                 ?>
                 <? if (count($creditos) > 0) { ?>
                     <?
+                    $contador_creditos = 0;
                     foreach ($creditos as $item) {
+                        $contador_creditos++;
                         if ($item->faturado == 'f') {
                             $faturado = 'f';
+                        }
+                        if ($item->financeiro_fechado == 't') {
+                            $financeiro = 't';
                         }
                         ?>
 
@@ -1294,7 +1303,7 @@
                         continue;
                     }
 
-                    $w++;
+                    @$w++;
 
                     /*
                      * Obs: O codigo abaixo foi feito pois o CodeIgniter não aceita certos caracteres
@@ -1325,7 +1334,7 @@
     <!--                    <input type="hidden" class="texto3" name="creditoValor[<?= $j; ?>]" value="<?= $item->valor; ?>"/>
     <input type="hidden" class="texto3" name="creditoData[<?= $j; ?>]" value="<?= $item->data; ?>"/>
     <input type="hidden" class="texto3" name="creditoForma[<?= $j; ?>]" value="<?= $item->forma_pagamento_id; ?>"/>-->
-                <? // $j++;    ?>
+                <? // $j++;     ?>
                 <? // }  ?>
 
                 <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
@@ -1335,23 +1344,27 @@
                 <? if (count($empresa) > 0) { ?>
                     <input type="hidden" class="texto3" name="empresa" value="<?= $empresa[0]->empresa_id; ?>"/>
                 <? } ?>
-
+                <? if (count($relatorio) > 0) { ?>
+                    <tr>
+                        <td colspan="5"></td><td colspan="2"><font size="-1"><b>TOTAL</b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"></td><td colspan="2"><font size="-1"><b>Nr. Exa: <?= $y; ?></b></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"></td><td colspan="2"><font size="-1"><b>VALOR TOTAL: <?= number_format($valor, 2, ',', '.'); ?></b></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                    </tr>
+                <? } ?>
                 <tr>
-                    <td colspan="5"></td><td colspan="2"><font size="-1"><b>TOTAL</b></td>
-                </tr>
-                <tr>
-                    <td colspan="5"></td><td colspan="2"><font size="-1"><b>Nr. Exa: <?= $y; ?></b></td>
-                </tr>
-                <tr>
-                    <td colspan="5"></td><td colspan="2"><font size="-1"><b>VALOR TOTAL: <?= number_format($valor, 2, ',', '.'); ?></b></td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
+                    <? // var_dump($faturado);
+//                    die;
+                    ?>
                     <td colspan="5"></td>
-                    <? if ($faturado == 't' && $exame == "") { ?>
-                        <? if ((count($operador) == 0 && count($medico) == 0 && $_POST['grupomedico'] == 0 && $_POST['grupo'] == '0' && $_POST['procedimentos'] == '0' && $financeiro == 'f')) { ?>
+                    <? if (@$faturado == 't' && ($exame == "" || count($creditos) > 0)) { ?>
+        <? if ((count($operador) == 0 && count($medico) == 0 && $_POST['grupomedico'] == 0 && $_POST['grupo'] == '0' && $_POST['procedimentos'] == '0' && @$financeiro == 'f')) { ?>
                             <td colspan="2" ><font size="-1"><button type="submit" name="btnEnviar">Fechar Caixa</button></td>
 
                         <? } elseif ((count($operador) > 0 || count($medico) > 0 || $_POST['grupomedico'] > 0 || $_POST['grupo'] != '0' || $_POST['procedimentos'] != '0') && $financeiro == 'f') { ?>
@@ -1362,7 +1375,7 @@
                         <? } ?>
                     <? } else { ?>
                         <td colspan="3" ><b>Pendencias de Faturamento / Finalizar exame</b></td>
-                    <? } ?>
+    <? } ?>
                 </tr>
 
 
@@ -1373,7 +1386,7 @@
         <!--<br>-->
         <br>
         <div style="">
-            <? if (count($creditos) > 0) { ?>
+    <? if (count($creditos) > 0) { ?>
                 <table border="1" cellpadding="5" cellspacing="5" style="magin-right: 12pt;">
                     <thead>
                         <tr>
@@ -1419,67 +1432,68 @@
                         ?>
                     </tbody>
                 </table> 
-            <? } ?>
+    <? } ?>
         </div>
         <br>
-        <div style="display: inline-block;">
-            <table border="1">
-                <tbody>
-                    <tr>
-                        <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
-                <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>
-                </tr>
-                <?
-                foreach ($formapagamento as $value) {
-                    if ($numero[$value->nome] > 0) {
-                        ?>
+    <? if (count($relatorio) > 0) { ?>
+            <div style="display: inline-block;">
+                <table border="1">
+                    <tbody>
                         <tr>
-                            <td width="140px;"><font size="-1"><?= $value->nome ?></td>
-                            <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
-                            <td width="200px;"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
-                            <td><font size="-1"><?= number_format($desconto[$value->nome], 2, ',', '.'); ?></td>
-                        </tr>    
+                            <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO</center></td>
+                    <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">DESCONTO</center></td>
+                    </tr>
+                    <?
+                    foreach ($formapagamento as $value) {
+                        if ($numero[$value->nome] > 0) {
+                            ?>
+                            <tr>
+                                <td width="140px;"><font size="-1"><?= $value->nome ?></td>
+                                <td width="140px;"><font size="-1"><?= $numero[$value->nome]; ?></td>
+                                <td width="200px;"><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
+                                <td><font size="-1"><?= number_format($desconto[$value->nome], 2, ',', '.'); ?></td>
+                            </tr>    
 
 
-                        <?
+                            <?
+                        }
                     }
-                }
-                ?>
-                <tr>
-                    <td width="140px;"><font size="-1">PENDENTES</td>
-                    <td width="140px;"><font size="-1"><?= $NUMEROOUTROS ?></td>
-                    <td width="200px;"><font size="-1"><?= number_format($OUTROS, 2, ',', '.'); ?></td>
-                    <td><font size="-2"></td>
-                </tr>  
-                <?
-                $TOTALCARTAO = 0;
-                $QTDECARTAO = 0;
-                foreach ($formapagamento as $value) {
-                    /* A linha abaixo era a condiçao do IF antigamente. Agora tudo que nao for cartao sera DINHEIRO */
-                    //                ($value->nome != 'DINHEIRO' && $value->nome != 'DEBITO' && $value->nome != 'CHEQUE') 
-                    if ($value->cartao != 'f') {
-                        $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
-                        $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
+                    ?>
+                    <tr>
+                        <td width="140px;"><font size="-1">PENDENTES</td>
+                        <td width="140px;"><font size="-1"><?= $NUMEROOUTROS ?></td>
+                        <td width="200px;"><font size="-1"><?= number_format($OUTROS, 2, ',', '.'); ?></td>
+                        <td><font size="-2"></td>
+                    </tr>  
+                    <?
+                    $TOTALCARTAO = 0;
+                    $QTDECARTAO = 0;
+                    foreach ($formapagamento as $value) {
+                        /* A linha abaixo era a condiçao do IF antigamente. Agora tudo que nao for cartao sera DINHEIRO */
+                        //                ($value->nome != 'DINHEIRO' && $value->nome != 'DEBITO' && $value->nome != 'CHEQUE') 
+                        if ($value->cartao != 'f') {
+                            $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
+                            $QTDECARTAO = $QTDECARTAO + $numero[$value->nome];
+                        }
                     }
-                }
-                ?>
-                <tr>
-                    <td width="140px;"><font size="-1">TOTAL CARTAO</td>
-                    <td width="140px;"><font size="-1">Nr. Cart&otilde;es: <?= $QTDECARTAO; ?></td>
-                    <td width="200px;" colspan="2"><font size="-1">Total Cartao: <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
-                </tr>
-                <tr>
-                    <td width="140px;"><font size="-1">TOTAL GERAL</td>
-                    <td width="140px;"><font size="-1">Nr. Exa: <?= $i; ?></td>
-                    <td width="200px;" colspan="2"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
-                </tr>
-                </tbody>
+                    ?>
+                    <tr>
+                        <td width="140px;"><font size="-1">TOTAL CARTAO</td>
+                        <td width="140px;"><font size="-1">Nr. Cart&otilde;es: <?= $QTDECARTAO; ?></td>
+                        <td width="200px;" colspan="2"><font size="-1">Total Cartao: <?= number_format($TOTALCARTAO, 2, ',', '.'); ?></td>
+                    </tr>
+                    <tr>
+                        <td width="140px;"><font size="-1">TOTAL GERAL</td>
+                        <td width="140px;"><font size="-1">Nr. Exa: <?= $i; ?></td>
+                        <td width="200px;" colspan="2"><font size="-1">Total Geral: <?= number_format($valortotal, 2, ',', '.'); ?></td>
+                    </tr>
+                    </tbody>
 
-            </table>
-        </div>
+                </table>
+            </div>
+        <? } ?>
 
-
-        <? if (count($creditos) > 0) { ?>
+    <? if (count($creditos) > 0) { ?>
             <div style="display: inline-block;margin-left: 10px;">
                 <table border="1">
                     <tbody>
@@ -1523,7 +1537,7 @@
                     </tr>
                     <tr>
                         <td width="140px;"><font size="-1">TOTAL GERAL</td>
-                        <td width="140px;"><font size="-1">Nr. Exa: <?= $i; ?></td>
+                        <td width="140px;"><font size="-1">Nr. Exa: <?= $contador_creditos; ?></td>
                         <td width="200px;" colspan="2"><font size="-1">Total Geral: <?= number_format($valorcreditototal, 2, ',', '.'); ?></td>
                     </tr>
                     </tbody>
@@ -1539,55 +1553,56 @@
                             <td colspan="3" bgcolor="#C0C0C0"><center><font size="-1">TOTAL GERAL (Atendimentos + Créditos Lançados)</center></td>
                     </tr>
                     <tr style="text-align: center;">
-                        <td width="1000px;" colspan="3"><font size="-1">Total Geral: <?= number_format($valorcreditototal + $valortotal, 2, ',', '.'); ?></td>
+        <? $TOTAL_GERAL_CREDITO_ATENDIMENTO = @$valorcreditototal + @$valortotal; ?>
+                        <td width="1000px;" colspan="3"><font size="-1">Total Geral: <?= number_format($TOTAL_GERAL_CREDITO_ATENDIMENTO, 2, ',', '.'); ?></td>
                     </tr>
                     </tbody>
 
                 </table>
             </div>
-        <? } ?>
+    <? } ?>
         <br>
 
         <h4>(*) Valores alterados.</h4>
         <?
-        $PERCENTUALDINHEIRO = ($NUMERODINHEIRO * 100) / $i;
-        $PERCENTUALDEBITO_CONTA = ($NUMERODEBITO_CONTA * 100) / $i;
-        $PERCENTUALCARTAOVISA = ($NUMEROCARTAOVISA * 100) / $i;
-        $PERCENTUALCARTAOMASTER = ($NUMEROCARTAOMASTER * 100) / $i;
-        $PERCENTUALCARTAOHIPER = ($NUMEROCARTAOHIPER * 100) / $i;
-        $PERCENTUALCARTAOELO = ($NUMEROCARTAOELO * 100) / $i;
-        $PERCENTUALOUTROS = ($NUMEROOUTROS * 100) / $i;
-        if ($valortotal != 0) {
-            $PERCENTUALVALORDINHEIRO = ($DINHEIRO * 100) / $valortotal;
-            $PERCENTUALVALORDEBITO_CONTA = ($DEBITO_CONTA * 100) / $valortotal;
-            $PERCENTUALVALORCARTAOVISA = ($CARTAOVISA * 100) / $valortotal;
-            $PERCENTUALVALORCARTAOMASTER = ($CARTAOMASTER * 100) / $valortotal;
-            $PERCENTUALVALORCARTAOHIPER = ($CARTAOHIPER * 100) / $valortotal;
-            $PERCENTUALVALORCARTAOELO = ($CARTAOELO * 100) / $valortotal;
-            $PERCENTUALVALOROUTROS = ($OUTROS * 100) / $valortotal;
-        } else {
-            $PERCENTUALVALORDINHEIRO = 0;
-            $PERCENTUALVALORDEBITO_CONTA = 0;
-            $PERCENTUALVALORCARTAOVISA = 0;
-            $PERCENTUALVALORCARTAOMASTER = 0;
-            $PERCENTUALVALORCARTAOHIPER = 0;
-            $PERCENTUALVALORCARTAOELO = 0;
-            $PERCENTUALVALOROUTROS = 0;
-        }
-        $VALORDINHEIRO = (str_replace("", ".", str_replace("", ",", $DINHEIRO))) / 100;
-        $VALORDEBITO_CONTA = (str_replace("", ".", str_replace("", ",", $DEBITO_CONTA))) / 100;
-        $VALORCARTAOVISA = (str_replace("", ".", str_replace("", ",", $CARTAOVISA))) / 100;
-        $VALORCARTAOMASTER = (str_replace("", ".", str_replace("", ",", $CARTAOMASTER))) / 100;
-        $VALORCARTAOHIPER = (str_replace("", ".", str_replace("", ",", $CARTAOHIPER))) / 100;
-        $VALORCARTAOELO = (str_replace("", ".", str_replace("", ",", $CARTAOELO))) / 100;
-        $VALOROUTROS = (str_replace("", ".", str_replace("", ",", $OUTROS))) / 100;
+//        $PERCENTUALDINHEIRO = ($NUMERODINHEIRO * 100) / $i;
+//        $PERCENTUALDEBITO_CONTA = ($NUMERODEBITO_CONTA * 100) / $i;
+//        $PERCENTUALCARTAOVISA = ($NUMEROCARTAOVISA * 100) / $i;
+//        $PERCENTUALCARTAOMASTER = ($NUMEROCARTAOMASTER * 100) / $i;
+//        $PERCENTUALCARTAOHIPER = ($NUMEROCARTAOHIPER * 100) / $i;
+//        $PERCENTUALCARTAOELO = ($NUMEROCARTAOELO * 100) / $i;
+//        $PERCENTUALOUTROS = ($NUMEROOUTROS * 100) / $i;
+//        if ($valortotal != 0) {
+//            $PERCENTUALVALORDINHEIRO = ($DINHEIRO * 100) / $valortotal;
+//            $PERCENTUALVALORDEBITO_CONTA = ($DEBITO_CONTA * 100) / $valortotal;
+//            $PERCENTUALVALORCARTAOVISA = ($CARTAOVISA * 100) / $valortotal;
+//            $PERCENTUALVALORCARTAOMASTER = ($CARTAOMASTER * 100) / $valortotal;
+//            $PERCENTUALVALORCARTAOHIPER = ($CARTAOHIPER * 100) / $valortotal;
+//            $PERCENTUALVALORCARTAOELO = ($CARTAOELO * 100) / $valortotal;
+//            $PERCENTUALVALOROUTROS = ($OUTROS * 100) / $valortotal;
+//        } else {
+//            $PERCENTUALVALORDINHEIRO = 0;
+//            $PERCENTUALVALORDEBITO_CONTA = 0;
+//            $PERCENTUALVALORCARTAOVISA = 0;
+//            $PERCENTUALVALORCARTAOMASTER = 0;
+//            $PERCENTUALVALORCARTAOHIPER = 0;
+//            $PERCENTUALVALORCARTAOELO = 0;
+//            $PERCENTUALVALOROUTROS = 0;
+//        }
+//        $VALORDINHEIRO = (str_replace("", ".", str_replace("", ",", $DINHEIRO))) / 100;
+//        $VALORDEBITO_CONTA = (str_replace("", ".", str_replace("", ",", $DEBITO_CONTA))) / 100;
+//        $VALORCARTAOVISA = (str_replace("", ".", str_replace("", ",", $CARTAOVISA))) / 100;
+//        $VALORCARTAOMASTER = (str_replace("", ".", str_replace("", ",", $CARTAOMASTER))) / 100;
+//        $VALORCARTAOHIPER = (str_replace("", ".", str_replace("", ",", $CARTAOHIPER))) / 100;
+//        $VALORCARTAOELO = (str_replace("", ".", str_replace("", ",", $CARTAOELO))) / 100;
+//        $VALOROUTROS = (str_replace("", ".", str_replace("", ",", $OUTROS))) / 100;
         ?>
 
         <!--        GRAFICO DE QUANTIDADE DE EXAMES
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $NUMERODINHEIRO; ?>,<?= $NUMERODEBITO_CONTA; ?>,<?= $NUMEROCARTAOVISA; ?>,<?= $NUMEROCARTAOMASTER; ?>,<?= $NUMEROCARTAOHIPER; ?>,<?= $NUMEROCARTAOELO; ?>,<?= $NUMEROOUTROS; ?>&chtt=QUANTIDADE DE EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALOUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste"/></center>
                 GRAFICO DE VALOR DE EXAMES
                 <center><img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?= $VALORDINHEIRO; ?>,<?= $VALORDEBITO_CONTA; ?>,<?= $VALORCARTAOVISA; ?>,<?= $VALORCARTAOMASTER; ?>,<?= $VALORCARTAOHIPER; ?>,<?= $VALORCARTAOELO; ?>,<?= $VALOROUTROS; ?>&chtt=VALOR DOS EXAMES&chs=600x300&chl=<?= number_format($PERCENTUALVALORDINHEIRO, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORDEBITO_CONTA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOVISA, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOMASTER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALORCARTAOHIPER, 2, ',', '.'); ?>%|<?= number_format($PERCENTUALVALOROUTROS, 2, ',', '.'); ?>%&chdl=DINHEIRO|DEBITO_CONTA\00|CARTAO VISA|CARTAO MASTER|CARTAO HIPER|OUTROS&chco=c60000|1da3f8|58e015|fffc00|67087b|#5F9EA0" alt="" name="teste2" /></center>-->
-        <? if (count($caixa)) { ?>
+    <? if (count($caixa)) { ?>
             <table border="1">
                 <thead>
                     <tr>
@@ -1610,7 +1625,7 @@
                             <td><?= utf8_decode($item->operador_caixa); ?></td>
                             <td><?= number_format($item->valor, 2, ',', '.'); ?></td>
                         </tr>
-                    <? endforeach; ?>
+        <? endforeach; ?>
         <!--                        <tr>
 
         </tr>-->
@@ -1630,7 +1645,7 @@
                     </tr>
                 </tbody>
             </table>
-            <? //  var_dump($data[$value->nome]);          ?>
+            <? //  var_dump($data[$value->nome]);           ?>
         <? } ?>
     <? } else {
         ?>
