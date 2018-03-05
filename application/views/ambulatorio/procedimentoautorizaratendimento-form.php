@@ -237,14 +237,15 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         <tr>
                             <th class="tabela_header">Hora</th>
                             <th class="tabela_header">Sala</th>
+                            <th class="tabela_header">QTDE</th>
                             <th class="tabela_header">Medico</th>
                             <th class="tabela_header">Solicitante</th>
                             <th class="tabela_header">Convenio</th>
                             <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">autorizacao</th>
-                            <th class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
-                            <th class="tabela_header">Qtde</th>
+                            <th class="tabela_header" <? if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <? } ?>>Valor</th>
+                            <th class="tabela_header">Sessoes</th>
                             <th class="tabela_header">Pagamento</th>
                             <th class="tabela_header">Promotor</th>
                             <th class="tabela_header">ordenador</th>
@@ -272,6 +273,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <? endforeach; ?>
                                     </select>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtdeProc[<?= $i; ?>]" id="qtdeProc<?= $i; ?>"  value="1"  min="1" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="medico_id[<?= $i; ?>]" id="medico_id<?= $i; ?>" class="size1" >
                                         <option value="">Selecione</option>
@@ -307,8 +309,11 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
-                                <td class="<?php echo $estilo_linha; ?>" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1"  min="1" class="texto01"/></td>
+                                <td class="<?php echo $estilo_linha; ?>" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                    <input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/>
+                                    <input type="hidden" name="valorunitario[<?= $i; ?>]" id="valorunitario<?= $i; ?>" class="texto01" readonly=""/>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1"  min="1" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
                                         <option value="0">Selecione</option>
@@ -418,6 +423,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         if(qtde == 0){
                                             qtde = 1;
                                         }
+                                        
                                         <? if($odontologia_alterar == 't'){ ?>
                                             if(a[0].grupo == 'ODONTOLOGIA'){
                                                 $("#valor<?=$b?>").prop('readonly', false);
@@ -426,9 +432,11 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                             }    
                                         <? }
                                         if(@$exames[$b - 1]->valor != ''){ ?>
+                                            document.getElementById("valorunitario<?= $b ?>").value = <?=@$exames[$b - 1]->valor?>;
                                             document.getElementById("valor<?= $b ?>").value = <?=@$exames[$b - 1]->valor?>;
-                                            document.getElementById("qtde<?= $b ?>").value =  <?=@$exames[$b - 1]->quantidade?>;
+                                            document.getElementById("qtde<?= $b ?>").value = <?=@$exames[$b - 1]->quantidade?>;
                                         <? } else { ?>
+                                            document.getElementById("valorunitario<?= $b ?>").value = valor;
                                             document.getElementById("valor<?= $b ?>").value = valor;
                                             document.getElementById("qtde<?= $b ?>").value = qtde;  
                                         <? } ?>
@@ -543,7 +551,21 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     }
                 }
             });
+            
+            
 
+            $('#qtdeProc<?= $b ?>').change(function () {
+                if ( $(this).val() ) {
+                    var valor = $(this).val() * document.getElementById("valorunitario<?= $b ?>").value;
+                    if( typeof(valor) == 'number' ){
+                        document.getElementById("valor<?= $b ?>").value = valor;
+                    }
+                }
+                else{
+                    $(this).val(1);
+                }
+            });
+            
             $('#procedimento<?= $b; ?>').change(function () {
                 if ($(this).val()) {
                     <? if($desabilitar_trava_retorno == 'f') { ?>
@@ -602,12 +624,21 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     $("#sala<?= $b; ?>").prop('required', true);
                     $("#convenio<?= $b; ?>").prop('required', true);
                     $("#qtde<?= $b; ?>").prop('required', true);
+                    $("#qtdeProc<?= $b; ?>").prop('required', true);
                     $("#procedimento<?= $b; ?>").prop('required', true);
                     <? if ( $recomendacao_obrigatorio == 't' ){ ?>
                         $("#indicacao<?= $b; ?>").prop('required', true);
                     <? } ?>
                      if ($("#procedimento<?= $b; ?>").val() != '') {
                          
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: $("#procedimento<?= $b; ?>").val(), ajax: true}, function (a) {
+                            if (a[0].tipo == 'EXAME' || a[0].tipo == 'ESPECIALIDADE' || a[0].tipo == 'FISIOTERAPIA') {
+                                $("#medico<?=$b?>").prop('required', true);
+                            } else {
+                                $("#medico<?=$b?>").prop('required', false);
+                            }
+                        });
+                        
                          <? if($desabilitar_trava_retorno == 'f') { ?>
                               $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $("#procedimento<?= $b; ?>").val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
     //                                    g(r); 
@@ -662,7 +693,9 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     $("#sala<?= $b; ?>").prop('required', false);
                     $("#convenio<?= $b; ?>").prop('required', false);
                     $("#qtde<?= $b; ?>").prop('required', false);
+                    $("#qtdeProc<?= $b; ?>").prop('required', false);
                     $("#procedimento<?= $b; ?>").prop('required', false);
+                    $("#medico<?=$b?>").prop('required', false);
                     <? if ( $recomendacao_obrigatorio == 't' ){ ?>
                         $("#indicacao<?= $b; ?>").prop('required', false);
                     <? } ?>
@@ -749,6 +782,11 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         }else{
                            qtde = 1; 
                         }
+                        if ((j[0].tipo == 'EXAME' || j[0].tipo == 'ESPECIALIDADE' || j[0].tipo == 'FISIOTERAPIA') && $('#checkbox<?= $b ?>').is(":checked")) {
+                            $("#medico<?=$b?>").prop('required', true);
+                        } else {
+                            $("#medico<?=$b?>").prop('required', false);
+                        }
                         <? if ($odontologia_alterar == 't') { ?>
                              if(j[0].grupo == 'ODONTOLOGIA'){
                                  $("#valor<?= $b ?>").prop('readonly', false);
@@ -756,6 +794,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                  $("#valor<?= $b ?>").prop('readonly', true);
                              }    
                         <? } ?>
+                        document.getElementById("valorunitario<?= $b ?>").value = options;
                         document.getElementById("valor<?= $b ?>").value = options;
                         document.getElementById("qtde<?= $b ?>").value = qtde;
                         $('.carregando').hide();
@@ -784,7 +823,6 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     $('#formapamento<?= $b ?>').html('<option value="0">Selecione</option>');
                 }
             });
-
 
         <? } ?>
 

@@ -428,7 +428,8 @@ class Operador extends BaseController {
 
     function operadorconvenioempresa($operador_id) {
         $data['operador'] = $this->operador_m->listarCada($operador_id);
-        $data['empresa'] = $this->operador_m->listarempresasconvenio();
+        $data['empresasCadastradas'] = $this->operador_m->listarempresasoperadorconvenio($operador_id);
+        $data['empresas'] = $this->operador_m->listarempresasconvenio();
         $this->loadView('seguranca/operadorconvenioempresa-form', $data);
     }
 
@@ -476,6 +477,21 @@ class Operador extends BaseController {
     function gravarcopiaroperadorconvenio() {
         $this->operador_m->gravarcopiaroperadorconvenio();
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function gravaroperadorconvenioempresa() {
+        $operador_id = $_POST['txtoperador_id'];
+        $empresa_id = $_POST['empresa_id'];
+        $verifica = $this->operador_m->gravaroperadorconvenioempresa();
+        if ($verifica == '-1') {
+            $data['mensagem'] = 'Erro ao cadastrar Empresa. Operação cancelada.';
+        } elseif ($verifica == '-2') {
+            $data['mensagem'] = 'Empresa ja cadastrada.';
+        } else {
+            $data['mensagem'] = 'Empresa cadastrada com sucesso.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/operadorconvenioempresa/$operador_id");
     }
 
     function gravaroperadorconvenio() {

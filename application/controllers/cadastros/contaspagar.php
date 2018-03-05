@@ -21,6 +21,8 @@ class Contaspagar extends BaseController {
         $this->load->model('cadastro/tipo_model', 'tipo');
         $this->load->model('cadastro/classe_model', 'classe');
         $this->load->model('ambulatorio/exame_model', 'exame');
+        $this->load->model('seguranca/operador_model', 'operador_m');
+        $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -114,6 +116,35 @@ class Contaspagar extends BaseController {
         $this->loadView('cadastros/relatoriocontaspagar', $data);
     }
 
+    function detalhesprevisaolaboratorio($dataSelecionada, $laboratorio_id, $empresa) {
+        
+        $data['laboratorio'] = $this->contaspagar->listarlaboratoriorelatorio($laboratorio_id);
+        $data['indicacao'] = $this->contaspagar->listacadaindicacao($laboratorio_id);
+        $data['indicacao_valor'] = $this->contaspagar->listaindicacao();
+        $data['detalhes'] = $this->contaspagar->detalhesprevisaolaboratorio($dataSelecionada, $laboratorio_id, $empresa);
+        $data['empresa'] = $this->guia->listarempresa($empresa);
+        $data['dataSelecionada'] = $dataSelecionada;
+        $this->load->View('cadastros/impressaodetalhesprevisaolaboratorio', $data);
+    }
+
+    function detalhesprevisaopromotor($dataSelecionada, $promotor_id, $empresa) {
+        
+        $data['indicacao'] = $this->contaspagar->listacadaindicacao($promotor_id);
+        $data['indicacao_valor'] = $this->contaspagar->listaindicacao();
+        $data['detalhes'] = $this->contaspagar->detalhesprevisaopromotor($dataSelecionada, $promotor_id, $empresa);
+        $data['empresa'] = $this->guia->listarempresa($empresa);
+        $data['dataSelecionada'] = $dataSelecionada;
+        $this->load->View('cadastros/impressaodetalhesprevisaopromotor', $data);
+    }
+
+    function detalhesprevisaomedica($dataSelecionada, $medico_id, $empresa) {
+        $data['detalhes'] = $this->contaspagar->detalhesprevisaomedica($dataSelecionada, $medico_id, $empresa);
+        $data['medico'] = $this->operador_m->listarCada($medico_id);
+        $data['empresa'] = $this->guia->listarempresa($empresa);
+        $data['dataSelecionada'] = $dataSelecionada;
+        $this->load->View('cadastros/impressaodetalhesprevisaomedica', $data);
+    }
+    
     function gerarelatoriocontaspagar() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
@@ -133,6 +164,7 @@ class Contaspagar extends BaseController {
             $data['relatoriopromotor'] = array();
             $data['relatoriolaboratorio'] = array();  
         }
+        
         $data['contador'] = $this->contaspagar->relatoriocontaspagarcontador();
 
         if ($_POST['email'] == "NAO") {

@@ -6,71 +6,65 @@
 <?
 $i = 0;
 foreach ($relatoriolaboratorio as $item) {
-    $i++;
-    ?>
-        $(function () {
-            $("#dataLab<?= $i ?>").datepicker({
-                autosize: true,
-                changeYear: true,
-                changeMonth: true,
-                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                buttonImage: '<?= base_url() ?>img/form/date.png',
-                dateFormat: 'dd/mm/yy'
-            });
+    $i++; ?>
+    $(function () {
+        $("#dataLab<?= $i ?>").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
         });
-
+    });
     <?
 }
-?>
-<?
+
 $i = 0;
 foreach ($relatoriomedico as $item) {
-    $i++;
-    ?>
+    $i++; ?>
 
-        $(function () {
-            $("#dataMed<?= $i ?>").datepicker({
-                autosize: true,
-                changeYear: true,
-                changeMonth: true,
-                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                buttonImage: '<?= base_url() ?>img/form/date.png',
-                dateFormat: 'dd/mm/yy'
-            });
+    $(function () {
+        $("#dataMed<?= $i ?>").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
         });
+    });
 
     <?
 }
-?>
-<?
+
 $i = 0;
 foreach ($relatoriopromotor as $item) {
-    $i++;
-    ?>
+    $i++; ?>
 
-        $(function () {
-            $("#dataPro<?= $i ?>").datepicker({
-                autosize: true,
-                changeYear: true,
-                changeMonth: true,
-                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                buttonImage: '<?= base_url() ?>img/form/date.png',
-                dateFormat: 'dd/mm/yy'
-            });
+    $(function () {
+        $("#dataPro<?= $i ?>").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
         });
+    });
     <?
 }
 ?>
 
 
-    (function ($) {
-        $(function () {
-            $('input:text').setMask();
-        });
-    })(jQuery);
+//    (function ($) {
+//        $(function () {
+//            $('input:text').setMask();
+//        });
+//    })(jQuery);
 </script>
 <style>
     #confirmacao-form{
@@ -187,9 +181,9 @@ foreach ($relatoriopromotor as $item) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php $i = 0;
+                                        <?php 
+                                        $i = 0;
                                         foreach ($previsaoMedicos as $key2 => $medicos) : 
-                                            $i ++;
                                             ?>
                                         
                                             <tr>
@@ -198,12 +192,17 @@ foreach ($relatoriopromotor as $item) {
                                             <?
                                             
                                             foreach ($medicos as $key => $item) :
+                                                $i ++;
                                                 
 //                                            if ($item["valor"] != 0) {
                                                 ?>
                                                 <tr>
                                                     <td ><?= $item["nome"]; ?></td>
-                                                    <td style="text-align: right"><?= number_format($item["valor"], 2, ",", "."); ?></td>
+                                                    <td style="text-align: right">
+                                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "cadastros/contaspagar/detalhesprevisaomedica/".date("Y-m-d", strtotime($key2))."/".$key."/".$_POST['empresa']; ?>', '_blank', 'width=800,height=800');">
+                                                            <?= number_format($item["valor"], 2, ",", "."); ?>
+                                                        </a>
+                                                    </td>
                                                     <td style="text-align: center">
                                                         <?
                                                         if (($_POST['empresa'] != '')) {
@@ -311,14 +310,18 @@ foreach ($relatoriopromotor as $item) {
                                                 <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
                                             </tr>
                                             <?
-                                             $i++;
                                             foreach ($promotores as $key => $item) :
+                                                $i++;
                                                
 //                                            if($item["valor"] != 0) {
                                                 ?>
                                                 <tr>
                                                     <td ><?= $item["nome"]; ?></td>
-                                                    <td style="text-align: right"><?= number_format($item["valor"], 2, ",", "."); ?></td>
+                                                    <td style="text-align: right">
+                                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "cadastros/contaspagar/detalhesprevisaopromotor/".date("Y-m-d", strtotime($key2))."/".$key."/".$_POST['empresa']; ?>', '_blank', 'width=800,height=800');">
+                                                            <?= number_format($item["valor"], 2, ",", "."); ?>
+                                                        </a>
+                                                    </td>
                                                     <td style="text-align: center">
                                                         <?
                                                         if (($_POST['empresa'] != '')) {
@@ -425,23 +428,25 @@ foreach ($relatoriopromotor as $item) {
                 </thead>
                 <tbody>
                     <?php
-//                    $i = 0;
+                    
                     $i = 0;
                     foreach ($previsaoLaboratorio as $key2 => $laboratorios) :
-                        $i++;
                         ?>
                         <tr>
                             <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
                         </tr>
                         <?
                         foreach ($laboratorios as $key => $item) :
-                            
-
+                            $i++;
 //                            if($item["valor"] != 0) {
                             ?>
                             <tr>
                                 <td ><?= $item["nome"]; ?></td>
-                                <td style="text-align: right"><?= number_format($item["valor"], 2, ",", "."); ?></td>
+                                <td style="text-align: right">
+                                    <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "cadastros/contaspagar/detalhesprevisaolaboratorio/".date("Y-m-d", strtotime($key2))."/".$key."/".$_POST['empresa']; ?>', '_blank', 'width=800,height=800');">
+                                        <?= number_format($item["valor"], 2, ",", "."); ?>
+                                    </a>
+                                </td>
                                 <td style="text-align: center">
                                     <?
                                     if (($_POST['empresa'] != '')) {

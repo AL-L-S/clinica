@@ -218,6 +218,188 @@ class contaspagar_model extends Model {
         return $return->result();
     }
     
+    
+    function listacadaindicacao($promotor_id) {
+
+        $this->db->select('pi.nome as indicacao,
+                           pi.tipo_id,
+                           pi.classe,
+                           pi.conta_id,
+                           pi.credor_devedor_id');
+        $this->db->from('tb_paciente_indicacao pi');
+        $this->db->where("pi.paciente_indicacao_id", $promotor_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listaindicacao() {
+
+        $this->db->select('paciente_indicacao_id, nome, registro');
+        $this->db->from('tb_paciente_indicacao');
+        $this->db->where('ativo', 't');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarlaboratoriorelatorio($laboratorio_id) {
+        $this->db->select('laboratorio_id,
+                            nome,
+                            credor_devedor_id,
+                            tipo,
+                            classe,
+                            dinheiro,
+                            conta_id');
+        $this->db->from('tb_laboratorio');
+//        $this->db->where("ativo", 't');
+        $this->db->where("laboratorio_id", $laboratorio_id);
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function detalhesprevisaolaboratorio($dataSelecionada, $laboratorio_id, $empresa) {
+        $this->db->select("ae.quantidade,
+                            p.nome as paciente,
+                            pt.nome as procedimento,
+                            pc.procedimento_convenio_id,
+                            ae.autorizacao,
+                            ae.percentual_laboratorio,
+                            ae.valor_laboratorio,
+                            ae.data,
+                            ae.valor,
+                            ae.valor1,
+                            ae.valor2,
+                            ae.valor3,
+                            ae.valor4,
+                            ae.valor_total,
+                            pc.procedimento_tuss_id,
+          
+                            pt.grupo,
+                            (
+                                SELECT dia_recebimento 
+                                FROM ponto.tb_procedimento_percentual_laboratorio_convenio ppmc
+                                INNER JOIN ponto.tb_procedimento_percentual_laboratorio ppm 
+                                ON ppm.procedimento_percentual_laboratorio_id = ppmc.procedimento_percentual_laboratorio_id
+                                WHERE ppm.procedimento_tuss_id = ae.procedimento_tuss_id
+                                AND ppm.ativo = 't'
+                                AND ppmc.ativo = 't'
+                                AND ppmc.laboratorio = ae.laboratorio_id
+                                ORDER BY ppmc.data_cadastro DESC
+                                LIMIT 1
+                            ) as dia_recebimento,
+                            (
+                                SELECT tempo_recebimento 
+                                FROM ponto.tb_procedimento_percentual_laboratorio_convenio ppmc
+                                INNER JOIN ponto.tb_procedimento_percentual_laboratorio ppm 
+                                ON ppm.procedimento_percentual_laboratorio_id = ppmc.procedimento_percentual_laboratorio_id
+                                WHERE ppm.procedimento_tuss_id = ae.procedimento_tuss_id
+                                AND ppm.ativo = 't'
+                                AND ppmc.ativo = 't'
+                                AND ppmc.laboratorio = ae.laboratorio_id
+                                ORDER BY ppmc.data_cadastro DESC
+                                LIMIT 1
+                            ) as tempo_recebimento,
+                            lab.nome as laboratorio,
+                            c.nome as convenio,
+                            c.iss,
+                            ae.valor1,
+                            ae.laboratorio_id,
+                            ae.forma_pagamento2,
+                            ae.valor2,
+                            ae.forma_pagamento3,
+                            ae.valor3,
+                            ae.numero_sessao,
+                            ae.forma_pagamento4,
+                            ae.valor4");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = ae.laboratorio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio_grupo cg', 'cg.convenio_grupo_id = c.convenio_grupo_id', 'left');
+        $this->db->where('ae.paciente_id is not null');
+        
+        if ($empresa != "") {
+            $this->db->where('ae.empresa_id', $empresa);
+        }
+        $this->db->where('ae.laboratorio_id', $laboratorio_id);
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime($dataSelecionada)));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime($dataSelecionada)));
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function detalhesprevisaopromotor($dataSelecionada, $promotor_id, $empresa) {
+        $this->db->select(' p.nome as paciente, 
+                            ae.paciente_id,
+                            ae.valor_promotor,ae.percentual_promotor, ae.valor_total,
+                            pt.nome as procedimento,
+                            ae.data,
+                            pt.grupo,
+                            c.nome as convenio,
+                            pi.nome as indicacao');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("ae.indicacao", $promotor_id);
+        if ($empresa != "") {
+            $this->db->where('ae.empresa_id', $empresa);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime($dataSelecionada)));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime($dataSelecionada)));
+        $this->db->orderby('pt.nome');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+    
+    function detalhesprevisaomedica($dataSelecionada, $medico_id, $empresa) {
+        
+        $this->db->select(" ae.quantidade,
+                            p.nome as paciente,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            ae.autorizacao,
+                            ae.data,            
+                            ae.valor_total,
+                            pc.procedimento_tuss_id,
+                            pc.procedimento_convenio_id,
+                            al.medico_parecer1,
+                            pt.perc_medico,
+                            al.situacao as situacaolaudo,
+                            pt.percentual,
+                            op.nome as medico,
+                            op.taxa_administracao,
+                            c.nome as convenio");
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.medico_agenda', 'left');
+        $this->db->where('ae.procedimento_tuss_id is not null');
+        
+        if ($empresa != "") {
+            $this->db->where('ae.empresa_id', $empresa);
+        }
+        
+        $this->db->where('ae.medico_agenda', $medico_id);
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime($dataSelecionada)));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime($dataSelecionada)));
+        
+        $this->db->orderby('pt.grupo');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function relatorioprevisaomedicacontaspagar() {
         
         $this->db->select(" ae.valor_total,

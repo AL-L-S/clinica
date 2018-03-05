@@ -5617,11 +5617,12 @@ class exametemp_model extends Model {
                     }
                     $this->db->set('autorizacao', $autorizacao);
                     $this->db->set('guia_id', $ambulatorio_guia_id);
-                    $this->db->set('quantidade', $qtde);
+//                    $_POST['qtdeProc'][$i];
+                    $this->db->set('quantidade', (int) $_POST['qtdeProc'][$i]);
                     $this->db->set('agenda_exames_nome_id', $sala);
                     if ($dinheiro == "t") {
                         $this->db->set('valor', $valor);
-                        $this->db->set('valor_total', $valor * $qtde);
+                        $this->db->set('valor_total', $valor);
                         $this->db->set('confirmado', 't');
                     } else {
                         $this->db->set('valor', $valor_convenio);

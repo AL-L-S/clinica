@@ -242,8 +242,8 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">autorizacao</th>
-                                <th class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
-                                <th class="tabela_header">Qtde</th>
+                                <th class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>Valor</th>
+                                <th class="tabela_header">Sessões</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Promotor</th>
                                 <th class="tabela_header">Entrega</th>
@@ -308,7 +308,10 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 </td>
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td  width="20px;" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td  width="20px;" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                    <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
+                                    <input type="hidden" name="valorunitario" id="valorunitario" class="texto01" readonly=""/>
+                                </td>
                                 <td  ><input type="text" name="qtde" id="qtde" class="texto01" readonly=""/></td>
                                 <td  width="50px;">
                                     <select  name="formapamento" id="formapamento" class="size1" >
@@ -947,19 +950,21 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 options += j[0].valortotal;
                                                 qtde = "";
                                                 qtde += j[0].qtde;
-<? if ($odontologia_alterar == 't') { ?>
+                                                <? if ($odontologia_alterar == 't') { ?>
                                                     if (j[0].grupo == 'ODONTOLOGIA') {
                                                         $("#valor1").prop('readonly', false);
                                                     } else {
                                                         $("#valor1").prop('readonly', true);
                                                     }
-                                                    if (j[0].tipo == 'EXAME' || j[0].tipo == 'ESPECIALIDADE' || j[0].tipo == 'FISIOTERAPIA') {
-                                                        $("#medico1").prop('required', true);
-                                                    } else {
-                                                        $("#medico1").prop('required', false);
-                                                    }
-<? } ?>
-                                                document.getElementById("valor1").value = options;
+                                                <? } ?>
+                                                if (j[0].tipo == 'EXAME' || j[0].tipo == 'ESPECIALIDADE' || j[0].tipo == 'FISIOTERAPIA') {
+                                                    $("#medico1").prop('required', true);
+                                                } else {
+                                                    $("#medico1").prop('required', false);
+                                                }
+                                                document.getElementById("valorunitario").value = options;
+                                                var valorTotal = options * (( $('#qtde1').val() ) ? $('#qtde1').val() : 1);
+                                                document.getElementById("valor1").value = valorTotal;
                                                 document.getElementById("qtde").value = qtde;
                                                 $('.carregando').hide();
                                             });
@@ -979,7 +984,9 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                 options = "";
                                                 options += j[0].valortotal;
-                                                document.getElementById("valor1").value = options
+                                                document.getElementById("valorunitario").value = options;
+                                                var valorTotal = options * (( $('#qtde1').val() ) ? $('#qtde1').val() : 1);
+                                                document.getElementById("valor1").value = valorTotal;
                                                 $('.carregando').hide();
                                             });
                                             
@@ -1010,7 +1017,9 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                                                     options = "";
                                                                     options += j[0].valortotal;
-                                                                    document.getElementById("valor1").value = options
+                                                                    document.getElementById("valorunitario").value = options;
+                                                                    var valorTotal = options * (( $('#qtde1').val() ) ? $('#qtde1').val() : 1);
+                                                                    document.getElementById("valor1").value = valorTotal;
                                                                     $('.carregando').hide();
                                                                 });
                                                             }
@@ -1020,7 +1029,9 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                                                 options = "";
                                                                 options += j[0].valortotal;
-                                                                document.getElementById("valor1").value = options
+                                                                document.getElementById("valorunitario").value = options;
+                                                                var valorTotal = options * (( $('#qtde1').val() ) ? $('#qtde1').val() : 1);
+                                                                document.getElementById("valor1").value = valorTotal;
                                                                 $('.carregando').hide();
                                                             });
                                                         }
@@ -1035,6 +1046,20 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     });
                                 });
 
+                                $(function () {
+                                    $('#qtde1').change(function () {
+                                        if ( $(this).val() ) {
+                                            var valor = $(this).val() * document.getElementById("valorunitario").value;
+                                            if( typeof(valor) == 'number' ){
+                                                document.getElementById("valor1").value = valor;
+                                            }
+                                        }
+                                        else{
+                                            $(this).val(1);
+                                        }
+                                    });
+                                });
+                                
                                 $(function () {
                                     $('#procedimento1').change(function () {
                                         if ($(this).val()) {

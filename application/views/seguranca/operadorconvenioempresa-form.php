@@ -1,6 +1,6 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
-    <form name="form_menuitens" id="form_menuitens" action="<?= base_url() ?>seguranca/operador/gravaroperadorconvenio" method="post">
+    <form name="form_menuitens" id="form_menuitens" action="<?= base_url() ?>seguranca/operador/gravaroperadorconvenioempresa" method="post">
         <fieldset>
             <legend>Operador</legend>
             <div>
@@ -9,11 +9,26 @@
                 <input type="text" name="txtNome" class="texto10 bestupper" value="<?= $operador[0]->operador; ?>"  readonly />
             </div>
         </fieldset>
+        <fieldset>
+            <legend>Cadastrar empresa</legend>
+            <div>
+                <label>Empresa</label>
+                <select name="empresa_id" id="empresa_id" class="size4">
+                    <? foreach ($empresas as $value) : ?>
+                        <option value="<?= $value->empresa_id; ?>"><?php echo $value->nome; ?></option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <label>&nbsp;</label>
+                <button type="submit" name="btnEnviar">Adicionar</button>
+            </div>
+        </fieldset>
     </form>
             
         <fieldset>
     <?
-    $contador = count($empresa);
+    $contador = count($empresasCadastradas);
     if ($contador > 0) {
         ?>
         <table id="table_agente_toxico" border="0">
@@ -26,7 +41,7 @@
             </thead>
             <?
             $estilo_linha = "tabela_content01";
-            foreach ($empresa as $item) {
+            foreach ($empresasCadastradas as $item) {
                 ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                 ?>
                 <tbody>
