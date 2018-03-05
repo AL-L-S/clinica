@@ -112,6 +112,7 @@ class guia_model extends Model {
                             ep.desabilitar_trava_retorno,
                             ep.conjuge,
                             ep.associa_credito_procedimento,
+                            ep.valor_laboratorio,
                             ep.desativar_personalizacao_impressao,
                             ep.campos_obrigatorios_pac_cpf,
                             ep.campos_obrigatorios_pac_sexo,

@@ -1032,6 +1032,11 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('conjuge', 'f');
                 }
+                if (isset($_POST['valor_laboratorio'])) {
+                    $this->db->set('valor_laboratorio', 't');
+                } else {
+                    $this->db->set('valor_laboratorio', 'f');
+                }
                 if (isset($_POST['gerente_contasapagar'])) {
                     $this->db->set('gerente_contasapagar', 't');
                 } else {
@@ -1256,6 +1261,11 @@ class empresa_model extends Model {
                     $this->db->set('conjuge', 't');
                 } else {
                     $this->db->set('conjuge', 'f');
+                }
+                if (isset($_POST['valor_laboratorio'])) {
+                    $this->db->set('valor_laboratorio', 't');
+                } else {
+                    $this->db->set('valor_laboratorio', 'f');
                 }
                 if (isset($_POST['laudo_sigiloso'])) {
                     $this->db->set('laudo_sigiloso', 't');
@@ -1567,6 +1577,7 @@ class empresa_model extends Model {
                                ep.laudo_sigiloso,
                                f.numero_empresa_painel,
                                ep.campos_obrigatorios_pac_cpf,
+                               ep.valor_laboratorio,
                                ep.campos_obrigatorios_pac_sexo,
                                ep.campos_obrigatorios_pac_nascimento,
                                ep.campos_obrigatorios_pac_telefone,
@@ -1608,6 +1619,7 @@ class empresa_model extends Model {
             $this->_estado = $return[0]->estado;
             $this->_cep = $return[0]->cep;
             $this->_chat = $return[0]->chat;
+            $this->_valor_laboratorio = $return[0]->valor_laboratorio;
             $this->_servicoemail = $return[0]->servicoemail;
             $this->_servicosms = $return[0]->servicosms;
             $this->_cnes = $return[0]->cnes;
