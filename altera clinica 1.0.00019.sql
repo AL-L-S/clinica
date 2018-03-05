@@ -91,6 +91,10 @@ ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_material_id integer;
 ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_solucao_id integer;
 ALTER TABLE ponto.tb_tuss ADD COLUMN brasindice_medicamento_id integer;
 
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN valor_laboratorio boolean DEFAULT false;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN financeiro_fechado boolean DEFAULT false;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN operador_financeiro integer;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN data_financeiro timestamp without time zone;
 
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$

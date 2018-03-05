@@ -8234,6 +8234,7 @@ class guia_model extends Model {
                             pc.valor3,
                             pc.valor4,
                             pc.faturado,
+                            pc.financeiro_fechado,
                             pc.forma_pagamento_id,
                             f.nome as forma_pagamento,
                             f2.nome as forma_pagamento_2,
@@ -10848,6 +10849,18 @@ ORDER BY ae.agenda_exames_id)";
                 }
             }
         }
+
+        $empresa = (isset($_POST['empresa']) ? ' AND ae.empresa_id = ' . $_POST['empresa'] : '');
+        $sql = "UPDATE ponto.tb_paciente_credito
+SET operador_financeiro = $operador_id, data_financeiro= '$horario', financeiro_fechado = 't'
+where paciente_credito_id in (SELECT ae.paciente_credito_id
+FROM ponto.tb_paciente_credito ae 
+WHERE ae.ativo = true 
+AND ae.data >= '$data_inicio' 
+AND ae.data <= '$data_fim' 
+$empresa
+ORDER BY ae.paciente_credito_id)";
+        $this->db->query($sql);
     }
 
     function jurosporparcelas($formapagamento_id, $parcelas) {
@@ -11825,13 +11838,13 @@ ORDER BY ae.agenda_exames_id)";
                         $this->db->set('indicacao', $_POST['indicacao']);
                     }
                 }
-                
+
                 if (count($percentual_laboratorio) > 0) {
                     $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
                     $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
                     $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
                 }
-                
+
                 $hora = date("H:i:s");
                 $data = date("Y-m-d");
 
@@ -11871,7 +11884,7 @@ ORDER BY ae.agenda_exames_id)";
                 }
                 if ($medico_id != "") {
                     $this->db->set('medico_solicitante', $medico_id);
-                } 
+                }
                 $this->db->set('tipo', $grupo);
                 $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
                 $this->db->set('inicio', $hora);
