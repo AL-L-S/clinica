@@ -1660,20 +1660,22 @@ class guia_model extends Model {
 
     function relatoriomedicosolicitante() {
 
-        $this->db->select('o.nome as medico,
+        $this->db->select('
+            ae.medico_solicitante,
+            o.nome as medico,
             sum(ae.quantidade) as quantidade,
             sum(ae.valor_total)as valor');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id');
-        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+//        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id');
+//        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
-        $this->db->where('e.cancelada', 'false');
-        $this->db->where('e.situacao', 'FINALIZADO');
+        $this->db->where('ae.confirmado', 't');
+        $this->db->where('ae.realizada', 't');
         if ($_POST['medicos'] != "0") {
-            $this->db->where('o.operador_id', $_POST['medicos']);
+            $this->db->where('ae.medico_solicitante', $_POST['medicos']);
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
@@ -1691,7 +1693,7 @@ class guia_model extends Model {
             $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
             $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         }
-        $this->db->groupby('o.nome');
+        $this->db->groupby('ae.medico_solicitante, o.nome');
         $this->db->orderby('o.nome');
         $return = $this->db->get();
         return $return->result();
