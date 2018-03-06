@@ -1391,13 +1391,30 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                         });
                                                     });
 
+//                                                    function calculoIdade() {
+//                                                        var data = document.getElementById("txtNascimento").value;
+//                                                        var ano = data.substring(6, 12);
+//                                                        var idade = new Date().getFullYear() - ano;
+//                                                        document.getElementById("txtIdade").value = idade;
+//                                                    }
                                                     function calculoIdade() {
                                                         var data = document.getElementById("txtNascimento").value;
-                                                        var ano = data.substring(6, 12);
-                                                        var idade = new Date().getFullYear() - ano;
-                                                        document.getElementById("txtIdade").value = idade;
-                                                    }
 
+                                                        if (data != '' && data != '//') {
+
+                                                            var ano = data.substring(6, 12);
+                                                            var idade = new Date().getFullYear() - ano;
+
+                                                            var dtAtual = new Date();
+                                                            var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
+
+                                                            if (dtAtual < aniversario) {
+                                                                idade--;
+                                                            }
+
+                                                            document.getElementById("txtIdade").value = idade + " ano(s)";
+                                                        }
+                                                    }
                                                     calculoIdade();
 
 </script>

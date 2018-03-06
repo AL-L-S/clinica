@@ -46,8 +46,18 @@
 
                     <div>
                         <label>Idade</label>
-                        <input type="text" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= $paciente['0']->idade; ?>" readonly />
+                        <? 
+                        if($paciente['0']->nascimento != '') { 
+                            $data_atual = date('Y-m-d');
+                            $data1 = new DateTime($data_atual);
+                            $data2 = new DateTime($paciente[0]->nascimento);
 
+                            $intervalo = $data1->diff($data2);
+                            ?>
+                            <input type="text" name="idade" id="idade" class="texto02" readonly value="<?= $intervalo->y ?> ano(s)"/>
+                        <? } else { ?>
+                            <input type="text" name="nascimento" id="txtNascimento" class="texto01" readonly/>
+                        <? } ?>
                     </div>
 
                     <div>
@@ -194,18 +204,18 @@
                     ?>
                         <tfoot>
                             <tr>
-                                <th class="tabela_footer" colspan="">
+                                <th class="tabela_footer" colspan="" style="vertical-align: top;">
                                     Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                 </th>
-                                <th class="tabela_footer" colspan="2">
+                                <th class="tabela_footer" colspan="2" style="vertical-align: top;">
                                     Valor Total Ajustado: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
                                 </th>
-                                <th colspan="1" align="center"><center><div class="bt_linkf">
-                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
-
-                                    </a></div></center>
-                                </th>
-                                <th colspan="2" align="center">
+                                <th colspan="1" align="center">
+                                    <center>
+                                        <div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento</a>
+                                        </div>
+                                    </center>
                                     <center>
                                         <div class="bt_linkf">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/orcamentocadastrofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão</a>
@@ -216,6 +226,11 @@
                                     <center>
                                         <div class="bt_linkf">
                                             <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
+                                        </div>
+                                    </center>
+                                    <center>
+                                        <div class="bt_linkf">
+                                            <a href="<?= base_url() . "ambulatorio/guia/transformaorcamentocredito/" . $orcamento; ?>" target='_blank'>Transformar em Crédito</a>
                                         </div>
                                     </center>
                                 </th>

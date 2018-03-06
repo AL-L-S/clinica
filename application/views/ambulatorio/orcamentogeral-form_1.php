@@ -172,34 +172,37 @@
                     ?>
                         <tfoot>
                             <tr>
-                                <th class="tabela_footer" colspan="">
+                                <th class="tabela_footer" colspan="2" style="vertical-align: top;">
                                     Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                 </th>
-                                <th class="tabela_footer" colspan="2">
+                                <th class="tabela_footer" colspan="" style="vertical-align: top;">
                                     Valor Total Ajustado: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
                                 </th>
                                 <th colspan="" align="center">
-                        <center>
-                            <div class="bt_linkf">
-                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/impressaoorcamentorecepcao/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento
-                                </a></div>
-                        </center>
-                        </th>
-                        <th colspan="2" align="center">
-                        <center>
-                            <div class="bt_linkf">
-                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/orcamentorecepcaofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão
-                                </a></div>
-                        </center>
-                        </th>
-                        <th colspan="2" align="center">
-                        <center>
-                            <div class="bt_linkf">
-                                <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
-                            </div>
-                        </center>
-                        </th>
-                        </tr>
+                                    <center>
+                                        <div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/impressaoorcamentorecepcao/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento</a>
+                                        </div>
+                                    </center>
+                                    <center>
+                                        <div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/orcamentorecepcaofila/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão</a>
+                                        </div>
+                                    </center>
+                                </th>
+                                <th colspan="2" align="center">
+                                    <center>
+                                        <div class="bt_linkf">
+                                            <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
+                                        </div>
+                                    </center>
+                                    <center>
+                                        <div class="bt_linkf">
+                                            <a href="<?= base_url() . "ambulatorio/guia/transformaorcamentocredito/" . $orcamento; ?>" target='_blank'>Transformar em Crédito</a>
+                                        </div>
+                                    </center>
+                                </th>
+                            </tr>
                         </tfoot>
                     </table> 
                     <?

@@ -2055,6 +2055,25 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimentosorcamentocredito($orcamento_id) {
+        $horario = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select(' oi.orcamento_id,
+                            oi.paciente_id,
+                            SUM(oi.valor_total) AS valortotal');
+        $this->db->from('tb_ambulatorio_orcamento_item oi');
+        $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = oi.forma_pagamento', 'left');
+        $this->db->where('oi.orcamento_id', $orcamento_id);
+        $this->db->where("oi.ativo", "t");
+        $this->db->groupby("oi.orcamento_id, oi.paciente_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarorcamentos($paciente_id) {
         $horario = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');

@@ -192,10 +192,19 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                 </div>
 
                 <div>
-
                     <label>Idade</label>
-                    <input type="text" name="txtIdade" id="txtIdade" class="texto01" readonly/>
+                    <? 
+                    if($paciente['0']->nascimento != '') { 
+                        $data_atual = date('Y-m-d');
+                        $data1 = new DateTime($data_atual);
+                        $data2 = new DateTime($paciente[0]->nascimento);
 
+                        $intervalo = $data1->diff($data2);
+                        ?>
+                        <input type="text" name="idade" id="idade" class="texto02" readonly value="<?= $intervalo->y ?> ano(s)"/>
+                    <? } else { ?>
+                        <input type="text" name="nascimento" id="txtNascimento" class="texto01" readonly/>
+                    <? } ?>
                 </div>
 
                 <div>
