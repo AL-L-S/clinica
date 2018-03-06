@@ -55,13 +55,13 @@
                 }, 2000);
             });
 
-<? foreach ($operadores as $opItem) { ?>
+            <? foreach ($operadores as $opItem) { ?>
                 $("#button<?= $opItem->operador_id ?>").click(function () {
                     $('html, body').animate({
                         scrollTop: $("#resumoOperador<?= $opItem->operador_id ?>").offset().top
                     }, 2000);
                 });
-<? } ?>
+            <? } ?>
         });
     </script>
 </head>
@@ -111,13 +111,15 @@
         }
 
         $valPendentes = 0;
+        $totGeralPaciente = array();
 
         if (count($procNaoFaturados) > 0 || count($operadores) > 0) {
 
             $totalProcedimentos = count($procNaoFaturados);
 
             foreach ($operadores as $opItem) {
-
+//                $totPacienteOperador = 0;
+                
                 $resumoTotalCartao = 0;
                 $resumoQtdeCartao = 0;
                 $resumoDinheiro = 0;
@@ -156,7 +158,7 @@
 
                         foreach ($listaProcOp as $item) {
                             $t++;
-
+                            
                             if ($opItem->operador_id == $item->operador_faturamento) {
                                 /* CABECALHO */
                                 if ($primeiro) {
@@ -241,6 +243,9 @@
 
                                     if ($verificador):
                                         $verificador = false;
+//                                        $totPacienteOperador++;
+                                        @$totGeralPaciente[$item->paciente_id]++;
+                                        
                                         ?>
                                         <td style="text-align: left;"><?= $item->paciente; ?></td>
                                     <? else: ?>
@@ -539,41 +544,44 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <? foreach ($procNaoFaturados as $proc) { ?>
-                        <td style="text-align: left;"><?= $proc->paciente; ?></td>
-                        <td style="text-align: left; color: <?= $cor ?>; font-weight: <?= $weigth ?>;"><?= $proc->procedimento; ?></td>
-                        <td style="text-align: left; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= $proc->convenio; ?></td>
-                        <td style="text-align: right; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= $proc->quantidade; ?></td>
-                        <?
-                        $agenda_exames_id .= $proc->agenda_exames_id . ',';
+                        <? foreach ($procNaoFaturados as $proc) { 
+                            @$totGeralPaciente[$proc->paciente_id]++; ?>
+                            <tr>
+                                <td style="text-align: left;"><?= $proc->paciente; ?></td>
+                                <td style="text-align: left; color: <?= $cor ?>; font-weight: <?= $weigth ?>;"><?= $proc->procedimento; ?></td>
+                                <td style="text-align: left; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= $proc->convenio; ?></td>
+                                <td style="text-align: right; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= $proc->quantidade; ?></td>
+                                <?
+                                $agenda_exames_id .= $proc->agenda_exames_id . ',';
 
-                        if ($proc->financeiro == 't') {
-                            $financeiro = 't';
-                        }
-                        if ($proc->exames_id == "") {
-                            $exame = 'f';
-                        }
-                        if ($proc->faturado == "f") {
-                            $faturado = 'f';
-                        }
+                                if ($proc->financeiro == 't') {
+                                    $financeiro = 't';
+                                }
+                                if ($proc->exames_id == "") {
+                                    $exame = 'f';
+                                }
+                                if ($proc->faturado == "f") {
+                                    $faturado = 'f';
+                                }
 
-                        $perc = ((int) $proc->quantidade * (float) $proc->valor_total);
-                        $valPendentes += $perc;
+                                $perc = ((int) $proc->quantidade * (float) $proc->valor_total);
+                                $valPendentes += $perc;
 
-                        if ($proc->forma_pagamento == "") {
-                            $OUTROS = $OUTROS + $proc->valor_total;
-                            $NUMEROOUTROS++;
-                        }
-                        if ($proc->faturado == 'f') {
-                            $pendentes ++;
-                        }
-                        $valor = 0;
-                        $valor = $valor + $proc->valor_total;
-                        $y = 0;
-                        $y++;
-                        ?>
-                        <td style="text-align: right; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= number_format($perc, 2, ',', '.'); ?></td>
-                    <? } ?>
+                                if ($proc->forma_pagamento == "") {
+                                    $OUTROS = $OUTROS + $proc->valor_total;
+                                    $NUMEROOUTROS++;
+                                }
+                                if ($proc->faturado == 'f') {
+                                    $pendentes ++;
+                                }
+                                $valor = 0;
+                                $valor = $valor + $proc->valor_total;
+                                $y = 0;
+                                $y++;
+                                ?>
+                                <td style="text-align: right; color: <?= $cor ?>; font-weight: <?= $weigth ?>"><?= number_format($perc, 2, ',', '.'); ?></td>                            
+                            </tr>
+                        <? } ?>
                     </tbody>
                 </table>
 
@@ -775,6 +783,10 @@
                                         <? } ?>
                                         <tr>
                                             <td colspan="4" align="center" style="background-color: #ddd"><font size="-1">TOTAL</td></tr>
+                                        <tr>
+                                            <td colspan="3"><font size="-1">NÚMERO DE PACIENTES</td>
+                                            <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= @count($totGeralPaciente); ?></td>
+                                        </tr>
                                         <tr>
                                             <td colspan="3"><font size="-1">NÚMERO DE PROCEDIMENTOS</td>
                                             <td style="text-align: right; font-weight: bolder;"><font size="-1"><?= $totalProcedimentos; ?></td>

@@ -11948,7 +11948,7 @@ ORDER BY ae.paciente_credito_id)";
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");
-            $qtde = $_POST['qtde'];
+            $qtde = (int) $_POST['qtde'];
 //            var_dump($qtde);die;
             for ($index = 1; $index <= $qtde; $index++) {
                 if ($_POST['indicacao'] != "") {
@@ -11991,7 +11991,7 @@ ORDER BY ae.paciente_credito_id)";
                     $this->db->set('medico_agenda', $_POST['medicoagenda']);
                 }
                 $this->db->set('convenio_id', $_POST['convenio1']);
-                $this->db->set('quantidade', '1');
+//                $this->db->set('quantidade', '1');
                 if ($dinheiro == "t") {
                     if ($index == 1) {
                         $this->db->set('valor', $_POST['valor1']);
@@ -12039,7 +12039,7 @@ ORDER BY ae.paciente_credito_id)";
                 }
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('quantidade', '1');
+                $this->db->set('quantidade', (int)$_POST['qtde1']);
                 $this->db->set('ativo', 'f');
                 $this->db->set('situacao', 'OK');
                 $this->db->set('guia_id', $ambulatorio_guia_id);

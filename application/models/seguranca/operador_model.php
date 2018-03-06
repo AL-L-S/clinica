@@ -249,6 +249,40 @@ class Operador_model extends BaseModel {
         }
     }
 
+    function gravaroperadorconvenioempresa() {
+        try {
+            $this->db->select('ambulatorio_empresa_operador_id');
+            $this->db->from('tb_ambulatorio_empresa_operador aeo');
+            $this->db->where('ativo', 't');
+            $this->db->where('operador_id', $_POST['txtoperador_id']);
+            $this->db->where('empresa_id', $_POST['empresa_id']);
+            $return = $this->db->get()->result();
+
+            if (count($return) == 0) {
+                /* inicia o mapeamento no banco */
+                $this->db->set('operador_id', $_POST['txtoperador_id']);
+                $this->db->set('empresa_id', $_POST['empresa_id']);
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_ambulatorio_empresa_operador');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $estoque_menu_produtos_id = $this->db->insert_id();
+
+                return $estoque_menu_produtos_id;
+            }
+            else {
+                return -2;
+            }
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravaroperadorconvenio() {
         try {
             $this->db->select('cop.ambulatorio_convenio_operador_id');
@@ -393,11 +427,31 @@ class Operador_model extends BaseModel {
         $this->db->where('operador', $operador);
         $this->db->where('empresa_id', $empresa_id);
         $this->db->update('tb_convenio_operador_procedimento');
+        
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('operador_id', $operador);
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->update('tb_ambulatorio_empresa_operador');
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return -1;
         else
             return 0;
+    }
+    
+    
+    function listarempresasconvenio() {
+
+//        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('empresa_id,
+                            nome');
+        $this->db->from('tb_empresa');
+        $this->db->orderby('nome');
+//        $this->db->where('empresa_id', $empresa_id);
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function excluiroperadorconvenio($ambulatorio_convenio_operador_id, $operador, $empresa_id, $convenio_id) {
@@ -534,14 +588,16 @@ class Operador_model extends BaseModel {
         return $return->result();
     }
 
-    function listarempresasconvenio() {
+    function listarempresasoperadorconvenio($operador) {
 
 //        $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('empresa_id,
-                            nome');
-        $this->db->from('tb_empresa');
-        $this->db->orderby('nome');
-//        $this->db->where('empresa_id', $empresa_id);
+        $this->db->select('e.empresa_id,
+                            e.nome');
+        $this->db->from('tb_ambulatorio_empresa_operador aeo');
+        $this->db->join('tb_empresa e', 'e.empresa_id = aeo.empresa_id');
+        $this->db->where('aeo.operador_id', $operador);
+        $this->db->where('aeo.ativo', 't');
+        $this->db->orderby('e.nome');
         $return = $this->db->get();
         return $return->result();
     }
