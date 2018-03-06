@@ -263,11 +263,29 @@
         });
     });
 
+//    function calculoIdade() {
+//        var data = document.getElementById("nascimento").value;
+//        var ano = data.substring(6, 12);
+//        var idade = new Date().getFullYear() - ano;
+//        document.getElementById("idade2").value = idade;
+//    }
     function calculoIdade() {
         var data = document.getElementById("nascimento").value;
-        var ano = data.substring(6, 12);
-        var idade = new Date().getFullYear() - ano;
-        document.getElementById("idade2").value = idade;
+
+        if (data != '' && data != '//') {
+
+            var ano = data.substring(6, 12);
+            var idade = new Date().getFullYear() - ano;
+
+            var dtAtual = new Date();
+            var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
+
+            if (dtAtual < aniversario) {
+                idade--;
+            }
+
+            document.getElementById("idade2").value = idade + " ano(s)";
+        }
     }
 
     jQuery("#nascimento").mask("99/99/9999");

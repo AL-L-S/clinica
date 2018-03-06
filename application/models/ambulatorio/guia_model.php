@@ -7943,6 +7943,111 @@ class guia_model extends Model {
         }
     }
 
+    function gravartransformaorcamentocredito() {
+        try {
+            if ($_POST['ajuste1'] != "0") {
+                $valor1 = $_POST['valorajuste1'];
+            } else {
+                $valor1 = $_POST['valor1'];
+            }
+            if ($_POST['ajuste2'] != "0") {
+                $valor2 = $_POST['valorajuste2'];
+            } else {
+                $valor2 = $_POST['valor2'];
+            }
+            if ($_POST['ajuste3'] != "0") {
+                $valor3 = $_POST['valorajuste3'];
+            } else {
+                $valor3 = $_POST['valor3'];
+            }
+            if ($_POST['ajuste4'] != "0") {
+                $valor4 = $_POST['valorajuste4'];
+            } else {
+                $valor4 = $_POST['valor4'];
+            }
+            if ($_POST['ajuste1'] != "0" || $_POST['ajuste2'] != "0" || $_POST['ajuste3'] != "0" || $_POST['ajuste4'] != "0") {
+                if ($_POST['valor1'] > $_POST['valorajuste1']) {
+                    $desconto1 = $_POST['valor1'] - $_POST['valorajuste1'];
+                } else {
+                    $desconto1 = $_POST['valorajuste1'] - $_POST['valor1'];
+                }
+                if ($_POST['valor2'] > $_POST['valorajuste2']) {
+                    $desconto2 = $_POST['valor1'] - $_POST['valorajuste1'];
+                } else {
+                    $desconto2 = $_POST['valorajuste2'] - $_POST['valor2'];
+                }
+                if ($_POST['valor3'] > $_POST['valorajuste3']) {
+                    $desconto3 = $_POST['valor3'] - $_POST['valorajuste3'];
+                } else {
+                    $desconto3 = $_POST['valorajuste3'] - $_POST['valor3'];
+                }
+                if ($_POST['valor4'] > $_POST['valorajuste4']) {
+                    $desconto4 = $_POST['valor4'] - $_POST['valorajuste4'];
+                } else {
+                    $desconto4 = $_POST['valorajuste4'] - $_POST['valor4'];
+                }
+
+                $desconto = $desconto1 + $desconto2 + $desconto3 + $desconto4;
+            } else {
+                $desconto = $_POST['desconto'];
+            }
+
+            $desconto_cartao1 = $_POST['valor1'] - $_POST['valorajuste1'];
+            $desconto_cartao2 = $_POST['valor2'] - $_POST['valorajuste2'];
+            $desconto_cartao3 = $_POST['valor3'] - $_POST['valorajuste3'];
+            $desconto_cartao4 = $_POST['valor4'] - $_POST['valorajuste4'];
+            
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            if ($_POST['formapamento1'] != '') {
+                $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                $this->db->set('valor1', str_replace(",", ".", $valor1));
+                $this->db->set('parcelas1', $_POST['parcela1']);
+                $this->db->set('desconto_ajuste1', $desconto_cartao1);
+            }
+            if ($_POST['formapamento2'] != '') {
+                $this->db->set('forma_pagamento2', $_POST['formapamento2']);
+                $this->db->set('valor2', str_replace(",", ".", $valor2));
+                $this->db->set('parcelas2', $_POST['parcela2']);
+                $this->db->set('desconto_ajuste2', $desconto_cartao2);
+            }
+            if ($_POST['formapamento3'] != '') {
+                $this->db->set('forma_pagamento3', $_POST['formapamento3']);
+                $this->db->set('valor3', str_replace(",", ".", $valor3));
+                $this->db->set('parcelas3', $_POST['parcela3']);
+                $this->db->set('desconto_ajuste3', $desconto_cartao3);
+            }
+            if ($_POST['formapamento4'] != '') {
+                $this->db->set('forma_pagamento4', $_POST['formapamento4']);
+                $this->db->set('valor4', str_replace(",", ".", $valor4));
+                $this->db->set('parcelas4', $_POST['parcela4']);
+                $this->db->set('desconto_ajuste4', $desconto_cartao4);
+            }
+            
+            $paciente_id = $_POST['paciente_id'];
+            
+            $this->db->set('faturado', 't');
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->set('valor',(float) str_replace(',', '.', str_replace('.', '', $_POST['valorafaturar'])) );
+            $this->db->set('data', date("Y-m-d"));
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->insert('tb_paciente_credito');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarfaturamentocredito() {
         try {
 
