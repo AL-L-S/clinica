@@ -256,6 +256,7 @@ class caixa_model extends Model {
         $this->db->where('s.ativo', 'true');
         $this->db->where('s.data >=', $data_inicio);
         $this->db->where('s.data <=', $data_fim);
+        $this->db->where('s.tipo !=', 'TRANSFERENCIA');
         $empresa_id = $this->session->userdata('empresa_id');
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
             $this->db->where('s.empresa_id', $args['txtempresa']);
@@ -284,6 +285,7 @@ class caixa_model extends Model {
         $this->db->where('s.ativo', 'true');
         $this->db->where('s.data >=', $data_inicio);
         $this->db->where('s.data <=', $data_fim);
+        $this->db->where('s.tipo !=', 'TRANSFERENCIA');
         $empresa_id = $this->session->userdata('empresa_id');
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
             $this->db->where('s.empresa_id', $args['txtempresa']);
@@ -369,6 +371,7 @@ class caixa_model extends Model {
         $this->db->where('s.ativo', 'true');
         $this->db->where('s.data >=', $data_inicio);
         $this->db->where('s.data <=', $data_fim);
+        $this->db->where('s.tipo !=', 'TRANSFERENCIA');
         $empresa_id = $this->session->userdata('empresa_id');
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
             $this->db->where('s.empresa_id', $args['txtempresa']);
@@ -397,6 +400,7 @@ class caixa_model extends Model {
         $this->db->where('s.ativo', 'true');
         $this->db->where('s.data >=', $data_inicio);
         $this->db->where('s.data <=', $data_fim);
+        $this->db->where('s.tipo !=', 'TRANSFERENCIA');
         $empresa_id = $this->session->userdata('empresa_id');
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
             $this->db->where('s.empresa_id', $args['txtempresa']);
@@ -475,6 +479,7 @@ class caixa_model extends Model {
         $this->db->where('s.ativo', 'true');
         $this->db->where('s.data >=', $data_inicio);
         $this->db->where('s.data <=', $data_fim);
+        $this->db->where('s.tipo !=', 'TRANSFERENCIA');
         $empresa_id = $this->session->userdata('empresa_id');
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
             $this->db->where('s.empresa_id', $args['txtempresa']);
@@ -495,6 +500,7 @@ class caixa_model extends Model {
         $this->db->where('s.ativo', 'true');
         $this->db->where('s.data >=', $data_inicio);
         $this->db->where('s.data <=', $data_fim);
+        $this->db->where('s.tipo !=', 'TRANSFERENCIA');
         $empresa_id = $this->session->userdata('empresa_id');
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
             $this->db->where('s.empresa_id', $args['txtempresa']);

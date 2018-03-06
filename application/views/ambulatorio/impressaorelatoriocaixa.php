@@ -54,6 +54,7 @@
 
                 $i = 0;
                 $b = 0;
+                $u = 0;
                 $valor = 0;
                 $valortotal = 0;
                 $convenio = "";
@@ -669,6 +670,7 @@
 
                         $i = 0;
                         $b = 0;
+                        $u = 0;
                         $valor = 0;
                         $valortotal = 0;
                         $convenio = "";
@@ -930,6 +932,7 @@
                             </tr>
 
                             <?php
+                            $u = 0;
                             foreach ($formapagamento as $value) {
                                 if ($item->forma_pagamento == $value->nome) {
                                     $data[$value->nome] = $data[$value->nome] + $item->valor1;
@@ -1435,7 +1438,7 @@
     <? } ?>
         </div>
         <br>
-    <? if (count($relatorio) > 0) { ?>
+    <? if (count($relatorio) > 0 || count($relatoriohomecare) > 0) { ?>
             <div style="display: inline-block;">
                 <table border="1">
                     <tbody>

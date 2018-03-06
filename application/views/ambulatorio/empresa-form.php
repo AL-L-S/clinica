@@ -589,6 +589,13 @@
                         <dd>
                             <input type="checkbox" id="valor_laboratorio" name="valor_laboratorio" <? if (@$obj->_valor_laboratorio == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+
+                             <label title="O manter classificação vira manter super grupo. Onde os grupos do sistema vão poder ser agrupados pelo Manter Grupo Classificação. Ou seja, Manter Subgrupo">Subgrupo </label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="subgrupo" name="subgrupo" <? if (@$obj->_subgrupo == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

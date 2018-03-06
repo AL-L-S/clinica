@@ -177,8 +177,10 @@ $valormes_total_pagamento = $valormes_medico_total + $valormes_laboratorio_total
                      </tr>
                  </table>   
                </td>
-               
-               <td style="width: 33%;<?if(date("m") == date("m", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio'])))){echo 'display:none'; }?>">
+               <?
+//               var_dump($_GET['txtdata_inicio']); die;
+               ?>
+               <td style="width: 33%;<?if(date("m") == date("m", strtotime(str_replace('/', '-', @$_GET['txtdata_inicio']))) || !isset($_GET['txtdata_inicio'])){echo 'display:none'; }?>">
                 <table>
                     <tr>
                            <!--<th class="tabela_header">Nome</th>-->

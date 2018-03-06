@@ -5,7 +5,7 @@
         <h4>TODOS OS TIPOS</h4>
     <? } ?>
     <? if (count($classe) > 0) { ?>
-         <? $texto = strtr(strtoupper($classe[0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß"); ?>
+        <? $texto = strtr(strtoupper($classe[0]->descricao), "àáâãäåæçèéêëìíîïðñòóôõö÷øùüúþÿ", "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÜÚÞß"); ?>
         <h4>CLASSE: <?= $texto; ?></h4>
     <? } else { ?>
         <h4>TODAS AS CLASSES</h4>
@@ -21,7 +21,7 @@
         <h4>TODAS OS CREDORES</h4>
     <? } ?>
     <h4>RELATORIO DE SAIDA</h4>
-    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
+    <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
     <hr>
     <?
     if (count($relatorio) > 0) {
@@ -43,7 +43,9 @@
                 <?php
                 $total = 0;
                 foreach ($relatorio as $item) :
-                    $total = $total + $item->valor;
+                    if ($item->tipo != 'TRANSFERENCIA') {
+                        $total = $total + $item->valor;
+                    }
                     ?>
                     <tr>
                         <td ><?= utf8_decode($item->conta); ?></td>
@@ -63,8 +65,7 @@
 
 
             <?
-        }
-        else {
+        } else {
             ?>
             <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
             <?

@@ -21,7 +21,7 @@
         <h4>TODAS OS DEVEDORES</h4>
     <? } ?>
     <h4>RELATORIO MOVIMENTA&Ccedil;&Atilde;O</h4>
-    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
+    <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
     <hr>
     <h4>Saldo anterior: <?= number_format($saldoantigo[0]->total, 2, ",", "."); ?></h4>
     <?
@@ -46,8 +46,12 @@
                 $data = 0;
                 $totalrelatorio = 0;
                 foreach ($relatorio as $item) :
-                    $total = $total + $item->valor;
-                    $totalrelatorio = $totalrelatorio + $item->valor;
+                    if ($item->tiposaida != 'TRANSFERENCIA' && $item->tipoentrada != 'TRANSFERENCIA') {
+                        $total = $total + $item->valor;
+                        $totalrelatorio = $totalrelatorio + $item->valor;
+                    }
+
+//                    $totalrelatorio = $totalrelatorio + $item->valor;
                     $dataatual = substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4);
                     ?>
 
@@ -58,10 +62,17 @@
                         <? if ($item->tiposaida != null) { ?>
                             <td ><?= utf8_decode($item->tiposaida); ?></td>
                             <td ><?= utf8_decode($item->classesaida); ?></td>
-                            <td ><font color="red"><?= number_format($item->valor, 2, ",", "."); ?></td>
+                            <? if ($item->valor > 0) { ?>
+                                <td ><font color="blue"><?= number_format($item->valor, 2, ",", "."); ?></td>   
+
+                            <? } else { ?>
+                                <td ><font color="red"><?= number_format($item->valor, 2, ",", "."); ?></td>    
+
+                            <? } ?>
+
                         <? } else { ?>
                             <td ><?= utf8_decode($item->tipoentrada); ?></td>
-                             <td ><?= utf8_decode($item->classeentrada); ?></td>                      
+                            <td ><?= utf8_decode($item->classeentrada); ?></td>                      
                             <td ><font color="blue"><?= number_format($item->valor, 2, ",", "."); ?></td>
                         <? } ?>
 

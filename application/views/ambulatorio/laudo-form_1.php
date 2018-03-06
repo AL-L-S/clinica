@@ -403,6 +403,7 @@ if (count($pacs) > 0) {
                                                         <? }
                                                         ?>
                                                     </div></td>
+                                                    
                                             </tr>
                                             <tr>
                                                 <td >
@@ -425,6 +426,10 @@ if (count($pacs) > 0) {
                                                     <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/carregaruploadcliente/" ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=650');" >
                                                             <font size="-1">Upload de Imagens</a></div></td>
+                                                <td>
+                                                    <div class="bt_link_new">
+                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/procedimentoplanoconsultalaudo/" ?> ', '_blank');" >
+                                                            <font size="-1">Consultar Proc...</a></div></td>
                                             </tr>
                                         </table>
                                     </div>

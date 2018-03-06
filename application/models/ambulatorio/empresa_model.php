@@ -1052,6 +1052,11 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('cpf_obrigatorio', 'f');
                 }
+                if (isset($_POST['subgrupo'])) {
+                    $this->db->set('subgrupo', 't');
+                } else {
+                    $this->db->set('subgrupo', 'f');
+                }
                 if (isset($_POST['orcamento_recepcao'])) {
                     $this->db->set('orcamento_recepcao', 't');
                 } else {
@@ -1261,6 +1266,11 @@ class empresa_model extends Model {
                     $this->db->set('valor_autorizar', 't');
                 } else {
                     $this->db->set('valor_autorizar', 'f');
+                }
+                if (isset($_POST['subgrupo'])) {
+                    $this->db->set('subgrupo', 't');
+                } else {
+                    $this->db->set('subgrupo', 'f');
                 }
                 if (isset($_POST['conjuge'])) {
                     $this->db->set('conjuge', 't');

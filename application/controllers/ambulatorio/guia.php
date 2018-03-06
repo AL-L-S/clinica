@@ -1268,6 +1268,7 @@ class Guia extends BaseController {
         if (count($percentual) == 0) {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
         }
+//        var_dump($percentual); die;
 
         $paciente_id = $_POST['txtpaciente_id'];
         $ambulatorio_guia_id = $this->guia->editarexames($percentual);

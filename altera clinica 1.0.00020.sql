@@ -21,3 +21,6 @@ AND oe.operador_id NOT IN (
     FROM ponto.tb_ambulatorio_empresa_operador
     WHERE ativo = 't'
 );
+
+
+ALTER TABLE ponto.tb_forma_entradas_saida ADD COLUMN empresa_id integer;
