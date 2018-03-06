@@ -96,6 +96,9 @@ ALTER TABLE ponto.tb_paciente_credito ADD COLUMN financeiro_fechado boolean DEFA
 ALTER TABLE ponto.tb_paciente_credito ADD COLUMN operador_financeiro integer;
 ALTER TABLE ponto.tb_paciente_credito ADD COLUMN data_financeiro timestamp without time zone;
 
+ALTER TABLE ponto.tb_empresa ADD COLUMN farmacia boolean DEFAULT false;
+
+
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
 DECLARE

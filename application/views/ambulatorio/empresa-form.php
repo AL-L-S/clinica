@@ -257,6 +257,12 @@
                             <input type="checkbox" id="internacao" name="internacao" <? if (@$obj->_internacao == 't') echo "checked"; ?>/> 
                         </dd>
                         <dt>
+                            <label title="Habilitar Internação.">Farmácia</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="internacao" name="farmacia" <? if (@$obj->_farmacia == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
                             <label title="Habilitar Centro Cirurgico.">Centro Cirurgico</label>
                         </dt>
                         <dd>
