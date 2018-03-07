@@ -56,6 +56,7 @@ class login_model extends Model {
             $internacao = $retorno[0]->internacao;
             $laudo_sigiloso = $retorno[0]->laudo_sigiloso;
             $chat = $retorno[0]->chat;
+            $farmacia = $retorno[0]->farmacia;
             $centrocirurgico = $retorno[0]->centrocirurgico;
             $relatoriorm = $retorno[0]->relatoriorm;
             $imagem = $retorno[0]->imagem;
@@ -118,6 +119,7 @@ class login_model extends Model {
                 'perfil' => $return[0]->perfil,
                 'modulo' => $modulo,
                 'laudo_sigiloso' => $laudo_sigiloso,
+                'farmacia' => $farmacia,
                 'centrocirurgico' => $centrocirurgico,
                 'gerente_contasapagar' => $gerente_contasapagar,
                 'orcamento_recepcao' => $orcamento_recepcao,

@@ -42,7 +42,10 @@
                 <?php
                 $total = 0;
                 foreach ($relatorioentrada as $item) :
-                    $total = $total + $item->valor;
+                    if($item->tipo != 'TRANSFERENCIA'){
+                         $total = $total + $item->valor;
+                    }
+                   
                     ?>
                     <tr>
                         <td ><?= utf8_decode($item->conta); ?></td>

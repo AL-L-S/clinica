@@ -36,7 +36,7 @@
                 <?php
                 $total = 0;
                 foreach ($relatorioentrada as $item) :
-                    $total = $total + $item->valor;
+                       $total = $total + $item->valor; 
                     ?>
                     <tr>
                         <td ><?= utf8_decode($item->conta); ?></td>

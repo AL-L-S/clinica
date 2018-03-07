@@ -47,6 +47,12 @@ class Procedimentoplano extends BaseController {
 
 //            $this->carregarView($data);
     }
+    function procedimentoplanoconsultalaudo($args = array()) {
+
+        $this->loadView('ambulatorio/procedimentoplanolaudo-consulta', $args);
+
+//            $this->carregarView($data);
+    }
 
     function conveniopercentual($args = array()) {
         $this->loadView('ambulatorio/conveniopercentualmedico-lista', $args);

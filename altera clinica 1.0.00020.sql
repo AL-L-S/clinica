@@ -51,3 +51,4 @@ CREATE TABLE ponto.tb_ambulatorio_subgrupo_grupo
 );
 
 ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN subgrupo_id integer;
+ALTER TABLE ponto.tb_forma_entradas_saida ADD COLUMN empresa_id integer;

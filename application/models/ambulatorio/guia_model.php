@@ -5961,6 +5961,7 @@ class guia_model extends Model {
                             ae.quantidade,
                             ae.valor_total,
                             ae.valor1,
+                            ae.forma_pagamento as forma_pagamento1,
                             ae.forma_pagamento2,
                             ae.valor2,
                             ae.forma_pagamento3,

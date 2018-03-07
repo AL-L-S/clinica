@@ -66,6 +66,81 @@ class procedimentoplano_model extends Model {
         return $this->db;
     }
 
+    function listarprocedimentoconsultalaudo1($args = array()) {
+        $this->db->select('
+                            distinct(pt.procedimento_tuss_id),
+                            pt.nome as procedimento,
+                           
+                            pt.codigo,
+                            pt.grupo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_empresa e', 'e.empresa_id = pc.empresa_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("pt.grupo !=", 'AGRUPADOR');
+//        $empresa_id = $this->session->userdata('empresa_id');
+//        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+//        if ($procedimento_multiempresa == 't') {
+//            $this->db->where('pc.empresa_id', $empresa_id);
+//        }
+
+        if (isset($args['procedimento']) && strlen($args['procedimento']) > 0) {
+            $this->db->where('pt.nome ilike', $args['procedimento'] . "%");
+        }
+        if (isset($args['codigo']) && strlen($args['codigo']) > 0) {
+            $this->db->where('pt.codigo ilike', $args['codigo'] . "%");
+        }
+        if (isset($args['grupo']) && strlen($args['grupo']) > 0) {
+            $this->db->where('pt.grupo ilike', $args['grupo'] . "%");
+        }
+        $this->db->groupby("pt.procedimento_tuss_id,
+                            pt.nome,
+                            pt.codigo,
+                            pt.grupo");
+        $this->db->orderby("pt.grupo,pt.nome");
+
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimentoconsultalaudo2($args = array()) {
+        $this->db->select('
+                            distinct(pt.procedimento_tuss_id),
+                            pt.nome as procedimento,
+                           
+                            pt.codigo,
+                            pt.grupo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_empresa e', 'e.empresa_id = pc.empresa_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("pt.grupo !=", 'AGRUPADOR');
+//        $empresa_id = $this->session->userdata('empresa_id');
+//        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+//        if ($procedimento_multiempresa == 't') {
+//            $this->db->where('pc.empresa_id', $empresa_id);
+//        }
+
+        if (isset($args['procedimento']) && strlen($args['procedimento']) > 0) {
+            $this->db->where('pt.nome ilike', $args['procedimento'] . "%");
+        }
+        if (isset($args['codigo']) && strlen($args['codigo']) > 0) {
+            $this->db->where('pt.codigo ilike', $args['codigo'] . "%");
+        }
+        if (isset($args['grupo']) && strlen($args['grupo']) > 0) {
+            $this->db->where('pt.grupo ilike', $args['grupo'] . "%");
+        }
+        $this->db->groupby("pt.procedimento_tuss_id,
+                            pt.nome,
+                            pt.codigo,
+                            pt.grupo");
+        $this->db->orderby("pt.grupo,pt.nome");
+
+
+        return $this->db;
+    }
+
     function listarautocompleteformapagamento($args = array()) {
         $this->db->select('forma_pagamento_id,
                            nome');
@@ -164,6 +239,7 @@ class procedimentoplano_model extends Model {
 
         $this->db->select('pm.procedimento_percentual_medico_id,
                             pt.nome as procedimento,
+                            pc.procedimento_convenio_id,
                             c.nome as convenio,
                             pt.grupo as grupo');
         $this->db->from('tb_procedimento_percentual_medico pm');
@@ -912,7 +988,7 @@ class procedimentoplano_model extends Model {
         $this->db->orderby('nome');
         $this->db->where("ativo", 't');
         $this->db->where("(grupo != 'AGRUPADOR' OR grupo IS NULL)");
-        $return = $this->db->get();  
+        $return = $this->db->get();
 //        echo "<pre>";
 //        var_dump($return->result()); die;
         return $return->result();
@@ -1490,7 +1566,7 @@ class procedimentoplano_model extends Model {
             $this->db->set('percentual', $_POST['percentual']);
             if (isset($_POST['revisor'])) {
                 $this->db->set('revisor', 't');
-            }else{
+            } else {
                 $this->db->set('revisor', 'f');
             }
             if ($_POST['dia_recebimento'] != '') {
@@ -2225,8 +2301,7 @@ class procedimentoplano_model extends Model {
                 } else {
                     return -2;
                 }
-            } 
-            else {
+            } else {
                 if (isset($_POST['brasindice'])) {
                     $horario = date("Y-m-d H:i:s");
                     $operador_id = $this->session->userdata('operador_id');

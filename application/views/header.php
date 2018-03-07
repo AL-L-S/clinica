@@ -13,6 +13,7 @@ $perfil_id = $this->session->userdata('perfil_id');
 $marketing = $this->session->userdata('marketing');
 $internacao = $this->session->userdata('internacao');
 $financeiro = $this->session->userdata('financeiro');
+$farmacia = $this->session->userdata('farmacia');
 $empresa_id = $this->session->userdata('empresa_id');
 $calendario = $this->session->userdata('calendario');
 $operador_id = $this->session->userdata('operador_id');
@@ -260,7 +261,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id                                       ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id                                        ?>);
                     }
                 }
 
@@ -288,7 +289,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id                                         ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id                                          ?>);
                 }
 
 <? } ?>
@@ -429,8 +430,8 @@ function debug($object) {
                                             <? }
                                             ?>
 
-                                                                                                                                                                                                                                                                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
-                                                                                                                                                                                                                                                                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
+                                                                                                                                                                                                                                                                            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
+                                                                                                                                                                                                                                                                            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
 
                                             <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
                                                 <? if ($geral == 't') { ?>
@@ -516,7 +517,7 @@ function debug($object) {
                             <ul>
                                 <li><span class="folder">Rotinas</span>
 
-                                    <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>-->
+                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>-->
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalasespera">Salas de Espera</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalaspreparo">Salas de Preparo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamerealizando">Salas de Atendimento</a></span></ul>
@@ -767,32 +768,35 @@ function debug($object) {
                             </ul>
                         </li>
                     <? } ?>
-<!--                    <li><span class="folder">Farmácia</span>
-                <ul><? if ($perfil_id == 1 || $perfil_id == 8) { ?>
-                                <li><span class="folder">Rotinas</span>                                                 <li><span class="file"><a href="<?= base_url() ?>farmacia/solicitacao">Manter Solicitacao</a></span></li>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada">Manter Entrada</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/menu">Manter Menu</a></span></ul>
+                    <? if ($farmacia == 't') { ?>
+                        <li><span class="folder">Farmácia</span>
+                            <ul><? if ($perfil_id == 1 || $perfil_id == 8) { ?>
+                                    <li><span class="folder">Rotinas</span>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/solicitacao">Manter Solicitacao</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada">Manter Entrada</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/menu">Manter Menu</a></span></ul>
 
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/armazem">Manter Armazem</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/fornecedor">Manter Fornecedor</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/produto">Manter Produto</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/fracionamento">Fracionamento</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/saida">Saida por paciente</a></span></ul>
-                                </li> 
-                                <li><span class="folder">Relatórios</span>        
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/culente">Manter Setor</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatorioentradaarmazem">Relatorio Entrada Produtos</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriosaidaarmazem">Relatorio Saida Produtos</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriosaldoarmazem">Relatorio Saldo Produtos/Entrada</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriosaldo">Relatorio Saldo Produtos</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriominimo">Relatorio farmacia Minimo</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatorioprodutos">Relatorio Produtos</a></span></ul>
-                                    <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriofornecedores">Relatorio Fornecedores</a></span></ul>
-                                    <li><span class="file"><a href="<?= base_url() ?>seguranca/operador/operadorsetor">Listar Operadores</a></span></li>
-                                </li> 
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/armazem">Manter Armazem</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/fornecedor">Manter Fornecedor</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/produto">Manter Produto</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/fracionamento">Fracionamento</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/saida">Saida por paciente</a></span></ul>
+                                    </li> 
+                                    <li><span class="folder">Relatórios</span>        
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/culente">Manter Setor</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatorioentradaarmazem">Relatorio Entrada Produtos</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriosaidaarmazem">Relatorio Saida Produtos</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriosaldoarmazem">Relatorio Saldo Produtos/Entrada</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriosaldo">Relatorio Saldo Produtos</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriominimo">Relatorio farmacia Minimo</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatorioprodutos">Relatorio Produtos</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriofornecedores">Relatorio Fornecedores</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/operadorsetor">Listar Operadores</a></span></ul>
+                                    </li> 
+                                <? } ?>
+                            </ul>
+                        </li>
                     <? } ?>
-                </ul>
-            </li>-->
 
                     <? if ($financeiro == 't' && ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || $perfil_id == 18 || ($perfil_id == 5 && $gerente_contasapagar == 't'))) { ?>
 
@@ -1116,13 +1120,15 @@ function debug($object) {
                                         <? } ?>
                                     </li> 
                                 <? } ?>
+                                <? if ($farmacia == 't') { ?>
 
-        <!--                                <li><span class="folder">Farmácia</span>
+                                <li><span class="folder">Farmácia</span>
                                             <ul><span class="file"><a href="<?= base_url() ?>farmacia/tipo">Manter Tipo</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>farmacia/classe">Manter Classe</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>farmacia/subclasse">Manter Sub-Classe</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>farmacia/unidade">Manter Medida</a></span></ul>
-                                        </li>-->
+                                        </li>
+                                <?}?>
                                 <? if ($financeiro == 't') { ?>
                                     <li><span class="folder">Financeiro</span>
                                         <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
@@ -1392,7 +1398,7 @@ function debug($object) {
                 //atualiza status do operador
                 //                setInterval(function () {
                 //                    atualizastatus();
-                //                    verifica(0, 0,<? // echo $operador_id                         ?>);
+                //                    verifica(0, 0,<? // echo $operador_id                          ?>);
                 //                }, 10000);
 
                 buscamensagens();
