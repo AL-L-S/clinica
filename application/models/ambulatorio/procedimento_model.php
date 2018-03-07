@@ -632,6 +632,12 @@ class procedimento_model extends Model {
             $this->db->set('tuss_id', $_POST['txtprocedimento']);
             $this->db->set('codigo', $_POST['txtcodigo']);
             $this->db->set('descricao', $_POST['txtdescricao']);
+            if ($_POST['subgrupo_id'] != '') {
+                $this->db->set('subgrupo_id', $_POST['subgrupo_id']);
+            }
+            else{
+                $this->db->set('subgrupo_id', null);
+            }
             if ($_POST['txtqtde'] != '') {
                 $this->db->set('qtde', $_POST['txtqtde']);
             }
@@ -1013,7 +1019,8 @@ class procedimento_model extends Model {
                                pt.qtde, pt.dencidade_calorica, pt.proteinas, pt.percentual_laboratorio, pt.valor_laboratorio,
                                pt.carboidratos, pt.lipidios, pt.kcal,pt.laboratorio_id,
                                pt.revisao, pt.sala_preparo, pt.revisao_dias,
-                               pt.associacao_procedimento_tuss_id, pt.retorno_dias');
+                               pt.associacao_procedimento_tuss_id, pt.retorno_dias,
+                               pt.subgrupo_id');
             $this->db->from('tb_procedimento_tuss pt');
             $this->db->join('tb_tuss t', 't.tuss_id = pt.tuss_id', 'left');
             $this->db->where("procedimento_tuss_id", $procedimento_tuss_id);
@@ -1050,6 +1057,7 @@ class procedimento_model extends Model {
             $this->_valor_laboratorio = $return[0]->valor_laboratorio;
             $this->_laboratorio_id = $return[0]->laboratorio_id;
             $this->_retorno_dias = $return[0]->retorno_dias;
+            $this->_subgrupo_id = $return[0]->subgrupo_id;
         } else {
             $this->_procedimento_tuss_id = null;
         }

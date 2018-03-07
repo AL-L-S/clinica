@@ -660,6 +660,9 @@ class guia_model extends Model {
         if (@$_POST['situacao_faturamento'] != "") {
             $this->db->where("ae.situacao_faturamento", $_POST['situacao_faturamento']);
         }
+        if ($_POST['subgrupo_id'] != "") {
+            $this->db->where("pt.subgrupo_id", $_POST['subgrupo_id']);
+        }
         if ($_POST['faturamento'] != "0") {
             $this->db->where("ae.faturado", $_POST['faturamento']);
         }

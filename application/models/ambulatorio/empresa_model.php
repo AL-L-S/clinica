@@ -1228,6 +1228,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('laudo_sigiloso', 'f');
                 }
+                
+                if (isset($_POST['subgrupo_procedimento'])) {
+                    $this->db->set('subgrupo_procedimento', 't');
+                } else {
+                    $this->db->set('subgrupo_procedimento', 'f');
+                }
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data_cadastro', $horario);
@@ -1468,6 +1474,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('repetir_horarios_agenda', 'f');
                 }
+                
+                if (isset($_POST['subgrupo_procedimento'])) {
+                    $this->db->set('subgrupo_procedimento', 't');
+                } else {
+                    $this->db->set('subgrupo_procedimento', 'f');
+                }
 
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
@@ -1582,7 +1594,8 @@ class empresa_model extends Model {
                                ep.campos_obrigatorios_pac_nascimento,
                                ep.campos_obrigatorios_pac_telefone,
                                ep.campos_obrigatorios_pac_municipio,
-                               ep.repetir_horarios_agenda
+                               ep.repetir_horarios_agenda,
+                               ep.subgrupo_procedimento,
                                ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -1690,6 +1703,7 @@ class empresa_model extends Model {
             $this->_campos_obrigatorios_pac_sexo = $return[0]->campos_obrigatorios_pac_sexo;
             $this->_campos_obrigatorios_pac_cpf = $return[0]->campos_obrigatorios_pac_cpf;
             $this->_repetir_horarios_agenda = $return[0]->repetir_horarios_agenda;
+            $this->_subgrupo_procedimento = $return[0]->subgrupo_procedimento;
         } else {
             $this->_empresa_id = null;
         }

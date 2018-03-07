@@ -24,9 +24,9 @@
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $('#btnVoltar').click(function() {
-        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
-    });
+//    $('#btnVoltar').click(function() {
+//        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
+//    });
 
     $(function() {
         $( "#accordion" ).accordion();

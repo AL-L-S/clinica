@@ -1986,6 +1986,7 @@ class Guia extends BaseController {
         $data['grupo'] = $this->guia->listargrupo();
         $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
         $data['grupoclassificacao'] = $this->grupoclassificacao->listargrupoclassificacaos();
+        $data['subgrupos'] = $this->grupoclassificacao->listarsubgrupo2();
         $data['procedimentos'] = $this->guia->listarprocedimentos();
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -2084,6 +2085,7 @@ class Guia extends BaseController {
             $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
         }
         $data['relatorio'] = $this->guia->relatorioexamesconferencia();
+        
         if ($_POST['planilha'] == "SIM") {
             $html = $this->load->View('ambulatorio/impressaorelatorioconferencia', $data, true);
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");

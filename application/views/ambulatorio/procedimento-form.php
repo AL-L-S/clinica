@@ -43,6 +43,23 @@
                         </select>
                     </dd>
                     
+                    <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento'); ?>
+                    <? if($subgrupo_procedimento == 't') { ?>
+                        <dt>
+                            <label>Subgrupo</label>
+                        </dt>
+                        <dd style="margin-bottom: 5pt">
+                            <select name="subgrupo_id" id="subgrupo_id" class="size2" data-placeholder="Selecione" tabindex="1">
+                                <option value=''>Selecione</option>
+                                <? foreach ($subgrupos as $value) : ?>
+                                    <option value="<?= $value->ambulatorio_subgrupo_id; ?>" <?= (@$obj->_subgrupo_id == $value->ambulatorio_subgrupo_id) ? 'selected' : ''?>>
+                                        <?php echo $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+                            </select>
+                        </dd>
+                    <? } ?>
+                    
                     
                     <div id="divRetorno">
                         <dt>
