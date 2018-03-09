@@ -2392,7 +2392,10 @@ class procedimentoplano_model extends Model {
                         $this->db->where('pc.ativo', 't');
                         $this->db->where("pt.procedimento_tuss_id", $_POST['procedimento']);
                         $this->db->where("pc.convenio_id", $_POST['convenio']);
-                        $this->db->where("pc.empresa_id", $_POST['empresa']);
+                        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+                        if ($procedimento_multiempresa == 't') { 
+                            $this->db->where("pc.empresa_id", $_POST['empresa']);
+                        }
                         $query = $this->db->get();
                         $return = $query->result();
                         $qtde = count($return);
@@ -2400,15 +2403,15 @@ class procedimentoplano_model extends Model {
                         if ($qtde == 0) {
                             $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                             $this->db->set('convenio_id', $_POST['convenio']);
-                            $this->db->set('qtdech', $_POST['qtdech']);
-                            $this->db->set('valorch', $_POST['valorch']);
-                            $this->db->set('qtdefilme', $_POST['qtdefilme']);
-                            $this->db->set('valorfilme', $_POST['valorfilme']);
-                            $this->db->set('qtdeporte', $_POST['qtdeporte']);
-                            $this->db->set('valorporte', $_POST['valorporte']);
-                            $this->db->set('qtdeuco', $_POST['qtdeuco']);
-                            $this->db->set('valoruco', $_POST['valoruco']);
-                            $this->db->set('valortotal', $_POST['valortotal']);
+                            $this->db->set('qtdech', (int)$_POST['qtdech']);
+                            $this->db->set('valorch', (float)$_POST['valorch']);
+                            $this->db->set('qtdefilme', (int)$_POST['qtdefilme']);
+                            $this->db->set('valorfilme', (float)$_POST['valorfilme']);
+                            $this->db->set('qtdeporte', (int)$_POST['qtdeporte']);
+                            $this->db->set('valorporte', (float)$_POST['valorporte']);
+                            $this->db->set('qtdeuco', (int)$_POST['qtdeuco']);
+                            $this->db->set('valoruco', (float)$_POST['valoruco']);
+                            $this->db->set('valortotal', (float)$_POST['valortotal']);
                             $this->db->set('empresa_id', $_POST['empresa']);
                             $this->db->set('data_cadastro', $horario);
                             $this->db->set('operador_cadastro', $operador_id);
@@ -2437,15 +2440,15 @@ class procedimentoplano_model extends Model {
                             $secundarios = $query->result();
 
                             foreach ($secundarios as $sec) {
-                                $this->db->set('qtdech', $_POST['qtdech']);
-                                $this->db->set('valorch', $_POST['valorch']);
-                                $this->db->set('qtdefilme', $_POST['qtdefilme']);
-                                $this->db->set('valorfilme', $_POST['valorfilme']);
-                                $this->db->set('qtdeporte', $_POST['qtdeporte']);
-                                $this->db->set('valorporte', $_POST['valorporte']);
-                                $this->db->set('qtdeuco', $_POST['qtdeuco']);
-                                $this->db->set('valoruco', $_POST['valoruco']);
-                                $this->db->set('valortotal', ($_POST['valortotal'] * (float) $sec->valor_percentual / 100));
+                                $this->db->set('qtdech', (int)$_POST['qtdech']);
+                                $this->db->set('valorch', (float)$_POST['valorch']);
+                                $this->db->set('qtdefilme', (int)$_POST['qtdefilme']);
+                                $this->db->set('valorfilme', (float)$_POST['valorfilme']);
+                                $this->db->set('qtdeporte', (int)$_POST['qtdeporte']);
+                                $this->db->set('valorporte', (float)$_POST['valorporte']);
+                                $this->db->set('qtdeuco', (int)$_POST['qtdeuco']);
+                                $this->db->set('valoruco', (float)$_POST['valoruco']);
+                                $this->db->set('valortotal', (float)($_POST['valortotal'] * (float) $sec->valor_percentual / 100));
                                 $this->db->set('empresa_id', $_POST['empresa']);
                                 $this->db->set('data_atualizacao', $horario);
                                 $this->db->set('operador_atualizacao', $operador_id);
@@ -2488,15 +2491,15 @@ class procedimentoplano_model extends Model {
 
                         $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                         $this->db->set('convenio_id', $_POST['convenio']);
-                        $this->db->set('qtdech', $_POST['qtdech']);
-                        $this->db->set('valorch', $_POST['valorch']);
-                        $this->db->set('qtdefilme', $_POST['qtdefilme']);
-                        $this->db->set('valorfilme', $_POST['valorfilme']);
-                        $this->db->set('qtdeporte', $_POST['qtdeporte']);
-                        $this->db->set('valorporte', $_POST['valorporte']);
-                        $this->db->set('qtdeuco', $_POST['qtdeuco']);
-                        $this->db->set('valoruco', $_POST['valoruco']);
-                        $this->db->set('valortotal', $_POST['valortotal']);
+                        $this->db->set('qtdech', (int)$_POST['qtdech']);
+                        $this->db->set('valorch', (float)$_POST['valorch']);
+                        $this->db->set('qtdefilme', (int)$_POST['qtdefilme']);
+                        $this->db->set('valorfilme', (float)$_POST['valorfilme']);
+                        $this->db->set('qtdeporte', (int)$_POST['qtdeporte']);
+                        $this->db->set('valorporte', (float)$_POST['valorporte']);
+                        $this->db->set('qtdeuco', (int)$_POST['qtdeuco']);
+                        $this->db->set('valoruco', (float)$_POST['valoruco']);
+                        $this->db->set('valortotal', (float)$_POST['valortotal']);
                         $this->db->set('empresa_id', $_POST['empresa']);
                         $this->db->set('data_atualizacao', $horario);
                         $this->db->set('operador_atualizacao', $operador_id);
@@ -2513,15 +2516,15 @@ class procedimentoplano_model extends Model {
                         $secundarios = $query->result();
 
                         foreach ($secundarios as $sec) {
-                            $this->db->set('qtdech', $_POST['qtdech']);
-                            $this->db->set('valorch', $_POST['valorch']);
-                            $this->db->set('qtdefilme', $_POST['qtdefilme']);
-                            $this->db->set('valorfilme', $_POST['valorfilme']);
-                            $this->db->set('qtdeporte', $_POST['qtdeporte']);
-                            $this->db->set('valorporte', $_POST['valorporte']);
-                            $this->db->set('qtdeuco', $_POST['qtdeuco']);
-                            $this->db->set('valoruco', $_POST['valoruco']);
-                            $this->db->set('valortotal', ($_POST['valortotal'] * (float) $sec->valor_percentual / 100));
+                            $this->db->set('qtdech', (int)$_POST['qtdech']);
+                            $this->db->set('valorch', (float)$_POST['valorch']);
+                            $this->db->set('qtdefilme', (int)$_POST['qtdefilme']);
+                            $this->db->set('valorfilme', (float)$_POST['valorfilme']);
+                            $this->db->set('qtdeporte', (int)$_POST['qtdeporte']);
+                            $this->db->set('valorporte', (float)$_POST['valorporte']);
+                            $this->db->set('qtdeuco', (int)$_POST['qtdeuco']);
+                            $this->db->set('valoruco', (float)$_POST['valoruco']);
+                            $this->db->set('valortotal', (float)($_POST['valortotal'] * (float) $sec->valor_percentual / 100));
                             $this->db->set('empresa_id', $_POST['empresa']);
                             $this->db->set('data_atualizacao', $horario);
                             $this->db->set('operador_atualizacao', $operador_id);
