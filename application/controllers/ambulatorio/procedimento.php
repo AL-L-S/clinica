@@ -21,6 +21,7 @@ class Procedimento extends BaseController {
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->model('cadastro/laboratorio_model', 'laboratorio');
+        $this->load->model('cadastro/grupoclassificacao_model', 'grupoclassificacao');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -122,6 +123,7 @@ class Procedimento extends BaseController {
         $obj_procedimento = new procedimento_model($procedimento_tuss_id);
         $data['obj'] = $obj_procedimento;
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
+        $data['subgrupos'] = $this->grupoclassificacao->listarsubgrupo2();
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['laboratorios'] = $this->laboratorio->listarlaboratorios();
         //$this->carregarView($data, 'giah/servidor-form');

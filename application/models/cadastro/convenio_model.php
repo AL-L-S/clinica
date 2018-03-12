@@ -1067,31 +1067,45 @@ class Convenio_model extends Model {
 //                var_dump($grupo);
 //                die;
                 $sql = "INSERT INTO ponto.tb_procedimento_convenio(
-            convenio_id, procedimento_tuss_id, 
-            qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
-            qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
-            data_atualizacao, operador_atualizacao)
-            SELECT $convenioidnovo, pc.procedimento_tuss_id, 
-            qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
-            qtdeuco, valoruco, valortotal, pc.ativo, '$horario', $operador_id, 
-            pc.data_atualizacao, pc.operador_atualizacao
-            FROM ponto.tb_procedimento_convenio pc
-                LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
-                where pt.grupo = '$grupo'
-                and convenio_id = $convenio";
+                        convenio_id, procedimento_tuss_id, 
+                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+                        qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
+                        data_atualizacao, operador_atualizacao)
+                        SELECT $convenioidnovo, pc.procedimento_tuss_id, 
+                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+                        qtdeuco, valoruco, valortotal, pc.ativo, '$horario', $operador_id, 
+                        pc.data_atualizacao, pc.operador_atualizacao
+                        FROM ponto.tb_procedimento_convenio pc
+                        LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                        WHERE pt.grupo = '$grupo'
+                        AND convenio_id = $convenio
+                        AND pc.ativo = 't'
+                        AND pc.procedimento_tuss_id NOT IN (
+                            SELECT DISTINCT(pc2.procedimento_tuss_id) FROM ponto.tb_procedimento_convenio pc2
+                            LEFT JOIN ponto.tb_procedimento_tuss pt2 ON pc2.procedimento_tuss_id = pt2.procedimento_tuss_id
+                            WHERE pc2.convenio_id = $convenioidnovo
+                            AND pt2.grupo = '$grupo'
+                            AND pc2.ativo = 't'
+                        )";
             } else {
                 $sql = "INSERT INTO ponto.tb_procedimento_convenio(
-            convenio_id, procedimento_tuss_id, 
-            qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
-            qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
-            data_atualizacao, operador_atualizacao)
-            SELECT $convenioidnovo, procedimento_tuss_id, 
-            qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
-            qtdeuco, valoruco, valortotal, ativo, '$horario', $operador_id, 
-            data_atualizacao, operador_atualizacao
-            FROM ponto.tb_procedimento_convenio
+                        convenio_id, procedimento_tuss_id, 
+                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+                        qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
+                        data_atualizacao, operador_atualizacao)
+                        SELECT $convenioidnovo, procedimento_tuss_id, 
+                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+                        qtdeuco, valoruco, valortotal, ativo, '$horario', $operador_id, 
+                        data_atualizacao, operador_atualizacao
+                        FROM ponto.tb_procedimento_convenio
+                        WHERE convenio_id = $convenio
+                        AND pc.ativo = 't'
+                        AND pc.procedimento_tuss_id NOT IN (
+                            SELECT DISTINCT(procedimento_tuss_id) FROM ponto.tb_procedimento_convenio
+                            WHERE convenio_id = $convenioidnovo
+                            AND ativo = 't'
+                        )";
 
-                where convenio_id = $convenio";
             }
 
             $this->db->query($sql);

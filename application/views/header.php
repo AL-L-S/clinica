@@ -32,6 +32,7 @@ $relatorios_recepcao = $this->session->userdata('relatorios_recepcao');
 $financeiro_cadastro = $this->session->userdata('financeiro_cadastro');
 $caixa_personalizado = $this->session->userdata('caixa_personalizado');
 $gerente_contasapagar = $this->session->userdata('gerente_contasapagar');
+$subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
 
 //var_dump($gerente_contasapagar); die;
 function alerta($valor) {
@@ -1055,9 +1056,15 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">Manter Percentual Promotor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentuallaboratorio">Manter Percentual Lab. Terceirizado</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificação</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao">Manter Grupo Classificação</a></span></ul>
-                                        <? } ?>
-                                    <? } ?>
+                                            <? if($subgrupo_procedimento != 't') { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao">Manter Grupo Classificação</a></span></ul>
+                                            <? } else { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarsubgrupo">Manter Subgrupo</a></span></ul>
+                                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarassociacaosubgrupo">Manter Associação Subgrupo</a></span></ul>
+                                            <?
+                                            }
+                                        }       
+                                    } ?>
                                 </li>
                                 <? if ($imagem == 't') { ?>
                                     <li><span class="folder">Imagem</span> 
