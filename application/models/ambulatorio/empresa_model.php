@@ -799,9 +799,13 @@ class empresa_model extends Model {
 
             if ($_POST['impressao_tipo'] != "") {
                 $this->db->set('impressao_tipo', $_POST['impressao_tipo']);
+            } else {
+                $this->db->set('impressao_tipo', null);
             }
             if ($_POST['impressao_orcamento'] != "") {
                 $this->db->set('impressao_orcamento', $_POST['impressao_orcamento']);
+            } else {
+                $this->db->set('impressao_orcamento', null);
             }
             if ($_POST['horario_sab'] != "") {
                 $this->db->set('horario_sab', $_POST['horario_sab']);
@@ -811,15 +815,21 @@ class empresa_model extends Model {
             }
             if ($_POST['impressao_laudo'] != "") {
                 $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
+            } else {
+                $this->db->set('impressao_laudo', null);
             }
             if ($_POST['impressao_recibo'] != "") {
                 $this->db->set('impressao_recibo', $_POST['impressao_recibo']);
+            } else {
+                $this->db->set('impressao_recibo', null);
             }
             if ($_POST['numero_empresa_painel'] != "") {
                 $this->db->set('numero_empresa_painel', (int) $_POST['numero_empresa_painel']);
             }
             if ($_POST['impressao_declaracao'] != "") {
                 $this->db->set('impressao_declaracao', $_POST['impressao_declaracao']);
+            } else {
+                $this->db->set('impressao_declaracao', null);
             }
 
             if ($_POST['txtCNPJ'] != '') {

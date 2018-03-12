@@ -1265,7 +1265,8 @@ class Laudo extends BaseController {
     </tr><tr><td>&nbsp;</td></tr>
     <tr>
     </table>";
-                } else {
+                } 
+                else {
                     $cabecalho = "<table>
     <tr>
       <td width='30px'></td><td><img align = 'left'  width='330px' height='100px' src='img/clinicadez.jpg'></td>
@@ -1292,7 +1293,8 @@ class Laudo extends BaseController {
 
                 if ($data['laudo']['0']->situacao == "FINALIZADO") {
                     $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></table>";
-                } else {
+                } 
+                else {
                     if ($data['laudo']['0']->medico_parecer1 == 929) {
 
                         $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>

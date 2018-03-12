@@ -2577,6 +2577,11 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatoriopacientewhatsapp', $data);
     }
 
+    function relatoriosituacaoatendimento() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriosituacaoatendimento', $data);
+    }
+
     function relatoriopacienteduplicado() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
@@ -2596,6 +2601,15 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $data['salas'] = $this->exame->listartodassalas();
         $this->loadView('ambulatorio/relatoriomedicoagendaexamefaltouemail', $data);
+    }
+
+    function gerarelatoriosituacaoatendimento() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['relatorio'] = $this->guia->gerarelatoriosituacaoatendimento();
+        echo "<pre>"; 
+        var_dump($data['relatorio']); die;
+        $this->load->View('ambulatorio/impressaorelatoriosituacaoatendimento', $data);
     }
 
     function gerarelatoriomedicoagendaexamefaltouemail() {

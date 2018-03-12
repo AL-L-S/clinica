@@ -2768,6 +2768,7 @@ class exame_model extends Model {
                             p.celular,
                             p.telefone,
                             ao.data_criacao,
+                            ao.autorizado,
                             e.nome as empresa_nome,
                             (
                                 SELECT SUM(valor_total)
@@ -2826,11 +2827,10 @@ class exame_model extends Model {
             $return = $this->db->get();
             $return = $return->result();
 
-//            echo "<pre>"; 
-//            var_dump($return); 
-//            var_dump($return[1]->valor * $return[1]->quantidade); 
-//            die;
-
+            $this->db->set('autorizado', 't');
+            $this->db->where('ambulatorio_orcamento_id', $ambulatorio_orcamento_id);
+            $this->db->update('tb_ambulatorio_orcamento');
+            
             if (count($return) > 0) {
 
                 foreach ($return as $value) {
