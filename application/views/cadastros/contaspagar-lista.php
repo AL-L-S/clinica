@@ -10,7 +10,7 @@
     $credores = $this->caixa->empresa();
     $empresas = $this->exame->listarempresas();
     $saldo = $this->caixa->saldo();
-    $conta = $this->forma->listarforma();
+    $conta = $this->forma->listarformaempresa();
     $tipo = $this->tipo->listartipo();
     $perfil_id = $this->session->userdata('perfil_id');
     
@@ -278,6 +278,50 @@
                                             dateFormat: 'dd/mm/yy'
                                         });
                                     });
+                                    
+                                      $(function () {
+                                          $('#txtempresa').change(function () {
+//                                            if ($(this).val()) {
+                                              $('.carregando').show();
+                                              $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $(this).val(), ajax: true}, function (j) {
+                                                  options = '<option value=""></option>';
+                                                  for (var c = 0; c < j.length; c++) {
+                                                      options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                                                  }
+                                                  $('#conta').html(options).show();
+                                                  $('.carregando').hide();
+                                              });
+//                                            } else {
+//                                                $('#nome_classe').html('<option value="">TODOS</option>');
+//                                            }
+                                          });
+                                      });
+
+                                      if ($('#txtempresa').val() > 0) {
+//                                          $('.carregando').show();
+                                          $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $('#txtempresa').val(), ajax: true}, function (j) {
+                                              options = '<option value=""></option>';
+                                              <?
+                                              if(@$_GET['conta'] > 0){
+                                                 $conta = $_GET['conta']; 
+                                              }else{
+                                                 $conta = 0;
+                                              }
+                                              ?>  
+                                              for (var c = 0; c < j.length; c++) {
+                                                
+                                                  if(<?=$conta?> == j[c].forma_entradas_saida_id){
+                                                      options += '<option selected value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                                                  }else{
+                                                      options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>'; 
+                                                  }
+                                                  
+                                              }
+                                              $('#conta').html(options).show();
+                                              $('.carregando').hide();
+                                          });
+                                      }
+                                    
 
                                     $(function () {
                                         $("#accordion").accordion();

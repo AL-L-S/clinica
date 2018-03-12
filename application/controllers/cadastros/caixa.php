@@ -51,7 +51,7 @@ class Caixa extends BaseController {
     function carregar($saidas_id) {
         $obj_saidas = new caixa_model($saidas_id);
         $data['obj'] = $obj_saidas;
-        $data['conta'] = $this->forma->listarforma();
+        $data['conta'] = $this->forma->listarformaempresa();
         $data['classe'] = $this->classe->listarclasse();
         $data['tipo'] = $this->tipo->listartipo();
         $this->loadView('cadastros/saida-form', $data);
@@ -60,14 +60,14 @@ class Caixa extends BaseController {
     function novaentrada() {
         $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
-        $data['conta'] = $this->forma->listarforma();
+        $data['conta'] = $this->forma->listarformaempresa();
         $this->loadView('cadastros/entrada-form', $data);
     }
 
     function novasaida() {
         $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
-        $data['conta'] = $this->forma->listarforma();
+        $data['conta'] = $this->forma->listarformaempresa();
 //        $r = $this->classe->listarautocompleteclassessaida('CUSTO FIXO IMPRESSÃO'); 
 //        var_dump($r); die;
         $this->loadView('cadastros/saida-form', $data);

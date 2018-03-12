@@ -57,7 +57,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Procedimento</td>
+                        <td>Material</td>
                         <td>
                             <select name="material_id" id="material_id" class="size4 chosen-select" required>
                                 <option value="">Selecione</option>
@@ -65,6 +65,12 @@
                                     <option value="<?= $item->procedimento_tuss_id ?>"><?= $item->nome ?></option>
                                 <? } ?>
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Observação</td>
+                        <td>
+                            <textarea  cols="" rows="8" name="observacao" class="texto_area"></textarea>
                         </td>
                     </tr>
 
@@ -94,6 +100,7 @@
                     <tr>
                         <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">Quantidade</th>
+                        <th class="tabela_header">Observação</th>
                         <th class="tabela_header">&nbsp;</th>
                     </tr>
                 </thead>
@@ -107,6 +114,7 @@
                         <tr>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>"><?= $item->observacao; ?></td>
                             <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                 <a style="text-align: left;" href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaomaterial/<?= $item->solicitacao_material_id; ?>/<?= $solicitacao_id; ?>" class="delete">
                                 </a>

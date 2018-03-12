@@ -945,7 +945,7 @@ class Laudo extends BaseController {
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $texto = $data['laudo'][0]->texto;
         $adendo = $data['laudo'][0]->adendo;
-        $data['laudo'][0]->texto = $texto . '<br>'. $adendo;
+        $data['laudo'][0]->texto = $texto . '<br>' . $adendo;
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
@@ -1438,6 +1438,52 @@ class Laudo extends BaseController {
                     $rodape = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <img  width='120px' height='80px' src='upload/1ASSINATURAS/$medicoparecer.bmp'>";
                 }
+                $grupo = $data['laudo']['0']->grupo;
+                $filename = "laudo.pdf";
+                $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
+                pdf($html, $filename, $cabecalho, $rodape, $grupo);
+                $this->load->View('ambulatorio/impressaolaudo_2', $data);
+            }
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            elseif ($data['empresa'][0]->impressao_laudo == 9) {//RONALDO BARREIRA FILIAL
+                $medicoparecer = $data['laudo']['0']->medico_parecer1;
+                //            echo "<pre>"; var_dump($data['laudo']['0']);die;
+                $cabecalho = "<table><tr><td><center><img align = 'left'  width='1000px' height='90px' src='img/cabecalho.jpg'></center></td></tr>
+
+                        <tr><td colspan='2'>Exame de: " . $data['laudo']['0']->paciente . "</td></tr>
+                        <tr><td>Nascimento: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "----Idade: " . $teste . "</td></tr>
+                        <tr><td>Atendimento:" . $data['laudo']['0']->guia_id . "----Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr>
+                        <tr><td>Convenio: " . $data['laudo']['0']->convenio . "----Solicitante: " . $data['laudo']['0']->solicitante . "<br></td></tr>
+                        </table>";
+                if ($data['laudo']['0']->convenio_id >= 29 && $data['laudo']['0']->convenio_id <= 84) {
+                    $cabecalho = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 9pt;'>
+                        <tr><td width='70%' style='vertical-align: bottom; font-family: serif; font-size: 12pt;'><center><u>Clinica Radiol&oacute;gica Dr. Ronaldo Barreira</u><center></td><td rowspan='2'><center><img align = 'left'  width='140px' height='40px' src='img/sesi.jpg'><center></td></tr>
+                        <tr><td ><center>Rua 24 de maio, 961-Fone: 3226-9536<center></td><td></td></tr>           
+                        <tr><td colspan='2'>Exame de:" . $data['laudo']['0']->paciente . "</td></tr>
+                        <tr><td>Nascimento: " . substr($data['laudo']['0']->nascimento, 8, 2) . '/' . substr($data['laudo']['0']->nascimento, 5, 2) . '/' . substr($data['laudo']['0']->nascimento, 0, 4) . "</td><td>Idade: " . $teste . "</td></tr>
+                        <tr><td>Atendimento:" . $data['laudo']['0']->guia_id . "</td><td>Data: " . substr($data['laudo']['0']->data_cadastro, 8, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 5, 2) . '/' . substr($data['laudo']['0']->data_cadastro, 0, 4) . "</td></tr>
+                        <tr><td>Convenio: " . $data['laudo']['0']->convenio . "<td>Solicitante: " . substr($data['laudo']['0']->solicitante, 0, 15) . "<br></td></tr>
+                        </table>";
+                }
+
+                if (file_exists("upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg")) {
+                    $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg'>";
+                    $data['assinatura'] = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg'>";
+                } else {
+                    $assinatura = "";
+                    $data['assinatura'] = "";
+                }
+
+                if ($data['cabecalhomedico'][0]->rodape != '' && $data['laudo']['0']->situacao == "FINALIZADO") {
+                    $rodape = $data['cabecalhomedico'][0]->rodape;
+                    $rodape = str_replace("_assinatura_", $assinatura, $rodape);
+                } else {
+                    $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
+                        <tr><td><center>CRM" . $data['laudo']['0']->conselho . "</td></tr></table>";
+                }
+
+
+
                 $grupo = $data['laudo']['0']->grupo;
                 $filename = "laudo.pdf";
                 $html = $this->load->view('ambulatorio/impressaolaudo_2', $data, true);
@@ -2042,8 +2088,8 @@ class Laudo extends BaseController {
                     $this->load->View('ambulatorio/impressaolaudo_1', $data);
                 }
             }
-        }else{
-                    echo '<html>
+        } else {
+            echo '<html>
                         <meta charset="utf-8">
         <script type="text/javascript">
         alert("Sem histórico do(a) médico(a) selecionado(a)");

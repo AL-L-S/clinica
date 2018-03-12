@@ -4,7 +4,11 @@
         <link href="<?= base_url() ?>/css/tabelarae.css" rel="stylesheet" type="text/css">
         <title>Guia de Serviço Profissional</title>
     </head>
+<?
+$caminho = base_url() . str_replace(' ','_', $convenio[0]->caminho_logo);
 
+//var_dump($caminho); die;
+?>
     <body>
         <? if (count($relatorio) > 0) {
             $totGeral = 0;
@@ -12,7 +16,7 @@
             <table id="tabelaspec" width="92%" border="1" align="center" cellpadding="0" cellspacing="0" class="tipp">
                 <tbody>
                     <tr>
-                        <td width="133" height="51" style="font-size: 9px;"><p class="ttr"><strong style="font-weight: normal; text-align: center;"><strong style="font-weight: normal; text-align: left;"><img src="<?= base_url() ?>/img/convenios/<? echo $relatorio[0]->convenio_id; ?>.jpg"  width="133" height="49" class="ttr"/></strong></strong></p></td>
+                        <td width="133" height="51" style="font-size: 9px;"><p class="ttr"><strong style="font-weight: normal; text-align: center;"><strong style="font-weight: normal; text-align: left;"><img src="<?= $caminho ?>"  width="130" height="50" class="ttr"/></strong></strong></p></td>
                         <td height="51" colspan="9" class="ttrl" style="font-size: 9px;">
                             <p>ANEXO DE OUTRAS DESPESAS</p>
                             <p>(para Guia de SP/SADT e Resumo de Internaçao)</p>
@@ -24,7 +28,7 @@
 
                     </tr>
                     <tr>
-                        <td height="16" colspan="2" class="tc"><strong><?= $relatorio[0]->registroans ?></strong></td>
+                        <td height="16" colspan="2" class="tc"><strong><?= $convenio[0]->registroans ?></strong></td>
                         <td colspan="8" class="tc"><strong><?= $relatorio[0]->guiaconvenio ?> </strong></td>
 
                     </tr>
@@ -43,7 +47,7 @@
                         <td colspan="2" class="ti">Código CNES</td>
                     </tr>
                     <tr>
-                        <td class="tc"><strong><? echo $relatorio[0]->codigoidentificador; ?></strong></td>
+                        <td class="tc"><strong><? echo $convenio[0]->codigoidentificador; ?></strong></td>
                         <td height="16" class="tc"><strong><? echo @$empresa[0]->razao_social; ?> </strong></td>
 
                         <td colspan="2" class="tc"><strong><?= @$empresa[0]->cnes; ?> </strong><strong> </strong></td>

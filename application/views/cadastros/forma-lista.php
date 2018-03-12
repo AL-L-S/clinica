@@ -20,6 +20,9 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
+                        <th class="tabela_header">Agência</th>
+                        <th class="tabela_header">Conta</th>
+                        <th class="tabela_header">Empresa</th>
                         <th class="tabela_header" width="70px;" colspan="2"><center>Detalhes</center></th>
                 </tr>
                 </thead>
@@ -41,6 +44,9 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->agencia; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->conta; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
 
                                 <?
                                 $perfil_id = $this->session->userdata('perfil_id');
@@ -71,7 +77,7 @@
                     ?>
                     <tfoot>
                         <tr>
-                            <th class="tabela_footer" colspan="4">
+                            <th class="tabela_footer" colspan="7">
                                 <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                                 Total de registros: <?php echo $total; ?>
                         </th>

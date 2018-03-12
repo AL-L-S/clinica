@@ -121,7 +121,7 @@ class solicita_cirurgia_model extends BaseModel {
     function listarprocedimentosagrupador($agrupador) {
         $this->db->select('pa.procedimento_tuss_id as procedimento_id, pc.valortotal');
         $this->db->from('tb_procedimentos_agrupados pa');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pa.procedimento_tuss_id ');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pa.procedimento_tuss_id');
         $this->db->where('pa.ativo', 't');
         $this->db->where('agrupador_id', $agrupador);
         $return = $this->db->get();
@@ -288,7 +288,7 @@ class solicita_cirurgia_model extends BaseModel {
     }
 
     function listarsolicitacaosmateriais($solicitacao_id) {
-        $this->db->select('scp.solicitacao_cirurgia_material_id as solicitacao_material_id, scp.quantidade,
+        $this->db->select('scp.solicitacao_cirurgia_material_id as solicitacao_material_id, scp.quantidade, scp.valor_unitario, scp.observacao,
                            pt.nome');
         $this->db->from('tb_solicitacao_cirurgia_material scp');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = scp.procedimento_tuss_id', 'left');
@@ -299,7 +299,7 @@ class solicita_cirurgia_model extends BaseModel {
     }
 
     function listarsolicitacaosprocedimentos($solicitacao_id) {
-        $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id,
+        $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id, scp.quantidade, scp.valor_unitario,
                            c.nome as convenio,
                            pt.nome');
         $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
@@ -313,7 +313,7 @@ class solicita_cirurgia_model extends BaseModel {
     }
 
     function listarsolicitacaosprocedimentosorcamento($solicitacao_id) {
-        $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id,
+        $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id, scp.quantidade, scp.valor_unitario,
                            c.nome as convenio,
                            pt.nome');
         $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
@@ -328,7 +328,7 @@ class solicita_cirurgia_model extends BaseModel {
     }
 
     function listarsolicitacaosprocedimentosconvenio($solicitacao_id) {
-        $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id,
+        $this->db->select('scp.solicitacao_cirurgia_procedimento_id as solicitacao_procedimento_id, scp.quantidade, scp.valor_unitario,
                            c.nome as convenio,
                            pt.nome');
         $this->db->from('tb_solicitacao_cirurgia_procedimento scp');
@@ -464,6 +464,7 @@ class solicita_cirurgia_model extends BaseModel {
                            p.celular,
                            p.telefone,
                            sc.data_prevista,
+                           sc.observacao,
                            sc.hora_prevista,
                            sc.hora_prevista_fim,
                            sc.solicitacao_cirurgia_id,
@@ -553,6 +554,7 @@ class solicita_cirurgia_model extends BaseModel {
                            pt.codigo,
                            scp.valor as valortotal,
                            scp.via,
+                           scp.quantidade, scp.valor_unitario,
                            c.nome as convenio,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
@@ -575,6 +577,7 @@ class solicita_cirurgia_model extends BaseModel {
                            pc.valortotal,
                            scp.valor as valortotal,
                            scp.via,
+                           scp.quantidade, scp.valor_unitario,
                            c.nome as convenio,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
@@ -596,6 +599,7 @@ class solicita_cirurgia_model extends BaseModel {
                            pt.codigo,
                            scp.valor as valortotal,
                            scp.via,
+                           scp.quantidade, scp.valor_unitario,
                            c.nome as convenio,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
@@ -618,6 +622,7 @@ class solicita_cirurgia_model extends BaseModel {
                            c.nome as convenio,
                            c.dinheiro,
                            scp.valor,
+                           scp.quantidade, scp.valor_unitario,
                            scp.via,
                            pc.procedimento_convenio_id,
                            scp.solicitacao_cirurgia_procedimento_id');
@@ -715,6 +720,7 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('hora_prevista', date("H:i:s", strtotime(str_replace('/', '-', $_POST['hora_inicio']))));
             $this->db->set('hora_prevista_fim', date("H:i:s", strtotime(str_replace('/', '-', $_POST['hora_fim']))));
             $this->db->set('leito', $_POST['leito']);
+            $this->db->set('observacao', $_POST['observacao']);
             $this->db->set('paciente_id', $_POST['txtNomeid']);
             $this->db->set('medico_solicitante', $_POST['medicoagenda']);
             $this->db->set('convenio', $_POST['convenio']);
@@ -742,14 +748,21 @@ class solicita_cirurgia_model extends BaseModel {
     function gravarsolicitacaoeditarprocedimento($guia_id, $solicitacao_id) {
 
         try {
-//            var_dump($_POST['via']);die;
+//            var_dump($_POST);die;
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
+            if (isset($_POST['quantidade'])) {
+                $this->db->set('quantidade', $_POST['quantidade']);
+                $quantidade = $_POST['quantidade'];
+            } else {
+                $this->db->set('quantidade', 1);
+                $quantidade = 1;
+            }
+            $this->db->set('valor_unitario', (float) $_POST['valor1']);
+            $this->db->set('valor', (float) $_POST['valor1'] * $quantidade);
             $this->db->set('solicitacao_cirurgia_id', $solicitacao_id);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
-            $this->db->set('valor', $_POST['valor1']);
             $this->db->set('via', $_POST['via']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
@@ -795,7 +808,16 @@ class solicita_cirurgia_model extends BaseModel {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            $this->db->set('valor', $valor[0]->valortotal);
+
+            if (isset($_POST['quantidade'])) {
+                $this->db->set('quantidade', $_POST['quantidade']);
+            } else {
+                $this->db->set('quantidade', 1);
+            }
+            
+            $this->db->set('valor', $valor[0]->valortotal * $_POST['quantidade']);
+            $this->db->set('valor_unitario', $valor[0]->valortotal);
+            
             $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
             $this->db->set('procedimento_tuss_id', $_POST['procedimentoID']);
             $this->db->set('data_cadastro', $horario);
@@ -818,8 +840,15 @@ class solicita_cirurgia_model extends BaseModel {
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
-            $this->db->set('valor', $_POST['valor1']);
+            if (isset($_POST['quantidade'])) {
+                $this->db->set('quantidade', $_POST['quantidade']);
+                $quantidade = $_POST['quantidade'];
+            } else {
+                $this->db->set('quantidade', 1);
+                $quantidade = 1;
+            }
+            $this->db->set('valor_unitario', $_POST['valor1']);
+            $this->db->set('valor', $_POST['valor1'] * $quantidade);
             $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
             $this->db->set('procedimento_tuss_id', $_POST['procedimentoID']);
             $this->db->set('data_cadastro', $horario);
@@ -849,6 +878,7 @@ class solicita_cirurgia_model extends BaseModel {
 
             $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
             $this->db->set('quantidade', $_POST['qtde1']);
+            $this->db->set('observacao', $_POST['observacao']);
             $this->db->set('procedimento_tuss_id', $_POST['material_id']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
@@ -1250,6 +1280,8 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->orderby('valor DESC');
             $procedimentos = $this->db->get()->result();
 
+//            var_dump($procedimentos);
+//            die;
 //            echo "<pre>";
             // Trazendo a lista com todos os integrantes da equipe cirurgica
             $this->db->select('leito');
@@ -1824,6 +1856,9 @@ class solicita_cirurgia_model extends BaseModel {
             // Trazendo os procedimentos
             $this->db->select(' horario_especial,
                                 valor,
+                                quantidade,
+                                via,
+                                equipe_particular,
                                 desconto,
                                 solicitacao_cirurgia_procedimento_id,
                                 procedimento_tuss_id');
@@ -1842,28 +1877,37 @@ class solicita_cirurgia_model extends BaseModel {
             $ambulatorio_guia_id = $guia_id;
 
             foreach ($procedimentos as $item) {
+
+                if ($item->quantidade > 0) {
+                    $quantidade = $item->quantidade;
+                } else {
+                    $quantidade = 1;
+                }
+                $valor_total = ( $item->valor - ($item->valor * $item->desconto) / 100);
+
                 $this->db->set('operador_autorizacao', $operador_id);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', 'CIRURGICO');
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
                 $this->db->set('confirmado', 't');
-                $this->db->set('valor', $item->valor);
-                $this->db->set('valor_total', ( $item->valor - ($item->valor * $item->desconto) / 100));
+                $this->db->set('valor', $valor_total / $quantidade);
+                $this->db->set('via', $item->via);
+                $this->db->set('valor_total', $valor_total);
 
 //                if ($_POST['formapamento'] != '') {
-//                    $this->db->set('valor1', ( $item->valor - ($item->valor * $item->desconto) / 100));
+//                    $this->db->set('valor1', $valor_total);
 //                    $this->db->set('forma_pagamento', $_POST['formapamento']);
 //                    $this->db->set('operador_faturamento', $operador_id);
 //                    $this->db->set('data_faturamento', $horario);
 //                }
 
                 $this->db->set('situacao', 'OK');
-                $this->db->set('quantidade', 1);
+                $this->db->set('quantidade', $quantidade);
                 $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
                 $this->db->set('data_faturar', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
                 $this->db->set('inicio', $_POST['hora']);
-//                $this->db->set('inicio', $_POST['hora']);
+                $this->db->set('fim', $_POST['hora_fim']);
                 $this->db->set('procedimento_tuss_id', $item->procedimento_tuss_id);
                 $this->db->set('guia_id', $ambulatorio_guia_id);
 
@@ -1871,6 +1915,12 @@ class solicita_cirurgia_model extends BaseModel {
                     $this->db->set('horario_especial', 't');
                 } else {
                     $this->db->set('horario_especial', 'f');
+                }
+
+                if ($item->equipe_particular == 't') {
+                    $this->db->set('equipe_particular', 't');
+                } else {
+                    $this->db->set('equipe_particular', 'f');
                 }
 
                 $this->db->set('data_autorizacao', $horario);
@@ -1881,6 +1931,7 @@ class solicita_cirurgia_model extends BaseModel {
                 $this->db->insert('tb_agenda_exames');
                 $agenda_exames_id = $this->db->insert_id();
 
+//                $this->db->set('valor', $agenda_exames_id);
                 $this->db->set('agenda_exames_id', $agenda_exames_id);
                 $this->db->where('solicitacao_cirurgia_procedimento_id', $item->solicitacao_cirurgia_procedimento_id);
                 $this->db->update('tb_solicitacao_cirurgia_procedimento');
@@ -1905,6 +1956,7 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->select(' horario_especial,
                                 valor,
                                 equipe_particular,
+                                quantidade,
                                 via,
                                 desconto,
                                 solicitacao_cirurgia_procedimento_id,
@@ -1937,25 +1989,32 @@ class solicita_cirurgia_model extends BaseModel {
             $ambulatorio_guia_id = $this->db->insert_id();
 
             foreach ($procedimentos as $item) {
+                if ($item->quantidade > 0) {
+                    $quantidade = $item->quantidade;
+                } else {
+                    $quantidade = 1;
+                }
+                $valor_total = ( $item->valor - ($item->valor * $item->desconto) / 100);
+
                 $this->db->set('operador_autorizacao', $operador_id);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', 'CIRURGICO');
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
                 $this->db->set('confirmado', 't');
-                $this->db->set('valor', $item->valor);
+                $this->db->set('valor', $valor_total / $quantidade);
                 $this->db->set('via', $item->via);
-                $this->db->set('valor_total', ( $item->valor - ($item->valor * $item->desconto) / 100));
+                $this->db->set('valor_total', $valor_total);
 
-                if ($_POST['formapamento'] != '') {
-                    $this->db->set('valor1', ( $item->valor - ($item->valor * $item->desconto) / 100));
-                    $this->db->set('forma_pagamento', $_POST['formapamento']);
-                    $this->db->set('operador_faturamento', $operador_id);
-                    $this->db->set('data_faturamento', $horario);
-                }
+//                if ($_POST['formapamento'] != '') {
+//                    $this->db->set('valor1', $valor_total);
+//                    $this->db->set('forma_pagamento', $_POST['formapamento']);
+//                    $this->db->set('operador_faturamento', $operador_id);
+//                    $this->db->set('data_faturamento', $horario);
+//                }
 
                 $this->db->set('situacao', 'OK');
-                $this->db->set('quantidade', 1);
+                $this->db->set('quantidade', $quantidade);
                 $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
                 $this->db->set('data_faturar', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata']))));
                 $this->db->set('inicio', $_POST['hora']);
@@ -2002,14 +2061,19 @@ class solicita_cirurgia_model extends BaseModel {
         try {
             $i = 0;
             foreach ($_POST['procedimento_convenio_id'] as $item) {
-                $valor = $_POST['valor_total'][$i];
+//                $valor = $_POST['valor_total'][$i];
+                $valor_total = (float) $_POST['valor_total'][$i];
+                $quantidade = (int) $_POST['quantidade'][$i];
+                $valor_unitario = (float) $valor_total / $quantidade;
                 $desconto = $_POST['desconto'];
                 $cirurgia_procedimento_id = $_POST['cirurgia_procedimento_id'][$i];
                 $horEspecial = @$_POST['horEspecial'][$i];
 
+                $this->db->set('quantidade', $quantidade);
                 $this->db->set('horario_especial', $horEspecial);
                 $this->db->set('desconto', $desconto);
-                $this->db->set('valor', $valor);
+                $this->db->set('valor', $valor_total);
+                $this->db->set('valor_unitario', $valor_unitario);
                 $this->db->set('via', $_POST['via'][$i]);
                 $this->db->where('solicitacao_cirurgia_procedimento_id', $cirurgia_procedimento_id);
                 $this->db->update('tb_solicitacao_cirurgia_procedimento');
@@ -2088,6 +2152,10 @@ class solicita_cirurgia_model extends BaseModel {
 //            var_dump($_POST); die;
             foreach ($_POST['cirurgia_procedimento_id'] as $key => $item) {
                 $valor = (float) $_POST['valor'][$key];
+                $valor_total = (float) $_POST['valor_total'][$key];
+
+                $quantidade = (int) $_POST['quantidade'][$key];
+                $valor_unitario = (float) $valor_total / $quantidade;
                 if (@$_POST['equipe_particular'][$key] == 'on') {
                     $this->db->set('equipe_particular', 't');
                 } else {
@@ -2095,7 +2163,9 @@ class solicita_cirurgia_model extends BaseModel {
                 }
 
                 $this->db->set('horario_especial', (isset($_POST['horEspecial'][$key]) ? 't' : 'f'));
-                $this->db->set('valor', $valor);
+                $this->db->set('quantidade', $quantidade);
+                $this->db->set('valor', $valor_total);
+                $this->db->set('valor_unitario', $valor_unitario);
                 $this->db->set('via', $_POST['via'][$key]);
                 $this->db->where('solicitacao_cirurgia_procedimento_id', $_POST['cirurgia_procedimento_id'][$key]);
                 $this->db->update('tb_solicitacao_cirurgia_procedimento');
@@ -2148,17 +2218,23 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->where('solicitacao_orcamento_id', $orcamento_id);
             $this->db->delete('tb_solicitacao_orcamento_equipe');
 
-
+//            var_dump($_POST);
+//            die;
             foreach ($_POST['cirurgia_procedimento_id'] as $key => $item) {
                 $valor = (float) $_POST['valor'][$key];
+                $valor_total = (float) $_POST['valor_total'][$key];
+
+                $quantidade = (int) $_POST['quantidade'][$key];
+                $valor_unitario = (float) $valor_total / $quantidade;
 
                 $this->db->set('horario_especial', (isset($_POST['horEspecial'][$key]) ? 't' : 'f'));
+                $this->db->set('quantidade', $quantidade);
+                $this->db->set('valor', $valor_total);
+                $this->db->set('valor_unitario', $valor_unitario);
                 $this->db->set('via', $_POST['via'][$key]);
-                $this->db->set('valor', $valor);
                 $this->db->where('solicitacao_cirurgia_procedimento_id', $_POST['cirurgia_procedimento_id'][$key]);
                 $this->db->update('tb_solicitacao_cirurgia_procedimento');
             }
-
             return $orcamento_id;
         } catch (Exception $exc) {
             return false;

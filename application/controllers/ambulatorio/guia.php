@@ -1062,7 +1062,7 @@ class Guia extends BaseController {
                                 $valorTotal += $value->valortotal;
                             }
                         }
-                        
+
                         $i = 0;
                         $totPro = count($pacoteProc);
                         foreach ($pacoteProc as $value) {
@@ -1071,15 +1071,15 @@ class Guia extends BaseController {
                                 /* Caso seja um valor diferenciado, ele vai descobrir o valor unitário.
                                  * Para isso, usa-se a seguinte regra: se antes o proc valia 15% do total do pacote,
                                  * entao, mesmo com um valor diferenciado, ele deve continuar valendo 15% do total. */
-                                $valor = round ( ($value->valor_pacote * $value->valortotal)/ $valorTotal );
+                                $valor = round(($value->valor_pacote * $value->valortotal) / $valorTotal);
                                 $vl_pacote += $valor;
-                                
-                                if ( $i == $totPro - 1 ) { 
+
+                                if ($i == $totPro - 1) {
                                     /* Caso tenha acontecido alguma diferença no valor informado na criaçao do pacote 
                                      * para o valor aqui calculado (geralmente ocorre uma diferença de alguns centavos)
                                      * ele acrescenta essa diferença no ultimo procedimento. */
-                                    
-                                    $diferenca = (float)$value->valor_pacote - (float)$vl_pacote;
+
+                                    $diferenca = (float) $value->valor_pacote - (float) $vl_pacote;
                                     $valor += $diferenca;
                                 }
                             } else {
@@ -1312,8 +1312,8 @@ class Guia extends BaseController {
         $agenda_exames_id = $_POST['agenda_exames_id'];
         $procedimentopercentual = $_POST['procedimento1'];
         $medicopercentual = $_POST['medico_agenda'];
-        
-        
+
+
         // Calcula o Percentual do médico para salvar na agenda_exames
         $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
         if (count($percentual) == 0) {
@@ -1323,12 +1323,12 @@ class Guia extends BaseController {
 //        $grupo = $this->exametemp->verificagrupoprocedimento($procedimentopercentual);
 //        if ($grupo == 'LABORATORIAL') {
         $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
-        
+
         $credito = $this->exame->creditocancelamentoeditarvalor();
 //        } else {
 //            $percentual_laboratorio = array();
 //        }
-        
+
         $dadosantigos = $this->guia->listardadosantigoseditarvalor($agenda_exames_id);
         $ambulatorio_guia_id = $this->guia->valorexames($percentual, $percentual_laboratorio);
         if ($ambulatorio_guia_id == "-1") {
@@ -1529,11 +1529,11 @@ class Guia extends BaseController {
         $this->guia->gravartransformaorcamentocredito();
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-    
+
     function transformaorcamentocredito($orcamento_id) {
         $data['forma_pagamento'] = $this->guia->formadepagamentofaturarcredito();
         $procedimentos = $this->exametemp->listarprocedimentosorcamentocredito($orcamento_id);
-        $data['valor'] = (float)@$procedimentos[0]->valortotal;
+        $data['valor'] = (float) @$procedimentos[0]->valortotal;
         $data['paciente_id'] = @$procedimentos[0]->paciente_id;
         $data['orcamento_id'] = $orcamento_id;
 //        echo "<pre>";
@@ -1760,7 +1760,8 @@ class Guia extends BaseController {
     function faturarguias($guia_id) {
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['procedimentos'] = $this->centrocirurgico_m->listarprocedimentosguiacirurgica($guia_id);
-        $data['exame'] = $this->guia->listarexameguia($guia_id);
+        $data['exame'] = $this->guia->listarexameguiafaturarconvenio($guia_id);
+//        var_dump($data['exame']); die;
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
         $this->load->View('ambulatorio/faturarguiaconvenio-form', $data);
@@ -2036,9 +2037,12 @@ class Guia extends BaseController {
 
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
 
-//        var_dump($empresa_id);die;
+
 
         $data['relatorio'] = $this->guia->guiaspsadtoutrasdespesas($guia_id);
+        $data['convenio'] = $this->guia->guiaspsadtoutrasdespesasconvenio($guia_id);
+//        var_dump($data['convenio']);
+//        die;
 //        $data['relatorio'] = $this->guia->relatoriogastosala();
 
         $this->load->View('ambulatorio/impressaoguiaspsadtoutrasdespesas', $data);

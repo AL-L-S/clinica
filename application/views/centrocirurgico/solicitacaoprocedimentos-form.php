@@ -2,6 +2,13 @@
     <div class="clear"></div>
     <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaoprocedimentos" method="post">
         <fieldset>
+            <legend>Outras Opções</legend>   
+
+            <div class="bt_link">
+                <a target="_blank" href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacaomaterial/<?= $dados[0]->solicitacao_cirurgia_id; ?>">Cadastrar Material</a>
+            </div>
+        </fieldset>
+        <fieldset>
             <legend>Dados da Solicitação</legend>
             <div>
                 <label>Paciente</label>
@@ -31,10 +38,44 @@
             </div>
         </fieldset>    
 
-        <fieldset id="cadastro"> 
-            <!-- NAO REMOVA ESSE FIELDSET POIS O JAVASCRIPT IRA FUNCIONAR NELE!!! -->
+        <fieldset id="fieldset_procedimento"> 
+
+            <div>
+                <label > Quantidade</label>
+                <input type="number" name="quantidade" id="quantidade" value="1"/>  
+
+            </div>
+            <div ><label for="procedimento">Procedimento</label>
+                <select style="" name="procedimentoID" id="procedimento" class="chosen-select" tabindex="1" >
+                    <option value="">Selecione</option>
+                    <? foreach (@$procedimento as $item3) : ?>   
+                        <option value="<? echo $item3->procedimento_convenio_id; ?>"><? echo $item3->codigo . " - " . $item3->nome; ?></option>
+                    <? endforeach; ?> 
+                </select>
+
+            </div>
+            <div id="btnEnviar"><label>&nbsp;</label>
+                <button type="submit" name="btnEnviar">Adicionar</button>
+            </div>
         </fieldset>
-        
+        <fieldset id="fieldset_agrupador"> 
+            <div id="div_agrupador"><label>Agrupador</label>
+                <select name="agrupador_id" id="agrupador_id" class="size4">
+                    <option value="">SELECIONE</option>
+                    <? foreach ($agrupador as $value) : ?>
+                        <option value='<?= $value->agrupador_id; ?>'><?php echo $value->nome; ?></option>
+                    <? endforeach; ?>
+                </select>
+
+            </div>
+
+            <div id="btnEnviar"><label>&nbsp;</label>
+                <button type="submit" name="btnEnviar">Adicionar</button>
+            </div>
+        </fieldset>
+
+
+
         <fieldset > 
             <div class="bt_link">                                  
                 <a onclick="javascript: return confirm('Deseja realmente Liberar a solicitacao?');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/liberar/<?= $solicitacao_id ?>/<?= $dados[0]->orcamento ?>">Liberar</a>
@@ -50,6 +91,7 @@
 
                 <tr>
                     <th class="tabela_header">Procedimento</th>
+                    <th class="tabela_header">Quantidade</th>
                     <th class="tabela_header">Convenio</th>
                     <th class="tabela_header">&nbsp;</th>
                 </tr>
@@ -63,6 +105,7 @@
 
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                 <center>
@@ -107,67 +150,28 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-                    function legend() {
-                        var leg = "<legend>Cadastrar procedimento</legend>";
-                        var verifica = jQuery("#cadastro legend").length;
-                        if (verifica == 0) {
-                            jQuery("#cadastro").append(leg);
-                        }
-                    }
+
+
+
 
                     function mostraagrupador() {
-                        legend();
-                        var tags = '<div id="div_agrupador"><label>Agrupador</label>';
-                        tags += '<select name="agrupador_id" id="agrupador_id" class="size4" required="true">';
-                        tags += '<option value="">SELECIONE</option>';
-
-                        <? foreach ($agrupador as $value) : ?>
-                            tags += "<option value='<?= $value->agrupador_id; ?>'><?php echo $value->nome; ?></option>";
-                        <? endforeach; ?>
-
-                        tags += '</select></div>';
-
-                        var verifica = jQuery("#cadastro #div_agrupador").length;
-                        if (verifica == 0) {
-                            jQuery("#cadastro div").remove();
-                            jQuery("#cadastro").append(tags);
-                            adicionarbtn();
-                        }
+                        $('#fieldset_procedimento').hide();
+                        $('#fieldset_agrupador').show();
 
                     }
 
 
                     function mostraprocedimentos() {
-                        legend();
-                        var tags = '<div id="div_procedimento"><label for="procedimento">Procedimento</label>';
-                        tags += '<select style="width: 400pt" name="procedimentoID" id="procedimento" class="chosen-select" tabindex="1" required="true" >';
-                        tags += '<option value="">Selecione</option>';
-                        <? foreach (@$procedimento as $item3) : ?>
-                            tags += '<option value="<? echo $item3->procedimento_convenio_id; ?>"><? echo $item3->codigo . " - " . $item3->nome; ?></option>';
-                        <? endforeach; ?>
-                        tags += '</select></div>';
-                        var verifica = jQuery("#cadastro #div_procedimento").length;
-                        if (verifica == 0) {
-                            jQuery("#cadastro div").remove();
-                            jQuery("#cadastro").append(tags);
-                            adicionarbtn();
-                        }
-//                        $(".chosen-select").chosen(); 
+                        $('#fieldset_agrupador').hide();
+                        $('#fieldset_procedimento').show();
 
                     }
-                    
-                    function adicionarbtn() {
-                        var btn = '<div id="btnEnviar"><label>&nbsp;</label>';
-                        btn += '<button type="submit" name="btnEnviar">Adicionar</button></div>';
-                        var verifica = jQuery("#cadastro #btnEnviar").length;
-                        if (verifica == 0) {
-                            jQuery("#cadastro").append(btn);
-                        } else {
-                            jQuery("#cadastro #btnEnviar").remove();
-                            jQuery("#cadastro").append(btn);
-                        }
-                    }
-                    
-                    
+
+                    $('#fieldset_procedimento').hide();
+                    $('#fieldset_agrupador').hide();
+
+
+
+
 
 </script>

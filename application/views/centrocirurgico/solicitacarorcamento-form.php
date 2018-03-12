@@ -78,8 +78,9 @@
                         <tr>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">Convênio</th>
-                            <th class="tabela_header">Valor</th>
+                            <th class="tabela_header">Valor U</th>
                             <th class="tabela_header">Quantidade</th>
+                            <th class="tabela_header">Valor T</th>
                             <th class="tabela_header">Horario Especial</th>
                             <th style="text-align: center;" class="tabela_header" colspan="2">Via</th>
                         </tr>
@@ -101,11 +102,14 @@
                                     <?= $item->convenio; ?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <input type="number" id="valor" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
+                                    <input type="number" id="valor<?= $i; ?>" class="texto02" name="valor[<?= $i; ?>]" value="<?= @$item->valor_unitario; ?>" step="0.01" required=""/>
                                 </td> 
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <input type="text" name="qtde[<?= $i; ?>]" id="qtde" alt="integer" class="texto01" value="1" required=""/>
+                                    <input type="number" name="quantidade[<?= $i; ?>]" id="quantidade<?= $i; ?>" alt="integer" class="texto01" value="<?= @$item->quantidade; ?>" required=""/>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="number" id="valor_total<?= $i; ?>" class="texto02"  name="valor_total[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
+                                </td> 
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="checkbox" name="horEspecial[<?= $i; ?>]">
                                 </td>
@@ -173,5 +177,26 @@
         });
     });
 
+<? for ($b = 0; $b < $i; $b++) { ?>
+    $(function () {
+        $('#quantidade<?= $b ?>').change(function () {
+            
+            var valor_total = $("#valor<?= $b ?>").val() * $("#quantidade<?= $b ?>").val();
+//            alert(valor_total);
+            $("#valor_total<?= $b ?>").val(valor_total);
 
+
+        });
+    });
+    $(function () {
+        $('#valor<?= $b ?>').change(function () {
+            
+            var valor_total = $("#valor<?= $b ?>").val() * $("#quantidade<?= $b ?>").val();
+//            alert(valor_total);
+            $("#valor_total<?= $b ?>").val(valor_total);
+
+
+        });
+    });
+<? } ?>
 </script>

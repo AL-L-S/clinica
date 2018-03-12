@@ -510,7 +510,7 @@ class centrocirurgico extends BaseController {
         $data['solicitacao_id'] = $solicitacao_id;
         $data['guia_id'] = $guia_id;
         $data['ambulatorio_guia_id'] = $guia_id;
-        $data['convenios'] = $this->solicitacirurgia_m->listarconvenios();
+        $data['convenios'] = $this->solicitacirurgia_m->listarconveniostodos();
         $data['solicitacao'] = $this->solicitacirurgia_m->listardadossolicitacaoautorizar($solicitacao_id);
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['procedimentos'] = $this->solicitacirurgia_m->listarprocedimentosolicitacaocirurgicaeditar($solicitacao_id);
@@ -813,7 +813,7 @@ class centrocirurgico extends BaseController {
     function gravarsolicitacaoprocedimentos() {
 
         $solicitacao = $_POST['solicitacao_id'];
-
+//        var_dump($_POST); die;
         if ($_POST['tipo'] == 'procedimento') {
 
             if ($_POST['procedimentoID'] != '') {
@@ -1115,7 +1115,7 @@ class centrocirurgico extends BaseController {
             $retorno['id'] = $i;
             $retorno['solicitacao_id'] = $item->solicitacao_cirurgia_id;
             $retorno['title'] = "Situação: $situacao \n \nCirurgião: $item->cirurgiao | Hospital: $item->hospital | Paciente: $item->nome | Convênio: $item->convenio | Procedimento: $procedimento | Fornecedor : $item->fornecedor  | Anestesista : $anestesista | Telefone: $item->celular / $item->telefone | Idade : $idade ";
-            $retorno['texto'] = "Situação:  $situacao \n \nCirurgião: $item->cirurgiao \n \nHospital: $item->hospital  \n \nPaciente: $item->nome  \n \nConvênio: $item->convenio  \n \nProcedimento: $procedimento \n \nFornecedor : $item->fornecedor  \n \nAnestesista  : $anestesista  \n \n Telefone: $item->celular / $item->telefone  \n \n Idade : $idade ";
+            $retorno['texto'] = "Situação:  $situacao \n \nCirurgião: $item->cirurgiao \n \nHospital: $item->hospital  \n \nPaciente: $item->nome  \n \nConvênio: $item->convenio  \n \nProcedimento: $procedimento \n \nFornecedor : $item->fornecedor  \n \nAnestesista  : $anestesista  \n \n Telefone: $item->celular / $item->telefone  \n \n Idade : $idade \n \n Observação:  $item->observacao";
 
 
             $retorno['start'] = date("Y-m-d", strtotime($item->data_prevista)) . "T" . date("H:i:s", strtotime($item->hora_prevista));

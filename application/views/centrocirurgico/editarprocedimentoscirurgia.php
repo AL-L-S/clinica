@@ -3,7 +3,7 @@
     <?
     $perfil_id = $this->session->userdata('perfil_id');
     ?>
-    <fieldset >
+    <fieldset>
         <legend>Dados da Solicitacao</legend>
 
         <div>
@@ -56,7 +56,7 @@
                     <tr>
                         <td>Quantidade</td>
                         <td>
-                            <input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/>
+                            <input type="number" name="quantidade" id="quantidade" value="1" class="texto01"/>
                             <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" value="<?= $ambulatorio_guia_id; ?>"/>
                             <input type="hidden" name="guia_id" id="guia_id" value="<?= $guia_id; ?>"/>
                         </td>
@@ -117,9 +117,11 @@
 
                     <tr>
                         <th class="tabela_header">Procedimento</th>
+                        <th class="tabela_header">Quantidade</th>
                         <th class="tabela_header">Convênio</th>
                         <th class="tabela_header">Via</th>
-                        <th class="tabela_header">Valor</th>
+                        <th class="tabela_header">Valor U.</th>
+                        <th class="tabela_header">Valor T.</th>
                         <!--<th class="tabela_header">Quantidade</th>-->
                         <!--<th class="tabela_header">Horario Especial</th>-->
                         <th class="tabela_header"></th>
@@ -139,19 +141,32 @@
                                 <?= $item->procedimento; ?>
                             </td>
                             <td class="<?php echo $estilo_linha; ?>">
+                                <?= $item->quantidade; ?>
+                            </td>
+                            <td class="<?php echo $estilo_linha; ?>">
                                 <?= $item->convenio; ?>
                             </td>
                             <td class="<?php echo $estilo_linha; ?>">
-                                <?if($item->via == 'M'){echo 'Mesma Via';}else{echo 'Via Diferente';} ?>
+                                <?
+                                if ($item->via == 'M') {
+                                    echo 'Mesma Via';
+                                } else {
+                                    echo 'Via Diferente';
+                                }
+                                ?>
                             </td>
                             <td class="<?php echo $estilo_linha; ?>">
-                                R$ <?= number_format(@$item->valor, 2, ',', '.'); ?>
+                                R$ <?= number_format(@$item->valor_unitario, 2, ',', '.'); ?>
                             </td> 
                             <td class="<?php echo $estilo_linha; ?>">
-                                <? if ($item->dinheiro == 'f') { ?>
-                                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirprocedimentoscirurgia/<?= $item->solicitacao_cirurgia_procedimento_id; ?>/<?= @$guia_id; ?>/<?= $solicitacao_id ?>" class="delete">
-                                    </a>
-                                <? } ?>
+                                R$ <?= number_format(@$item->quantidade * @$item->valor_unitario, 2, ',', '.'); ?>
+                            </td> 
+
+                            <td class="<?php echo $estilo_linha; ?>">
+                                <? //if ($item->dinheiro == 'f') {   ?>
+                                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirprocedimentoscirurgia/<?= $item->solicitacao_cirurgia_procedimento_id; ?>/<?= @$guia_id; ?>/<?= $solicitacao_id ?>" class="delete">
+                                </a>
+                                <? // }  ?>
                             </td>                            
 
                         </tr>

@@ -30,7 +30,7 @@
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
                 <button type="reset" name="btnLimpar">Limpar</button>
-                <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
+                <a href="<?= base_url() ?>ambulatorio/procedimentoplano/agrupador"><button type="button" id="btnVoltar" name="btnVoltar">Voltar</button></a>
             </form>
             <br/><br/>
 

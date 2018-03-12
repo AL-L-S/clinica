@@ -32,7 +32,7 @@
                         <tr>
                             <td>Quantidade</td>
                             <td>
-                                <input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/>
+                                <input type="number" name="quantidade" id="quantidade" value="1" class="texto00"/>
                             </td>
                         </tr>
                         <tr>
@@ -109,6 +109,7 @@
 
                 <tr>
                     <th class="tabela_header">Procedimento</th>
+                    <th class="tabela_header">Quantidade</th>
                     <th class="tabela_header">Convenio</th>
                     <th class="tabela_header">&nbsp;</th>
                 </tr>
@@ -122,6 +123,7 @@
 
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                 <center>

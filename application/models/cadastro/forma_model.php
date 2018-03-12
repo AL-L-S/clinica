@@ -15,12 +15,18 @@ class forma_model extends Model {
     }
 
     function listar($args = array()) {
-        $this->db->select('forma_entradas_saida_id,
-                            descricao');
-        $this->db->from('tb_forma_entradas_saida');
-        $this->db->where('ativo', 'true');
+        $this->db->select('c.forma_entradas_saida_id,
+                            c.conta,
+                            c.agencia,
+                            e.nome as empresa,
+                            c.descricao');
+        $this->db->from('tb_forma_entradas_saida c');
+        $this->db->join('tb_empresa e', 'e.empresa_id = c.empresa_id', 'left');
+        $this->db->where('c.ativo', 'true');
+        $empresa_id = $this->session->userdata('empresa_id');
+//        $this->db->where('c.empresa_id', $empresa_id);
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('descricao ilike', "%" . $args['nome'] . "%");
+            $this->db->where('c.descricao ilike', "%" . $args['nome'] . "%");
         }
         return $this->db;
     }
@@ -30,6 +36,35 @@ class forma_model extends Model {
                             descricao');
         $this->db->from('tb_forma_entradas_saida');
         $this->db->where('ativo', 'true');
+        $this->db->orderby('descricao');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarformaempresa() {
+        $this->db->select('forma_entradas_saida_id,
+                            descricao');
+        $this->db->from('tb_forma_entradas_saida');
+        $empresa_id = $this->session->userdata('empresa_id');
+//        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('ativo', 'true');
+        $this->db->orderby('descricao');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarautocompletecontaempresa($empresa_post_id = null) {
+        $this->db->select('forma_entradas_saida_id,
+                            descricao');
+        $this->db->from('tb_forma_entradas_saida');
+        $empresa_id = $this->session->userdata('empresa_id');
+        if($empresa_post_id != null){
+//           $this->db->where('empresa_id', $empresa_post_id); 
+        }else{
+//            $this->db->where('empresa_id', $empresa_id);  
+        }
+        $this->db->where('ativo', 'true');
+         $this->db->orderby('descricao');
         $return = $this->db->get();
         return $return->result();
     }
@@ -67,6 +102,9 @@ class forma_model extends Model {
             $this->db->set('descricao', $_POST['txtNome']);
             $this->db->set('agencia', $_POST['txtagencia']);
             $this->db->set('conta', $_POST['txtconta']);
+            $empresa_id = $this->session->userdata('empresa_id');
+//            var_du
+            $this->db->set('empresa_id', $empresa_id);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 

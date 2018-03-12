@@ -11,9 +11,9 @@
     $credores = $this->caixa->empresa();
     $empresas = $this->exame->listarempresas();
     $empresa_permissao = $this->guia->listarempresapermissoes();
-    $conta = $this->forma->listarforma();
+    $conta = $this->forma->listarformaempresa();
     $tipo = $this->tipo->listartipo();
-    
+
     $perfil_id = $this->session->userdata('perfil_id');
     ?>
     <div id="accordion">
@@ -152,6 +152,7 @@
                         <?php
                         $totaldalista = 0;
                         $lista = $this->caixa->listarentrada($_GET)->orderby('data desc')->limit($limit, $pagina)->get()->result();
+//                        var_dump($lista); die;
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -166,25 +167,25 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->conta; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->observacao; ?></td>
 
-                                <?if($perfil_id != 10){?>
-                                
-                                
-                                <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                                  <?if(($item->tipo == 'TRANSFERENCIA' && @$empresa_permissao[0]->excluir_transferencia == 't') || $item->tipo != 'TRANSFERENCIA'){?><a onclick="javascript: return confirm('Deseja realmente excluir a entrada?');" href="<?= base_url() ?>cadastros/caixa/excluirentrada/<?= $item->entradas_id ?>">Excluir</a><?}?></div>
-                                </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                      <a href="<?= base_url() ?>cadastros/caixa/anexarimagementrada/<?= $item->entradas_id ?>">Arquivos</a></div>
-                                </td>
-                                <?}else{?>
+                                <? if ($perfil_id != 10) { ?>
+
+
                                     <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                                            <?if(($item->tipo == 'TRANSFERENCIA' && @$empresa_permissao[0]->excluir_transferencia == 't') || $item->tipo != 'TRANSFERENCIA'){?>Excluir<?}?>
-                                    </div>
-                                </td>
-                                
-                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>cadastros/caixa/anexarimagementrada/<?= $item->entradas_id ?>">Arquivos</a></div>
-                                </td>
-                                <?}?>
+                                            <? if (($item->tipo == 'TRANSFERENCIA' && @$empresa_permissao[0]->excluir_transferencia == 't') || $item->tipo != 'TRANSFERENCIA') { ?><a onclick="javascript: return confirm('Deseja realmente excluir a entrada?');" href="<?= base_url() ?>cadastros/caixa/excluirentrada/<?= $item->entradas_id ?>">Excluir</a><? } ?></div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>cadastros/caixa/anexarimagementrada/<?= $item->entradas_id ?>">Arquivos</a></div>
+                                    </td>
+                                <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
+                                            <? if (($item->tipo == 'TRANSFERENCIA' && @$empresa_permissao[0]->excluir_transferencia == 't') || $item->tipo != 'TRANSFERENCIA') { ?>Excluir<? } ?>
+                                        </div>
+                                    </td>
+
+                                    <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>cadastros/caixa/anexarimagementrada/<?= $item->entradas_id ?>">Arquivos</a></div>
+                                    </td>
+                                <? } ?>
                             </tr>
 
                         </tbody>
@@ -242,48 +243,92 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
 
-                                    $(function () {
-                                        $('#nome').change(function () {
-                                            if ($(this).val()) {
-                                                $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
-                                                    options = '<option value=""></option>';
-                                                    for (var c = 0; c < j.length; c++) {
-                                                        options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
-                                                    }
-                                                    $('#nome_classe').html(options).show();
-                                                    $('.carregando').hide();
-                                                });
-                                            } else {
-                                                $('#nome_classe').html('<option value="">TODOS</option>');
-                                            }
-                                        });
-                                    });
+                                      $(function () {
+                                          $('#nome').change(function () {
+                                              if ($(this).val()) {
+                                                  $('.carregando').show();
+                                                  $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
+                                                      options = '<option value=""></option>';
+                                                      for (var c = 0; c < j.length; c++) {
+                                                          options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                                                      }
+                                                      $('#nome_classe').html(options).show();
+                                                      $('.carregando').hide();
+                                                  });
+                                              } else {
+                                                  $('#nome_classe').html('<option value="">TODOS</option>');
+                                              }
+                                          });
+                                      });
 
-                                    $(function () {
-                                        $("#datainicio").datepicker({
-                                            autosize: true,
-                                            changeYear: true,
-                                            changeMonth: true,
-                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                            dateFormat: 'dd/mm/yy'
-                                        });
-                                    });
-                                    $(function () {
-                                        $("#datafim").datepicker({
-                                            autosize: true,
-                                            changeYear: true,
-                                            changeMonth: true,
-                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                                            dateFormat: 'dd/mm/yy'
-                                        });
-                                    });
-                                    $(function () {
-                                        $("#accordion").accordion();
-                                    });
+                                      $(function () {
+                                          $('#txtempresa').change(function () {
+//                                            if ($(this).val()) {
+                                              $('.carregando').show();
+                                              $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $(this).val(), ajax: true}, function (j) {
+                                                  options = '<option value=""></option>';
+                                                  for (var c = 0; c < j.length; c++) {
+                                                      options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                                                  }
+                                                  $('#conta').html(options).show();
+                                                  $('.carregando').hide();
+                                              });
+//                                            } else {
+//                                                $('#nome_classe').html('<option value="">TODOS</option>');
+//                                            }
+                                          });
+                                      });
+
+                                      if ($('#txtempresa').val() > 0) {
+//                                          $('.carregando').show();
+                                          $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $('#txtempresa').val(), ajax: true}, function (j) {
+                                              options = '<option value=""></option>';
+                                              <?
+                                              if(@$_GET['conta'] > 0){
+                                                 $conta = $_GET['conta']; 
+                                              }else{
+                                                 $conta = 0;
+                                              }
+                                              ?>  
+                                              for (var c = 0; c < j.length; c++) {
+                                                
+                                                  if(<?=$conta?> == j[c].forma_entradas_saida_id){
+                                                      options += '<option selected value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                                                  }else{
+                                                      options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>'; 
+                                                  }
+                                                  
+                                              }
+                                              $('#conta').html(options).show();
+                                              $('.carregando').hide();
+                                          });
+                                      }
+
+
+                                      $(function () {
+                                          $("#datainicio").datepicker({
+                                              autosize: true,
+                                              changeYear: true,
+                                              changeMonth: true,
+                                              monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                              dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                              buttonImage: '<?= base_url() ?>img/form/date.png',
+                                              dateFormat: 'dd/mm/yy'
+                                          });
+                                      });
+                                      $(function () {
+                                          $("#datafim").datepicker({
+                                              autosize: true,
+                                              changeYear: true,
+                                              changeMonth: true,
+                                              monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                              dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                              buttonImage: '<?= base_url() ?>img/form/date.png',
+                                              dateFormat: 'dd/mm/yy'
+                                          });
+                                      });
+                                      $(function () {
+                                          $("#accordion").accordion();
+                                      });
 
 </script>

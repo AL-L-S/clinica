@@ -792,12 +792,12 @@ class Convenio_model extends Model {
             return -1;
         }
     }
-    
-    function criarProcedimentoCBHPM(){
+
+    function criarProcedimentoCBHPM() {
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
         $horario = date("Y-m-d H:i:s");
-        
+
         $this->db->select('tuss_id, descricao, codigo');
         $this->db->from('tb_tuss t');
         $this->db->where("tabela", 'CBHPM');
@@ -808,11 +808,11 @@ class Convenio_model extends Model {
                     AND pt.ativo = 't'
                 )");
         $return = $this->db->get()->result();
-        
-        
-        if ( count($return) > 0 ){
+
+
+        if (count($return) > 0) {
             foreach ($return as $item) {
-            
+
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
                 $this->db->set('nome', $item->descricao);
@@ -831,16 +831,15 @@ class Convenio_model extends Model {
                 $procedimento_tuss_id = $this->db->insert_id();
             }
         }
-        
     }
-    
+
     function atualizarValoresProcedimentosCBHPM($convenio_id) {
         // Cria procedimentos CBHPM que nao estao cadastrados na MANTER PROCEDIMENTO
         $this->criarProcedimentoCBHPM();
-        
+
         $valor_por = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']));
         $valor_por = ($valor_por) / 100;
-        
+
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
         $horario = date("Y-m-d H:i:s");
@@ -856,7 +855,7 @@ class Convenio_model extends Model {
             WHERE pc.ativo = 't' AND pc.convenio_id = " . (int) $convenio_id . "
         )");
         $return = $this->db->get()->result();
-        
+
         if (count($return) > 0) {
             foreach ($return as $value) {
                 $this->db->set('convenio_id', $convenio_id);
@@ -905,7 +904,6 @@ class Convenio_model extends Model {
                 AND pc.ativo = 't'
                 AND t.tabela = 'CBHPM' ";
         $this->db->query($sql);
-        
     }
 
     function gravar() {
@@ -1030,15 +1028,28 @@ class Convenio_model extends Model {
                 $this->db->where('convenio_id', $convenio_id);
                 $this->db->update('tb_convenio');
             }
-            
+
             /* Atualiza os valores no procedimento convenio baseado no valor de ajuste informado
               e no valor do porte que está la no cadastro do TUSS. */
             if ($_POST['tipo'] == 'CBHPM') {
                 // Só ira recalcular os valores, se o usuario informar que o convenio usa CBHPM
                 $this->atualizarValoresProcedimentosCBHPM($exame_sala_id);
             }
-            
+
             return $exame_sala_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarcaminhologo($convenio_id, $arquivo) {
+        try {
+
+            /* inicia o mapeamento no banco */
+
+            $this->db->set('caminho_logo', $arquivo);
+            $this->db->where('convenio_id', $convenio_id);
+            $this->db->update('tb_convenio');
         } catch (Exception $exc) {
             return -1;
         }

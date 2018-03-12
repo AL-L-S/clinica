@@ -330,6 +330,24 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function guiaspsadtoutrasdespesasconvenio($guia_id) {
+
+        $this->db->select(' c.nome as convenio,
+                            c.registroans,
+                            c.convenio_id,
+                            c.caminho_logo,
+                            c.codigoidentificador,
+                            c.dinheiro,
+                            c.tabela');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'ae.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("ae.guia_id", $guia_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function impressaoguiaconsultaspsadt($guia_id) {
 
         $this->db->select('ae.agenda_exames_id,
@@ -7207,6 +7225,21 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarexameguiafaturarconvenio($guia_id) {
+
+        $this->db->select('sum((valor * quantidade)) as total');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+//        $this->db->where('faturado', 'f');
+        $this->db->where('confirmado', 't');
+//        $this->db->where('c.dinheiro', 't');
+        $this->db->where("guia_id", $guia_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarexameguiaprocedimentos($guia_id) {
 
         $this->db->select('sum((valor * quantidade)) as total');
@@ -7996,7 +8029,7 @@ class guia_model extends Model {
             $desconto_cartao2 = $_POST['valor2'] - $_POST['valorajuste2'];
             $desconto_cartao3 = $_POST['valor3'] - $_POST['valorajuste3'];
             $desconto_cartao4 = $_POST['valor4'] - $_POST['valorajuste4'];
-            
+
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -8024,12 +8057,12 @@ class guia_model extends Model {
                 $this->db->set('parcelas4', $_POST['parcela4']);
                 $this->db->set('desconto_ajuste4', $desconto_cartao4);
             }
-            
+
             $paciente_id = $_POST['paciente_id'];
-            
+
             $this->db->set('faturado', 't');
             $this->db->set('paciente_id', $paciente_id);
-            $this->db->set('valor',(float) str_replace(',', '.', str_replace('.', '', $_POST['valorafaturar'])) );
+            $this->db->set('valor', (float) str_replace(',', '.', str_replace('.', '', $_POST['valorafaturar'])));
             $this->db->set('data', date("Y-m-d"));
 
             $horario = date("Y-m-d H:i:s");
@@ -12145,7 +12178,7 @@ ORDER BY ae.paciente_credito_id)";
                 }
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('quantidade', (int)$_POST['qtde1']);
+                $this->db->set('quantidade', (int) $_POST['qtde1']);
                 $this->db->set('ativo', 'f');
                 $this->db->set('situacao', 'OK');
                 $this->db->set('guia_id', $ambulatorio_guia_id);

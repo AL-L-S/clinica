@@ -60,7 +60,7 @@ class contaspagar_model extends Model {
         else{
 //            echo 'something';
             $empresa_id = $this->session->userdata('empresa_id');
-            $this->db->where('empresa_id', $empresa_id);
+            $this->db->where('fc.empresa_id', $empresa_id);
         }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('tipo', $return[0]->descricao);

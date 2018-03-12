@@ -25,6 +25,7 @@ class Autocomplete extends Controller {
         $this->load->model('cadastro/paciente_model', 'paciente_m');
         $this->load->model('cadastro/contaspagar_model', 'contaspagar');
         $this->load->model('cadastro/classe_model', 'financeiro_classe');
+        $this->load->model('cadastro/forma_model', 'forma');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('emergencia/solicita_acolhimento_model', 'solicita_acolhimento_m');
         $this->load->model('internacao/internacao_model', 'internacao_m');
@@ -1135,6 +1136,15 @@ class Autocomplete extends Controller {
             $result = $this->financeiro_classe->listarautocompleteclassessaida($_GET['nome']);
         } else {
             $result = $this->financeiro_classe->listarautocompleteclassessaida();
+        }
+        echo json_encode($result);
+    }
+    
+    function contaporempresa() {
+        if (isset($_GET['empresa'])) {
+            $result = $this->forma->listarautocompletecontaempresa($_GET['empresa']);
+        } else {
+            $result = $this->forma->listarautocompletecontaempresa();
         }
         echo json_encode($result);
     }

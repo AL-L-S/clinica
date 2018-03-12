@@ -6109,6 +6109,17 @@ class exame_model extends Model {
     }
 
     function excluirgastodesala($gasto_id) {
+
+        $this->db->select('agenda_exames_id');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where("ambulatorio_gasto_sala_id", $gasto_id);
+        $return = $this->db->get()->result();
+
+        if (count($return) > 0) {
+        
+        $this->db->where("ambulatorio_gasto_sala_id", $gasto_id);
+        $this->db->delete('tb_agenda_exames');
+        }
         $horario = date('Y-m-d');
         $operador_id = $this->session->userdata('operador_id');
 

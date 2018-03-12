@@ -54,21 +54,21 @@
                             </div>
                         </fieldset>-->
 
-<!--            <fieldset>
-                <legend>Via</legend>
-                <div id="via">
-                    <input type="radio" name="via" id="m" <?
-                    if (@$solicitacao[0]->via == 'M') {
-                        echo 'checked';
-                    }
-                    ?> value="M" required/> <label for="m">Mesma Via</label>
-                    <input type="radio" name="via" id="d" <?
-                    if (@$solicitacao[0]->via == 'D') {
-                        echo 'checked';
-                    }
-                    ?>  value="D" required/> <label for="d">Via Diferente</label>
-                </div>
-            </fieldset>-->
+            <!--            <fieldset>
+                            <legend>Via</legend>
+                            <div id="via">
+                                <input type="radio" name="via" id="m" <?
+            if (@$solicitacao[0]->via == 'M') {
+                echo 'checked';
+            }
+            ?> value="M" required/> <label for="m">Mesma Via</label>
+                                <input type="radio" name="via" id="d" <?
+            if (@$solicitacao[0]->via == 'D') {
+                echo 'checked';
+            }
+            ?>  value="D" required/> <label for="d">Via Diferente</label>
+                            </div>
+                        </fieldset>-->
 
             <fieldset>
                 <legend>Procedimentos</legend>
@@ -78,8 +78,9 @@
                         <tr>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">Convênio</th>
-                            <th class="tabela_header">Valor</th>
+                            <th class="tabela_header">Valor U</th>
                             <th class="tabela_header">Quantidade</th>
+                            <th class="tabela_header">Valor T</th>
                             <th class="tabela_header">Horário Especial</th>
                             <th class="tabela_header">Equipe Particular</th>
                             <th style="text-align: center;" class="tabela_header" colspan="2">Via</th>
@@ -102,11 +103,14 @@
                                     <?= $item->convenio; ?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <input type="number" id="valor" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
+                                    <input type="number" id="valor<?= $i; ?>" class="texto02" name="valor[<?= $i; ?>]" value="<?= @$item->valor_unitario; ?>" step="0.01" required=""/>
                                 </td> 
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <input type="text" name="qtde[<?= $i; ?>]" id="qtde" alt="integer" class="texto01" value="1" required=""/>
+                                    <input type="number" name="quantidade[<?= $i; ?>]" id="quantidade<?= $i; ?>" alt="integer" class="texto01" value="<?= @$item->quantidade; ?>" required=""/>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="number" id="valor_total<?= $i; ?>" class="texto02"  name="valor_total[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
+                                </td> 
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="checkbox" name="horEspecial[<?= $i; ?>]">
                                 </td>                            
@@ -161,21 +165,42 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
+//    $(function () {
+//        $('#procedimento1').change(function () {
+//            if ($(this).val()) {
+//                $('.carregando').show();
+//                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
+//                    options = "";
+//                    options += j[0].valortotal;
+//                    document.getElementById("valor1").value = options.replace(".", ",");
+//                    $('.carregando').hide();
+//                });
+//            } else {
+//                $('#valor1').html('value=""');
+//            }
+//        });
+//    });
+<? for ($b = 0; $b < $i; $b++) { ?>
     $(function () {
-        $('#procedimento1').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalororcamento', {procedimento1: $(this).val(), convenio: $("#convenio_id").val()}, function (j) {
-                    options = "";
-                    options += j[0].valortotal;
-                    document.getElementById("valor1").value = options.replace(".", ",");
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#valor1').html('value=""');
-            }
+        $('#quantidade<?= $b ?>').change(function () {
+            
+            var valor_total = $("#valor<?= $b ?>").val() * $("#quantidade<?= $b ?>").val();
+//            alert(valor_total);
+            $("#valor_total<?= $b ?>").val(valor_total);
+
+
         });
     });
+    $(function () {
+        $('#valor<?= $b ?>').change(function () {
+            
+            var valor_total = $("#valor<?= $b ?>").val() * $("#quantidade<?= $b ?>").val();
+//            alert(valor_total);
+            $("#valor_total<?= $b ?>").val(valor_total);
 
+
+        });
+    });
+<? } ?>
 
 </script>

@@ -1350,6 +1350,12 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('orcamento_config', 'f');
                 }
+                
+                if (isset($_POST['subgrupo'])) {
+                    $this->db->set('subgrupo', 't');
+                } else {
+                    $this->db->set('subgrupo', 'f');
+                }
 
                 if (isset($_POST['odontologia_valor_alterar'])) {
                     $this->db->set('odontologia_valor_alterar', 't');
@@ -1590,6 +1596,7 @@ class empresa_model extends Model {
                                ep.desabilitar_trava_retorno,
                                ep.associa_credito_procedimento,
                                ep.conjuge,
+                               ep.subgrupo,
                                ep.laudo_sigiloso,
                                f.numero_empresa_painel,
                                ep.campos_obrigatorios_pac_cpf,
@@ -1615,6 +1622,7 @@ class empresa_model extends Model {
             $this->_telefone = $return[0]->telefone;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
+            $this->_subgrupo = $return[0]->subgrupo;
             $this->_laudo_sigiloso = $return[0]->laudo_sigiloso;
             $this->_conjuge = $return[0]->conjuge;
             $this->_horario_seg_sex = $return[0]->horario_seg_sex;

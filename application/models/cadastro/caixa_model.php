@@ -44,9 +44,11 @@ class caixa_model extends Model {
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = e.classe', 'left');
         $this->db->where('e.ativo', 'true');
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->where("empresa_id", $empresa_id);
+        
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
             $this->db->where('e.empresa_id', $args['txtempresa']);
+        }else{
+            $this->db->where("e.empresa_id", $empresa_id);
         }
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('e.nome', $args['empresa']);
@@ -106,13 +108,15 @@ class caixa_model extends Model {
         $this->db->where('s.ativo', 'true');
         $empresa_id = $this->session->userdata('empresa_id');
 //        $this->db->where("empresa_id", $empresa_id);
-        $this->db->where('empresa_id', $empresa_id);
+        
 
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('s.nome', $args['empresa']);
         }
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
-            $this->db->where('e.empresa_id', $args['txtempresa']);
+            $this->db->where('s.empresa_id', $args['txtempresa']);
+        }else{
+            $this->db->where('s.empresa_id', $empresa_id);
         }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('tipo', $tipo);

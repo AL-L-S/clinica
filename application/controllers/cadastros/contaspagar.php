@@ -43,7 +43,7 @@ class Contaspagar extends BaseController {
     function carregar($financeiro_contaspagar_id) {
         $obj_contaspagar = new contaspagar_model($financeiro_contaspagar_id);
         $data['obj'] = $obj_contaspagar;
-        $data['conta'] = $this->forma->listarforma();
+        $data['conta'] = $this->forma->listarformaempresa();
         $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
         $this->loadView('cadastros/contaspagar-form', $data);
@@ -52,7 +52,7 @@ class Contaspagar extends BaseController {
     function carregarconfirmacao($financeiro_contaspagar_id) {
         $obj_contaspagar = new contaspagar_model($financeiro_contaspagar_id);
         $data['obj'] = $obj_contaspagar;
-        $data['conta'] = $this->forma->listarforma();
+        $data['conta'] = $this->forma->listarformaempresa();
         $data['tipo'] = $this->tipo->listartipo();
         $this->loadView('cadastros/contaspagarconfirmar-form', $data);
     }

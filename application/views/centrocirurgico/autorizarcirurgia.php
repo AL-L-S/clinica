@@ -47,6 +47,10 @@
                 <label>Hospital</label>
                 <input type="text"  id="hospital" class="texto02" name="hospital" value="<?= @$solicitacao[0]->hospital; ?>" readonly="true"/>
             </div>
+            <div>
+                <label>Observação</label>
+                <textarea readonly="" cols="" rows="5" name="observacao" class="texto_area"><?= @$solicitacao[0]->observacao; ?></textarea>
+            </div>
 
         </fieldset>
 
@@ -82,7 +86,7 @@
                     <label>Desconto (%)</label>
                     <input type="number" id="desconto" name="desconto" value="0" step="0.01" min="0" required=""/>
                 </div>
-                <div>
+<!--                <div>
                     <label>Forma Pagamento</label>
                     <select name="formapamento" id="formapamento" class="size2">
                         <option value="">Selecione</option>
@@ -94,7 +98,7 @@
                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                         <? endforeach; ?>
                     </select>
-                </div>
+                </div>-->
             </fieldset>
 
             <!--            <fieldset>
@@ -121,8 +125,9 @@
                         <tr>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">Convênio</th>
-                            <th class="tabela_header">Valor</th>
-                            <!--<th class="tabela_header">Quantidade</th>-->
+                            <th class="tabela_header">Valor U</th>
+                            <th class="tabela_header">Quantidade</th>
+                            <th class="tabela_header">Valor T</th>
                             <th class="tabela_header">Horario Especial</th>
                             <th class="tabela_header" colspan="2">Via</th>
                         </tr>
@@ -138,42 +143,52 @@
                                 <td  class="<?php echo $estilo_linha; ?>">
                                     <input type="hidden" name="procedimento_convenio_id[<?= $i; ?>]" value="<?= $item->procedimento_convenio_id; ?>" />
                                     <input type="hidden" name="cirurgia_procedimento_id[<?= $i; ?>]" value="<?= $item->solicitacao_cirurgia_procedimento_id; ?>" />
-    <?= $item->procedimento; ?>
+                                    <?= $item->procedimento; ?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-    <?= $item->convenio; ?>
+                                    <?= $item->convenio; ?>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <input type="number" id="valor_total<?= $i; ?>" name="valor_total[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
-                                    <input type="hidden" id="valor<?= $i; ?>" name="valor[<?= $i; ?>]" value="<?= @$item->valortotal; ?>" step="0.01" required=""/>
+                                    <input type="number" id="valor<?= $i; ?>" class="texto02" name="valor[<?= $i; ?>]" value="<?= @$item->valor_unitario; ?>" step="0.01" required=""/>
                                 </td> 
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="number" name="quantidade[<?= $i; ?>]" id="quantidade<?= $i; ?>" alt="integer" class="texto01" value="<?= @$item->quantidade; ?>" required=""/>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="number" id="valor_total<?= $i; ?>" class="texto02"  name="valor_total[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
+                                </td> 
+
     <!--                                <td class="<?php echo $estilo_linha; ?>">
-                                    <input type="text" name="qtde[<?= $i; ?>]" id="qtde" alt="integer" class="texto01" value="1" required=""/>
-                                </td>-->
+        <input type="number" id="valor_total<?= $i; ?>" name="valor_total[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
+        <input type="number" id="valor<?= $i; ?>" name="valor[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
+    </td> -->
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="text" name="quantidade[<?= $i; ?>]" id="quantidade" alt="integer" class="texto01" value="<?= @$item->quantidade; ?>" required=""/>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="checkbox" name="horEspecial[<?= $i; ?>]">
                                 </td>                            
                                 <td style="width: 300px" class="<?php echo $estilo_linha; ?>">
                                     <div id="via">
                                         <input type="radio" name="via[<?= $i; ?>]" id="m" <?
-                                               if ($item->via == 'M') {
-                                                   echo 'checked';
-                                               }
-                                               ?> value="M" required/> <label for="m">Mesma Via</label>
+                                        if ($item->via == 'M') {
+                                            echo 'checked';
+                                        }
+                                        ?> value="M" required/> <label for="m">Mesma Via</label>
                                         <input type="radio" name="via[<?= $i; ?>]" id="d" <?
-                                               if ($item->via == 'D') {
-                                                   echo 'checked';
-                                               }
-                                               ?>  value="D" required/> <label for="d">Via Diferente</label>
+                                        if ($item->via == 'D') {
+                                            echo 'checked';
+                                        }
+                                        ?>  value="D" required/> <label for="d">Via Diferente</label>
                                     </div>
                                 </td>                            
 
 
                             </tr>
-    <?
-    $i++;
-}
-?>
+                            <?
+                            $i++;
+                        }
+                        ?>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -223,7 +238,7 @@
         $('#desconto').blur(function () {
             desconto = $('#desconto').val();
 <? for ($b = 0; $b < $i; $b++) { ?>
-                valor_destacado<?= $b ?> = $('#valor<?= $b ?>').val();
+                valor_destacado<?= $b ?> = $('#valor_total<?= $b ?>').val();
                 valor<?= $b ?> = valor_destacado<?= $b ?> - (valor_destacado<?= $b ?> * (desconto / 100));
                 //               alert(valor<?= $b ?>);
                 $('#valor_total<?= $b ?>').val(valor<?= $b ?>);
@@ -231,5 +246,27 @@
         });
     });
 
+<? for ($b = 0; $b < $i; $b++) { ?>
+        $(function () {
+            $('#quantidade<?= $b ?>').change(function () {
+
+                var valor_total = $("#valor<?= $b ?>").val() * $("#quantidade<?= $b ?>").val();
+    //            alert(valor_total);
+                $("#valor_total<?= $b ?>").val(valor_total);
+
+
+            });
+        });
+        $(function () {
+            $('#valor<?= $b ?>').change(function () {
+
+                var valor_total = $("#valor<?= $b ?>").val() * $("#quantidade<?= $b ?>").val();
+    //            alert(valor_total);
+                $("#valor_total<?= $b ?>").val(valor_total);
+
+
+            });
+        });
+<? } ?>
 
 </script>

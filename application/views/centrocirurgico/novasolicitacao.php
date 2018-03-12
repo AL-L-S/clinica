@@ -86,6 +86,14 @@
                     <dd>
                         <input type="checkbox" id="orcamento" name="orcamento"/>
                     </dd>
+                    
+                    <dt>
+                        <label>Observação</label>
+                    </dt>
+                    <dd style="height: 130px;">
+                        <textarea  cols="" rows="8" name="observacao" class="texto_area"></textarea>
+                        
+                    </dd>
 
 
                 </dl>    

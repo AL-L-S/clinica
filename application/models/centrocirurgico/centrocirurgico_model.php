@@ -1741,6 +1741,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
                             o2.cor_mapa,
                             c.nome as convenio,
                             sc.autorizado,
+                            sc.observacao,
                             h.nome as hospital,
                             sc.hora_prevista,
                             sc.hora_prevista_fim,
