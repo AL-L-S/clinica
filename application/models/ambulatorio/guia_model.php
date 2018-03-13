@@ -1004,6 +1004,8 @@ class guia_model extends Model {
                             al.medico_parecer1,
                             al.ambulatorio_laudo_id,
                             al.exame_id,
+                            al.data as data_atendimento,
+                            pt.entrega,
                             e.situacao as situacaoexame,
                             al.procedimento_tuss_id,
                             p.paciente_id,
@@ -1017,7 +1019,8 @@ class guia_model extends Model {
                             pt.grupo,
                             c.nome as convenio,
                             pt.nome as procedimento,
-                            al.situacao as situacaolaudo');
+                            al.situacao as situacaolaudo,
+                            al.observacao_laudo');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -1033,6 +1036,9 @@ class guia_model extends Model {
         $this->db->where('ae.cancelada', 'false');
         if($_POST['situacao'] != ''){
             $this->db->where('al.situacao', $_POST['situacao']);
+        }
+        if($_POST['grupo'] != ''){
+            $this->db->where('pt.grupo', $_POST['grupo']);
         }
         if($_POST['empresa'] != ''){
             $this->db->where('ae.empresa_id', $_POST['empresa']);

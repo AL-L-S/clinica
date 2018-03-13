@@ -2579,6 +2579,7 @@ class Guia extends BaseController {
 
     function relatoriosituacaoatendimento() {
         $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriosituacaoatendimento', $data);
     }
 
@@ -2604,11 +2605,15 @@ class Guia extends BaseController {
     }
 
     function gerarelatoriosituacaoatendimento() {
-        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
-        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
+        $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['relatorio'] = $this->guia->gerarelatoriosituacaoatendimento();
-        echo "<pre>"; 
-        var_dump($data['relatorio']); die;
+        if($_POST['empresa'] != ""){
+            $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        } else {
+            $data['empresa'] = array();
+        }
+        
         $this->load->View('ambulatorio/impressaorelatoriosituacaoatendimento', $data);
     }
 

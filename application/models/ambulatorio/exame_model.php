@@ -158,6 +158,14 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listarobservacaolaudo($laudo_id) {
+        $this->db->select('observacao_laudo');
+        $this->db->from('tb_ambulatorio_laudo');
+        $this->db->where('ambulatorio_laudo_id', $laudo_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarobservacoesfaturar($agenda_exame_id) {
         $this->db->select('observacao_faturamento');
         $this->db->from('tb_agenda_exames');
@@ -7475,6 +7483,19 @@ class exame_model extends Model {
             $this->db->set('operador_atendimento', $operador_id);
             $this->db->where('agenda_exames_id', $agenda_exame_id);
             $this->db->update('tb_agenda_exames');
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function observacaolaudogravar($laudo_id) {
+        try {
+//            $horario = date("Y-m-d H:i:s");
+//            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('observacao_laudo', utf8_encode($_POST['txtobservacao']));
+            $this->db->where('ambulatorio_laudo_id', $laudo_id);
+            $this->db->update('tb_ambulatorio_laudo');
             return 0;
         } catch (Exception $exc) {
             return -1;
