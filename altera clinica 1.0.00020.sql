@@ -152,6 +152,10 @@ ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN observacao text;
 
 ALTER TABLE ponto.tb_solicitacao_cirurgia_material ADD COLUMN observacao text;
 
+-- Dia 12/03/2018
+ALTER TABLE ponto.tb_ambulatorio_orcamento ADD COLUMN ativo boolean DEFAULT TRUE;
+ALTER TABLE ponto.tb_ambulatorio_orcamento ADD COLUMN autorizado boolean DEFAULT FALSE;
+
 
 ALTER TABLE ponto.tb_internacao ALTER COLUMN leito TYPE integer USING (leito::integer);
 

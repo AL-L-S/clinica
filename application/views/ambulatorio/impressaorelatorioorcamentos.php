@@ -19,6 +19,7 @@
                 <th class="tabela_header" width="150px;">Valor (R$)</th>
                 <th class="tabela_header" width="150px;">Valor Cartão(R$)</th>
                 <th class="tabela_header" width="300px;">Empresa</th>
+                <th class="tabela_header" width="80px;">Detalhes</th>
                 <th class="tabela_header" width="150px;">Ação</th>
             </tr>
         </thead>
@@ -50,6 +51,13 @@
                                 </a>
                         </td>
                         <td><b><?= $item->empresa_nome; ?></b></td>
+                        <td><b><? 
+                        if ($item->autorizado == 't'){
+                            echo "<span style='color: green'>Já Autorizado</span>";
+                        } else {
+                            echo "<span>Não Autorizado</span>"; 
+                        }
+                        ?></b></td>
                         <td align="center"><a href="<?= base_url() ?>ambulatorio/exame/autorizarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a></td>
                     </tr>
 

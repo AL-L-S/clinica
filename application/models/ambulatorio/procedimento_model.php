@@ -773,6 +773,7 @@ class procedimento_model extends Model {
                     LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id
                     LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
                     WHERE pc.ativo = 't'
+                    AND pc2.procedimento_convenio_id = pc.procedimento_convenio_id
                     AND c.tabela = 'CBHPM'
                     AND t.tuss_id IN (SELECT tuss_id FROM ponto.tb_tuss WHERE porte_descricao = '".$_POST['descricaoporte']."')";
             $this->db->query($sql);
@@ -803,22 +804,7 @@ class procedimento_model extends Model {
                     $this->db->query($sql);
                 }
                 $this->db->set('valor_bri', str_replace(",", ".", str_replace(".", "", $_POST['txtvalorbri'])));
-            }
-            
-            if ($_POST['descricaoporte'] != '' && $_POST['tuss_id'] != ""){
-                $sql = "UPDATE ponto.tb_procedimento_convenio pc2
-                        SET valorch = t.valor_porte + (c.valor_ajuste_cbhpm/100 * t.valor_porte), 
-                            valortotal = t.valor_porte + (c.valor_ajuste_cbhpm/100 * t.valor_porte)
-                        FROM ponto.tb_procedimento_convenio pc
-                        LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
-                        LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id
-                        LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
-                        WHERE pc.ativo = 't'
-                        AND c.tabela = 'CBHPM'
-                        AND t.tuss_id = $tuss_id";
-                $this->db->query($sql);
-            }
-                    
+            }  
             $this->db->set('valor_porte', (float)str_replace(",", ".", str_replace(".", "", $_POST['txtvalorporte'])));
             $this->db->set('porte_descricao', $_POST['descricaoporte']);
             
@@ -856,7 +842,21 @@ class procedimento_model extends Model {
                 $this->db->update('tb_tuss');
             }
             
-            
+            if ($_POST['descricaoporte'] != '' && $_POST['tuss_id'] != ""){
+                $sql = "UPDATE ponto.tb_procedimento_convenio pc2
+                        SET valorch = t.valor_porte + (c.valor_ajuste_cbhpm/100 * t.valor_porte), 
+                            valortotal = t.valor_porte + (c.valor_ajuste_cbhpm/100 * t.valor_porte)
+                        FROM ponto.tb_procedimento_convenio pc
+                        LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                        LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id
+                        LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
+                        WHERE pc.ativo = 't'
+                        AND pc2.procedimento_convenio_id = pc.procedimento_convenio_id
+                        AND c.tabela = 'CBHPM'
+                        AND t.tuss_id = $tuss_id";
+                $this->db->query($sql);
+            }
+                  
             if ($_POST['descricaoporte'] != ''){
                 $this->insereProcedimentoConvenioCBHPM($tuss_id);
             }

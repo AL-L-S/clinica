@@ -1212,6 +1212,65 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function gerarelatoriosituacaoatendimento() {
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.inicio,
+                            ae.data_autorizacao,
+                            ae.fim,
+                            ae.ativo,
+                            ae.telefonema,
+                            ae.situacao,
+                            ae.guia_id,
+                            ae.data_atualizacao,
+                            ae.paciente_id,
+                            ae.observacoes,
+                            ae.realizada,
+                            ae.medico_consulta_id,
+                            al.medico_parecer1,
+                            al.ambulatorio_laudo_id,
+                            al.exame_id,
+                            e.situacao as situacaoexame,
+                            al.procedimento_tuss_id,
+                            p.paciente_id,
+                            o.nome as medicoconsulta,
+                            p.nome as paciente,
+                            ae.procedimento_tuss_id,
+                            ae.confirmado,
+                            e.exames_id,
+                            ae.agenda_exames_nome_id as sala_id,
+                            ag.tipo,
+                            pt.grupo,
+                            c.nome as convenio,
+                            pt.nome as procedimento,
+                            al.situacao as situacaolaudo');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->where('ae.tipo !=', 'CIRURGICO');
+        $this->db->where('ae.paciente_id IS NOT NULL');
+        $this->db->where('ae.cancelada', 'false');
+        if($_POST['situacao'] != ''){
+            $this->db->where('al.situacao', $_POST['situacao']);
+        }
+        if($_POST['empresa'] != ''){
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where('ae.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function gerarelatorioexamefaltou() {
 
         $_POST['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
