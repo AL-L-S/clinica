@@ -1445,6 +1445,12 @@ class Exame extends BaseController {
         $this->load->View('ambulatorio/observacao-form', $data);
     }
 
+    function alterarobservacaolaudo($laudo_id) {
+        $data['laudo_id'] = $laudo_id;
+        $data['observacao'] = $this->exame->listarobservacaolaudo($laudo_id);
+        $this->load->View('ambulatorio/alterarobservacaolaudo-form', $data);
+    }
+
     function alterarobservacao($agenda_exame_id) {
         $data['agenda_exame_id'] = $agenda_exame_id;
         $data['observacao'] = $this->exame->listarobservacoes($agenda_exame_id);
@@ -1462,6 +1468,12 @@ class Exame extends BaseController {
         $data['observacao'] = $this->exame->listarobservacoesfaturaramentomanual($guia_id);
 //        var_dump($data);die;
         $this->load->View('ambulatorio/alteracaoobservacaofaturamentomanual-form', $data);
+    }
+
+    function observacaolaudogravar($laudo_id) {
+//        var_dump($agenda_exame_id); die;
+        $verificar = $this->exame->observacaolaudogravar($laudo_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function observacaogravar($agenda_exame_id) {

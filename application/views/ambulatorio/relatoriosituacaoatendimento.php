@@ -29,6 +29,17 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Grupo</label>
+                    </dt>
+                    <dd>
+                        <select name="grupo" id="grupo" class="size2" >
+                            <option value=''>SELECIONE</option>
+                            <? foreach ($grupos as $grupo) { ?>                                
+                                <option value='<?= $grupo->nome ?>'><?= $grupo->nome ?></option>
+                            <? } ?>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Empresa</label>
                     </dt>
                     <dd>
