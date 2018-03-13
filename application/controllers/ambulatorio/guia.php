@@ -21,6 +21,7 @@ class Guia extends BaseController {
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->model('ambulatorio/sala_model', 'sala');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
+        $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('cadastro/laboratorio_model', 'laboratorio');
         $this->load->model('cadastro/caixa_model', 'caixa');
@@ -50,6 +51,67 @@ class Guia extends BaseController {
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/guia-lista', $data);
+    }
+
+    function pesquisarsolicitacaosadt($paciente_id) {
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+//        $data['exames'] = $this->guia->listarexames($paciente_id);
+        $data['guia'] = $this->guia->listarsolicitacaosadt($paciente_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $this->loadView('ambulatorio/solicitacaosadtguia-lista', $data);
+    }
+
+    function novasolicitacaosadt($paciente_id) {
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+//        $data['exames'] = $this->guia->listarexames($paciente_id);
+        $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $this->loadView('ambulatorio/solicitacaosadtguia-form', $data);
+    }
+
+    function cadastrarsolicitacaosadt($solicitacao_id) {
+        $data['procedimentos_cadastrados'] = $this->guia->listarprocedimentosguiasadt($solicitacao_id);
+        $data['guia'] = $this->guia->listarsolicitacaosadtcadastrar($solicitacao_id);
+        $data['solicitacao_id'] = $solicitacao_id;
+        @$convenio_id = @$data['guia'][0]->convenio_id;
+        $data['procedimento'] = $this->procedimentoplano->listarprocedimentocadastrarsadt($convenio_id);
+//        var_dump($data['procedimentos_cadastrados']);
+//        die;
+        $this->loadView('ambulatorio/cadastrarsolicitacaosadt', $data);
+    }
+
+    function gravarnovasolicitacaosadt($paciente_id) {
+//        var_dump($_POST);
+//        die;
+        $this->guia->gravarnovasolicitacaosadt($paciente_id);
+        $mensagem = 'Solicitação gravada com sucesso';
+//        $data['exames'] = $this->guia->listarexames($paciente_id);
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/guia/pesquisarsolicitacaosadt/$paciente_id");
+    }
+
+    function excluirsolicitacaoprocedimentosadt($solicitacao_id, $solicitacao_procedimento_id) {
+//        var_dump($_POST);
+//        die;
+        $this->guia->excluirsolicitacaoprocedimentosadt($solicitacao_procedimento_id);
+        $mensagem = 'Procedimento excluido com sucesso';
+//        $data['exames'] = $this->guia->listarexames($paciente_id);
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/guia/cadastrarsolicitacaosadt/$solicitacao_id");
+    }
+
+    function gravarprocedimentosolicitacaosadt($solicitacao_id) {
+//        var_dump($_POST);
+//        die;
+        $this->guia->gravarprocedimentosolicitacaosadt($solicitacao_id);
+        $mensagem = 'Procedimento gravado com sucesso';
+//        $data['exames'] = $this->guia->listarexames($paciente_id);
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/guia/cadastrarsolicitacaosadt/$solicitacao_id");
     }
 
     function pesquisarfiladeimpressao($args = array()) {
@@ -96,6 +158,18 @@ class Guia extends BaseController {
 
 
         $this->load->View('ambulatorio/impressaoguiaspsadt', $data);
+    }
+
+    function impressaosolicitacaosadt($solicitacao_id) {
+        $data['solicitacao_id'] = $solicitacao_id;
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['relatorio'] = $this->guia->impressaoguiasolicitacaopsadt($solicitacao_id);
+//        echo '<pre>';
+//        var_dump($data['relatorio']); die;
+
+
+        $this->load->View('ambulatorio/impressaoguiasolicitacaospsadt', $data);
     }
 
     function impressaoguiaconsultaspsadtprocedimento($agenda_exames_id) {
@@ -2090,7 +2164,7 @@ class Guia extends BaseController {
             $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
         }
         $data['relatorio'] = $this->guia->relatorioexamesconferencia();
-        
+
         if ($_POST['planilha'] == "SIM") {
             $html = $this->load->View('ambulatorio/impressaorelatorioconferencia', $data, true);
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -2127,7 +2201,7 @@ class Guia extends BaseController {
         if ($_POST['procedimentos'] != '0') {
             $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
         }
-        $data['relatorio'] = $this->guia->relatorioexamesconferencia();
+        $data['relatorio'] = $this->guia->relatorioexamesrecolhimento();
 
         if ($_POST['planilha'] == 'sim') {
             $html = $this->load->view('ambulatorio/impressaorelatoriorecolhimento', $data, true);

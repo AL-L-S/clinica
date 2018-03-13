@@ -6,7 +6,7 @@ ALTER TABLE ponto.tb_empresa_sms ADD COLUMN remetente_sms character varying(50);
 -- Internação na Clínica
 
  -- Dia 22/11/16
- DROP TABLE ponto.tb_internacao;
+ --DROP TABLE ponto.tb_internacao;
 
 CREATE TABLE ponto.tb_internacao
 (
@@ -53,9 +53,9 @@ CREATE TABLE ponto.tb_internacao
   CONSTRAINT tb_internacao_pkey PRIMARY KEY (internacao_id)
 );
 
-ALTER TABLE ponto.tb_internacao DROP COLUMN leito;
+--ALTER TABLE ponto.tb_internacao DROP COLUMN leito;
 
-ALTER TABLE ponto.tb_internacao ADD COLUMN leito integer;
+--ALTER TABLE ponto.tb_internacao ADD COLUMN leito integer;
 
 
 
