@@ -9,12 +9,12 @@
         <? if (count($relatorio) > 0) { ?>  
             <table id="tabelaspec" width="92%" border="1" align="center" cellpadding="0" cellspacing="0" class="tipp">
                 <tbody>
-                    <tr bgcolor="#B1B1B1">
-                        <td width="133" height="51" style="font-size: 9px;"><p class="ttr"><strong style="font-weight: normal; text-align: center;"><strong style="font-weight: normal; text-align: left;"><img src="<?= base_url() ?>/img/convenios/<? echo $relatorio[0]->convenio_id; ?>.jpg"  width="133" height="49" class="ttr"/></strong></strong></p></td>
-                        <td height="51" colspan="8" class="ttrl" style="font-size: 9px;"><p>GUIA DE SERVIÇO PROFISSIONAL/SERVIÇO AUXILIAR DE
+                    <tr >
+                        <td  width="133" height="51" style="font-size: 9px;"><p class="ttr"><strong style="font-weight: normal; text-align: center;"><strong style="font-weight: normal; text-align: left;"><img src="<?= base_url(). $relatorio[0]->caminho_logo ?>"  width="133" height="49" class="ttr"/></strong></strong></p></td>
+                        <td bgcolor="#B1B1B1" height="51" colspan="8" class="ttrl" style="font-size: 9px;"><p>GUIA DE SERVIÇO PROFISSIONAL/SERVIÇO AUXILIAR DE
                             </p>
                             <p> DIAGNÓSTICO E TERAPIA - SP/SADT</p></td>
-                        <td width="239" style="font-size: 9px;"><p>2-N° Guia no Prestador</p><p><strong><?= $relatorio[0]->guia_id ?></strong></p></td>
+                        <td bgcolor="#B1B1B1" width="239" style="font-size: 9px;"><p>2-N° Guia no Prestador</p><p><strong><?//= $relatorio[0]->guia_id ?></strong></p></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="ti">1- Registro ANS</td>
@@ -34,12 +34,12 @@
                         <td colspan="3" class="ti">7- Número da guia atribuida pela operadora</td>
                     </tr>
                     <tr>
-                        <td height="16" colspan="3" class="tc"><strong><? $ano = substr($relatorio[0]->data_autorizacao, 0, 4); ?>
-                                <? $mes = substr($relatorio[0]->data_autorizacao, 5, 2); ?>
-                                <? $dia = substr($relatorio[0]->data_autorizacao, 8, 2); ?>
+                        <td height="16" colspan="3" class="tc"><strong><? $ano = substr($relatorio[0]->data_cadastro, 0, 4); ?>
+                                <? $mes = substr($relatorio[0]->data_cadastro, 5, 2); ?>
+                                <? $dia = substr($relatorio[0]->data_cadastro, 8, 2); ?>
                                 <? $datafinal = $dia . '/' . $mes . '/' . $ano; ?>
-                                <?php echo$datafinal ?></strong></td>
-                        <td colspan="2" class="tc"><strong><?= $relatorio[0]->autorizacao; ?> </strong></td>
+                                <?php echo $datafinal ?></strong></td>
+                        <td colspan="2" class="tc"><strong><?//= $relatorio[0]->autorizacao; ?> </strong></td>
                         <td colspan="2" class="tc"><strong>&nbsp; </strong></td>
                         <td colspan="3" class="tc"><strong>&nbsp; </strong></td>
                     </tr>
@@ -61,7 +61,7 @@
                     </tr>
                     <tr>
                         <td height="16" colspan="3" class="tc"><strong><? echo $relatorio[0]->convenionumero; ?></strong></td>
-                        <td colspan="1" class="tc"><strong> </strong></td>
+                        <td colspan="1" class="tc"><strong><?=date("d/m/Y",strtotime($relatorio[0]->vencimento_carteira));?> </strong></td>
                         <td colspan="4" class="tc"><strong><?= $relatorio[0]->paciente; ?> </strong></td>
                         <td colspan="1" class="tc"><strong>&nbsp; </strong></td>
                         <td colspan="1" class="tc"><strong>&nbsp; </strong></td>
@@ -148,10 +148,10 @@
                     <? foreach ($relatorio as $value) { ?>
 
                         <tr>
-                            <td class="semborda"><strong> <a onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadtprocedimento/<? echo $value->agenda_exames_id; ?>');">22 </a></strong></td>
-                            <td height="16" class="semborda"><strong><a onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadtprocedimento/<? echo $value->agenda_exames_id; ?>');"><? echo $value->codigo_procedimento; ?> </a></strong></td>
+                            <td class="semborda"><strong> </strong></td>
+                            <td height="16" class="semborda"><strong><? echo $value->codigo_procedimento; ?></strong></td>
 
-                            <td colspan="1" class="semborda"><strong><a onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;'"style="" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoguiaconsultaspsadtprocedimento/<? echo $value->agenda_exames_id; ?>');"><? echo $value->procedimento; ?> </a></strong></td>
+                            <td colspan="1" class="semborda"><strong><? echo $value->procedimento; ?></strong></td>
                             <td colspan="1" class="semborda"><strong><? echo $value->quantidade; ?> </strong></td>
                             <td colspan="1" class="semborda"><strong><? echo $value->quantidade; ?></strong></td>
                         </tr>
@@ -229,11 +229,11 @@
                     <? foreach ($relatorio as $value) { ?>
 
                         <tr>
-                            <td class="semborda"><strong><? echo date("d-m-Y", strtotime($value->data)); ?>&nbsp;&nbsp;</strong></td>
-                            <td height="16" class="semborda"><strong><? echo $value->inicio ?></strong></td>
+                            <td class="semborda"><strong><?// echo date("d-m-Y", strtotime($value->data)); ?>&nbsp;&nbsp;</strong></td>
+                            <td height="16" class="semborda"><strong><?// echo $value->inicio ?></strong></td>
 
-                            <td colspan="1" class="semborda"><strong><? echo $value->fim ?></strong></td>
-                            <td colspan="1" class="semborda"><strong>22 </strong></td>
+                            <td colspan="1" class="semborda"><strong><?// echo $value->fim ?></strong></td>
+                            <td colspan="1" class="semborda"><strong> </strong></td>
                             <td colspan="1" class="semborda"><strong><? echo $value->codigo_procedimento; ?></strong></td>
                             <td colspan="1" class="semborda"><strong><? echo $value->procedimento; ?></strong></td>
                             <td colspan="1" class="semborda"><strong><? echo $value->quantidade; ?></strong></td>
@@ -271,18 +271,18 @@
 
                     </tr>
 
-                    <? foreach ($relatorio as $value) { ?>
+                    <?// foreach ($relatorio as $value) { ?>
                         <tr>
                             <td height="16" class="semborda"><strong></strong><strong></strong></td>
                             <td class="semborda"><strong></strong><strong></strong></td>
-                            <td colspan="1" class="semborda"><strong><?= $value->cpf_executante; ?></strong></td>
-                            <td colspan="1" class="semborda"><strong><?= $value->executante; ?></strong></td>
+                            <td colspan="1" class="semborda"><strong><?//= $value->cpf_executante; ?></strong></td>
+                            <td colspan="1" class="semborda"><strong><?//= $value->executante; ?></strong></td>
                             <td colspan="1" class="semborda"><strong></strong></td>
-                            <td class="semborda"><strong><?= $value->conselho_executante; ?></strong></td>
-                            <td colspan="1" class="semborda"><strong><?= $codigoUF = $this->utilitario->codigo_uf($value->codigo_ibge_executante); ?></strong></td>
-                            <td colspan="1" class="semborda"><strong><?= $value->cbo_executante; ?></strong></td>
+                            <td class="semborda"><strong><?//= $value->conselho_executante; ?></strong></td>
+                            <td colspan="1" class="semborda"><strong><?//= $codigoUF = $this->utilitario->codigo_uf($value->codigo_ibge_executante); ?></strong></td>
+                            <td colspan="1" class="semborda"><strong><?//= $value->cbo_executante; ?></strong></td>
                         </tr>
-                    <? } ?>
+                    <? //} ?>
 
                     <tr class="ti">
                         <td height="12" colspan="8" class="ti">56- Data de Realização de Procedimentos em Série &nbsp;&nbsp;&nbsp;&nbsp; 57- Assinatura do Beneficiário ou Responsável</td>

@@ -5403,7 +5403,8 @@ class exametemp_model extends Model {
     function autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id) {
         try {
 //            $testemedico = $_POST['medico_id'];
-//            var_dump($_POST['indicacao']); die;
+//            echo '<pre>';
+//            var_dump($_POST); die;
 //            die;
             $i = 0;
             $confimado = "";
@@ -5427,8 +5428,12 @@ class exametemp_model extends Model {
                 $k = 0;
                 $i++;
 
-
-                $tipo = $this->verificaexamemedicamento($procedimento_tuss_id);
+                if($procedimento_tuss_id != ''){
+                   $tipo = $this->verificaexamemedicamento($procedimento_tuss_id); 
+                }else{
+                    $tipo = '';
+                }
+                
                 if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO' || $tipo == 'MATERIAL') && $_POST['medico'][$i] == '') {
                     return 2;
                 }
@@ -5566,8 +5571,12 @@ class exametemp_model extends Model {
                     } else {
                         $promotor = array();
                     }
-                    $grupo_laboratorio = $this->verificagrupoprocedimento($procedimento_tuss_id);
-                    if ($grupo_laboratorio == 'LABORATORIAL') {
+//                    var_dump($procedimento_tuss_id); die;
+//                    if(){
+//                        
+//                    }
+//                    $grupo_laboratorio = $this->verificagrupoprocedimento($procedimento_tuss_id);
+                    //if ($grupo_laboratorio == 'LABORATORIAL') {
                         $this->db->select('mc.valor as perc_laboratorio, mc.percentual, mc.laboratorio');
                         $this->db->from('tb_procedimento_percentual_laboratorio_convenio mc');
                         $this->db->join('tb_procedimento_percentual_laboratorio m', 'm.procedimento_percentual_laboratorio_id = mc.procedimento_percentual_laboratorio_id', 'left');
@@ -5576,7 +5585,7 @@ class exametemp_model extends Model {
                         $this->db->where('mc.ativo', 'true');
                         $this->db->where('mc.revisor', 'false');
                         $percentual_laboratorio = $this->db->get()->result();
-                    }
+                   // }
 
 
 
