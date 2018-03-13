@@ -238,7 +238,16 @@ class guia_model extends Model {
                             ssp.valor,
                             o.nome as solicitante,
                             c.nome as convenio,
+                            c.codigoidentificador,
+                            c.registroans,
+                            c.caminho_logo,
+                            o.cbo_ocupacao_id as cbo,
+                            ms.codigo_ibge,
+                            o.conselho,
+                            p.convenionumero,
+                            p.vencimento_carteira,
                             pt.nome as procedimento,
+                            pt.codigo as codigo_procedimento,
                             ss.data_cadastro,
                             p.nome as paciente');
         $this->db->from('tb_solicitacao_sadt_procedimento ssp');
@@ -248,6 +257,7 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = ss.convenio_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ss.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ss.medico_solicitante', 'left');
+        $this->db->join('tb_municipio ms', 'ms.municipio_id = o.municipio_id', 'left');
         $this->db->where("ss.solicitacao_sadt_id", $solicitacao_id);
         $this->db->where("ssp.ativo", 't');
         $this->db->orderby('ssp.solicitacao_sadt_procedimento_id');
