@@ -254,6 +254,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function listarprocedimentosguiasadt($solicitacao_id) {
 
         $this->db->select('ss.solicitacao_sadt_id,
@@ -832,6 +833,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function relatorioexamesrecolhimento() {
 
         $this->db->select('ae.agenda_exames_id,
@@ -871,7 +873,7 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
-  
+
 
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
@@ -1258,15 +1260,15 @@ class guia_model extends Model {
         $this->db->where('ae.tipo !=', 'CIRURGICO');
         $this->db->where('ae.paciente_id IS NOT NULL');
         $this->db->where('ae.cancelada', 'false');
-        if($_POST['situacao'] != ''){
+        if ($_POST['situacao'] != '') {
             $this->db->where('al.situacao', $_POST['situacao']);
         }
-        if($_POST['empresa'] != ''){
+        if ($_POST['empresa'] != '') {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
         $this->db->where('ae.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where('ae.data <=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -4303,6 +4305,7 @@ class guia_model extends Model {
                             c.nome as convenio,
                             c.iss,
                             ae.valor1,
+                            ae.forma_pagamento as forma_pagamento1,
                             ae.forma_pagamento2,
                             ae.valor2,
                             ae.forma_pagamento3,
@@ -8036,9 +8039,7 @@ class guia_model extends Model {
                 return -1;
             else
 //                $ambulatorio_guia_id = $this->db->insert_id();
-
-
-            return $ambulatorio_guia_id;
+                return $ambulatorio_guia_id;
         } catch (Exception $exc) {
             return -1;
         }
@@ -12757,7 +12758,7 @@ ORDER BY ae.paciente_credito_id)";
         }
     }
 
-    function gravarfisioterapia($ambulatorio_guia_id, $percentual, $medico_id) {
+    function gravarfisioterapia($ambulatorio_guia_id, $percentual, $medico_id, $percentual_laboratorio) {
         try {
 //            var_dump($percentual); die;
             $horario = date("Y-m-d H:i:s");
@@ -12801,7 +12802,11 @@ ORDER BY ae.paciente_credito_id)";
 
                 $hora = date("H:i:s");
                 $data = date("Y-m-d");
-
+                if (count($percentual_laboratorio) > 0) {
+                    $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
+                    $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
+                    $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
+                }
 
                 $this->db->set('valor_medico', $percentual[0]->perc_medico);
                 $this->db->set('percentual_medico', $percentual[0]->percentual);

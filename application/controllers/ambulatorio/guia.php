@@ -1256,7 +1256,7 @@ class Guia extends BaseController {
                 redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id");
             }
         } else {
-
+             $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
             $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
             if (count($percentual) == 0) {
                 $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
@@ -1278,7 +1278,7 @@ class Guia extends BaseController {
                         $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                     }
                     $medico_id = $_POST['crm1'];
-                    $this->guia->gravarfisioterapia($ambulatorio_guia, $percentual, $medico_id);
+                    $this->guia->gravarfisioterapia($ambulatorio_guia, $percentual, $medico_id, $percentual_laboratorio);
                 }
                 //        $this->gerardicom($ambulatorio_guia);
                 //            $this->session->set_flashdata('message', $data['mensagem']);
