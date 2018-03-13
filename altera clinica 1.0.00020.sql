@@ -151,3 +151,39 @@ ALTER TABLE ponto.tb_solicitacao_cirurgia_material ADD COLUMN valor_unitario num
 ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN observacao text;
 
 ALTER TABLE ponto.tb_solicitacao_cirurgia_material ADD COLUMN observacao text;
+
+
+ALTER TABLE ponto.tb_internacao ALTER COLUMN leito TYPE integer USING (leito::integer);
+
+
+
+CREATE TABLE ponto.tb_solicitacao_sadt
+(
+  solicitacao_sadt_id serial NOT NULL,
+  paciente_id integer,
+  convenio_id integer,
+  medico_solicitante integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  guia_id integer,
+  empresa_id integer,
+  CONSTRAINT tb_solicitacao_sadt_pkey PRIMARY KEY (solicitacao_sadt_id)
+);
+
+CREATE TABLE ponto.tb_solicitacao_sadt_procedimento
+(
+  solicitacao_sadt_procedimento_id serial,
+  solicitacao_sadt_id integer,
+  procedimento_convenio_id integer,
+  quantidade integer,
+  valor numeric,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_solicitacao_sadt_procedimento_pkey PRIMARY KEY (solicitacao_sadt_procedimento_id)
+);

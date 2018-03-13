@@ -403,6 +403,10 @@ if (count($pacs) > 0) {
                                                         <? }
                                                         ?>
                                                     </div></td>
+<!--                                                <td >
+                                                    <div class="bt_link_new">
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/pesquisarsolicitacaosadt/<?= $paciente_id ?>');" >
+                                                            <font size="-1">Solicitação SADT</font></a></div></td>    -->
                                                     
                                             </tr>
                                             <tr>
