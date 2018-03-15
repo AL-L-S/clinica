@@ -143,6 +143,7 @@
                                 <? } else { ?>
                                     <!--<td class="<?php echo $estilo_linha; ?>" width="30px;">  </td>-->
                                 <? } ?>
+                                    <!--
                                 <? if ($item->orcamento_convenio_id != '') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                         <div class="bt_link" style="width:90pt;">
@@ -154,7 +155,7 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">  </td>
                                 <? } ?>
 
-
+                                    -->
                                 <? if ($item->orcamento == 'f' && $item->equipe_montada == 't') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
 

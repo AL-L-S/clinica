@@ -269,6 +269,16 @@ class app_model extends Model {
         $this->db->update("tb_agenda_exames");
         
     }
+
+    function listarLaudosNaoCriados() {
+        $this->db->select('al.ambulatorio_laudo_id, al.exame_id, e.sala_id');
+        $this->db->from('tb_ambulatorio_laudo al');
+        $this->db->join('tb_exames e', 'e.exames_id = al.exame_id');
+        $this->db->where("al.situacao", "FINALIZADO");
+        $this->db->where("al.cancelada", "f");
+        $return = $this->db->get();
+        return $return->result();
+    }
 }
 
 ?>
