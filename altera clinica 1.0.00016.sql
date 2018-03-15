@@ -77,8 +77,8 @@ ALTER TABLE ponto.tb_internacao ADD COLUMN hospital_transferencia character vary
 ALTER TABLE ponto.tb_internacao_leito ADD COLUMN excluido boolean DEFAULT false;
 
 
-ALTER TABLE ponto.tb_internacao DROP COLUMN procedimentosolicitado;
-ALTER TABLE ponto.tb_internacao ADD COLUMN procedimentosolicitado integer;
+--ALTER TABLE ponto.tb_internacao DROP COLUMN procedimentosolicitado;
+ALTER TABLE ponto.tb_internacao ALTER COLUMN procedimentosolicitado TYPE integer USING(procedimentosolicitado::integer);
 
 
  DROP TABLE ponto.tb_internacao_prescricao;
@@ -816,27 +816,6 @@ $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
 
-ALTER TABLE ponto.tb_ambulatorio_grupo ADD COLUMN tipo character varying(40);
-
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'ESPECIALIDADE' WHERE nome = 'AUDIOMETRIA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'CONSULTA' WHERE nome = 'CONSULTA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'DENSITOMETRIA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'ECOCARDIOGRAMA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'ELETROCARDIOGRAMA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'ELETROENCEFALOGRAMA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'ESPIROMETRIA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'ESPECIALIDADE' WHERE nome = 'FISIOTERAPIA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'LABORATORIAL';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'MAMOGRAFIA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'TOMOGRAFIA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'ENDOSCOPIA';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'RM';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'RX';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'EXAME' WHERE nome = 'US';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'MEDICAMENTO' WHERE nome = 'MEDICAMENTO';
-UPDATE ponto.tb_ambulatorio_grupo  SET tipo= 'CIRURGICO' WHERE nome = 'CIRURGICO';
-
-
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_medico numeric(10,2);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN percentual_medico boolean;
 
@@ -1115,6 +1094,18 @@ CREATE TABLE ponto.tb_farmacia_produto
   operador_atualizacao integer,
   quantidade_unitaria numeric,
   CONSTRAINT tb_farmacia_produto_pkey PRIMARY KEY (farmacia_produto_id)
+);
+
+CREATE TABLE ponto.tb_farmacia_menu
+(
+  farmacia_menu_id serial NOT NULL,
+  descricao character varying(200),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_farmacia_menu_pkey PRIMARY KEY (farmacia_menu_id)
 );
 
 

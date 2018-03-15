@@ -112,6 +112,7 @@ foreach ($relatoriopromotor as $item) {
                         <th class="tabela_header">Valor</th>
 
                         <th class="tabela_header">Observacao</th>
+                        <th class="tabela_header">Empresa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -128,6 +129,7 @@ foreach ($relatoriopromotor as $item) {
                             <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
                             <td ><?= $item->observacao; ?></td>
+                            <td ><?= $item->empresa; ?></td>
                         </tr>
                     <? endforeach; ?>
                     <tr>

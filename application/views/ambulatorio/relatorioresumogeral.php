@@ -17,6 +17,16 @@
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
                     <dt>
+                    <label>Laboratório</label>
+                    </dt>
+                    <dd>
+                        <select name="laboratorio" id="laboratorio" class="size2">
+                            
+                            <option value="NAO">NÃO</option>
+                            <option value="SIM">SIM</option>
+                        </select>
+                    </dd>
+                    <dt>
                     <label>Empresa</label>
                     </dt>
                     <dd>

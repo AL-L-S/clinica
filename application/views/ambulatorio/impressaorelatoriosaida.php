@@ -35,8 +35,8 @@
                     <th class="tabela_header">Classe</th>
                     <th class="tabela_header">Dt saida</th>
                     <th class="tabela_header">Valor</th>
-
                     <th class="tabela_header">Observacao</th>
+                    <th class="tabela_header">Empresa</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,6 +55,7 @@
                         <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                         <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
                         <td ><?= utf8_decode($item->observacao); ?></td>
+                        <td ><?= utf8_decode($item->empresa); ?></td>
                     </tr>
                 <? endforeach; ?>
                 <tr>
@@ -62,6 +63,8 @@
                     <td colspan="2"><b><?= number_format($total, 2, ",", "."); ?></b></td>
                 </tr>
             </tbody>
+        </table>
+    <h4>Obs: Transfer&ecirc;ncias n&atilde;o s&atilde;o somadas no valor total</h4>
 
 
             <?

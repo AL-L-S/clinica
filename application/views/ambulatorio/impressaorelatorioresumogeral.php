@@ -61,7 +61,7 @@
                     <td><?= $item->paciente ?></td>
                     <td style='text-align: right;'><?= date("d/m/Y", strtotime($item->data)) ?></td>
                     <td style='text-align: right;'><?= number_format($item->valor, 2, ',', '') ?></td>
-                    <td style='text-align: right;'><?= $item->operador?></td>
+                    <td style='text-align: right;'><?= $item->operador ?></td>
                 </tr>
             <? } ?>
             <tr>
@@ -100,6 +100,8 @@
             $medicos = 0;
             $total_medicos = 0;
             $total_medicospagar = 0;
+            $totalgerallaboratorio = 0;
+            $totalperclaboratorio = 0;
             $perc = 0;
             $totalperc = 0;
             $total_geral = 0;
@@ -107,6 +109,7 @@
             $total_convenio = 0;
             $liquidodinheiro = 0;
             $faturamento_clinica = 0;
+            $total_laboratoriospagar = 0;
             $TOTALCARTAO = 0;
 
             foreach ($formapagamento as $value) {
@@ -155,6 +158,32 @@
             foreach ($medico as $item) :
                 foreach ($medicorecebido as $itens) :
                     if ($item->medico == $itens->medico) {
+
+                        $valor_total = $itens->valor_total;
+
+                        if ($_POST['laboratorio'] == 'SIM') {
+
+                            if ($itens->percentual_laboratorio == "t") {
+                                $simbolopercebtuallaboratorio = " %";
+
+                                $valorpercentuallaboratorio = $itens->valor_laboratorio/* - ((float) $itens->valor_laboratorio * ((float) $itens->taxa_administracao / 100)) */;
+
+                                $perclaboratorio = $valor_total * ($valorpercentuallaboratorio / 100);
+//                                    var_dump(@$empresa_permissao[0]->valor_laboratorio); die;
+                            } else {
+                                $simbolopercebtuallaboratorio = "";
+                                $valorpercentuallaboratorio = $itens->valor_laboratorio/* - ((float) $itens->valor_laboratorio * ((float) $itens->taxa_administracao / 100)) */;
+
+//                                    $perclaboratorio = $valorpercentuallaboratorio;
+                                $perclaboratorio = $valorpercentuallaboratorio * $itens->quantidade;
+                            }
+                            if (@$empresa_permissao[0]->valor_laboratorio == 't') {
+                                $valor_total = $valor_total - $perclaboratorio;
+                            }
+//                            $totalperclaboratorio = $totalperclaboratorio + $perclaboratorio;
+//                            $totalgerallaboratorio = $totalgerallaboratorio + $valor_total;
+                        }
+
                         $procedimentopercentual = $itens->procedimento_tuss_id;
                         $medicopercentual = $itens->medico_parecer1;
 
@@ -166,7 +195,7 @@
 
                             $valorpercentualmedico = $itens->valor_medico;
 
-                            $perc = $itens->valor_total * ($valorpercentualmedico / 100);
+                            $perc = $valor_total * ($valorpercentualmedico / 100);
 
                             $medicos = $medicos + $perc;
                         } else {
@@ -280,6 +309,77 @@
     <br>
     <br>
     <br>
+    <? if ($_POST['laboratorio'] == 'SIM') { ?>
+        <table>
+            <tbody>           
+
+                <tr>
+                    <td width="350px;"><font size="-1"><B>Laboratório</B></td>
+                    <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor Produzido</B></td>
+                    <td style='text-align: right;'width="120px;"><font size="-1"><B>Valor Pago</B></td>
+                </tr>
+
+                <? if (count($laboratorio) > 0): ?>
+                    <tr>
+                        <th style='width:10pt;border:solid windowtext 1.0pt;
+                            border-bottom:none;mso-border-top-alt:none;border-left:
+                            none;border-right:none;' colspan="4">&nbsp;</th>
+                    </tr>
+                <? endif; ?>
+                <?
+                $i = 0;
+
+                foreach ($laboratorio as $item) :
+                    $laboratorio_total = 0;
+                    foreach ($medicorecebido as $itens) :
+                        if ($item->laboratorio_id == $itens->laboratorio_id) {
+
+                            $valor_total = $itens->valor_total;
+
+                            if ($itens->percentual_laboratorio == "t") {
+                                $simbolopercebtuallaboratorio = " %";
+
+                                $valorpercentuallaboratorio = $itens->valor_laboratorio/* - ((float) $itens->valor_laboratorio * ((float) $itens->taxa_administracao / 100)) */;
+
+                                $perclaboratorio = $valor_total * ($valorpercentuallaboratorio / 100);
+//                                    var_dump(@$empresa_permissao[0]->valor_laboratorio); die;
+                            } else {
+                                $simbolopercebtuallaboratorio = "";
+                                $valorpercentuallaboratorio = $itens->valor_laboratorio/* - ((float) $itens->valor_laboratorio * ((float) $itens->taxa_administracao / 100)) */;
+
+
+                                $perclaboratorio = $valorpercentuallaboratorio * $itens->quantidade;
+                            }
+//                            if (@$empresa_permissao[0]->valor_laboratorio == 't') {
+//                                $valor_total = $valor_total - $perclaboratorio;
+//                            }
+                            $totalperclaboratorio = $totalperclaboratorio + $perclaboratorio;
+                            $totalgerallaboratorio = $totalgerallaboratorio + $valor_total;
+                            $laboratorio_total = $laboratorio_total + $perclaboratorio;
+                        }
+
+
+                    endforeach;
+                    $i++;
+                    $total_laboratoriospagar = $total_laboratoriospagar + $laboratorio_total;
+                    ?>
+                    <tr>
+                        <td><font size="-1" width="350px;"><?= utf8_decode($item->laboratorio); ?></td>
+                        <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
+                        <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($laboratorio_total, 2, ',', '.') ?></td>
+                    </tr>
+                    <?php
+//                    $total_medicos = $total_medicos + $item->valor;
+//                    $medicos = 0;
+                endforeach;
+                ?>
+
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <br>
+    <? } ?>
     <table>
         <tbody>           
 
@@ -293,39 +393,80 @@
                     none;border-right:none;' colspan="4">&nbsp;</th>
             </tr>
             <?
-            foreach ($convenio as $item) :
-                foreach ($convenios as $value) :
-                    if ($item->convenio == $value->nome) {
+            $valor_p = 0;
+            $contador_a = 0;
+            $total_convenio_geral = 0;
+            foreach ($convenios as $value) {
+                $contador_a++;
+                $total_convenio_f = 0;
+                
+                $total_convenio = 0;
+                foreach ($convenio as $item) {
 
+                    if ($value->convenio_id == $item->convenio_id) {
                         if ($value->dinheiro == 't') {
-                            $total_particular = $total_particular + $item->valor;
+//                            $valor_p = $item->valor;
+
+                            if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
+                                $valor_p = $item->valor;
+                            } else {
+                                if ($item->forma_pagamento1 == 1000) {
+                                    $valorSemCreditoTotal = $item->valor2 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento2 == 1000) {
+                                    $valorSemCreditoTotal = $item->valor1 + $item->valor3 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento3 == 1000) {
+                                    $valorSemCreditoTotal = $item->valor1 + $item->valor2 + $item->valor4;
+                                }
+                                if ($item->forma_pagamento4 == 1000) {
+                                    $valorSemCreditoTotal = $item->valor1 + $item->valor2 + $item->valor3;
+                                }
+                                $valor_p = $valorSemCreditoTotal;
+                            }
+
+                            $total_particular = $total_particular + $valor_p;
                         } else {
                             $total_convenio = $total_convenio + $item->valor;
                         }
+                        $total_convenio_f = $total_convenio_f + $valor_p;
                     }
-                endforeach;
-                if ($item->dinheiro == 'f') {
+                }
+                $value->valor_teste = $total_convenio_f;
+                $total_geral = $total_geral + $item->valor;
+                $total_convenio_geral = $total_convenio_geral + $total_convenio;
+
+                if ($value->dinheiro == 'f') {
                     ?>
                     <tr>
-                        <td><font size="-1" width="350px;"><?= utf8_decode($item->convenio); ?></td>
-                        <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
+                        <td><font size="-1" width="350px;"><?= utf8_decode($value->convenio); ?></td>
+                        <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_convenio, 2, ',', '.') ?></td>
                     </tr>
                     <?php
                 }
-                $total_geral = $total_geral + $item->valor;
-            endforeach;
-
+                
+                
+                
+            }
+//            echo '<pre>';
+//            var_dump($contador_a); die;
             $total_geral = $total_particular + $total_convenio;
-            $liquidodinheiro = $total_particular - $total_medicospagar;
-            $faturamento_clinica = $liquidodinheiro + $total_convenio;
+            if($_POST['laboratorio'] == 'SIM'){
+              $liquidodinheiro = $total_particular - $total_medicospagar - $total_laboratoriospagar;  
+            }else{
+              $liquidodinheiro = $total_particular - $total_medicospagar;    
+            }
+            
+            $faturamento_clinica = $liquidodinheiro + $total_convenio_geral;
             ?>
             <tr>
                 <td><font size="-1" width="350px;"><b>VALOR GERAL</b></td>
-                <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_convenio, 2, ',', '.') ?></td>
+                <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_convenio_geral, 2, ',', '.') ?></td>
             </tr>
 
         </tbody>
     </table>
+
     <br>
     <br>
     <br>
@@ -342,13 +483,13 @@
                     none;border-right:none;' colspan="4">&nbsp;</th>
             </tr>
             <?
-            foreach ($convenio as $item2) :
+            foreach ($convenios as $item2) :
 
                 if ($item2->dinheiro == 't') {
                     ?>
                     <tr>
                         <td><font size="-1" width="350px;"><?= utf8_decode($item2->convenio); ?></td>
-                        <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item2->valor, 2, ',', '.') ?></td>
+                        <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item2->valor_teste, 2, ',', '.') ?></td>
                     </tr>
                     <?php
                 }
@@ -399,7 +540,7 @@
             </tr>
             <tr>
                 <td><font size="-1" width="350px;">VALOR CONVENIO</td>
-                <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_convenio, 2, ',', '.') ?></td>
+                <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_convenio_geral, 2, ',', '.') ?></td>
             </tr>
             <tr>
                 <td><font size="-1" width="350px;">VALOR LIQUIDO DA CLINICA</td>
@@ -431,7 +572,11 @@
                 </tr>  
                 <?
             }
-            $totalgeral = $totalgeral + $data[$value->nome];
+            if ($value->forma_pagamento_id != 1000) {
+                $totalgeral = $totalgeral + $data[$value->nome];
+            }
+
+
             if ($value->cartao != 'f') {
                 $TOTALCARTAO = $TOTALCARTAO + $data[$value->nome];
             }
@@ -463,19 +608,19 @@
                 <th style=''width="120px;"><font size="-1">Data Lançamento</th>
                 <th style=''width="120px;"><font size="-1">Data</th>
             </tr> <?
-    foreach ($relatoriocredito as $item) {
-        if ($item->forma_pagamento == 1000) {
-            $credito = $credito + $item->valor1;
-        }
-        if ($item->forma_pagamento2 == 1000) {
-            $credito = $credito + $item->valor2;
-        }
-        if ($item->forma_pagamento3 == 1000) {
-            $credito = $credito + $item->valor3;
-        }
-        if ($item->forma_pagamento4 == 1000) {
-            $credito = $credito + $item->valor4;
-        }
+        foreach ($relatoriocredito as $item) {
+            if ($item->forma_pagamento == 1000) {
+                $credito = $credito + $item->valor1;
+            }
+            if ($item->forma_pagamento2 == 1000) {
+                $credito = $credito + $item->valor2;
+            }
+            if ($item->forma_pagamento3 == 1000) {
+                $credito = $credito + $item->valor3;
+            }
+            if ($item->forma_pagamento4 == 1000) {
+                $credito = $credito + $item->valor4;
+            }
             ?>
                 <tr>
                     <td ><font size="-1"><?= $item->paciente ?></td>
@@ -486,10 +631,10 @@
                     <td style='text-align: right;'width="120px;"><font size="-1"><?= date("d/m/Y", strtotime($item->data)) ?></td>
                 </tr> 
 
-        <?
-        $credito = 0;
-    }
-    ?>
+                <?
+                $credito = 0;
+            }
+            ?>
         </table>
         <?
     }

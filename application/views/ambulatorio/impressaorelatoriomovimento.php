@@ -37,6 +37,7 @@
                     <th class="tabela_header">Classe</th>
                     <th class="tabela_header">Valor</th>
                     <th class="tabela_header">Observa&ccedil;&atilde;o</th>
+                    <th class="tabela_header">Empresa</th>
                     <th class="tabela_header">Saldo</th>
                 </tr>
             </thead>
@@ -46,10 +47,10 @@
                 $data = 0;
                 $totalrelatorio = 0;
                 foreach ($relatorio as $item) :
-                    if ($item->tiposaida != 'TRANSFERENCIA' && $item->tipoentrada != 'TRANSFERENCIA') {
+//                    if ($item->tiposaida != 'TRANSFERENCIA' && $item->tipoentrada != 'TRANSFERENCIA') {
                         $total = $total + $item->valor;
                         $totalrelatorio = $totalrelatorio + $item->valor;
-                    }
+//                    }
 
 //                    $totalrelatorio = $totalrelatorio + $item->valor;
                     $dataatual = substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4);
@@ -82,6 +83,7 @@
                         <? } else { ?>
                             <td ><?= utf8_decode($item->observacaoentrada); ?></td>
                         <? } ?>
+                        <td ><?= utf8_decode($item->empresa); ?></td>
                         <td colspan="2"><b><?= number_format($total, 2, ",", "."); ?></b></td>
                     </tr>
 
@@ -90,6 +92,7 @@
                 <tr>
                     <td colspan="5"><b>Saldo Final</b></td>
                     <td ><b><?= number_format($totalrelatorio, 2, ",", "."); ?></b></td>
+                    <td ><b></b></td>
                     <td ><b></b></td>
                     <td ><b><?= number_format($total, 2, ",", "."); ?></b></td>
                 </tr>

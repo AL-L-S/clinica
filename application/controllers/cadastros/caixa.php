@@ -74,7 +74,7 @@ class Caixa extends BaseController {
     }
 
     function transferencia() {
-        $data['conta'] = $this->forma->listarforma();
+        $data['conta'] = $this->forma->listarformaempresa();
         $this->loadView('cadastros/transferencia-form', $data);
     }
 
@@ -244,7 +244,7 @@ class Caixa extends BaseController {
     }
 
     function relatoriosaida() {
-        $data['conta'] = $this->forma->listarforma();
+        $data['conta'] = $this->forma->listarformaempresa();
         $data['credordevedor'] = $this->caixa->listarcredordevedor();
         $data['tipo'] = $this->tipo->listartipo();
 //        $data['empresa'] = $this->guia->listarempresas();
@@ -413,7 +413,7 @@ class Caixa extends BaseController {
     }
 
     function relatoriosaidagrupo() {
-        $data['conta'] = $this->forma->listarforma();
+        $data['conta'] = $this->forma->listarformaempresa();
         $data['credordevedor'] = $this->caixa->listarcredordevedor();
         $data['tipo'] = $this->tipo->listartipo();
 //        $data['empresa'] = $this->guia->listarempresas();

@@ -24,7 +24,7 @@ class forma_model extends Model {
         $this->db->join('tb_empresa e', 'e.empresa_id = c.empresa_id', 'left');
         $this->db->where('c.ativo', 'true');
         $empresa_id = $this->session->userdata('empresa_id');
-//        $this->db->where('c.empresa_id', $empresa_id);
+        $this->db->where('c.empresa_id', $empresa_id);
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('c.descricao ilike', "%" . $args['nome'] . "%");
         }
@@ -46,7 +46,7 @@ class forma_model extends Model {
                             descricao');
         $this->db->from('tb_forma_entradas_saida');
         $empresa_id = $this->session->userdata('empresa_id');
-//        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('empresa_id', $empresa_id);
         $this->db->where('ativo', 'true');
         $this->db->orderby('descricao');
         $return = $this->db->get();
@@ -59,9 +59,9 @@ class forma_model extends Model {
         $this->db->from('tb_forma_entradas_saida');
         $empresa_id = $this->session->userdata('empresa_id');
         if($empresa_post_id != null){
-//           $this->db->where('empresa_id', $empresa_post_id); 
+           $this->db->where('empresa_id', $empresa_post_id); 
         }else{
-//            $this->db->where('empresa_id', $empresa_id);  
+            $this->db->where('empresa_id', $empresa_id);  
         }
         $this->db->where('ativo', 'true');
          $this->db->orderby('descricao');

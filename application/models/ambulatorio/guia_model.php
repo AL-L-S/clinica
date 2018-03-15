@@ -1919,9 +1919,9 @@ class guia_model extends Model {
         return $return->result();
     }
 
-    function relatorioresumogeralconvenio() {
+    function relatorioresumogeralconveniounico() {
 
-        $this->db->select('c.nome as convenio,c.dinheiro,
+        $this->db->select('c.convenio_id,c.nome as convenio,c.dinheiro,sum(ae.valor_total)as valor_teste,
             sum(ae.valor_total)as valor');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
@@ -1939,8 +1939,41 @@ class guia_model extends Model {
         }
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        $this->db->groupby('c.nome');
+        $this->db->groupby('c.convenio_id,c.nome');
         $this->db->groupby('c.dinheiro');
+        $this->db->orderby('c.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function relatorioresumogeralconvenio() {
+
+        $this->db->select('c.nome as convenio,c.convenio_id,c.dinheiro,ae.forma_pagamento as forma_pagamento1,
+                          ae.forma_pagamento2,  
+                          ae.forma_pagamento3,  
+                          ae.forma_pagamento4,  
+                          ae.valor1,  
+                          ae.valor2,  
+                          ae.valor3,  
+                          ae.valor4,  
+            ae.valor_total as valor');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("(e.cancelada = false OR ae.tipo = 'CIRURGICO')");
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where("(ae.valor_medico is not null OR ae.tipo = 'CIRURGICO')");
+//        $this->db->where('e.situacao', 'FINALIZADO');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+//        $this->db->groupby('c.nome');
+//        $this->db->groupby('c.dinheiro');
         $this->db->orderby('c.nome');
         $return = $this->db->get();
         return $return->result();
@@ -5064,12 +5097,41 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function relatorioresumolaboratoriogeral() {
+
+        $this->db->select('ae.laboratorio_id, lab.nome as laboratorio,
+                           sum(ae.valor_total) as valor');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = ae.laboratorio_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->where('e.cancelada', 'false');
+        $this->db->where("ae.valor_medico is not null");
+        $this->db->where("ae.laboratorio_id is not null");
+        //$this->db->where('al.situacao', 'FINALIZADO');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        $this->db->groupby('ae.laboratorio_id,lab.nome');
+        $this->db->orderby('lab.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function relatorioresumogeralmedico() {
 
         $this->db->select('op.nome as medico,
+                           ae.laboratorio_id,
                            ae.valor_total,
                            ae.valor_medico,
+                           ae.quantidade,
+                           ae.valor_laboratorio,
                            ae.forma_pagamento,
                            ae.forma_pagamento2,
                            ae.forma_pagamento3,
@@ -5082,6 +5144,7 @@ class guia_model extends Model {
                            c.nome,
                            ae.percentual_medico,
                            pt.perc_medico,
+                           ae.percentual_laboratorio,
                            pt.procedimento_tuss_id,
                            al.medico_parecer1,
                            pt.percentual');
@@ -5089,6 +5152,7 @@ class guia_model extends Model {
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_laboratorio lab', 'lab.laboratorio_id = ae.laboratorio_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');

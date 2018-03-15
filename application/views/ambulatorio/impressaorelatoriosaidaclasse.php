@@ -36,6 +36,7 @@
                     <th class="tabela_header">Observacao</th>
                     <th class="tabela_header">Dt saida</th>
                     <th class="tabela_header">Valor</th>
+                    <th class="tabela_header">Empresa</th>
 
 
                 </tr>
@@ -47,10 +48,17 @@
                 $i = 0;
                 $s = '';
                 foreach ($relatorio as $item) :
-                    $totalgeral = $totalgeral + $item->valor;
+
+                    if ($item->tipo != 'TRANSFERENCIA') {
+                        $totalgeral = $totalgeral + $item->valor;
+                    }
+
                     if ($i == 0 || $item->classe == $s) {
                         $s = $item->classe;
-                        $totaltipo = $totaltipo + $item->valor;
+
+                        if ($item->tipo != 'TRANSFERENCIA') {
+                            $totaltipo = $totaltipo + $item->valor;
+                        }
                         ?>
                         <tr>
                             <td ><?= utf8_decode($item->conta); ?></td>
@@ -60,12 +68,13 @@
                             <td ><?= utf8_decode($item->observacao); ?></td>
                             <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
+                            <td ><?= utf8_decode($item->empresa); ?></td>
 
                         </tr>
                     <? } else { ?>
                         <tr>
                             <td colspan="6" bgcolor="#C0C0C0"><b>SUB-TOTAL</b></td>
-                            <td bgcolor="#C0C0C0"><b><?= number_format($totaltipo, 2, ",", "."); ?></b></td>
+                            <td colspan="2" bgcolor="#C0C0C0"><b><?= number_format($totaltipo, 2, ",", "."); ?></b></td>
 
                         </tr>
                         <tr>
@@ -76,31 +85,36 @@
                             <td ><?= utf8_decode($item->observacao); ?></td>
                             <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
+                            <td ><?= utf8_decode($item->empresa); ?></td>
 
                         </tr>
                         <?
                         $s = $item->classe;
                         $totaltipo = 0;
-                        $totaltipo = $item->valor;
+                        if ($item->tipo != 'TRANSFERENCIA') {
+                            $totaltipo = $item->valor;
+                        }
                     }
                     if ($i == (count($relatorio) - 1)) {
                         ?>
                         <tr>
                             <td colspan="6" bgcolor="#C0C0C0"><b>SUB-TOTAL</b></td>
-                            <td bgcolor="#C0C0C0"><b><?= number_format($totaltipo, 2, ",", "."); ?></b></td>
+                            <td colspan="2" bgcolor="#C0C0C0"><b><?= number_format($totaltipo, 2, ",", "."); ?></b></td>
 
                         </tr>
-                    <?
+                        <?
                     }
                     $i++
                     ?>
-    <? endforeach; ?>
+                <? endforeach; ?>
 
                 <tr>
                     <td colspan="6" bgcolor="#C0C0C0"><b>TOTAL</b></td>
                     <td colspan="2" bgcolor="#C0C0C0"><b><?= number_format($totalgeral, 2, ",", "."); ?></b></td>
                 </tr>
             </tbody>
+        </table>
+    <h4>Obs: Transfer&ecirc;ncias n&atilde;o s&atilde;o somadas no valor total</h4>
 
 
             <?

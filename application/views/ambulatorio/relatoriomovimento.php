@@ -62,9 +62,9 @@
                     </dt>
                     <dd>
                         <select name="empresa" id="empresa" class="size2">
-                        <? foreach ($empresas as $value) : ?>
-                            <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
-                        <? endforeach; ?>
+                            <? foreach ($empresas as $value) : ?>
+                                <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
                             <option value="0">TODOS</option>
                         </select>
                     </dd>
@@ -113,6 +113,44 @@
             dateFormat: 'dd/mm/yy'
         });
     });
+
+    $(function () {
+        $('#empresa').change(function () {
+//                                            if ($(this).val()) {
+            $('.carregando').show();
+            $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $(this).val(), ajax: true}, function (j) {
+                options = '<option value="0">TODOS</option>';
+//                options += '<option value="0">TODOS</option>';
+                for (var c = 0; c < j.length; c++) {
+                    options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                }
+                $('#conta').html(options).show();
+                $('.carregando').hide();
+            });
+//                                            } else {
+//                                                $('#nome_classe').html('<option value="">TODOS</option>');
+//                                            }
+        });
+    });
+
+    if ($('#empresa').val() > 0) {
+//                                          $('.carregando').show();
+        $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $('#empresa').val(), ajax: true}, function (j) {
+            options = '<option value="0">TODOS</option>';
+            for (var c = 0; c < j.length; c++) {
+
+                if ($('#conta').val() == j[c].forma_entradas_saida_id) {
+                    options += '<option selected value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                } else {
+                    options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                }
+
+            }
+            $('#conta').html(options).show();
+            $('.carregando').hide();
+        });
+    }
+
 
 
     $(function () {
