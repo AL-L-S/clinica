@@ -25,7 +25,7 @@
     <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     <hr>
     <?
-    if (count($relatorio) > 0 || count($previsaoconvenio) > 0) {
+    if (count($relatorio) > 0 || count(@$previsaoconvenio) > 0) {
         if (count($relatorio) > 0) {
             ?>
             <table border="1">
@@ -39,6 +39,7 @@
                         <th class="tabela_header">Valor</th>
 
                         <th class="tabela_header">Observacao</th>
+                        <th class="tabela_header">Empresa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,11 +56,12 @@
                             <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
                             <td ><?= $item->observacao; ?></td>
+                            <td ><?= $item->empresa; ?></td>
                         </tr>
                     <? endforeach; ?>
                     <tr>
                         <td colspan="4"><b>TOTAL</b></td>
-                        <td colspan="2"><b><?= number_format($total, 2, ",", "."); ?></b></td>
+                        <td colspan="3"><b><?= number_format($total, 2, ",", "."); ?></b></td>
                     </tr>
                 </tbody>
 

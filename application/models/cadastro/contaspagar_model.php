@@ -99,6 +99,7 @@ class contaspagar_model extends Model {
                             fc.credor,
                             fc.observacao,
                             fc.data,
+                            e.nome as empresa,
                             fcd.razao_social,
                             fe.descricao as conta,
                             fc.tipo,
@@ -106,7 +107,8 @@ class contaspagar_model extends Model {
         $this->db->from('tb_financeiro_contaspagar fc');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = fc.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = fc.credor', 'left');
-         $this->db->join('tb_financeiro_classe c', 'c.descricao = fc.classe', 'left');
+//         $this->db->join('tb_financeiro_classe c', 'c.descricao = fc.classe', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = fc.empresa_id', 'left');
         $this->db->where('fc.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);

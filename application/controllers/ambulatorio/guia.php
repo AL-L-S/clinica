@@ -2493,13 +2493,15 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['medico'] = $this->guia->relatorioresumogeral();
         $data['medicorecebido'] = $this->guia->relatorioresumogeralmedico();
+        $data['laboratorio'] = $this->guia->relatorioresumolaboratoriogeral();
         $data['convenio'] = $this->guia->relatorioresumogeralconvenio();
-        $data['convenios'] = $this->convenio->listardados();
+        $data['empresa_permissao'] = $this->guia->listarempresapermissoes($_POST['empresa']);
+        $data['convenios'] = $this->guia->relatorioresumogeralconveniounico();
         $data['creditos'] = $this->guia->relatorioresumocreditoslancados();
         $data['formapagamento'] = $this->formapagamento->listarforma();
         $data['relatoriocredito'] = $this->guia->relatorioresumocredito();
 //        echo '<pre>'; 
-//        var_dump($data['relatoriocredito']); die;
+//        var_dump($data['laboratoriorecebido']); die;
         $data['relatoriocirurgico'] = $this->guia->relatorioresumocirurgicomedico();
         $data['procedimentoscirurgicos'] = $this->guia->relatorioresumocirurgicomedicotodos();
 

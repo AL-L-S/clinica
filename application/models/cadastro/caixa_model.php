@@ -205,6 +205,7 @@ class caixa_model extends Model {
                             s.saidas_id,
                             s.observacao,
                             s.data,
+                            e.nome as empresa,
                             fcd.razao_social,
                             fe.descricao as conta,
                             s.tipo,
@@ -212,6 +213,7 @@ class caixa_model extends Model {
         $this->db->from('tb_saidas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
+        $this->db->join('tb_empresa e', 's.empresa_id = e.empresa_id', 'left');
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
@@ -1048,6 +1050,7 @@ class caixa_model extends Model {
                             s.saidas_id,
                             s.observacao,
                             s.data,
+                            e.nome as empresa,
                             fcd.razao_social,
                             fe.descricao as conta,
                             s.tipo,
@@ -1055,7 +1058,7 @@ class caixa_model extends Model {
         $this->db->from('tb_saidas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
-//        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
@@ -1086,6 +1089,7 @@ class caixa_model extends Model {
                             s.saidas_id,
                             s.observacao,
                             s.data,
+                            e.nome as empresa,
                             fcd.razao_social,
                             fe.descricao as conta,
                             s.tipo,
@@ -1093,7 +1097,8 @@ class caixa_model extends Model {
         $this->db->from('tb_saidas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
-        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
+//        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
@@ -1195,6 +1200,7 @@ class caixa_model extends Model {
                             s.entradas_id,
                             s.observacao,
                             s.data,
+                            e.nome as empresa,
                             fcd.razao_social,
                             fe.descricao as conta,
                             s.tipo,
@@ -1202,7 +1208,8 @@ class caixa_model extends Model {
         $this->db->from('tb_entradas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
-        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id', 'left');
+//        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
             $this->db->where('fcd.financeiro_credor_devedor_id ', $_POST['credordevedor']);
@@ -1264,6 +1271,7 @@ class caixa_model extends Model {
                             s.entradas_id,
                             s.observacao,
                             s.data,
+                            e.nome as empresa,
                             fcd.razao_social,
                             fe.descricao as conta,
                             s.tipo,
@@ -1271,6 +1279,7 @@ class caixa_model extends Model {
         $this->db->from('tb_entradas s');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = s.empresa_id', 'left');
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = s.classe', 'left');
         $this->db->where('s.ativo', 'true');
         if ($_POST['credordevedor'] != 0) {
@@ -1332,11 +1341,13 @@ class caixa_model extends Model {
                             e.observacao as observacaoentrada,
                             fe.descricao as contanome,
                             s.conta,
+                            ep.nome as empresa,
                             sa.classe as classesaida,
                             e.classe as classeentrada');
         $this->db->from('tb_saldo s');
         $this->db->join('tb_saidas sa', 'sa.saidas_id = s.saida_id', 'left');
         $this->db->join('tb_entradas e', 'e.entradas_id = s.entrada_id', 'left');
+        $this->db->join('tb_empresa ep', 'ep.empresa_id = s.empresa_id', 'left');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
         $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = s.nome', 'left');
 //        $this->db->join('tb_financeiro_classe fc', 'fc.descricao = sa.classe AND fc.descricao = e.classe', 'left');
@@ -1643,6 +1654,8 @@ class caixa_model extends Model {
 
     function gravartransferencia() {
         try {
+//            var_dump($_POST); die;
+            
             $empresa_id = $this->session->userdata('empresa_id');
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
@@ -1670,7 +1683,7 @@ class caixa_model extends Model {
             $this->db->set('conta', $_POST['conta']);
             $this->db->set('observacao', $_POST['Observacao']);
             $this->db->set('data_cadastro', $horario);
-            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('empresa_id', $_POST['empresa']);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saidas');
             $saida_id = $this->db->insert_id();
@@ -1681,7 +1694,7 @@ class caixa_model extends Model {
             $this->db->set('conta', $_POST['conta']);
             $this->db->set('saida_id', $saida_id);
             $this->db->set('data', $datainicio);
-            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('empresa_id', $_POST['empresa']);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saldo');
@@ -1697,7 +1710,7 @@ class caixa_model extends Model {
             $this->db->set('transferencia_id', $transferencia_id);
             $this->db->set('data', $datainicio);
             $this->db->set('tipo', 'TRANSFERENCIA');
-            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('empresa_id', $_POST['empresaentrada']);
             $this->db->set('conta', $_POST['contaentrada']);
             $this->db->set('observacao', $_POST['Observacao']);
             $this->db->set('data_cadastro', $horario);
@@ -1713,7 +1726,7 @@ class caixa_model extends Model {
             $this->db->set('entrada_id', $entrada_id);
             $this->db->set('saida_id', $saida_id);
             $this->db->set('data_cadastro', $horario);
-            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('empresa_id', $_POST['empresaentrada']);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saldo');
 

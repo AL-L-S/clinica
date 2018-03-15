@@ -12,23 +12,25 @@
                         <label>Valor *</label>
                     </dt>
                     <dd>
-                        <input type="text" name="valor" alt="decimal" class="texto04"/>
+                        <input type="text" name="valor" alt="decimal" class="texto04" required=""/>
                     </dd>
                     <dt>
                         <label>Data*</label>
                     </dt>
                     <dd>
-                        <input type="text" name="inicio" id="inicio" class="texto04"/>
+                        <input type="text" name="inicio" id="inicio" class="texto04" required/>
                     </dd>
                     <dt>
-                        <label>Empresa</label>
+                        <label>Empresa Saída</label>
                     </dt>
                     <dd>
                         <select name="empresa" id="empresa" class="size2">
                             <? foreach ($empresas as $value) : ?>
-                                <option <? if ($empresa_atual == $value->empresa_id) {
-                                echo 'selected';
-                            } ?> value="<?= $value->empresa_id; ?>"><?php echo $value->nome; ?></option>
+                                <option <?
+                                if ($empresa_atual == $value->empresa_id) {
+                                    echo 'selected';
+                                }
+                                ?> value="<?= $value->empresa_id; ?>"><?php echo $value->nome; ?></option>
 <? endforeach; ?>
                         </select>
                     </dd>
@@ -36,7 +38,7 @@
                         <label>Conta Saida</label>
                     </dt>
                     <dd>
-                        <select name="conta" id="conta" class="size2">
+                        <select name="conta" id="conta" class="size2" required>
                             <? foreach ($conta as $value) : ?>
                                 <option value="<?= $value->forma_entradas_saida_id; ?>"><?php echo $value->descricao; ?></option>
 <? endforeach; ?>
@@ -46,11 +48,13 @@
                         <label>Empresa Entrada</label>
                     </dt>
                     <dd>
-                        <select name="empresa" id="empresa" class="size2">
+                        <select name="empresaentrada" id="empresaentrada" class="size2">
                             <? foreach ($empresas as $value) : ?>
-                                <option <? if ($empresa_atual == $value->empresa_id) {
-                                echo 'selected';
-                            } ?> value="<?= $value->empresa_id; ?>"><?php echo $value->nome; ?></option>
+                                <option <?
+                                    if ($empresa_atual == $value->empresa_id) {
+                                        echo 'selected';
+                                    }
+                                    ?> value="<?= $value->empresa_id; ?>"><?php echo $value->nome; ?></option>
 <? endforeach; ?>
                         </select>
                     </dd>
@@ -58,7 +62,7 @@
                         <label>Conta Entrada</label>
                     </dt>
                     <dd>
-                        <select name="contaentrada" id="contaentrada" class="size2">
+                        <select name="contaentrada" id="contaentrada" class="size2" required>
 <? foreach ($conta as $item) : ?>
                                 <option value="<?= $item->forma_entradas_saida_id; ?>"><?php echo $item->descricao; ?></option>
 <? endforeach; ?>
@@ -84,20 +88,15 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-
     $(function () {
-        $("#devedorlabel").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=credordevedor",
-            minLength: 1,
-            focus: function (event, ui) {
-                $("#devedorlabel").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#devedorlabel").val(ui.item.value);
-                $("#devedor").val(ui.item.id);
-                return false;
-            }
+        $("#inicio").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
         });
     });
 
@@ -118,7 +117,7 @@
 //                                            }
         });
     });
-    
+
     $(function () {
         $('#empresaentrada').change(function () {
 //                                            if ($(this).val()) {
@@ -141,42 +140,7 @@
         $("#accordion").accordion();
     });
 
-    $(function () {
-        $("#inicio").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
-        });
-    });
 
-    $(document).ready(function () {
-        jQuery('#form_emprestimo').validate({
-            rules: {
-                valor: {
-                    required: true
-                },
-                tipo: {
-                    required: true
-                },
-                inicio: {
-                    required: true
-                }
-            },
-            messages: {
-                valor: {
-                    required: "*"
-                },
-                tipo: {
-                    required: "*"
-                },
-                inicio: {
-                    required: "*"
-                }
-            }
-        });
-    });
+
+
 </script>
