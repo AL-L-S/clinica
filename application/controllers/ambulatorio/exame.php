@@ -596,7 +596,11 @@ class Exame extends BaseController {
         $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
         if (count($data['integracao']) > 0) {
 //            echo count($data['integracao']) . "<hr>";
-            $this->laudo->atualizacaolaudosintegracaotodos();
+            $laudos = $this->laudo->atualizacaolaudosintegracaotodos();
+            
+            foreach($laudos as $item){
+                $dados = $this->laudo->listardadoslaudogravarxml($item);
+            }
         }
     }
 

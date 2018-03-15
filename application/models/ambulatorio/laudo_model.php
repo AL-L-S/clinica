@@ -147,6 +147,15 @@ class laudo_model extends Model {
         return $return->result();
     }
 
+    function listardadoslaudogravarxml($ambulatorio_laudo_id) {
+        $this->db->select('il.exame_id');
+        $this->db->from('tb_ambulatorio_laudo al');
+        $this->db->join('tb_operador o', 'o.conselho = il.laudo_conselho_medico', 'left');
+        $this->db->where('al.ambulatorio_laudo_id', $ambulatorio_laudo_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function atualizacaolaudosintegracaotodos() {
 
         $this->db->select('il.integracao_laudo_id,
@@ -169,8 +178,12 @@ class laudo_model extends Model {
         $this->db->orderby('il.integracao_laudo_id');
         $query = $this->db->get();
         $return = $query->result();
-
+        
+        $laudosInseridos = array();
+        
         foreach ($return as $value) {
+            $laudosInseridos[] = $value->ambulatorio_laudo_id;
+            
             $laudo_texto = $value->laudo_texto;
             $laudo_data_hora = $value->laudo_data_hora;
             $ambulatorio_laudo_id = $value->ambulatorio_laudo_id;
@@ -193,6 +206,8 @@ class laudo_model extends Model {
             $this->db->where('exame_id', $agenda_exames_id);
             $this->db->update('tb_integracao_laudo');
         }
+        
+        return $laudosInseridos;
 //
 //
 //        $this->db->select('il.integracao_laudo_id,

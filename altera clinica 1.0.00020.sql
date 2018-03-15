@@ -190,3 +190,11 @@ CREATE TABLE ponto.tb_solicitacao_sadt_procedimento
   operador_atualizacao integer,
   CONSTRAINT tb_solicitacao_sadt_procedimento_pkey PRIMARY KEY (solicitacao_sadt_procedimento_id)
 );
+
+-- Dia 14/03/2018
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN data_autorizacao date;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN operador_autorizacao integer;
+UPDATE ponto.tb_solicitacao_cirurgia
+   SET data_autorizacao=data_prevista
+ WHERE data_autorizacao IS NULL
+ AND autorizado = 't';

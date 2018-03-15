@@ -76,6 +76,16 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoconveniocirurgicoagrupador() {
+
+        if (isset($_GET['convenio1'])) {
+            $result = $this->centrocirurgico->listarautocompleteprocedimentoconveniocirurgicoagrupador($_GET['convenio1']);
+        } else {
+            $result = $this->centrocirurgico->listarautocompleteprocedimentoconveniocirurgicoagrupador();
+        }
+        echo json_encode($result);
+    }
+
     function produtofarmacia() {
 
         if (isset($_GET['term'])) {

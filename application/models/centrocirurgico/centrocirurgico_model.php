@@ -764,7 +764,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
 
     function listarsolicitacoes2($args = array()) {
 
-        $this->db->select(' p.paciente_id,
+        $this->db->select(" p.paciente_id,
                             p.nome,
                             sc.solicitacao_cirurgia_id,
                             sc.data_prevista,
@@ -779,9 +779,16 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
                             c.convenio_id,
                             o.nome as medico,
                             o2.nome as medico_solicitante,
-                            sc.situacao');
+                            sc.situacao,
+                            (
+                                SELECT solicitacao_orcamento_convenio_id 
+                                FROM ponto.tb_solicitacao_orcamento_convenio tb_soc
+                                WHERE tb_soc.solicitacao_cirurgia_id = sc.solicitacao_cirurgia_id
+                                AND ativo = 't'
+                                LIMIT 1
+                            ) as orcamento_convenio_id
+                            ");
         $this->db->from('tb_solicitacao_cirurgia sc');
-
         $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = sc.medico_agendado', 'left');
@@ -2458,6 +2465,21 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->where("(funcao = '{$_POST['funcao']}' OR operador_responsavel = {$_POST['medico']})");
         $this->db->where('ativo', 't');
         $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompleteprocedimentoconveniocirurgicoagrupador($parametro) {
+        $this->db->select(' pc.procedimento_convenio_id,
+                            pt.nome as procedimento, 
+                            pt.codigo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("pt.grupo", 'CIRURGICO');
+        $this->db->where('pc.convenio_id', $parametro);
+        $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
     }

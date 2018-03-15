@@ -12,20 +12,6 @@
                         <input type="hidden" name="agrupador_id" class="texto10" value="<?= @$agrupador[0]->agrupador_id; ?>" />
                         <input type="text" name="txtNome" class="texto05" value="<?= @$agrupador[0]->nome; ?>"/>
                     </dd>
-                    
-                    <dt>
-                        <label>Convenio</label>
-                    </dt>
-                    <dd>
-                        <select  name="convenio" id="convenio" class="size2" required="" >
-                            <option value="">Selecione</option>
-                            <? foreach ($convenio as $item) : ?>
-                                <option value="<?= $item->convenio_id; ?>" <? if(@$agrupador[0]->convenio_id == $item->convenio_id) echo "selected";?>>
-                                    <?= $item->nome; ?>
-                                </option>
-                            <? endforeach; ?>
-                        </select>
-                    </dd>
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
                 <button type="reset" name="btnLimpar">Limpar</button>

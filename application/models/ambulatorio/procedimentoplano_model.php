@@ -605,6 +605,7 @@ class procedimentoplano_model extends Model {
                            pa.procedimento_agrupado_id,
                            pt.nome,
                            c.nome as convenio,
+                           pc.convenio_id,
                            pt.codigo,
                            pc.procedimento_convenio_id');
         $this->db->from('tb_procedimentos_agrupados pa');
@@ -831,7 +832,7 @@ class procedimentoplano_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
 
             $this->db->set('nome', $_POST['txtNome']);
-            $this->db->set('convenio_id', $_POST['convenio']);
+//            $this->db->set('convenio_id', $_POST['convenio']);
             if ($_POST['agrupador_id'] == '' || !isset($_POST['agrupador_id'])) {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);

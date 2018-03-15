@@ -857,7 +857,7 @@ class centrocirurgico extends BaseController {
         $data['dados'] = $this->centrocirurgico_m->listarsolicitacoes3($solicitacao_id);
         $data['convenios'] = $this->solicitacirurgia_m->listarconvenios();
         $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaoprocedimento($data['dados'][0]->convenio_id);
-        $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador($data['dados'][0]->convenio_id);
+        $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupador();
         $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosprocedimentos($solicitacao_id);
         $this->loadView('centrocirurgico/solicitacaoprocedimentos-form', $data);
     }
@@ -1321,7 +1321,13 @@ class centrocirurgico extends BaseController {
 
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
-
+    
+    function impressaosolicitacaocirurgicaconveniospsadt($solicitacao_cirurgia_id) {
+        $data['empresa'] = $this->solicitacirurgia_m->burcarempresa();
+        $data['relatorio'] = $this->solicitacirurgia_m->listarsolicitacaocirurgicaconveniospsadt($solicitacao_cirurgia_id);
+        $this->load->View('centrocirurgico/impressaosolicitacaocirurgicaconveniospsadt', $data);
+    }
+    
     function gravarsolicitacaorcamentoconvenio() {
         $orcamento_id = $this->solicitacirurgia_m->gravarsolicitacaorcamentoconvenio();
 

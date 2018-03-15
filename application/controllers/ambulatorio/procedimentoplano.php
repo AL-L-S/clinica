@@ -95,7 +95,6 @@ class Procedimentoplano extends BaseController {
     }
 
     function carregaragrupador($agrupador_id = null) {
-        $data['convenio'] = $this->convenio->listardados();
         $data['agrupador'] = $this->procedimentoplano->instanciaragrupador($agrupador_id);
 //        $data['forma_pagamento'] = $this->formapagamento->listarforma();
         $this->loadView('ambulatorio/agrupadorprocedimentos-form', $data);
@@ -114,7 +113,8 @@ class Procedimentoplano extends BaseController {
 
     function agrupadoradicionar($agrupador_id) {
         $data['agrupador'] = $this->procedimentoplano->buscaragrupador($agrupador_id);
-        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconvenioagrupadorcirurgico(@$data['agrupador'][0]->convenio_id);
+        $data['convenio'] = $this->convenio->listardados();  
+//        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconvenioagrupadorcirurgico(73);
         $data['relatorio'] = $this->procedimentoplano->listarprocedimentosagrupador($agrupador_id);
         $this->loadView('ambulatorio/agrupador-adicionar', $data);
     }

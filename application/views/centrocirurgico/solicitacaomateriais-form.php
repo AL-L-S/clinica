@@ -68,7 +68,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Observação</td>
+                        <td style="vertical-align:top">Observação</td>
                         <td>
                             <textarea  cols="" rows="8" name="observacao" class="texto_area"></textarea>
                         </td>

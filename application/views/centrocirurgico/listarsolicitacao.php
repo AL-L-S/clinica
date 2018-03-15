@@ -143,6 +143,16 @@
                                 <? } else { ?>
                                     <!--<td class="<?php echo $estilo_linha; ?>" width="30px;">  </td>-->
                                 <? } ?>
+                                <? if ($item->orcamento_convenio_id != '') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                        <div class="bt_link" style="width:90pt;">
+                                            <a  title="Imprimir Orçamento do Convênio."
+                                                href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaosolicitacaocirurgicaconveniospsadt/<?= $item->solicitacao_cirurgia_id; ?>">Guia Convênio</a>
+                                        </div>
+                                    </td>
+                                <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">  </td>
+                                <? } ?>
 
 
                                 <? if ($item->orcamento == 'f' && $item->equipe_montada == 't') { ?>
