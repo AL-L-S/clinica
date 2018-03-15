@@ -83,6 +83,7 @@ BEGIN
   where e.ativo = true
   AND e.conta = c.forma_entradas_saida_id
   AND c2.empresa_id = e.empresa_id 
+  AND c.ativo = true
   AND c2.ativo = true;
 
   UPDATE ponto.tb_saidas e
@@ -92,6 +93,7 @@ BEGIN
   where e.ativo = true
   AND e.conta = c.forma_entradas_saida_id
   AND c2.empresa_id = e.empresa_id 
+  AND c.ativo = true
   AND c2.ativo = true;
 
 
@@ -102,6 +104,7 @@ BEGIN
   where e.ativo = true
   AND e.conta = c.forma_entradas_saida_id
   AND c2.empresa_id = e.empresa_id 
+  AND c.ativo = true
   AND c2.ativo = true;
 
 
@@ -112,6 +115,7 @@ BEGIN
   where e.ativo = true
   AND e.conta = c.forma_entradas_saida_id
   AND c2.empresa_id = e.empresa_id 
+  AND c.ativo = true
   AND c2.ativo = true;
 
   UPDATE ponto.tb_financeiro_contaspagar e
@@ -121,6 +125,7 @@ BEGIN
   where e.ativo = true
   AND e.conta = c.forma_entradas_saida_id
   AND c2.empresa_id = e.empresa_id 
+  AND c.ativo = true
   AND c2.ativo = true;
     
     END IF;
