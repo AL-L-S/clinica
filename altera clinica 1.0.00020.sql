@@ -203,3 +203,6 @@ UPDATE ponto.tb_solicitacao_cirurgia
    SET data_autorizacao=data_prevista
  WHERE data_autorizacao IS NULL
  AND autorizado = 't';
+
+ALTER TABLE ponto.tb_paciente ADD COLUMN nacionalidade text;
+ALTER TABLE ponto.tb_paciente ADD COLUMN sexo_real text;

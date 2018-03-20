@@ -249,6 +249,7 @@ class paciente_model extends BaseModel {
                 $this->_nascimento = $return[0]->nascimento;
             }
             $this->_idade = $return[0]->idade;
+            $this->_nacionalidade = $return[0]->nacionalidade;
             $this->_cbo_nome = $return[0]->cbo_nome;
             $this->_cbo_ocupacao_id = $return[0]->profissao;
             $this->_documento = $return[0]->rg;
@@ -380,6 +381,7 @@ class paciente_model extends BaseModel {
                 $this->db->set('leito', $_POST['leito']);
             }
 
+            $this->db->set('nacionalidade', $_POST['nacionalidade']);
             $this->db->set('nome_pai', $_POST['nome_pai']);
             $this->db->set('nome_mae', $_POST['nome_mae']);
             $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));

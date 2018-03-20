@@ -74,7 +74,7 @@
                                     </td>
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
-                                            <a href="<?= base_url() ?>cadastros/convenio/ajustargrupo/<?= $item->convenio_id ?>">
+                                            <a href="<?= base_url() ?>cadastros/convenio/ajustargrupoeditar/<?= $item->convenio_id ?>">
                                                 Ajuste Grupo
                                             </a>
                                         </div>

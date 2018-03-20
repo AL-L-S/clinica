@@ -947,7 +947,7 @@ class procedimento_model extends Model {
             if (isset($_POST['ajuste'])) {
                 $vlr = str_replace(",", ".", $_POST['ajuste_percentual']);
                 $sql = "UPDATE ponto.tb_procedimento_tuss
-                        SET perc_medico = (perc_medico + (perc_medico * ( {$vlr} / 100) ) )
+                        SET perc_medico = perc_medico + (perc_medico * {$vlr} / 100)
                         WHERE grupo = '{$_POST['grupo']}' ";
 //                die($sql);
             } else {

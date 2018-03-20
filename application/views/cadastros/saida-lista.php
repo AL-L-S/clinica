@@ -167,7 +167,7 @@
                     <tbody>
                         <?php
                         $totaldalista = 0;
-                        $lista = $this->caixa->listarsaida($_GET)->orderby('data desc')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->caixa->listarsaida($_GET)->orderby('data desc, saidas_id')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";

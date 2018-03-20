@@ -37,7 +37,7 @@
                         <label>N° Maximo de Parcelas</label>
                     </dt>
                     <dd>
-                        <input type="text" name="parcelas" class="texto02" id="parcelas" value= "<?= @$obj->_parcelas; ?>" required=""/>
+                        <input type="text" name="parcelas" class="texto02" id="parcelas" value= "<?= @$obj->_parcelas; ?>"/>
                     </dd>
                     <dt>
                         <label>Valor Mínimo da Parcela</label>
@@ -105,20 +105,24 @@
        if ($('#cartao').is(":checked")) {
             
             $("#credor_devedor").prop('required', true);
+            $("#parcelas").prop('required', true);
 
         } else {
             
             $("#credor_devedor").prop('required', false);
+            $("#parcelas").prop('required', false);
         }
 
     $('#cartao').change(function () {
         if ($(this).is(":checked")) {
             
             $("#credor_devedor").prop('required', true);
+            $("#parcelas").prop('required', true);
 
         } else {
             
             $("#credor_devedor").prop('required', false);
+            $("#parcelas").prop('required', false);
         }
     });
 

@@ -151,12 +151,16 @@
                     <tbody>
                         <?php
                         $totaldalista = 0;
-                        $lista = $this->caixa->listarentrada($_GET)->orderby('data desc')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->caixa->listarentrada($_GET)->orderby('data desc, entradas_id')->limit($limit, $pagina)->get()->result();
+//                        echo '<pre>';
 //                        var_dump($lista); die;
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             $totaldalista = $totaldalista + $item->valor;
+//                            echo '<pre>';
+//                            var_dump('teste ',$totaldalista);
+//                            echo '<br>';
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->razao_social; ?></td>

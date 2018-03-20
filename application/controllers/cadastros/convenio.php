@@ -61,6 +61,14 @@ class Convenio extends BaseController {
         $this->loadView('cadastros/convenioassociacaoajustevalores-form', $data);
     }
 
+    function ajustargrupoeditar($convenio_id) {
+        $data['convenios'] = $this->convenio->listardados();
+        $data['grupos'] = $this->convenio->listargrupos();
+        $data['associacoes'] = $this->convenio->listarassociacoesconvenio($convenio_id);
+        $data['convenio_id'] = $convenio_id;
+        $this->loadView('cadastros/convenioassociacaoajustevaloreseditar-form', $data);
+    }
+
     function desconto($convenio_id) {
         $data['convenio'] = $this->convenio->listarconveniodesconto($convenio_id);
         $data['grupos'] = $this->convenio->listargrupos();
@@ -72,6 +80,14 @@ class Convenio extends BaseController {
         $convenio_id = $_POST['convenio_secundario_id'];
         $data['convenio'] = $this->convenio->gravarvaloresassociacaoantigo($convenio_id);
         $data['convenio'] = $this->convenio->gravarvaloresassociacao($convenio_id);
+        $data['convenioid'] = $convenio_id;
+        redirect(base_url() . "cadastros/convenio");
+    }
+    
+    function gravarvaloresassociacaoeditar() {
+        $convenio_id = $_POST['convenio_secundario_id'];
+        $data['convenio'] = $this->convenio->gravarvaloresassociacaoantigo($convenio_id);
+        $data['convenio'] = $this->convenio->gravarvaloresassociacaoeditar($convenio_id);
         $data['convenioid'] = $convenio_id;
         redirect(base_url() . "cadastros/convenio");
     }

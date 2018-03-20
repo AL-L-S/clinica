@@ -356,7 +356,13 @@ class formapagamento_model extends Model {
 //            var_dump($arredondamento); die;
 
             $this->db->set('ajuste', $ajuste);
-            $this->db->set('parcelas', $parcelas);
+            if($parcelas > 0){
+               $this->db->set('parcelas', $parcelas); 
+            }else{
+                $this->db->set('parcelas', 1);
+            }
+            
+            
             $this->db->set('parcela_minima', str_replace(",", ".", str_replace(".", "", $parcela_minima)));
             $this->db->set('taxa_juros', $taxa_juros);
             $this->db->set('fixar', $arredondamento);
