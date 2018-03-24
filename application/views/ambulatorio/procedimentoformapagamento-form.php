@@ -39,7 +39,8 @@
             <table>
                 <thead>
                     <tr>
-                        <td colspan="2" class="tabela_header">Nome</td>
+                        <td colspan="3" class="tabela_header">Nome</td>
+                        <td colspan="1" class="tabela_header">Ações</td>
                     </tr>
                 </thead>
                 <?
@@ -47,7 +48,8 @@
                 foreach ($grupos_associados as $item) {
                     ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";?>
                     <tr>
-                        <td colspan="2" class="<?php echo $estilo_linha; ?>"><?=$item->nome?></td>
+                        <td colspan="3" class="<?php echo $estilo_linha; ?>"><?=$item->nome?></td>
+                        <td colspan="1" class="<?php echo $estilo_linha; ?>"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirgrupopagamentoprocedimento/<?= $item->procedimento_convenio_pagamento_id ?>/<?=$procedimento_convenio_id?>">Excluir</a></td>
                     </tr>
                     <?
                 }

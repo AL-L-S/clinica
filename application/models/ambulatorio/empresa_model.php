@@ -788,7 +788,7 @@ class empresa_model extends Model {
                 $this->db->where('forma_pagamento_id', 1000);
                 $this->db->update('tb_forma_pagamento');
             }
-
+            $operador_id = $this->session->userdata('operador_id');
             /* inicia o mapeamento no banco */
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
@@ -797,39 +797,42 @@ class empresa_model extends Model {
             $this->db->set('cnes', $_POST['txtCNES']);
             $this->db->set('email', $_POST['email']);
 
-            if ($_POST['impressao_tipo'] != "") {
-                $this->db->set('impressao_tipo', $_POST['impressao_tipo']);
-            } else {
-                $this->db->set('impressao_tipo', null);
-            }
-            if ($_POST['impressao_orcamento'] != "") {
-                $this->db->set('impressao_orcamento', $_POST['impressao_orcamento']);
-            } else {
-                $this->db->set('impressao_orcamento', null);
-            }
-            if ($_POST['horario_sab'] != "") {
-                $this->db->set('horario_sab', $_POST['horario_sab']);
-            }
-            if ($_POST['horario_seg_sex'] != "") {
-                $this->db->set('horario_seg_sex', $_POST['horario_seg_sex']);
-            }
-            if ($_POST['impressao_laudo'] != "") {
-                $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
-            } else {
-                $this->db->set('impressao_laudo', null);
-            }
-            if ($_POST['impressao_recibo'] != "") {
-                $this->db->set('impressao_recibo', $_POST['impressao_recibo']);
-            } else {
-                $this->db->set('impressao_recibo', null);
-            }
-            if ($_POST['numero_empresa_painel'] != "") {
-                $this->db->set('numero_empresa_painel', (int) $_POST['numero_empresa_painel']);
-            }
-            if ($_POST['impressao_declaracao'] != "") {
-                $this->db->set('impressao_declaracao', $_POST['impressao_declaracao']);
-            } else {
-                $this->db->set('impressao_declaracao', null);
+            if ($operador_id == 1) {
+
+                if ($_POST['impressao_tipo'] != "") {
+                    $this->db->set('impressao_tipo', $_POST['impressao_tipo']);
+                } else {
+                    $this->db->set('impressao_tipo', null);
+                }
+                if ($_POST['impressao_orcamento'] != "") {
+                    $this->db->set('impressao_orcamento', $_POST['impressao_orcamento']);
+                } else {
+                    $this->db->set('impressao_orcamento', null);
+                }
+                if ($_POST['horario_sab'] != "") {
+                    $this->db->set('horario_sab', $_POST['horario_sab']);
+                }
+                if ($_POST['horario_seg_sex'] != "") {
+                    $this->db->set('horario_seg_sex', $_POST['horario_seg_sex']);
+                }
+                if ($_POST['impressao_laudo'] != "") {
+                    $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
+                } else {
+                    $this->db->set('impressao_laudo', null);
+                }
+                if ($_POST['impressao_recibo'] != "") {
+                    $this->db->set('impressao_recibo', $_POST['impressao_recibo']);
+                } else {
+                    $this->db->set('impressao_recibo', null);
+                }
+                if ($_POST['numero_empresa_painel'] != "") {
+                    $this->db->set('numero_empresa_painel', (int) $_POST['numero_empresa_painel']);
+                }
+                if ($_POST['impressao_declaracao'] != "") {
+                    $this->db->set('impressao_declaracao', $_POST['impressao_declaracao']);
+                } else {
+                    $this->db->set('impressao_declaracao', null);
+                }
             }
 
             if ($_POST['txtCNPJ'] != '') {
@@ -847,174 +850,175 @@ class empresa_model extends Model {
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
 
-            if (isset($_POST['sms'])) {
-                $this->db->set('servicosms', 't');
-            } else {
-                $this->db->set('servicosms', 'f');
+            if ($operador_id == 1) {
+                if (isset($_POST['sms'])) {
+                    $this->db->set('servicosms', 't');
+                } else {
+                    $this->db->set('servicosms', 'f');
+                }
+                if (isset($_POST['servicoemail'])) {
+                    $this->db->set('servicoemail', 't');
+                } else {
+                    $this->db->set('servicoemail', 'f');
+                }
+                if (isset($_POST['chat'])) {
+                    $this->db->set('chat', 't');
+                } else {
+                    $this->db->set('chat', 'f');
+                }
+                if (isset($_POST['farmacia'])) {
+                    $this->db->set('farmacia', 't');
+                } else {
+                    $this->db->set('farmacia', 'f');
+                }
+                if (isset($_POST['imagem'])) {
+                    $this->db->set('imagem', 't');
+                } else {
+                    $this->db->set('imagem', 'f');
+                }
+                if (isset($_POST['fila_caixa'])) {
+                    $this->db->set('caixa', 't');
+                } else {
+                    $this->db->set('caixa', 'f');
+                }
+                if (isset($_POST['data_contaspagar'])) {
+                    $this->db->set('data_contaspagar', 't');
+                } else {
+                    $this->db->set('data_contaspagar', 'f');
+                }
+                if (isset($_POST['medico_laudodigitador'])) {
+                    $this->db->set('medico_laudodigitador', 't');
+                } else {
+                    $this->db->set('medico_laudodigitador', 'f');
+                }
+                if (isset($_POST['chamar_consulta'])) {
+                    $this->db->set('chamar_consulta', 't');
+                } else {
+                    $this->db->set('chamar_consulta', 'f');
+                }
+                if (isset($_POST['procedimentos_multiempresa'])) {
+                    $this->db->set('procedimento_multiempresa', 't');
+                } else {
+                    $this->db->set('procedimento_multiempresa', 'f');
+                }
+                if (isset($_POST['consulta'])) {
+                    $this->db->set('consulta', 't');
+                } else {
+                    $this->db->set('consulta', 'f');
+                }
+                if (isset($_POST['especialidade'])) {
+                    $this->db->set('especialidade', 't');
+                } else {
+                    $this->db->set('especialidade', 'f');
+                }
+                if (isset($_POST['odontologia'])) {
+                    $this->db->set('odontologia', 't');
+                } else {
+                    $this->db->set('odontologia', 'f');
+                }
+                if (isset($_POST['laboratorio'])) {
+                    $this->db->set('laboratorio', 't');
+                } else {
+                    $this->db->set('laboratorio', 'f');
+                }
+                if (isset($_POST['geral'])) {
+                    $this->db->set('geral', 't');
+                } else {
+                    $this->db->set('geral', 'f');
+                }
+                if (isset($_POST['faturamento'])) {
+                    $this->db->set('faturamento', 't');
+                } else {
+                    $this->db->set('faturamento', 'f');
+                }
+                if (isset($_POST['estoque'])) {
+                    $this->db->set('estoque', 't');
+                } else {
+                    $this->db->set('estoque', 'f');
+                }
+                if (isset($_POST['financeiro'])) {
+                    $this->db->set('financeiro', 't');
+                } else {
+                    $this->db->set('financeiro', 'f');
+                }
+                if (isset($_POST['marketing'])) {
+                    $this->db->set('marketing', 't');
+                } else {
+                    $this->db->set('marketing', 'f');
+                }
+                if (isset($_POST['internacao'])) {
+                    $this->db->set('internacao', 't');
+                } else {
+                    $this->db->set('internacao', 'f');
+                }
+                if (isset($_POST['centro_cirurgico'])) {
+                    $this->db->set('centrocirurgico', 't');
+                } else {
+                    $this->db->set('centrocirurgico', 'f');
+                }
+                if (isset($_POST['ponto'])) {
+                    $this->db->set('ponto', 't');
+                } else {
+                    $this->db->set('ponto', 'f');
+                }
+                if (isset($_POST['calendario'])) {
+                    $this->db->set('calendario', 't');
+                } else {
+                    $this->db->set('calendario', 'f');
+                }
+                if (isset($_POST['botao_faturar_guia'])) {
+                    $this->db->set('botao_faturar_guia', 't');
+                } else {
+                    $this->db->set('botao_faturar_guia', 'f');
+                }
+                if (isset($_POST['botao_faturar_proc'])) {
+                    $this->db->set('botao_faturar_procedimento', 't');
+                } else {
+                    $this->db->set('botao_faturar_procedimento', 'f');
+                }
+                if (isset($_POST['producao_medica_saida'])) {
+                    $this->db->set('producao_medica_saida', 't');
+                } else {
+                    $this->db->set('producao_medica_saida', 'f');
+                }
+                if (isset($_POST['cabecalho_config'])) {
+                    $this->db->set('cabecalho_config', 't');
+                } else {
+                    $this->db->set('cabecalho_config', 'f');
+                }
+                if (isset($_POST['rodape_config'])) {
+                    $this->db->set('rodape_config', 't');
+                } else {
+                    $this->db->set('rodape_config', 'f');
+                }
+                if (isset($_POST['laudo_config'])) {
+                    $this->db->set('laudo_config', 't');
+                } else {
+                    $this->db->set('laudo_config', 'f');
+                }
+                if (isset($_POST['recibo_config'])) {
+                    $this->db->set('recibo_config', 't');
+                } else {
+                    $this->db->set('recibo_config', 'f');
+                }
+                if (isset($_POST['ficha_config'])) { // Ficha
+                    $this->db->set('ficha_config', 't');
+                } else {
+                    $this->db->set('ficha_config', 'f');
+                }
+                if (isset($_POST['declaracao_config'])) { // Declaracao
+                    $this->db->set('declaracao_config', 't');
+                } else {
+                    $this->db->set('declaracao_config', 'f');
+                }
+                if (isset($_POST['atestado_config'])) { // Atestado
+                    $this->db->set('atestado_config', 't');
+                } else {
+                    $this->db->set('atestado_config', 'f');
+                }
             }
-            if (isset($_POST['servicoemail'])) {
-                $this->db->set('servicoemail', 't');
-            } else {
-                $this->db->set('servicoemail', 'f');
-            }
-            if (isset($_POST['chat'])) {
-                $this->db->set('chat', 't');
-            } else {
-                $this->db->set('chat', 'f');
-            }
-            if (isset($_POST['farmacia'])) {
-                $this->db->set('farmacia', 't');
-            } else {
-                $this->db->set('farmacia', 'f');
-            }
-            if (isset($_POST['imagem'])) {
-                $this->db->set('imagem', 't');
-            } else {
-                $this->db->set('imagem', 'f');
-            }
-            if (isset($_POST['fila_caixa'])) {
-                $this->db->set('caixa', 't');
-            } else {
-                $this->db->set('caixa', 'f');
-            }
-            if (isset($_POST['data_contaspagar'])) {
-                $this->db->set('data_contaspagar', 't');
-            } else {
-                $this->db->set('data_contaspagar', 'f');
-            }
-            if (isset($_POST['medico_laudodigitador'])) {
-                $this->db->set('medico_laudodigitador', 't');
-            } else {
-                $this->db->set('medico_laudodigitador', 'f');
-            }
-            if (isset($_POST['chamar_consulta'])) {
-                $this->db->set('chamar_consulta', 't');
-            } else {
-                $this->db->set('chamar_consulta', 'f');
-            }
-            if (isset($_POST['procedimentos_multiempresa'])) {
-                $this->db->set('procedimento_multiempresa', 't');
-            } else {
-                $this->db->set('procedimento_multiempresa', 'f');
-            }
-            if (isset($_POST['consulta'])) {
-                $this->db->set('consulta', 't');
-            } else {
-                $this->db->set('consulta', 'f');
-            }
-            if (isset($_POST['especialidade'])) {
-                $this->db->set('especialidade', 't');
-            } else {
-                $this->db->set('especialidade', 'f');
-            }
-            if (isset($_POST['odontologia'])) {
-                $this->db->set('odontologia', 't');
-            } else {
-                $this->db->set('odontologia', 'f');
-            }
-            if (isset($_POST['laboratorio'])) {
-                $this->db->set('laboratorio', 't');
-            } else {
-                $this->db->set('laboratorio', 'f');
-            }
-            if (isset($_POST['geral'])) {
-                $this->db->set('geral', 't');
-            } else {
-                $this->db->set('geral', 'f');
-            }
-            if (isset($_POST['faturamento'])) {
-                $this->db->set('faturamento', 't');
-            } else {
-                $this->db->set('faturamento', 'f');
-            }
-            if (isset($_POST['estoque'])) {
-                $this->db->set('estoque', 't');
-            } else {
-                $this->db->set('estoque', 'f');
-            }
-            if (isset($_POST['financeiro'])) {
-                $this->db->set('financeiro', 't');
-            } else {
-                $this->db->set('financeiro', 'f');
-            }
-            if (isset($_POST['marketing'])) {
-                $this->db->set('marketing', 't');
-            } else {
-                $this->db->set('marketing', 'f');
-            }
-            if (isset($_POST['internacao'])) {
-                $this->db->set('internacao', 't');
-            } else {
-                $this->db->set('internacao', 'f');
-            }
-            if (isset($_POST['centro_cirurgico'])) {
-                $this->db->set('centrocirurgico', 't');
-            } else {
-                $this->db->set('centrocirurgico', 'f');
-            }
-            if (isset($_POST['ponto'])) {
-                $this->db->set('ponto', 't');
-            } else {
-                $this->db->set('ponto', 'f');
-            }
-            if (isset($_POST['calendario'])) {
-                $this->db->set('calendario', 't');
-            } else {
-                $this->db->set('calendario', 'f');
-            }
-            if (isset($_POST['botao_faturar_guia'])) {
-                $this->db->set('botao_faturar_guia', 't');
-            } else {
-                $this->db->set('botao_faturar_guia', 'f');
-            }
-            if (isset($_POST['botao_faturar_proc'])) {
-                $this->db->set('botao_faturar_procedimento', 't');
-            } else {
-                $this->db->set('botao_faturar_procedimento', 'f');
-            }
-            if (isset($_POST['producao_medica_saida'])) {
-                $this->db->set('producao_medica_saida', 't');
-            } else {
-                $this->db->set('producao_medica_saida', 'f');
-            }
-            if (isset($_POST['cabecalho_config'])) {
-                $this->db->set('cabecalho_config', 't');
-            } else {
-                $this->db->set('cabecalho_config', 'f');
-            }
-            if (isset($_POST['rodape_config'])) {
-                $this->db->set('rodape_config', 't');
-            } else {
-                $this->db->set('rodape_config', 'f');
-            }
-            if (isset($_POST['laudo_config'])) {
-                $this->db->set('laudo_config', 't');
-            } else {
-                $this->db->set('laudo_config', 'f');
-            }
-            if (isset($_POST['recibo_config'])) {
-                $this->db->set('recibo_config', 't');
-            } else {
-                $this->db->set('recibo_config', 'f');
-            }
-            if (isset($_POST['ficha_config'])) { // Ficha
-                $this->db->set('ficha_config', 't');
-            } else {
-                $this->db->set('ficha_config', 'f');
-            }
-            if (isset($_POST['declaracao_config'])) { // Declaracao
-                $this->db->set('declaracao_config', 't');
-            } else {
-                $this->db->set('declaracao_config', 'f');
-            }
-            if (isset($_POST['atestado_config'])) { // Atestado
-                $this->db->set('atestado_config', 't');
-            } else {
-                $this->db->set('atestado_config', 'f');
-            }
-
             $horario = date("Y-m-d H:i:s");
-            $operador_id = $this->session->userdata('operador_id');
+            
 
             $perfil_id = $this->session->userdata('perfil_id');
             if ($_POST['txtempresaid'] == "") {// insert
@@ -1286,6 +1290,21 @@ class empresa_model extends Model {
                         $this->db->set('valor_autorizar', 't');
                     } else {
                         $this->db->set('valor_autorizar', 'f');
+                    }
+                    if (isset($_POST['profissional_completo'])) {
+                        $this->db->set('profissional_completo', 't');
+                    } else {
+                        $this->db->set('profissional_completo', 'f');
+                    }
+                    if (isset($_POST['tecnica_promotor'])) {
+                        $this->db->set('tecnica_promotor', 't');
+                    } else {
+                        $this->db->set('tecnica_promotor', 'f');
+                    }
+                    if (isset($_POST['tecnica_enviar'])) {
+                        $this->db->set('tecnica_enviar', 't');
+                    } else {
+                        $this->db->set('tecnica_enviar', 'f');
                     }
                     if (isset($_POST['subgrupo'])) {
                         $this->db->set('subgrupo', 't');
@@ -1628,6 +1647,9 @@ class empresa_model extends Model {
                                f.numero_empresa_painel,
                                ep.campos_obrigatorios_pac_cpf,
                                ep.valor_laboratorio,
+                               ep.profissional_completo,
+                               ep.tecnica_promotor,
+                               ep.tecnica_enviar,
                                ep.campos_obrigatorios_pac_sexo,
                                ep.campos_obrigatorios_pac_nascimento,
                                ep.campos_obrigatorios_pac_telefone,
@@ -1669,6 +1691,9 @@ class empresa_model extends Model {
             $this->_selecionar_retorno = $return[0]->selecionar_retorno;
             $this->_impressao_orcamento = $return[0]->impressao_orcamento;
             $this->_administrador_cancelar = $return[0]->administrador_cancelar;
+            $this->_profissional_completo = $return[0]->profissional_completo;
+            $this->_tecnica_promotor = $return[0]->tecnica_promotor;
+            $this->_tecnica_enviar = $return[0]->tecnica_enviar;
             $this->_estado = $return[0]->estado;
             $this->_cep = $return[0]->cep;
             $this->_chat = $return[0]->chat;

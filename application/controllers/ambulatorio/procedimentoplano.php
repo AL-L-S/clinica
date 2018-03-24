@@ -47,6 +47,7 @@ class Procedimentoplano extends BaseController {
 
 //            $this->carregarView($data);
     }
+
     function procedimentoplanoconsultalaudo($args = array()) {
 
         $this->loadView('ambulatorio/procedimentoplanolaudo-consulta', $args);
@@ -113,7 +114,7 @@ class Procedimentoplano extends BaseController {
 
     function agrupadoradicionar($agrupador_id) {
         $data['agrupador'] = $this->procedimentoplano->buscaragrupador($agrupador_id);
-        $data['convenio'] = $this->convenio->listardados();  
+        $data['convenio'] = $this->convenio->listardados();
 //        $data['procedimentos'] = $this->procedimentoplano->listarprocedimentoconvenioagrupadorcirurgico(73);
         $data['relatorio'] = $this->procedimentoplano->listarprocedimentosagrupador($agrupador_id);
         $this->loadView('ambulatorio/agrupador-adicionar', $data);
@@ -496,6 +497,15 @@ class Procedimentoplano extends BaseController {
         redirect(base_url() . "ambulatorio/procedimentoplano");
     }
 
+    function excluirgrupopagamentoprocedimento($grupo_id, $procedimento_convenio_id) {
+        $this->procedimentoplano->excluirgrupopagamentoprocedimento($grupo_id);
+//        if ($return == 1) {
+        $mensagem = 'Sucesso ao gravar Forma de Pagamento.';
+//        }
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoformapagamento/$procedimento_convenio_id");
+    }
+
     function excluir($procedimentoplano_tuss_id) {
         if ($this->procedimentoplano->excluir($procedimentoplano_tuss_id)) {
             $mensagem = 'Sucesso ao excluir o Procedimentoplano';
@@ -742,7 +752,7 @@ class Procedimentoplano extends BaseController {
         } elseif ($procedimentoplano_tuss_id == "-2") {
             $data['mensagem'] = 'Alguns procedimentos não foram gravados porque já existem registros dos mesmos.';
         } else {
-           $data['mensagem'] = 'Erro ao gravar o percentual do convênio. Convênio já cadastrado'; 
+            $data['mensagem'] = 'Erro ao gravar o percentual do convênio. Convênio já cadastrado';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/procedimentoplano/conveniopercentuallaboratorio");

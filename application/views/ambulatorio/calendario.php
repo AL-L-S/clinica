@@ -616,7 +616,7 @@ if (@$_GET['nome'] != '') {
         dayClick: function (date, cell) {
             var data = date.format();
 //            cell.css("background-color", "#BCD2EE");
-            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() +  '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome= ' + paciente + '', '_self');
+            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() +  '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=' + paciente + '', '_self');
 
 
 

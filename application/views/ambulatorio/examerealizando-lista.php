@@ -4,6 +4,7 @@
         <div>
             <?
             $salas = $this->exame->listartodassalas();
+            $empresa_p = $this->guia->listarempresapermissoes();
             ?>
             <table>
                 <thead>
@@ -49,7 +50,7 @@
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->exame->listarexames($_GET);
                 $total = $consulta->count_all_results();
-              $limit = $limite_paginacao;
+                $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                 if ($total > 0) {
@@ -84,11 +85,13 @@
                                         </a>
                                     </div>
                                 </td>
+                                <? if ($empresa_p[0]->tecnica_enviar == 't' || ($perfil_id != 15 && $perfil_id != 7)) { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/finalizarexame/<?= $item->exames_id ?>/<?= $item->sala_id ?> ">
                                             Finalizar
                                         </a></div>
                                 </td>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/finalizarexametodos/<?= $item->sala_id ?>/<?= $item->guia_id; ?>/<?= $item->grupo; ?> ">
                                             Todos
@@ -100,28 +103,35 @@
                                         </a></div>
                                 </td>
                                 <td>
-                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente2/<?= $item->ambulatorio_laudo_id ?> ">
-                                            Chamar</a></div>
-                                    <!--                                        impressaolaudo -->
-                                </td>
-                                
-                                <? if ($perfil_id == 1) { 
-                                    if($item->agrupador_pacote_id == ''){?>
+                                    <? if ($empresa_p[0]->tecnica_enviar == 't' || ($perfil_id != 15 && $perfil_id != 7)) { ?>
+
+
+                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente2/<?= $item->ambulatorio_laudo_id ?> ">
+                                                Chamar</a></div>
+                                        <!--                                        impressaolaudo -->
+                                    </td>
+                                <? } ?>
+
+                                <?
+                                if ($perfil_id == 1) {
+                                    if ($item->agrupador_pacote_id == '') {
+                                        ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                            <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exames_id ?>/<?= $item->sala_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
-                                                Cancelar
-                                            </a></div>
+                                                <a href="<?= base_url() ?>ambulatorio/exame/examecancelamento/<?= $item->exames_id ?>/<?= $item->sala_id ?> /<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?> ">
+                                                    Cancelar
+                                                </a></div>
                                         </td>
-                                    <?} else { ?>
+                                    <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link_new">
                                                 <a target="_blank" href="<?= base_url() ?>ambulatorio/exame/pacotecancelamento/<?= $item->sala_id ?>/<?= $item->guia_id ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?> ">
-                                                Cancelar Pacote
-                                            </a></div>
+                                                    Cancelar Pacote
+                                                </a></div>
                                         </td>
-                                <? } 
-                                
-                                    }?>
+                                        <?
+                                    }
+                                }
+                                ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exame/voltarexame/<?= $item->exames_id ?>/<?= $item->sala_id ?>/<?= $item->agenda_exames_id ?> ">
                                             Voltar
@@ -145,28 +155,28 @@
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                             <span style="margin-left: 15px; color: white; font-weight: bolder;"> Limite: </span>
-                                <select style="width: 57px">
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/25');" <?
-                                    if ($limit == 25) {
-                                        echo "selected";
-                                    }
-                                    ?>>25 </option>
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/50');" <?
-                                    if ($limit == 50) {
-                                        echo "selected";
-                                    }
-                                    ?>>50 </option>
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/100');" <?
-                                            if ($limit == 100) {
-                                                echo "selected";
-                                            }
-                                    ?>> 100 </option>
-                                    <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/todos');" <?
-                                            if ($limit == "todos") {
-                                                echo "selected";
-                                            }
-                                    ?>> Todos </option>
-                                </select>
+                            <select style="width: 57px">
+                                <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/25');" <?
+                                if ($limit == 25) {
+                                    echo "selected";
+                                }
+                                ?>>25 </option>
+                                <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/50');" <?
+                                if ($limit == 50) {
+                                    echo "selected";
+                                }
+                                ?>>50 </option>
+                                <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/100');" <?
+                                if ($limit == 100) {
+                                    echo "selected";
+                                }
+                                ?>> 100 </option>
+                                <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarexamerealizando/todos');" <?
+                                if ($limit == "todos") {
+                                    echo "selected";
+                                }
+                                ?>> Todos </option>
+                            </select>
                         </th>
                     </tr>
                 </tfoot>

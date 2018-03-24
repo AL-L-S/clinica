@@ -1098,6 +1098,7 @@ class exame_model extends Model {
         if ($grupo_pagamento_id != 0 && $grupo_pagamento_id != null) {
             $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = pc.procedimento_convenio_id', 'left');
             $this->db->where("cp.grupo_pagamento_id", $grupo_pagamento_id);
+            $this->db->where("cp.ativo", 't');
         }
         $this->db->where("c.dinheiro", 't');
         $this->db->where('ae.empresa_id', $empresa_id);

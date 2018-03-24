@@ -588,13 +588,31 @@
                         <dd>
                             <input type="checkbox" id="valor_laboratorio" name="valor_laboratorio" <? if (@$obj->_valor_laboratorio == 't') echo "checked"; ?>/> 
                         </dd>
-                        
                         <dt>
+                            <label title="A técnica irá poder chamar na tela de atendimento">Técnica Chamar</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="tecnica_enviar" name="tecnica_enviar" <? if (@$obj->_tecnica_enviar == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Técnica alterar o promotor">Promotor Sala de Espera</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="valor_laboratorio" name="tecnica_promotor" <? if (@$obj->_tecnica_promotor == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="O valor do laboratório é retirado antes do valor do médico no relatório de produção médica">Profissional Convênio Completo</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="profissional_completo" name="profissional_completo" <? if (@$obj->_profissional_completo == 't') echo "checked"; ?>/> 
+                        </dd>
+                        
+<!--                        <dt>
                             <label title="Ao ativar, irá aparecer uma tela para cadastrar subgrupos no sistema (associados aos grupos). Isso pode ser usado no relátorio de conferência.">Subgrupo de Procedimento</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="subgrupo_procedimento" name="subgrupo_procedimento" <? if (@$obj->_subgrupo_procedimento == 't') echo "checked"; ?>/> 
-                        </dd>
+                        </dd>-->
                     <? } ?>
                 </dl>    
                 <hr/>

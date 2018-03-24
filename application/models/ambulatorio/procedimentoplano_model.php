@@ -1389,6 +1389,7 @@ class procedimentoplano_model extends Model {
         $this->db->from('tb_procedimento_convenio_pagamento');
         $this->db->where('procedimento_convenio_id', $_POST['procedimento_convenio_id']);
         $this->db->where('grupo_pagamento_id ', $_POST['grupopagamento']);
+        $this->db->where('ativo ', 't');
         $return = $this->db->get();
         $result = $return->result();
 
@@ -1960,6 +1961,23 @@ class procedimentoplano_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('procedimento_percentual_medico_convenio_id', $procedimento_percentual_medico_convenio_id);
         $this->db->update('tb_procedimento_percentual_medico_convenio');
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
+    function excluirgrupopagamentoprocedimento($grupo_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('ativo', 'f');
+//        $this->db->set('data_atualizacao', $horario);
+//        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('procedimento_convenio_pagamento_id', $grupo_id);
+        $this->db->update('tb_procedimento_convenio_pagamento');
 
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco

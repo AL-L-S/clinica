@@ -4025,9 +4025,10 @@ class Laudo extends BaseController {
 
         $servicoemail = $this->session->userdata('servicoemail');
         if ($servicoemail == 't') {
-
+            
             $dados = $this->laudo->listardadoservicoemail($ambulatorio_laudo_id, $exame_id);
-            if ($dados['enviado'] != 't') {
+//            var_dump($dados); die;
+            if ($dados['enviado'] != 't' && $dados['pacienteEmail'] != '' && $dados['mensagem'] != '') {
                 $this->load->library('My_phpmailer');
                 $mail = new PHPMailer(true);
 

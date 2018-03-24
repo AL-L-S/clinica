@@ -40,6 +40,7 @@ class formapagamento_model extends Model {
         $this->db->join('tb_grupo_formapagamento gp', "gp.grupo_formapagamento_id = pcp.grupo_pagamento_id", 'left');
         $this->db->join('tb_financeiro_grupo fg', "fg.financeiro_grupo_id = gp.grupo_id", 'left');
         $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->where('pcp.ativo', 't');
         
         $return = $this->db->get();
         return $return->result();
@@ -132,6 +133,7 @@ class formapagamento_model extends Model {
         $this->db->from('tb_formapagamento_pacela_juros');
         $this->db->where("ativo", 't');
         $this->db->where("forma_pagamento_id", $forma_pagamento_id);
+        $this->db->orderby("parcelas_inicio");
         $return = $this->db->get();
         return $return->result();
     }

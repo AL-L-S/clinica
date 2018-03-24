@@ -67,6 +67,18 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function listarconveniosprimarios() {
+        $this->db->select('convenio_id,
+                            nome,
+                            dinheiro,
+                            conta_id');
+        $this->db->from('tb_convenio');
+        $this->db->where("ativo", 't');
+        $this->db->where("associado", 'f');
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarconvenioscopiar($convenio_id) {
         $this->db->select('convenio_id,
@@ -579,7 +591,7 @@ class Convenio_model extends Model {
 
                     $this->db->set('data_atualizacao', $horario);
                     $this->db->set('operador_atualizacao', $operador_id);
-                    $this->db->where('ativo', 'f');
+                    $this->db->set('ativo', 'f');
                     $this->db->where('convenio_id', $convenio_id);
                     $grupo = $_POST['grupo'][$key];
                     $this->db->where("procedimento_tuss_id IN ( SELECT procedimento_tuss_id 
@@ -590,6 +602,7 @@ class Convenio_model extends Model {
 
                     if (count($result2) > 0) {
                         foreach ($result2 as $value) {
+                            $valortotal = $value->valortotal + ($value->valortotal * (float)$_POST['valor'][$key] / 100);
                             $this->db->set('qtdech', $value->qtdech);
                             $this->db->set('valorch', $value->valorch);
                             $this->db->set('qtdefilme', $value->qtdefilme);
@@ -598,7 +611,7 @@ class Convenio_model extends Model {
                             $this->db->set('valorporte', $value->valorporte);
                             $this->db->set('qtdeuco', $value->qtdeuco);
                             $this->db->set('valoruco', $value->valoruco);
-                            $this->db->set('valortotal', ($value->valortotal * (float) $_POST['valor'][$key] / 100));
+                            $this->db->set('valortotal', $valortotal);
                             $this->db->set('data_cadastro', $horario);
                             $this->db->set('operador_cadastro', $operador_id);
                             $this->db->set('convenio_id', $convenio_id);
@@ -697,6 +710,9 @@ class Convenio_model extends Model {
 
                     if (count($result2) > 0) {
                         foreach ($result2 as $value) {
+                            $valortotal = $value->valortotal + ($value->valortotal * (float)$_POST['valor'][$key] / 100);
+//                            var_dump($valortotal); die;
+                            
                             $this->db->set('qtdech', $value->qtdech);
                             $this->db->set('valorch', $value->valorch);
                             $this->db->set('qtdefilme', $value->qtdefilme);
@@ -705,7 +721,7 @@ class Convenio_model extends Model {
                             $this->db->set('valorporte', $value->valorporte);
                             $this->db->set('qtdeuco', $value->qtdeuco);
                             $this->db->set('valoruco', $value->valoruco);
-                            $this->db->set('valortotal', ($value->valortotal * (float) $_POST['valor'][$key] / 100));
+                            $this->db->set('valortotal', $valortotal);
                             $this->db->set('data_cadastro', $horario);
                             $this->db->set('operador_cadastro', $operador_id);
                             $this->db->set('convenio_id', $convenio_id);

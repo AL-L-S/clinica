@@ -206,3 +206,9 @@ UPDATE ponto.tb_solicitacao_cirurgia
 
 ALTER TABLE ponto.tb_paciente ADD COLUMN nacionalidade text;
 ALTER TABLE ponto.tb_paciente ADD COLUMN sexo_real text;
+
+ALTER TABLE ponto.tb_procedimento_convenio_pagamento ADD COLUMN ativo boolean DEFAULT true;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN profissional_completo boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN tecnica_promotor boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN tecnica_enviar boolean DEFAULT true;

@@ -71,6 +71,7 @@ class Operador_model extends BaseModel {
         if ($operador_id != 1) {
             $this->db->where('tb_operador.operador_id != 1');
         }
+//        var_dump($args); die;
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 // $this->db->like('tb_operador.nome', $args['nome'], 'left');
@@ -79,7 +80,11 @@ class Operador_model extends BaseModel {
             }
             if (@$args['ativo'] != '') {
                 $this->db->where('tb_operador.ativo', $args['ativo']);
+            } else {
+                $this->db->where('tb_operador.ativo', 't');
             }
+        } else {
+            $this->db->where('tb_operador.ativo', 't');
         }
         return $this->db;
     }
@@ -182,6 +187,134 @@ class Operador_model extends BaseModel {
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function gravaprocedimentosoperadorescompleto($operador_id) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_atual_id = $this->session->userdata('operador_id');
+//            $empresa_id_origem = (int) $_POST['empresa_id_origem'];
+//            $empresa_id_destino = (int) $_POST['empresa_id_destino'];
+
+            $this->db->select('empresa_id');
+            $this->db->from('tb_empresa');
+            $this->db->where('ativo', 't');
+            $empresas = $this->db->get()->result();
+
+            $this->db->select('convenio_id');
+            $this->db->from('tb_convenio');
+            $this->db->where('ativo', 't');
+            $convenio = $this->db->get()->result();
+
+            foreach ($empresas as $emp) {
+                // EMPRESA
+                $this->db->set('operador_id', $operador_id);
+                $this->db->set('empresa_id', $emp->empresa_id);
+                $horario = date("Y-m-d H:i:s");
+//                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_atual_id);
+                $this->db->insert('tb_ambulatorio_empresa_operador');
+                $ambulatorio_empresa_id = $this->db->insert_id();
+
+                foreach ($convenio as $conv) {
+                    // CONVENIO
+                    $this->db->set('operador_id', $operador_id);
+                    $this->db->set('convenio_id', $conv->convenio_id);
+                    $this->db->set('empresa_id', $emp->empresa_id);
+                    $horario = date("Y-m-d H:i:s");
+//                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_atual_id);
+                    $this->db->insert('tb_ambulatorio_convenio_operador');
+                    $ambulatorio_convenio_id = $this->db->insert_id();
+
+                    // SELECT PROCEDIMENTOS
+                }
+                $procedimento_multiempresa = $this->listarempresapermissoes($emp->empresa_id);
+                
+                $this->db->select('pc.procedimento_convenio_id,pc.convenio_id');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+                $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+                $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+                $this->db->where("ag.tipo !=", 'CIRURGICO');
+                $this->db->where("pc.ativo", 't');
+//                    $this->db->where('pc.convenio_id', $conv->convenio_id);
+                
+//                    $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+                if ($procedimento_multiempresa == 't') {
+                    $this->db->where('pc.empresa_id', $emp->empresa_id);
+                }
+                $procedimentos = $this->db->get()->result();
+
+
+                foreach ($procedimentos as $proc) {
+                    $this->db->set('operador', $operador_id);
+                    $this->db->set('convenio_id', $proc->convenio_id);
+                    $this->db->set('empresa_id', $emp->empresa_id);
+                    $this->db->set('procedimento_convenio_id', $proc->procedimento_convenio_id);
+                    $horario = date("Y-m-d H:i:s");
+//                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_atual_id);
+                    $this->db->insert('tb_convenio_operador_procedimento');
+                }
+            }
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function listarempresapermissoes($empresa_id) {
+//        if ($empresa_id == null) {
+//            $empresa_id = $this->session->userdata('empresa_id');
+//        }
+
+        $this->db->select('e.empresa_id,
+                            ordem_chegada,
+                            promotor_medico,
+                            excluir_transferencia,
+                            orcamento_config,
+                            rodape_config,
+                            cabecalho_config,
+                            valor_recibo_guia,
+                            valor_autorizar,
+                            gerente_contasapagar,
+                            cpf_obrigatorio,
+                            orcamento_recepcao,
+                            relatorio_ordem,
+                            relatorio_producao,
+                            relatorios_recepcao,
+                            encaminhamento_email,
+                            financeiro_cadastro,
+                            odontologia_valor_alterar,
+                            selecionar_retorno,
+                            oftamologia,
+                            procedimento_multiempresa,
+                            carregar_modelo_receituario,
+                            retirar_botao_ficha,
+                            ep.desabilitar_trava_retorno,
+                            ep.conjuge,
+                            ep.associa_credito_procedimento,
+                            ep.valor_laboratorio,
+                            ep.desativar_personalizacao_impressao,
+                            ep.campos_obrigatorios_pac_cpf,
+                            ep.profissional_completo,
+                            ep.tecnica_promotor,
+                            ep.tecnica_enviar,
+                            ep.campos_obrigatorios_pac_sexo,
+                            ep.campos_obrigatorios_pac_nascimento,
+                            ep.campos_obrigatorios_pac_telefone,
+                            ep.campos_obrigatorios_pac_municipio,
+                            ep.repetir_horarios_agenda');
+        $this->db->from('tb_empresa e');
+        $this->db->where('e.empresa_id', $empresa_id);
+        $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+        $this->db->orderby('e.empresa_id');
+        $return = $this->db->get()->result();
+        $procedimento_multiempresa = $return[0]->procedimento_multiempresa;
+        return $procedimento_multiempresa;
     }
 
     function gravarcopiaroperadorconvenio() {
@@ -427,7 +560,7 @@ class Operador_model extends BaseModel {
         $this->db->where('operador', $operador);
         $this->db->where('empresa_id', $empresa_id);
         $this->db->update('tb_convenio_operador_procedimento');
-        
+
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
@@ -440,8 +573,7 @@ class Operador_model extends BaseModel {
         else
             return 0;
     }
-    
-    
+
     function listarempresasconvenio() {
 
 //        $empresa_id = $this->session->userdata('empresa_id');
@@ -842,15 +974,19 @@ class Operador_model extends BaseModel {
 
     function gravarassociarempresas() {
         try {
-            $this->db->set('operador_id', $_POST['txtoperador_id']);
-            $this->db->set('empresa_id', $_POST['empresa_id']);
-            $this->db->insert('tb_operador_empresas');
-
-            $erro = $this->db->_error_message();
-            if (trim($erro) != "") { // erro de banco
-                return false;
+            $this->db->select('oe.operador_empresa_id');
+            $this->db->from('tb_operador_empresas oe');
+            $this->db->where('oe.ativo', 't');
+            $this->db->where('operador_id', $_POST['txtoperador_id']);
+            $this->db->where('empresa_id', $_POST['empresa_id']);
+            $return = $this->db->get()->result();
+            if (count($return) == 0) {
+                $this->db->set('operador_id', $_POST['txtoperador_id']);
+                $this->db->set('empresa_id', $_POST['empresa_id']);
+                $this->db->insert('tb_operador_empresas');
+                return 20;
             } else {
-                return true;
+                return 10;
             }
         } catch (Exception $ex) {
             return false;

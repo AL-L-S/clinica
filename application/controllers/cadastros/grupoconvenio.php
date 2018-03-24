@@ -41,7 +41,7 @@ class Grupoconvenio extends BaseController {
     }
 
     function excluir($exame_grupoconvenio_id) {
-        if ($this->procedimento->excluir($exame_grupoconvenio_id)) {
+        if ($this->grupoconvenio->excluir($exame_grupoconvenio_id)) {
             $mensagem = 'Sucesso ao excluir a Grupoconvenio';
         } else {
             $mensagem = 'Erro ao excluir a grupoconvenio. Opera&ccedil;&atilde;o cancelada.';

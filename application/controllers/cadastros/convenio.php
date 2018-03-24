@@ -62,7 +62,7 @@ class Convenio extends BaseController {
     }
 
     function ajustargrupoeditar($convenio_id) {
-        $data['convenios'] = $this->convenio->listardados();
+        $data['convenios'] = $this->convenio->listarconveniosprimarios();
         $data['grupos'] = $this->convenio->listargrupos();
         $data['associacoes'] = $this->convenio->listarassociacoesconvenio($convenio_id);
         $data['convenio_id'] = $convenio_id;
