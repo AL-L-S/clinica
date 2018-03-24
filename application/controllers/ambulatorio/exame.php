@@ -589,20 +589,20 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/multifuncaomedicogeral-lista', $args);
     }
 
-    function multifuncaomedicointegracao() {
-        set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
-        ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão 
-
-        $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
-        if (count($data['integracao']) > 0) {
-//            echo count($data['integracao']) . "<hr>";
-            $laudos = $this->laudo->atualizacaolaudosintegracaotodos();
-            
-            foreach($laudos as $item){
-                $dados = $this->laudo->listardadoslaudogravarxml($item);
-            }
-        }
-    }
+//    function multifuncaomedicointegracao() {
+//        set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
+//        ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão 
+//
+//        $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
+//        if (count($data['integracao']) > 0) {
+////            echo count($data['integracao']) . "<hr>";
+//            $laudos = $this->laudo->atualizacaolaudosintegracaotodos();
+//            
+//            foreach($laudos as $item){
+//                $dados = $this->laudo->listardadoslaudogravarxml($item);
+//            }
+//        }
+//    }
 
     function reagendarespecialidade() {
 //        var_dump($_POST);

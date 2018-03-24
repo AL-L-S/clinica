@@ -110,18 +110,11 @@
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
                                             <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Autorizar</a></div>
                                     </td> 
-                                <? } else {
-                                    ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                    </td>  
                                 <? }
-                                ?>
-                                <? if ($item->equipe_montada == 'f') { ?>
+                                if ($item->equipe_montada == 'f') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
                                             <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= $item->solicitacao_cirurgia_id; ?>">Equipe</a></div>
                                     </td>   
-                                <? } else { ?>
-
                                 <? } ?>
                                 <? if ($item->liberada == 'f') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
@@ -143,23 +136,29 @@
                                 <? } else { ?>
                                     <!--<td class="<?php echo $estilo_linha; ?>" width="30px;">  </td>-->
                                 <? } ?>
-                                    <!--
+                                    
                                 <? if ($item->orcamento_convenio_id != '') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                         <div class="bt_link" style="width:90pt;">
-                                            <a  title="Imprimir Orçamento do Convênio."
-                                                href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaosolicitacaocirurgicaconveniospsadt/<?= $item->solicitacao_cirurgia_id; ?>">Guia Convênio</a>
+                                            <a  title="Imprimir Guia de Internação do Convênio."
+                                                href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaosolicitacaocirurgicaconveniospsadt/<?= $item->solicitacao_cirurgia_id; ?>">Guia Internação</a>
                                         </div>
                                     </td>
-                                <? } else { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">  </td>
+                                <? }
+                                
+                                if ($item->qtde_material > 0) { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                        <div class="bt_link" style="width:90pt;">
+                                            <a  title="Imprimir Guia de OPME."
+                                                href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaosolicitacaocirurgicamaterialopme/<?= $item->solicitacao_cirurgia_id; ?>">Guia OPME</a>
+                                        </div>
+                                    </td>
                                 <? } ?>
 
-                                    -->
                                 <? if ($item->orcamento == 'f' && $item->equipe_montada == 't') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                    <!--<td class="<?php echo $estilo_linha; ?>" width="30px;">-->
 
-                                    </td>
+                                    <!--</td>-->
                                 <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/excluirsolicitacaocirurgia/<?= $item->solicitacao_cirurgia_id; ?>">Excluir</a></div>
@@ -184,7 +183,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="10">
+                        <th class="tabela_footer" colspan="15">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

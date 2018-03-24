@@ -7,6 +7,7 @@ class App extends Controller {
         parent::Controller();
         $this->load->model('app_model', 'app');
         $this->load->model('ambulatorio/laudo_model', 'laudo');
+        $this->load->model('ambulatorio/exame_model', 'exame');
     }
 
     function buscandoAgenda() {
@@ -232,12 +233,26 @@ class App extends Controller {
     }
     
     function criarArquivosLaudoProImagem(){
-        $dados = $this->app->listarLaudosNaoCriados();
+        $this->load->helper('directory');
+        $arquivo_pasta = directory_map("./upload/laudo/UNIMED UBERLANDIA/");
+        $array = array();
         
-        foreach ($dados as $value) {        
-            $this->gerarxmlsalvar($value->ambulatorio_laudo_id, $value->exame_id, $value->sala_id);
+        foreach($arquivo_pasta as $key => $value){
+            $array[] = $key;
         }
+        
+        $string = implode(',', $array);
+        $dados = $this->app->listarLaudosNaoCriados($string);
+//        echo "<pre>";
+//        var_dump($dados); die;
+        foreach ($dados as $value) {
+            $this->gerarxmlsalvar($value->ambulatorio_laudo_id, $value->exame_id, $value->sala_id);
+//            sleep(0.85);
+            
+        }
+//        $this->gerarxmlsalvar(268115, 271699, 26);
     }
+    
     
     function gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id) {
         $this->load->plugin('mpdf');
@@ -270,22 +285,26 @@ class App extends Controller {
 
                 if ($impressao_tipo == 2) {
                     foreach ($listarexame as $item) {
-
-//                    if ($_POST['apagar'] == 1) {
-//                        delete_files($origem . '/' . $convenio . '/' . $item->paciente_id);
-//                    }
+                        
 
                         if ($item->paciente_id !== $paciente_dif) {
+                            
+                            $data_atual = date('Y-m-d');
+                            $data1 = new DateTime($data_atual);
+                            $data2 = new DateTime($item->nascimento);
+                            $intervalo = $data1->diff($data2);
+                            $teste = $intervalo->y;
+                            
                             $sl_cod_doc = $item->ambulatorio_laudo_id;
-                            if (!is_dir($origem . '/' . $convenio . '/' . $sl_cod_doc)) {
-                                mkdir($origem . '/' . $convenio . '/' . $sl_cod_doc);
-                                chmod($origem . '/' . $convenio . '/' . $sl_cod_doc, 0777);
-                            }
-                            $texto = "";
                             if (!is_dir($origem . '/' . $convenio)) {
                                 mkdir($origem . '/' . $convenio);
                                 chmod($origem . '/' . $convenio, 0777);
                             }
+//                            if (!is_dir($origem . '/' . $convenio . '/' . $sl_cod_doc)) {
+//                                mkdir($origem . '/' . $convenio . '/' . $sl_cod_doc);
+//                                chmod($origem . '/' . $convenio . '/' . $sl_cod_doc, 0777);
+//                            }
+                            $texto = "";
 
                             //NUMERO DA CARTEIRA
                             if ($item->convenionumero == '') {
@@ -319,7 +338,7 @@ class App extends Controller {
                             //   este foreach irá inserir todos os códigos dos exames relacionados ao numeroguia 
                             foreach ($listarexame as $value) {
                                 $corpo = $corpo . "<OPER_EXAME>" . $value->codigo . "</OPER_EXAME>";
-                                $texto = $texto . $value->texto_laudo;
+                                $texto = $texto . $value->texto;
                             }
                             // matriz de entrada
                             $what = array('&Aacute;', '&Eacute;', '&Iacute;', '&Oacute;', '&Uacute;', '&aacute;', '&eacute;', '&iacute;', '&oacute;', '&uacute;', '&Acirc;');
@@ -375,8 +394,8 @@ class App extends Controller {
                             $nomepdf = "./upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".pdf";
                             $cabecalhopdf = $cabecalho;
                             $rodapepdf = $rodape;
-//                        $cabecalhopdf = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $item->paciente . " <br>Emiss&atilde;o: </td></tr></table>";
-//                        $rodapepdf = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
+//                            $cabecalhopdf = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $item->paciente . " <br>Emiss&atilde;o: </td></tr></table>";
+//                            $rodapepdf = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
                             salvapdf($texto, $nomepdf, $cabecalhopdf, $rodapepdf);
 
 
