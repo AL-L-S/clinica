@@ -142,7 +142,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->contaspagar->listar($_GET)->orderby('data')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->contaspagar->listar($_GET)->orderby('data, financeiro_contaspagar_id')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         $dataatual = date("Y-m-d");
                         foreach ($lista as $item) {

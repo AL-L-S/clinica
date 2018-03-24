@@ -49,8 +49,14 @@ class Operador extends BaseController {
     }
 
     function gravarassociarempresas() {
-        $this->operador_m->gravarassociarempresas();
+        $retorno = $this->operador_m->gravarassociarempresas();
+        if ($retorno == 10) {
+            $mensagem = 'Empresa já cadastrada';
+        }else{
+            $mensagem = 'Empresa cadastrada com sucesso';
+        }
         $operador_id = $_POST['txtoperador_id'];
+        $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "seguranca/operador/associarempresas/$operador_id");
     }
 
@@ -154,6 +160,8 @@ class Operador extends BaseController {
     function gravar() {
         $cpf = $this->operador_m->listarcpfcontador();
         $usuario = $this->operador_m->listarusuariocontador();
+        $empresa_p = $this->guia->listarempresapermissoes();
+//        var_dump($_POST); die;
         if ($_POST['operador_id'] == '') {
             if ($cpf > 0) {
                 $data['mensagem'] = 'Erro. CPF já cadastrado.';
@@ -166,6 +174,11 @@ class Operador extends BaseController {
                 redirect(base_url() . "seguranca/operador", $data);
             }
             $operador_id = $this->operador_m->gravar();
+//            var_dump($empresa_p[0]->profissional_completo); die;
+            if($empresa_p[0]->profissional_completo == 't' && isset($_POST['txtconsulta'])){
+               $gravaprocedimentos = $this->operador_m->gravaprocedimentosoperadorescompleto($operador_id, $empresa_p); 
+            }
+            
             if ($operador_id != false) {
                 $data['mensagem'] = 'Operador cadastrado com sucesso.';
             } else {
@@ -180,7 +193,7 @@ class Operador extends BaseController {
             }
             // ESSA GAMBIARRA RETIRA ALGUMAS PARTES DA STRING PARA PODER ENVIAR NA FUNÇÃO E TIRAR OS CAMPOS DO HTML
             // QUE ATRAPALHARIAM
-            if ($_POST['timbrado'] != '') {
+            if (@$_POST['timbrado'] != '') {
 
                 $arquivobase64_img = explode('src="', $_POST['timbrado']);
                 $arquivobase64 = explode('alt=""', $arquivobase64_img[1]);
@@ -235,7 +248,7 @@ class Operador extends BaseController {
 
     function gravarfinanceiro() {
         if ($this->operador_m->gravarfinanceiro()) {
-                   echo '<html><meta charset="utf-8">
+            echo '<html><meta charset="utf-8">
         <script type="text/javascript">
         alert("Operação Efetuada Com Sucesso");
         window.onunload = fechaEstaAtualizaAntiga;
@@ -246,7 +259,7 @@ class Operador extends BaseController {
             </script>
             </html>';
         } else {
-                   echo '<html><meta charset="utf-8">
+            echo '<html><meta charset="utf-8">
         <script type="text/javascript">
         alert("Houve um erro ao tentar alterar as informações");
         window.onunload = fechaEstaAtualizaAntiga;

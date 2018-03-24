@@ -1,5 +1,6 @@
 <?
 $perfil_id = $this->session->userdata('perfil_id');
+$empresa_p = $this->guia->listarempresapermissoes();
 ?>
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/examepacientedetalhes/<?= $paciente_id; ?>/<?= $procedimento_tuss_id; ?>/<?= $guia_id; ?>/<?= $agenda_exames_id ?>', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Detalhes
@@ -63,7 +64,7 @@ $perfil_id = $this->session->userdata('perfil_id');
                             <? endforeach; ?>
                         </select>
                     </dd>
-                    <? if($perfil_id == 1 || $perfil_id == 10) { ?>
+                    <? if(($perfil_id == 1 || $perfil_id == 10) && $empresa_p[0]->tecnica_promotor == 't') { ?>
                         <dt>
                             <label>Recomendação</label>
                         </dt>

@@ -59,7 +59,10 @@ class Formapagamento extends BaseController {
         $data['formapagamento_id'] = $formapagamento_id;
         $data['formapagamento'] = $this->formapagamento->buscarforma($formapagamento_id);
         $data['faixas_parcelas'] = $this->formapagamento->buscafaixasparcelas($formapagamento_id);
-        
+//        echo '<pre>';
+        $data['maximo'] = $data['formapagamento'][0]->parcelas;
+//        var_dump($data['faixas_parcelas'][count($data['faixas_parcelas']) - 1]);
+//        die;
         if(count($data['faixas_parcelas']) > 0){
             
             $ind_ultima_parcela = count($data['faixas_parcelas']) - 1;
@@ -74,9 +77,13 @@ class Formapagamento extends BaseController {
                     $data['ultima_parcela'] = $item->parcelas_fim;
                 }
             }
+//            if($data['ultima_parcela'] == $maximo){
+////                $data['ultima_parcela'] = -1;
+//            }
         } else {
             $data['ultima_parcela'] = 0;
         }
+//        var_dump($data['ultima_parcela']); die;
         $this->loadView('cadastros/formapagamentoparcelas-form', $data);
     }
     

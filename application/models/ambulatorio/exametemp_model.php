@@ -3586,7 +3586,7 @@ class exametemp_model extends Model {
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
                 $empresa_id = $this->session->userdata('empresa_id');
-                $this->db->set('empresa_id', $empresa_id);
+//                $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
                 $this->db->set('confirmado', 'f');
@@ -3746,7 +3746,7 @@ class exametemp_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $empresa_id = $this->session->userdata('empresa_id');
-            $this->db->set('empresa_id', $empresa_id);
+//            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('tipo', 'ESPECIALIDADE');
             $this->db->set('ativo', 'f');
             $this->db->set('cancelada', 'f');
@@ -3782,7 +3782,7 @@ class exametemp_model extends Model {
 //            var_dump($agenda); die;
             foreach ($agenda as $item) {
 
-                $this->db->set('empresa_id', $empresa_id);
+//                $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('tipo', 'ESPECIALIDADE');
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
@@ -3819,7 +3819,7 @@ class exametemp_model extends Model {
 //            var_dump($agenda); die;
 
 
-            $this->db->set('empresa_id', $empresa_id);
+//            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('tipo', 'ESPECIALIDADE');
             $this->db->set('ativo', 'f');
             $this->db->set('cancelada', 'f');

@@ -24,40 +24,44 @@
                     </tr>
                 </thead>
                 <?php
-                    $url      = $this->utilitario->build_query_params(current_url(), $_GET);
-                    $consulta = $this->grupoconvenio->listar($_GET);
-                    $total    = $consulta->count_all_results();
-                    $limit    = 10;
-                    isset ($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+                $url = $this->utilitario->build_query_params(current_url(), $_GET);
+                $consulta = $this->grupoconvenio->listar($_GET);
+                $total = $consulta->count_all_results();
+                $limit = 10;
+                isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
-                    if ($total > 0) {
-                ?>
-                <tbody>
-                    <?php
+                if ($total > 0) {
+                    ?>
+                    <tbody>
+                        <?php
                         $lista = $this->grupoconvenio->listar($_GET)->limit($limit, $pagina)->orderby("nome")->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                     ?>
+                            ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>cadastros/grupoconvenio/carregargrupoconvenio/<?= $item->convenio_grupo_id ?>">Editar</a></div>
-                            </td>
-                        </tr>
+                                        <a href="<?= base_url() ?>cadastros/grupoconvenio/carregargrupoconvenio/<?= $item->convenio_grupo_id ?>">Editar</a></div>
+                                </td>
+
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a href="<?= base_url() ?>cadastros/grupoconvenio/excluir/<?= $item->convenio_grupo_id ?>">Excluir</a></div>
+                                </td>
+                            </tr>
 
                         </tbody>
                         <?php
-                                }
-                            }
-                        ?>
-                        <tfoot>
-                            <tr>
-                                <th class="tabela_footer" colspan="6">
-                                   <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                    }
+                }
+                ?>
+                <tfoot>
+                    <tr>
+                        <th class="tabela_footer" colspan="6">
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
-                                </th>
+                        </th>
                     </tr>
                 </tfoot>
             </table>
@@ -67,8 +71,8 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 
-    $(function() {
-        $( "#accordion" ).accordion();
+    $(function () {
+        $("#accordion").accordion();
     });
 
 </script>

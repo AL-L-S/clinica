@@ -1265,8 +1265,7 @@ class Laudo extends BaseController {
     </tr><tr><td>&nbsp;</td></tr>
     <tr>
     </table>";
-                } 
-                else {
+                } else {
                     $cabecalho = "<table>
     <tr>
       <td width='30px'></td><td><img align = 'left'  width='330px' height='100px' src='img/clinicadez.jpg'></td>
@@ -1293,8 +1292,7 @@ class Laudo extends BaseController {
 
                 if ($data['laudo']['0']->situacao == "FINALIZADO") {
                     $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $data['laudo']['0']->medico_parecer1 . ".jpg'></td></tr></table>";
-                } 
-                else {
+                } else {
                     if ($data['laudo']['0']->medico_parecer1 == 929) {
 
                         $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td><center>Dr." . $data['laudo']['0']->medico . "</td></tr>
@@ -1361,8 +1359,10 @@ class Laudo extends BaseController {
             elseif ($data['empresa'][0]->impressao_laudo == 13) {// CLINICA CAGE
                 if ($data['laudo']['0']->sexo == "F") {
                     $SEXO = 'FEMININO';
-                } else {
+                } elseif ($data['laudo']['0']->sexo == "M") {
                     $SEXO = 'MASCULINO';
+                } else {
+                    $SEXO = 'OUTROS';
                 }
 
                 $filename = "laudo.pdf";
@@ -1968,8 +1968,10 @@ class Laudo extends BaseController {
                 elseif ($data['empresa'][0]->impressao_laudo == 13) {// CLINICA CAGE
                     if ($data['laudo']['0']->sexo == "F") {
                         $SEXO = 'FEMININO';
-                    } else {
+                    } elseif ($data['laudo']['0']->sexo == "M") {
                         $SEXO = 'MASCULINO';
+                    } else {
+                        $SEXO = 'OUTROS';
                     }
 
                     $filename = "laudo.pdf";
@@ -2363,8 +2365,10 @@ class Laudo extends BaseController {
         elseif ($data['empresa'][0]->impressao_tipo == 13) {//CAGE        
             if ($data['laudo']['0']->sexo == "F") {
                 $SEXO = 'FEMININO';
-            } else {
+            } elseif ($data['laudo']['0']->sexo == "M") {
                 $SEXO = 'MASCULINO';
+            } else {
+                $SEXO = 'OUTROS';
             }
 
             $filename = "laudo.pdf";
@@ -3152,8 +3156,10 @@ class Laudo extends BaseController {
                 $filename = "laudo.pdf";
                 if ($data['laudo']['0']->sexo == "F") {
                     $SEXO = 'FEMININO';
-                } else {
+                } elseif ($data['laudo']['0']->sexo == "M") {
                     $SEXO = 'MASCULINO';
+                } else {
+                    $SEXO = 'OUTROS';
                 }
                 $filename = "laudo.pdf";
                 $cabecalho = "<table>
@@ -3175,8 +3181,10 @@ class Laudo extends BaseController {
                 $filename = "laudo.pdf";
                 if ($data['laudo']['0']->sexo == "F") {
                     $SEXO = 'FEMININO';
-                } else {
+                } elseif ($data['laudo']['0']->sexo == "M") {
                     $SEXO = 'MASCULINO';
+                } else {
+                    $SEXO = 'OUTROS';
                 }
                 $filename = "laudo.pdf";
                 $cabecalho = "<table>
@@ -4040,9 +4048,10 @@ class Laudo extends BaseController {
 
         $servicoemail = $this->session->userdata('servicoemail');
         if ($servicoemail == 't') {
-
+            
             $dados = $this->laudo->listardadoservicoemail($ambulatorio_laudo_id, $exame_id);
-            if ($dados['enviado'] != 't') {
+//            var_dump($dados); die;
+            if ($dados['enviado'] != 't' && $dados['pacienteEmail'] != '' && $dados['mensagem'] != '') {
                 $this->load->library('My_phpmailer');
                 $mail = new PHPMailer(true);
 

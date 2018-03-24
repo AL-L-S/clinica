@@ -27,7 +27,7 @@ class sala_model extends Model {
         }
         return $this->db;
     }
-    
+
     function listararmazem() {
         $this->db->select('estoque_armazem_id,
                             descricao');
@@ -70,7 +70,7 @@ class sala_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarsala($sala_id) {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -156,8 +156,8 @@ class sala_model extends Model {
             $this->db->where('painel_id', $_POST['painel_numero']);
             $this->db->where('exame_sala_id', $_POST['exame_sala_id']);
             $return = $this->db->get()->result();
-            
-            if ( count($return) == 0 ) {
+
+            if (count($return) == 0) {
                 $this->db->set('nome_chamada', $_POST['txtnomechamada']);
                 $this->db->set('painel_id', $_POST['painel_numero']);
                 $this->db->set('exame_sala_id', $_POST['exame_sala_id']);
@@ -179,7 +179,7 @@ class sala_model extends Model {
 
             $this->db->set('grupo', $_POST['grupo']);
             $this->db->set('exame_sala_id', $_POST['exame_sala_id']);
-            
+
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -197,15 +197,15 @@ class sala_model extends Model {
         }
     }
 
-    function gravar() {
+    function gravar($grupos) {
         try {
             /* inicia o mapeamento no banco */
             $empresa_id = $this->session->userdata('empresa_id');
             $exame_sala_id = $_POST['txtexamesalaid'];
-            if($_POST['armazem'] != ''){
-              $this->db->set('armazem_id', $_POST['armazem']);  
+            if ($_POST['armazem'] != '') {
+                $this->db->set('armazem_id', $_POST['armazem']);
             }
-            
+
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('nome', $_POST['txtNome']);
 //            $this->db->set('nome_chamada', $_POST['txtnomechamada']);
@@ -219,6 +219,16 @@ class sala_model extends Model {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_exame_sala');
+                $exame_sala_id = $this->db->insert_id();
+                foreach ($grupos as $item) {
+                    
+                    $this->db->set('grupo', $item->nome);
+                    $this->db->set('exame_sala_id', $exame_sala_id);
+
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_exame_sala_grupo');
+                }
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") // erro de banco
                     return -1;

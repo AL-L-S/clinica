@@ -95,7 +95,7 @@ class Sala extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/sala/carregarsalagrupo/" . $exame_sala_id);
     }
-    
+
     function excluirsalapainel($sala_painel_id, $sala_id) {
         if ($this->sala->excluirsalapainel($sala_painel_id)) {
             $mensagem = 'Sucesso ao excluir o Painel.';
@@ -106,7 +106,7 @@ class Sala extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/sala/carregarsalapainel/" . $sala_id);
     }
-    
+
     function excluirsalagrupo($sala_grupo_id, $sala_id) {
         if ($this->sala->excluirsalagrupo($sala_grupo_id)) {
             $mensagem = 'Sucesso ao excluir o Grupo.';
@@ -119,23 +119,25 @@ class Sala extends BaseController {
     }
 
     function gravar() {
-        $exame_sala_id = $this->sala->gravar();
+        $grupos = $this->procedimento->listargrupos();
+//        echo '<pre>';
+//        var_dump($grupos); die;
+        $exame_sala_id = $this->sala->gravar($grupos);
         if ($exame_sala_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Sala. Opera&ccedil;&atilde;o cancelada.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/sala");
-            
         } else {
             $data['mensagem'] = 'Sucesso ao gravar a Sala.';
         }
-        
+
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/sala/carregarsalapainel/$exame_sala_id");
     }
 
     function ativar($exame_sala_id) {
         $this->sala->ativar($exame_sala_id);
-            $data['mensagem'] = 'Sucesso ao ativar a Sala.';
+        $data['mensagem'] = 'Sucesso ao ativar a Sala.';
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/sala");
     }

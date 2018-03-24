@@ -433,6 +433,13 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                             qtde = 1;
                                         }
                                         
+                                        if ((a[0].tipo == 'EXAME' || a[0].tipo == 'ESPECIALIDADE' || a[0].tipo == 'FISIOTERAPIA') && $('#checkbox<?= $b ?>').is(":checked")) {
+//                                            alert('asdasd');
+                                            $("#medico<?= $b ?>").prop('required', true);
+                                        } else {
+                                            $("#medico<?= $b ?>").prop('required', false);
+                                        }
+                                        
                                         <? if($odontologia_alterar == 't'){ ?>
                                             if(a[0].grupo == 'ODONTOLOGIA'){
                                                 $("#valor<?=$b?>").prop('readonly', false);
@@ -793,8 +800,10 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         }
                         if ((j[0].tipo == 'EXAME' || j[0].tipo == 'ESPECIALIDADE' || j[0].tipo == 'FISIOTERAPIA') && $('#checkbox<?= $b ?>').is(":checked")) {
                             $("#medico<?=$b?>").prop('required', true);
+//                            alert(j[0].tipo);
                         } else {
                             $("#medico<?=$b?>").prop('required', false);
+//                            alert(j[0].tipo);
                         }
                         <? if ($odontologia_alterar == 't') { ?>
                              if(j[0].grupo == 'ODONTOLOGIA'){

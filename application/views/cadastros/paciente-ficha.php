@@ -62,6 +62,10 @@
                     if (@$obj->_sexo == "F"):echo 'selected';
                     endif;
                     ?>>Feminino</option>
+                    <option value="O" <?
+                    if (@$obj->_sexo == "O"):echo 'selected';
+                    endif;
+                    ?>>Outros</option>
                 </select>
 
             </div>
@@ -304,6 +308,10 @@
                 <label>Ocupa&ccedil;&atilde;o</label>
                 <input type="hidden" id="txtcboID" class="texto_id" name="txtcboID" value="<?= @$obj->_cbo_ocupacao_id; ?>" readonly="true" />
                 <input type="text" id="txtcbo" class="texto04" name="txtcbo" value="<?= @$obj->_cbo_nome; ?>" />
+            </div>
+            <div>
+                <label>Nacionalidade</label>
+                <input type="text" id="nacionalidade" class="texto04" name="nacionalidade" value="<?= @$obj->_nacionalidade; ?>" />
             </div>
             <div>
                 <label>Ra&ccedil;a / Cor</label>

@@ -361,11 +361,12 @@ class App extends Controller {
                             $fp = fopen($nome, "w+");
                             fwrite($fp, $xml . "\n");
                             fclose($fp);
+                            $arquivo = '';
 
 
                             $cabecalho = "<table>
     <tr>
-      <td width='30px'></td><td><img align = 'left'  width='330px' height='100px' src='img/clinicadez.jpg'></td>
+      <td width='30px'></td><td><img align = 'left'  width='330px' height='100px' src='".$arquivo."img/clinicadez.jpg'></td>
     </tr>
     <td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
     <tr>

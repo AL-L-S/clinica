@@ -115,6 +115,9 @@ class guia_model extends Model {
                             ep.valor_laboratorio,
                             ep.desativar_personalizacao_impressao,
                             ep.campos_obrigatorios_pac_cpf,
+                            ep.profissional_completo,
+                            ep.tecnica_promotor,
+                            ep.tecnica_enviar,
                             ep.campos_obrigatorios_pac_sexo,
                             ep.campos_obrigatorios_pac_nascimento,
                             ep.campos_obrigatorios_pac_telefone,
@@ -1276,10 +1279,10 @@ class guia_model extends Model {
         if ($_POST['situacao'] != '') {
             $this->db->where('al.situacao', $_POST['situacao']);
         }
-        if($_POST['grupo'] != ''){
+        if ($_POST['grupo'] != '') {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        if($_POST['empresa'] != ''){
+        if ($_POST['empresa'] != '') {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
         $this->db->where('ae.data >=', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
@@ -1945,6 +1948,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+
     function relatorioresumogeralconvenio() {
 
         $this->db->select('c.nome as convenio,c.convenio_id,c.dinheiro,ae.forma_pagamento as forma_pagamento1,
@@ -5097,7 +5101,7 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function relatorioresumolaboratoriogeral() {
 
         $this->db->select('ae.laboratorio_id, lab.nome as laboratorio,
@@ -5114,7 +5118,7 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        
+
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
@@ -7632,6 +7636,7 @@ class guia_model extends Model {
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->where("guia_id", $guia_id);
+        $this->db->where("cp.ativo", 't');
         if ($financeiro_grupo_id != null) {
             $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
         }
@@ -7645,11 +7650,12 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->where("guia_id", $guia_id);
         $this->db->where("ae.faturado", 'f');
+        $this->db->where("cp.ativo", 't');
         if ($financeiro_grupo_id != null) {
             $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
         }
         $return = $this->db->get();
-//        var_dump($return->result()); die;
+//        var_dump($financeiro_grupo_id); die;
         return $return->result();
     }
 
@@ -7763,6 +7769,7 @@ class guia_model extends Model {
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
         $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
         $this->db->where('fp.ativo', 't');
+        $this->db->where('pp.ativo', 't');
         if ($credito == 'f') {
             $this->db->where('fp.forma_pagamento_id !=', 1000);
         }
@@ -7796,6 +7803,7 @@ class guia_model extends Model {
         $this->db->join('tb_grupo_formapagamento gf', 'gf.grupo_id = pp.grupo_pagamento_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
         $this->db->where('ae.guia_id', $guia_id);
+        $this->db->where('pp.ativo', 't');
         $this->db->where('gf.grupo_id', $financeiro_grupo_id);
         $this->db->orderby('fp.nome');
         $return = $this->db->get();
@@ -7813,6 +7821,7 @@ class guia_model extends Model {
         $this->db->join('tb_grupo_formapagamento gf', 'gf.grupo_id = pp.grupo_pagamento_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
         $this->db->where('ae.guia_id', $guia_id);
+        $this->db->where('pp.ativo', 't');
         $this->db->where('gf.grupo_id', $financeiro_grupo_id);
         if ($credito == 'f') {
             $this->db->where('fp.forma_pagamento_id !=', 1000);
