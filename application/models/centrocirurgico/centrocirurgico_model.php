@@ -150,6 +150,7 @@ class centrocirurgico_model extends BaseModel {
                            p.paciente_id');
         $this->db->from('tb_ambulatorio_laudo al');
         $this->db->join('tb_paciente p', 'p.paciente_id = al.paciente_id', 'left');
+        $this->db->where('al.ambulatorio_laudo_id', $laudo_id);
         $return = $this->db->get();
         return $return->result();
     }

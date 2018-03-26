@@ -14,7 +14,7 @@
             <table>
                 <thead>
                     <tr>
-                        <th class="tabela_title" colspan="4">
+                        <th class="tabela_title" colspan="8">
                             Lista de Solicitacoes
                             <form method="get" action="<?php echo base_url() ?>centrocirurgico/centrocirurgico/pesquisar">
                                 <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />

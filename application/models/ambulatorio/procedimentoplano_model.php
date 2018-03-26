@@ -505,14 +505,14 @@ class procedimentoplano_model extends Model {
         return $this->db;
     }
 
-    function listaragrupador() {
+    function listaragrupador($args = array()) {
         $this->db->select('agrupador_id,
                            nome                            
                             ');
         $this->db->from('tb_agrupador_procedimento_nome');
         $this->db->where("ativo", 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('c.nome ilike', "%" . $args['nome'] . "%");
+            $this->db->where('nome ilike', "%" . $args['nome'] . "%");
         }
 
         return $this->db;

@@ -177,6 +177,7 @@ class Convenio extends BaseController {
         $data = $_FILES['userfile'];
         $nome = $_FILES['userfile']['name'];
         $arquivo = "upload/convenios/$convenios_id/$nome";
+//        var_dump($arquivo); die;
 //        $arquivonovo = "./upload/1ASSINATURAS/$convenios_id.jpg";
         $this->convenio->gravarcaminhologo($convenios_id, $arquivo);
 //        var_dump($data);

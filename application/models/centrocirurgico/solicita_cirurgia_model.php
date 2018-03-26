@@ -500,6 +500,7 @@ class solicita_cirurgia_model extends BaseModel {
                            c.nome as convenio,
                            c.registroans,
                            c.codigoidentificador,
+                           c.caminho_logo,
                            o.nome as solicitante,
                            o.cbo_ocupacao_id as cbo,
                            o.conselho,
@@ -539,6 +540,7 @@ class solicita_cirurgia_model extends BaseModel {
                            c.nome as convenio,
                            c.registroans,
                            c.codigoidentificador,
+                           c.caminho_logo,
                            o.nome as solicitante,
                            o.cbo_ocupacao_id as cbo,
                            o.conselho,
@@ -548,12 +550,14 @@ class solicita_cirurgia_model extends BaseModel {
                            sc.guia_id,
                            sc.data_prevista,
                            sc.data_cadastro,
-                           sc.data_autorizacao');
+                           sc.data_autorizacao,
+                           al.texto as indicacao_clinica');
         $this->db->from('tb_solicitacao_cirurgia sc');
         $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id', 'left');
         $this->db->join('tb_hospital h', 'h.hospital_id = sc.hospital_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = sc.medico_solicitante', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.ambulatorio_laudo_id = sc.ambulatorio_laudo_id', 'left');
         $this->db->join('tb_municipio ms', 'ms.municipio_id = o.municipio_id', 'left');
         $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
 
@@ -822,7 +826,7 @@ class solicita_cirurgia_model extends BaseModel {
     function gravarnovasolicitacao() {
 
         try {
-
+//            var_dump($_POST['ambulatorio_laudo_id']); die;
             $horario = date("Y-m-d H:i:s");
             $data = date("Y-m-d");
             $operador_id = $this->session->userdata('operador_id');
@@ -831,6 +835,9 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('data_prevista', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_prevista']))));
             $this->db->set('hora_prevista', date("H:i:s", strtotime(str_replace('/', '-', $_POST['hora_inicio']))));
             $this->db->set('hora_prevista_fim', date("H:i:s", strtotime(str_replace('/', '-', $_POST['hora_fim']))));
+            if($_POST['ambulatorio_laudo_id'] != ''){
+                $this->db->set('ambulatorio_laudo_id', $_POST['ambulatorio_laudo_id']);
+            }
             $this->db->set('leito', $_POST['leito']);
             $this->db->set('observacao', $_POST['observacao']);
             $this->db->set('paciente_id', $_POST['txtNomeid']);

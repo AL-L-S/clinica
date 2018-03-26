@@ -1044,6 +1044,7 @@ class centrocirurgico extends BaseController {
 //    }
 
     function novasolicitacao($solicitacao_id, $laudo_id = null) {
+        $data['laudo_id'] = $laudo_id;
         $data['solicitacao_id'] = $solicitacao_id;
         $data['hospitais'] = $this->centrocirurgico_m->listarhospitaissolicitacao();
         $data['medicos'] = $this->operador_m->listarmedicos();

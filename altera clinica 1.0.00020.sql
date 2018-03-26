@@ -212,3 +212,22 @@ ALTER TABLE ponto.tb_procedimento_convenio_pagamento ADD COLUMN ativo boolean DE
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN profissional_completo boolean DEFAULT false;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN tecnica_promotor boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN tecnica_enviar boolean DEFAULT true;
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN ambulatorio_laudo_id integer;
+
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000020');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000020', '1.0.000020');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();

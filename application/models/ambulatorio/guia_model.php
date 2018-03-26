@@ -472,6 +472,7 @@ class guia_model extends Model {
                             c.nome as convenio,
                             c.registroans,
                             c.codigoidentificador,
+                            c.caminho_logo,
                             ae.guia_id,
                             e.situacao as situacaoexame,
                             al.situacao as situacaolaudo,

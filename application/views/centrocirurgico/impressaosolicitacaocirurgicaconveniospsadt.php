@@ -14,7 +14,7 @@
                             <p class="ttr">
                                 <strong style="font-weight: normal; text-align: center;">
                                     <strong style="font-weight: normal; text-align: left;">
-                                        <img src="<?= base_url() ?>/img/convenios/<? echo $relatorio[0]->convenio_id; ?>.jpg"  width="80" height="49" class="ttr"/>
+                                        <img src="<?= base_url() . $relatorio[0]->caminho_logo; ?>"  width="80" height="49" class="ttr"/>
                                     </strong>
                                 </strong>
                             </p>
@@ -25,7 +25,7 @@
                         </td>
                         <td colspan="2" width="239" style="font-size: 9px;">
                             <p>N° Guia no Prestador</p>
-                            <p><strong><?= $solicitacao_cirurgia_id ?></strong></p>
+                            <p><strong></strong></p>
                         </td>
                     </tr>
                     <tr>
@@ -123,7 +123,7 @@
                     <tr>
                         <td height="16" colspan="2" class="tic"><strong><? echo $relatorio[0]->cnpj; ?></strong></td>
                         <td height="16" colspan="2" class="tic"><strong><? echo $relatorio[0]->hospital; ?></strong></td>
-                        <td height="16" colspan="2" class="tic"><strong><? echo date("d/m/Y", strtotime($relatorio[0]->data_prevista)); ?></strong></td>
+                        <td height="16" colspan="2" class="tic"><strong></strong></td>
                     </tr>
                     
                     <tr class="tic">
@@ -147,7 +147,7 @@
                         <td width="100%" height="13" class="ti" colspan="6">28- Indicação Clinica</td>
                     </tr>
                     <tr>
-                        <td height="46" class="tic" colspan="6"><strong>&nbsp;</strong></td>
+                        <td height="46" class="tic" colspan="6"><strong><? echo $relatorio[0]->indicacao_clinica; ?></strong></td>
                     </tr>
                     <tr class="tic">
                         <td width="10%" height="13" class="ti">29- CID 10 Principal</td>
@@ -232,7 +232,7 @@
                         <td class="ti" colspan="3">49- Assinatura do Responsável pela Autorização</td>
                     </tr>
                     <tr>
-                        <td height="16" colspan="" class="tic"><strong><?= date('d/m/Y', strtotime($relatorio[0]->data_cadastro)) ?></strong></td>
+                        <td height="16" colspan="" class="tic"><strong></strong></td>
                         <td height="16" colspan="" class="tic"><strong>&nbsp;</strong></td>
                         <td height="16" colspan="" class="tic"><strong>&nbsp;</strong></td>
                         <td height="16" colspan="3" class="tic"><strong>&nbsp;</strong></td>
