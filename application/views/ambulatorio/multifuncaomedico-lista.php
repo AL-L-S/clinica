@@ -4,7 +4,7 @@
     $(function () {
         $.ajax({
             type: "GET",
-            url: "<?= base_url(); ?>ambulatorio/exame/multifuncaomedicointegracao",
+            url: "<?= base_url(); ?>ambulatorio/laudo/multifuncaomedicointegracao",
             dataType: "json",
             success: function () {
 

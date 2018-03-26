@@ -1044,6 +1044,7 @@ class centrocirurgico extends BaseController {
 //    }
 
     function novasolicitacao($solicitacao_id, $laudo_id = null) {
+        $data['laudo_id'] = $laudo_id;
         $data['solicitacao_id'] = $solicitacao_id;
         $data['hospitais'] = $this->centrocirurgico_m->listarhospitaissolicitacao();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -1322,9 +1323,19 @@ class centrocirurgico extends BaseController {
         redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
     }
     
+    function impressaosolicitacaocirurgicamaterialopme($solicitacao_cirurgia_id) {
+        $data['solicitacao_cirurgia_id'] = $solicitacao_cirurgia_id;
+        $data['empresa'] = $this->solicitacirurgia_m->burcarempresa();
+        $data['relatorio'] = $this->solicitacirurgia_m->listarsolicitacaocirurgicamaterialopme($solicitacao_cirurgia_id);
+        $data['procedimentos'] = $this->solicitacirurgia_m->listarmateriaisguiacirurgicaopme($solicitacao_cirurgia_id);
+        $this->load->View('centrocirurgico/impressaosolicitacaocirurgicamaterialopme', $data);
+    }
+    
     function impressaosolicitacaocirurgicaconveniospsadt($solicitacao_cirurgia_id) {
+        $data['solicitacao_cirurgia_id'] = $solicitacao_cirurgia_id;
         $data['empresa'] = $this->solicitacirurgia_m->burcarempresa();
         $data['relatorio'] = $this->solicitacirurgia_m->listarsolicitacaocirurgicaconveniospsadt($solicitacao_cirurgia_id);
+        $data['procedimentos'] = $this->solicitacirurgia_m->listarprocedimentoguiacirurgicaconvenio($solicitacao_cirurgia_id);
         $this->load->View('centrocirurgico/impressaosolicitacaocirurgicaconveniospsadt', $data);
     }
     

@@ -40,8 +40,6 @@ function pdf($html, $filename = null, $cabecalho = null, $rodape=null, $grupo = 
 }
 
 function salvapdf($texto, $filename , $cabecalho = null, $rodape=null) {
-//    var_dump($texto , $filename , $cabecalho , $rodape);
-//    die;
     require_once("mpdf_lib/mpdf.php");
     
 //    $mpdf = new mPDF('UTF-8', array (210,148));

@@ -20,6 +20,7 @@
                         <label>Paciente *</label>
                     </dt>
                     <dd>
+                        <input type="hidden" name="ambulatorio_laudo_id" id="ambulatorio_laudo_id" class="texto02" value="<?= @$laudo_id; ?>"/>
                         <input type="hidden" name="txtNomeid" id="txtNomeid" class="texto02" value="<?= @$laudo[0]->paciente_id; ?>"/>
                         <input type="text" name="txtNome" id="txtNome" class="texto10" value="<?= @$laudo[0]->nome; ?>"/>
                     </dd>

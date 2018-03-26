@@ -486,6 +486,46 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
+    function listarsolicitacaocirurgicamaterialopme($solicitacao_id) {
+        $this->db->select('sc.paciente_id,
+                           p.nome as paciente,
+                           p.celular,
+                           sc.leito,
+                           sc.via,
+                           p.telefone,
+                           p.convenionumero,
+                           h.nome as hospital,
+                           h.valor_taxa,
+                           h.cnpj,
+                           c.nome as convenio,
+                           c.registroans,
+                           c.codigoidentificador,
+                           c.caminho_logo,
+                           o.nome as solicitante,
+                           o.cbo_ocupacao_id as cbo,
+                           o.conselho,
+                           o.telefone,
+                           o.celular,
+                           o.email,
+                           ms.codigo_ibge,
+                           sc.observacao,
+                           sc.convenio as convenio_id,
+                           sc.guia_id,
+                           sc.data_prevista,
+                           sc.data_cadastro,
+                           sc.data_autorizacao');
+        $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id', 'left');
+        $this->db->join('tb_hospital h', 'h.hospital_id = sc.hospital_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = sc.medico_solicitante', 'left');
+        $this->db->join('tb_municipio ms', 'ms.municipio_id = o.municipio_id', 'left');
+        $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarsolicitacaocirurgicaconveniospsadt($solicitacao_id) {
         $this->db->select('sc.paciente_id,
                            p.nome as paciente,
@@ -496,21 +536,28 @@ class solicita_cirurgia_model extends BaseModel {
                            p.convenionumero,
                            h.nome as hospital,
                            h.valor_taxa,
+                           h.cnpj,
                            c.nome as convenio,
                            c.registroans,
                            c.codigoidentificador,
+                           c.caminho_logo,
                            o.nome as solicitante,
                            o.cbo_ocupacao_id as cbo,
                            o.conselho,
                            ms.codigo_ibge,
+                           sc.observacao,
                            sc.convenio as convenio_id,
                            sc.guia_id,
-                           sc.data_autorizacao');
+                           sc.data_prevista,
+                           sc.data_cadastro,
+                           sc.data_autorizacao,
+                           al.texto as indicacao_clinica');
         $this->db->from('tb_solicitacao_cirurgia sc');
         $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id', 'left');
         $this->db->join('tb_hospital h', 'h.hospital_id = sc.hospital_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = sc.medico_solicitante', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.ambulatorio_laudo_id = sc.ambulatorio_laudo_id', 'left');
         $this->db->join('tb_municipio ms', 'ms.municipio_id = o.municipio_id', 'left');
         $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
 
@@ -648,6 +695,43 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
+    function listarmateriaisguiacirurgicaopme($solicitacao_id) {        
+        $this->db->select('scp.solicitacao_cirurgia_material_id as solicitacao_material_id, 
+                           scp.quantidade, 
+                           scp.valor_unitario, 
+                           scp.observacao,
+                           pt.nome,
+                           pt.codigo');
+        $this->db->from('tb_solicitacao_cirurgia_material scp');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = scp.procedimento_tuss_id', 'left');
+        $this->db->where('scp.ativo', 'true');
+        $this->db->where('scp.solicitacao_cirurgia_id', $solicitacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimentoguiacirurgicaconvenio($solicitacao_id) {
+        $this->db->select('pt.nome as procedimento,
+                           pt.codigo,
+                           scp.valor as valortotal,
+                           scp.via,
+                           scp.quantidade, scp.valor_unitario,
+                           c.nome as convenio,
+                           pc.procedimento_convenio_id,
+                           scp.solicitacao_cirurgia_procedimento_id');
+        $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->join('tb_solicitacao_cirurgia_procedimento scp', 'scp.solicitacao_cirurgia_id = sc.solicitacao_cirurgia_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = scp.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('sc.solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->where('scp.ativo', 't');
+        $this->db->where('c.dinheiro', 'f');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarprocedimentosolicitacaocirurgicaeditar($solicitacao_id) {
         $this->db->select('pt.nome as procedimento,
                            pt.codigo,
@@ -742,7 +826,7 @@ class solicita_cirurgia_model extends BaseModel {
     function gravarnovasolicitacao() {
 
         try {
-
+//            var_dump($_POST['ambulatorio_laudo_id']); die;
             $horario = date("Y-m-d H:i:s");
             $data = date("Y-m-d");
             $operador_id = $this->session->userdata('operador_id');
@@ -751,6 +835,9 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('data_prevista', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_prevista']))));
             $this->db->set('hora_prevista', date("H:i:s", strtotime(str_replace('/', '-', $_POST['hora_inicio']))));
             $this->db->set('hora_prevista_fim', date("H:i:s", strtotime(str_replace('/', '-', $_POST['hora_fim']))));
+            if($_POST['ambulatorio_laudo_id'] != ''){
+                $this->db->set('ambulatorio_laudo_id', $_POST['ambulatorio_laudo_id']);
+            }
             $this->db->set('leito', $_POST['leito']);
             $this->db->set('observacao', $_POST['observacao']);
             $this->db->set('paciente_id', $_POST['txtNomeid']);

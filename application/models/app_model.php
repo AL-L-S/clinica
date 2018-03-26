@@ -270,12 +270,20 @@ class app_model extends Model {
         
     }
 
-    function listarLaudosNaoCriados() {
+    function listarLaudosNaoCriados($string) {
         $this->db->select('al.ambulatorio_laudo_id, al.exame_id, e.sala_id');
         $this->db->from('tb_ambulatorio_laudo al');
         $this->db->join('tb_exames e', 'e.exames_id = al.exame_id');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->where("al.situacao", "FINALIZADO");
-        $this->db->where("al.cancelada", "f");
+        if($string != ''){
+            $this->db->where("al.ambulatorio_laudo_id NOT IN ($string)");
+        }
+        $this->db->where("pc.convenio_id = 108");
+        
+        $this->db->where("al.data >= '2018-02-28'");
+        $this->db->where("al.data <= '2018-03-26'");
         $return = $this->db->get();
         return $return->result();
     }

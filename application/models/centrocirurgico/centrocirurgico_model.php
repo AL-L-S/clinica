@@ -150,6 +150,7 @@ class centrocirurgico_model extends BaseModel {
                            p.paciente_id');
         $this->db->from('tb_ambulatorio_laudo al');
         $this->db->join('tb_paciente p', 'p.paciente_id = al.paciente_id', 'left');
+        $this->db->where('al.ambulatorio_laudo_id', $laudo_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -786,7 +787,13 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
                                 WHERE tb_soc.solicitacao_cirurgia_id = sc.solicitacao_cirurgia_id
                                 AND ativo = 't'
                                 LIMIT 1
-                            ) as orcamento_convenio_id
+                            ) as orcamento_convenio_id,
+                            (
+                                SELECT COUNT(*)
+                                FROM ponto.tb_solicitacao_cirurgia_material tb_scm
+                                WHERE tb_scm.solicitacao_cirurgia_id = sc.solicitacao_cirurgia_id
+                                AND ativo = 't'
+                            ) as qtde_material
                             ");
         $this->db->from('tb_solicitacao_cirurgia sc');
         $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id');

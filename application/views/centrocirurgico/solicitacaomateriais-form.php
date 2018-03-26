@@ -57,7 +57,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Material</td>
+                        <td style="vertical-align:middle;">Material</td>
                         <td>
                             <select name="material_id" id="material_id" class="size4 chosen-select" required>
                                 <option value="">Selecione</option>
@@ -148,6 +148,13 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript">
 
 

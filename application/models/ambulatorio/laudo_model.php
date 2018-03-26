@@ -148,9 +148,9 @@ class laudo_model extends Model {
     }
 
     function listardadoslaudogravarxml($ambulatorio_laudo_id) {
-        $this->db->select('il.exame_id');
+        $this->db->select('al.ambulatorio_laudo_id, al.exame_id, e.sala_id');
         $this->db->from('tb_ambulatorio_laudo al');
-        $this->db->join('tb_operador o', 'o.conselho = il.laudo_conselho_medico', 'left');
+        $this->db->join('tb_exames e', 'e.exames_id = al.exame_id');
         $this->db->where('al.ambulatorio_laudo_id', $ambulatorio_laudo_id);
         $return = $this->db->get();
         return $return->result();
@@ -769,6 +769,7 @@ class laudo_model extends Model {
                             ae.valor_total,
                             ae.valor,
                             ae.autorizacao,
+                            an.nome as sala, 
                             p.convenionumero,
                             p.nome as paciente,
                             p.nascimento,
@@ -797,7 +798,9 @@ class laudo_model extends Model {
                             g.data_criacao,
                             ae.guiaconvenio,
                             ae.paciente_id,
+                            al.situacao,
                             al.texto_laudo,
+                            al.texto,
                             al.ambulatorio_laudo_id,
                             i.wkl_accnumber,
                             i.wkl_procstep_descr');

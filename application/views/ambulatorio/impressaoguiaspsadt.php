@@ -10,7 +10,12 @@
             <table id="tabelaspec" width="92%" border="1" align="center" cellpadding="0" cellspacing="0" class="tipp">
                 <tbody>
                     <tr bgcolor="#B1B1B1">
-                        <td width="133" height="51" style="font-size: 9px;"><p class="ttr"><strong style="font-weight: normal; text-align: center;"><strong style="font-weight: normal; text-align: left;"><img src="<?= base_url() ?>/img/convenios/<? echo $relatorio[0]->convenio_id; ?>.jpg"  width="133" height="49" class="ttr"/></strong></strong></p></td>
+                        <td width="133" height="51" style="font-size: 9px;"><p class="ttr">
+                                <strong style="font-weight: normal; text-align: center;">
+                                    <strong style="font-weight: normal; text-align: left;">
+                                        <img src="<?= base_url() . $relatorio[0]->caminho_logo ?>"  width="133" height="49" class="ttr"/>
+                                    </strong>
+                                </strong></p></td>
                         <td height="51" colspan="8" class="ttrl" style="font-size: 9px;"><p>GUIA DE SERVIÇO PROFISSIONAL/SERVIÇO AUXILIAR DE
                             </p>
                             <p> DIAGNÓSTICO E TERAPIA - SP/SADT</p></td>

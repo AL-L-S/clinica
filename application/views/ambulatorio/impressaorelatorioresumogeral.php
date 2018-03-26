@@ -56,7 +56,11 @@
                 <td style='text-align: right; 'width="120px;"><font size="-1"><B>Valor</B></td>
                 <td style='text-align: center;'width="120px;"><font size="-1"><B>Operador</B></td>
             </tr>
-            <? foreach ($creditos as $item) { ?>
+            <? 
+            $vlrCreditosLancados = 0;
+            foreach ($creditos as $item) { 
+                $vlrCreditosLancados += $item->valor;
+                ?>
                 <tr>
                     <td><?= $item->paciente ?></td>
                     <td style='text-align: right;'><?= date("d/m/Y", strtotime($item->data)) ?></td>
@@ -457,6 +461,10 @@
               $liquidodinheiro = $total_particular - $total_medicospagar;    
             }
             
+            if (count($creditos) > 0) {
+                $liquidodinheiro += $vlrCreditosLancados;
+            }
+            
             $faturamento_clinica = $liquidodinheiro + $total_convenio_geral;
             ?>
             <tr>
@@ -562,18 +570,30 @@
         </tr>
         <tr>
             <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">FORMA DE PAGAMENTO NÃO CONVÊNIO</center></td>
-        <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">VALOR</center></td>
+            <td colspan="1" bgcolor="#C0C0C0"><center><font size="-1">VALOR</center></td>
         </tr>
-        <? foreach ($formapagamento as $value) { ?>
-            <? if ($numero[$value->nome] > 0) { ?>
+        
+        <? if (count($creditos) > 0) {
+            $totalgeral = $totalgeral + $vlrCreditosLancados; ?>
+            <tr>
+                <td ><font size="-1">CRÉDITO</td>
+                <td ><font size="-1"><?= number_format($vlrCreditosLancados, 2, ',', '.'); ?></td>
+            </tr> 
+        <? } ?>
+        
+        <? foreach ($formapagamento as $value) {
+            if ($numero[$value->nome] > 0) {
+                if ($value->forma_pagamento_id != 1000) {
+                    $totalgeral = $totalgeral + $data[$value->nome];
+                } else {
+                    continue;
+                }
+                ?>
                 <tr>
                     <td ><font size="-1"><?= $value->nome ?></td>
                     <td ><font size="-1"><?= number_format($data[$value->nome], 2, ',', '.'); ?></td>
                 </tr>  
                 <?
-            }
-            if ($value->forma_pagamento_id != 1000) {
-                $totalgeral = $totalgeral + $data[$value->nome];
             }
 
 
