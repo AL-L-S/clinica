@@ -83,7 +83,7 @@ class Convenio extends BaseController {
         $data['convenioid'] = $convenio_id;
         redirect(base_url() . "cadastros/convenio");
     }
-    
+
     function gravarvaloresassociacaoeditar() {
         $convenio_id = $_POST['convenio_secundario_id'];
         $data['convenio'] = $this->convenio->gravarvaloresassociacaoantigo($convenio_id);
@@ -119,6 +119,8 @@ class Convenio extends BaseController {
 
     function gravar() {
         $convenio_id = $this->convenio->gravar();
+//        var_dump($convenio_id);
+//        die;
 
         if ($convenio_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar Convenio. Opera&ccedil;&atilde;o cancelada.';
@@ -131,7 +133,10 @@ class Convenio extends BaseController {
         if (isset($_POST['associaconvenio'])) {
 
 //            $convenio_associacao = $_POST['convenio_associacao'];
-            $convenio_id = $_POST['txtconvenio_id'];
+            if ($_POST['txtconvenio_id'] > 0) {
+                $convenio_id = $_POST['txtconvenio_id'];
+            }
+//            var_dump($convenio_id); die;
 
             $this->convenio->removerprocedimentosnaopertenceprincipal($convenio_id);
 

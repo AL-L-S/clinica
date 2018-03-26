@@ -2839,7 +2839,7 @@ class exame_model extends Model {
             $this->db->set('autorizado', 't');
             $this->db->where('ambulatorio_orcamento_id', $ambulatorio_orcamento_id);
             $this->db->update('tb_ambulatorio_orcamento');
-            
+
             if (count($return) > 0) {
 
                 foreach ($return as $value) {
@@ -2854,11 +2854,16 @@ class exame_model extends Model {
                     $this->db->set('cancelada', 'f');
                     $this->db->set('confirmado', 'f');
                     $this->db->set('situacao', 'OK');
+                    if ($_POST['sala'] > 0) {
+                        $this->db->set('agenda_exames_nome_id', $_POST['sala']);
+                    }
+                    if ($_POST['medico_id'] > 0) {
+                        $this->db->set('medico_consulta_id', $_POST['medico_id']);
+                        $this->db->set('medico_agenda', $_POST['medico_id']);
+                    }
 
-                    $this->db->set('agenda_exames_nome_id', $_POST['sala']);
 
-                    $this->db->set('medico_consulta_id', $_POST['medico_id']);
-                    $this->db->set('medico_agenda', $_POST['medico_id']);
+
 
                     $this->db->set('tipo', $value->tipo);
                     $this->db->set('empresa_id', $value->empresa_id);
@@ -6125,9 +6130,9 @@ class exame_model extends Model {
         $return = $this->db->get()->result();
 
         if (count($return) > 0) {
-        
-        $this->db->where("ambulatorio_gasto_sala_id", $gasto_id);
-        $this->db->delete('tb_agenda_exames');
+
+            $this->db->where("ambulatorio_gasto_sala_id", $gasto_id);
+            $this->db->delete('tb_agenda_exames');
         }
         $horario = date('Y-m-d');
         $operador_id = $this->session->userdata('operador_id');
