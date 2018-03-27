@@ -880,6 +880,19 @@ CREATE TABLE ponto.tb_solicitacao_orcamento_convenio_equipe
 
 -- FARMACIA 
 
+CREATE TABLE ponto.tb_farmacia_operador_cliente
+(
+  farmacia_operador_cliente_id serial NOT NULL,
+  cliente_id integer,
+  operador_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_farmacia_operador_cliente_pkey PRIMARY KEY (farmacia_operador_cliente_id)
+);
+
 
 CREATE TABLE ponto.tb_farmacia
 (
