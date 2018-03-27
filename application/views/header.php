@@ -773,7 +773,7 @@ function debug($object) {
                         <li><span class="folder">Farmácia</span>
                             <ul><? if ($perfil_id == 1 || $perfil_id == 8) { ?>
                                     <li><span class="folder">Rotinas</span>
-                                        <ul><span class="file"><a href="<?= base_url() ?>farmacia/solicitacao">Manter Solicitacao</a></span></ul>
+                                        <!--<ul><span class="file"><a href="<?= base_url() ?>farmacia/solicitacao">Manter Solicitacao</a></span></ul>-->
                                         <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada">Manter Entrada</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>farmacia/menu">Manter Menu</a></span></ul>
 
