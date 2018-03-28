@@ -243,14 +243,17 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         <thead>
 
                             <tr>
-                                <th width="70px;" class="tabela_header">Sala*</th>
-                                <th class="tabela_header">Medico*</th>
-                                <th class="tabela_header">Qtde*</th>
-                                <th colspan="2" class="tabela_header">Solicitante</th>
+                                
+                                
+                                
                                 <th class="tabela_header">Convenio*</th>
+                                <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
-                                <th class="tabela_header">autorizacao</th>
+                                <th width="70px;" class="tabela_header">Sala*</th>
+                                <th class="tabela_header">Medico*</th>
+                                <th colspan="2" class="tabela_header">Solicitante</th>
+                                <th class="tabela_header">Autorizacão</th>
                                 <th class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>Valor</th>
                                 <th class="tabela_header">Sessões</th>
                                 <th class="tabela_header">Pagamento</th>
@@ -262,6 +265,42 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         </thead>
                         <tbody>
                             <tr>
+                                <td  width="50px;">
+                                    <select name="convenio1" id="convenio1" class="size1" required="">
+                                        <option value="">Selecione</option>
+                                         <?
+                                        foreach ($convenio as $item) :
+                                            $lastConv = $exames[count($exames) - 1]->convenio_id;
+                                            ?>
+                                            <option value="<?= $item->convenio_id; ?>" <? if ($lastConv == $item->convenio_id) echo 'selected'; ?>>
+                                                <?= $item->nome; ?>
+                                            </option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
+                                <td  width="50px;">
+                                    <select  name="grupo1" id="grupo1" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <?
+                                        $lastGrupo = $exames[count($exames) - 1]->grupo;
+                                        foreach ($grupos as $item) :
+                                            ?>
+                                            <option value="<?= $item->nome; ?>" <? if ($lastGrupo == $item->nome) echo 'selected'; ?>>
+                                                <?= $item->nome; ?>
+                                            </option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+
+                                <td  width="50px;">
+<!--                                    <select  name="procedimento1" id="procedimento1" class="size1" required="" >
+                                        <option value="">Selecione</option>
+                                    </select>-->
+                                    <select name="procedimento1" id="procedimento1" class="size4" data-placeholder="Selecione" tabindex="1">
+                                        <option value="">Selecione</option>
+                                    </select>
+                                </td>
                                 <td > 
                                     <select  name="sala1" id="sala1" class="size1" required="" >
                                         <option value="">Selecione</option>
@@ -283,38 +322,13 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                             ?>><?= $item->nome; ?></option>
                                                 <? endforeach; ?>
                                     </select></td>
-                                <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
+                                
                                 <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
 
-                                <td  width="50px;">
-                                    <select name="convenio1" id="convenio1" class="size1" required="">
-                                        <option value="">Selecione</option>
-                                    </select>
-                                </td>
+                                
 
-                                <td  width="50px;">
-                                    <select  name="grupo1" id="grupo1" class="size1" >
-                                        <!--<option value="">Selecione</option>-->
-                                        <?
-//                                        $lastGrupo = @$exames[count(@$exames) - 1]->grupo;
-//                                        foreach ($grupos as $item) :
-                                            ?>
-<!--                                            <option value="<?= $item->nome; ?>" <? if ($lastGrupo == $item->nome) echo 'selected'; ?>>
-                                                <?= $item->nome; ?>
-                                            </option>-->
-                                        <? // endforeach; ?>
-                                    </select>
-                                </td>
-
-                                <td  width="50px;">
-<!--                                    <select  name="procedimento1" id="procedimento1" class="size1" required="" >
-                                        <option value="">Selecione</option>
-                                    </select>-->
-                                    <select name="procedimento1" id="procedimento1" class="size4" data-placeholder="Selecione" tabindex="1">
-                                        <option value="">Selecione</option>
-                                    </select>
-                                </td>
+                                
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
                                 <td  width="20px;" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
@@ -735,108 +749,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     $("#accordion").accordion();
                                 });
 
-                                if ( $("#exame").val() ) {
-                                    var convenio = <?= (@$exames[count(@$exames) - 1]->convenio_id != "") ? @$exames[count(@$exames) - 1]->convenio_id : 0; ?>;
-                                    
-                                    $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $("#exame").val(), ajax: true}, function (f) {
-                                        var options = '<option value=""></option>';
-                                        for (var i = 0; i < f.length; i++) {
-                                            var select = (convenio == f[i].convenio_id) ? " selected " : "";
-                                            options += '<option value="' + f[i].convenio_id + '" ' + select + '>' + f[i].nome + '</option>';
-                                        }
-                                        $('#convenio1').html(options).show();
-                                        $('.carregando').hide();
-                                        if( $('#sala1').val() ){
-                                            $.getJSON('<?= base_url() ?>autocomplete/listargruposala', { sala: $('#sala1').val() }, function (z) {
-                                                for (var c = 0; c < z.length; c++) {
-                                                    if(z[c].nome == '<?= @$exames[count(@$exames) - 1]->grupo; ?>'){
-                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: z[c].nome, convenio1: $('#convenio1').val(), teste: $('#exame').val()}, function (j) {
-                                                            opt = '<option value=""></option>';
-                                                            for (var k = 0; k < j.length; k++) {
-                                                                opt += '<option value="' + j[k].procedimento_convenio_id + '">' + j[k].procedimento + ' - ' + j[k].codigo + '</option>';
-                                                            }
-                                                            $('#procedimento1 option').remove();
-                                                            $('#procedimento1').append(opt);
-                                                            $("#procedimento1").trigger("chosen:updated");
-                                                            $('.carregando').hide();
-                                                        });
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                                
-                                if( $('#sala1').val() ){
-                                    $.getJSON('<?= base_url() ?>autocomplete/listargruposala', { sala: $('#sala1').val() }, function (j) {
-                                        options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            if(j[c].nome == '<?= @$exames[count(@$exames) - 1]->grupo; ?>'){
-                                                options += '<option value="' + j[c].nome + '" selected>' + j[c].nome + '</option>';
-                                            }
-                                            else{
-                                                options += '<option value="' + j[c].nome + '">' + j[c].nome + '</option>';
-                                            }
-                                        }
-//                                                alert('asd');
-                                        $('#grupo1 option').remove();
-                                        $('#grupo1').append(options);
-                                        $("#grupo1").trigger("chosen:updated");
-                                        $('.carregando').hide();
-                                    });
-                                }
-                                
-                                $(function () {
-                                    $('#sala1').change(function () {
-//                                        alert($('#sala1').val());
-                                        if ($('#sala1').val()) {
-                                            $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/listargruposala', { sala: $(this).val() }, function (j) {
-                                                options = '<option value=""></option>';
-                                                for (var c = 0; c < j.length; c++) {
-                                                    if( $('#grupo1').val() == j[c].nome ){
-                                                        options += '<option value="' + j[c].nome + '" selected>' + j[c].nome + '</option>';
-                                                    }
-                                                    else{
-                                                        options += '<option value="' + j[c].nome + '">' + j[c].nome + '</option>';
-                                                    }
-                                                }
-                                                $('#grupo1 option').remove();
-                                                $('#grupo1').append(options);
-                                                $("#grupo1").trigger("chosen:updated");
-                                                $('.carregando').hide();
-                                            }); 
-                                            
-                                            if($('#convenio1').val()) {
-                                                if ( $('#grupo1').val() ){
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val(), teste: $('#exame').val()}, function (j) {
-                                                    options = '<option value=""></option>';
-                                                    for (var c = 0; c < j.length; c++) {
-                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                                    }
-                                                    $('#procedimento1 option').remove();
-                                                    $('#procedimento1').append(options);
-                                                    $("#procedimento1").trigger("chosen:updated");
-                                                    $('.carregando').hide();
-                                                });
-                                                }
-                                                else{
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedicocadastrosala', {convenio1: $('#convenio1').val(), sala: $('#sala1').val(), teste: $('#exame').val(), ajax: true}, function (j) {
-                                                        options = '<option value=""></option>';
-                                                        for (var c = 0; c < j.length; c++) {
-                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                                        }
-        //                                                $('#procedimento1').html(options).show();
-                                                        $('#procedimento1 option').remove();
-                                                        $('#procedimento1').append(options);
-                                                        $("#procedimento1").trigger("chosen:updated");
-                                                        $('.carregando').hide();
-                                                    });                                                                            
-                                                }
-                                            }
-                                        }
-                                    });
-                                });
+
                                 $(function () {
                                     $('#grupo1').change(function () {
                                         if ($('#grupo1').val()) {
@@ -885,35 +798,62 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         }
                                     });
                                 });
-
-
-                                $(function () {
-                                    $('#exame').change(function () {
-                                        if ($(this).val()) {
-                                            $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
-                                                var options = '<option value=""></option>';
-                                                for (var i = 0; i < j.length; i++) {
-                                                    options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
-                                                }
-                                                $('#convenio1').html(options).show();
-                                                $('.carregando').hide();
-                                            });
-                                        } else {
-                                            $('#convenio1').html('<option value="">-- Escolha um hora --</option>');
+                                
+                                if ($("#convenio1").val() > 0) {
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioatendimentonovo', {convenio1: $("#convenio1").val()}, function (j) {
+                                        options = '<option value=""></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                         }
-                                    });
-                                });
+//                                        $('#procedimento1').html(options).show();
 
+                                        $('#procedimento1 option').remove();
+                                        $('#procedimento1').append(options);
+                                        $("#procedimento1").trigger("chosen:updated");
+                                        $('.carregando').hide();
+                                    });
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val()}, function (j) {
+                                        options = '<option value=""></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                        }
+//                                        $('#procedimento1').html(options).show();
+
+                                        $('#procedimento1 option').remove();
+                                        $('#procedimento1').append(options);
+                                        $("#procedimento1").trigger("chosen:updated");
+                                        $('.carregando').hide();
+                                    });
+                                    
+
+                                }
+                                
+                                
+                                if ($('#grupo1').val()) {
+                                    
+                                    $.getJSON('<?= base_url() ?>autocomplete/listarsalaporgrupo', {grupo1: $('#grupo1').val(), ajax: true}, function (j) {
+                                        options = '<option value=""></option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                        }
+                                        $('#sala1').html(options).show();
+                                        $('.carregando').hide();
+                                    });
+                                }
+                                
                                 $(function () {
                                     $('#convenio1').change(function () {
+                                        
                                         if ($(this).val()) {
                                             $('.carregando').show();
                                             
-
-                                            if ($("#grupo1").val()) {
-                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupomedico', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val(), teste: $('#exame').val()}, function (j) {
-                                                    options = '<option value=""></option>';
+//                                        alert($("#grupo1").val());
+//                                        alert($('#convenio1').val());
+//                                            if ($("#grupo1").val()) {
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioatendimentonovo', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val()}, function (j) {
+//                                                alert('asdasd');
+                                                options = '<option value=""></option>';
+                                                    
                                                     for (var c = 0; c < j.length; c++) {
                                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                                     }
@@ -923,31 +863,37 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                     $("#procedimento1").trigger("chosen:updated");
                                                     $('.carregando').hide();
                                                 });
-                                            }
-                                            else {
-                                                if($('#sala1').val()) {
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniomedicocadastrosala', {convenio1: $(this).val(), sala: $('#sala1').val(), teste: $('#exame').val(), ajax: true}, function (j) {
-                                                        options = '<option value=""></option>';
-                                                        for (var c = 0; c < j.length; c++) {
-                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                                        }
-        //                                                $('#procedimento1').html(options).show();
-                                                        $('#procedimento1 option').remove();
-                                                        $('#procedimento1').append(options);
-                                                        $("#procedimento1").trigger("chosen:updated");
-                                                        $('.carregando').hide();
-                                                    });
-                                                }
-                                                else { 
-                                                    alert("Favor, selecione uma sala.");
-                                                }
-                                            }
+//                                            }
+                                            
                                         } else {
                                             $('#procedimento1').html('<option value="">Selecione</option>');
                                         }
                                     });
                                 });
-
+                                
+                                $('#grupo1').change(function () {
+                                    if ($('#convenio1').val()) {
+                                        if ($(this).val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val(), teste: $('#medico_id1').val(), ajax: true}, function (j) {
+                                                options = '<option value=""></option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                }
+                                                $('#procedimento1').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                            $.getJSON('<?= base_url() ?>autocomplete/listarsalaporgrupo', {grupo1: $(this).val(), ajax: true}, function (j) {
+                                                options = '<option value=""></option>';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                                }
+                                                $('#sala1').html(options).show();
+                                                $('.carregando').hide();
+                                            });
+                                        }
+                                    }
+                                });
 
                                 $(function () {
                                     $('#procedimento1').change(function () {
@@ -971,6 +917,18 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 } else {
                                                     $("#medico1").prop('required', false);
                                                 }
+                                                $('#grupo1').find('option:contains("' + j[0].grupo + '")').prop('selected', true);
+
+                                                $.getJSON('<?= base_url() ?>autocomplete/listarsalaporgrupo', {grupo1: j[0].grupo, ajax: true}, function (i) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < i.length; c++) {
+                                                        options += '<option value="' + i[c].exame_sala_id + '">' + i[c].nome + '</option>';
+                                                    }
+                                                    $('#sala1').html(options).show();
+                                                    $('.carregando').hide();
+                                                });                                                  
+                                                
+                                                
                                                 document.getElementById("valorunitario").value = options;
                                                 var valorTotal = options * (( $('#qtde1').val() ) ? $('#qtde1').val() : 1);
                                                 document.getElementById("valor1").value = valorTotal;
@@ -1083,6 +1041,23 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 $('#formapamento').html(options).show();
                                                 $('.carregando').hide();
                                             });
+                                            $.getJSON('<?= base_url() ?>autocomplete/listarmedicoprocedimentoconvenio', {procedimento: $(this).val(), ajax: true}, function (m) {
+                                            options = '<option value=""></option>';
+                //                            console.log(j);
+                                                    for (var y = 0; y < m.length; y++) {
+                        //                                if(m[y].operador_id == medico_agenda[]){
+                        //                                  options += '<option selected="" value="' + m[y].operador_id + '">' + m[y].nome + '</option>';  
+                        //                                }else{
+                                                          options += '<option value="' + m[y].operador_id + '">' + m[y].nome + '</option>';  
+                        //                                }
+                                                    }
+                                            $('#exame').html(options).show();
+                                          
+                                            $('.carregando').hide();
+                                            
+                        });
+                                            
+                                            
                                             <? if($desabilitar_trava_retorno == 'f') { ?>
                                                 $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
     //                                                console.log(r);

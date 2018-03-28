@@ -283,7 +283,7 @@ class app_model extends Model {
         $this->db->where("pc.convenio_id = 108");
         
         $this->db->where("al.data >= '2018-02-28'");
-        $this->db->where("al.data <= '2018-03-26'");
+        $this->db->where("al.data <= '2018-03-27'");
         $return = $this->db->get();
         return $return->result();
     }

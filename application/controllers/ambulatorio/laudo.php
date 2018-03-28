@@ -3534,7 +3534,7 @@ class Laudo extends BaseController {
                             $fim_numguia = "</OPER_NUMGUIA>";
 
                             $rodape = "</SL_OPER>
-                       <SL_TEXTO>$saida</SL_TEXTO>
+                       <SL_TEXTO></SL_TEXTO>
                     </S_LINE>";
                             $nome = "./upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
                             $xml = $cabecalho . $corpo . $fim_numguia . $rodape;

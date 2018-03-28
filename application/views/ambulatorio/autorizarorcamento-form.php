@@ -18,7 +18,7 @@
                                 <label>Sala</label>
                             </td>
                             <td>
-                                <select  name="sala" id="sala" class="size1" required="" >
+                                <select  name="sala" id="sala" class="size1"  >
                                     <option value="">Selecione</option>
                                     <? foreach ($salas as $item): ?>
                                         <option value="<?= $item->exame_sala_id; ?>"><?= $item->nome; ?></option>
@@ -32,7 +32,7 @@
                                 <label>Medico</label>
                             </td>
                             <td>
-                                <select name="medico_id" id="medico_id" class="size1" required>
+                                <select name="medico_id" id="medico_id" class="size1" >
                                     <option value="">Selecione</option>
                                     <? foreach ($medicos as $item) : ?>
                                         <option value="<?= $item->operador_id; ?>" <?= ($item->operador_id == @$obj->_medico_encaminhamento_id) ? 'selected' : ''?>><?= $item->nome; ?></option>

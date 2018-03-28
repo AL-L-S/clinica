@@ -247,7 +247,7 @@ class App extends Controller {
 //        var_dump($dados); die;
         foreach ($dados as $value) {
             $this->gerarxmlsalvar($value->ambulatorio_laudo_id, $value->exame_id, $value->sala_id);
-//            sleep(0.85);
+            sleep(0.85);
             
         }
 //        $this->gerarxmlsalvar(268115, 271699, 26);
@@ -354,7 +354,7 @@ class App extends Controller {
                             $fim_numguia = "</OPER_NUMGUIA>";
 
                             $rodape = "</SL_OPER>
-                       <SL_TEXTO>$saida</SL_TEXTO>
+                       <SL_TEXTO></SL_TEXTO>
                     </S_LINE>";
                             $nome = "./upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
                             $xml = $cabecalho . $corpo . $fim_numguia . $rodape;

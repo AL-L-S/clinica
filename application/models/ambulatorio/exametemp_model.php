@@ -2462,8 +2462,8 @@ class exametemp_model extends Model {
             $this->db->where('e.empresa_id', $empresa_id);
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
             $return = $this->db->get()->result();
-            
-            if($return[0]->associa_credito_procedimento == 't'){
+
+            if ($return[0]->associa_credito_procedimento == 't') {
                 $this->db->set('valor', $_POST['valor1']);
                 $this->db->set('procedimento_convenio_id', $_POST['procedimento1']);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
@@ -2478,11 +2478,10 @@ class exametemp_model extends Model {
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->insert('tb_paciente_credito');
 
-                $paciente_credito_id = $this->db->insert_id();                
-            }
-            else{
+                $paciente_credito_id = $this->db->insert_id();
+            } else {
 //                var_dump(); die;
-                $this->db->set('valor',(float) str_replace(',', '.', str_replace('.', '', $_POST['valor1'])) );
+                $this->db->set('valor', (float) str_replace(',', '.', str_replace('.', '', $_POST['valor1'])));
                 $this->db->set('data', date("Y-m-d"));
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
 
@@ -2494,9 +2493,9 @@ class exametemp_model extends Model {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->insert('tb_paciente_credito');
-                $paciente_credito_id = $this->db->insert_id();                
+                $paciente_credito_id = $this->db->insert_id();
             }
-            
+
 
             return $paciente_credito_id;
         } catch (Exception $exc) {
@@ -2507,25 +2506,24 @@ class exametemp_model extends Model {
     function excluircredito($credito_id) {
         try {
             $empresa_id = $this->session->userdata('empresa_id');
-            
+
             $this->db->select('valor, paciente_id');
             $this->db->from('tb_paciente_credito');
             $this->db->where('paciente_credito_id', $credito_id);
             $valorCredito = $this->db->get()->result();
-            
+
             $this->db->select('SUM(pcr.valor) as saldo');
             $this->db->from('tb_paciente_credito pcr');
             $this->db->where('pcr.empresa_id', $empresa_id);
             $this->db->where('pcr.paciente_id', $valorCredito[0]->paciente_id);
             $this->db->where('pcr.ativo', 'true');
             $return = $this->db->get()->result();
-            
-            if($valorCredito[0]->valor <= $return[0]->saldo) {
+
+            if ($valorCredito[0]->valor <= $return[0]->saldo) {
                 $this->db->set('ativo', 'f');
                 $this->db->where('paciente_credito_id', $credito_id);
                 $this->db->update('tb_paciente_credito');
-            }
-            else{
+            } else {
                 return -2;
             }
 
@@ -3817,8 +3815,6 @@ class exametemp_model extends Model {
             $empresa_id = $this->session->userdata('empresa_id');
 //            $agenda = array_filter($agenda);
 //            var_dump($agenda); die;
-
-
 //            $this->db->set('empresa_id', $empresa_id);
             $this->db->set('tipo', 'ESPECIALIDADE');
             $this->db->set('ativo', 'f');
@@ -4195,7 +4191,7 @@ class exametemp_model extends Model {
                     }
                 }
                 if ($confimado == "on" && $procedimento_tuss_id > 0) {
-                    
+
                     foreach ($_POST['convenio'] as $itemconvenio) {
                         $w++;
                         if ($i == $w) {
@@ -5388,6 +5384,7 @@ class exametemp_model extends Model {
         $tipo = $query->result();
         return $tipo[0]->tipo;
     }
+
     function verificagrupoprocedimento($procedimento_convenio_id) {
 
         $this->db->select('ag.nome');
@@ -5428,12 +5425,12 @@ class exametemp_model extends Model {
                 $k = 0;
                 $i++;
 
-                if($procedimento_tuss_id != ''){
-                   $tipo = $this->verificaexamemedicamento($procedimento_tuss_id); 
-                }else{
+                if ($procedimento_tuss_id != '') {
+                    $tipo = $this->verificaexamemedicamento($procedimento_tuss_id);
+                } else {
                     $tipo = '';
                 }
-                
+
                 if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO' || $tipo == 'MATERIAL') && $_POST['medico'][$i] == '') {
                     return 2;
                 }
@@ -5577,15 +5574,15 @@ class exametemp_model extends Model {
 //                    }
 //                    $grupo_laboratorio = $this->verificagrupoprocedimento($procedimento_tuss_id);
                     //if ($grupo_laboratorio == 'LABORATORIAL') {
-                        $this->db->select('mc.valor as perc_laboratorio, mc.percentual, mc.laboratorio');
-                        $this->db->from('tb_procedimento_percentual_laboratorio_convenio mc');
-                        $this->db->join('tb_procedimento_percentual_laboratorio m', 'm.procedimento_percentual_laboratorio_id = mc.procedimento_percentual_laboratorio_id', 'left');
-                        $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
+                    $this->db->select('mc.valor as perc_laboratorio, mc.percentual, mc.laboratorio');
+                    $this->db->from('tb_procedimento_percentual_laboratorio_convenio mc');
+                    $this->db->join('tb_procedimento_percentual_laboratorio m', 'm.procedimento_percentual_laboratorio_id = mc.procedimento_percentual_laboratorio_id', 'left');
+                    $this->db->where('m.procedimento_tuss_id', $procedimento_tuss_id);
 //        $this->db->where('mc.laboratorio', $laboratoriopercentual);
-                        $this->db->where('mc.ativo', 'true');
-                        $this->db->where('mc.revisor', 'false');
-                        $percentual_laboratorio = $this->db->get()->result();
-                   // }
+                    $this->db->where('mc.ativo', 'true');
+                    $this->db->where('mc.revisor', 'false');
+                    $percentual_laboratorio = $this->db->get()->result();
+                    // }
 
 
 
@@ -6154,6 +6151,58 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompleteprocedimentosatendimento($parametro, $grupo = null) {
+        $this->db->select(' pc.procedimento_convenio_id,
+                            pt.codigo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+//        $this->db->where("ag.tipo !=", 'CONSULTA');
+//        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+        if ($grupo != '') {
+            $this->db->where("pt.grupo", $grupo);
+        }
+        $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompleteprocedimentosatendimentonovo($parametro, $grupo = null) {
+        $this->db->select(' pc.procedimento_convenio_id,
+                            pt.codigo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+//        $this->db->where("ag.tipo !=", 'CONSULTA');
+//        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+        if ($grupo != '') {
+            $this->db->where("pt.grupo", $grupo);
+        }
+        $this->db->where('pc.convenio_id', $parametro);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa == 't') {
+            $this->db->where('pc.empresa_id', $empresa_id);
+        }
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompleteprocedimentosfidelidadeweb($parametro) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
@@ -6265,7 +6314,7 @@ class exametemp_model extends Model {
 
     function listarautocompleteprocedimentosgrupomedico($convenio_id = null, $grupo = null, $medico_id = null) {
         $empresa_id = $this->session->userdata('empresa_id');
-        
+
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
                             pt.nome as procedimento');
@@ -6316,6 +6365,43 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompletemedicoporprocedimento($procedimento_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' o.nome,
+                            o.operador_id');
+        $this->db->from('tb_operador o');
+        $this->db->where('o.consulta', 't');
+        $this->db->where('o.ativo', 't');
+        $procedimento_excecao = $this->session->userdata('procedimento_excecao');
+        if ($procedimento_excecao == "t") {
+            $this->db->where("o.operador_id NOT IN (
+                                SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
+                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                INNER JOIN ponto.tb_convenio c2 ON c2.convenio_id = pc2.convenio_id
+                                INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
+                                WHERE cop.procedimento_convenio_id = {$procedimento_id}
+                                AND cop.empresa_id = {$empresa_id}
+                                AND cop.ativo = 't'
+                            )");
+        } else {
+            $this->db->where("o.operador_id IN (
+                                SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
+                                INNER JOIN ponto.tb_procedimento_convenio pc2 ON pc2.procedimento_convenio_id = cop.procedimento_convenio_id
+                                INNER JOIN ponto.tb_convenio c2 ON c2.convenio_id = pc2.convenio_id
+                                INNER JOIN ponto.tb_procedimento_tuss pt2 ON pt2.procedimento_tuss_id = pc2.procedimento_tuss_id
+                                WHERE cop.procedimento_convenio_id = {$procedimento_id}
+                                AND cop.empresa_id = {$empresa_id}
+                                AND cop.ativo = 't'
+                            )");
+        }
+
+
+        $this->db->orderby("o.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompletecadastroexcecaoprocedimentosgrupo($parametro = null, $parametro2 = null) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
@@ -6353,6 +6439,20 @@ class exametemp_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = esg.grupo');
         $this->db->where("esg.ativo", 't');
         $this->db->where('exame_sala_id', $sala_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarautocompletesalaporgrupo($grupo = null) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('es.exame_sala_id, es.nome ');
+        $this->db->from('tb_exame_sala_grupo esg');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = esg.exame_sala_id');
+        $this->db->where("esg.ativo", 't');
+        $this->db->where('esg.grupo', $grupo);
+        $this->db->where('es.empresa_id', $empresa_id);
+        $this->db->orderby("es.nome");
         $return = $this->db->get();
         return $return->result();
     }
@@ -6413,10 +6513,10 @@ class exametemp_model extends Model {
         $this->db->select('c.convenio_id,
                             c.nome,');
         $this->db->from('tb_convenio c');
-        
+
         $procedimento_excecao = $this->session->userdata('procedimento_excecao');
         $empresa_id = $this->session->userdata('empresa_id');
-        
+
         if ($procedimento_excecao == "t") {
             $this->db->where("c.convenio_id NOT IN (
                                 SELECT cop.convenio_id FROM ponto.tb_ambulatorio_convenio_operador cop
@@ -6424,8 +6524,7 @@ class exametemp_model extends Model {
                                 AND cop.operador_id = {$parametro}
                                 AND cop.empresa_id = {$empresa_id}
                             )");
-        }
-        else {
+        } else {
             $this->db->where("c.convenio_id IN (
                                 SELECT cop.convenio_id FROM ponto.tb_ambulatorio_convenio_operador cop
                                 WHERE cop.ativo = 't'
@@ -6603,7 +6702,7 @@ class exametemp_model extends Model {
     }
 
     function listarautocompleteagendaempresasala($empresa_id) {
-        
+
         $this->db->select('es.exame_sala_id, es.nome');
         $this->db->from('tb_exame_sala es');
         $this->db->where('es.excluido', 'f');
@@ -6645,7 +6744,7 @@ class exametemp_model extends Model {
         $this->db->where('esg.ativo', 't');
         $this->db->where('es.empresa_id', $empresa_id);
         $this->db->orderby('es.exame_sala_id');
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -6682,7 +6781,7 @@ class exametemp_model extends Model {
     }
 
     function listarautocompleteprocedimentosvalor($parametro = null) {
-        $this->db->select('pc.valortotal, pt.qtde, pt.descricao_procedimento, pt.home_care, pt.grupo, ag.tipo');
+        $this->db->select('pc.valortotal, pt.qtde, pt.descricao_procedimento, pt.home_care, pt.grupo, ag.tipo, pc.procedimento_convenio_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
@@ -6711,6 +6810,8 @@ class exametemp_model extends Model {
 //        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = cp.forma_pagamento_id', 'left');
         $this->db->where('cp.procedimento_convenio_id', $parametro);
         $this->db->where('fp.forma_pagamento_id !=', 1000);
+        $this->db->where('cp.ativo', 't');
+        $this->db->where('gf.ativo', 't');
         $return = $this->db->get();
         $result = $return->result();
 
