@@ -1,12 +1,21 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->      
     <form name="form_cirurgia_orcamento" id="form_cirurgia_orcamento" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaorcamentoconvenio" method="post">
         <fieldset>
-            <legend>Outras Opções</legend>   
-            <div class="bt_link">
-                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacaoeditarconvenio/<?= @$solicitacao_id; ?>">Cadastrar</a>
-            </div>
-            <div class="bt_link">
-                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= @$solicitacao_id; ?>">Equipe</a>
+            <legend>Outras Opções</legend>
+            <?
+            $perfil_id = $this->session->userdata('perfil_id');
+            if ($perfil_id != 4) {
+            ?>
+                <div class="bt_link">
+                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacaoeditarconvenio/<?= @$solicitacao_id; ?>">Cadastrar</a>
+                </div>
+                <div class="bt_link">
+                    <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/montarequipe/<?= @$solicitacao_id; ?>">Equipe</a>
+                </div>
+            <? } ?>
+            <div class="bt_link" style="width:90pt;">
+                <a  title="Imprimir Guia de Internação do Convênio."
+                    href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaosolicitacaocirurgicaconveniospsadt/<?= @$solicitacao_id; ?>">Guia Internação</a>
             </div>
             <!--            <div class="bt_link">
                             <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamento/<?= @$solicitacao_id; ?>">Orçamento</a>

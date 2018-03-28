@@ -89,7 +89,7 @@
                     </tr>
                     <tr>
                         <td height="16" colspan="2" class="tc"><strong><? echo $relatorio[0]->codigoidentificador; ?></strong></td>
-                        <td colspan="8" class="tc"><strong><? echo $empresa[0]->razao_social; ?> </strong></td>
+                        <td colspan="8" class="tc"><strong></strong></td>
 
                     </tr>
 

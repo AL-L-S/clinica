@@ -165,6 +165,7 @@ class procedimento_model extends Model {
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('grupo', 'AGRUPADOR');
             $this->db->set('agrupador', 't');
+            $this->db->set('agrupador_grupo', $_POST['agrupador_grupo']);
             $this->db->set('codigo', '');
             $this->db->set('qtde', 1);
 
@@ -180,7 +181,7 @@ class procedimento_model extends Model {
                 $this->db->where('procedimento_tuss_id', $procedimento_agrupador_id);
                 $this->db->update('tb_procedimento_tuss');
             }
-
+            
             foreach ($_POST['add_agrupador'] as $key => $value) {
 
                 if ($_POST['add_agrupador'][$key] != "") { // insert
@@ -204,6 +205,18 @@ class procedimento_model extends Model {
                 }
             }
 
+            if ($_POST['agrupador_grupo'] != '') {
+                // Caso tenha definido um grupo para o agrupador ele irá setar pra falso todos os procedimentos que não forem daquele grupo
+                $sql = "UPDATE ponto.tb_procedimentos_agrupados_ambulatorial paa
+                        SET ativo = 'f', data_atualizacao = '{$horario}', operador_atualizacao = {$operador_id}
+                        FROM ponto.tb_procedimentos_agrupados_ambulatorial paa2
+                        INNER JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = paa2.procedimento_tuss_id
+                        WHERE paa2.procedimentos_agrupados_ambulatorial_id = paa.procedimentos_agrupados_ambulatorial_id
+                        AND pt.grupo != '".$_POST['agrupador_grupo']."'
+                        AND paa2.ativo = 't'
+                        AND paa2.procedimento_agrupador_id = {$procedimento_agrupador_id}";
+                $this->db->query($sql);
+            }
 
             return $procedimento_agrupador_id;
         } catch (Exception $exc) {
@@ -1020,7 +1033,7 @@ class procedimento_model extends Model {
                                pt.carboidratos, pt.lipidios, pt.kcal,pt.laboratorio_id,
                                pt.revisao, pt.sala_preparo, pt.revisao_dias,
                                pt.associacao_procedimento_tuss_id, pt.retorno_dias,
-                               pt.subgrupo_id');
+                               pt.subgrupo_id, pt.agrupador_grupo');
             $this->db->from('tb_procedimento_tuss pt');
             $this->db->join('tb_tuss t', 't.tuss_id = pt.tuss_id', 'left');
             $this->db->where("procedimento_tuss_id", $procedimento_tuss_id);
@@ -1058,6 +1071,7 @@ class procedimento_model extends Model {
             $this->_laboratorio_id = $return[0]->laboratorio_id;
             $this->_retorno_dias = $return[0]->retorno_dias;
             $this->_subgrupo_id = $return[0]->subgrupo_id;
+            $this->_agrupador_grupo = $return[0]->agrupador_grupo;
         } else {
             $this->_procedimento_tuss_id = null;
         }

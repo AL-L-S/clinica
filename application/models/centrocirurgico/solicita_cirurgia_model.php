@@ -236,6 +236,36 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
+    function verificamaterialagrupador($procedimento_tuss_id) {
+
+
+        $this->db->select('agrupador_grupo');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->where('pt.procedimento_tuss_id', $procedimento_tuss_id);
+        $return = $this->db->get()->result();
+        
+        if($return[0]->agrupador_grupo == 'OPME'){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    function carregarsolicitacaoagrupadormaterial() {
+
+
+        $this->db->select('pt.codigo,
+                           pt.procedimento_tuss_id,
+                           pt.nome');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->where("pt.agrupador_grupo = 'OPME'");
+        $this->db->where('pt.ativo', 'true');
+//        $this->db->where('pc.convenio_id', $convenio_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function carregarsolicitacaomaterial() {
 
 
@@ -973,6 +1003,42 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_solicitacao_cirurgia_procedimento');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return false;
+            }
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravarsolicitacaomateriaisagrupador() {
+
+        try {
+            $this->db->set('fornecedor_id', $_POST['fornecedor_id']);
+            $this->db->where('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+            $this->db->update('tb_solicitacao_cirurgia');
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $this->db->select("procedimento_tuss_id");
+            $this->db->from('tb_procedimentos_agrupados_ambulatorial paa');
+            $this->db->where('procedimento_agrupador_id', $_POST['material_id']);
+            $this->db->where('ativo', 't');
+            $return = $this->db->get()->result();
+            
+            foreach($return as $value){
+                $this->db->set('solicitacao_cirurgia_id', $_POST['solicitacao_id']);
+                $this->db->set('quantidade', $_POST['qtde1']);
+                $this->db->set('observacao', $_POST['observacao']);
+                $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_solicitacao_cirurgia_material');
+            }
+            
             $erro = $this->db->_error_message();
             if (trim($erro) != "") { // erro de banco
                 return false;

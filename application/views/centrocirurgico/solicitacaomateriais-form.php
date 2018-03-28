@@ -5,6 +5,14 @@
         $perfil_id = $this->session->userdata('perfil_id');
         ?>
         <fieldset>
+            <legend>Outras Opções</legend>   
+
+            <div class="bt_link" style="width:90pt;">
+                <a  title="Imprimir Guia de OPME." target="_blank"
+                    href="<?= base_url() ?>centrocirurgico/centrocirurgico/impressaosolicitacaocirurgicamaterialopme/<?php echo $solicitacao_id; ?>">Guia OPME</a>
+            </div>
+        </fieldset>
+        <fieldset>
             <legend>Dados da Solicitação</legend>
             <div>
                 <label>Paciente</label>
@@ -61,9 +69,16 @@
                         <td>
                             <select name="material_id" id="material_id" class="size4 chosen-select" required>
                                 <option value="">Selecione</option>
-                                <? foreach ($procedimento as $item) { ?>
-                                    <option value="<?= $item->procedimento_tuss_id ?>"><?= $item->nome ?></option>
-                                <? } ?>
+                                <optgroup label="Procedimentos">
+                                    <? foreach ($procedimento as $item) { ?>
+                                        <option value="<?= $item->procedimento_tuss_id ?>"><?= $item->nome ?></option>
+                                    <? } ?>
+                                </optgroup>
+                                <optgroup label="Agrupadores">
+                                    <? foreach ($agrupador as $item) { ?>
+                                        <option value="<?= $item->procedimento_tuss_id ?>"><?= $item->nome ?></option>
+                                    <? } ?>
+                                </optgroup>
                             </select>
                         </td>
                     </tr>
@@ -156,29 +171,6 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript">
-
-
-    $(function () {
-        $('#convenio1').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniocirurgico', {convenio1: $(this).val(), ajax: true}, function (j) {
-                    var options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                    }
-//                    $('#procedimento1').html(options).show();
-                    $('#procedimento1 option').remove();
-                    $('#procedimento1').append(options);
-                    $("#procedimento1").trigger("chosen:updated");
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#procedimento1').html('<option value="">-- Escolha um exame --</option>');
-            }
-        });
-    });
-
 
     if ($('#convenio1').val() != '') {
 //                            alert('asdsd');
