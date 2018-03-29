@@ -54,7 +54,7 @@
                                 <select name='empresa[1]' id="empresa1" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
-                                        <option value="<?= $row->empresa_id ?>"
+                                        <option value="<?= $row->empresa_id ?>" <?= (count($empresas) == 1 ) ? "selected" : '' ?>
                                         <?
 //                                    $empresa_id = $this->session->userdata('empresa_id');
 //                                    if ($empresa_id == $row->empresa_id): echo 'selected';
@@ -94,7 +94,7 @@
                                 <select name='empresa[2]' id="empresa2" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
-                                        <option value="<?= $row->empresa_id ?>"
+                                        <option value="<?= $row->empresa_id ?>" <?= (count($empresas) == 1 ) ? "selected" : '' ?>
                                         <?
 //                                    $empresa_id = $this->session->userdata('empresa_id');
 //                                    if ($empresa_id == $row->empresa_id): echo 'selected';
@@ -134,7 +134,7 @@
                                 <select name='empresa[3]' id="empresa3" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
-                                        <option value="<?= $row->empresa_id ?>"
+                                        <option value="<?= $row->empresa_id ?>" <?= (count($empresas) == 1 ) ? "selected" : '' ?>
                                         <?
 //                                    $empresa_id = $this->session->userdata('empresa_id');
 //                                    if ($empresa_id == $row->empresa_id): echo 'selected';
@@ -174,7 +174,7 @@
                                 <select name='empresa[4]' id="empresa4" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
-                                        <option value="<?= $row->empresa_id ?>"
+                                        <option value="<?= $row->empresa_id ?>" <?= (count($empresas) == 1 ) ? "selected" : '' ?>
                                         <?
 //                                    $empresa_id = $this->session->userdata('empresa_id');
 //                                    if ($empresa_id == $row->empresa_id): echo 'selected';
@@ -214,7 +214,7 @@
                                 <select name='empresa[5]' id="empresa5" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
-                                        <option value="<?= $row->empresa_id ?>"
+                                        <option value="<?= $row->empresa_id ?>" <?= (count($empresas) == 1 ) ? "selected" : '' ?>
                                         <?
 //                                    $empresa_id = $this->session->userdata('empresa_id');
 //                                    if ($empresa_id == $row->empresa_id): echo 'selected';
@@ -254,7 +254,7 @@
                                 <select name='empresa[6]' id="empresa6" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
-                                        <option value="<?= $row->empresa_id ?>"
+                                        <option value="<?= $row->empresa_id ?>" <?= (count($empresas) == 1 ) ? "selected" : '' ?>
                                         <?
 //                                    $empresa_id = $this->session->userdata('empresa_id');
 //                                    if ($empresa_id == $row->empresa_id): echo 'selected';
@@ -294,7 +294,7 @@
                                 <select name='empresa[7]' id="empresa7" class='size2' >
                                     <option value="" ></option>
                                     <? foreach ($empresas as $row) : ?>
-                                        <option value="<?= $row->empresa_id ?>"
+                                        <option value="<?= $row->empresa_id ?>" <?= (count($empresas) == 1 ) ? "selected" : '' ?>
                                         <?
 //                                    $empresa_id = $this->session->userdata('empresa_id');
 //                                    if ($empresa_id == $row->empresa_id): echo 'selected';
@@ -464,8 +464,24 @@
         if($("#empresa<?= $i ?>").val()){
             $.getJSON('<?= base_url() ?>autocomplete/agendaempresasala', {txtempresa: $("#empresa<?= $i ?>").val(), ajax: true}, function (j) {
                 var options = '<option value=""></option>';
+                var selected = (j.length == 1)?'selected':'';
                 for (var c = 0; c < j.length; c++) {
-                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                    options += '<option value="' + j[c].exame_sala_id + '"'+selected+'>' + j[c].nome + '</option>';
+                }
+                $("#sala<?= $i ?>").html(options).show();
+                $('.carregando').hide();
+            });
+        }
+        
+        // Caso so tenha uma empresa, ele ja deve carregar todas as salas dessa empresa.
+        if($("#empresa<?= $i ?>").val()){
+            $.getJSON('<?= base_url() ?>autocomplete/agendaempresasala', {txtempresa: $("#empresa<?= $i ?>").val(), ajax: true}, function (j) {
+                var options = '<option value=""></option>';
+                
+                var selected = (j.length == 1)?'selected':'';
+                
+                for (var c = 0; c < j.length; c++) {
+                    options += '<option value="' + j[c].exame_sala_id + '"'+selected+'>' + j[c].nome + '</option>';
                 }
                 $("#sala<?= $i ?>").html(options).show();
                 $('.carregando').hide();

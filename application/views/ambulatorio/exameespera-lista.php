@@ -75,6 +75,7 @@
                     <th class="tabela_header">Agenda</th>
                     <th class="tabela_header">Sala</th>
                     <th class="tabela_header">Procedimento</th>              
+                    <th class="tabela_header">Médico</th>              
                     <th class="tabela_header">Obs.</th>
                     <th class="tabela_header" colspan="4"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
@@ -134,6 +135,12 @@
                                     }
                                     ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <?
+                                    $nome = explode(" ", $item->medico);
+                                    ?>
+                                    <span style="cursor: pointer;" title="<?= $item->medico; ?>"><?= @$nome[0]; ?>...</span>
+                                </td>
 
                                 <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $item->observacoes; ?></b></td>
                                 <? if ($situacaocaixa[0]->caixa == 't') { ?>
@@ -227,7 +234,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="12">
+                        <th class="tabela_footer" colspan="15">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?> <div style="display: inline">
                                 <span style="margin-left: 15px; color: white; font-weight: bolder;"> Limite: </span>

@@ -7,10 +7,11 @@
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
 </h4>
 <hr>
-<table border="1" cellpadding="5">
+<table border="1" cellpadding="5" cellspacing="0">
     <thead>
         <tr>
 
+            <th class="tabela_header" width="350px;">CPF</th>
             <th class="tabela_header" width="350px;">Paciente</th>
             <th class="tabela_header">Grupo</th>
             <th class="tabela_header">Convenio</th>
@@ -61,6 +62,7 @@
                 ?>
                 <tr>
 
+                    <td><?= $item->cpf; ?></td>
                     <td><?= $item->paciente; ?></td>
                     <td><?= $item->grupo; ?></td>
                     <td><?= $item->convenio; ?></td>

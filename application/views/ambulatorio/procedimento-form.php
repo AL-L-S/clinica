@@ -43,8 +43,8 @@
                         </select>
                     </dd>
                     
-                    <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento'); ?>
-                    <? if($subgrupo_procedimento == 't') { ?>
+                    <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
+                    if($subgrupo_procedimento == 't') { ?>
                         <dt>
                             <label>Subgrupo</label>
                         </dt>

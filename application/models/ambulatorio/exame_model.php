@@ -928,6 +928,7 @@ class exame_model extends Model {
                             an.nome as sala,
                             ae.faturado,
                             ae.agrupador_pacote_id,
+                            o.nome as medico,
                             c.dinheiro,
                             p.nome as paciente,
                             p.nascimento,
@@ -940,6 +941,7 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_grupo ag', 'pt.grupo = ag.nome', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->orderby('ae.ordenador desc');
 //        var_dump($ordem_chegada); die;
         if ($ordem_chegada == 'f') {
@@ -3076,6 +3078,7 @@ class exame_model extends Model {
                             ae.data,
                             p.nome as paciente,
                             p.celular,
+                            p.cpf,
                             pt.grupo,
                             c.nome as convenio,
                             p.telefone,
@@ -4540,8 +4543,11 @@ class exame_model extends Model {
         return $this->db;
     }
 
-    function listarmultifuncao2geral($args = array(), $ordem_chegada) {
-        $teste = empty($args);
+    function listarmultifuncao2geral($args = array(), $ordem_chegada = 'f') {
+        ini_set('display_errors',1);
+        ini_set('display_startup_erros',1);
+        error_reporting(E_ALL);
+
         $operador_id = $this->session->userdata('operador_id');
         $perfil_id = $this->session->userdata('perfil_id');
         $dataAtual = date("Y-m-d");
@@ -4605,6 +4611,10 @@ class exame_model extends Model {
         $this->db->orderby('al.situacao');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.tipo !=', 'CIRURGICO');
+        
+//        echo "<pre>"; var_dump($teste,$args, isset($args)); die;
+//        
+        $teste = empty($args);
         if ($teste == true) {
             $this->db->where('ae.medico_consulta_id', $operador_id);
             $this->db->where('ae.data', $dataAtual);

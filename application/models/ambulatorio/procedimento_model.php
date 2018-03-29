@@ -29,19 +29,21 @@ class procedimento_model extends Model {
     }
 
     function listar($args = array()) {
-        $this->db->select('procedimento_tuss_id,
-                            nome,
-                            codigo,
-                            descricao,
-                            grupo');
-        $this->db->from('tb_procedimento_tuss');
-        $this->db->where("ativo", 't');
+        $this->db->select('pt.procedimento_tuss_id,
+                            pt.nome,
+                            pt.codigo,
+                            pt.descricao,
+                            pt.grupo,
+                            sub.nome as subgrupo');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->join('tb_ambulatorio_subgrupo sub', 'sub.ambulatorio_subgrupo_id = pt.subgrupo_id', 'left');
+        $this->db->where("pt.ativo", 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('nome ilike', "%" . $args['nome'] . "%");
-            $this->db->orwhere('grupo ilike', "%" . $args['nome'] . "%");
-            $this->db->where("ativo", 't');
-            $this->db->orwhere('codigo ilike', "%" . $args['nome'] . "%");
-            $this->db->where("ativo", 't');
+            $this->db->where('pt.nome ilike', "%" . $args['nome'] . "%");
+            $this->db->orwhere('pt.grupo ilike', "%" . $args['nome'] . "%");
+            $this->db->where("pt.ativo", 't');
+            $this->db->orwhere('pt.codigo ilike', "%" . $args['nome'] . "%");
+            $this->db->where("pt.ativo", 't');
         }
 
         return $this->db;
