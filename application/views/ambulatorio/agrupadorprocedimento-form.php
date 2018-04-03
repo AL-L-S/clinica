@@ -19,7 +19,21 @@
                         <input type="hidden" name="txtprocedimentotussid" value="<?= @$obj->_procedimento_tuss_id; ?>" />
                         <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_nome; ?>" required=""/>
                     </dd>
-                    
+                    <dt>
+                        <label>Grupo</label>
+                    </dt>
+                    <dd>
+                        <select name="agrupador_grupo" id="agrupador_grupo">
+                            <option value="">TODOS</option>
+                            <? foreach ($grupos as $value) { 
+                                if($value->nome == 'AGRUPADOR') continue; ?>
+                                <option value="<?= $value->nome ?>" <?= ($value->nome == @$obj->_agrupador_grupo)? 'selected': ''?>>
+                                    <?= $value->nome ?>
+                                </option>
+                            <? } ?>
+                        </select>
+                    </dd>
+                    <p style="font-style: italic;">Obs: Caso seja informado um grupo para o agrupador, ele só irá salvar os procedimentos pertencentes a este grupo.</p>
                     <br>
                     
                     <div class="divTabela">
@@ -29,7 +43,8 @@
                                 <input type="text" id="procText" onkeypress="filtrarTabela()" placeholder="Pesquisar texto..." title="Pesquise pelo nome do procedimento ou pelo codigo">
                                 <select id="grupoText">
                                     <option value="">TODOS</option>
-                                    <? foreach ($grupos as $value) { ?>
+                                    <? foreach ($grupos as $value) { 
+                                        if($value->nome == 'AGRUPADOR') continue; ?>
                                         <option value="<?= $value->nome ?>"><?= $value->nome ?></option>
                                     <? } ?>
                                 </select>
@@ -125,7 +140,6 @@
     $(function () {
         $("#accordion").accordion();
     });
-
 
     function filtrarTabela() {
         var input, procedimento, select, grupo, table, tr, td, i;

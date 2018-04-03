@@ -798,14 +798,26 @@ class centrocirurgico extends BaseController {
     }
 
     function gravarsolicitacaomateriais() {
-//        var_dump($_POST); die;
+        
         $solicitacao = $_POST['solicitacao_id'];
-
-        if ($this->solicitacirurgia_m->gravarsolicitacaomateriais()) {
-            $data['mensagem'] = 'Material adicionado com Sucesso';
-        } else {
-            $data['mensagem'] = 'Erro ao gravar Material';
+        $procedimento_tuss_id = $_POST['material_id'];
+        
+        if ( $this->solicitacirurgia_m->verificamaterialagrupador($procedimento_tuss_id) ){
+            // Caso tenha selecionado um agrupador
+            if ($this->solicitacirurgia_m->gravarsolicitacaomateriaisagrupador()) {
+                $data['mensagem'] = 'Materiais adicionados com Sucesso';
+            } else {
+                $data['mensagem'] = 'Erro ao gravar Materiais';
+            }
+        } else{
+            // Caso não seja um agrupador
+            if ($this->solicitacirurgia_m->gravarsolicitacaomateriais()) {
+                $data['mensagem'] = 'Material adicionado com Sucesso';
+            } else {
+                $data['mensagem'] = 'Erro ao gravar Material';
+            }
         }
+        
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "centrocirurgico/centrocirurgico/carregarsolicitacaomaterial/$solicitacao");
     }
@@ -901,10 +913,9 @@ class centrocirurgico extends BaseController {
         $data['fornecedor'] = $this->centrocirurgico_m->listarfornecedorsolicitacao();
         $data['dados'] = $this->centrocirurgico_m->listarsolicitacoes3($solicitacao_id);
         $data['procedimento'] = $this->solicitacirurgia_m->carregarsolicitacaomaterial();
+        $data['agrupador'] = $this->solicitacirurgia_m->carregarsolicitacaoagrupadormaterial($solicitacao_id);
 
         $data['procedimentos'] = $this->solicitacirurgia_m->listarsolicitacaosmateriais($solicitacao_id);
-//        echo '<pre>';
-//        var_dump($data); die;
         $this->loadView('centrocirurgico/solicitacaomateriais-form', $data);
     }
 
@@ -1341,7 +1352,8 @@ class centrocirurgico extends BaseController {
     
     function gravarsolicitacaorcamentoconvenio() {
         $orcamento_id = $this->solicitacirurgia_m->gravarsolicitacaorcamentoconvenio();
-
+        $solicitacao_id = $_POST['txtsolcitacao_id'];
+        
         if ($this->solicitacirurgia_m->gravarsolicitacaorcamentoconvenioitens($orcamento_id)) {
             $data['mensagem'] = "Orçamento gravado com sucesso!";
         } else {
@@ -1350,7 +1362,7 @@ class centrocirurgico extends BaseController {
 
         $this->session->set_flashdata('message', $data['mensagem']);
 
-        redirect(base_url() . "centrocirurgico/centrocirurgico/pesquisar");
+        redirect(base_url() . "centrocirurgico/centrocirurgico/solicitacarorcamentoconvenio/$solicitacao_id", $data);
     }
 
     function internacaoalta($internacao_id) {

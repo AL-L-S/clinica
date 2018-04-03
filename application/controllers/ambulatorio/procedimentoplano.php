@@ -163,8 +163,7 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
-
-        //$this->carregarView($data, 'giah/servidor-form');
+        
         $this->loadView('ambulatorio/multiplosprocedimentoplano-form', $data);
     }
 

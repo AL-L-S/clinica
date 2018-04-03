@@ -56,6 +56,7 @@
                     <th class="tabela_teste">Nome</th>
                     <th class="tabela_teste">Promotor</th>
                     <th class="tabela_teste">Procedimento</th>
+                    <th class="tabela_teste">Observação</th>
                     <th class="tabela_teste">Valor do Promotor</th>
                     <th class="tabela_teste">Valor Recebido R$</th>
                 </tr>
@@ -118,13 +119,14 @@
 
                         <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
                         <td style='text-align: center;'><font size="-2"><?= $item->procedimento ?></td>
+                        <td style='text-align: center;'><font size="-2"><?= $item->observacoes ?></td>
                         <td style='text-align: center;'><font size="-2"><?= $valor_promotor ?></td>
                         <td style='text-align: center;'><font size="-1"><?= "R$ " . number_format($perc, 2, ",", "."); ?></td>
                     </tr>
                 <? endforeach; ?>
 
                 <tr>
-                    <td width="140px;" align="Right" colspan="4"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
+                    <td width="140px;" align="Right" colspan="5"><b>Total:&nbsp; <?= $qtdetotal; ?></b></td>
                 </tr>
             </tbody>
         </table>

@@ -57,6 +57,10 @@
                     <tr>
                         <th class="tabela_header" width="50%">Nome</th>
                         <th class="tabela_header" width="10%">Grupo</th>
+                        <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
+                        if($subgrupo_procedimento == 't') { ?>
+                            <th class="tabela_header" width="10%">Subgrupo</th>
+                        <? } ?>
                         <th class="tabela_header" width="10%">Codigo</th>
                         <th class="tabela_header" width="25%">Descri&ccedil;&atilde;o</th>
                         <th style="text-align: center;" colspan="3" class="tabela_header">Detalhes</th>
@@ -85,6 +89,10 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
+                                <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
+                                if($subgrupo_procedimento == 't') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->subgrupo; ?></td>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
 

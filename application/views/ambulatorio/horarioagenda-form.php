@@ -417,8 +417,11 @@
             if($("#empresa<?= $i ?>").val()){
                 $.getJSON('<?= base_url() ?>autocomplete/agendaempresasala', {txtempresa: $("#empresa<?= $i ?>").val(), ajax: true}, function (j) {
                     var options = '<option value=""></option>';
+                    
+                    var selected = (j.length == 1)?'selected':'';
+                
                     for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                        options += '<option value="' + j[c].exame_sala_id + '"'+selected+'>' + j[c].nome + '</option>';
                     }
                     $("#sala<?= $i ?>").html(options).show();
                     $('.carregando').hide();
@@ -434,8 +437,11 @@
         if($("#empresa<?= $i ?>").val()){
             $.getJSON('<?= base_url() ?>autocomplete/agendaempresasala', {txtempresa: $("#empresa<?= $i ?>").val(), ajax: true}, function (j) {
                 var options = '<option value=""></option>';
+                
+                var selected = (j.length == 1)?'selected':'';
+                
                 for (var c = 0; c < j.length; c++) {
-                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                    options += '<option value="' + j[c].exame_sala_id + '"'+selected+'>' + j[c].nome + '</option>';
                 }
                 $("#sala<?= $i ?>").html(options).show();
                 $('.carregando').hide();

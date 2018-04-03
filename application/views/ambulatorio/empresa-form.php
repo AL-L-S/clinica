@@ -607,12 +607,12 @@
                             <input type="checkbox" id="profissional_completo" name="profissional_completo" <? if (@$obj->_profissional_completo == 't') echo "checked"; ?>/> 
                         </dd>
                         
-<!--                        <dt>
+                        <dt>
                             <label title="Ao ativar, irá aparecer uma tela para cadastrar subgrupos no sistema (associados aos grupos). Isso pode ser usado no relátorio de conferência.">Subgrupo de Procedimento</label>
                         </dt>
                         <dd>
                             <input type="checkbox" id="subgrupo_procedimento" name="subgrupo_procedimento" <? if (@$obj->_subgrupo_procedimento == 't') echo "checked"; ?>/> 
-                        </dd>-->
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

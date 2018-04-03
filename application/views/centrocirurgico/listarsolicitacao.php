@@ -171,9 +171,9 @@
                                                                 </td>-->
                                 <? } ?>
                                 <? if ($item->orcamento_completo == 'f' && $item->orcamento == 'f' && $item->equipe_montada == 't') { ?>
-                                        <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                                </td>-->
                                 <? } ?>
+                                
+                                <td class="<?php echo $estilo_linha; ?>" colspan="10"></td>
 
                             </tr>
                         </tbody>

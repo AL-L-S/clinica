@@ -6,6 +6,9 @@
 
             <div class="bt_link">
                 <a target="_blank" href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacaomaterial/<?= $dados[0]->solicitacao_cirurgia_id; ?>">Cadastrar Material</a>
+            </div>            
+            <div class="bt_link">
+                <a target="_blank" href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamentoconvenio/<?= $dados[0]->solicitacao_cirurgia_id; ?>">Guia Convênio</a>
             </div>
         </fieldset>
         <fieldset>

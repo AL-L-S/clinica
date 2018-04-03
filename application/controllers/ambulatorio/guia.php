@@ -1126,9 +1126,7 @@ class Guia extends BaseController {
 
                         // Traz os procedimentos desse pacote bem como o valor
                         $pacoteProc = $this->guia->listarprocedimentospacote($_POST['procedimento1']);
-
-                        /* Caso a pessoa tenha dado um valor diferenciado para o pacote, para descobrir o valor unitario,
-                         * ele vai pegar o valor total do pacote e dividir para os procedimentos do pacote */
+                        
                         if ($pacoteProc[0]->valor_pacote_diferenciado == 't') {
                             $vl_pacote = 0;
                             $valorTotal = 0;
