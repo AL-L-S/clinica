@@ -18,13 +18,17 @@
                         <label>Sexo</label>
                         <select name="sexo" id="txtSexo" class="size2">
                             <option value="M" <?
-            if ($paciente['0']->sexo == "M"):echo 'selected';
-            endif;
-            ?>>Masculino</option>
+                            if ($paciente['0']->sexo == "M"):echo 'selected';
+                            endif;
+                            ?>>Masculino</option>
                             <option value="F" <?
                             if ($paciente['0']->sexo == "F"):echo 'selected';
                             endif;
-            ?>>Feminino</option>
+                            ?>>Feminino</option>
+                            <option value="O" <?
+                            if ($paciente['0']->sexo == "O"):echo 'selected';
+                            endif;
+                            ?>>Outro</option>
                         </select>
                     </div>
 
@@ -62,17 +66,19 @@
                         </tr>
                         <tr>
                             <td>Convenio</td>
-                            <td><select  name="convenio1" id="convenio1" class="size2" <? if ($perfil_id != 1) {
-                                                echo 'disabled';
-                                            } ?>>
+                            <td><select  name="convenio1" id="convenio1" class="size2" <?
+                                if ($perfil_id != 1) {
+                                    echo 'disabled';
+                                }
+                                ?>>
                                     <option value="-1">Selecione</option>
                                     <? foreach ($convenio as $item) : ?>
                                         <option value="<?= $item->convenio_id; ?>" <?
-                                    if ($exame[0]->convenio_id == $item->convenio_id) {
-                                        echo 'selected';
-                                    }
+                                        if ($exame[0]->convenio_id == $item->convenio_id) {
+                                            echo 'selected';
+                                        }
                                         ?>><?= $item->nome; ?></option>
-                                            <? endforeach; ?>
+<? endforeach; ?>
                                 </select></td>
                         </tr>
                         <tr>
@@ -89,17 +95,21 @@
                         </tr>
                         <tr>
                             <td>Valor Unitario</td>
-                            <td><input type="text" name="valor1" id="valor1" <? if ($perfil_id != 1) {
-                                                echo 'readonly';
-                                            } ?> class="texto01"/></td>
+                            <td><input type="text" name="valor1" id="valor1" <?
+if ($perfil_id != 1) {
+    echo 'readonly';
+}
+?> class="texto01"/></td>
                         </tr>
                         <tr>
                             <td>Pagamento</td>
-                            <td><select  name="formapamento" id="formapamento" class="size2"  <? if ($perfil_id != 1) {
-                                                echo 'disabled';
-                                            } ?>>
+                            <td><select  name="formapamento" id="formapamento" class="size2"  <?
+if ($perfil_id != 1) {
+    echo 'disabled';
+}
+?>>
                                     <option value="0">Selecione</option>
-                                    <? foreach ($forma_pagamento as $item) : ?>
+<? foreach ($forma_pagamento as $item) : ?>
                                         <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
 <? endforeach; ?>
                                 </select>

@@ -41,6 +41,10 @@
                             if ($paciente['0']->sexo == "F"):echo 'selected';
                             endif;
                             ?>>Feminino</option>
+                            <option value="O" <?
+                            if ($paciente['0']->sexo == "O"):echo 'selected';
+                            endif;
+                            ?>>Outros</option>
                         </select>
                     </div>
 
@@ -63,9 +67,9 @@
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                     </div>
                 </fieldset>
-<div class="table-responsive">
-                <fieldset>
-                    
+                <div class="table-responsive">
+                    <fieldset>
+
 
 
                         <table id="table_justa">
@@ -157,11 +161,11 @@
                             </tfoot>
                         </table> 
 
-                    
-                    <hr/>
-                    <button type="submit" name="btnEnviar">Adicionar</button>
-                </fieldset>
-    </div>
+
+                        <hr/>
+                        <button type="submit" name="btnEnviar">Adicionar</button>
+                    </fieldset>
+                </div>
             </form>
             <fieldset>
                 <?

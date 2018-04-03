@@ -193,7 +193,7 @@
                                 <th colspan="2" align="center">
                                     <center>
                                         <div class="bt_linkf">
-                                            <a href="<?= base_url() . "ambulatorio/exame/autorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
+                                            <a href="<?= base_url() . "ambulatorio/exame/gravarautorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
                                         </div>
                                     </center>
                                     <center>

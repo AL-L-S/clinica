@@ -20,7 +20,14 @@
 
                 <div>
                     <label>Sexo</label>
-                    <input type="text" id="sexo" name="sexo"  class="texto09" value="<?= $paciente[0]->sexo == 'M' ? "Masculino" : "Feminino"; ?>" readonly/>
+                    <input type="text" id="sexo" name="sexo"  class="texto09" value="<?
+                    if ($paciente[0]->sexo == "M"):echo 'Masculino';
+                    endif;
+                    if ($paciente[0]->sexo == "F"):echo 'Feminino';
+                    endif;
+                    if ($paciente[0]->sexo == "O"):echo 'Outro';
+                    endif;
+                    ?>" readonly/>
                 </div>    
 
                 <div>
@@ -55,40 +62,40 @@
 <script type="text/javascript" src="<?= base_url() ?>js/funcoes.js"></script>
 
 <script>
-                     $(function () {
-                         $("#txtprocedimento").autocomplete({
-                             source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentotuss",
-                             minLength: 2,
-                             focus: function (event, ui) {
-                                 $("#txtprocedimento").val(ui.item.label);
-                                 return false;
-                             },
-                             select: function (event, ui) {
-                                 $("#txtprocedimento").val(ui.item.value);
-                                 $("#txtprocedimentoID").val(ui.item.id);
-                                 return false;
-                             }
-                         });
-                     });
+                $(function () {
+                    $("#txtprocedimento").autocomplete({
+                        source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentotuss",
+                        minLength: 2,
+                        focus: function (event, ui) {
+                            $("#txtprocedimento").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtprocedimento").val(ui.item.value);
+                            $("#txtprocedimentoID").val(ui.item.id);
+                            return false;
+                        }
+                    });
+                });
 
 
-                     $(function () {
-                         $('#convenio1').change(function () {
-                             if ($(this).val()) {
-                                 $('.carregando').show();
-                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                     options = '<option value=""></option>';
-                                     for (var c = 0; c < j.length; c++) {
-                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                     }
-                                     $('#procedimento1').html(options).show();
-                                     $('.carregando').hide();
-                                 });
-                             } else {
-                                 $('#procedimento1').html('<option value="">Selecione</option>');
-                             }
-                         });
-                     });
+                $(function () {
+                    $('#convenio1').change(function () {
+                        if ($(this).val()) {
+                            $('.carregando').show();
+                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofisioterapia', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                options = '<option value=""></option>';
+                                for (var c = 0; c < j.length; c++) {
+                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                }
+                                $('#procedimento1').html(options).show();
+                                $('.carregando').hide();
+                            });
+                        } else {
+                            $('#procedimento1').html('<option value="">Selecione</option>');
+                        }
+                    });
+                });
 
 
 </script>

@@ -78,6 +78,7 @@
             $paciente = "";
             $indicacao = "";
             $masculino = 0;
+            $sexo_outro = 0;
             $feminino = 0;
             $solteiro = 0;
             $casado = 0;
@@ -174,9 +175,12 @@
                         if ($item->sexo == "M") {
                             echo 'Masculino';
                             $masculino ++;
-                        } else {
+                        } elseif($item->sexo == "F") {
                             $feminino ++;
                             echo 'Feminino';
+                        }else{
+                            $sexo_outro ++;
+                            echo 'Outro';
                         }
                         ?></td>
                     <td style='text-align: center;'><?
@@ -228,9 +232,10 @@
         </tbody>
     </table>
     <?php
-    $sexo_total = $masculino + $feminino;
+    $sexo_total = $masculino + $feminino + $sexo_outro;
     $masculinop = round(($masculino * 100) / $sexo_total);
     $femininop = round(($feminino * 100) / $sexo_total);
+    $sexo_outro_p = round(($sexo_outro * 100) / $sexo_total);
 
     $faixa_etaria = $crianca + $adoles + $adulto + $idosos;
     $criancap = round(($crianca * 100) / $faixa_etaria);
@@ -292,6 +297,11 @@
                             <td style='text-align: center;'>Mulheres</td>
                             <td style="text-align: right"><?= $feminino; ?></td>
                             <td style="text-align: right"><?= $femininop . "%"; ?></td>
+                        </tr>
+                        <tr>
+                            <td style='text-align: center;'>Outro</td>
+                            <td style="text-align: right"><?= $sexo_outro; ?></td>
+                            <td style="text-align: right"><?= $sexo_outro_p . "%"; ?></td>
                         </tr>
                         <tr>
                             <td colspan="3" rowspan="3" style='text-align: center;'><div id="sexo" style="height: 250px;"></div></td>
@@ -572,7 +582,8 @@
         element: 'sexo',
         data: [
             {label: "Homens", value: <?= $masculinop; ?>, formatted: '<?= $masculinop; ?>%'},
-            {label: "Mulheres", value: <?= $femininop; ?>, formatted: '<?= $femininop; ?>%'}
+            {label: "Mulheres", value: <?= $femininop; ?>, formatted: '<?= $femininop; ?>%'},
+            {label: "Outro", value: <?= $sexo_outro_p; ?>, formatted: '<?= $sexo_outro_p; ?>%'}
 
         ],
         colors: [

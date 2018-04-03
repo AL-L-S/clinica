@@ -33,6 +33,10 @@
                         if ($paciente['0']->sexo == "F"):echo 'selected';
                         endif;
                         ?>>Feminino</option>
+                        <option value="O" <?
+                        if ($paciente['0']->sexo == "O"):echo 'selected';
+                        endif;
+                        ?>>Outros</option>
                     </select>
                 </div>
 

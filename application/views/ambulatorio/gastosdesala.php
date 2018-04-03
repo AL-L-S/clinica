@@ -58,8 +58,10 @@
                         <td><input type="text" name="sexo" class="input_pequeno" value="<?
                             if ($paciente[0]->sexo == 'F') {
                                 echo 'Feminino';
-                            } else {
-                                echo 'masculino';
+                            } elseif($paciente[0]->sexo == 'M') {
+                                echo 'Masculino';
+                            }else{
+                                echo 'Outro';
                             }
                             ?>" readonly /></td>
                     </tr>

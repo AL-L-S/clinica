@@ -34,6 +34,10 @@
                             if ($paciente['0']->sexo == "F"):echo 'selected';
                             endif;
                             ?>>Feminino</option>
+                            <option value="O" <?
+                            if ($paciente['0']->sexo == "O"):echo 'selected';
+                            endif;
+                            ?>>Outros</option>
                         </select>
                     </div>
 
@@ -84,7 +88,7 @@
                                         <option value="">Selecione</option>
                                         <? foreach ($medicos as $item) : ?>
                                             <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
-                                                <? endforeach; ?>
+                                        <? endforeach; ?>
                                     </select>
                                 </td>
                                 <td  width="50px;">
@@ -100,13 +104,13 @@
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
-                                
+
 <!--                                <td  width="50px;">
-                                    <select  name="tipo" id="tipo" class="size1" >
-                                        <option value="EXAME">EXAME</option>
-                                        <option value="CONSULTA">CONSULTA</option>
-                                    </select>
-                                </td>-->
+    <select  name="tipo" id="tipo" class="size1" >
+        <option value="EXAME">EXAME</option>
+        <option value="CONSULTA">CONSULTA</option>
+    </select>
+</td>-->
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
                                 <td  width="50px;"><input type="text" name="guiaconvenio" id="guiaconvenio" class="size1"/></td>
@@ -142,7 +146,7 @@
                     <button type="submit" name="btnEnviar">Adicionar</button>
                 </fieldset>
             </form>
-            
+
 
         </div> 
     </div> 
@@ -151,79 +155,61 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-                                        function percentual() {
-                                            var valordesconto = parseFloat(document.form_guia.desconto.value.replace(",", "."));
-                                            var desconto = valordesconto / 100;
-                                            var valortot = document.getElementById("valortot").value;
-                                            var valor = valortot * desconto;
-                                            var r = valor.toFixed(2);
+                                    function percentual() {
+                                        var valordesconto = parseFloat(document.form_guia.desconto.value.replace(",", "."));
+                                        var desconto = valordesconto / 100;
+                                        var valortot = document.getElementById("valortot").value;
+                                        var valor = valortot * desconto;
+                                        var r = valor.toFixed(2);
 
-                                            document.getElementById("valor1").value = r;
-                                        }
+                                        document.getElementById("valor1").value = r;
+                                    }
 
-                                        $(function () {
-                                            $("#data").datepicker({
-                                                autosize: true,
-                                                changeYear: true,
-                                                changeMonth: true,
-                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                dateFormat: 'dd/mm/yy'
-                                            });
+                                    $(function () {
+                                        $("#data").datepicker({
+                                            autosize: true,
+                                            changeYear: true,
+                                            changeMonth: true,
+                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                                            dateFormat: 'dd/mm/yy'
                                         });
+                                    });
 
-                                        $(function () {
-                                            $("#accordion").accordion();
-                                        });
-
-
-                                        $(function () {
-                                            $('#convenio1').change(function () {
-                                                if ($(this).val()) {
-                                                    $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofaturarmatmed', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                                        options = '<option value=""></option>';
-                                                        for (var c = 0; c < j.length; c++) {
-                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                                        }
-                                                        $('#procedimento1').html(options).show();
-                                                        $('.carregando').hide();
-                                                    });
-                                                } else {
-                                                    $('#procedimento1').html('<option value="">Selecione</option>');
-                                                }
-                                            });
-                                        });
+                                    $(function () {
+                                        $("#accordion").accordion();
+                                    });
 
 
-                                        $(function () {
-                                            $('#procedimento1').change(function () {
-                                                if ($(this).val()) {
-                                                    $('.carregando').show();
-                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
-
-                                                        var valorTotal = parseFloat(j[0].valortotal);
-                                                        var qt = document.getElementById("qtde1").value;
-                                                        document.getElementById("valor1").value = valorTotal;
-                                                        document.getElementById("valortot").value = valorTotal;
-                                                        $('.carregando').hide();
-
-                                                    });
-                                                } else {
-                                                    $('#valor1').html('value=""');
-                                                }
-                                            });
-                                        });
-
-                                        function alteraQuantidade() {
-                                            if ($("#procedimento1").val()) {
+                                    $(function () {
+                                        $('#convenio1').change(function () {
+                                            if ($(this).val()) {
                                                 $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (j) {
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniofaturarmatmed', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                    }
+                                                    $('#procedimento1').html(options).show();
+                                                    $('.carregando').hide();
+                                                });
+                                            } else {
+                                                $('#procedimento1').html('<option value="">Selecione</option>');
+                                            }
+                                        });
+                                    });
+
+
+                                    $(function () {
+                                        $('#procedimento1').change(function () {
+                                            if ($(this).val()) {
+                                                $('.carregando').show();
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
 
                                                     var valorTotal = parseFloat(j[0].valortotal);
                                                     var qt = document.getElementById("qtde1").value;
-//                                                    document  .getElementById("valor1").value = qt * valorTotal;
+                                                    document.getElementById("valor1").value = valorTotal;
                                                     document.getElementById("valortot").value = valorTotal;
                                                     $('.carregando').hide();
 
@@ -231,7 +217,25 @@
                                             } else {
                                                 $('#valor1').html('value=""');
                                             }
+                                        });
+                                    });
+
+                                    function alteraQuantidade() {
+                                        if ($("#procedimento1").val()) {
+                                            $('.carregando').show();
+                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (j) {
+
+                                                var valorTotal = parseFloat(j[0].valortotal);
+                                                var qt = document.getElementById("qtde1").value;
+//                                                    document  .getElementById("valor1").value = qt * valorTotal;
+                                                document.getElementById("valortot").value = valorTotal;
+                                                $('.carregando').hide();
+
+                                            });
+                                        } else {
+                                            $('#valor1').html('value=""');
                                         }
+                                    }
 
 
 

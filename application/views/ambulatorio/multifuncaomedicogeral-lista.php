@@ -141,6 +141,7 @@
                         <th class="tabela_header" width="60px;">Espera</th>
                         <th class="tabela_header" width="100px;">Convenio</th>
                         <th class="tabela_header" width="80px;">Agenda</th>
+                        <th class="tabela_header" width="250px;">Autorização</th>
                         <th class="tabela_header" width="250px;">Procedimento</th>
                         <th class="tabela_header">OBS</th>
                         <th class="tabela_header" colspan="8"><center>A&ccedil;&otilde;es</center></th>

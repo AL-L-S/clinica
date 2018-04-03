@@ -258,6 +258,7 @@ class paciente_model extends BaseModel {
             $this->_titulo_eleitor = $return[0]->titulo_eleitor;
             $this->_raca_cor = $return[0]->raca_cor;
             $this->_sexo = $return[0]->sexo;
+            $this->_sexo_real = $return[0]->sexo_real;
             $this->_estado_civil = $return[0]->estado_civil_id;
             $this->_escolaridade_id = $return[0]->escolaridade_id;
             $this->_nomepai = $return[0]->nome_pai;
@@ -371,6 +372,11 @@ class paciente_model extends BaseModel {
 //            $this->db->set('uf_rg', $_POST['uf_rg']);
 //            $this->db->set('titulo_eleitor', $_POST['titulo_eleitor']);
             $this->db->set('sexo', $_POST['sexo']);
+
+//            if ($_POST['sexo_real'] != '') {
+            $this->db->set('sexo_real', $_POST['sexo_real']);
+//            }
+
             if ($_POST['raca_cor'] != '') {
                 $this->db->set('raca_cor', $_POST['raca_cor']);
             }

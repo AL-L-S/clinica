@@ -12,7 +12,14 @@
                     </div>
                     <div>
                         <label>Sexo</label>
-                        <input type="text" id="txtSexo" name="sexo"  class="texto05" value="<?= ($paciente['0']->sexo == "M")? "MASCULINO": "FEMININO"; ?>" readonly/>
+                        <input type="text" id="txtSexo" name="sexo"  class="texto05" value="<?
+                        if ($paciente['0']->sexo == "M"):echo 'Masculino';
+                        endif;
+                        if ($paciente['0']->sexo == "F"):echo 'Feminino';
+                        endif;
+                        if ($paciente['0']->sexo == "O"):echo 'Outro';
+                        endif;
+                        ?>" readonly/>
                     </div>
 
                     <div>
@@ -32,7 +39,7 @@
 
                 <fieldset>
                     <table>
-                        <? if(@$permissoes[0]->associa_credito_procedimento == 't'){ ?>
+                        <? if (@$permissoes[0]->associa_credito_procedimento == 't') { ?>
                             <tr>
                                 <td>Convenio</td>
                                 <td>
@@ -61,31 +68,33 @@
                                 <td>Valor Unitario</td>
                                 <td><input type="text" name="valor1" id="valor1" class="texto02" readonly="" required/></td>
                             </tr>
-                            
-                        <? } 
-                        else { ?>
+
+                        <? }
+                        else {
+                            ?>
                             <tr>
                                 <td>Valor Unitario</td>
                                 <td><input type="text" name="valor1" id="valor1" class="texto02" alt="decimal" required/></td>
                             </tr>                            
-                        <? } ?>
-                        <!--<tr>
-                        
-                        <td>Forma de Pagamento</td>
-                        <td>
-                            <select name="forma_pagamento" id="forma_pagamento" class="size2" required>
-                                <option value="">Selecione</option>
-                                <? // foreach ($forma_pagamento as $item) : //Não vai mostrar forma de pagamento credito.
-//                                    if ($item->forma_pagamento_id == 1000 ) continue; ?>
-                                    <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                <? // endforeach; ?>
-                            </select>
-                        </td>-->
+<? } ?>
+                    <!--<tr>
+                    
+                    <td>Forma de Pagamento</td>
+                    <td>
+                        <select name="forma_pagamento" id="forma_pagamento" class="size2" required>
+                            <option value="">Selecione</option>
+                        <? // foreach ($forma_pagamento as $item) : //Não vai mostrar forma de pagamento credito.
+//                                    if ($item->forma_pagamento_id == 1000 ) continue; 
+                        ?>
+                                <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+<? // endforeach;  ?>
+                        </select>
+                    </td>-->
                         </tr>
                     </table>
-                    
+
                     <hr/>
-                    
+
                     <button type="submit" name="btnEnviar">Enviar</button>
                 </fieldset>
             </form>
@@ -111,19 +120,19 @@
 
 <script type="text/javascript">
 
-    $(function() {
-        $( "#accordion" ).accordion();
+    $(function () {
+        $("#accordion").accordion();
     });
 
-    $(function(){
-        $('#convenio1').change(function(){
-            if( $(this).val() ) {
+    $(function () {
+        $('#convenio1').change(function () {
+            if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos',{convenio1:$(this).val(), ajax:true}, function(j){
-                    var options = '<option value=""></option>';	
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $(this).val(), ajax: true}, function (j) {
+                    var options = '<option value=""></option>';
                     for (var c = 0; c < j.length; c++) {
                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                    }	
+                    }
 //                    $('#procedimento1').html(options).show();
                     $('#procedimento1 option').remove();
                     $('#procedimento1').append(options);
@@ -138,22 +147,21 @@
             }
         });
     });
-    
-        
-    $(function(){
-        $('#procedimento1').change(function(){
-            if( $(this).val() ) {
+
+
+    $(function () {
+        $('#procedimento1').change(function () {
+            if ($(this).val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor',{procedimento1:$(this).val(), ajax:true}, function(j){
-                    options =  "";
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                    options = "";
                     options += j[0].valortotal;
-                    if( j[0].grupo == "ODONTOLOGIA" ){
+                    if (j[0].grupo == "ODONTOLOGIA") {
                         $("#valor1").removeAttr("readonly", "false");
-                    }
-                    else{
+                    } else {
                         $("#valor1").attr("readonly", "");
                     }
-                    
+
                     document.getElementById("valor1").value = options;
                     $('.carregando').hide();
                 });

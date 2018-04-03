@@ -177,10 +177,12 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     <label>Sexo</label>
                     <input name="sexo" id="txtSexo" class="size2" 
                            value="<?
-                           if ($paciente['0']->sexo == "M"):echo 'Masculino';
-                           endif;
-                           if ($paciente['0']->sexo == "F"):echo 'Feminino';
-                           endif;
+                            if ($paciente['0']->sexo == "M"):echo 'Masculino';
+                            endif;
+                            if ($paciente['0']->sexo == "F"):echo 'Feminino';
+                            endif;
+                            if ($paciente['0']->sexo == "O"):echo 'Outro';
+                            endif;
                            ?>" readonly="true">
                 </div>
 
