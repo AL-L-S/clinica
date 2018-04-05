@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+                            <NAJA>
+                                <NJ_CodPaciente>25146</NJ_CodPaciente>
+                                <NJ_NomePaciente>JULIANA MEIRELES DE CASTRO MOTA </NJ_NomePaciente>
+                                <NJ_Laudo>77248</NJ_Laudo>
+                                <NJ_LocalLaudo>./upload/laudoBRADESCO EMPRESARIAL/25146</NJ_LocalLaudo>
+                                <NJ_FormatoLaudo>RTF</NJ_FormatoLaudo>
+                                <NJ_NomeMedicoLaudante>GLAUCIA M.C. LIMA</NJ_NomeMedicoLaudante>
+                               <NJ_Detalhes><NJ_Exame>
+                            <NJ_Accessionnumber></NJ_Accessionnumber>                            
+                            <NJ_NomeExame></NJ_NomeExame>
+                       </NJ_Exame></NJ_Detalhes>
+                       </NAJA>

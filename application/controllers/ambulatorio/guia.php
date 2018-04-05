@@ -1126,7 +1126,7 @@ class Guia extends BaseController {
 
                         // Traz os procedimentos desse pacote bem como o valor
                         $pacoteProc = $this->guia->listarprocedimentospacote($_POST['procedimento1']);
-                        
+
                         if ($pacoteProc[0]->valor_pacote_diferenciado == 't') {
                             $vl_pacote = 0;
                             $valorTotal = 0;
@@ -2130,6 +2130,7 @@ class Guia extends BaseController {
     }
 
     function gerarelatorioexame() {
+        
         $data['convenio'] = $_POST['convenio'];
         $data['procedimentos'] = $_POST['procedimentos'];
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
@@ -2162,6 +2163,15 @@ class Guia extends BaseController {
             $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
         }
         $data['relatorio'] = $this->guia->relatorioexamesconferencia();
+
+        if ($_POST['gerarpdf'] == "SIM") {
+            $this->load->plugin('mpdf');
+            $texto = $this->load->View('ambulatorio/impressaorelatorioconferencia', $data, true);
+            $cabecalhopdf = '';
+            $rodapepdf = '';
+            $nomepdf = "relatoriopdf " .date("d/m/Y H:i:s") . ".pdf";
+            downloadpdf($texto, $nomepdf, $cabecalhopdf, $rodapepdf);
+        }
 
         if ($_POST['planilha'] == "SIM") {
             $html = $this->load->View('ambulatorio/impressaorelatorioconferencia', $data, true);
@@ -3200,7 +3210,6 @@ class Guia extends BaseController {
         if ($_POST['planilha'] == 'SIM') {
             $html = $this->load->View('ambulatorio/impressaorelatoriopacientecpfvalido', $data, true);
 //            $filename = "Relatorio Paciente CPF Clinica Med";
-            
 //            $html = $this->load->View('ambulatorio/impressaorelatorioconferencia', $data, true);
             header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
             header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
@@ -3844,6 +3853,7 @@ class Guia extends BaseController {
         $data['caixa'] = $this->caixa->listarsangriacaixa();
         $data['contador'] = $this->guia->relatoriocaixacontador();
         $data['formapagamento'] = $this->formapagamento->listarformanaocredito();
+        $data['relatoriocredito'] = $this->guia->relatorioresumocredito();
         $this->load->View('ambulatorio/impressaorelatoriocaixa', $data);
     }
 

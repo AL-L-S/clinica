@@ -2469,11 +2469,34 @@ class laudo_model extends Model {
 
             $this->db->set('texto', $_POST['laudo']);
             if ($_POST['adendo'] != '') {
-                $adendo_coluna = "<p>Adendo de: " . date("d/m/Y H:i:s") . "<br></p>" . $_POST['adendo'];
-                $adendo = $_POST['laudo'] . "<p><strong>Adendo de: " . date("d/m/Y H:i:s") . "<br></strong></p>" . $_POST['adendo'];
+                $post_adendo = str_replace('<!DOCTYPE html>', '', $_POST['adendo']) ;
+                $post_adendo = str_replace('<html>', '', $post_adendo) ;
+                $post_adendo = str_replace('<head>', '', $post_adendo) ;
+                $post_adendo = str_replace('</head>', '', $post_adendo) ;
+                $post_adendo = str_replace('<body>', '', $post_adendo) ;
+                $adendo_coluna = "<p><strong>Adendo de: " . date("d/m/Y H:i:s") . "<br></strong></p>" . $post_adendo;
+                $adendo = str_replace('</body>', '', $_POST['laudo']);
+                $adendo = str_replace('</html>', '', $adendo);
+                
+                $adendo = $adendo . $adendo_coluna . "</body></html>";
 //                $this->db->set('adendo', $adendo_coluna);
                 $this->db->set("texto", $adendo);
             }
+//            if ($_POST['adendo'] != '') {
+//                $post_adendo = str_replace('<!DOCTYPE html>', '', $_POST['adendo']) ;
+//                $post_adendo = str_replace('<html>', '', $post_adendo) ;
+//                $post_adendo = str_replace('<head>', '', $post_adendo) ;
+//                $post_adendo = str_replace('</head>', '', $post_adendo) ;
+//                $post_adendo = str_replace('<body>', '', $post_adendo) ;
+//                $adendo_coluna = "<p><strong>Adendo de: " . date("d/m/Y H:i:s") . "<br></strong></p>" . $post_adendo;
+//                $adendo = str_replace('</body>', '', $_POST['laudo']);
+//                $adendo = str_replace('</html>', '', $adendo);
+//                
+//                $adendo = $adendo . $adendo_coluna . "</body></html>";
+////                $this->db->set('adendo', $adendo_coluna);
+//                $this->db->set("texto", $adendo);
+//            }
+//            var_dump($adendo); die;
 
 
             if ($_POST['medico'] != '') {

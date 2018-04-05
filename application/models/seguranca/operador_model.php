@@ -232,7 +232,7 @@ class Operador_model extends BaseModel {
                     // SELECT PROCEDIMENTOS
                 }
                 $procedimento_multiempresa = $this->listarempresapermissoes($emp->empresa_id);
-                
+
                 $this->db->select('pc.procedimento_convenio_id,pc.convenio_id');
                 $this->db->from('tb_procedimento_convenio pc');
                 $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
@@ -241,7 +241,6 @@ class Operador_model extends BaseModel {
                 $this->db->where("ag.tipo !=", 'CIRURGICO');
                 $this->db->where("pc.ativo", 't');
 //                    $this->db->where('pc.convenio_id', $conv->convenio_id);
-                
 //                    $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
                 if ($procedimento_multiempresa == 't') {
                     $this->db->where('pc.empresa_id', $emp->empresa_id);
@@ -942,6 +941,26 @@ class Operador_model extends BaseModel {
         $this->db->from('tb_operador o');
         $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
         $this->db->where('o.operador_id', $operador_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatorioemailoperador() {
+        $this->db->select('o.operador_id,
+                               o.usuario,
+                               o.nome,
+                               o.email,
+                               o.perfil_id,
+                               p.nome as perfil');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
+        $this->db->where('o.ativo', 'true');
+        $this->db->where('o.email !=', '');
+        $this->db->orderby('o.nome');
+        if($_POST['perfil'] > 0){
+           $this->db->where('o.perfil_id', $_POST['perfil']); 
+        }
+        
         $return = $this->db->get();
         return $return->result();
     }

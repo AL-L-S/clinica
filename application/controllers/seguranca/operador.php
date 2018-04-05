@@ -41,6 +41,18 @@ class Operador extends BaseController {
         $this->loadView('seguranca/operador-form', $data);
     }
 
+    function relatorioemailoperador() {
+        $data['perfil'] = $this->operador_m->listarPerfil();
+        $this->loadView('seguranca/relatorioemailoperador', $data);
+    }
+
+    function gerarelatorioemailoperador() {
+
+//        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->operador_m->relatorioemailoperador();
+        $this->load->View('seguranca/impressaorelatorioemailoperador', $data);
+    }
+
     function associarempresas($operador_id) {
         $data['operador'] = $this->operador_m->listarCada($operador_id);
         $data['empresa'] = $this->operador_m->listarempresas();
@@ -52,7 +64,7 @@ class Operador extends BaseController {
         $retorno = $this->operador_m->gravarassociarempresas();
         if ($retorno == 10) {
             $mensagem = 'Empresa já cadastrada';
-        }else{
+        } else {
             $mensagem = 'Empresa cadastrada com sucesso';
         }
         $operador_id = $_POST['txtoperador_id'];
@@ -175,10 +187,10 @@ class Operador extends BaseController {
             }
             $operador_id = $this->operador_m->gravar();
 //            var_dump($empresa_p[0]->profissional_completo); die;
-            if($empresa_p[0]->profissional_completo == 't' && isset($_POST['txtconsulta'])){
-               $gravaprocedimentos = $this->operador_m->gravaprocedimentosoperadorescompleto($operador_id, $empresa_p); 
+            if ($empresa_p[0]->profissional_completo == 't' && isset($_POST['txtconsulta'])) {
+                $gravaprocedimentos = $this->operador_m->gravaprocedimentosoperadorescompleto($operador_id, $empresa_p);
             }
-            
+
             if ($operador_id != false) {
                 $data['mensagem'] = 'Operador cadastrado com sucesso.';
             } else {

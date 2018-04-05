@@ -123,7 +123,7 @@
 
                         <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $paciente_id ?>">Consultas</a></div></td>
                     <? } ?>
-                    <? if ($credito == 't' && ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 10)) { ?>
+                    <? if ($credito == 't' && ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 10 || $perfil_id == 11)) { ?>
                         <td width="100px;"><div class="bt_link_new"><a  href="<?= base_url() ?>ambulatorio/exametemp/listarcredito/<?= $paciente_id ?>">Credito</a></div></td>    
                     <? } ?> 
 

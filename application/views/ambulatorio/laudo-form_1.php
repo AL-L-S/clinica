@@ -290,8 +290,8 @@ if (count($pacs) > 0) {
                                             <option value=0 >selecione</option>
                                             <? foreach ($operadores as $value) : ?>
                                                 <option value="<?= $value->operador_id; ?>"<?
-                                            if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
-                                            endif;
+                                                if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
+                                                endif;
                                                 ?>><?= $value->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -310,8 +310,8 @@ if (count($pacs) > 0) {
                                             <option value="">Selecione</option>
                                             <? foreach ($operadores as $valor) : ?>
                                                 <option value="<?= $valor->operador_id; ?>"<?
-                                            if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
-                                            endif;
+                                                if (@$obj->_medico_parecer2 == $valor->operador_id):echo 'selected';
+                                                endif;
                                                 ?>><?= $valor->nome; ?></option>
                                                     <? endforeach; ?>
                                         </select>
@@ -344,17 +344,17 @@ if (count($pacs) > 0) {
                                         <label>situa&ccedil;&atilde;o</label>
                                         <select name="situacao" id="situacao" class="size2" onChange="muda(this)">
                                             <option value='DIGITANDO'<?
-                                        if (@$obj->_status == 'DIGITANDO'):echo 'selected';
-                                        endif;
-                                        ?> >DIGITANDO</option>
+                                            if (@$obj->_status == 'DIGITANDO'):echo 'selected';
+                                            endif;
+                                            ?> >DIGITANDO</option>
                                             <option value='REVISAR' <?
                                             if (@$obj->_status == 'REVISAR'):echo 'selected';
                                             endif;
-                                        ?> >REVISAR</option>
+                                            ?> >REVISAR</option>
                                             <option value='FINALIZADO' <?
                                             if (@$obj->_status == 'FINALIZADO'):echo 'selected';
                                             endif;
-                                        ?> >FINALIZADO</option>
+                                            ?> >FINALIZADO</option>
                                         </select>
                                     </div>
                                     <div>
@@ -673,70 +673,70 @@ if (count($pacs) > 0) {
                             <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
                             <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
                             <script type="text/javascript">
-                                                        jQuery('#rev').change(function () {
-                                                            if (this.checked) {
-                                                                var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
+                                                                jQuery('#rev').change(function () {
+                                                                    if (this.checked) {
+                                                                        var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
 //                                                            var tag += '';
 ////                                                           <input type="radio" name="OPCAO1" VALUE="op1"> opção1
 ////                                                            var tag += '';
 //                                                            jQuery("#Altura").mask("999", {placeholder: " "});
-                                                                jQuery(".dias").append(tag);
-                                                            } else {
-                                                                jQuery(".dias span").remove();
-                                                                jQuery(".dias input").remove();
-                                                            }
-                                                        });
-                                                        document.getElementById('titulosenha').style.display = "none";
-                                                        document.getElementById('senha').style.display = "none";
-
-                                                        $(document).ready(function () {
-                                                            $("body").keypress(function (event) {
-
-                                                                if (event.keyCode == 119)   // se a tecla apertada for 13 (enter)
-                                                                {
-                                                                    document.getElementById('Imprimir').click();
-                                                                }
-                                                                if (event.keyCode == 120)   // se a tecla apertada for 13 (enter)
-                                                                {
-                                                                    var combosituacao = document.getElementById("situacao");
-                                                                    combosituacao.selectedIndex = 2;
-                                                                    document.getElementById('titulosenha').style.display = "block";
-                                                                    document.getElementById('senha').style.display = "block";
-                                                                    document.form_laudo.senha.focus()
-                                                                }
-                                                            });
-                                                        });
-                                                        $(document).ready(function () {
-                                                            $('#sortable').sortable();
-                                                        });
-
-
-                                                        $(document).ready(function () {
-                                                            jQuery('#ficha_laudo').validate({
-                                                                rules: {
-                                                                    imagem: {
-                                                                        required: true
+                                                                        jQuery(".dias").append(tag);
+                                                                    } else {
+                                                                        jQuery(".dias span").remove();
+                                                                        jQuery(".dias input").remove();
                                                                     }
-                                                                },
-                                                                messages: {
-                                                                    imagem: {
-                                                                        required: "*"
-                                                                    }
-                                                                }
-                                                            });
-                                                        });
-
-
-
-                                                        function muda(obj) {
-                                                            if (obj.value == 'FINALIZADO') {
-                                                                document.getElementById('titulosenha').style.display = "block";
-                                                                document.getElementById('senha').style.display = "block";
-                                                            } else {
+                                                                });
                                                                 document.getElementById('titulosenha').style.display = "none";
                                                                 document.getElementById('senha').style.display = "none";
-                                                            }
-                                                        }
+
+                                                                $(document).ready(function () {
+                                                                    $("body").keypress(function (event) {
+
+                                                                        if (event.keyCode == 119)   // se a tecla apertada for 13 (enter)
+                                                                        {
+                                                                            document.getElementById('Imprimir').click();
+                                                                        }
+                                                                        if (event.keyCode == 120)   // se a tecla apertada for 13 (enter)
+                                                                        {
+                                                                            var combosituacao = document.getElementById("situacao");
+                                                                            combosituacao.selectedIndex = 2;
+                                                                            document.getElementById('titulosenha').style.display = "block";
+                                                                            document.getElementById('senha').style.display = "block";
+                                                                            document.form_laudo.senha.focus()
+                                                                        }
+                                                                    });
+                                                                });
+                                                                $(document).ready(function () {
+                                                                    $('#sortable').sortable();
+                                                                });
+
+
+                                                                $(document).ready(function () {
+                                                                    jQuery('#ficha_laudo').validate({
+                                                                        rules: {
+                                                                            imagem: {
+                                                                                required: true
+                                                                            }
+                                                                        },
+                                                                        messages: {
+                                                                            imagem: {
+                                                                                required: "*"
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                });
+
+
+
+                                                                function muda(obj) {
+                                                                    if (obj.value == 'FINALIZADO') {
+                                                                        document.getElementById('titulosenha').style.display = "block";
+                                                                        document.getElementById('senha').style.display = "block";
+                                                                    } else {
+                                                                        document.getElementById('titulosenha').style.display = "none";
+                                                                        document.getElementById('senha').style.display = "none";
+                                                                    }
+                                                                }
 
 
 <?
@@ -776,14 +776,14 @@ if (count($pacs) > 0) {
                                                                 {title: 'Example 2', inline: 'span', classes: 'example2'},
                                                                 {title: 'Table styles'},
                                                                 {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                                                            ],
+                                                                    ],
                                                             // Replace values for the template plugin
                                                             template_replace_values: {
                                                                 username: "Some User",
                                                                 staffid: "991234"
-                                                            }
+                                                                            }
 
-                                                        });
+                                                                });
 
                                                         tinyMCE.init({
                                                             // General options
@@ -817,107 +817,107 @@ if (count($pacs) > 0) {
                                                                 {title: 'Example 2', inline: 'span', classes: 'example2'},
                                                                 {title: 'Table styles'},
                                                                 {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                                                            ],
+                                                                    ],
                                                             // Replace values for the template plugin
                                                             template_replace_values: {
                                                                 username: "Some User",
                                                                 staffid: "991234"
-                                                            }
+                                                                            }
 
-                                                        });
+                                                                });
 
-                                                        $(function () {
-                                                            $('#exame').change(function () {
-                                                                if ($(this).val()) {
-                                                                    //$('#laudo').hide();
-                                                                    $('.carregando').show();
-                                                                    $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
-                                                                        options = "";
+                                                                $(function () {
+                                                                    $('#exame').change(function () {
+                                                                        if ($(this).val()) {
+                                                                            //$('#laudo').hide();
+                                                                            $('.carregando').show();
+                                                                            $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
+                                                                                options = "";
 
-                                                                        options += j[0].texto;
-                                                                        //                                                document.getElementById("laudo").value = options
+                                                                                options += j[0].texto;
+                                                                                //                                                document.getElementById("laudo").value = options
 
-                                                                        $('#laudo').val(options)
-                                                                        var ed = tinyMCE.get('laudo');
-                                                                        ed.setContent($('#laudo').val());
+                                                                                $('#laudo').val(options)
+                                                                                var ed = tinyMCE.get('laudo');
+                                                                                ed.setContent($('#laudo').val());
 
-                                                                        //$('#laudo').val(options);
-                                                                        //$('#laudo').html(options).show();
-                                                                        //                                                $('.carregando').hide();
-                                                                        //history.go(0) 
+                                                                                //$('#laudo').val(options);
+                                                                                //$('#laudo').html(options).show();
+                                                                                //                                                $('.carregando').hide();
+                                                                                //history.go(0) 
+                                                                            });
+                                                                        } else {
+                                                                            $('#laudo').html('value=""');
+                                                                        }
                                                                     });
-                                                                } else {
-                                                                    $('#laudo').html('value=""');
-                                                                }
-                                                            });
-                                                        });
+                                                                });
 
-                                                        $(function () {
-                                                            $('#linha').change(function () {
-                                                                if ($(this).val()) {
-                                                                    //$('#laudo').hide();
-                                                                    $('.carregando').show();
-                                                                    $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
-                                                                        options = "";
+                                                                $(function () {
+                                                                    $('#linha').change(function () {
+                                                                        if ($(this).val()) {
+                                                                            //$('#laudo').hide();
+                                                                            $('.carregando').show();
+                                                                            $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
+                                                                                options = "";
 
-                                                                        options += j[0].texto;
-                                                                        //                                                document.getElementById("laudo").value = $('#laudo').val() + options
-                                                                        $('#laudo').val() + options
-                                                                        var ed = tinyMCE.get('laudo');
-                                                                        ed.setContent($('#laudo').val());
-                                                                        //$('#laudo').html(options).show();
+                                                                                options += j[0].texto;
+                                                                                //                                                document.getElementById("laudo").value = $('#laudo').val() + options
+                                                                                $('#laudo').val() + options
+                                                                                var ed = tinyMCE.get('laudo');
+                                                                                ed.setContent($('#laudo').val());
+                                                                                //$('#laudo').html(options).show();
+                                                                            });
+                                                                        } else {
+                                                                            $('#laudo').html('value=""');
+                                                                        }
                                                                     });
-                                                                } else {
-                                                                    $('#laudo').html('value=""');
-                                                                }
-                                                            });
-                                                        });
+                                                                });
 
-                                                        $(function () {
-                                                            $("#linha2").autocomplete({
-                                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
-                                                                minLength: 1,
-                                                                focus: function (event, ui) {
-                                                                    $("#linha2").val(ui.item.label);
-                                                                    return false;
-                                                                },
-                                                                select: function (event, ui) {
-                                                                    $("#linha2").val(ui.item.value);
-                                                                    tinyMCE.triggerSave(true, true);
-                                                                    document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
-                                                                    $('#laudo').val() + ui.item.id
-                                                                    var ed = tinyMCE.get('laudo');
-                                                                    ed.setContent($('#laudo').val());
-                                                                    //$( "#laudo" ).val() + ui.item.id;
-                                                                    document.getElementById("linha2").value = ''
-                                                                    return false;
-                                                                }
-                                                            });
-                                                        });
-
-                                                        $(function (a) {
-                                                            $('#anteriores').change(function () {
-                                                                if ($(this).val()) {
-                                                                    //$('#laudo').hide();
-                                                                    $('.carregando').show();
-                                                                    $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
-                                                                        option = "";
-
-                                                                        option = i[0].texto;
-                                                                        tinyMCE.triggerSave();
-                                                                        document.getElementById("laudo").value = option
-                                                                        //$('#laudo').val(options);
-                                                                        //$('#laudo').html(options).show();
-                                                                        $('.carregando').hide();
-                                                                        history.go(0)
+                                                                $(function () {
+                                                                    $("#linha2").autocomplete({
+                                                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
+                                                                        minLength: 1,
+                                                                        focus: function (event, ui) {
+                                                                            $("#linha2").val(ui.item.label);
+                                                                            return false;
+                                                                        },
+                                                                        select: function (event, ui) {
+                                                                            $("#linha2").val(ui.item.value);
+                                                                            tinyMCE.triggerSave(true, true);
+                                                                            document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
+                                                                            $('#laudo').val() + ui.item.id
+                                                                            var ed = tinyMCE.get('laudo');
+                                                                            ed.setContent($('#laudo').val());
+                                                                            //$( "#laudo" ).val() + ui.item.id;
+                                                                            document.getElementById("linha2").value = ''
+                                                                            return false;
+                                                                        }
                                                                     });
-                                                                } else {
-                                                                    $('#laudo').html('value="texto"');
-                                                                }
-                                                            });
-                                                        });
-                                                        //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-                                                        $('.jqte-test').jqte();
+                                                                });
+
+                                                                $(function (a) {
+                                                                    $('#anteriores').change(function () {
+                                                                        if ($(this).val()) {
+                                                                            //$('#laudo').hide();
+                                                                            $('.carregando').show();
+                                                                            $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
+                                                                                option = "";
+
+                                                                                option = i[0].texto;
+                                                                                tinyMCE.triggerSave();
+                                                                                document.getElementById("laudo").value = option
+                                                                                //$('#laudo').val(options);
+                                                                                //$('#laudo').html(options).show();
+                                                                                $('.carregando').hide();
+                                                                                history.go(0)
+                                                                            });
+                                                                        } else {
+                                                                            $('#laudo').html('value="texto"');
+                                                                        }
+                                                                    });
+                                                                });
+                                                                //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+                                                                $('.jqte-test').jqte();
 
 
 
