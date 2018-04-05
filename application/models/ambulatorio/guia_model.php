@@ -2677,6 +2677,22 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function relatoriopacientecpfvalido() {
+        $this->db->select('paciente_id,
+                           p.nome as paciente,
+                           p.nascimento,
+                           p.nome_mae,
+                           p.cpf
+                           ');
+        $this->db->from('tb_paciente p');
+
+//        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("p.ativo", 't');
+        $this->db->where("p.cpf !=", '');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function relatorioperfilpaciente() {
         $this->db->select('
                            distinct(p.paciente_id), 

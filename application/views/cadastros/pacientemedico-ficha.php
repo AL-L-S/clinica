@@ -31,10 +31,6 @@
             <div>
                 <label>Sexo</label>
                 <select name="sexo" id="txtSexo" class="size1" required="">
-                    <option value="" <?
-                    if (@$obj->_sexo == ""):echo 'selected';
-                    endif;
-                    ?>>Selecione</option>
                     <option value="M" <?
                     if (@$obj->_sexo == "M"):echo 'selected';
                     endif;
@@ -43,6 +39,10 @@
                     if (@$obj->_sexo == "F"):echo 'selected';
                     endif;
                     ?>>Feminino</option>
+                    <option value="O" <?
+                    if (@$obj->_sexo == "O"):echo 'selected';
+                    endif;
+                    ?>>Outro</option>
                 </select>
 
             </div>

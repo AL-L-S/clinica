@@ -262,7 +262,14 @@ $teste = $diff->format('%Ya %mm %dd');
                         <td><span class="dadosTitulo">Sala:</span> <?= @$obj->_sala ?></td>
                     </tr>
                     <tr>
-                        <td><span class="dadosTitulo">Sexo:</span> <?= (@$obj->_sexo == "F") ? "Feminino" : "Masculino" ?></td>
+                        <td><span class="dadosTitulo">Sexo:</span> <?
+                        if (@$obj->_sexo == "M"):echo 'Masculino';
+                        endif;
+                        if (@$obj->_sexo == "F"):echo 'Feminino';
+                        endif;
+                        if (@$obj->_sexo == "O"):echo 'Outro';
+                        endif;
+                        ?></td>
                         <td><span class="dadosTitulo">Convenio:</span> <?= @$obj->_convenio; ?></td>
                         <td><span class="dadosTitulo">Telefone:</span> <?= @$obj->_telefone ?></td>
                     </tr>

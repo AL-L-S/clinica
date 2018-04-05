@@ -3465,16 +3465,16 @@ class Laudo extends BaseController {
 
                 if ($impressao_tipo == 2) {
                     foreach ($listarexame as $item) {
-                        
+
 
                         if ($item->paciente_id !== $paciente_dif) {
-                            
+
                             $data_atual = date('Y-m-d');
                             $data1 = new DateTime($data_atual);
                             $data2 = new DateTime($item->nascimento);
                             $intervalo = $data1->diff($data2);
                             $teste = $intervalo->y;
-                            
+
                             $sl_cod_doc = $item->ambulatorio_laudo_id;
                             if (!is_dir($origem . '/' . $convenio)) {
                                 mkdir($origem . '/' . $convenio);
@@ -3879,7 +3879,7 @@ class Laudo extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $this->novo($data);
     }
-    
+
     function multifuncaomedicointegracao() {
         set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
         ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão 
@@ -3887,18 +3887,16 @@ class Laudo extends BaseController {
         $data['integracao'] = $this->laudo->listarlaudosintegracaotodos();
         if (count($data['integracao']) > 0) {
             $laudos = $this->laudo->atualizacaolaudosintegracaotodos();
-            
-            foreach($laudos as $item){
+
+            foreach ($laudos as $item) {
                 $dados = $this->laudo->listardadoslaudogravarxml($item);
-                
+
                 $this->gerarxmlsalvar($dados[0]->ambulatorio_laudo_id, $dados[0]->exame_id, $dados[0]->sala_id);
                 sleep(2);
-                
             }
         }
     }
 
-    
     function gravarlaudo($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $sala_id) {
 
         if ($_POST['situacao'] == 'FINALIZADO') {
@@ -4048,7 +4046,7 @@ class Laudo extends BaseController {
 
         $servicoemail = $this->session->userdata('servicoemail');
         if ($servicoemail == 't') {
-            
+
             $dados = $this->laudo->listardadoservicoemail($ambulatorio_laudo_id, $exame_id);
 //            var_dump($dados); die;
             if ($dados['enviado'] != 't' && $dados['pacienteEmail'] != '' && $dados['mensagem'] != '') {
@@ -4106,6 +4104,14 @@ class Laudo extends BaseController {
     function anexarimagem($ambulatorio_laudo_id) {
 
         $this->load->helper('directory');
+
+        if (!is_dir("./upload/consulta")) {
+            mkdir("./upload/consulta");
+            $destino = "./upload/consulta";
+            chmod($destino, 0777);
+        }
+
+
         $data['arquivo_pasta'] = directory_map("./upload/consulta/$ambulatorio_laudo_id/");
         //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
         if ($data['arquivo_pasta'] != false) {
@@ -4133,7 +4139,7 @@ class Laudo extends BaseController {
 
             //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
             $config['upload_path'] = "./upload/consulta/" . $ambulatorio_laudo_id . "/";
-            $config['allowed_types'] = 'gif|jpg|BMP|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar|xml|txt';
+            $config['allowed_types'] = 'gif|jpg|BMP|bmp|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar|xml|txt';
             $config['max_size'] = '0';
             $config['overwrite'] = FALSE;
             $config['encrypt_name'] = FALSE;

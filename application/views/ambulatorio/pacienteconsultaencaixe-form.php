@@ -29,7 +29,7 @@
 
                 <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
             </div>
-                        <div>
+            <div>
                 <label>Sexo</label>
                 <select name="sexo" id="txtSexo" class="size2">
                     <option value="M" <?
@@ -40,6 +40,10 @@
                     if ($paciente['0']->sexo == "F"):echo 'selected';
                     endif;
                     ?>>Feminino</option>
+                    <option value="O" <?
+                    if ($paciente['0']->sexo == "O"):echo 'selected';
+                    endif;
+                    ?>>Outros</option>
                 </select>
             </div>
         </fieldset>
@@ -51,7 +55,7 @@
                 <input type="text"  id="data_ficha" name="data_ficha" class="size1"  />
                 <input type="hidden" name="txtpaciente_id"  value="<?= $paciente_id; ?>" />
             </div>
-                        <div>
+            <div>
                 <label>Horarios</label>
                 <input type="text" id="horarios" alt="time" class="size1" name="horarios" />
             </div>
@@ -69,8 +73,8 @@
                 <label>Observa&ccedil;&otilde;es</label>
                 <input type="text" id="observacoes" class="size3" name="observacoes" />
             </div>
-            </fieldset>
-            <button type="submit" name="btnEnviar">Adicionar</button>
+        </fieldset>
+        <button type="submit" name="btnEnviar">Adicionar</button>
     </form>
 
 
@@ -80,56 +84,56 @@
 <script type="text/javascript">
 
 
-                            $(function() {
-                                $("#data_ficha").datepicker({
-                                    autosize: true,
-                                    changeYear: true,
-                                    changeMonth: true,
-                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                    buttonImage: '<?= base_url() ?>img/form/date.png',
-                                    dateFormat: 'dd/mm/yy'
-                                });
-                            });
-                            $(function() {
-                                $("#txtNascimento").datepicker({
-                                    autosize: true,
-                                    changeYear: true,
-                                    changeMonth: true,
-                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                    dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                    buttonImage: '<?= base_url() ?>img/form/date.png',
-                                    dateFormat: 'dd/mm/yy'
-                                });
-                            });
+                    $(function () {
+                        $("#data_ficha").datepicker({
+                            autosize: true,
+                            changeYear: true,
+                            changeMonth: true,
+                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                            dateFormat: 'dd/mm/yy'
+                        });
+                    });
+                    $(function () {
+                        $("#txtNascimento").datepicker({
+                            autosize: true,
+                            changeYear: true,
+                            changeMonth: true,
+                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                            dateFormat: 'dd/mm/yy'
+                        });
+                    });
 
-                            $(function() {
-                                $("#accordion").accordion();
-                            });
+                    $(function () {
+                        $("#accordion").accordion();
+                    });
 
 
-                            $(document).ready(function() {
-                                jQuery('#form_exametemp').validate({
-                                    rules: {
-                                        data_ficha: {
-                                            required: true
-                                        },
-                                        horarios: {
-                                            required: true,
-                                            minlength: 5
-                                        }
-                                    },
-                                    messages: {
-                                        data_ficha: {
-                                            required: "*"
-                                        },
-                                        horarios: {
-                                            required: "*",
-                                            minlength: "!"
-                                        }
-                                    }
-                                });
-                            });
+                    $(document).ready(function () {
+                        jQuery('#form_exametemp').validate({
+                            rules: {
+                                data_ficha: {
+                                    required: true
+                                },
+                                horarios: {
+                                    required: true,
+                                    minlength: 5
+                                }
+                            },
+                            messages: {
+                                data_ficha: {
+                                    required: "*"
+                                },
+                                horarios: {
+                                    required: "*",
+                                    minlength: "!"
+                                }
+                            }
+                        });
+                    });
 
 
 </script>

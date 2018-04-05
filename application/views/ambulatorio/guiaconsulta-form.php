@@ -204,6 +204,8 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                endif;
                                if ($paciente['0']->sexo == "F"):echo 'Feminino';
                                endif;
+                               if ($paciente['0']->sexo == "O"):echo 'Outro';
+                               endif;
                                ?>" readonly="true">
                     </div>
 

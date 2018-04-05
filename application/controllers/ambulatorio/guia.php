@@ -1254,7 +1254,7 @@ class Guia extends BaseController {
                 redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id");
             }
         } else {
-             $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
+            $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
             $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
             if (count($percentual) == 0) {
                 $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
@@ -2663,6 +2663,12 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatoriopacienteduplicado', $data);
     }
 
+    function relatoriopacientecpfvalido() {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriopacientecpfvalido', $data);
+    }
+
     function relatorioperfilpaciente() {
         $data['convenio'] = $this->convenio->listardados();
         $data['empresa'] = $this->guia->listarempresas();
@@ -2682,12 +2688,12 @@ class Guia extends BaseController {
         $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
         $data['txtdata_fim'] = $_POST['txtdata_fim'];
         $data['relatorio'] = $this->guia->gerarelatoriosituacaoatendimento();
-        if($_POST['empresa'] != ""){
+        if ($_POST['empresa'] != "") {
             $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         } else {
             $data['empresa'] = array();
         }
-        
+
         $this->load->View('ambulatorio/impressaorelatoriosituacaoatendimento', $data);
     }
 
@@ -3183,6 +3189,31 @@ class Guia extends BaseController {
             $data['mensagem'] = 'Insira um periodo válido.';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "/ambulatorio/guia/relatoriopacientewhatsapp");
+        }
+    }
+
+    function gerarelatoriopacientecpfvalido() {
+
+        $data['relatorio'] = $this->guia->relatoriopacientecpfvalido();
+
+//        $this->load->View('ambulatorio/impressaorelatoriopacientecpfvalido', $data);
+        if ($_POST['planilha'] == 'SIM') {
+            $html = $this->load->View('ambulatorio/impressaorelatoriopacientecpfvalido', $data, true);
+//            $filename = "Relatorio Paciente CPF Clinica Med";
+            
+//            $html = $this->load->View('ambulatorio/impressaorelatorioconferencia', $data, true);
+            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+            header("Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT");
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Pragma: no-cache");
+            header("Content-type: application/x-msexcel");
+            header("Content-Disposition: attachment; filename=\"Relatorio.xls\"");
+            header("Content-Description: PHP Generated Data");
+            // Envia o conteúdo do arquivo
+            echo $html;
+            exit;
+        } else {
+            $this->load->View('ambulatorio/impressaorelatoriopacientecpfvalido', $data);
         }
     }
 

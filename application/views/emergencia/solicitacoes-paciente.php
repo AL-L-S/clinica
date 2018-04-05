@@ -123,12 +123,12 @@
 
                         <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $paciente_id ?>">Consultas</a></div></td>
                     <? } ?>
-                    <?if($credito == 't' && ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 10)){?>
-                    <td width="100px;"><div class="bt_link_new"><a  href="<?= base_url() ?>ambulatorio/exametemp/listarcredito/<?= $paciente_id ?>">Credito</a></div></td>    
-                    <?}?> 
-                    
-                       
-                    
+                    <? if ($credito == 't' && ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 10)) { ?>
+                        <td width="100px;"><div class="bt_link_new"><a  href="<?= base_url() ?>ambulatorio/exametemp/listarcredito/<?= $paciente_id ?>">Credito</a></div></td>    
+                    <? } ?> 
+
+
+
                     <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>cadastros/pacientes/cancelamento/<?= $paciente_id ?>" target="_blank">Cancelamentos</a></div></td>
 
 
@@ -166,6 +166,10 @@
                         if ($paciente['0']->sexo == "F"):echo 'selected';
                         endif;
                         ?>>Feminino</option>
+                        <option value="O" <?
+                        if ($paciente['0']->sexo == "O"):echo 'selected';
+                        endif;
+                        ?>>Outro</option>
                     </select>
                 </div>
 
@@ -173,11 +177,11 @@
                     <label>Nascimento</label>
                     <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
                 </div>
-                
+
                 <div>
                     <label>Idade</label>
-                    <? 
-                    if($paciente['0']->nascimento != '') { 
+                    <?
+                    if ($paciente['0']->nascimento != '') {
                         $data_atual = date('Y-m-d');
                         $data1 = new DateTime($data_atual);
                         $data2 = new DateTime($paciente[0]->nascimento);
@@ -232,27 +236,27 @@
 
                     <input type="text" name="rg"  id="txtDocumento" class="texto04" maxlength="20" value="<?= $paciente['0']->rg; ?>" readonly/>
                 </div>
-<!--                <div>
-                    <label>UF Expedidor</label>
-
-
-                    <input type="text" id="txtuf_rg" class="texto02" name="uf_rg" value="<?= $paciente['0']->uf_rg; ?>" readonly/>
-                </div>
-                <div>
-                    <div>
-                        <label>Data Emiss&atilde;o</label>
-
-
-                        <input type="text" name="data_emissao" id="txtDataEmissao" class="texto02" alt="date" value="<?php echo substr($paciente['0']->data_emissao, 8, 2) . '/' . substr($paciente['0']->data_emissao, 5, 2) . '/' . substr($paciente['0']->data_emissao, 0, 4); ?>" readonly/>
-                    </div>
-
-                    <div>
-
-                        <label>T. Eleitor</label>
-
-
-                        <input type="text"   name="titulo_eleitor" id="txtTituloEleitor" class="texto02" value="<?= $paciente['0']->titulo_eleitor; ?>" readonly/>
-                    </div>-->
+                <!--                <div>
+                                    <label>UF Expedidor</label>
+                
+                
+                                    <input type="text" id="txtuf_rg" class="texto02" name="uf_rg" value="<?= $paciente['0']->uf_rg; ?>" readonly/>
+                                </div>
+                                <div>
+                                    <div>
+                                        <label>Data Emiss&atilde;o</label>
+                
+                
+                                        <input type="text" name="data_emissao" id="txtDataEmissao" class="texto02" alt="date" value="<?php echo substr($paciente['0']->data_emissao, 8, 2) . '/' . substr($paciente['0']->data_emissao, 5, 2) . '/' . substr($paciente['0']->data_emissao, 0, 4); ?>" readonly/>
+                                    </div>
+                
+                                    <div>
+                
+                                        <label>T. Eleitor</label>
+                
+                
+                                        <input type="text"   name="titulo_eleitor" id="txtTituloEleitor" class="texto02" value="<?= $paciente['0']->titulo_eleitor; ?>" readonly/>
+                                    </div>-->
 
 
 

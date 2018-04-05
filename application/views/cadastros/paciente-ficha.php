@@ -65,7 +65,25 @@
                     <option value="O" <?
                     if (@$obj->_sexo == "O"):echo 'selected';
                     endif;
-                    ?>>Outros</option>
+                    ?>>Outro</option>
+                </select>
+
+            </div>
+            <div id="sexo_real_div" style="display: none;">
+                <label>Sexo Inicial</label>
+                <select name="sexo_real" id="sexo_real" class="size1">
+                    <option value="" <?
+                    if (@$obj->_sexo_real == ""):echo 'selected';
+                    endif;
+                    ?>>Selecione</option>
+                    <option value="M" <?
+                    if (@$obj->_sexo_real == "M"):echo 'selected';
+                    endif;
+                    ?>>Masculino</option>
+                    <option value="F" <?
+                    if (@$obj->_sexo_real == "F"):echo 'selected';
+                    endif;
+                    ?>>Feminino</option>
                 </select>
 
             </div>
@@ -320,29 +338,29 @@
                 <select name="raca_cor" id="txtRacaCor" class="size2">
 
                     <option value=0  <?
-                            if (@$obj->_raca_cor == 0):echo 'selected';
-                            endif;
-                            ?>>Selecione</option>
+                    if (@$obj->_raca_cor == 0):echo 'selected';
+                    endif;
+                    ?>>Selecione</option>
                     <option value=1 <?
-                            if (@$obj->_raca_cor == 1):echo 'selected';
-                            endif;
-                            ?>>Branca</option>
+                    if (@$obj->_raca_cor == 1):echo 'selected';
+                    endif;
+                    ?>>Branca</option>
                     <option value=2 <?
-                            if (@$obj->_raca_cor == 2):echo 'selected';
-                            endif;
-                            ?>>Amarela</option>
+                    if (@$obj->_raca_cor == 2):echo 'selected';
+                    endif;
+                    ?>>Amarela</option>
                     <option value=3 <?
-                            if (@$obj->_raca_cor == 3):echo 'selected';
-                            endif;
-                            ?>>Preta</option>
+                    if (@$obj->_raca_cor == 3):echo 'selected';
+                    endif;
+                    ?>>Preta</option>
                     <option value=4 <?
-                            if (@$obj->_raca_cor == 4):echo 'selected';
-                            endif;
-                            ?>>Parda</option>
+                    if (@$obj->_raca_cor == 4):echo 'selected';
+                    endif;
+                    ?>>Parda</option>
                     <option value=5 <?
-                            if (@$obj->_raca_cor == 5):echo 'selected';
-                            endif;
-                            ?>>Ind&iacute;gena</option>
+                    if (@$obj->_raca_cor == 5):echo 'selected';
+                    endif;
+                    ?>>Ind&iacute;gena</option>
                 </select>
             </div>
             <div>
@@ -351,29 +369,29 @@
 
                 <select name="estado_civil_id" id="txtEstadoCivil" class="size2" selected="<?= @$obj->_estado_civil; ?>">
                     <option value=0 <?
-                            if (@$obj->_estado_civil == 0):echo 'selected';
-                            endif;
-                            ?>>Selecione</option>
+                    if (@$obj->_estado_civil == 0):echo 'selected';
+                    endif;
+                    ?>>Selecione</option>
                     <option value=1 <?
-                            if (@$obj->_estado_civil == 1):echo 'selected';
-                            endif;
-                            ?>>Solteiro</option>
+                    if (@$obj->_estado_civil == 1):echo 'selected';
+                    endif;
+                    ?>>Solteiro</option>
                     <option value=2 <?
-                            if (@$obj->_estado_civil == 2):echo 'selected';
-                            endif;
-                            ?>>Casado</option>
+                    if (@$obj->_estado_civil == 2):echo 'selected';
+                    endif;
+                    ?>>Casado</option>
                     <option value=3 <?
-                            if (@$obj->_estado_civil == 3):echo 'selected';
-                            endif;
-                            ?>>Divorciado</option>
+                    if (@$obj->_estado_civil == 3):echo 'selected';
+                    endif;
+                    ?>>Divorciado</option>
                     <option value=4 <?
-                            if (@$obj->_estado_civil == 4):echo 'selected';
-                            endif;
-                            ?>>Viuvo</option>
+                    if (@$obj->_estado_civil == 4):echo 'selected';
+                    endif;
+                    ?>>Viuvo</option>
                     <option value=5 <?
-                            if (@$obj->_estado_civil == 5):echo 'selected';
-                            endif;
-                            ?>>Outros</option>
+                    if (@$obj->_estado_civil == 5):echo 'selected';
+                    endif;
+                    ?>>Outros</option>
                 </select>
             </div>
             <div>
@@ -381,41 +399,41 @@
 
                 <select name="escolaridade" id="escolaridade" class="size2" selected="<?= @$obj->_escolaridade_id; ?>">
                     <option value=0 <?
-                            if (@$obj->_escolaridade_id == 0):echo 'selected';
-                            endif;
-                            ?>>Selecione</option>
+                    if (@$obj->_escolaridade_id == 0):echo 'selected';
+                    endif;
+                    ?>>Selecione</option>
                     <option value=1 <?
-                            if (@$obj->_escolaridade_id == 1):echo 'selected';
-                            endif;
-                            ?>>Fundamental-Incompleto </option>
+                    if (@$obj->_escolaridade_id == 1):echo 'selected';
+                    endif;
+                    ?>>Fundamental-Incompleto </option>
                     <option value=2 <?
-                            if (@$obj->_escolaridade_id == 2):echo 'selected';
-                            endif;
-                            ?>>Fundamental-Completo</option>
+                    if (@$obj->_escolaridade_id == 2):echo 'selected';
+                    endif;
+                    ?>>Fundamental-Completo</option>
 
                     <option value=3 <?
-                            if (@$obj->_escolaridade_id == 3):echo 'selected';
-                            endif;
-                            ?>>Médio 
+                    if (@$obj->_escolaridade_id == 3):echo 'selected';
+                    endif;
+                    ?>>Médio 
                         -
                         Incompleto</option>
                     <option value=4 <?
-                            if (@$obj->_escolaridade_id == 4):echo 'selected';
-                            endif;
-                            ?>>Médio 
+                    if (@$obj->_escolaridade_id == 4):echo 'selected';
+                    endif;
+                    ?>>Médio 
                         -
                         Completo
                     </option>
                     <option value=5 <?
-                            if (@$obj->_escolaridade_id == 5):echo 'selected';
-                            endif;
-                            ?>>Superior 
+                    if (@$obj->_escolaridade_id == 5):echo 'selected';
+                    endif;
+                    ?>>Superior 
                         -
                         Incompleto</option>
                     <option value=6 <?
-                            if (@$obj->_escolaridade_id == 6):echo 'selected';
-                            endif;
-                            ?>>Superior-Completo </option>
+                    if (@$obj->_escolaridade_id == 6):echo 'selected';
+                    endif;
+                    ?>>Superior-Completo </option>
 
 
                 </select>
@@ -618,6 +636,25 @@
 
 
     $(function () {
+        $('#txtSexo').change(function () {
+//            alert($(this).val());
+            if ($(this).val() == 'O') {
+                $("#sexo_real_div").show();
+
+            } else {
+                $("#sexo_real_div").hide();
+            }
+        });
+    });
+
+    if ($('#txtSexo').val() == 'O') {
+        $("#sexo_real_div").show();
+
+    } else {
+        $("#sexo_real_div").hide();
+    }
+
+    $(function () {
         $('#txtconvenio').change(function () {
             if ($(this).val()) {
                 $('.carregando').show();
@@ -732,7 +769,7 @@
                             $.getJSON('<?= base_url() ?>autocomplete/cidadeibge', {ibge: dados.ibge}, function (j) {
                                 $("#txtCidade").val(j[0].value);
                                 $("#txtCidadeID").val(j[0].id);
-                                
+
 //                                console.log(j);
                             });
 //                            console.log(dados);

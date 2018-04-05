@@ -19,13 +19,17 @@
 
                 <select name="sexo" id="txtSexo" class="size1">
                     <option value="M" <?
-if (@$obj->_sexo == "M"):echo 'selected';
-endif;
-?>>Masculino</option>
+                    if (@$obj->_sexo == "M"):echo 'selected';
+                    endif;
+                    ?>>Masculino</option>
                     <option value="F" <?
-                            if (@$obj->_sexo == "F"):echo 'selected';
-                            endif;
-?>>Feminino</option>
+                    if (@$obj->_sexo == "F"):echo 'selected';
+                    endif;
+                    ?>>Feminino</option>
+                    <option value="O" <?
+                    if (@$obj->_sexo == "O"):echo 'selected';
+                    endif;
+                    ?>>Outro</option>
                 </select>
             </div>
 
@@ -129,9 +133,10 @@ endif;
                     $listaLogradouro = $this->paciente->listaTipoLogradouro($_GET);
                     foreach ($listaLogradouro as $item) {
                         ?>
-                        
-                        <option   value =<?php echo $item->tipo_logradouro_id; ?> <? if (@$obj->_tipoLogradouro == $item->tipo_logradouro_id):echo 'selected';
-                    endif;
+
+                        <option   value =<?php echo $item->tipo_logradouro_id; ?> <?
+                        if (@$obj->_tipoLogradouro == $item->tipo_logradouro_id):echo 'selected';
+                        endif;
                         ?>><?php echo $item->descricao; ?></option>
                                   <?php
                               }
@@ -251,10 +256,10 @@ endif;
                     $listaconvenio = $this->paciente->listaconvenio($_GET);
                     foreach ($listaconvenio as $item) {
                         ?>
-                        
+
                         <option   value =<?php echo $item->convenio_id; ?> <?
-                    if (@$obj->_convenio == $item->convenio_id):echo 'selected';
-                    endif;
+                        if (@$obj->_convenio == $item->convenio_id):echo 'selected';
+                        endif;
                         ?>><?php echo $item->descricao; ?></option>
                                   <?php
                               }
@@ -274,29 +279,29 @@ endif;
                 <select name="raca_cor" id="txtRacaCor" class="size2">
 
                     <option value=0  <?
-                              if (@$obj->_raca_cor == 0):echo 'selected';
-                              endif;
-                              ?>>Selecione</option>
+                    if (@$obj->_raca_cor == 0):echo 'selected';
+                    endif;
+                    ?>>Selecione</option>
                     <option value=1 <?
-                            if (@$obj->_raca_cor == 1):echo 'selected';
-                            endif;
-                              ?>>Branca</option>
+                    if (@$obj->_raca_cor == 1):echo 'selected';
+                    endif;
+                    ?>>Branca</option>
                     <option value=2 <?
-                            if (@$obj->_raca_cor == 2):echo 'selected';
-                            endif;
-                              ?>>Amarela</option>
+                    if (@$obj->_raca_cor == 2):echo 'selected';
+                    endif;
+                    ?>>Amarela</option>
                     <option value=3 <?
-                            if (@$obj->_raca_cor == 3):echo 'selected';
-                            endif;
-                              ?>>Preta</option>
+                    if (@$obj->_raca_cor == 3):echo 'selected';
+                    endif;
+                    ?>>Preta</option>
                     <option value=4 <?
-                            if (@$obj->_raca_cor == 4):echo 'selected';
-                            endif;
-                              ?>>Parda</option>
+                    if (@$obj->_raca_cor == 4):echo 'selected';
+                    endif;
+                    ?>>Parda</option>
                     <option value=5 <?
-                            if (@$obj->_raca_cor == 5):echo 'selected';
-                            endif;
-                              ?>>Ind&iacute;gena</option>
+                    if (@$obj->_raca_cor == 5):echo 'selected';
+                    endif;
+                    ?>>Ind&iacute;gena</option>
                 </select>
             </div>
             <div>
@@ -305,29 +310,29 @@ endif;
 
                 <select name="estado_civil_id" id="txtEstadoCivil" class="size2" selected="<?= @$obj->_estado_civil; ?>">
                     <option value=0 <?
-                            if (@$obj->_estado_civil == 0):echo 'selected';
-                            endif;
-                              ?>>Selecione</option>
+                    if (@$obj->_estado_civil == 0):echo 'selected';
+                    endif;
+                    ?>>Selecione</option>
                     <option value=1 <?
-                            if (@$obj->_estado_civil == 1):echo 'selected';
-                            endif;
-                              ?>>Solteiro</option>
+                    if (@$obj->_estado_civil == 1):echo 'selected';
+                    endif;
+                    ?>>Solteiro</option>
                     <option value=2 <?
-                            if (@$obj->_estado_civil == 2):echo 'selected';
-                            endif;
-                              ?>>Casado</option>
+                    if (@$obj->_estado_civil == 2):echo 'selected';
+                    endif;
+                    ?>>Casado</option>
                     <option value=3 <?
-                            if (@$obj->_estado_civil == 3):echo 'selected';
-                            endif;
-                              ?>>Divorciado</option>
+                    if (@$obj->_estado_civil == 3):echo 'selected';
+                    endif;
+                    ?>>Divorciado</option>
                     <option value=4 <?
-                            if (@$obj->_estado_civil == 4):echo 'selected';
-                            endif;
-                              ?>>Viuvo</option>
+                    if (@$obj->_estado_civil == 4):echo 'selected';
+                    endif;
+                    ?>>Viuvo</option>
                     <option value=5 <?
-                            if (@$obj->_estado_civil == 5):echo 'selected';
-                            endif;
-                              ?>>Outros</option>
+                    if (@$obj->_estado_civil == 5):echo 'selected';
+                    endif;
+                    ?>>Outros</option>
                 </select>
             </div>
         </fieldset>
@@ -345,81 +350,81 @@ endif;
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-     
 
 
-    $(function() {
-        $( "#txtCidade" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
-            minLength: 3,
-            focus: function( event, ui ) {
-                $( "#txtCidade" ).val( ui.item.label );
-                return false;
-            },
-            select: function( event, ui ) {
-                $( "#txtCidade" ).val( ui.item.value );
-                $( "#txtCidadeID" ).val( ui.item.id );
-                return false;
-            }
-        });
-    });
-    $(function() {
-        $( "#txtEstado" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=estado",
-            minLength: 2,
-            focus: function( event, ui ) {
-                $( "#txtEstado" ).val( ui.item.label );
-                return false;
-            },
-            select: function( event, ui ) {
-                $( "#txtEstado" ).val( ui.item.value );
-                $( "#txtEstadoID" ).val( ui.item.id );
-                return false;
-            }
-        });
-    });
+
+                    $(function () {
+                        $("#txtCidade").autocomplete({
+                            source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
+                            minLength: 3,
+                            focus: function (event, ui) {
+                                $("#txtCidade").val(ui.item.label);
+                                return false;
+                            },
+                            select: function (event, ui) {
+                                $("#txtCidade").val(ui.item.value);
+                                $("#txtCidadeID").val(ui.item.id);
+                                return false;
+                            }
+                        });
+                    });
+                    $(function () {
+                        $("#txtEstado").autocomplete({
+                            source: "<?= base_url() ?>index.php?c=autocomplete&m=estado",
+                            minLength: 2,
+                            focus: function (event, ui) {
+                                $("#txtEstado").val(ui.item.label);
+                                return false;
+                            },
+                            select: function (event, ui) {
+                                $("#txtEstado").val(ui.item.value);
+                                $("#txtEstadoID").val(ui.item.id);
+                                return false;
+                            }
+                        });
+                    });
 
 
-    $(document).ready(function(){
-        jQuery('#form_paciente').validate( {
-            rules: {
-                nome: {
-                    required: true,
-                    minlength: 3
-                },
-                endereco: {
-                    required: true
-                },
-                cep: {
-                    required: true
-                },
-                cns: {
-                    maxLength:15
-                }, rg: {
-                    maxLength:20
-                }
-   
-            },
-            messages: {
-                nome: {
-                    required: "*",
-                    minlength: "*"
-                },
-                endereco: {
-                    required: "*"
-                },
-                cep: {
-                    required: "*"
-                },
-                cns: {
-                    required: "Tamanho m&acute;ximo do campo CNS é de 15 caracteres"
-                },
-                rg: {
-                    maxlength: "Tamanho m&acute;ximo do campo RG é de 20 caracteres"
-                }
-            }
-        });
-    });
+                    $(document).ready(function () {
+                        jQuery('#form_paciente').validate({
+                            rules: {
+                                nome: {
+                                    required: true,
+                                    minlength: 3
+                                },
+                                endereco: {
+                                    required: true
+                                },
+                                cep: {
+                                    required: true
+                                },
+                                cns: {
+                                    maxLength: 15
+                                }, rg: {
+                                    maxLength: 20
+                                }
+
+                            },
+                            messages: {
+                                nome: {
+                                    required: "*",
+                                    minlength: "*"
+                                },
+                                endereco: {
+                                    required: "*"
+                                },
+                                cep: {
+                                    required: "*"
+                                },
+                                cns: {
+                                    required: "Tamanho m&acute;ximo do campo CNS é de 15 caracteres"
+                                },
+                                rg: {
+                                    maxlength: "Tamanho m&acute;ximo do campo RG é de 20 caracteres"
+                                }
+                            }
+                        });
+                    });
 
 
 

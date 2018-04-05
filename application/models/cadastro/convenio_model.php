@@ -1221,7 +1221,7 @@ class Convenio_model extends Model {
                         qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
                         qtdeuco, valoruco, valortotal, ativo, '$horario', $operador_id, 
                         data_atualizacao, operador_atualizacao
-                        FROM ponto.tb_procedimento_convenio
+                        FROM ponto.tb_procedimento_convenio pc
                         WHERE convenio_id = $convenio
                         AND pc.ativo = 't'
                         AND pc.procedimento_tuss_id NOT IN (

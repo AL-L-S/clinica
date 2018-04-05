@@ -27,7 +27,12 @@
                     
                     <div>
                         <label>Sexo</label>
-                        <input type="text" id="sexo" name="sexo"  class="texto09" value="<?=@$paciente[0]->sexo == 'M'? "Masculino": "Feminino"; ?>" readonly/>
+                        <input type="text" id="sexo" name="sexo"  class="texto09" value="<?if (@$paciente[0]->sexo == "M"):echo 'Masculino';
+                    endif;
+                    if (@$paciente[0]->sexo == "F"):echo 'Feminino';
+                    endif;
+                    if (@$paciente[0]->sexo == "O"):echo 'Outro';
+                    endif; ?>" readonly/>
                     </div> 
                     
                      <div>

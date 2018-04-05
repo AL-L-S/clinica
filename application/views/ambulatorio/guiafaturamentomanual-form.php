@@ -29,6 +29,8 @@
                         endif;
                         if ($paciente['0']->sexo == "F"):echo 'Feminino';
                         endif;
+                        if ($paciente['0']->sexo == "O"):echo 'Outro';
+                        endif;
                         ?>" readonly=""/>
                     </div>
 

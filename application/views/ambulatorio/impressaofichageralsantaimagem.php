@@ -23,7 +23,7 @@ if ($sexo == "M") {
 } elseif ($sexo == "F") {
     $sexopaciente = "Feminino";
 } else {
-    $sexopaciente = 'Não Informado';
+    $sexopaciente = "Outro";
 }
 $dataFuturo = date("Y-m-d");
 $dataAtual = $paciente['0']->nascimento;

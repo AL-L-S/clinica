@@ -75,6 +75,7 @@
             $indicacao = "";
             $masculino = 0;
             $feminino = 0;
+            $sexo_outro = 0;
             $solteiro = 0;
             $casado = 0;
             $divorciado = 0;
@@ -133,9 +134,12 @@
                         if ($item->sexo == "M") {
                             echo 'Masculino';
                             $masculino ++;
-                        } else {
+                        } elseif($item->sexo == "F") {
                             $feminino ++;
                             echo 'Feminino';
+                        }else{
+                            $sexo_outro ++;
+                            echo 'Outro';
                         }
                         ?></td>
                     

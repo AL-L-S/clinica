@@ -30,12 +30,18 @@
                 <div>
                     <label>Sexo</label>
                     <select name="sexo" id="txtSexo" class="size2">
-                        <option value="M" <? if ($paciente['0']->sexo == "M"):echo 'selected';
-endif;
-?>>Masculino</option>
-                        <option value="F" <? if ($paciente['0']->sexo == "F"):echo 'selected';
-                                endif;
-?>>Feminino</option>
+                        <option value="M" <?
+                        if ($paciente['0']->sexo == "M"):echo 'selected';
+                        endif;
+                        ?>>Masculino</option>
+                        <option value="F" <?
+                        if ($paciente['0']->sexo == "F"):echo 'selected';
+                        endif;
+                        ?>>Feminino</option>
+                        <option value="O" <?
+                        if ($paciente['0']->sexo == "O"):echo 'selected';
+                        endif;
+                        ?>>Outro</option>
                     </select>
                 </div>
 
@@ -114,12 +120,12 @@ endif;
                             if ($i <= $p && $i != 1):
                                 ?>
                                 <tr><td width="1000px;">Em <?= "<b>" . substr($item->data_cadastro, 8, 2) . "-" . substr($item->data_cadastro, 5, 2) . "-" . substr($item->data_cadastro, 0, 4) . " " . substr($item->data_cadastro, 11, 8) . "</b>" . " Transferido para o leito: <b>" . $item->leito . " ( " . $item->enfermaria . " - " . $item->unidade . " ) " . "OPERADOR: " . $item->operador . "</b>" ?></td></tr>                        
-                            <?
+                                <?
                             endif;
                             $i++;
                             ?>
                         </table>
-<? endforeach; ?>
+                    <? endforeach; ?>
                 </div>
             </fieldset>
     </div>

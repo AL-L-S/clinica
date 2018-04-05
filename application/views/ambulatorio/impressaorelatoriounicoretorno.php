@@ -167,9 +167,12 @@
                         if ($item->sexo == "M") {
                             echo 'Masculino';
                             $masculino ++;
-                        } else {
+                        } elseif($item->sexo == "F") {
                             $feminino ++;
                             echo 'Feminino';
+                        }else{
+                            $sexo_outro ++;
+                            echo 'Outro';
                         }
                         ?></td>
                     <td style='text-align: center;'><?
