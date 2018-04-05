@@ -67,6 +67,7 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
     function listarconveniosprimarios() {
         $this->db->select('convenio_id,
                             nome,

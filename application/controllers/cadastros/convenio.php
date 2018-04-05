@@ -54,7 +54,7 @@ class Convenio extends BaseController {
     }
 
     function ajustargrupo($convenio_id) {
-        $data['convenios'] = $this->convenio->listardados();
+        $data['convenios'] = $this->convenio->listarconveniosprimarios();
         $data['grupos'] = $this->convenio->listargrupos();
         $data['associacoes'] = $this->convenio->listarassociacoesconvenio($convenio_id);
         $data['convenio_id'] = $convenio_id;
@@ -131,19 +131,14 @@ class Convenio extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
 
         if (isset($_POST['associaconvenio'])) {
-
-//            $convenio_associacao = $_POST['convenio_associacao'];
+            
             if ($_POST['txtconvenio_id'] > 0) {
                 $convenio_id = $_POST['txtconvenio_id'];
+                $this->convenio->removerprocedimentosnaopertenceprincipal($convenio_id);
             }
-//            var_dump($convenio_id); die;
-
-            $this->convenio->removerprocedimentosnaopertenceprincipal($convenio_id);
-
-            redirect(base_url() . "cadastros/convenio/ajustargrupo/$convenio_id");
-        } else {
-            redirect(base_url() . "cadastros/convenio");
-        }
+        } 
+        
+        redirect(base_url() . "cadastros/convenio");
     }
 
     function gravarcopia() {

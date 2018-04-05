@@ -338,7 +338,14 @@ class procedimento_model extends Model {
                             descricao,
                             grupo,
                             perc_medico,
+                            percentual,
+                            percentual_revisor,
+                            valor_revisor,
                             qtde,
+                            home_care,
+                            entrega,
+                            
+                            
                             dencidade_calorica,
                             proteinas,
                             carboidratos,

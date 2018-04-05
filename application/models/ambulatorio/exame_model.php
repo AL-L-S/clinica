@@ -1892,16 +1892,17 @@ class exame_model extends Model {
                             tel.nome as telefonema_operador,
                             bloc.nome as operador_bloqueio,
                             desbloc.nome as operador_desbloqueio,
-                            ae.confirmacao_por_sms');
+                            ae.confirmacao_por_sms,
+                            emp.nome as empresa');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_empresa emp', 'emp.empresa_id = ae.empresa_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_convenio co', 'co.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         if (isset($args['grupo']) && strlen($args['grupo']) > 0) {
-//            echo 'uahsuhdahusd'; die;
             $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = an.exame_sala_id', 'left');
         }
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');

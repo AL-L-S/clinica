@@ -174,7 +174,6 @@ class Operador extends BaseController {
                 redirect(base_url() . "seguranca/operador", $data);
             }
             $operador_id = $this->operador_m->gravar();
-//            var_dump($empresa_p[0]->profissional_completo); die;
             if($empresa_p[0]->profissional_completo == 't' && isset($_POST['txtconsulta'])){
                $gravaprocedimentos = $this->operador_m->gravaprocedimentosoperadorescompleto($operador_id, $empresa_p); 
             }

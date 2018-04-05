@@ -107,6 +107,20 @@ class Sala extends BaseController {
         redirect(base_url() . "ambulatorio/sala/carregarsalapainel/" . $sala_id);
     }
 
+    function excluirmultiplossalagrupo($sala_id) {
+//        var_dump($_POST); die;
+        if(count($_POST) > 0){
+            if ($this->sala->excluirmultiplossalagrupo() ) {
+                $mensagem = 'Sucesso ao excluir os Grupos marcados.';
+            } else {
+                $mensagem = 'Erro ao excluir os Grupos marcados. Opera&ccedil;&atilde;o cancelada.';
+            }
+            $this->session->set_flashdata('message', $mensagem);
+        }
+
+        redirect(base_url() . "ambulatorio/sala/carregarsalagrupo/" . $sala_id);
+    }
+
     function excluirsalagrupo($sala_grupo_id, $sala_id) {
         if ($this->sala->excluirsalagrupo($sala_grupo_id)) {
             $mensagem = 'Sucesso ao excluir o Grupo.';

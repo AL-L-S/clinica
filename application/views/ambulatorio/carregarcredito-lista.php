@@ -79,12 +79,12 @@ $perfil_id = $this->session->userdata('perfil_id');
                                 </td>
                                 <?if($perfil_id == 1){?>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                        <a onclick="javascript: return confirm('Deseja realmente excluir esse crédito?')"href="<?= base_url() ?>ambulatorio/exametemp/excluircredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>">Excluir</a></div>
+                                        <a onclick="javascript: return confirm('Deseja realmente estornar esse crédito?')"href="<?= base_url() ?>ambulatorio/exametemp/excluircredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>">Estornar</a></div>
                                 </td>    
                                 <?}?>
                                 
                                 
-                                
+                                <!--
                                 <? if ($item->faturado == 'f') { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                             <a target="_blank" href="<?= base_url() ?>ambulatorio/exametemp/faturarcreditos/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>">Faturar</a></div>
@@ -95,24 +95,25 @@ $perfil_id = $this->session->userdata('perfil_id');
                                     </td>  
 
                                 <? } ?>
+                                -->
 
 
 
                             </tr>
                         <? } ?>
                         <tr id="tot">
-                            <td class="<?php echo $estilo_linha; ?>" id="textovalortotal" colspan="3">
-                                <div class="bt_link" style="float: right">
-                                    <a href="<?= base_url() ?>ambulatorio/exametemp/gerasaldocredito/<?= $paciente_id ?>">Saldo</a>
-                                </div>
-                            </td>
-                            <td class="<?php echo $estilo_linha; ?>" id="textovalortotal" colspan="">
+                            <td class="<?php echo $estilo_linha; ?>" id="textovalortotal" colspan="2">
                                 <span id="spantotal"> Saldo:</span> 
                             </td>
-                            <td class="<?php echo $estilo_linha; ?>" colspan="5">
+                            <td class="<?php echo $estilo_linha; ?>" colspan="2">
                                 <span id="spantotal">
                                     R$ <?= number_format($valortotal[0]->saldo, 2, ',', '') ?>
                                 </span>
+                            </td>
+                            <td class="<?php echo $estilo_linha; ?>" id="textovalortotal" colspan="3">
+<!--                                <div class="bt_link" style="float: right">
+                                    <a href="<?= base_url() ?>ambulatorio/exametemp/gerasaldocredito/<?= $paciente_id ?>">Saldo</a>
+                                </div>-->
                             </td>
                         </tr>
 

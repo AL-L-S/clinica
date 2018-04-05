@@ -59,14 +59,15 @@ class Formapagamento extends BaseController {
         $data['formapagamento_id'] = $formapagamento_id;
         $data['formapagamento'] = $this->formapagamento->buscarforma($formapagamento_id);
         $data['faixas_parcelas'] = $this->formapagamento->buscafaixasparcelas($formapagamento_id);
-//        echo '<pre>';
         $data['maximo'] = $data['formapagamento'][0]->parcelas;
-//        var_dump($data['faixas_parcelas'][count($data['faixas_parcelas']) - 1]);
-//        die;
         if(count($data['faixas_parcelas']) > 0){
             
             $ind_ultima_parcela = count($data['faixas_parcelas']) - 1;
             $data['ultima_parcela'] = (int) $data['faixas_parcelas'][$ind_ultima_parcela]->parcelas_fim;
+            
+//            echo '<pre>';
+//            var_dump($data['faixas_parcelas'],$data['ultima_parcela']);
+//            die;
             
             foreach ($data['faixas_parcelas'] as $item) {
                 $item->parcelas_fim = (int)$item->parcelas_fim;

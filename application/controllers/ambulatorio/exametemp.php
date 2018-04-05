@@ -387,15 +387,16 @@ class Exametemp extends BaseController {
     }
     
     function excluircredito($credito_id, $paciente_id) {
+        $this->exametemp->registrainformacaoestornocredito($credito_id);
         $verificar = $this->exametemp->excluircredito($credito_id);
         if ($verificar == -1) {
-            $data['mensagem'] = 'Erro ao excluir o Crédito. Opera&ccedil;&atilde;o cancelada.';
+            $data['mensagem'] = 'Erro ao estornar o Crédito. Opera&ccedil;&atilde;o cancelada.';
         } 
         elseif ($verificar == -2) {
-            $data['mensagem'] = 'Erro ao excluir. Crédito já utilizado.';
+            $data['mensagem'] = 'Erro ao estornar. Crédito já utilizado.';
         }
         else {
-            $data['mensagem'] = 'Sucesso ao excluir o Crédito.';
+            $data['mensagem'] = 'Sucesso ao estornar o Crédito.';
         }
         
         $this->session->set_flashdata('message', $data['mensagem']);

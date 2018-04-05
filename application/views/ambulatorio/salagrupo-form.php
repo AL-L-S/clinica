@@ -15,15 +15,20 @@
             </div>
             <button type="submit" name="btnEnviar">Enviar</button>
         </fieldset>
-        <?
-        if (count($gruposAssociados) > 0) {
-            ?>
+    </form>
+    <?
+    if (count($gruposAssociados) > 0) {
+        ?>
+        <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>ambulatorio/sala/excluirmultiplossalagrupo/<?= $exame_sala_id; ?>" method="post">
             <fieldset>
+                <button type="submit" id="excluirSelecionados">Excluir Selecionados</button>
+                
                 <table id="table_agente_toxico" border="0">
                     <thead>
 
                         <tr>
                             <th class="tabela_header">Grupo</th>
+                            <th class="tabela_header">Selecionar</th>
                             <th class="tabela_header">&nbsp;</th>
                         </tr>
                     </thead>
@@ -35,6 +40,9 @@
                         <tbody>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                                    <input type="checkbox" name="selecionado[<?= $item->exame_sala_grupo_id; ?>]" id="selecionado"/>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                     <a href="<?= base_url() ?>ambulatorio/sala/excluirsalagrupo/<?= $item->exame_sala_grupo_id; ?>/<?= $exame_sala_id; ?>" class="delete">
                                     </a>
@@ -53,11 +61,23 @@
                     </tfoot>
                 </table> 
             </fieldset>
-        <? } ?>
+        </form>
+    <? } ?>
 </div> <!-- Final da DIV content -->
 
 
-
+<style>
+    #excluirSelecionados{
+        float: right;
+        padding: 4pt;
+        font-weight: bold;
+        margin: 10pt;
+        margin-right: 10%;
+        border: 1pt solid #aaa;
+        border-radius: 10pt;
+        height: 20pt;
+    }
+</style>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
