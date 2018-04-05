@@ -420,6 +420,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                                     <!--<th class="tabela_header" width="70px;">Data</th>-->
                                     <!--<th class="tabela_header" width="50px;">Dia</th>-->
                                     <th class="tabela_header" width="70px;">Agenda</th>
+                                    <th class="tabela_header" width="70px;">Empresa</th>
                                     <th class="tabela_header" width="70px;">    </th>
                                     <th class="tabela_header" width="150px;">Telefone</th>
                                     <th class="tabela_header" width="150px;">Convenio</th>
@@ -591,6 +592,12 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                                     <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <? } ?>
+                        <!-- EMPRESA -->
+                        <td class="<?php echo $estilo_linha; ?>">
+                            <div style="font-size: 8pt; margin-left: 2pt"><?= $item->empresa; ?></div>
+                        </td>
+                        
+                        
                         <td class="<?php echo $estilo_linha; ?>"><?
                             if ($item->encaixe == 't') {
                                 if ($item->paciente == '') {

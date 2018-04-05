@@ -14,18 +14,15 @@
                         <td class="esquerda"><label>Inicio:</label></td> 
                         <td>
                             <select name="parcela_inicio" class="size2" id="parcela_inicio" required>
-                                <? if ($ultima_parcela < $maximo) { ?>
+                                <? 
+                                $parcelaInicialDisponivel = $ultima_parcela+1;
+                                if ($ultima_parcela < $maximo) { 
+                                    
+                                    ?>
+                                    <option value="<?= $parcelaInicialDisponivel ?>"> <?= $parcelaInicialDisponivel ?> </option>
                                     <?
-                                    if ($ultima_parcela == 0) {
-                                        $ultima_parcela++;
-                                        ?>
-                                        <option value="<?= $ultima_parcela ?>"> <?= $ultima_parcela ?> </option>
-                                        <?
-                                    } else {
-                                        $ultima_parcela++;
-                                        ?>
-                                        <option value="<?= $ultima_parcela ?>"> <?= $ultima_parcela ?> </option>
-                                    <? } ?>
+                                    
+                                    ?>
                                 <? } else { ?>
                                         <option value=""></option>
                                 <? } ?>
@@ -38,16 +35,11 @@
                         <td>
                             <select name="parcela_fim" class="size2" id="parcela_fim" required>
                                 <?
-                                for ($i = $ultima_parcela; $i < $formapagamento[0]->parcelas; $i++) {
-                                    if ($ultima_parcela == 1) {
-                                        ?>
+                                if ($ultima_parcela < $maximo) {
+                                    for ($i = $parcelaInicialDisponivel; $i <= $formapagamento[0]->parcelas; $i++) { ?>
                                         <option value="<?= $i ?>"> <?= $i ?></option>
-                                    <? } else { ?>
-                                        <option value="<?= $i + 1 ?>"> <?= $i + 1 ?></option>
-                                        <?
-                                    }
-                                }
-                                ?>
+                                    <? } 
+                                }?>
                             </select>
                         </td>    
                     </tr>          

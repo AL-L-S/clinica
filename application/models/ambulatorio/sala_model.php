@@ -115,6 +115,24 @@ class sala_model extends Model {
             return true;
     }
 
+    function excluirmultiplossalagrupo() {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        foreach ($_POST['selecionado'] as $key => $value){
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('exame_sala_grupo_id', $key);
+            $this->db->update('tb_exame_sala_grupo');
+        }
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
     function excluirsalagrupo($sala_grupo_id) {
 
         $horario = date("Y-m-d H:i:s");

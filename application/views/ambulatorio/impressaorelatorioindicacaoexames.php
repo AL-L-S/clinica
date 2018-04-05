@@ -56,6 +56,7 @@
                     <th class="tabela_teste">Nome</th>
                     <th class="tabela_teste">Promotor</th>
                     <th class="tabela_teste">Procedimento</th>
+                    <th class="tabela_teste" title="Data em que foi agendado.">Data Agendamento</th>
                     <th class="tabela_teste">Observação</th>
                     <th class="tabela_teste">Valor do Promotor</th>
                     <th class="tabela_teste">Valor Recebido R$</th>
@@ -119,6 +120,7 @@
 
                         <td style='text-align: center;'><font size="-2"><?= $item->indicacao; ?></td>
                         <td style='text-align: center;'><font size="-2"><?= $item->procedimento ?></td>
+                        <td style='text-align: center;'><font size="-2"><?= date("d/m/Y",strtotime($item->data)) ?></td>
                         <td style='text-align: center;'><font size="-2"><?= $item->observacoes ?></td>
                         <td style='text-align: center;'><font size="-2"><?= $valor_promotor ?></td>
                         <td style='text-align: center;'><font size="-1"><?= "R$ " . number_format($perc, 2, ",", "."); ?></td>

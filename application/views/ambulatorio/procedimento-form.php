@@ -259,7 +259,7 @@
                     </dd>
                     
                     <dt>
-                        <label>Revisão?</label>
+                        <label>Manutenção?</label>
                     </dt>
                     <dd>
                         <input type="checkbox" name="rev" id="rev" <?if(@$obj->_revisao == 't'){ echo "checked"; }?>/>

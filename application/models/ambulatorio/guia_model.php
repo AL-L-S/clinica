@@ -8645,6 +8645,7 @@ class guia_model extends Model {
             }
 //            $this->db->set('desconto', $desconto);
 //            $this->db->set('valor_total', $_POST['totalpagar']);
+            $this->db->set('ativo', 't');
             $this->db->set('faturado', 't');
             $this->db->where('paciente_credito_id', $_POST['credito_id']);
             $this->db->update('tb_paciente_credito');

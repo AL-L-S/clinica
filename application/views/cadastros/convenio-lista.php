@@ -59,16 +59,22 @@
                                             Editar
                                         </a>
                                     </div></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>cadastros/convenio/copiar/<?= $item->convenio_id ?>">
-                                            Copiar
-                                        </a>
-                                    </div>
-                                </td>
                                 <? if($item->associado == "f"){ ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                            <a href="<?= base_url() ?>cadastros/convenio/copiar/<?= $item->convenio_id ?>">
+                                                Copiar
+                                            </a>
+                                        </div>
+                                    </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
                                             <a href="<?= base_url() ?>cadastros/convenio/desconto/<?= $item->convenio_id ?>">
                                                 Ajuste (%)
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
+                                            <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoexcluirgrupo/<?= $item->convenio_id ?>">
+                                                Excluir Proc.
                                             </a>
                                         </div>
                                     </td>
@@ -80,12 +86,6 @@
                                         </div>
                                     </td>                                    
                                 <? } ?>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
-                                        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoexcluirgrupo/<?= $item->convenio_id ?>">
-                                            Excluir Proc.
-                                        </a>
-                                    </div>
-                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
                                         <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/<?= $item->convenio_id ?>">
                                             G. Pagamento
@@ -105,6 +105,7 @@
                                         </a>
                                     </div>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>" colspan="10"></td>
                             </tr>
 
                         </tbody>
