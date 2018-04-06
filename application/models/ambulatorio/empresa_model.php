@@ -1043,6 +1043,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('encaminhamento_email', 'f');
                     }
+                    if (isset($_POST['valor_convenio_nao'])) {
+                        $this->db->set('valor_convenio_nao', 't');
+                    } else {
+                        $this->db->set('valor_convenio_nao', 'f');
+                    }
                     if (isset($_POST['valor_autorizar'])) {
                         $this->db->set('valor_autorizar', 't');
                     } else {
@@ -1300,6 +1305,11 @@ class empresa_model extends Model {
                         $this->db->set('tecnica_promotor', 't');
                     } else {
                         $this->db->set('tecnica_promotor', 'f');
+                    }
+                    if (isset($_POST['valor_convenio_nao'])) {
+                        $this->db->set('valor_convenio_nao', 't');
+                    } else {
+                        $this->db->set('valor_convenio_nao', 'f');
                     }
                     if (isset($_POST['tecnica_enviar'])) {
                         $this->db->set('tecnica_enviar', 't');
@@ -1641,6 +1651,7 @@ class empresa_model extends Model {
                                ep.carregar_modelo_receituario,
                                ep.desabilitar_trava_retorno,
                                ep.associa_credito_procedimento,
+                               ep.valor_convenio_nao,
                                ep.conjuge,
                                ep.subgrupo,
                                ep.laudo_sigiloso,
@@ -1682,6 +1693,7 @@ class empresa_model extends Model {
             $this->_bairro = $return[0]->bairro;
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_caixa = $return[0]->caixa;
+            $this->_valor_convenio_nao = $return[0]->valor_convenio_nao;
             $this->_promotor_medico = $return[0]->promotor_medico;
             $this->_municipio = $return[0]->municipio;
             $this->_encaminhamento_email = $return[0]->encaminhamento_email;

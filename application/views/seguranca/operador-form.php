@@ -257,17 +257,21 @@
                         <option value='' >Selecione</option>
                         <?php
                         $conta = $this->forma->listarforma();
+                        
                         foreach ($conta as $item) {
                             ?>
 
                             <option   value =<?php echo $item->forma_entradas_saida_id; ?> <?
                             if (@$obj->_conta_id == $item->forma_entradas_saida_id):echo 'selected';
                             endif;
-                            ?>><?php echo $item->descricao; ?></option>
+                            ?>><?php echo $item->descricao . " - " . $item->empresa; ?></option>
                                       <?php
                                   }
                                   ?> 
                     </select>
+                    <?
+//                    var_dump($conta); die;
+                    ?>
                 </div>
                 <div>
                     <label>Tipo</label>

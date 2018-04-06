@@ -40,3 +40,6 @@ CREATE TABLE ponto.tb_paciente_estorno_registro
   data_financeiro timestamp without time zone,
   CONSTRAINT tb_paciente_estorno_registro_pkey PRIMARY KEY (paciente_estorno_registro_id)
 );
+
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN valor_convenio_nao boolean DEFAULT false;

@@ -613,6 +613,12 @@
                         <dd>
                             <input type="checkbox" id="subgrupo_procedimento" name="subgrupo_procedimento" <? if (@$obj->_subgrupo_procedimento == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="No lançamento de procedimentos não aparece o valor de procedimentos não particulares.">Valor Convenio não aparecer</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="valor_convenio_nao" name="valor_convenio_nao" <? if (@$obj->_valor_convenio_nao == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>
