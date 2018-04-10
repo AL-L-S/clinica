@@ -3,7 +3,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Editar Promotor</a></h3>
         <div>
-            <form name="form_procedimentohonorarioeditar" id="form_procedimentohonorarioeditar" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravareditarpromotorpercentual/<?= $procedimento_percentual_promotor_convenio_id ?>/<?=$dados?>" method="post">
+            <form name="form_procedimentohonorarioeditar" id="form_procedimentohonorarioeditar" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravareditarpromotorpercentual/<?= $procedimento_percentual_promotor_convenio_id ?>/<?=$dados?>/<?=$convenio_id?>" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>

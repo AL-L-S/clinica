@@ -73,6 +73,7 @@ class guia_model extends Model {
                             oftamologia,
                             horario_sab,
                             horario_seg_sex,
+                            senha_finalizar_laudo,
                             desativar_personalizacao_impressao');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
@@ -122,7 +123,8 @@ class guia_model extends Model {
                             ep.campos_obrigatorios_pac_nascimento,
                             ep.campos_obrigatorios_pac_telefone,
                             ep.campos_obrigatorios_pac_municipio,
-                            ep.repetir_horarios_agenda');
+                            ep.repetir_horarios_agenda,
+                            ep.senha_finalizar_laudo');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
@@ -5337,6 +5339,52 @@ class guia_model extends Model {
         $this->db->orderby("pac.data_cadastro");
 //        $this->db->orderby("pt.nome");
 
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriocreditoestorno() {
+
+        $this->db->select('per.data_cadastro as data_estorno,
+                           o.nome as operador_estorno,
+                           per.data as data_credito,
+                           p.nome as paciente,
+                           per.valor,
+                           e.nome as empresa,
+                           pt.nome as procedimento,
+                           per.financeiro_fechado,
+                           per.data_financeiro,
+                           f1.nome as formapagamento1,
+                           valor1,
+                           f2.nome as formapagamento2,
+                           valor2,
+                           f3.nome as formapagamento3,
+                           valor3,
+                           f4.nome as formapagamento4,
+                           valor4');
+        $this->db->from('tb_paciente_estorno_registro per');
+        $this->db->join('tb_paciente p', 'p.paciente_id = per.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = per.operador_cadastro', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = per.empresa_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = per.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_forma_pagamento f1', 'f1.forma_pagamento_id = per.forma_pagamento1', 'left');
+        $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = per.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = per.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = per.forma_pagamento4', 'left');
+
+        $this->db->where("per.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:00");
+        $this->db->where("per.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
+        
+        if ($_POST['operador_id'] != '') {
+            $this->db->where("per.operador_cadastro", $_POST['operador']);
+        }
+        if ($_POST['empresa'] != '') {
+            $this->db->where("per.empresa_id", $_POST['empresa']);
+        }
+        
+        $this->db->orderby("per.data_cadastro");
 
         $return = $this->db->get();
         return $return->result();

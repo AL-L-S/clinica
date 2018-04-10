@@ -172,6 +172,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
         $sala_id = "";
         $medico_id = "";
         $medico = "";
+        $promotor_id = @$exames[count($exames) - 1]->indicacao;
         $medico_solicitante = @$exames[count($exames) - 1]->medico_solicitante;
         $medico_solicitante_id = @$exames[count($exames) - 1]->medico_solicitante_id;
         $convenio_paciente = "";
@@ -356,7 +357,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         $indicacao = $this->paciente->listaindicacao($_GET);
                                         foreach ($indicacao as $item) {
                                             ?>
-                                            <option value="<?php echo $item->paciente_indicacao_id; ?>"> <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
+                                            <option value="<?= $item->paciente_indicacao_id; ?>" <?= ($item->paciente_indicacao_id == $promotor_id)?'selected':'' ?>><?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
                                             <?php
                                         }
                                         ?> 

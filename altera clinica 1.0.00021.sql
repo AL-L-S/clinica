@@ -40,3 +40,6 @@ CREATE TABLE ponto.tb_paciente_estorno_registro
   data_financeiro timestamp without time zone,
   CONSTRAINT tb_paciente_estorno_registro_pkey PRIMARY KEY (paciente_estorno_registro_id)
 );
+
+-- Dia 07/04/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN senha_finalizar_laudo boolean DEFAULT true;

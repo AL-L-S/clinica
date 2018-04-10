@@ -154,6 +154,7 @@ class formapagamento_model extends Model {
         $this->db->select('forma_pagamento_id,
                             nome,
                             ajuste,
+                            cartao,
                             parcelas');
         $this->db->from('tb_forma_pagamento');
         $this->db->where('ativo', 'true');

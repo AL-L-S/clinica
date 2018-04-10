@@ -174,6 +174,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
         $medico_solicitante = "";
         $medico_solicitante_id = "";
         $convenio_paciente = "";
+        $promotor_id = @$exames[count($exames) - 1]->indicacao;
         if ($contador > 0) {
             $sala_id = $exames[0]->agenda_exames_nome_id;
             $sala = $exames[0]->sala;
@@ -338,15 +339,15 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         <? endforeach; ?>
                                     </select>
                                 </td>
+                                
                                 <td  width="50px;">
-                                    <? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');?>
-                                    <select name="indicacao" id="indicacao" class="size1 ui-widget" <?= $recomendacao_obrigatorio == 't' ? 'required' : ''?>>
+                                    <select name="indicacao" id="indicacao" class="size1 ui-widget" <?= $recomendacao_obrigatorio == 't' ? 'required' : '' ?>>
                                         <option value='' >Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
                                         foreach ($indicacao as $item) {
                                             ?>
-                                            <option value="<?php echo $item->paciente_indicacao_id; ?>"> <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
+                                            <option value="<?= $item->paciente_indicacao_id; ?>" <?= ($item->paciente_indicacao_id == $promotor_id)?'selected':'' ?>><?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
                                             <?php
                                         }
                                         ?> 
@@ -594,7 +595,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
 
 <style>
     .chosen-container{ margin-top: 5pt;}
-    /*#procedimento1_chosen a { width: 130px; }*/
+    #procedimento1_chosen a { width: 130px; }
 </style>
 
 <script type="text/javascript">
@@ -684,7 +685,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                         options = "";
                                                         options += j[0].valortotal;
-                                                        document.getElementById("valor1").value = options
+                                                        document.getElementById("valor1").value = options;
                                                         $('.carregando').hide();
                                                     });
                                                     $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
@@ -714,7 +715,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                                                     options = "";
                                                                     options += j[0].valortotal;
-                                                                    document.getElementById("valor1").value = options
+                                                                    document.getElementById("valor1").value = options;
                                                                     $('.carregando').hide();
                                                                 });    
                                                             }   
@@ -724,7 +725,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                           $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                                                     options = "";
                                                                     options += j[0].valortotal;
-                                                                    document.getElementById("valor1").value = options
+                                                                    document.getElementById("valor1").value = options;
                                                                     $('.carregando').hide();
                                                                 });
                                                          }
@@ -779,7 +780,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                     idade--;
                                                 }
 
-                                                document.getElementById("txtIdade").value = idade + " ano(s)";
+                                                document.getElementById("idade").value = idade + " ano(s)";
                                             }
                                         }
 

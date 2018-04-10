@@ -62,7 +62,9 @@ if (count($pacs) > 0) {
 
     $laudo_sigiloso = $this->session->userdata('laudo_sigiloso');
     $operador_id = $this->session->userdata('operador_id');
-    if (@$obj->_status == 'FINALIZADO' && $laudo_sigiloso == 't' && $operador_id != 3) {
+    $perfil_id = $this->session->userdata('perfil_id');
+    
+    if (@$obj->_status == 'FINALIZADO' && $laudo_sigiloso == 't' && $operador_id != 1) {
         $readonly = 1;
     } else {
         $readonly = 0;
@@ -285,15 +287,20 @@ if (count($pacs) > 0) {
                                     ?>
 
                                     <div>
-                                        <label>M&eacute;dico respons&aacutevel</label>
-                                        <select name="medico" id="medico" class="size2">
-                                            <option value=0 >selecione</option>
-                                            <? foreach ($operadores as $value) : ?>
-                                                <option value="<?= $value->operador_id; ?>"<?
-                                            if (@$obj->_medico_parecer1 == $value->operador_id):echo 'selected';
-                                            endif;
-                                                ?>><?= $value->nome; ?></option>
-                                                    <? endforeach; ?>
+                                        <label title='Apenas Administradores Totais podem alterar o médico.'>
+                                            M&eacute;dico respons&aacutevel
+                                        </label>
+                                        <select name="medico" id="medico" class="size2" title='Apenas Administradores Totais podem alterar o médico.' >
+                                            <? if($perfil_id == 1){ ?>
+                                                <option value=0 >selecione</option>
+                                            <? }
+                                            foreach ($operadores as $value) : 
+                                                if($perfil_id != 1 && $obj->_medico_parecer1 != $value->operador_id) { continue; } ?>
+
+                                                <option value="<?= $value->operador_id; ?>" <?= (@$obj->_medico_parecer1 == $value->operador_id)?'selected':'';?>>
+                                                    <?= $value->nome; ?>
+                                                </option>
+                                            <? endforeach; ?>
                                         </select>
                                         <?php
                                         if (@$obj->_revisor == "t") {
@@ -342,7 +349,7 @@ if (count($pacs) > 0) {
                                         <? } ?>
 
                                         <label>situa&ccedil;&atilde;o</label>
-                                        <select name="situacao" id="situacao" class="size2" onChange="muda(this)">
+                                        <select name="situacao" id="situacao" class="size2" <? if($empresapermissao[0]->senha_finalizar_laudo == 't') { ?>onChange="muda(this)" <? } ?> >
                                             <option value='DIGITANDO'<?
                                         if (@$obj->_status == 'DIGITANDO'):echo 'selected';
                                         endif;

@@ -2524,6 +2524,12 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatoriocreditopaciente', $data);
     }
 
+    function relatoriocreditoestorno() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['operadores'] = $this->operador_m->listaroperadores();
+        $this->loadView('ambulatorio/relatoriocreditoestorno', $data);
+    }
+
     function gerarelatoriocredito() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
@@ -2534,6 +2540,17 @@ class Guia extends BaseController {
 //        $data['pacientes'] = $this->guia->relatoriocreditopacientes();
 //        var_dump($data['relatoriocredito']); die;
         $this->load->View('ambulatorio/impressaorelatoriocredito', $data);
+    }
+
+    function gerarelatoriocreditoestorno() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+
+        $data['relatorio'] = $this->guia->relatoriocreditoestorno();
+//        echo "<pre>";
+//        var_dump($data['relatorio']); die;
+        $this->load->View('ambulatorio/impressaorelatoriocreditoestorno', $data);
     }
 
     function relatoriomedicosolicitante() {

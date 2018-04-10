@@ -71,6 +71,7 @@ class procedimento_model extends Model {
                             oi.valor_total,
                             (oi.valor_ajustado * oi.quantidade) as valor_total_ajustado,
                             ao.paciente_id,
+                            ao.autorizado,
                             pc.convenio_id,
                             c.nome as convenio,
                             pt.codigo,

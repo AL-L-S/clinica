@@ -1260,6 +1260,12 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('subgrupo_procedimento', 'f');
                     }
+
+                    if (isset($_POST['senha_finalizar_laudo'])) {
+                        $this->db->set('senha_finalizar_laudo', 't');
+                    } else {
+                        $this->db->set('senha_finalizar_laudo', 'f');
+                    }
                 }
 
 
@@ -1534,6 +1540,12 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('subgrupo_procedimento', 'f');
                     }
+
+                    if (isset($_POST['senha_finalizar_laudo'])) {
+                        $this->db->set('senha_finalizar_laudo', 't');
+                    } else {
+                        $this->db->set('senha_finalizar_laudo', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -1656,6 +1668,7 @@ class empresa_model extends Model {
                                ep.campos_obrigatorios_pac_municipio,
                                ep.repetir_horarios_agenda,
                                ep.subgrupo_procedimento,
+                               ep.senha_finalizar_laudo,
                                ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -1769,6 +1782,7 @@ class empresa_model extends Model {
             $this->_campos_obrigatorios_pac_cpf = $return[0]->campos_obrigatorios_pac_cpf;
             $this->_repetir_horarios_agenda = $return[0]->repetir_horarios_agenda;
             $this->_subgrupo_procedimento = $return[0]->subgrupo_procedimento;
+            $this->_senha_finalizar_laudo = $return[0]->senha_finalizar_laudo;
         } else {
             $this->_empresa_id = null;
         }

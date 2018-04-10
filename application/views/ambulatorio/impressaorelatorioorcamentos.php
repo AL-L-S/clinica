@@ -19,8 +19,8 @@
                 <th class="tabela_header" width="150px;">Valor (R$)</th>
                 <th class="tabela_header" width="150px;">Valor Cartão(R$)</th>
                 <th class="tabela_header" width="300px;">Empresa</th>
-                <th class="tabela_header" width="80px;">Detalhes</th>
-                <th class="tabela_header" width="150px;">Ação</th>
+                <th class="tabela_header" width="110px;">Detalhes</th>
+                <th class="tabela_header">Ação</th>
             </tr>
         </thead>
         <tbody>
@@ -53,12 +53,16 @@
                         <td><b><?= $item->empresa_nome; ?></b></td>
                         <td><b><? 
                         if ($item->autorizado == 't'){
-                            echo "<span style='color: green'>Já Autorizado</span>";
+                            echo "<span style='color: green; font-size: 12pt'>Autorizado</span>";
                         } else {
-                            echo "<span>Não Autorizado</span>"; 
+                            echo "<span style='font-size: 9pt'>Não Autorizado</span>"; 
                         }
                         ?></b></td>
-                        <td align="center"><a href="<?= base_url() ?>ambulatorio/exame/autorizarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a></td>
+                        <td align="center">
+                            <? if ($item->autorizado == 'f'){ ?>
+                                <a href="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a>
+                            <? } ?>
+                        </td>
                     </tr>
 
                 </tbody>

@@ -1,7 +1,13 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
+    
+    <div class="bt_link_voltar">
+        <a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">
+            Voltar
+        </a>
+    </div>
     <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novoprocedimentopercentualpromotor">
+        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novoprocedimentopromotor/<?=$convenio_id?>">
             Novo Procedimento
         </a>
     </div>
@@ -15,24 +21,12 @@
                     <tr>
                         <th colspan="5" class="tabela_title">
                     </tr>
-                <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">
-                    <tr>
-                        <th class="tabela_title" >Convenio</th>                        
-                        <th class="tabela_title" >Grupo</th>                  
+                <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentualpromotor/<?=$convenio_id?>">
+                    <tr>                      
+                        <th class="tabela_title">Grupo</th>                  
                         <th class="tabela_title">Procedimento</th>
                     </tr>
                     <tr>
-                        <th class="tabela_title">
-                            <select name="convenio" id="convenio" class="size2">
-                                <option value="">Selecione</option>
-                                <? foreach ($convenio as $value) : ?>
-                                    <option value="<?= $value->convenio_id; ?>"
-                                            <?if($value->convenio_id == @$_GET['convenio']) echo 'selected';?>>
-                                            <?= $value->nome; ?>
-                                    </option>
-                                <? endforeach; ?>
-                            </select>
-                        </th>
                         <th class="tabela_title">
                             <select name="grupo" id="grupo" class="size2">
                                 <option value="">Selecione</option>
@@ -70,7 +64,7 @@
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->procedimentoplano->listarprocedimentogrupopromotor($_GET);
+                $consulta = $this->procedimentoplano->listarprocedimentogrupopromotor($convenio_id);
                 $total = $consulta->count_all_results();
                 $limit = 10;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
@@ -79,7 +73,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->procedimentoplano->listarprocedimentogrupopromotor($_GET)->orderby('pt.grupo')->orderby('pt.nome')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->procedimentoplano->listarprocedimentogrupopromotor($convenio_id)->orderby('pt.grupo')->orderby('pt.nome')->limit($limit, $pagina)->get()->result();
 //                        echo '<pre>';
 //                        var_dump($lista);
 //                        die;
@@ -95,10 +89,10 @@
                                 <td class="<?php echo $estilo_linha; ?>"></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                     <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento');"
-                                       href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualpromotorgeral/<?= $item->procedimento_percentual_promotor_id; ?>">Excluir&nbsp;
+                                       href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualpromotorgeral/<?= $item->procedimento_percentual_promotor_id; ?>/<?=$convenio_id?>">Excluir&nbsp;
                                     </a>
                                     <a 
-                                        href="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimentopromotor/<?= $item->procedimento_percentual_promotor_id; ?>">Editar
+                                        href="<?= base_url() ?>ambulatorio/procedimentoplano/editarprocedimentopromotor/<?= $item->procedimento_percentual_promotor_id; ?>/<?=$convenio_id?>">Editar
                                     </a>  
                                 </td>
                             </tr>

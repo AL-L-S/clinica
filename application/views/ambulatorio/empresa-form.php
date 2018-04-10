@@ -613,6 +613,13 @@
                         <dd>
                             <input type="checkbox" id="subgrupo_procedimento" name="subgrupo_procedimento" <? if (@$obj->_subgrupo_procedimento == 't') echo "checked"; ?>/> 
                         </dd>
+                        
+                        <dt>
+                            <label title="Ao ativar, o sistema irá solicitar a senha do medico responsavel para finalizar o laudo. Do contrário, não será necessário.">Solicitar Senha ao Finalizar Laudo</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="senha_finalizar_laudo" name="senha_finalizar_laudo" <? if (@$obj->_senha_finalizar_laudo == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

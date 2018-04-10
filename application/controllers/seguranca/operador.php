@@ -481,6 +481,11 @@ class Operador extends BaseController {
         $this->loadView('seguranca/operadorconvenioprocedimento-form', $data);
     }
 
+    function vinculaoperadorconveniotodos($operador_id) {
+        $this->operador_m->vinculaoperadorconveniotodos($operador_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function gravarcopiaroperadorconvenioempresa() {
         $this->operador_m->gravarcopiaroperadorconvenioempresa();
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
