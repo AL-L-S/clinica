@@ -879,6 +879,7 @@ class Guia extends BaseController {
         $caixa = $this->guia->fecharcaixa();
         $this->guia->fecharcaixacredito();
 //        echo 'mostre algo';
+//        var_dump($caixa);
 //        die;
         if ($caixa == "-1") {
             $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';

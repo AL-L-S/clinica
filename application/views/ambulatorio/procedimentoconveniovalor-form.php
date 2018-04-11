@@ -35,41 +35,41 @@
     </form>
 </fieldset>
 
-        <fieldset>
-<?
-$contador = count($valor);
-if ($contador > 0) {
-    ?>
-            <table id="table_agente_toxico" border="0">
-                <thead>
-
-                    <tr>
-                        <th class="tabela_header">Convenio</th>
-                        <th class="tabela_header">Valor</th>
-                        <th class="tabela_header">&nbsp;</th>
-                    </tr>
-                </thead>
+<fieldset>
     <?
-    $estilo_linha = "tabela_content01";
-    foreach ($valor as $item) {
-        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+    $contador = count($valor);
+    if ($contador > 0) {
         ?>
-                        <tbody>
-                            <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?=number_format($item->valor, 2, ',', '.'); ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>ambulatorio/procedimento/excluirprocedimentoconveniovalor/<?= $item->procedimento_convenio_id; ?>/<?= $item->procedimento_tuss_id; ?>">Excluir
-                                    </a></div>
+        <table id="table_agente_toxico" border="0">
+            <thead>
 
-                                </td>
-                            </tr>
+                <tr>
+                    <th class="tabela_header">Convenio</th>
+                    <th class="tabela_header">Valor</th>
+                    <th class="tabela_header">&nbsp;</th>
+                </tr>
+            </thead>
+            <?
+            $estilo_linha = "tabela_content01";
+            foreach ($valor as $item) {
+                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                ?>
+                <tbody>
+                    <tr>
+                        <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                        <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ',', '.'); ?></td>
+                        <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
+                                <a href="<?= base_url() ?>ambulatorio/procedimento/excluirprocedimentoconveniovalor/<?= $item->procedimento_convenio_id; ?>/<?= $item->procedimento_tuss_id; ?>">Excluir
+                                </a></div>
 
-                        </tbody>
-        <?
-    }
-}
-?>
+                        </td>
+                    </tr>
+
+                </tbody>
+                <?
+            }
+        }
+        ?>
         <tfoot>
             <tr>
                 <th class="tabela_footer" colspan="4">

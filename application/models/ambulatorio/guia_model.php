@@ -10149,7 +10149,6 @@ class guia_model extends Model {
 
         $this->db->select('forma_pagamento_id,
                             nome, 
-                            conta_id, 
                             credor_devedor,
                             tempo_receber, 
                             dia_receber,
@@ -10164,6 +10163,23 @@ class guia_model extends Model {
 
         $teste = $_POST['qtde'];
         foreach ($forma_pagamento as $value) {
+                        // Selecionando a conta baseada na empresa
+
+            $this->db->select('conta_id');
+            $this->db->from('tb_formapagamento_conta_empresa');
+            $this->db->where("ativo", 't');
+            $this->db->where("forma_pagamento_id", $value->forma_pagamento_id);
+            $this->db->where("empresa_id", $empresa_id);
+
+            $conta_array = $this->db->get()->result();
+
+//            var_dump($conta_array); die;
+            if (count($conta_array) > 0) {
+                $value->conta_id = $conta_array[0]->conta_id;
+            } else {
+                $value->conta_id = '';
+            }
+//            var_dump($value->conta_id); die;
             $classe = "CAIXA" . " " . $value->nome;
 
             foreach ($teste as $j => $t) {
@@ -10707,7 +10723,6 @@ class guia_model extends Model {
 
         $this->db->select('forma_pagamento_id,
                             nome, 
-                            conta_id, 
                             credor_devedor,
                             tempo_receber, 
                             dia_receber,
@@ -10720,14 +10735,31 @@ class guia_model extends Model {
         $return = $this->db->get();
 
         $forma_pagamento = $return->result();
-//        echo '<pre>';        
-//        var_dump($forma_pagamento); die;
+//        echo '<pre>';
+//        var_dump($forma_pagamento);
+//        die;
 
         $valor_total = '0.00';
 
         $teste = $_POST['qtde'];
         foreach ($forma_pagamento as $value) {
+            // Selecionando a conta baseada na empresa
 
+            $this->db->select('conta_id');
+            $this->db->from('tb_formapagamento_conta_empresa');
+            $this->db->where("ativo", 't');
+            $this->db->where("forma_pagamento_id", $value->forma_pagamento_id);
+            $this->db->where("empresa_id", $empresa_id);
+
+            $conta_array = $this->db->get()->result();
+
+//            var_dump($conta_array); die;
+            if (count($conta_array) > 0) {
+                $value->conta_id = $conta_array[0]->conta_id;
+            } else {
+                $value->conta_id = '';
+            }
+//            var_dump($value->conta_id); die;
             $classe = "CAIXA" . " " . $value->nome;
 
             foreach ($teste as $j => $t) {
@@ -10959,156 +10991,9 @@ class guia_model extends Model {
                                 $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
                                 $this->db->insert('tb_financeiro_contasreceber');
                             }
-//                            
-//                            $valor_n_parcelado = $valor_total;
-//                            $agenda_exames_id = $this->relatoriocaixaformacredito($value->forma_pagamento_id);
-//                            foreach ($agenda_exames_id as $item) {
-//                                if ($item->forma_pagamento == $value->forma_pagamento_id) {
-//                                    $parcelas = $item->parcelas1;
-//                                    $valor = $item->valor1;
-////                                    $retorno = $this->parcelas1($item->agenda_exames_id);
-//                                } elseif ($item->forma_pagamento2 == $value->forma_pagamento_id) {
-//                                    $parcelas = $item->parcelas2;
-//                                    $valor = $item->valor2;
-////                                    $retorno = $this->parcelas2($item->agenda_exames_id);
-//                                } elseif ($item->forma_pagamento3 == $value->forma_pagamento_id) {
-//                                    $parcelas = $item->parcelas3;
-//                                    $valor = $item->valor3;
-////                                    $retorno = $this->parcelas3($item->agenda_exames_id);
-//                                } elseif ($item->forma_pagamento4 == $value->forma_pagamento_id) {
-//                                    $parcelas = $item->parcelas4;
-//                                    $valor = $item->valor4;
-////                                    $retorno = $this->parcelas4($item->agenda_exames_id);
-//                                }
-//
-//                                if ($parcelas != '') {
-//                                    $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
-////                                    var_dump($jurosporparcelas); die;
-//                                    if (@$jurosporparcelas[0]->taxa_juros > 0) {
-//                                        $taxa_juros = $jurosporparcelas[0]->taxa_juros;
-//                                    } else {
-//                                        $taxa_juros = 0;
-//                                    }
-//                                    $taxa_parcela = $valor * ($taxa_juros / 100);
-//                                    $valor_com_juros = $valor - $taxa_parcela;
-//                                    $valor_parcelado = $valor_com_juros / $parcelas;
-//                                } else {
-//                                    $valor_parcelado = $valor;
-//                                }
-//
-//                                $tempo_receber = $value->tempo_receber;
-////                                if ($parcelas > 1) {
-//                                for ($i = 1; $i <= $parcelas; $i++) {
-//
-//                                    $tempo_receber = $tempo_receber + $value->tempo_receber;
-//                                    $data_atual = $_POST['data1'];
-//
-//                                    if ($i == 1) {
-//                                        $data_receber_p = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
-//                                    }
-//
-//                                    $this->db->set('valor', $valor_parcelado);
-//                                    $this->db->set('devedor', $value->credor_devedor);
-//                                    $this->db->set('parcela', $i);
-//                                    $this->db->set('data', $data_receber_p);
-//                                    $this->db->set('classe', $classe);
-//                                    $this->db->set('conta', $value->conta_id);
-//                                    $this->db->set('observacao', $observacao);
-//                                    $this->db->set('data_cadastro', $horario);
-//                                    $this->db->set('operador_cadastro', $operador_id);
-//                                    $this->db->insert('tb_financeiro_contasreceber_temp');
-//
-//                                    $data_receber_p = date("Y-m-d", strtotime("+$tempo_receber days", strtotime($data_atual)));
-//                                }
-//                                $valor_n_parcelado = $valor_n_parcelado - $valor + $valor_parcelado;
-//                            }
-//
-//                            $receber_temp = $this->burcarcontasrecebertemp();
-//
-//                            foreach ($receber_temp as $temp) {
-//                                $receber_temp2 = $this->burcarcontasrecebertemp2($temp->data);
-//                                $this->db->set('valor', $receber_temp2[0]->valor);
-//                                $this->db->set('devedor', $receber_temp2[0]->devedor);
-//                                $this->db->set('data', $temp->data);
-//                                $this->db->set('parcela', $receber_temp2[0]->parcela);
-//                                $this->db->set('numero_parcela', $parcelas);
-//                                $this->db->set('classe', $receber_temp2[0]->classe);
-//                                $this->db->set('conta', $receber_temp2[0]->conta);
-//                                $this->db->set('observacao', $receber_temp2[0]->observacao);
-//                                $this->db->set('data_cadastro', $receber_temp2[0]->data_cadastro);
-//                                $this->db->set('empresa_id', $empresa_id);
-////                                                            var_dump($empresa_id); die;
-//                                $this->db->set('operador_cadastro', $receber_temp2[0]->operador_cadastro);
-//                                $this->db->insert('tb_financeiro_contasreceber');
-//                            }
+
                             $this->db->set('ativo', 'f');
                             $this->db->update('tb_financeiro_contasreceber_temp');
-                        }
-                    }
-                }
-            }
-
-            if (count(@$_POST['creditoForma']) > 0) {
-                //INSERINDO OS CRÉDITOS LANÇADOS HOJE
-                foreach ($_POST['creditoForma'] as $key => $item5) {
-                    if ($_POST['creditoForma'][$key] == $value->forma_pagamento_id && $_POST['creditoValor'][$key] != '0.00') {
-                        if ($value->nome == '' || $value->conta_id == '' || $value->credor_devedor == '' || $value->parcelas == '') {
-                            return 10;
-                        }
-
-                        if ((!isset($value->tempo_receber) || $value->tempo_receber == 0) && (!isset($value->dia_receber) || $value->dia_receber == 0)) {
-                            //$_POST['creditoData'][$key]
-                            $this->db->set('data', $data_inicio);
-                            $this->db->set('valor', $_POST['creditoValor'][$key]);
-                            $this->db->set('classe', $classe);
-                            $this->db->set('nome', $value->credor_devedor);
-                            $this->db->set('conta', $value->conta_id);
-                            $this->db->set('observacao', $observacao . " (CREDITO)");
-                            $this->db->set('data_cadastro', $horario);
-                            $this->db->set('empresa_id', $empresa_id);
-                            $this->db->set('operador_cadastro', $operador_id);
-                            $this->db->insert('tb_entradas');
-                            $entradas_id = $this->db->insert_id();
-
-                            $this->db->set('data', $_POST['data1']);
-                            $this->db->set('valor', $_POST['creditoValor'][$key]);
-                            $this->db->set('entrada_id', $entradas_id);
-                            $this->db->set('conta', $value->conta_id);
-                            $this->db->set('nome', $value->credor_devedor);
-                            $this->db->set('empresa_id', $empresa_id);
-                            $this->db->set('data_cadastro', $horario);
-                            $this->db->set('operador_cadastro', $operador_id);
-                            $this->db->insert('tb_saldo');
-                        } else {
-                            $data_atual = $_POST['data1'];
-                            $dia_atual = substr($_POST['data1'], 8);
-                            $mes_atual = substr($_POST['data1'], 5, 2);
-                            $ano_atual = substr($_POST['data1'], 0, 4);
-
-                            if (isset($value->dia_receber) && $value->dia_receber > 0) {
-                                if ($dia_atual < $value->dia_receber) {
-                                    $data_receber = $ano_atual . '-' . $mes_atual . '-' . $value->dia_receber;
-                                } else {
-                                    $data_passada = $ano_atual . '-' . $mes_atual . '-' . $value->dia_receber;
-                                    $data_receber = date("Y-m-d", strtotime("+1 month", strtotime($data_passada)));
-                                }
-
-                                $data_receber_p = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_receber)));
-                            } else {
-                                $data_receber_p = date("Y-m-d", strtotime("+$value->tempo_receber days", strtotime($data_atual)));
-                            }
-
-                            $this->db->set('valor', $_POST['creditoValor'][$key]);
-                            $this->db->set('devedor', $value->credor_devedor);
-                            $this->db->set('parcela', 1);
-                            $this->db->set('data', $data_receber_p);
-                            $this->db->set('classe', $classe);
-                            $this->db->set('conta', $value->conta_id);
-                            $this->db->set('observacao', $observacao . " (CREDITO)");
-                            $this->db->set('data_cadastro', $horario);
-                            $this->db->set('operador_cadastro', $operador_id);
-                            $this->db->set('empresa_id', $empresa_id);
-                            $this->db->insert('tb_financeiro_contasreceber');
                         }
                     }
                 }
@@ -11203,7 +11088,6 @@ ORDER BY ae.agenda_exames_id)";
 
         $this->db->select('forma_pagamento_id,
                             nome, 
-                            conta_id, 
                             credor_devedor,
                             tempo_receber, 
                             dia_receber,
@@ -11223,6 +11107,23 @@ ORDER BY ae.agenda_exames_id)";
 
         $teste = $_POST['qtdecredito'];
         foreach ($forma_pagamento as $value) {
+            // Selecionando a conta baseada na empresa
+
+            $this->db->select('conta_id');
+            $this->db->from('tb_formapagamento_conta_empresa');
+            $this->db->where("ativo", 't');
+            $this->db->where("forma_pagamento_id", $value->forma_pagamento_id);
+            $this->db->where("empresa_id", $empresa_id);
+
+            $conta_array = $this->db->get()->result();
+
+//            var_dump($conta_array); die;
+            if (count($conta_array) > 0) {
+                $value->conta_id = $conta_array[0]->conta_id;
+            } else {
+                $value->conta_id = '';
+            }
+//            var_dump($value->conta_id); die;
 
             $classe = "CAIXA" . " " . $value->nome;
 

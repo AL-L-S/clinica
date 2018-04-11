@@ -45,7 +45,7 @@
                     <dd>
                         <input type="text" name="parcela_minima" class="texto02" alt="decimal" id="parcela_minima" value= "<?= @$obj->_parcela_minima; ?>" />
                     </dd>
-                    <dt title="Selecione a conta onde o dinheiro irá ingressar">
+<!--                    <dt title="Selecione a conta onde o dinheiro irá ingressar">
                         <label>Conta</label>
                     </dt>
                     <dd title="Selecione a conta onde o dinheiro irá ingressar">
@@ -58,7 +58,7 @@
                                 ?>><?= $value->descricao ?></option>
                                     <? } ?>                            
                         </select>
-                    </dd>
+                    </dd>-->
                     <dt>
                         <label>Credor/Devedor</label>
                     </dt>
