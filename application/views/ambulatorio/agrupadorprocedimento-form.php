@@ -1,7 +1,7 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_voltar">
-        <a href="<?= base_url() ?>ambulatorio/procedimentoplano">
+        <a href="<?= base_url() ?>ambulatorio/procedimento">
             Voltar
         </a>
 

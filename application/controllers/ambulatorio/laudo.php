@@ -479,6 +479,7 @@ class Laudo extends BaseController {
             $this->exame->atendimentohora($agenda_exames_id);
         }
         if ($situacaolaudo != 'FINALIZADO') {
+//            echo 'teste';
             $this->exame->atenderpacienteconsulta($exame_id);
         }
         $this->load->helper('directory');

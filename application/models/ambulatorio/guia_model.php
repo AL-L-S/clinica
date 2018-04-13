@@ -8153,27 +8153,22 @@ class guia_model extends Model {
         }
     }
 
-    function gravarnovasolicitacaosadt($paciente_id) {
+    function gravarnovasolicitacaosadt($paciente_id, $convenio_id, $solicitante_id) {
         try {
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
             $empresa_id = $this->session->userdata('empresa_id');
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->set('medico_solicitante', $_POST['solicitante']);
-            $this->db->set('convenio_id', $_POST['convenio']);
+            $this->db->set('medico_solicitante', $solicitante_id);
+            $this->db->set('convenio_id', $convenio_id);
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->insert('tb_solicitacao_sadt');
-            $erro = $this->db->_error_message();
-            if (trim($erro) != "") // erro de banco
-                return -1;
-            else
-                $ambulatorio_guia_id = $this->db->insert_id();
-
-
-            return $ambulatorio_guia_id;
+            
+            $insert_id = $this->db->insert_id();
+            return $insert_id;
         } catch (Exception $exc) {
             return -1;
         }

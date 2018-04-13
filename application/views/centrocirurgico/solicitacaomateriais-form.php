@@ -1,4 +1,10 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
+    <div class="bt_link_voltar">
+        <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?php echo $solicitacao_id; ?>">
+            Voltar
+        </a>
+
+    </div>
     <div class="clear"></div>
     <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaomateriais" method="post">
         <?

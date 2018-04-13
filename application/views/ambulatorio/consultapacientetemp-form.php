@@ -159,7 +159,7 @@
                     <th class="tabela_header">Hora</th>
                     <th class="tabela_header">M&eacute;dico</th>
                     <th class="tabela_header">Observa&ccedil;&otilde;es</th>
-                    <th class="tabela_header" colspan="2">&nbsp;</th>
+                    <th class="tabela_header" colspan="4">&nbsp;</th>
                 </tr>
             </thead>
             <?
@@ -190,7 +190,10 @@
         <? } ?>
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/exametemp/reservarconsultatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>/<?= $item->data; ?>">
-                                    reservar</a></td></div>
+                                    reservar</a></div></td>
+                            <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                        <a href="<?= base_url() ?>ambulatorio/exametemp/reangedarconsultatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>">
+                                            Re-Agendar</a></div></td>
 
                     </tr>
 

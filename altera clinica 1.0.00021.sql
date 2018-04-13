@@ -83,3 +83,7 @@ $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
 
+
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN primeiro_atendimento boolean DEFAULT false;
+
