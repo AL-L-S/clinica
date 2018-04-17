@@ -144,7 +144,7 @@ class contasreceber_model extends Model {
                             WHERE c.convenio_id = " . $_GET['convenio_id'] . "
                             AND ae.empresa_id = " . $_GET['empresa'] . "
                             AND pt.grupo != 'CIRURGICO'
-                            AND ae.data >= '" . $periodoAnterior . "'
+                            AND ae.data > '" . $periodoAnterior . "'
                             AND ae.data <= '" . $_GET['periodo_aquisicao'] . "'
                         )";
 
@@ -186,6 +186,27 @@ class contasreceber_model extends Model {
         
         $this->db->orderby('ae.data');
         $this->db->orderby('c.nome');
+        $return = $this->db->get();
+        
+        return $return->result();
+    }
+
+    function listarconvenioprevistoscontasreceber() {
+        $this->db->select('c.nome, c.convenio_id, c.dia_aquisicao');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("c.dinheiro", 'f');
+        $this->db->where("c.dia_aquisicao IS NOT NULL");
+        $this->db->where('pt.grupo !=', 'CIRURGICO');
+        $this->db->where('ae.cancelada', 'f');
+        if ($_POST['empresa'] != "") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->groupby('c.nome, c.convenio_id, c.dia_aquisicao');
         $return = $this->db->get();
         
         return $return->result();

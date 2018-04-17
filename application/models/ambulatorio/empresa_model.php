@@ -1043,6 +1043,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('encaminhamento_email', 'f');
                     }
+                    if (isset($_POST['valor_convenio_nao'])) {
+                        $this->db->set('valor_convenio_nao', 't');
+                    } else {
+                        $this->db->set('valor_convenio_nao', 'f');
+                    }
                     if (isset($_POST['valor_autorizar'])) {
                         $this->db->set('valor_autorizar', 't');
                     } else {
@@ -1266,6 +1271,12 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('senha_finalizar_laudo', 'f');
                     }
+
+                    if (isset($_POST['retirar_flag_solicitante'])) {
+                        $this->db->set('retirar_flag_solicitante', 't');
+                    } else {
+                        $this->db->set('retirar_flag_solicitante', 'f');
+                    }
                 }
 
 
@@ -1306,6 +1317,11 @@ class empresa_model extends Model {
                         $this->db->set('tecnica_promotor', 't');
                     } else {
                         $this->db->set('tecnica_promotor', 'f');
+                    }
+                    if (isset($_POST['valor_convenio_nao'])) {
+                        $this->db->set('valor_convenio_nao', 't');
+                    } else {
+                        $this->db->set('valor_convenio_nao', 'f');
                     }
                     if (isset($_POST['tecnica_enviar'])) {
                         $this->db->set('tecnica_enviar', 't');
@@ -1546,6 +1562,12 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('senha_finalizar_laudo', 'f');
                     }
+
+                    if (isset($_POST['retirar_flag_solicitante'])) {
+                        $this->db->set('retirar_flag_solicitante', 't');
+                    } else {
+                        $this->db->set('retirar_flag_solicitante', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -1653,6 +1675,7 @@ class empresa_model extends Model {
                                ep.carregar_modelo_receituario,
                                ep.desabilitar_trava_retorno,
                                ep.associa_credito_procedimento,
+                               ep.valor_convenio_nao,
                                ep.conjuge,
                                ep.subgrupo,
                                ep.laudo_sigiloso,
@@ -1669,6 +1692,7 @@ class empresa_model extends Model {
                                ep.repetir_horarios_agenda,
                                ep.subgrupo_procedimento,
                                ep.senha_finalizar_laudo,
+                               ep.retirar_flag_solicitante,
                                ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -1695,6 +1719,7 @@ class empresa_model extends Model {
             $this->_bairro = $return[0]->bairro;
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_caixa = $return[0]->caixa;
+            $this->_valor_convenio_nao = $return[0]->valor_convenio_nao;
             $this->_promotor_medico = $return[0]->promotor_medico;
             $this->_municipio = $return[0]->municipio;
             $this->_encaminhamento_email = $return[0]->encaminhamento_email;
@@ -1783,6 +1808,7 @@ class empresa_model extends Model {
             $this->_repetir_horarios_agenda = $return[0]->repetir_horarios_agenda;
             $this->_subgrupo_procedimento = $return[0]->subgrupo_procedimento;
             $this->_senha_finalizar_laudo = $return[0]->senha_finalizar_laudo;
+            $this->_retirar_flag_solicitante = $return[0]->retirar_flag_solicitante;
         } else {
             $this->_empresa_id = null;
         }

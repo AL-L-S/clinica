@@ -32,13 +32,13 @@
         
             <fieldset>
                 <legend>Financeiro</legend>
-                <div>
+<!--                <div>
                     <label>Criar Credor</label>
-                    <input type="checkbox" name="criarcredor"/></div>
+                    <input type="checkbox" name="criarcredor"/></div>-->
 
                 <div>
                     <label>Credor / Devedor</label>
-                    <select name="credor_devedor" id="credor_devedor" class="size2" >
+                    <select name="credor_devedor" id="credor_devedor" class="size4" disabled="">
                         <option value='' >Selecione</option>
                         <?php
                         $credor_devedor = $this->convenio->listarcredordevedor();

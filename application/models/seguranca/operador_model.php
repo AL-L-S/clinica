@@ -232,7 +232,7 @@ class Operador_model extends BaseModel {
                     // SELECT PROCEDIMENTOS
                 }
                 $procedimento_multiempresa = $this->listarempresapermissoes($emp->empresa_id);
-                
+
                 $this->db->select('pc.procedimento_convenio_id,pc.convenio_id');
                 $this->db->from('tb_procedimento_convenio pc');
                 $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
@@ -241,7 +241,6 @@ class Operador_model extends BaseModel {
                 $this->db->where("ag.tipo !=", 'CIRURGICO');
                 $this->db->where("pc.ativo", 't');
 //                    $this->db->where('pc.convenio_id', $conv->convenio_id);
-                
 //                    $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
                 if ($procedimento_multiempresa == 't') {
                     $this->db->where('pc.empresa_id', $emp->empresa_id);
@@ -1042,6 +1041,26 @@ class Operador_model extends BaseModel {
         return $return->result();
     }
 
+    function relatorioemailoperador() {
+        $this->db->select('o.operador_id,
+                               o.usuario,
+                               o.nome,
+                               o.email,
+                               o.perfil_id,
+                               p.nome as perfil');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
+        $this->db->where('o.ativo', 'true');
+        $this->db->where('o.email !=', '');
+        $this->db->orderby('o.nome');
+        if($_POST['perfil'] > 0){
+           $this->db->where('o.perfil_id', $_POST['perfil']); 
+        }
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarempresas() {
         $this->db->select('empresa_id,
                             nome');
@@ -1143,8 +1162,15 @@ class Operador_model extends BaseModel {
 
     function gravar() {
         try {
-
-            if ($_POST['criarcredor'] == "on") {
+            
+            $result = array();
+            if ($_POST['txtlaboratorio_id'] != ''){
+                $this->db->select('credor_devedor_id')->from('tb_operador')->where('operador_id', $_POST['operador_id']);
+                $result = $this->db->get()->result();
+            }
+                               
+           
+            if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
                 $this->db->set('razao_social', $_POST['nome']);
                 $this->db->set('cep', $_POST['cep']);
                 if ($_POST['cpf'] != '') {
@@ -1233,12 +1259,10 @@ class Operador_model extends BaseModel {
             if ($_POST['conta'] != "") {
                 $this->db->set('conta_id', $_POST['conta']);
             }
-            if ($_POST['criarcredor'] == "on") {
+            if (isset($financeiro_credor_devedor_id) && @$financeiro_credor_devedor_id != '') {
                 $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
-            } elseif ($_POST['credor_devedor'] != "") {
-                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
-
+            
             $this->db->set('cabecalho', $_POST['cabecalho']);
             $this->db->set('rodape', $_POST['rodape']);
             $this->db->set('timbrado', $_POST['timbrado']);

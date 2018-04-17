@@ -68,10 +68,11 @@
                         <input type="checkbox" name="txtconsulta"  />Realiza consulta
                         <?php
                     }
-                    ?>
-
-                    <input type="checkbox" name="txtsolicitante" <? if (@$obj->_solicitante == "t") echo 'checked' ?> />Médico Solicitante
-                    <input type="checkbox" name="ocupacao_painel" <? if (@$obj->_ocupacao_painel == "t") echo 'checked' ?> />Ocupação no Painel
+                    
+                    if (@$empresapermissao[0]->retirar_flag_solicitante == 'f') { ?>
+                        <input type="checkbox" name="txtsolicitante" <? if (@$obj->_solicitante == "t") echo 'checked' ?> />Médico Solicitante
+                        <input type="checkbox" name="ocupacao_painel" <? if (@$obj->_ocupacao_painel == "t") echo 'checked' ?> />Ocupação no Painel
+                    <? } ?>
                 </div>
             </fieldset>
             <fieldset>
@@ -222,18 +223,16 @@
             </fieldset>
             <fieldset>
                 <legend>Financeiro</legend>
-                <div>
+<!--                <div>
                     <label>Criar Credor</label>
-                    <input type="checkbox" name="criarcredor"/></div>
+                    <input type="checkbox" name="criarcredor"/></div>-->
 
                 <div>
 
 
 
                     <label>Credor / Devedor</label>
-
-
-                    <select name="credor_devedor" id="credor_devedor" class="size2" >
+                    <select name="credor_devedor" id="credor_devedor" class="size4" disabled="">
                         <option value='' >Selecione</option>
                         <?php
                         $credor_devedor = $this->convenio->listarcredordevedor();
@@ -251,23 +250,25 @@
                 </div>
                 <div>
                     <label>Conta</label>
-
-
                     <select name="conta" id="conta" class="size2" >
                         <option value='' >Selecione</option>
                         <?php
                         $conta = $this->forma->listarforma();
+                        
                         foreach ($conta as $item) {
                             ?>
 
                             <option   value =<?php echo $item->forma_entradas_saida_id; ?> <?
                             if (@$obj->_conta_id == $item->forma_entradas_saida_id):echo 'selected';
                             endif;
-                            ?>><?php echo $item->descricao; ?></option>
+                            ?>><?php echo $item->descricao . " - " . $item->empresa; ?></option>
                                       <?php
                                   }
                                   ?> 
                     </select>
+                    <?
+//                    var_dump($conta); die;
+                    ?>
                 </div>
                 <div>
                     <label>Tipo</label>

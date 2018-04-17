@@ -823,9 +823,14 @@ class Laboratorio_model extends Model {
 
     function gravar() {
         try {
-            echo '<pre>';
-//            var_dump($_POST); die;
-            if ($_POST['criarcredor'] == "on") {
+            $result = array();
+            if ($_POST['txtlaboratorio_id'] != ''){
+                $this->db->select('credor_devedor_id')->from('tb_laboratorio')->where('laboratorio_id', $_POST['txtlaboratorio_id']);
+                $result = $this->db->get()->result();
+            }
+                               
+           
+            if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
                 $this->db->set('razao_social', $_POST['txtNome']);
                 $this->db->set('razao_social', $_POST['txtNome']);
                 $this->db->set('cep', $_POST['cep']);
@@ -867,10 +872,8 @@ class Laboratorio_model extends Model {
             if ($_POST['conta'] != "") {
                 $this->db->set('conta_id', $_POST['conta']);
             }
-            if ($_POST['criarcredor'] == "on") {
+            if ($financeiro_credor_devedor_id != "") {
                 $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
-            } elseif ($_POST['credor_devedor'] != "") {
-                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('tipo', $_POST['tipo']);

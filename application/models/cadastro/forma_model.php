@@ -32,11 +32,13 @@ class forma_model extends Model {
     }
 
     function listarforma() {
-        $this->db->select('forma_entradas_saida_id,
-                            descricao');
-        $this->db->from('tb_forma_entradas_saida');
-        $this->db->where('ativo', 'true');
-        $this->db->orderby('descricao');
+        $this->db->select('c.forma_entradas_saida_id,
+                            c.descricao,
+                            e.nome as empresa');
+        $this->db->from('tb_forma_entradas_saida c');
+        $this->db->join('tb_empresa e', 'e.empresa_id = c.empresa_id', 'left');
+        $this->db->where('c.ativo', 'true');
+        $this->db->orderby('c.descricao');
         $return = $this->db->get();
         return $return->result();
     }

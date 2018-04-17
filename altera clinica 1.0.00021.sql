@@ -41,5 +41,25 @@ CREATE TABLE ponto.tb_paciente_estorno_registro
   CONSTRAINT tb_paciente_estorno_registro_pkey PRIMARY KEY (paciente_estorno_registro_id)
 );
 
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN valor_convenio_nao boolean DEFAULT false;
+
 -- Dia 07/04/2018
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN senha_finalizar_laudo boolean DEFAULT true;
+
+-- Dia 16/04/2018
+CREATE TABLE ponto.tb_feriado
+(
+  feriado_id serial NOT NULL,
+  nome character varying(200) NOT NULL,
+  data character varying(15),
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_feriado_pkey PRIMARY KEY (feriado_id)
+);
+
+-- Dia 17/04/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN retirar_flag_solicitante boolean DEFAULT false;

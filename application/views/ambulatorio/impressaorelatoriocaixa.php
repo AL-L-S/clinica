@@ -1268,26 +1268,26 @@
                         <?
                         foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento == $value->nome) {
-                                $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor1;
-                                $numerocredito[$value->nome] ++;
+                                $datacredito[$value->nome] = @$datacredito[$value->nome] + $item->valor1;
+                                @$numerocredito[$value->nome] ++;
                             }
 //                        }
 //                        foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_2 == $value->nome) {
-                                $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor2;
-                                $numerocredito[$value->nome] ++;
+                                $datacredito[$value->nome] = @$datacredito[$value->nome] + $item->valor2;
+                                @$numerocredito[$value->nome] ++;
                             }
 //                        }
 //                        foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_3 == $value->nome) {
-                                $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor3;
-                                $numerocredito[$value->nome] ++;
+                                $datacredito[$value->nome] = @$datacredito[$value->nome] + $item->valor3;
+                                @$numerocredito[$value->nome] ++;
                             }
 //                        }
 //                        foreach ($formapagamento as $value) {
                             if ($item->forma_pagamento_4 == $value->nome) {
-                                $datacredito[$value->nome] = $datacredito[$value->nome] + $item->valor4;
-                                $numerocredito[$value->nome] ++;
+                                $datacredito[$value->nome] = @$datacredito[$value->nome] + $item->valor4;
+                                @$numerocredito[$value->nome] ++;
                             }
                         }
                         ?>
@@ -1362,7 +1362,8 @@
                     </tr>
                 <? } ?>
                 <tr>
-                    <? // var_dump($faturado);
+                    <?
+                    // var_dump($faturado);
 //                    die;
                     ?>
                     <td colspan="5"></td>
@@ -1436,6 +1437,55 @@
                     </tbody>
                 </table> 
     <? } ?>
+        </div>
+        <br>
+        <div style="">
+    <? if (count($relatoriocredito) > 0) { ?>
+                <br>
+                <table border="1" cellspacing="0" cellpadding="5">
+                    <tr>
+                        <td colspan="6"><center><font size="-1"><B>CRÉDITOS UTILIZADOS</B></center></td>
+                    </tr>
+                    <tr>
+                        <th style='text-align: left;'><font size="-1">Paciente</th>
+                        <th style='text-align: right;'width="120px;"><font size="-1">Procedimento</th>
+                        <th style='text-align: right;'width="120px;"><font size="-1">Valor Crédito</th>
+                        <th style='text-align: right;'width="120px;"><font size="-1">Saldo Atual</th>
+                        <th style=''width="120px;"><font size="-1">Data Lançamento</th>
+                        <th style=''width="120px;"><font size="-1">Data</th>
+                    </tr> <?$credito = 0;
+                    foreach ($relatoriocredito as $item) {
+                        
+                        if ($item->forma_pagamento == 1000) {
+                            $credito = $credito + $item->valor1;
+                        }
+                        if ($item->forma_pagamento2 == 1000) {
+                            $credito = $credito + $item->valor2;
+                        }
+                        if ($item->forma_pagamento3 == 1000) {
+                            $credito = $credito + $item->valor3;
+                        }
+                        if ($item->forma_pagamento4 == 1000) {
+                            $credito = $credito + $item->valor4;
+                        }
+                        ?>
+                        <tr>
+                            <td ><font size="-1"><?= $item->paciente ?></td>
+                            <td style='text-align: right;'width="120px;"><font size="-1"><?= $item->procedimento ?></td>
+                            <td style='text-align: right;'width="120px;"><font size="-1"><?= "R$ " . number_format($credito, 2, ',', '.') ?></td>
+                            <td style='text-align: right;'width="120px;"><font size="-1"><?= "R$ " . number_format($item->saldo_credito, 2, ',', '.') ?></td>
+                            <td style='text-align: right;'width="120px;"><font size="-1"><?= date("d/m/Y", strtotime($item->data_lancamento)) ?></td>
+                            <td style='text-align: right;'width="120px;"><font size="-1"><?= date("d/m/Y", strtotime($item->data)) ?></td>
+                        </tr> 
+
+                        <?
+                        $credito = 0;
+                    }
+                    ?>
+                </table>
+                <?
+            }
+            ?>
         </div>
         <br>
     <? if (count($relatorio) > 0 || count($relatoriohomecare) > 0) { ?>

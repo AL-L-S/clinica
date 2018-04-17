@@ -74,7 +74,8 @@ class guia_model extends Model {
                             horario_sab,
                             horario_seg_sex,
                             senha_finalizar_laudo,
-                            desativar_personalizacao_impressao');
+                            desativar_personalizacao_impressao,
+                            retirar_flag_solicitante');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
@@ -8869,23 +8870,33 @@ class guia_model extends Model {
     }
 
     function relatorioresumocreditoslancados() {
-        $this->db->select("SUM(pc.valor) AS valor,
+        $this->db->select(" pc.valor,
                             p.nome as paciente,
                             pc.data,
                             o.nome as operador,
                             f.forma_pagamento_id,
-                            f.nome as formapagamento");
+                            f.nome as formapagamento,
+                            pc.valor1,
+                            pc.valor2,
+                            pc.valor3,
+                            pc.valor4,
+                            f.nome as forma_pagamento,
+                            f2.nome as forma_pagamento_2,
+                            f3.nome as forma_pagamento_3,
+                            f4.nome as forma_pagamento_4");
         $this->db->from('tb_paciente_credito pc');
         $this->db->join('tb_paciente p', 'p.paciente_id = pc.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = pc.operador_cadastro', 'left');
-        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento1', 'left');
+        $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = pc.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = pc.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = pc.forma_pagamento4', 'left');
         $this->db->where("pc.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("pc.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        if ($_POST['empresa'] != '') {
+        if ($_POST['empresa'] != '0') {
             $this->db->where('pc.empresa_id', $_POST['empresa']);
         }
         $this->db->where("pc.ativo", 't');
-        $this->db->groupby("p.nome, pc.data, f.forma_pagamento_id, f.nome,o.nome");
         $query = $this->db->get();
         $return = $query->result();
         return $return;
@@ -8895,13 +8906,13 @@ class guia_model extends Model {
         $this->db->select("pc.valor,
                             p.nome as paciente,
                             pc.data,
+                            pc.faturado,
+                            pc.financeiro_fechado,
+                            pc.forma_pagamento_id,
                             pc.valor1,
                             pc.valor2,
                             pc.valor3,
                             pc.valor4,
-                            pc.faturado,
-                            pc.financeiro_fechado,
-                            pc.forma_pagamento_id,
                             f.nome as forma_pagamento,
                             f2.nome as forma_pagamento_2,
                             f3.nome as forma_pagamento_3,
@@ -10316,7 +10327,11 @@ class guia_model extends Model {
                                 $this->db->set('valor', $valor_parcelado);
                                 $this->db->set('devedor', $value->credor_devedor);
                                 $this->db->set('parcela', $i);
-                                $this->db->set('data', $data_receber_p);
+                                
+                                $proximoDiaUtil = $this->retornaProximoDiaUtil(strtotime($data_receber_p));
+
+                                $this->db->set('data', $proximoDiaUtil);
+//                                $this->db->set('data', $data_receber_p);
                                 $this->db->set('classe', $classe);
                                 $this->db->set('conta', $value->conta_id);
                                 $this->db->set('observacao', $observacao);
@@ -10348,7 +10363,8 @@ class guia_model extends Model {
                         }
                         $this->db->set('ativo', 'f');
                         $this->db->update('tb_financeiro_contasreceber_temp');
-                    } else {
+                    } 
+                    else {
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
                             $valor_n_parcelado = $valor_total;
                             $agenda_exames_id = $this->relatoriocaixapersonalizadoforma($value->forma_pagamento_id);
@@ -10401,7 +10417,10 @@ class guia_model extends Model {
                                     $this->db->set('valor', $valor_parcelado);
                                     $this->db->set('devedor', $value->credor_devedor);
                                     $this->db->set('parcela', $i);
-                                    $this->db->set('data', $data_receber_p);
+                                    
+                                    $proximoDiaUtil = $this->retornaProximoDiaUtil(strtotime($data_receber_p));
+                                    
+                                    $this->db->set('data', $proximoDiaUtil);
                                     $this->db->set('classe', $classe);
                                     $this->db->set('conta', $value->conta_id);
                                     $this->db->set('observacao', $observacao);
@@ -10438,7 +10457,7 @@ class guia_model extends Model {
                 }
             }
         }
-
+        
         // Update na tabela agenda exames
         $procedimentos = substr($_POST['agenda_exames_id'], 0, (strlen($_POST['agenda_exames_id']) - 1));
         $sql = "UPDATE ponto.tb_agenda_exames
@@ -10449,6 +10468,22 @@ class guia_model extends Model {
         $this->db->query($sql);
     }
 
+    function retornaProximoDiaUtil($data) {
+        $feriados = array();
+        $result = $this->db->select("data")->from("tb_feriado")->where("ativo", 't')->get()->result();
+        foreach($result as $item){
+            $feriados[] = $item->data;
+        }
+        
+        if(in_array(date("d/m", $data), $feriados) || date("N", $data) > 5){
+            $diaSeguinte = strtotime("+1 day", $data);
+            return $this->retornaProximoDiaUtil($diaSeguinte);
+        }
+        else{
+            return date("Y-m-d", $data);
+        }
+    }
+    
     function fecharcaixapersonalizadocredito() {
 //        die($_POST['empresa']);
 //        try {

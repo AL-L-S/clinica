@@ -1,3 +1,4 @@
+<html>
 <div class="content"> <!-- Inicio da DIV content -->
 
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
@@ -109,7 +110,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
+                <?
                 $i = 0;
                 $qtde = 0;
                 $qtdetotal = 0;
@@ -196,7 +197,7 @@
                         </tr>
 
 
-                        <?php
+                        <?
                         $paciente = $item->paciente;
                         $convenio = $item->convenio;
                     } else {
@@ -316,13 +317,4 @@
 
 
 </div> <!-- Final da DIV content -->
-<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
-<script type="text/javascript">
-
-
-
-    $(function () {
-        $("#accordion").accordion();
-    });
-
-</script>
+</html>

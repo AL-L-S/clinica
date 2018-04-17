@@ -1,10 +1,10 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
-    <div class="bt_link_new">
+<!--    <div class="bt_link_new">
         <a href="<?php echo base_url() ?>cadastros/fornecedor/carregarfornecedor/0">
             Novo Credor/Devedor
         </a>
-    </div>
+    </div>-->
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Credor/Devedor</a></h3>
         <div>

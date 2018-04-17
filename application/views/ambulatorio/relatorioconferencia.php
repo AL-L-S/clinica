@@ -243,6 +243,15 @@
                             <option value="SIM">SIM</option>
                         </select>
                     </dd>
+                    <dt>
+                        <label>Gerar PDF</label>
+                    </dt>
+                    <dd>
+                        <select name="gerarpdf" id="gerarpdf" class="size2">
+                            <option value="NAO">NÃO</option>
+                            <option value="SIM">SIM</option>
+                        </select>
+                    </dd>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>

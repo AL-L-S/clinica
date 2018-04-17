@@ -30,9 +30,8 @@ $empresapermissao = $this->guia->listarempresasaladepermissao();
                         </th>
                         <th class="tabela_title">
                             <select name="ativo" id="empresa" class="size1">
-                                <option value="">Selecione</option>
-                                <option value="t">Ativo</option>
-                                <option value="f">Não-ativo</option>
+                                <option value="t" <?= ((@$_GET['ativo'] == 'f')? '':'selected="selected"') ?>>Ativo</option>
+                                <option value="f" <?= ((@$_GET['ativo'] == 'f')? 'selected="selected"':'') ?>>Não-ativo</option>
 
                             </select>
 

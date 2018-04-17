@@ -620,6 +620,18 @@
                         <dd>
                             <input type="checkbox" id="senha_finalizar_laudo" name="senha_finalizar_laudo" <? if (@$obj->_senha_finalizar_laudo == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="No lançamento de procedimentos não aparece o valor de procedimentos não particulares.">Valor Convenio não aparecer</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="valor_convenio_nao" name="valor_convenio_nao" <? if (@$obj->_valor_convenio_nao == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa opção, as flags de medico solicitante e ocupação no painel não irão aparecer no cadastro de profissionais">Retirar flag de solicitante</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="retirar_flag_solicitante" name="retirar_flag_solicitante" <? if (@$obj->_retirar_flag_solicitante == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>
