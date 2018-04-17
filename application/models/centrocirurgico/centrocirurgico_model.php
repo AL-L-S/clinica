@@ -467,13 +467,22 @@ class centrocirurgico_model extends BaseModel {
     }
 
     function listarconveniocirurgiaorcamento() {
-        $this->db->select('convenio_id,
-                            nome,');
-        $this->db->from('tb_convenio');
-        $this->db->where("ativo", 't');
-        $this->db->orderby('nome');
-        $return = $this->db->get();
-        return $return->result();
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("ce.empresa_id", $empresa_id);
+        $this->db->where("ce.ativo", 'true');
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
     }
 
     function procedimentocirurgicovalor($agenda_exames_id) {
@@ -1726,7 +1735,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
                 $pesquisa1 = $pesquisa . ' 00:00:00';
                 $pesquisa2 = $pesquisa . ' 23:59:59';
                 $this->db->where("sc.data_prevista >=", "$pesquisa1");
-                $this->db->where("sc.data_prevista <=", "$pesquisa2");
+//                $this->db->where("sc.data_prevista <=", "$pesquisa2");
                 if ($args['nome'] != null) {
                     $this->db->where('nome ilike', "%" . $args['nome'] . "%");
                 }
@@ -2870,6 +2879,28 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->set('situacao', 'ORCAMENTO_INCOMPLETO');
         $this->db->set('situacao_convenio', 'ORCAMENTO_INCOMPLETO');
+        $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
+        $this->db->update('tb_solicitacao_cirurgia');
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function alterardatacirurgiajson($solicitacao_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $_POST['dataprevista'] = date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['dataprevista'])));
+
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('data_prevista', date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_GET['txtdata']))));
+        $this->db->set('hora_prevista', date("H:i:s", strtotime(str_replace('/', '-', $_GET['hora']))));
+        $this->db->set('hora_prevista_fim', date("H:i:s", strtotime(str_replace('/', '-', $_GET['hora_fim']))));
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->update('tb_solicitacao_cirurgia');
 

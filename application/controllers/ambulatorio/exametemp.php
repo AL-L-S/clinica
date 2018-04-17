@@ -270,6 +270,26 @@ class Exametemp extends BaseController {
         $this->loadView('ambulatorio/reagendarfisioterapiapacientetemp-form', $data);
     }
 
+    function reangedarconsultatemp($agenda_exames_id, $pacientetemp_id, $medico_consulta_id) {
+//        if (isset($faltou)) {
+//            $data['faltou'] = $faltou;
+//        }
+        $data['pacientetemp_id'] = $pacientetemp_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['medico_consulta_id'] = $medico_consulta_id;
+        $obj_paciente = new paciente_model($pacientetemp_id);
+        $data['obj'] = $obj_paciente;
+        $data['medico'] = $this->exametemp->listarmedicoconsulta();
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['contador'] = $this->exametemp->contadorfisioterapiapaciente($pacientetemp_id);
+        $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapiareangedar($agenda_exames_id);
+        $data['consultasanteriores'] = $this->exametemp->listarespecialidadeanterior($pacientetemp_id);
+        $data['consultaanteriorcontador'] = $this->exametemp->listarconsultaanteriorcontador($pacientetemp_id);
+
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/reagendarconsultapacientetemp-form', $data);
+    }
+
     function listarcredito($paciente_id) {
 
         $data['paciente_id'] = $paciente_id;
@@ -287,12 +307,12 @@ class Exametemp extends BaseController {
         $this->load->view('ambulatorio/mostrarpendencias', $data);
     }
 
-    function gerasaldocredito ($paciente_id) {
+    function gerasaldocredito($paciente_id) {
         $data['paciente_id'] = $paciente_id;
 
         $credito = $this->exametemp->gerasaldocredito($paciente_id);
 //        var_dump($credito); die;
-        
+
         if (@$credito[0]->valor_total == '0.00') {
             $data['extenso'] = 'ZERO';
         } else {
@@ -365,7 +385,6 @@ class Exametemp extends BaseController {
 
 //        echo '<pre>';
 //        var_dump($data['valor']); die;
-
 //        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['paciente_id'] = $paciente_id;
 //        var_dump($paciente_id); die;
@@ -374,7 +393,7 @@ class Exametemp extends BaseController {
 
         $this->load->View('ambulatorio/faturarcredito-form', $data);
     }
-    
+
     function gravarfaturarcredito() {
         $this->guia->gravarfaturamentocredito();
 //        var_dump($_POST['paciente_teste_id']);
@@ -385,20 +404,18 @@ class Exametemp extends BaseController {
 //        $this->load->View('ambulatorio/faturar-form', $data);
         redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
     }
-    
+
     function excluircredito($credito_id, $paciente_id) {
         $this->exametemp->registrainformacaoestornocredito($credito_id);
         $verificar = $this->exametemp->excluircredito($credito_id);
         if ($verificar == -1) {
             $data['mensagem'] = 'Erro ao estornar o Crédito. Opera&ccedil;&atilde;o cancelada.';
-        } 
-        elseif ($verificar == -2) {
+        } elseif ($verificar == -2) {
             $data['mensagem'] = 'Erro ao estornar. Crédito já utilizado.';
-        }
-        else {
+        } else {
             $data['mensagem'] = 'Sucesso ao estornar o Crédito.';
         }
-        
+
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
     }
@@ -1000,6 +1017,15 @@ class Exametemp extends BaseController {
 //        $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapiareangedar();
         $this->exametemp->gravarfisioterapiapacientetempreagendar($pacientetemp_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
+//        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+    }
+
+    function gravarconsultapacientetempreagendar() {
+
+        $pacientetemp_id = $_POST['txtpaciente_id'];
+//        $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapiareangedar();
+        $this->exametemp->gravarconsultapacientetempreagendar($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
 //        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
     }
 

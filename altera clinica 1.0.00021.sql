@@ -44,6 +44,85 @@ CREATE TABLE ponto.tb_paciente_estorno_registro
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN valor_convenio_nao boolean DEFAULT false;
 
+
+CREATE TABLE ponto.tb_formapagamento_conta_empresa
+(
+  formapagamento_conta_empresa_id serial,
+  forma_pagamento_id integer,
+  empresa_id integer,
+  conta_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT formapagamento_conta_empresa_id_pkey PRIMARY KEY (formapagamento_conta_empresa_id)
+);
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_formapagamento_conta_empresa);
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_formapagamento_conta_empresa(forma_pagamento_id, empresa_id, 
+            conta_id)
+	SELECT fp.forma_pagamento_id, e.empresa_id, c2.forma_entradas_saida_id
+	FROM ponto.tb_forma_pagamento fp, ponto.tb_empresa e, ponto.tb_forma_entradas_saida c, ponto.tb_forma_entradas_saida c2
+	WHERE fp.ativo = true
+	AND fp.conta_id = c.forma_entradas_saida_id
+	AND c.descricao = c2.descricao
+        AND c2.ativo = true
+        AND c.ativo = true
+	AND e.empresa_id = c2.empresa_id
+	ORDER BY fp.nome,e.empresa_id;
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();
+
+
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN primeiro_atendimento boolean DEFAULT false;
+
+CREATE TABLE ponto.tb_convenio_empresa
+(
+  convenio_empresa_id serial NOT NULL,
+  convenio_id integer,
+  empresa_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_convenio_empresa_pkey PRIMARY KEY (convenio_empresa_id)
+);
+
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_convenio_empresa);
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_convenio_empresa(convenio_id, empresa_id)
+	SELECT convenio_id, empresa_id
+	FROM ponto.tb_convenio c, ponto.tb_empresa e
+	WHERE e.ativo = true AND c.ativo = true
+	ORDER BY convenio_id, empresa_id;
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT insereValor();    
 -- Dia 07/04/2018
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN senha_finalizar_laudo boolean DEFAULT true;
 

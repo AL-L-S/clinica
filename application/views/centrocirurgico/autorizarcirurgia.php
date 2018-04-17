@@ -15,7 +15,7 @@
                 <a target="_blank" href="<?= base_url() ?>centrocirurgico/centrocirurgico/solicitacarorcamentoconvenio/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>">Guia Convênio</a>
             </div>
             <div class="bt_link">
-                <a target="_blank" href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacaomaterial/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>">Cadastrar Material</a>
+                <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/carregarsolicitacaomaterial/<?= @$solicitacao[0]->solicitacao_cirurgia_id; ?>">Cadastrar Material</a>
             </div>
         </fieldset>
         <fieldset >
@@ -86,36 +86,15 @@
                     <label>Desconto (%)</label>
                     <input type="number" id="desconto" name="desconto" value="0" step="0.01" min="0" required=""/>
                 </div>
-<!--                <div>
-                    <label>Forma Pagamento</label>
-                    <select name="formapamento" id="formapamento" class="size2">
-                        <option value="">Selecione</option>
-                        <?
-                        foreach ($forma_pagamento as $item) :
-                            if ($item->forma_pagamento_id == 1000)
-                                continue;
-                            ?>
-                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                        <? endforeach; ?>
-                    </select>
-                </div>-->
+
+
             </fieldset>
 
-            <!--            <fieldset>
-                            <legend>Via</legend>
-                            <div id="via">
-                                <input type="radio" name="via" id="m" <?
-            if (@$solicitacao[0]->via == 'M') {
-                echo 'checked';
-            }
-            ?> value="M" required/> <label for="m">Mesma Via</label>
-                                <input type="radio" name="via" id="d" <?
-            if (@$solicitacao[0]->via == 'D') {
-                echo 'checked';
-            }
-            ?>  value="D" required/> <label for="d">Via Diferente</label>
-                            </div>
-                        </fieldset>-->
+            <fieldset>
+                <div>
+                    <div id="alterardatacirurgia"  style="cursor: pointer;" class="bt_link"><a>Alterar Data</a></div>
+                </div>
+            </fieldset>
 
             <fieldset>
                 <legend>Procedimentos</legend>
@@ -158,10 +137,10 @@
                                     <input type="number" id="valor_total<?= $i; ?>" class="texto02"  name="valor_total[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
                                 </td> 
 
-    <!--                                <td class="<?php echo $estilo_linha; ?>">
-        <input type="number" id="valor_total<?= $i; ?>" name="valor_total[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
-        <input type="number" id="valor<?= $i; ?>" name="valor[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
-    </td> -->
+                <!--                                <td class="<?php echo $estilo_linha; ?>">
+                    <input type="number" id="valor_total<?= $i; ?>" name="valor_total[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
+                    <input type="number" id="valor<?= $i; ?>" name="valor[<?= $i; ?>]" value="<?= @$item->quantidade * @$item->valor_unitario; ?>" step="0.01" required=""/>
+                </td> -->
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <input type="text" name="quantidade[<?= $i; ?>]" id="quantidade" alt="integer" class="texto01" value="<?= @$item->quantidade; ?>" required=""/>
                                 </td>
@@ -233,6 +212,29 @@
 
         });
     });
+
+
+    $(function () {
+        $('#alterardatacirurgia').click(function () {
+//            $('#txtdata').val();
+//            $('#hora').val();
+//            $('#hora_fim').val();
+            alert('Data alterada com sucesso');
+
+            $.getJSON('<?= base_url() ?>autocomplete/alterardatacirurgiajson', {solicitacao_id: $('#txtsolcitacao_id').val(), txtdata: $('#txtdata').val(), hora: $('#hora').val(), hora_fim: $('#hora_fim').val(), ajax: true}, function (t) {
+//                   if(j == 'true'){
+//                        alert('Data Alterada com sucesso');
+//                   }else{
+//                       alert('Erro ao alterar data'); 
+//                   }
+                   console.log(t);
+//                   window.location.reload(); 
+            });
+
+        });
+    });
+
+
     $(function () {
 
         $('#desconto').blur(function () {
@@ -251,7 +253,7 @@
             $('#quantidade<?= $b ?>').change(function () {
 
                 var valor_total = $("#valor<?= $b ?>").val() * $("#quantidade<?= $b ?>").val();
-    //            alert(valor_total);
+                //            alert(valor_total);
                 $("#valor_total<?= $b ?>").val(valor_total);
 
 
@@ -261,7 +263,7 @@
             $('#valor<?= $b ?>').change(function () {
 
                 var valor_total = $("#valor<?= $b ?>").val() * $("#quantidade<?= $b ?>").val();
-    //            alert(valor_total);
+                //            alert(valor_total);
                 $("#valor_total<?= $b ?>").val(valor_total);
 
 

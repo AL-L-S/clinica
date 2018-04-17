@@ -120,9 +120,9 @@
                     foreach ($convenio as $value) :
                         ?>
                         <option value="<?= $value->convenio_id; ?>" <? if ($lastCov == $value->convenio_id) echo 'selected'; ?>>
-                        <?php echo $value->nome; ?>
+                            <?php echo $value->nome; ?>
                         </option>
-<? endforeach; ?>
+                    <? endforeach; ?>
                 </select>
             </div>
             <div>
@@ -159,7 +159,7 @@
                     <th class="tabela_header">Hora</th>
                     <th class="tabela_header">M&eacute;dico</th>
                     <th class="tabela_header">Observa&ccedil;&otilde;es</th>
-                    <th class="tabela_header" colspan="2">&nbsp;</th>
+                    <th class="tabela_header" colspan="4">&nbsp;</th>
                 </tr>
             </thead>
             <?
@@ -173,25 +173,29 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                                                                                width=500,height=230');">=><?= $item->observacoes; ?></a></td>
 
                         <? if (empty($faltou)) { ?>
-            <? if ($item->encaixe == 't') { ?>
+                            <? if ($item->encaixe == 't') { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                         <a onclick="javascript: return confirm('Deseja realmente excluir o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/excluirconsultatempencaixe/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
                                             Excluir</a></td></div>
-            <? } else { ?>
+                            <? } else { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                         <a onclick="javascript: return confirm('Deseja realmente excluir a consulta?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirconsultatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
                                             Excluir</a></td></div>
 
                             <? } ?>
 
-        <? } ?>
+                        <? } ?>
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/exametemp/reservarconsultatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>/<?= $item->data; ?>">
-                                    reservar</a></td></div>
-
+                                    reservar</a></div></td>
+                        <? if ($item->confirmado == 'f' && $item->realizada == 'f') {?>
+                            <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/exametemp/reangedarconsultatemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>">
+                                        Re-Agendar</a></div></td>
+                        <? } ?>
                     </tr>
 
                 </tbody>
@@ -454,14 +458,14 @@
         var data = document.getElementById("txtNascimento").value;
         var ano = data.substring(6, 12);
         var idade = new Date().getFullYear() - ano;
-        
+
         var dtAtual = new Date();
         var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
-        
-        if ( dtAtual < aniversario ) {
+
+        if (dtAtual < aniversario) {
             idade--;
         }
-        
+
         document.getElementById("idade2").value = idade + " ano(s)";
     }
 

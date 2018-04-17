@@ -7089,6 +7089,23 @@ class exame_model extends Model {
 //            var_dump($_POST['txttipo']);
 //            die;
 
+            $this->db->select('al.ambulatorio_laudo_id');
+            $this->db->from('tb_ambulatorio_laudo al');
+            $this->db->join('tb_exames ae', 'ae.exames_id = al.exame_id', 'left');
+            $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
+            $this->db->where("age.agenda_exames_id is not null");
+            $this->db->where("al.data <=", $data);
+            $this->db->where("age.paciente_id", $_POST['txtpaciente_id']);
+            $this->db->where("al.medico_parecer1", $_POST['txtmedico']);
+            $atendimentos = $this->db->get()->result();
+            
+//            var_dump($atendimentos); die;
+            if(count($atendimentos) > 0){
+                $primeiro_atendimento = 'f';
+            }else{
+                $primeiro_atendimento = 't';
+            }
+            
             $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
             $this->db->from('tb_procedimento_percentual_medico ppm');
             $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
@@ -7143,6 +7160,7 @@ class exame_model extends Model {
                 $this->db->set('exame_id', $exames_id);
                 $this->db->set('guia_id', $_POST['txtguia_id']);
                 $this->db->set('tipo', $_POST['txttipo']);
+                $this->db->set('primeiro_atendimento', $primeiro_atendimento);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 if ($_POST['txtmedico'] != "") {
@@ -7213,6 +7231,7 @@ class exame_model extends Model {
                 if ($_POST['txtmedico'] != "") {
                     $this->db->set('medico_parecer1', $_POST['txtmedico']);
                 }
+                $this->db->set('primeiro_atendimento', $primeiro_atendimento);
                 $this->db->insert('tb_ambulatorio_laudo');
                 $laudo_id = $this->db->insert_id();
                 $guia_id = $_POST['txtguia_id'];
@@ -7279,6 +7298,7 @@ class exame_model extends Model {
                 if ($_POST['txtmedico'] != "") {
                     $this->db->set('medico_parecer1', $_POST['txtmedico']);
                 }
+                $this->db->set('primeiro_atendimento', $primeiro_atendimento);
                 $this->db->insert('tb_ambulatorio_laudo');
                 $laudo_id = $this->db->insert_id();
                 $guia_id = $_POST['txtguia_id'];
@@ -7344,6 +7364,7 @@ class exame_model extends Model {
                 if ($_POST['txtmedico'] != "") {
                     $this->db->set('medico_parecer1', $_POST['txtmedico']);
                 }
+                $this->db->set('primeiro_atendimento', $primeiro_atendimento);
                 $this->db->insert('tb_ambulatorio_laudo');
                 $laudo_id = $this->db->insert_id();
                 $guia_id = $_POST['txtguia_id'];

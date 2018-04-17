@@ -237,7 +237,7 @@
                 $total_medicospagar = $total_medicospagar + $medicos;
                 ?>
                 <tr>
-                    <td><font size="-1" width="350px;"><?= utf8_decode($item->medico); ?></td>
+                    <td><font size="-1" width="350px;"><?= $item->medico; ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($medicos, 2, ',', '.') ?></td>
                 </tr>
@@ -289,7 +289,7 @@
                 ?>
 
                 <tr>
-                    <td><font size="-1" width="350px;"><?= $item->guia_id . ' => ' . utf8_decode($item->medico); ?></td>
+                    <td><font size="-1" width="350px;"><?= $item->guia_id . ' => ' . $item->medico; ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
                     <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor_medico, 2, ',', '.') ?></td>
                 </tr>
@@ -389,7 +389,7 @@
                     $total_laboratoriospagar = $total_laboratoriospagar + $laboratorio_total;
                     ?>
                     <tr>
-                        <td><font size="-1" width="350px;"><?= utf8_decode($item->laboratorio); ?></td>
+                        <td><font size="-1" width="350px;"><?= $item->laboratorio; ?></td>
                         <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item->valor, 2, ',', '.') ?></td>
                         <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($laboratorio_total, 2, ',', '.') ?></td>
                     </tr>
@@ -464,7 +464,7 @@
                 if ($value->dinheiro == 'f') {
                     ?>
                     <tr>
-                        <td><font size="-1" width="350px;"><?= utf8_decode($value->convenio); ?></td>
+                        <td><font size="-1" width="350px;"><?= $value->convenio; ?></td>
                         <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($total_convenio, 2, ',', '.') ?></td>
                     </tr>
                     <?php
@@ -517,7 +517,7 @@
                 if ($item2->dinheiro == 't') {
                     ?>
                     <tr>
-                        <td><font size="-1" width="350px;"><?= utf8_decode($item2->convenio); ?></td>
+                        <td><font size="-1" width="350px;"><?= $item2->convenio; ?></td>
                         <td style='text-align: right;'><font size="-1" width="200px;"><?= number_format($item2->valor_teste, 2, ',', '.') ?></td>
                     </tr>
                     <?php
@@ -773,3 +773,6 @@
     });
 
 </script>
+
+
+

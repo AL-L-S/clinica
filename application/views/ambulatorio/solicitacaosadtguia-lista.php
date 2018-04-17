@@ -68,7 +68,7 @@
             </fieldset>
         </form>
         <div class="bt_link_new">
-            <a href="<?= base_url() ?>ambulatorio/guia/novasolicitacaosadt/<?= $paciente['0']->paciente_id ?>">
+            <a href="<?= base_url() ?>ambulatorio/guia/gravarnovasolicitacaosadt/<?= $paciente['0']->paciente_id ?>/<?=$convenio_id?>/<?=$solicitante_id?>">
                 Nova guia
             </a>
         </div>
@@ -99,7 +99,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->solicitante ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y H:i:s", strtotime($item->data_cadastro)); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/guia/cadastrarsolicitacaosadt/<?= $item->solicitacao_sadt_id ?>">Cadastrar</a></div>
+                                        <a href="<?= base_url() ?>ambulatorio/guia/cadastrarsolicitacaosadt/<?= $item->solicitacao_sadt_id ?>/<?= $paciente['0']->paciente_id ?>/<?=$convenio_id?>/<?=$solicitante_id?>">Cadastrar</a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/guia/impressaosolicitacaosadt/<?= $item->solicitacao_sadt_id ?>">Imprimir</a></div>

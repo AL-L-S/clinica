@@ -84,7 +84,7 @@
                             $telefone = $relatorio[0]->telefone;
                         }
                         ?>
-                        <td height="16" colspan="1" class="tc"><strong><?= $telefone; ?></strong></td>
+                        <td height="16" colspan="1" class="tc"><strong><?//= $telefone; ?></strong></td>
                         <td height="16" colspan="2" class="tc"><strong><?= $relatorio[0]->email; ?></strong></td>
                     </tr>
                     <tr>

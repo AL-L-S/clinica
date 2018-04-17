@@ -4129,6 +4129,8 @@ class laudo_model extends Model {
                             pi.nome as indicacao,
                             m.estado as uf,
                             age.guia_id,
+                            age.medico_solicitante,
+                            ag.primeiro_atendimento,
                             co.nome as convenio,
                             ag.situacao as situacaolaudo,
                             p.nome as paciente');
@@ -4159,6 +4161,8 @@ class laudo_model extends Model {
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;
             $this->_bairro = $return[0]->bairro;
+            $this->_medico_solicitante = $return[0]->medico_solicitante;
+            $this->_primeiro_atendimento = $return[0]->primeiro_atendimento;
             $this->_adendo = $return[0]->adendo;
             $this->_uf = $return[0]->uf;
             $this->_telefone = $return[0]->telefone;

@@ -1416,7 +1416,7 @@
                         foreach ($creditos as $item) {
                             ?>
                             <?
-                            $valorcreditototal = $valorcreditototal + $item->valor;
+                            $valorcreditototal = $valorcreditototal + ($item->valor1 + $item->valor2 + $item->valor3 + $item->valor4);
                             ?>
                             <tr <? if ($item->faturado == 'f') { ?> style="color: red;" <? } ?>>
                                 <td><font size="-2"><?= $item->paciente ?></td>

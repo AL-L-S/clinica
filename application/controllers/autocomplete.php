@@ -1020,6 +1020,19 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
+    
+    function alterardatacirurgiajson() {
+//        var_dump(123);die;
+
+        if (isset($_GET['solicitacao_id'])) {
+            $this->centrocirurgico->alterardatacirurgiajson($_GET['solicitacao_id']);
+            $retorno = true;
+        } else {
+            $retorno = false;
+        }
+        
+        echo json_encode($retorno);
+    }
 
     function carregavalorprocedimentocirurgico() {
 

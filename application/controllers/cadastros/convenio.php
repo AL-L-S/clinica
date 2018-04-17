@@ -18,6 +18,7 @@ class Convenio extends BaseController {
         $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
+        $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('cadastro/grupoconvenio_model', 'grupoconvenio');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
         $this->load->library('mensagem');
@@ -51,6 +52,14 @@ class Convenio extends BaseController {
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['convenioid'] = $convenio_id;
         $this->loadView('cadastros/copiarconvenio-form', $data);
+    }
+
+    function empresaconvenio($convenio_id) {
+        $data['empresa'] = $this->empresa->listarempresasativo();
+        $data['empresa_conta'] = $this->convenio->buscarconvenioempresa($convenio_id);
+        $data['convenio_selecionado'] = $this->convenio->listarconvenioselecionado($convenio_id);
+        $data['convenioid'] = $convenio_id;
+        $this->loadView('cadastros/empresaconvenio-form', $data);
     }
 
     function ajustargrupo($convenio_id) {
@@ -141,8 +150,8 @@ class Convenio extends BaseController {
                 $this->convenio->removerprocedimentosnaopertenceprincipal($convenio_id);
                 $this->convenio->removerpercentuaisnaopertenceprincipal($convenio_id);
             }
-        } 
-        
+        }
+
         redirect(base_url() . "cadastros/convenio");
     }
 
@@ -155,6 +164,29 @@ class Convenio extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/convenio");
+    }
+
+    function gravarconvenioempresa() {
+        $convenio_id = $_POST['convenio_id'];
+        $teste = $this->convenio->gravarconvenioempresa();
+        if (!$teste) {
+            $data['mensagem'] = 'Erro ao gravar empresa. Empresa já cadastrada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar empresa.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "cadastros/convenio/empresaconvenio/$convenio_id");
+    }
+    
+    function excluirconvenioempresa($convenio_empresa_id,$convenio_id) {
+        $teste = $this->convenio->excluirconvenioempresa($convenio_empresa_id);
+        if (!$teste) {
+            $data['mensagem'] = 'Erro ao excluir empresa.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao excluir empresa.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "cadastros/convenio/empresaconvenio/$convenio_id");
     }
 
     function anexararquivoconvenio($convenios_id) {

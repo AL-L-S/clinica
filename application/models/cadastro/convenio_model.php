@@ -57,41 +57,95 @@ class Convenio_model extends Model {
     }
 
     function listardados() {
-        $this->db->select('convenio_id,
-                            nome,
-                            dinheiro,
-                            conta_id');
-        $this->db->from('tb_convenio');
-        $this->db->where("ativo", 't');
-        $this->db->orderby("nome");
-        $return = $this->db->get();
-        return $return->result();
+
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("ce.empresa_id", $empresa_id);
+        $this->db->where("ce.ativo", 'true');
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
     }
-    
+
     function listarconveniosprimarios() {
-        $this->db->select('convenio_id,
-                            nome,
-                            dinheiro,
-                            conta_id');
-        $this->db->from('tb_convenio');
-        $this->db->where("ativo", 't');
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("ce.empresa_id", $empresa_id);
         $this->db->where("associado", 'f');
-        $this->db->orderby("nome");
+        $this->db->where("ce.ativo", 'true');
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
+//        $this->db->select('convenio_id,
+//                            nome,
+//                            dinheiro,
+//                            conta_id');
+//        $this->db->from('tb_convenio');
+//        $this->db->where("ativo", 't');
+//
+//        $this->db->orderby("nome");
+//        $return = $this->db->get();
+//        return $return->result();
+    }
+
+    function buscarconvenioempresa($convenio_id) {
+        $this->db->select('e.nome as empresa, convenio_empresa_id');
+        $this->db->from('tb_convenio_empresa ce');
+        $this->db->join('tb_empresa e', 'ce.empresa_id = e.empresa_id', 'left');
+        $this->db->where("ce.ativo", 't');
+        $this->db->where("ce.convenio_id", $convenio_id);
+        $this->db->orderby("ce.empresa_id");
         $return = $this->db->get();
         return $return->result();
     }
 
     function listarconvenioscopiar($convenio_id) {
-        $this->db->select('convenio_id,
-                            nome,
-                            dinheiro,
-                            conta_id');
-        $this->db->from('tb_convenio');
-        $this->db->where("ativo", 't');
-        $this->db->where("convenio_id !=", $convenio_id);
-        $this->db->orderby("nome");
-        $return = $this->db->get();
-        return $return->result();
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("ce.empresa_id", $empresa_id);
+        $this->db->where("c.convenio_id !=", $convenio_id);
+//        $this->db->where("associado", 'f');
+        $this->db->where("ce.ativo", 'true');
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        return $return = $query->result();
+
+
+//        $this->db->select('convenio_id,
+//                            nome,
+//                            dinheiro,
+//                            conta_id');
+//        $this->db->from('tb_convenio');
+//        $this->db->where("ativo", 't');
+//
+//        $this->db->orderby("nome");
+//        $return = $this->db->get();
+//        return $return->result();
     }
 
     function listarconvenioselecionado($convenio_id) {
@@ -108,12 +162,16 @@ class Convenio_model extends Model {
     }
 
     function listardadoscbhpm() {
-        $this->db->select('convenio_id,
-                            nome,
-                            dinheiro,
-                            conta_id');
-        $this->db->from('tb_convenio');
-        $this->db->where("ativo", 't');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("ce.empresa_id", $empresa_id);
+//        $this->db->where("ativo", 't');
         $this->db->where("(tabela = 'CBHPM' OR tabela = 'PROPRIA')");
         $this->db->orderby("nome");
         $return = $this->db->get();
@@ -213,14 +271,33 @@ class Convenio_model extends Model {
     }
 
     function listarconvenionaodinheiro() {
-        $this->db->select('convenio_id,
-                            nome');
-        $this->db->from('tb_convenio');
-        $this->db->where("ativo", 't');
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("ce.empresa_id", $empresa_id);
+        $this->db->where("ce.ativo", 'true');
         $this->db->where("dinheiro", 'f');
-        $this->db->orderby("nome");
-        $return = $this->db->get();
-        return $return->result();
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
+
+//
+//        $this->db->select('convenio_id,
+//                            nome');
+//        $this->db->from('tb_convenio');
+//        $this->db->where("ativo", 't');
+//        $this->db->where("dinheiro", 'f');
+//        $this->db->orderby("nome");
+//        $return = $this->db->get();
+//        return $return->result();
     }
 
     function excluir($convenio_id) {
@@ -660,7 +737,7 @@ class Convenio_model extends Model {
 
                     if (count($result2) > 0) {
                         foreach ($result2 as $value) {
-                            $valortotal = $value->valortotal + ($value->valortotal * (float)$_POST['valor'][$key] / 100);
+                            $valortotal = $value->valortotal + ($value->valortotal * (float) $_POST['valor'][$key] / 100);
                             $this->db->set('qtdech', $value->qtdech);
                             $this->db->set('valorch', $value->valorch);
                             $this->db->set('qtdefilme', $value->qtdefilme);
@@ -719,6 +796,7 @@ class Convenio_model extends Model {
         }
     }
     
+
     function gravarvaloresassociacaoeditar($convenio_id) {
 
         $horario = date("Y-m-d H:i:s");
@@ -768,9 +846,9 @@ class Convenio_model extends Model {
 
                     if (count($result2) > 0) {
                         foreach ($result2 as $value) {
-                            $valortotal = $value->valortotal + ($value->valortotal * (float)$_POST['valor'][$key] / 100);
+                            $valortotal = $value->valortotal + ($value->valortotal * (float) $_POST['valor'][$key] / 100);
 //                            var_dump($valortotal); die;
-                            
+
                             $this->db->set('qtdech', $value->qtdech);
                             $this->db->set('valorch', $value->valorch);
                             $this->db->set('qtdefilme', $value->qtdefilme);
@@ -1271,8 +1349,24 @@ class Convenio_model extends Model {
                     return -1;
                 else
                     $exame_sala_id = $this->db->insert_id();
-            }
-            else { // update
+
+
+                $convenio_id = $exame_sala_id;
+                $this->db->select('empresa_id');
+
+                $this->db->from('tb_empresa');
+                $this->db->where("ativo", 't');
+                $this->db->orderby('empresa_id');
+                $empresas = $this->db->get()->result();
+                foreach ($empresas as $item) {
+
+                    $this->db->set('empresa_id', $item->empresa_id);
+                    $this->db->set('convenio_id', $convenio_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_convenio_empresa');
+                }
+            } else { // update
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $exame_sala_id = $_POST['txtconvenio_id'];
@@ -1291,6 +1385,48 @@ class Convenio_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function gravarconvenioempresa() {
+
+
+        $this->db->select('convenio_empresa_id');
+        $this->db->from('tb_convenio_empresa ce');
+        $this->db->where("ce.ativo", 't');
+        $this->db->where('empresa_id', $_POST['empresa']);
+        $this->db->where('convenio_id', $_POST['convenio_id']);
+        $return = $this->db->get()->result();
+
+        if (count($return) == 0) {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('empresa_id', $_POST['empresa']);
+            $this->db->set('convenio_id', $_POST['convenio_id']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_convenio_empresa');
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function excluirconvenioempresa($convenio_empresa_id) {
+
+        /* inicia o mapeamento no banco */
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('convenio_empresa_id', $convenio_empresa_id);
+        $this->db->update('tb_convenio_empresa');
+
+        return true;
     }
 
     function gravarcaminhologo($convenio_id, $arquivo) {
@@ -1356,7 +1492,6 @@ class Convenio_model extends Model {
                             WHERE convenio_id = $convenioidnovo
                             AND ativo = 't'
                         )";
-
             }
 
             $this->db->query($sql);

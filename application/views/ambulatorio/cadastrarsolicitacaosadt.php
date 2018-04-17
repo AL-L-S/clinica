@@ -1,6 +1,12 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
+    <div class="bt_link_voltar">
+        <a href="<?= base_url() ?>ambulatorio/guia/pesquisarsolicitacaosadt/<?=$paciente_id?>/<?=$convenio_id?>/<?=$solicitante_id?>">
+            Voltar
+        </a>
+
+    </div>
     <div class="clear"></div>
-    <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentosolicitacaosadt/<?=$solicitacao_id?>" method="post">
+    <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>ambulatorio/guia/gravarprocedimentosolicitacaosadt/<?= $solicitacao_id ?>/<?=$paciente_id?>/<?=$convenio_id?>/<?=$solicitante_id?>" method="post">
         <?
         $perfil_id = $this->session->userdata('perfil_id');
         ?>
@@ -37,7 +43,7 @@
                     <tr>
                         <td>Procedimento</td>
                         <td>
-                            <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                            <select name="procedimento1" id="procedimento1" class="size4 chosen-select" tabindex="1" required="">
                                 <option value="">Selecione</option>
                                 <? foreach ($procedimento as $item) { ?>
                                     <option value="<?= $item->procedimento_convenio_id ?>"><?= $item->procedimento ?></option>
@@ -53,20 +59,7 @@
                             }
                             ?> class="texto01"/></td>
                     </tr>
-<!--                        <tr>
-                        <td>Pagamento</td>
-                        <td><select  name="formapamento" id="formapamento" class="size2"  <?
-                    if ($perfil_id != 1) {
-                        echo 'disabled';
-                    }
-                    ?>>
-                                <option value="0">Selecione</option>
-                    <? foreach ($forma_pagamento as $item) : ?>
-                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                    <? endforeach; ?>
-                            </select>
-                        </td>
-                    </tr>-->
+
                 </table>
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
@@ -83,11 +76,6 @@
             <!-- NAO REMOVA ESSE FIELDSET POIS O JAVASCRIPT IRA FUNCIONAR NELE!!! -->
         </fieldset>
 
-        <!--        <fieldset > 
-                    <div class="bt_link">                                  
-                        <a onclick="javascript: return confirm('Deseja realmente Liberar a solicitacao?');" href="<?= base_url() ?>centrocirurgico/centrocirurgico/liberar/<?= $solicitacao_id ?>/<?= $dados[0]->orcamento ?>">Liberar</a>
-                    </div>
-                </fieldset>-->
 
     </form>
     <?
@@ -116,7 +104,7 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                 <center>
-                    <a href="<?= base_url() ?>ambulatorio/guia/excluirsolicitacaoprocedimentosadt/<?=$solicitacao_id?>/<?= $item->solicitacao_sadt_procedimento_id; ?>" class="delete">
+                    <a href="<?= base_url() ?>ambulatorio/guia/excluirsolicitacaoprocedimentosadt/<?= $solicitacao_id ?>/<?= $item->solicitacao_sadt_procedimento_id; ?>" class="delete">
                     </a>
                 </center>
                 </td>
@@ -145,69 +133,28 @@
     }
 </style>
 
+<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-verificaCPF.js"></script>-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
+    $(document).ready(function () {
 
-    $(function () {
-        $('#convenio1').change(function () {
-            if ($(this).val()) {
+
+
+        $('#procedimento1_chosen').click(function () {
+//            alert($('#procedimento1').val());
+            if ($('#procedimento1').val()) {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniocirurgico', {convenio1: $(this).val(), ajax: true}, function (j) {
-                    var options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                    }
-//                    $('#procedimento1').html(options).show();
-                    $('#procedimento1 option').remove();
-                    $('#procedimento1').append(options);
-                    $("#procedimento1").trigger("chosen:updated");
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#procedimento1').html('<option value="">-- Escolha um exame --</option>');
-            }
-        });
-    });
-
-
-    if ($('#convenio1').val() != '') {
-//                            alert('asdsd');
-        $('.carregando').show();
-        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniocirurgico', {convenio1: $('#convenio1').val(), ajax: true}, function (j) {
-            var options = '<option value=""></option>';
-            for (var c = 0; c < j.length; c++) {
-                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-
-            }
-
-//                    $('#procedimento1').html(options).show();
-            $('#procedimento1 option').remove();
-            $('#procedimento1').append(options);
-            $("#procedimento1").trigger("chosen:updated");
-            $('.carregando').hide();
-
-            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $('#procedimento1').val(), ajax: true}, function (j) {
-                options = "";
-                options += j[0].valortotal;
-                document.getElementById("valor1").value = options
-                $('.carregando').hide();
-            });
-        });
-    } else {
-        $('#procedimento1').html('<option value="">-- Escolha um exame --</option>');
-    }
-
-
-
-    $(function () {
-        $('#procedimento1').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $('#procedimento1').val(), ajax: true}, function (j) {
                     options = "";
                     options += j[0].valortotal;
                     document.getElementById("valor1").value = options
@@ -217,12 +164,12 @@
                 $('#valor1').html('value=""');
             }
         });
+
+
+
+
+
     });
-
-
-
-
-
 
 
 

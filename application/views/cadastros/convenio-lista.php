@@ -92,9 +92,15 @@
                                         </a>
                                     </div>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 100px;">
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 70px;">
                                         <a href="<?php echo base_url() ?>cadastros/convenio/anexararquivoconvenio/<?= $item->convenio_id ?>">
                                             Logo
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link" style="width: 70px;">
+                                        <a href="<?php echo base_url() ?>cadastros/convenio/empresaconvenio/<?= $item->convenio_id ?>">
+                                            Empresa
                                         </a>
                                     </div>
                                 </td>

@@ -93,8 +93,21 @@
                         <tr>
                             <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                         </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                        </tr>
                     </table>
+
+
                 </fieldset>
+                <? if (@$obj->_primeiro_atendimento == 't') { ?>
+
+
+                    <fieldset style="text-align: center;">
+                        <span style="color: #189d00;font-size: large;font-weight: bold">Primeiro Atendimento</span>
+                    </fieldset>
+
+                <? } ?>
                 <table>
                     <tr>
                         <td >
@@ -339,8 +352,8 @@
                                         </tr>
                                         <tr>
                                             <td width="40px;"><div class="bt_link_new">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/pesquisarsolicitacaosadt/<?= $paciente_id ?>');" >
-                                                            Solicitação SADT</a></div>
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/pesquisarsolicitacaosadt/<?= $paciente_id ?>/<?= @$obj->_convenio_id ?>/<?= @$obj->_medico_parecer1 ?>');" >
+                                                        Solicitação SADT</a></div>
                                             </td>
                                         </tr>
 
@@ -1455,13 +1468,13 @@
         }
 
     });
-    
+
     tinyMCE.init({
         // General options
         mode: "exact",
         elements: "adendo",
         theme: "advanced",
-       // plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+        // plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
         menubar: "tools",
         toolbar: "spellchecker",
         spellchecker_languages: 'pt_BR',
