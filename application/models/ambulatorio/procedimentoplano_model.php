@@ -1030,13 +1030,22 @@ class procedimentoplano_model extends Model {
     }
 
     function listarconvenio() {
-        $this->db->select('convenio_id,
-                            nome,');
-        $this->db->from('tb_convenio');
-        $this->db->where("ativo", 't');
-        $this->db->orderby('nome');
-        $return = $this->db->get();
-        return $return->result();
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("ce.empresa_id", $empresa_id);
+        $this->db->where("ce.ativo", 'true');
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
     }
 
     function listarconveniointegracaofidelidade($parceiro_id) {
@@ -1051,13 +1060,22 @@ class procedimentoplano_model extends Model {
     }
 
     function listarconveniocirurgiaorcamento() {
-        $this->db->select('convenio_id,
-                            nome,');
-        $this->db->from('tb_convenio');
-        $this->db->where("ativo", 't');
-        $this->db->orderby('nome');
-        $return = $this->db->get();
-        return $return->result();
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("ce.empresa_id", $empresa_id);
+        $this->db->where("ce.ativo", 'true');
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
     }
 
     function listargrupo() {

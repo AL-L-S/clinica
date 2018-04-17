@@ -49,6 +49,19 @@ class empresa_model extends Model {
         return $this->db;
     }
 
+    function listarempresasativo() {
+
+        $this->db->select('empresa_id,
+            razao_social,
+            producaomedicadinheiro,
+            nome');
+        $this->db->from('tb_empresa');
+        $this->db->where("ativo", 't');
+        $this->db->orderby('empresa_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarlembretes($args = array()) {
 
         $operador_id = $this->session->userdata('operador_id');
@@ -1018,7 +1031,7 @@ class empresa_model extends Model {
                 }
             }
             $horario = date("Y-m-d H:i:s");
-            
+
 
             $perfil_id = $this->session->userdata('perfil_id');
             if ($_POST['txtempresaid'] == "") {// insert

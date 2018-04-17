@@ -1020,6 +1020,15 @@ class Exametemp extends BaseController {
 //        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
     }
 
+    function gravarconsultapacientetempreagendar() {
+
+        $pacientetemp_id = $_POST['txtpaciente_id'];
+//        $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapiareangedar();
+        $this->exametemp->gravarconsultapacientetempreagendar($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
+//        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+    }
+
     function gravarpaciente() {
         if (trim($_POST['txtNome']) == "") {
             $data['mensagem'] = 'Erro ao marcar consulta é obrigatorio nome do Paciente.';

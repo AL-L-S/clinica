@@ -632,11 +632,15 @@ class guia_model extends Model {
     }
 
     function listarconvenios() {
+        $empresa_id = $this->session->userdata('empresa_id');
 
         $this->db->select(' c.convenio_id,
                             c.nome');
         $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
         $this->db->where("c.ativo", 'true');
+        $this->db->where("ce.empresa_id", $empresa_id);
+        $this->db->where("ce.ativo", 'true');
         $this->db->orderby("c.nome");
         $query = $this->db->get();
         $return = $query->result();
@@ -8816,23 +8820,33 @@ class guia_model extends Model {
     }
 
     function relatorioresumocreditoslancados() {
-        $this->db->select("SUM(pc.valor) AS valor,
+        $this->db->select(" pc.valor,
                             p.nome as paciente,
                             pc.data,
                             o.nome as operador,
                             f.forma_pagamento_id,
-                            f.nome as formapagamento");
+                            f.nome as formapagamento,
+                            pc.valor1,
+                            pc.valor2,
+                            pc.valor3,
+                            pc.valor4,
+                            f.nome as forma_pagamento,
+                            f2.nome as forma_pagamento_2,
+                            f3.nome as forma_pagamento_3,
+                            f4.nome as forma_pagamento_4");
         $this->db->from('tb_paciente_credito pc');
         $this->db->join('tb_paciente p', 'p.paciente_id = pc.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = pc.operador_cadastro', 'left');
-        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = pc.forma_pagamento1', 'left');
+        $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = pc.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = pc.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = pc.forma_pagamento4', 'left');
         $this->db->where("pc.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("pc.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        if ($_POST['empresa'] != '') {
+        if ($_POST['empresa'] != '0') {
             $this->db->where('pc.empresa_id', $_POST['empresa']);
         }
         $this->db->where("pc.ativo", 't');
-        $this->db->groupby("p.nome, pc.data, f.forma_pagamento_id, f.nome,o.nome");
         $query = $this->db->get();
         $return = $query->result();
         return $return;
@@ -11579,6 +11593,7 @@ ORDER BY ae.paciente_credito_id)";
             producaomedicadinheiro,
             nome');
         $this->db->from('tb_empresa');
+        $this->db->where("ativo", 't');
         $this->db->orderby('empresa_id');
         $return = $this->db->get();
         return $return->result();

@@ -1405,7 +1405,8 @@ class caixa_model extends Model {
         if ($_POST['conta'] != 0) {
             $this->db->where('s.conta', $_POST['conta']);
         }
-        $this->db->where('s.data <', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' ' . '00:00:00');
+//        var_dump(date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])))); die;
+        $this->db->where('s.data <', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $return = $this->db->get();
         return $return->result();
     }
