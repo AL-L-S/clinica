@@ -142,3 +142,13 @@ CREATE TABLE ponto.tb_feriado
 
 -- Dia 17/04/2018
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN retirar_flag_solicitante boolean DEFAULT false;
+
+UPDATE ponto.tb_procedimento_tuss
+   SET grupo=agrupador_grupo
+ WHERE grupo = 'AGRUPADOR';
+
+DELETE FROM ponto.tb_ambulatorio_grupo WHERE tipo = 'AGRUPADOR';
+
+-- Dia 19/04/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN cadastrar_painel_sala boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN apenas_procedimentos_multiplos boolean DEFAULT false;

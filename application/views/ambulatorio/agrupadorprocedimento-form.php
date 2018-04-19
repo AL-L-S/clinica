@@ -23,18 +23,17 @@
                         <label>Grupo</label>
                     </dt>
                     <dd>
-                        <select name="agrupador_grupo" id="agrupador_grupo">
-                            <option value="">TODOS</option>
-                            <? foreach ($grupos as $value) { 
-                                if($value->nome == 'AGRUPADOR') continue; ?>
+                        <select name="agrupador_grupo" id="agrupador_grupo" required="">
+                            <option value="">Selecione</option>
+                            <? foreach ($grupos as $value) { ?>
                                 <option value="<?= $value->nome ?>" <?= ($value->nome == @$obj->_agrupador_grupo)? 'selected': ''?>>
                                     <?= $value->nome ?>
                                 </option>
                             <? } ?>
                         </select>
                     </dd>
-                    <p style="font-style: italic;">Obs: Caso seja informado um grupo para o agrupador, ele só irá salvar os procedimentos pertencentes a este grupo.</p>
-                    <br>
+<!--                    <p style="font-style: italic;">Obs: Caso seja informado um grupo para o agrupador, ele só irá salvar os procedimentos pertencentes a este grupo.</p>
+                    --><br>
                     
                     <div class="divTabela">
                         <div class='base'>

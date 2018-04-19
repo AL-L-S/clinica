@@ -247,11 +247,22 @@ class sala_model extends Model {
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_exame_sala_grupo');
                 }
-                $erro = $this->db->_error_message();
-                if (trim($erro) != "") // erro de banco
-                    return -1;
-                else
-                    $exame_sala_id = $this->db->insert_id();
+                
+                $empresa_id = $this->session->userdata('empresa_id');
+                $this->db->select('cadastrar_painel_sala')->from('tb_empresa_permissoes')->where('empresa_id', $empresa_id);
+                $return = $this->db->get()->result();
+                if($return[0]->cadastrar_painel_sala == 't'){
+                    for($i = 1; $i <= 10; $i++){
+                        $this->db->set('nome_chamada', $_POST['txtNome']);
+                        $this->db->set('painel_id', $i);
+                        $this->db->set('exame_sala_id', $exame_sala_id);
+
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_id);
+                        $this->db->insert('tb_exame_sala_painel');
+                    }
+                }
+                
             }
             else { // update
                 $this->db->set('data_atualizacao', $horario);

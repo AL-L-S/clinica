@@ -134,8 +134,6 @@ class Sala extends BaseController {
 
     function gravar() {
         $grupos = $this->procedimento->listargrupos();
-//        echo '<pre>';
-//        var_dump($grupos); die;
         $exame_sala_id = $this->sala->gravar($grupos);
         if ($exame_sala_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Sala. Opera&ccedil;&atilde;o cancelada.';

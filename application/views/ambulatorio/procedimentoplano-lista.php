@@ -1,34 +1,48 @@
 
+<? 
+$data['empresa_permissao'] = $this->guia->listarempresapermissoes(); 
+?>
 <link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
 <link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
 <div class="content"> <!-- Inicio da DIV content -->
     <table>
         <tr>
-            <td>
-                <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplano/0" target="_blank">
-                        Novo Procedimento
-                    </a>
-                </div>
-            </td>
-            <? $geral = $this->session->userdata('geral'); 
-            if ($geral == 't') {?>
+            <? if($data['empresa_permissao'][0]->apenas_procedimentos_multiplos != 't'){ ?>
                 <td>
                     <div class="bt_link_new">
-                        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoagrupador/0">
-                            Novo Agrupador
+                        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplano/0" target="_blank">
+                            Novo Procedimento
+                        </a>
+                    </div>
+                </td>
+                <? $geral = $this->session->userdata('geral'); 
+                if ($geral == 't') {?>
+                    <td>
+                        <div class="bt_link_new">
+                            <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplanoagrupador/0">
+                                Novo Agrupador
+                            </a>
+                        </div>
+                    </td>
+                <? } ?>
+                <td>
+                    <div class="bt_link_new">
+                        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarmultiplosprocedimentoplano" target="_blank">
+                            Multiplos Procedimentos 
+                        </a>
+                    </div>
+                </td>
+            <? } 
+            else { ?>
+                <td>
+                    <div class="bt_link_new">
+                        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarmultiplosprocedimentoplano" target="_blank">
+                            Novo Procedimento 
                         </a>
                     </div>
                 </td>
             <? } ?>
-            <td>
-                <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/carregarmultiplosprocedimentoplano" target="_blank">
-                        Multiplos Procedimentos 
-                    </a>
-                </div>
-            </td>
         </tr>
     </table>
 

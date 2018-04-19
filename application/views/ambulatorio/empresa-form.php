@@ -632,6 +632,18 @@
                         <dd>
                             <input type="checkbox" id="retirar_flag_solicitante" name="retirar_flag_solicitante" <? if (@$obj->_retirar_flag_solicitante == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ativando essa opção, ao criar uma sala, o sistema irá criar vincular 10 paineis automaticamente.">Vincular paineis ao criar salas</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="cadastrar_painel_sala" name="cadastrar_painel_sala" <? if (@$obj->_cadastrar_painel_sala == 't') echo "checked"; ?>/> 
+                        </dd>
+                        <dt>
+                            <label title="Ativando essa opção, o sistema so irá disponibilizar o botão de procedimentos multiplos.">Deixar apenas procedimentos múltiplos</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="apenas_procedimentos_multiplos" name="apenas_procedimentos_multiplos" <? if (@$obj->_apenas_procedimentos_multiplos == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

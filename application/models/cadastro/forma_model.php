@@ -45,6 +45,8 @@ class forma_model extends Model {
     
     function listarformaempresa() {
         $this->db->select('forma_entradas_saida_id,
+                            agencia,
+                            conta,
                             descricao');
         $this->db->from('tb_forma_entradas_saida');
         $empresa_id = $this->session->userdata('empresa_id');
@@ -57,14 +59,18 @@ class forma_model extends Model {
     
     function listarautocompletecontaempresa($empresa_post_id = null) {
         $this->db->select('forma_entradas_saida_id,
+                            agencia,
+                            conta,
                             descricao');
         $this->db->from('tb_forma_entradas_saida');
         $empresa_id = $this->session->userdata('empresa_id');
+        
         if($empresa_post_id != null){
            $this->db->where('empresa_id', $empresa_post_id); 
         }else{
             $this->db->where('empresa_id', $empresa_id);  
         }
+        
         $this->db->where('ativo', 'true');
          $this->db->orderby('descricao');
         $return = $this->db->get();

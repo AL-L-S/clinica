@@ -1007,7 +1007,7 @@ class procedimentoplano_model extends Model {
         $this->db->from('tb_procedimento_tuss');
         $this->db->orderby('nome');
         $this->db->where("ativo", 't');
-        $this->db->where("grupo", 'AGRUPADOR');
+        $this->db->where("agrupador", 't');
         $return = $this->db->get();
         return $return->result();
     }
@@ -1050,6 +1050,7 @@ class procedimentoplano_model extends Model {
         $this->db->from('tb_convenio c');
         $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
         $this->db->where("c.ativo", 'true');
+        $this->db->where("c.associado", 'false');
         $this->db->where("ce.empresa_id", $empresa_id);
         $this->db->where("ce.ativo", 'true');
         $this->db->orderby("c.nome");

@@ -1290,6 +1290,18 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('retirar_flag_solicitante', 'f');
                     }
+                    
+                    if (isset($_POST['cadastrar_painel_sala'])) {
+                        $this->db->set('cadastrar_painel_sala', 't');
+                    } else {
+                        $this->db->set('cadastrar_painel_sala', 'f');
+                    }
+                    
+                    if (isset($_POST['apenas_procedimentos_multiplos'])) {
+                        $this->db->set('apenas_procedimentos_multiplos', 't');
+                    } else {
+                        $this->db->set('apenas_procedimentos_multiplos', 'f');
+                    }
                 }
 
 
@@ -1581,6 +1593,18 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('retirar_flag_solicitante', 'f');
                     }
+                    
+                    if (isset($_POST['cadastrar_painel_sala'])) {
+                        $this->db->set('cadastrar_painel_sala', 't');
+                    } else {
+                        $this->db->set('cadastrar_painel_sala', 'f');
+                    }
+                    
+                    if (isset($_POST['apenas_procedimentos_multiplos'])) {
+                        $this->db->set('apenas_procedimentos_multiplos', 't');
+                    } else {
+                        $this->db->set('apenas_procedimentos_multiplos', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -1706,6 +1730,8 @@ class empresa_model extends Model {
                                ep.subgrupo_procedimento,
                                ep.senha_finalizar_laudo,
                                ep.retirar_flag_solicitante,
+                               ep.cadastrar_painel_sala,
+                               ep.apenas_procedimentos_multiplos,
                                ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -1822,6 +1848,8 @@ class empresa_model extends Model {
             $this->_subgrupo_procedimento = $return[0]->subgrupo_procedimento;
             $this->_senha_finalizar_laudo = $return[0]->senha_finalizar_laudo;
             $this->_retirar_flag_solicitante = $return[0]->retirar_flag_solicitante;
+            $this->_cadastrar_painel_sala = $return[0]->cadastrar_painel_sala;
+            $this->_apenas_procedimentos_multiplos = $return[0]->apenas_procedimentos_multiplos;
         } else {
             $this->_empresa_id = null;
         }

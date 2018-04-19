@@ -18,7 +18,7 @@
                 <dd>
                     <select name="painel_numero" id="painel_numero" class="size2" required="">
                         <? for ($i = 1; $i <= 10; $i++) { ?>                                
-                            <option value='<?=$i?>' ><?=$i?></option>
+                            <option value='<?=$i?>'><?=$i?></option>
                         <? } ?>
                     </select>
                 </dd>

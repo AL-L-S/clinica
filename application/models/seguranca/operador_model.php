@@ -1047,9 +1047,15 @@ class Operador_model extends BaseModel {
                                o.nome,
                                o.email,
                                o.perfil_id,
-                               p.nome as perfil');
+                               p.nome as perfil,
+                               o.nascimento,
+                               o.cpf,
+                               o.telefone,
+                               o.celular,
+                               c.descricao as cbo');
         $this->db->from('tb_operador o');
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
+        $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id');
         $this->db->where('o.ativo', 'true');
         $this->db->where('o.email !=', '');
         $this->db->orderby('o.nome');
@@ -1764,10 +1770,12 @@ class Operador_model extends BaseModel {
                                 o.timbrado,
                                 m.nome as cidade_nome,
                                 c.descricao as cbo_nome,
-                                o.carimbo');
+                                o.carimbo,
+                                fcd.razao_social as credor');
             $this->db->from('tb_operador o');
             $this->db->join('tb_municipio m', 'm.municipio_id = o.municipio_id', 'left');
             $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+            $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = o.credor_devedor_id', 'left');
             $this->db->where("o.operador_id", $operador_id);
             $query = $this->db->get();
             $return = $query->result();
@@ -1816,6 +1824,7 @@ class Operador_model extends BaseModel {
             $this->_rodape = $return[0]->rodape;
             $this->_timbrado = $return[0]->timbrado;
             $this->_solicitante = $return[0]->solicitante;
+            $this->_credor = $return[0]->credor;
         }
     }
 

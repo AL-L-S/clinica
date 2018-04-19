@@ -2,11 +2,11 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>ambulatorio/tipoconsulta/carregartipoconsulta/0">
-            Novo Tipo consulta
+            Novo Tipo Agenda
         </a>
     </div>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Tipo cancelamento</a></h3>
+        <h3 class="singular"><a href="#">Tipo Agenda</a></h3>
         <div>
             <table>
                 <thead>

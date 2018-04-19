@@ -688,6 +688,26 @@ class Convenio_model extends Model {
         }
     }
 
+    function removeassociacoescomoutrosconvenios($convenio_id) {
+
+
+        $operador_id = $this->session->userdata('operador_id');
+        $data = date('Y-m-d H:i:s');
+
+        try {
+
+            $sql = "UPDATE ponto.tb_convenio_secudario_associacao SET ativo = 'f', data_atualizacao = '{$data}', operador_atualizacao = {$operador_id}
+                    WHERE convenio_secundario_id = {$convenio_id} 
+                    AND ativo = 't'";
+
+            $this->db->query($sql);
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravarvaloresassociacao($convenio_id) {
 
         $horario = date("Y-m-d H:i:s");
@@ -1548,10 +1568,12 @@ class Convenio_model extends Model {
                                 co.razao_social,
                                 co.guia_prestador_unico,
                                 co.dia_aquisicao,
-                                co.valor_ajuste_cbhpm');
+                                co.valor_ajuste_cbhpm,
+                                fcd.razao_social as credor');
             $this->db->from('tb_convenio co');
             $this->db->join('tb_municipio c', 'c.municipio_id = co.municipio_id', 'left');
             $this->db->join('tb_tipo_logradouro tp', 'tp.tipo_logradouro_id = co.tipo_logradouro_id', 'left');
+            $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = co.credor_devedor_id', 'left');
             $this->db->where("convenio_id", $convenio_id);
             $query = $this->db->get();
             $return = $query->result();
@@ -1599,6 +1621,7 @@ class Convenio_model extends Model {
             $this->_guia_prestador_unico = $return[0]->guia_prestador_unico;
             $this->_dia_aquisicao = $return[0]->dia_aquisicao;
             $this->_valor_ajuste_cbhpm = $return[0]->valor_ajuste_cbhpm;
+            $this->_credor = $return[0]->credor;
         } else {
             $this->_convenio_id = null;
         }

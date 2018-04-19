@@ -1070,7 +1070,51 @@ class Guia extends BaseController {
                 } else {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 }
-                $this->guia->gravarexames($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
+                $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);;
+                if ($agrupador[0]->agrupador != 't') {
+                    $this->guia->gravarexames($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
+                }
+                else{
+                    // Cria um agrupador para o pacote
+                    $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
+
+                    // Traz os procedimentos desse pacote bem como o valor
+                    $pacoteProc = $this->guia->listarprocedimentospacote($_POST['procedimento1']);
+
+                    if ($pacoteProc[0]->valor_pacote_diferenciado == 't') {
+                        $vl_pacote = 0;
+                        $valorTotal = 0;
+                        foreach ($pacoteProc as $value) {
+                            $valorTotal += $value->valortotal;
+                        }
+                    }
+
+                    $i = 0;
+                    $totPro = count($pacoteProc);
+                    foreach ($pacoteProc as $value) {
+
+                        if ($value->valor_pacote_diferenciado == 't') {
+                            /* Caso seja um valor diferenciado, ele vai descobrir o valor unitário.
+                             * Para isso, usa-se a seguinte regra: se antes o proc valia 15% do total do pacote,
+                             * entao, mesmo com um valor diferenciado, ele deve continuar valendo 15% do total. */
+                            $valor = round(($value->valor_pacote * $value->valortotal) / $valorTotal);
+                            $vl_pacote += $valor;
+
+                            if ($i == $totPro - 1) {
+                                /* Caso tenha acontecido alguma diferença no valor informado na criaçao do pacote 
+                                 * para o valor aqui calculado (geralmente ocorre uma diferença de alguns centavos)
+                                 * ele acrescenta essa diferença no ultimo procedimento. */
+
+                                $diferenca = (float) $value->valor_pacote - (float) $vl_pacote;
+                                $valor += $diferenca;
+                            }
+                        } else {
+                            $valor = $value->valortotal;
+                        }
+                        $i++;
+                        $this->guia->gravarexamesagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo);
+                    }
+                }
             }
 
             redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$ambulatorio_guia");
@@ -1132,7 +1176,8 @@ class Guia extends BaseController {
                     $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
                     $this->session->set_flashdata('message', $data['mensagem']);
                 } else {
-                    if ($tipo != 'AGRUPADOR') {
+                    $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);;
+                    if ($agrupador[0]->agrupador != 't') {
                         $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
                     } else {
                         // Cria um agrupador para o pacote
@@ -1234,9 +1279,51 @@ class Guia extends BaseController {
                 } else {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 }
-                $this->guia->gravarconsulta($ambulatorio_guia, $percentual, $percentual_laboratorio);
+                $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);;
+                if ($agrupador[0]->agrupador != 't') {
+                    $this->guia->gravarconsulta($ambulatorio_guia, $percentual, $percentual_laboratorio);
+                } else {
+                    // Cria um agrupador para o pacote
+                    $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
+
+                    // Traz os procedimentos desse pacote bem como o valor
+                    $pacoteProc = $this->guia->listarprocedimentospacote($_POST['procedimento1']);
+
+                    if ($pacoteProc[0]->valor_pacote_diferenciado == 't') {
+                        $vl_pacote = 0;
+                        $valorTotal = 0;
+                        foreach ($pacoteProc as $value) {
+                            $valorTotal += $value->valortotal;
+                        }
+                    }
+
+                    $i = 0;
+                    $totPro = count($pacoteProc);
+                    foreach ($pacoteProc as $value) {
+
+                        if ($value->valor_pacote_diferenciado == 't') {
+                            /* Caso seja um valor diferenciado, ele vai descobrir o valor unitário.
+                             * Para isso, usa-se a seguinte regra: se antes o proc valia 15% do total do pacote,
+                             * entao, mesmo com um valor diferenciado, ele deve continuar valendo 15% do total. */
+                            $valor = round(($value->valor_pacote * $value->valortotal) / $valorTotal);
+                            $vl_pacote += $valor;
+
+                            if ($i == $totPro - 1) {
+                                /* Caso tenha acontecido alguma diferença no valor informado na criaçao do pacote 
+                                 * para o valor aqui calculado (geralmente ocorre uma diferença de alguns centavos)
+                                 * ele acrescenta essa diferença no ultimo procedimento. */
+
+                                $diferenca = (float) $value->valor_pacote - (float) $vl_pacote;
+                                $valor += $diferenca;
+                            }
+                        } else {
+                            $valor = $value->valortotal;
+                        }
+                        $i++;
+                        $this->guia->gravarconsultaagrupador($ambulatorio_guia, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo);
+                    }
+                }
             }
-            //        $this->gerardicom($ambulatorio_guia);
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/guia/novoconsulta/$paciente_id/$ambulatorio_guia");
         }
@@ -1500,7 +1587,13 @@ class Guia extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
         $data['grupos'] = $this->procedimento->listargruposexame();
-
+        
+        if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
+            $data['exames_pacote'] = $this->exametemp->listarpacoteexamespaciente($ambulatorio_guia_id);
+        } else {
+            $data['exames_pacote'] = array();
+        }
+        
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
@@ -1527,6 +1620,16 @@ class Guia extends BaseController {
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
         $data['grupos'] = $this->procedimento->listargruposconsulta();
         $data['x'] = 0;
+        
+        if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
+            $data['exames_pacote'] = $this->exametemp->listarpacoteexamespaciente($ambulatorio_guia_id);
+        } else {
+            $data['exames_pacote'] = array();
+        }
+        
+//        echo "<pre>";
+//        var_dump($data['exames_pacote']); die;
+        
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
             if (empty($teste)) {

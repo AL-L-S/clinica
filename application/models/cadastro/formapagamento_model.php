@@ -140,7 +140,13 @@ class formapagamento_model extends Model {
     }
 
     function buscarempresaconta($forma_pagamento_id) {
-        $this->db->select('e.nome as empresa, formapagamento_conta_empresa_id, fce.conta_id, fp.nome as forma, fe.descricao as conta');
+        $this->db->select('e.nome as empresa, 
+                           formapagamento_conta_empresa_id, 
+                           fce.conta_id, 
+                           fp.nome as forma, 
+                           fe.descricao as conta,
+                           fe.conta as numero_conta,
+                           fe.agencia');
         $this->db->from('tb_formapagamento_conta_empresa fce');
         $this->db->join('tb_empresa e', 'fce.empresa_id = e.empresa_id', 'left');
         $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = fce.conta_id', 'left');

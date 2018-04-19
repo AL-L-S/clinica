@@ -1111,10 +1111,12 @@ class Laboratorio_model extends Model {
                                 co.associado,
                                 co.associacao_percentual,
                                 co.associacao_laboratorio_id,
-                                co.razao_social');
+                                co.razao_social,
+                                fcd.razao_social as credor');
             $this->db->from('tb_laboratorio co');
             $this->db->join('tb_municipio c', 'c.municipio_id = co.municipio_id', 'left');
             $this->db->join('tb_tipo_logradouro tp', 'tp.tipo_logradouro_id = co.tipo_logradouro_id', 'left');
+            $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = co.credor_devedor_id', 'left');
             $this->db->where("laboratorio_id", $laboratorio_id);
             $query = $this->db->get();
             $return = $query->result();
@@ -1163,6 +1165,7 @@ class Laboratorio_model extends Model {
             $this->_associado = $return[0]->associado;
             $this->_associacao_percentual = $return[0]->associacao_percentual;
             $this->_associacao_laboratorio_id = $return[0]->associacao_laboratorio_id;
+            $this->_credor = $return[0]->credor;
         } else {
             $this->_laboratorio_id = null;
         }

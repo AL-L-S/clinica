@@ -150,6 +150,8 @@ class Convenio extends BaseController {
                 $this->convenio->removerprocedimentosnaopertenceprincipal($convenio_id);
                 $this->convenio->removerpercentuaisnaopertenceprincipal($convenio_id);
             }
+        } else {
+            $this->convenio->removeassociacoescomoutrosconvenios($convenio_id);
         }
 
         redirect(base_url() . "cadastros/convenio");

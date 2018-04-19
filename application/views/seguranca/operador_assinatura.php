@@ -22,7 +22,7 @@
                         ?>
 
                             <td width="10px">
-                                <img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/1ASSINATURAS/$operador_id" ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url() . "upload/1ASSINATURAS/$operador_id" ?>">
+                                <img  width="50px" height="50px" onclick="javascript:window.open('<?= base_url() . "upload/1ASSINATURAS/$operador_id" ?>.jpg', '_blank', 'toolbar=no,Location=no,menubar=no,width=1200,height=600');" src="<?= base_url() . "upload/1ASSINATURAS/$operador_id" ?>.jpg">
                                 <br><? echo "$operador_id.jpg" ?>
                                 <br/>
                                 <a onclick="javascript: return confirm('Deseja realmente excluir o arquivo <?= $operador_id; ?>.jpg');" href="<?= base_url() ?>seguranca/operador/ecluirimagem/<?= $operador_id ?>">Excluir</a>

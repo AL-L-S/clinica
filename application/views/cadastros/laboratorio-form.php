@@ -89,9 +89,9 @@
 
 
                     <label>Credor / Devedor</label>
+                    <input type="text" id="credor_devedor" class="texto08" name="credor_devedor" value="<?= @$obj->_credor; ?>" readonly=""/>
 
-
-                    <select name="credor_devedor" id="credor_devedor" class="size4" disabled="">
+<!--                    <select name="credor_devedor" id="credor_devedor" class="size4" disabled="">
                         <option value='' >Selecione</option>
                         <?php
                         $credor_devedor = $this->convenio->listarcredordevedor();
@@ -105,13 +105,13 @@
                                       <?php
                                   }
                                   ?> 
-                    </select>
+                    </select>-->
                 </div>
                 <div>
                     <label>Conta</label>
 
 
-                    <select name="conta" id="conta" class="size2" required>
+                    <select name="conta" id="conta" class="size2">
                         <option value='' >Selecione</option>
                         <?php
                         $conta = $this->forma->listarforma();
@@ -131,7 +131,7 @@
                     <label>Tipo</label>
 
 
-                    <select name="tipo" id="tipo" class="size2" required>
+                    <select name="tipo" id="tipo" class="size2">
                         <option value='' >Selecione</option>
                         <?php
                         $tipo = $this->tipo->listartipo();
@@ -152,7 +152,7 @@
                     <label>Classe</label>
 
 
-                    <select name="classe" id="classe" class="size2" required>
+                    <select name="classe" id="classe" class="size2">
                         <option value="">Selecione</option>
                         <? foreach ($classe as $value) : ?>
                             <option value="<?= $value->descricao; ?>"
