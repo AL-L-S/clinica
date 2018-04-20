@@ -75,6 +75,7 @@ class guia_model extends Model {
                             horario_seg_sex,
                             senha_finalizar_laudo,
                             desativar_personalizacao_impressao,
+                            desativar_taxa_administracao,
                             retirar_flag_solicitante');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);

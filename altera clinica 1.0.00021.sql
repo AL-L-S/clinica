@@ -152,3 +152,5 @@ DELETE FROM ponto.tb_ambulatorio_grupo WHERE tipo = 'AGRUPADOR';
 -- Dia 19/04/2018
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN cadastrar_painel_sala boolean DEFAULT false;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN apenas_procedimentos_multiplos boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN desativar_taxa_administracao boolean DEFAULT false;
