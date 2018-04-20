@@ -1841,10 +1841,12 @@ class caixa_model extends Model {
 
     function saldo() {
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('sum(valor)');
-        $this->db->from('tb_saldo');
-        $this->db->where('ativo', 'true');
-        $this->db->where('empresa_id', $empresa_id);
+        $this->db->select('sum(s.valor)');
+        $this->db->from('tb_saldo s');
+        $this->db->join('tb_forma_entradas_saida fe', 'fe.forma_entradas_saida_id = s.conta', 'left');
+        $this->db->where('fe.ativo', 'true');
+        $this->db->where('s.ativo', 'true');
+        $this->db->where('s.empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();
     }
