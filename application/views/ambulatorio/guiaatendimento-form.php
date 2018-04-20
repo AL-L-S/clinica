@@ -172,6 +172,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
         $sala_id = "";
         $medico_id = "";
         $medico = "";
+        $promotor_id = @$exames[count($exames) - 1]->indicacao;
         $medico_solicitante = @$exames[count($exames) - 1]->medico_solicitante;
         $medico_solicitante_id = @$exames[count($exames) - 1]->medico_solicitante_id;
         $convenio_paciente = "";
@@ -356,7 +357,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         $indicacao = $this->paciente->listaindicacao($_GET);
                                         foreach ($indicacao as $item) {
                                             ?>
-                                            <option value="<?php echo $item->paciente_indicacao_id; ?>"> <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
+                                            <option value="<?= $item->paciente_indicacao_id; ?>" <?= ($item->paciente_indicacao_id == $promotor_id)?'selected':'' ?>><?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
                                             <?php
                                         }
                                         ?> 
@@ -615,7 +616,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <th class="tabela_header">Hora</th>
                                 <th class="tabela_header">Sala</th>
                                 <th class="tabela_header">Valor</th>
-                                <th class="tabela_header">Exame</th>
+                                <th class="tabela_header">Procedimento</th>
                                 <!--<th class="tabela_header" colspan="2">Descricao</th>-->
                                 <th class="tabela_header" colspan="2">Pacote</th>
                                 <th colspan="4" class="tabela_header">&nbsp;</th>
@@ -675,10 +676,10 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
     ?>
                         <tfoot>
                             <tr>
-                                <th class="tabela_footer" colspan="5">
+                                <th class="tabela_footer" colspan="4">
                                     Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                 </th>
-                                <th class="tabela_footer">** = Valor diferenciado</th>
+                                <th class="tabela_footer" colspan="5">** = Valor diferenciado</th>
 <!--    <? if ($perfil_id != 11) { ?>
 
                             <? if ($perfil_id == 1 || $faturado == 0) {

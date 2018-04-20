@@ -1513,11 +1513,14 @@ class exametemp_model extends Model {
                             ae.guia_id,
                             ae.data_atualizacao,
                             ae.paciente_id,
+                            ae.indicacao,
                             ae.faturado,
-                            pc.convenio_id,
                             ae.medico_agenda as medico_agenda_id,
-                            op.nome as medico_agenda,
                             ae.medico_solicitante as medico_solicitante_id,
+                            ae.ordenador,
+                            ae.procedimento_tuss_id,
+                            pc.convenio_id,
+                            op.nome as medico_agenda,
                             o.nome as medico_solicitante,
                             es.nome as sala,
                             p.nome as paciente,
@@ -1526,8 +1529,6 @@ class exametemp_model extends Model {
                             pt.codigo,
                             pt.grupo,
                             pt.descricao_procedimento,
-                            ae.ordenador,
-                            ae.procedimento_tuss_id,
                             pt.nome as procedimento,
                             fp.forma_pagamento_id,
                             apt.valor_diferenciado');
@@ -2098,6 +2099,7 @@ class exametemp_model extends Model {
                             oi.valor_total,
                             oi.orcamento_id,
                             oi.paciente_id,
+                            ao.autorizado,
                             (oi.valor_ajustado * oi.quantidade) as valor_total_ajustado,
                             pc.convenio_id,
                             p.nome as paciente,
@@ -2108,6 +2110,7 @@ class exametemp_model extends Model {
                             pt.nome as procedimento,
                             fp.nome as forma_pagamento');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
+        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = oi.orcamento_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -3847,7 +3850,7 @@ class exametemp_model extends Model {
 
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
-                $empresa_id = $this->session->userdata('empresa_id');
+//                $empresa_id = $this->session->userdata('empresa_id');
 //                $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('ativo', 'f');
                 $this->db->set('cancelada', 'f');
@@ -6205,6 +6208,7 @@ class exametemp_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("pc.ativo", 't');
+        $this->db->where("pt.agrupador", 'f');
         $this->db->where('pc.convenio_id', $parametro);
         $empresa_id = $this->session->userdata('empresa_id');
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
@@ -6734,6 +6738,7 @@ class exametemp_model extends Model {
 //        $this->db->where("ag.tipo !=", 'ESPECIALIDADE');
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
+        $this->db->where("pt.agrupador", 'f');
 
         if ($parametro != null) {
             $this->db->where('pc.convenio_id', $parametro);
@@ -6909,6 +6914,7 @@ class exametemp_model extends Model {
         $this->db->where("ag.tipo NOT IN ('MEDICAMENTO', 'MATERIAL')");
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
+        $this->db->where("pt.agrupador", 'f');
         $this->db->where('pc.convenio_id', $parametro);
         $empresa_id = $this->session->userdata('empresa_id');
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');

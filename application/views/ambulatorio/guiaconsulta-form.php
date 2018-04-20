@@ -174,6 +174,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
         $medico_solicitante = "";
         $medico_solicitante_id = "";
         $convenio_paciente = "";
+        $promotor_id = @$exames[count($exames) - 1]->indicacao;
         if ($contador > 0) {
             $sala_id = $exames[0]->agenda_exames_nome_id;
             $sala = $exames[0]->sala;
@@ -338,15 +339,15 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         <? endforeach; ?>
                                     </select>
                                 </td>
+                                
                                 <td  width="50px;">
-                                    <? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');?>
-                                    <select name="indicacao" id="indicacao" class="size1 ui-widget" <?= $recomendacao_obrigatorio == 't' ? 'required' : ''?>>
+                                    <select name="indicacao" id="indicacao" class="size1 ui-widget" <?= $recomendacao_obrigatorio == 't' ? 'required' : '' ?>>
                                         <option value='' >Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
                                         foreach ($indicacao as $item) {
                                             ?>
-                                            <option value="<?php echo $item->paciente_indicacao_id; ?>"> <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
+                                            <option value="<?= $item->paciente_indicacao_id; ?>" <?= ($item->paciente_indicacao_id == $promotor_id)?'selected':'' ?>><?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
                                             <?php
                                         }
                                         ?> 
@@ -577,7 +578,109 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                 ?>
 
             </fieldset>
+            
+            <? if (count(@$exames_pacote) > 0) { ?>
+                <fieldset>
+                    <legend>Pacotes Lançados</legend>
+                    <table id="table_agente_toxico" border="0">
+                        <thead>
+                            <tr>
+                                <th class="tabela_header">Data</th>
+                                <th class="tabela_header">Hora</th>
+                                <th class="tabela_header">Sala</th>
+                                <th class="tabela_header">Valor</th>
+                                <th class="tabela_header">Procedimento</th>
+                                <!--<th class="tabela_header" colspan="2">Descricao</th>-->
+                                <th class="tabela_header" colspan="2">Pacote</th>
+                                <th colspan="4" class="tabela_header">&nbsp;</th>
+                            </tr>
+                        </thead>
 
+                        <?
+                        $total = 0;
+                        $guia = 0;
+                        $faturado = 0;
+                        foreach ($exames_pacote as $item) {
+                            $estilo_linha = "tabela_content01";
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            $total = $total + $item->valor_total;
+                            $guia = $item->guia_id;
+                            ?>
+                            <tbody>
+                                <tr>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->sala; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
+                                    <!--<td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>-->
+                                    <td class="<?php echo $estilo_linha; ?>" colspan="2">
+                                        <?= $item->pacote_nome; ?><?= (@$item->valor_diferenciado == 't') ? " **" : ""; ?>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                        <div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/atendimentocancelamentopacote/<?= $guia ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>');">Cancelar Pacote
+
+                                            </a>
+                                        </div>
+<!--                                        <div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
+                                            </a></div>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
+                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
+                                            </a></div>-->
+                                        <!--</td>-->
+        <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+            <? if ($perfil_id != 11) { ?>
+                                                        <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                <div class="bt_link_new">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+
+                                                    </a></div>
+                                                <!--</td>-->
+                                <? } ?>
+                            <? } ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+        <?
+    }
+    ?>
+                        <tfoot>
+                            <tr>
+                                <th class="tabela_footer" colspan="4">
+                                    Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
+                                </th>
+                                <th class="tabela_footer" colspan="5">** = Valor diferenciado</th>
+<!--    <? if ($perfil_id != 11) { ?>
+
+                            <? if ($perfil_id == 1 || $faturado == 0) {
+                                if ($botao_faturar_guia == 't') {
+                                    ?>
+                                            <th colspan="2" align="center"><center><div class="bt_linkf">
+                                            <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
+
+                                            </a></div></center></th>
+            <? }
+            if ($botao_faturar_proc == 't') {
+                ?>
+                                    <th colspan="2" align="center">    
+                                        <div class="bt_linkf">
+                                            <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+
+                                            </a></div></center>
+                                    </th>
+                            <?
+                        }
+                    }
+                }
+                ?>-->
+                        </tr>
+                        </tfoot>
+                    </table> 
+                </fieldset>
+            <? } ?>
         </div> 
     </div> 
 </div> <!-- Final da DIV content -->
@@ -594,7 +697,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
 
 <style>
     .chosen-container{ margin-top: 5pt;}
-    /*#procedimento1_chosen a { width: 130px; }*/
+    #procedimento1_chosen a { width: 130px; }
 </style>
 
 <script type="text/javascript">
@@ -684,7 +787,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                         options = "";
                                                         options += j[0].valortotal;
-                                                        document.getElementById("valor1").value = options
+                                                        document.getElementById("valor1").value = options;
                                                         $('.carregando').hide();
                                                     });
                                                     $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
@@ -714,7 +817,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                                                     options = "";
                                                                     options += j[0].valortotal;
-                                                                    document.getElementById("valor1").value = options
+                                                                    document.getElementById("valor1").value = options;
                                                                     $('.carregando').hide();
                                                                 });    
                                                             }   
@@ -724,7 +827,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                           $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                                                     options = "";
                                                                     options += j[0].valortotal;
-                                                                    document.getElementById("valor1").value = options
+                                                                    document.getElementById("valor1").value = options;
                                                                     $('.carregando').hide();
                                                                 });
                                                          }
@@ -779,7 +882,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                     idade--;
                                                 }
 
-                                                document.getElementById("txtIdade").value = idade + " ano(s)";
+                                                document.getElementById("idade").value = idade + " ano(s)";
                                             }
                                         }
 

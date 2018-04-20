@@ -844,6 +844,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioresumogeral">Relatorio Resumo</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocredito">Relatorio Crédito Paciente</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocreditosaldo">Relatorio Crédito Saldo</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocreditoestorno">Relatorio Crédito Estorno</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatorioacompanhamentodecontas">Relatorio Acompanhamento de contas</a></span></ul>
                                         <?
                                     }
@@ -1166,6 +1167,7 @@ function debug($object) {
                                 <? } ?>
                                 <li><span class="folder">Administrativas</span>
                                     <? if ($perfil_id == 1) { ?>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/pesquisarferiados">Manter Feriados</a></span></ul>
                                         <? if ($perfil_id == 1) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/pesquisarlembrete">Manter Lembretes</a></span></ul>
                                         <? } ?>

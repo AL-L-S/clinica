@@ -122,14 +122,15 @@ class Contasreceber extends BaseController {
         $data['tipo'] = $this->tipo->buscartipo($_POST['tipo']);
         $data['classe'] = $this->classe->buscarclasserelatorio($_POST['classe']);
         $data['forma'] = $this->forma->buscarforma($_POST['conta']);
-//        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
 
         $data['relatorio'] = $this->contasreceber->relatoriocontasreceber();
         
         if(@$_POST['previsao'] == 'SIM'){
+            $data['listaconvenios'] = $this->contasreceber->listarconvenioprevistoscontasreceber();
             $data['relatorioconvenio'] = $this->contasreceber->relatorioprevisaoconveniocontasreceber();
         }
         else{
+            $data['listaconvenios'] = array();
             $data['relatorioconvenio'] = array();
         }
         

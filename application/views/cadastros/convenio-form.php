@@ -204,9 +204,9 @@
                     <input type="text" id="pagamento" class="texto02" name="pagamento" alt="integer" value="<?= @$obj->_pagamento; ?>" />
 
                 </div>
-                <div title="Dia que é enviado o XML para o convênio.">
+                <div>
                     <label>Dia de Aquisição</label>
-                    <input type="number" id="dia_aquisicao" name="dia_aquisicao" class="texto02" value="<?= @$obj->_dia_aquisicao; ?>" max="28" min="1"/>
+                    <input type="number" id="dia_aquisicao" name="dia_aquisicao" class="texto02" value="<?= @$obj->_dia_aquisicao; ?>" max="31" min="1"/>
                 </div>
 
             </fieldset>
@@ -227,22 +227,22 @@
                 </div>
                 <div>
                     <label>Credor / Devedor</label>
-
-                    <select name="credor_devedor" id="credor_devedor" class="size2" >
+                    <input type="text" id="credor_devedor" class="texto08" name="credor_devedor" value="<?= @$obj->_credor; ?>" readonly=""/>
+<!--                    <select name="credor_devedor" id="credor_devedor" class="size4" disabled="">
                         <option value='' >selecione</option>
                         <?php
-                        $credor_devedor = $this->convenio->listarcredordevedor();
-                        foreach ($credor_devedor as $item) {
+//                        $credor_devedor = $this->convenio->listarcredordevedor();
+//                        foreach ($credor_devedor as $item) {
                             ?>
 
                             <option   value =<?php echo $item->financeiro_credor_devedor_id; ?> <?
-                            if (@$obj->_credor_devedor_id == $item->financeiro_credor_devedor_id):echo 'selected';
-                            endif;
-                            ?>><?php echo $item->razao_social; ?></option>
+//                            if (@$obj->_credor_devedor_id == $item->financeiro_credor_devedor_id):echo 'selected';
+//                            endif;
+                            ?>><?php // echo $item->razao_social; ?></option>
                                       <?php
-                                  }
+//                                  }
                                   ?> 
-                    </select>
+                    </select>-->
                 </div>
                 <div>
                     <label>Conta</label>

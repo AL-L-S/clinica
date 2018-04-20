@@ -1,11 +1,11 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <form name="form_formapagamento_parcela" id="form_formapagamento_parcela" action="<?= base_url() ?>cadastros/formapagamento/gravarcontaempresa" method="post">
-        <fieldset>
+        <!--<fieldset>-->
             <div>
                 <!--<label>&nbsp;</label>-->
-                <div class="bt_link"><a href="<?= base_url() ?>cadastros/formapagamento/">Inicio</a></div>
+                <div class="bt_link_voltar"><a href="<?= base_url() ?>cadastros/formapagamento/">Voltar</a></div>
             </div>
-        </fieldset>
+        <!--</fieldset>-->
         <fieldset>
             <legend>Forma de Pagamento</legend>
             <input type="text" class="texto09" name="forma_nome" value="<?= @$formapagamento[0]->nome; ?>" readonly="">
@@ -36,7 +36,10 @@
                 <select name="conta" id="conta" class="size4" required>
                     <!--<option value="">SELECIONE</option>-->
                     <? foreach ($conta as $item) { ?>
-                        <option value="<?= $item->forma_entradas_saida_id ?>"><?= $item->descricao ?></option>
+                        <option value="<?= $item->forma_entradas_saida_id ?>">
+                            <?= $item->descricao ?> 
+                            <? if ($item->agencia!='') echo "| Ag: ".$item->agencia ?> 
+                            <? if ($item->conta!='') echo "| Conta: ".$item->conta ?> 
                     <? } ?>
                 </select>
             </div>
@@ -49,12 +52,6 @@
 
         </fieldset>
     </form>
-    <fieldset>
-        <div>
-            <!--<label>&nbsp;</label>-->
-            <div class="bt_link"><a href="<?= base_url() ?>cadastros/formapagamento/">Concluir</a></div>
-        </div>
-    </fieldset>
     <div style="display: block; width: 100%;">
         <? if (count($empresa_conta) > 0) { ?>
             <table class="taxas-feitas">
@@ -62,6 +59,8 @@
                     <tr>
                         <th class="tabela_header">Empresa</th>
                         <th class="tabela_header">Conta</th>
+                        <th class="tabela_header">Agência</th>
+                        <th class="tabela_header">Numero</th>
                         <th class="tabela_header"><center>Deletar</center></th>
                 </tr>
                 </thead>
@@ -75,6 +74,8 @@
                         <tr>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->conta_id ?> - <?= $item->conta ?> </td>
+                            <td class="<?php echo $estilo_linha; ?>"><?= $item->agencia ?> </td>
+                            <td class="<?php echo $estilo_linha; ?>"><?= $item->numero_conta ?> </td>
                             <td class="<?php echo $estilo_linha; ?>"><center><a class="delete" href="<?= base_url() ?>cadastros/formapagamento/excluircontaempresa/<?= $item->formapagamento_conta_empresa_id ?>/<?= $formapagamento_id ?>">delete</a></center></td>
                     </tr>
                 <? } ?>
@@ -111,9 +112,16 @@
 //                                            if ($(this).val()) {
             $('.carregando').show();
             $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $(this).val(), ajax: true}, function (j) {
-                options = '<option value=""></option>';
+                var options = '<option value=""></option>';
                 for (var c = 0; c < j.length; c++) {
-                    options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                    options += '<option value="'+j[c].forma_entradas_saida_id+'">'+j[c].descricao;
+                    if(j[c].agencia != ''){
+                        options += ' | Ag: '+j[c].agencia;
+                    }
+                    if(j[c].conta != ''){
+                        options += ' | Conta: '+j[c].conta;
+                    }
+                    options += '</option>';
                 }
                 $('#conta').html(options).show();
                 $('.carregando').hide();
@@ -129,10 +137,16 @@
     if ($('#empresa').val() > 0) {
 //                                          $('.carregando').show();
         $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $('#empresa').val(), ajax: true}, function (j) {
-            options = '<option value=""></option>';
+            var options = '<option value=""></option>';
             for (var c = 0; c < j.length; c++) {
-
-                options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                    options += '<option value="'+j[c].forma_entradas_saida_id+'">'+j[c].descricao;
+                    if(j[c].agencia != ''){
+                        options += ' | Ag: '+j[c].agencia;
+                    }
+                    if(j[c].conta != ''){
+                        options += ' | Conta: '+j[c].conta;
+                    }
+                    options += '</option>';
             }
             $('#conta').html(options).show();
             $('.carregando').hide();

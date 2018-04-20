@@ -125,10 +125,10 @@ class Operador_model extends BaseModel {
             $this->db->where('operador_id', $operador_id);
             $this->db->where('empresa_id', $empresa_id_origem);
             $return = $this->db->get()->result();
-
+            
             foreach ($return as $conv) {
 
-                $convenio_id = (int) $conv;
+                $convenio_id = (int) $conv->convenio_id;
 
                 $this->db->select('ambulatorio_convenio_operador_id');
                 $this->db->from('tb_ambulatorio_convenio_operador');
@@ -264,7 +264,103 @@ class Operador_model extends BaseModel {
             return -1;
         }
     }
+    
+    
+    function vinculaoperadorconveniotodos($operador_id) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_atual_id = $this->session->userdata('operador_id');
+            
+            // SETANDO REGISTROS ANTIGOS PARA FALSE PARA NÃO DUPLICAR
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_atual_id);
+            $this->db->where('operador_id', $operador_id);
+            $this->db->update('tb_ambulatorio_empresa_operador');   
+            
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_atual_id);
+            $this->db->where('operador_id', $operador_id);
+            $this->db->update('tb_ambulatorio_convenio_operador');
+            
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_atual_id);
+            $this->db->where('operador', $operador_id);
+            $this->db->insert('tb_convenio_operador_procedimento');
+            
 
+            $this->db->select('empresa_id');
+            $this->db->from('tb_empresa');
+            $this->db->where('ativo', 't');
+            $empresas = $this->db->get()->result();
+
+            $this->db->select('convenio_id');
+            $this->db->from('tb_convenio');
+            $this->db->where('ativo', 't');
+            $convenio = $this->db->get()->result();
+
+            foreach ($empresas as $emp) {
+                // EMPRESA
+                $this->db->set('operador_id', $operador_id);
+                $this->db->set('empresa_id', $emp->empresa_id);
+                $horario = date("Y-m-d H:i:s");
+//                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_atual_id);
+                $this->db->insert('tb_ambulatorio_empresa_operador');
+                $ambulatorio_empresa_id = $this->db->insert_id();
+
+                foreach ($convenio as $conv) {
+                    // CONVENIO
+                    $this->db->set('operador_id', $operador_id);
+                    $this->db->set('convenio_id', $conv->convenio_id);
+                    $this->db->set('empresa_id', $emp->empresa_id);
+                    $horario = date("Y-m-d H:i:s");
+//                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_atual_id);
+                    $this->db->insert('tb_ambulatorio_convenio_operador');
+                    $ambulatorio_convenio_id = $this->db->insert_id();
+
+                }
+                // SELECT PROCEDIMENTOS
+                $procedimento_multiempresa = $this->listarempresapermissoes($emp->empresa_id);
+                
+                $this->db->select('pc.procedimento_convenio_id,pc.convenio_id');
+                $this->db->from('tb_procedimento_convenio pc');
+                $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+                $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+                $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+                $this->db->where("ag.tipo !=", 'CIRURGICO');
+                $this->db->where("pc.ativo", 't');
+//                    $this->db->where('pc.convenio_id', $conv->convenio_id);
+                
+//                    $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+                if ($procedimento_multiempresa == 't') {
+                    $this->db->where('pc.empresa_id', $emp->empresa_id);
+                }
+                $procedimentos = $this->db->get()->result();
+
+
+                foreach ($procedimentos as $proc) {
+                    $this->db->set('operador', $operador_id);
+                    $this->db->set('convenio_id', $proc->convenio_id);
+                    $this->db->set('empresa_id', $emp->empresa_id);
+                    $this->db->set('procedimento_convenio_id', $proc->procedimento_convenio_id);
+                    $horario = date("Y-m-d H:i:s");
+//                    $operador_id = $this->session->userdata('operador_id');
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_atual_id);
+                    $this->db->insert('tb_convenio_operador_procedimento');
+                }
+            }
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
     function listarempresapermissoes($empresa_id) {
 //        if ($empresa_id == null) {
 //            $empresa_id = $this->session->userdata('empresa_id');
@@ -951,9 +1047,15 @@ class Operador_model extends BaseModel {
                                o.nome,
                                o.email,
                                o.perfil_id,
-                               p.nome as perfil');
+                               p.nome as perfil,
+                               o.nascimento,
+                               o.cpf,
+                               o.telefone,
+                               o.celular,
+                               c.descricao as cbo');
         $this->db->from('tb_operador o');
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
+        $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id');
         $this->db->where('o.ativo', 'true');
         $this->db->where('o.email !=', '');
         $this->db->orderby('o.nome');
@@ -1066,8 +1168,15 @@ class Operador_model extends BaseModel {
 
     function gravar() {
         try {
-
-            if ($_POST['criarcredor'] == "on") {
+            
+            $result = array();
+            if ($_POST['txtlaboratorio_id'] != ''){
+                $this->db->select('credor_devedor_id')->from('tb_operador')->where('operador_id', $_POST['operador_id']);
+                $result = $this->db->get()->result();
+            }
+                               
+           
+            if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
                 $this->db->set('razao_social', $_POST['nome']);
                 $this->db->set('cep', $_POST['cep']);
                 if ($_POST['cpf'] != '') {
@@ -1156,12 +1265,10 @@ class Operador_model extends BaseModel {
             if ($_POST['conta'] != "") {
                 $this->db->set('conta_id', $_POST['conta']);
             }
-            if ($_POST['criarcredor'] == "on") {
+            if (isset($financeiro_credor_devedor_id) && @$financeiro_credor_devedor_id != '') {
                 $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
-            } elseif ($_POST['credor_devedor'] != "") {
-                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
-
+            
             $this->db->set('cabecalho', $_POST['cabecalho']);
             $this->db->set('rodape', $_POST['rodape']);
             $this->db->set('timbrado', $_POST['timbrado']);
@@ -1663,10 +1770,12 @@ class Operador_model extends BaseModel {
                                 o.timbrado,
                                 m.nome as cidade_nome,
                                 c.descricao as cbo_nome,
-                                o.carimbo');
+                                o.carimbo,
+                                fcd.razao_social as credor');
             $this->db->from('tb_operador o');
             $this->db->join('tb_municipio m', 'm.municipio_id = o.municipio_id', 'left');
             $this->db->join('tb_cbo_ocupacao c', 'c.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+            $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = o.credor_devedor_id', 'left');
             $this->db->where("o.operador_id", $operador_id);
             $query = $this->db->get();
             $return = $query->result();
@@ -1715,6 +1824,7 @@ class Operador_model extends BaseModel {
             $this->_rodape = $return[0]->rodape;
             $this->_timbrado = $return[0]->timbrado;
             $this->_solicitante = $return[0]->solicitante;
+            $this->_credor = $return[0]->credor;
         }
     }
 

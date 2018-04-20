@@ -1,5 +1,9 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
+    <div class="bt_linkf">
+        <a href="<?= base_url() . "seguranca/operador/vinculaoperadorconveniotodos/" . $operador[0]->operador_id ?>" target="_blank" 
+           onclick="javascript: return confirm('Essa ação irá vincular todas as empresas, convenios e procedimentos a este operador. Essa ação pode demorar um pouco.\nDeseja realmente continuar?');">Vincular Tudo</a>
+    </div>
     <form name="form_menuitens" id="form_menuitens" action="<?= base_url() ?>seguranca/operador/gravaroperadorconvenioempresa" method="post">
         <fieldset>
             <legend>Operador</legend>

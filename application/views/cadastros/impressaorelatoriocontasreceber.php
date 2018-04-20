@@ -66,131 +66,155 @@
                 </tbody>
 
             </table>
+            <br>
+            <br>
+            <br>
             <?
         }
         
         if (count($relatorioconvenio) > 0) {
-            $previsaoConvenio = Array();
-            
-            $primeiraDia = date("d", strtotime($relatorioconvenio[0]->data));
-            $diaAquisicao = $relatorioconvenio[0]->dia_aquisicao;
-            if ($primeiraDia <= $diaAquisicao) {
-                $periodo = date("Y-m-", strtotime($relatorioconvenio[0]->data)) . $diaAquisicao;
-            }
-            else {
-                $periodo = date("Y-m-", strtotime("+1 month", strtotime($relatorioconvenio[0]->data))) . $diaAquisicao;
-            }
-            $periodoAnterior = date("Y-m-d", strtotime("-1 month", strtotime($periodo)));
-            
-            foreach ($relatorioconvenio as $item) {
-                if ($item->data > $periodoAnterior && $item->data <= $periodo){
-                    $p = $periodo;
-                }
-                else {
-                    $periodoAnterior = $periodo;
-                    $periodo = date("Y-m-d", strtotime("+1 month", strtotime($periodo)));
-                    $p = $periodo;
-                }
+            foreach ($listaconvenios as $conv){
+                $contador = 0;
                 
-                
-                $previsaoConvenio[$p][$item->convenio_id]["nome"] = $item->convenio;
-                $previsaoConvenio[$p][$item->convenio_id]["credor_devedor_id"] = $item->credor_devedor_id;
-                $previsaoConvenio[$p][$item->convenio_id]["conta_id"] = $item->conta_id;       
-                
-                if($item->valor_total != ''){
-                    $valor = $item->valor_total;
-                } else{
-                    $valor = $item->valor_procedimento;
-                }
-                
-                $previsaoConvenio[$p][$item->convenio_id]["valor"] = @$previsaoConvenio[$p][$item->convenio_id]["valor"] + $valor;
-                
-                if ( $item->confirmacao_recebimento_convenio == 't' ){
-                    @$previsaoConvenio[$p][$item->convenio_id]["confirmado"]++;
-                }
-            }
+                foreach ($relatorioconvenio as $item) {
+                    if($item->convenio_id == $conv->convenio_id) {
+                        if($contador == 0){
+                            $contador++;
+                            $previsaoConvenio = Array();
 
-            ?>
-            <br>
-            <br>
-            <br>
-            <table border="1" cellspacing="0" cellpadding="5">
-                <thead>
-                    <tr>
-                        <th class="tabela_header" colspan="5" style="background-color: #ccc;">Previsão Convênio</th>
-                    </tr>
-                    <tr>
-                        <th class="tabela_header">Convênio</th>
-                        <th class="tabela_header">Valor Previsto</th>
-                        <th class="tabela_header">Confirmar Recebimento</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    
-                    
-                    foreach ($previsaoConvenio as $key2 => $convenios) : ?>
-                        <tr>
-                            <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data Aquisiçao: <?= date("d/m/Y", strtotime($key2)); ?></td>
-                        </tr>
-                    <?
-                        foreach ($convenios as $key => $item) :
-                            ?>
+                            $primeiraDia = date("d", strtotime($item->data));
+                            $diaAquisicao = $conv->dia_aquisicao;
+                            
+                            if ($primeiraDia <= $diaAquisicao) {
+                                $periodo = date("Y-m-", strtotime($item->data)) . $diaAquisicao;
+                            }
+                            else {
+                                $periodo = date("Y-m-", strtotime("+1 month", strtotime($item->data))) . $diaAquisicao;
+                            }
+                            $periodoAnterior = date("Y-m-", strtotime("-1 month", strtotime($item->data))) . $diaAquisicao;
+                        }
+                        
+                        if ($item->data > $periodoAnterior && $item->data <= $periodo){
+                            if($diaAquisicao <= 28){
+                                $p = $periodo;
+                            } else {
+                                $pAux = substr($periodo, 0, -2) . '01';
+                                $p = date("Y-m-t", strtotime($pAux));
+                            }
+                        }
+                        else {
+                            $periodoAnterior = $periodo;
+                            if($diaAquisicao <= 28){
+                                $periodo = date("Y-m-d", strtotime("+1 month", strtotime($periodo)));
+                            } else {
+                                $periodo = date("Y-m-t", strtotime("+1 week", strtotime($periodo)));
+                            }
+                            $p = $periodo;
+                        }
+
+
+                        $previsaoConvenio[$p][$item->convenio_id]["nome"] = $item->convenio;
+                        $previsaoConvenio[$p][$item->convenio_id]["credor_devedor_id"] = $item->credor_devedor_id;
+                        $previsaoConvenio[$p][$item->convenio_id]["conta_id"] = $item->conta_id;       
+
+                        if($item->valor_total != ''){
+                            $valor = $item->valor_total;
+                        } else{
+                            $valor = $item->valor_procedimento;
+                        }
+
+                        $previsaoConvenio[$p][$item->convenio_id]["valor"] = @$previsaoConvenio[$p][$item->convenio_id]["valor"] + $valor;
+
+                        if ( $item->confirmacao_recebimento_convenio == 't' ){
+                            @$previsaoConvenio[$p][$item->convenio_id]["confirmado"]++;
+                        }
+                    }
+                }
+                
+                echo "<pre>";
+                var_dump($previsaoConvenio); die;
+
+                ?>
+                <div style="display: inline-block">
+                    <table border="1" cellspacing="0" cellpadding="5">
+                        <thead>
                             <tr>
-                                <td ><?= $item["nome"]; ?></td>
-                                <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
-                                <td style="text-align: center">
-                                    <? 
-                                    
-//                                    if($item["valor"] != 0) {
-                                        if ( ($_POST['empresa'] != '') ) {
-                                            if ( !isset($item["confirmado"]) ) {
-                                                if ($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
-                                                <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contasreceber/confirmarprevisaorecebimentoconvenio" target="_blank">
-                                                    <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
-                                                    <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
-                                                    <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
-                                                    <input type="hidden" name="periodo_aquisicao" value="<?= $key2 ?>"/>
-                                                    <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
-                                                    <input type="hidden" name="convenio_id" value="<?= $key ?>"/>
-                                                    <input type="hidden" name="convenio_nome" value="<?= $item["nome"] ?>"/>
-                                                    <button type="submit">Confirmar</button>
+                                <th class="tabela_header" colspan="5" style="background-color: #ccc;">Previsão Convênio <?=$conv->nome?></th>
+                            </tr>
+                            <tr>
+                                <!--<th class="tabela_header">Convênio</th>-->
+                                <th class="tabela_header">Valor Previsto</th>
+                                <th class="tabela_header">Confirmar Recebimento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
 
-                                                </form>
-                                            <?  }
-                                                else{
-                                                    if($item["credor_devedor_id"] == ''){
-                                                        echo "Credor/Devedor não informado";
-                                                    } else{
-                                                        echo "Conta não informada";
+
+                            foreach ($previsaoConvenio as $key2 => $convenios) : ?>
+                                <tr>
+                                    <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data Aquisiçao: <?= date("d/m/Y", strtotime($key2)); ?></td>
+                                </tr>
+                            <?
+                                foreach ($convenios as $key => $item) :
+                                    ?>
+                                    <tr>
+                                        <!--<td ><?= $item["nome"]; ?></td>-->
+                                        <td style="text-align: right"><?= number_format($item["valor"], 2, ",", ".");?></td>
+                                        <td style="text-align: center">
+                                            <? 
+
+        //                                    if($item["valor"] != 0) {
+                                                if ( ($_POST['empresa'] != '') ) {
+                                                    if ( !isset($item["confirmado"]) ) {
+                                                        if ($item["credor_devedor_id"] != '' && $item["conta_id"] != ''){?>
+                                                        <form id="confirmacao-form" name="confirmacao-form" method="get" action="<?= base_url() ?>cadastros/contasreceber/confirmarprevisaorecebimentoconvenio" target="_blank">
+                                                            <input type="hidden" name="empresa" value="<?= $_POST['empresa'] ?>"/>
+                                                            <input type="hidden" name="conta" value="<?= $item["conta_id"] ?>"/>
+                                                            <input type="hidden" name="credordevedor" value="<?= $item["credor_devedor_id"] ?>"/>
+                                                            <input type="hidden" name="periodo_aquisicao" value="<?= $key2 ?>"/>
+                                                            <input type="hidden" name="valor" value="<?= $item["valor"] ?>"/>
+                                                            <input type="hidden" name="convenio_id" value="<?= $key ?>"/>
+                                                            <input type="hidden" name="convenio_nome" value="<?= $item["nome"] ?>"/>
+                                                            <button type="submit">Confirmar</button>
+
+                                                        </form>
+                                                    <?  }
+                                                        else{
+                                                            if($item["credor_devedor_id"] == ''){
+                                                                echo "Credor/Devedor não informado";
+                                                            } else{
+                                                                echo "Conta não informada";
+                                                            }
+                                                        }
+                                                    }
+                                                    else{
+                                                        echo "Valor já confirmado";
                                                     }
                                                 }
-                                            }
-                                            else{
-                                                echo "Valor já confirmado";
-                                            }
-                                        }
-                                        else {
-                                            echo "Selecione uma empresa";
-                                        }
-//                                    }
-//                                    else {
-//                                        echo "Selecione uma empresa";
-//                                    }
-                                    ?>
-                                </td>
+                                                else {
+                                                    echo "Selecione uma empresa";
+                                                }
+        //                                    }
+        //                                    else {
+        //                                        echo "Selecione uma empresa";
+        //                                    }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <? 
+                                endforeach; 
+                            endforeach; 
+                            ?>
+                            <tr>
+                                <td colspan="10"><span style="font-size: 10pt; font-style: italic">Obs: So irá aparecer na lista, convenios que possuirem um dia de aquisição cadastrado.</span></td>
                             </tr>
-                            <? 
-                        endforeach; 
-                    endforeach; 
-                    ?>
-                    <tr>
-                        <td colspan="10"><span style="font-size: 10pt; font-style: italic">Obs: So irá aparecer na lista, convenios que possuirem um dia de aquisição cadastrado.</span></td>
-                    </tr>
-                </tbody>
+                        </tbody>
 
-            </table>
-            <?
+                    </table>
+                </div>
+                <?
+            }
         }
     }
     else {

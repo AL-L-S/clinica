@@ -23,23 +23,17 @@
 <? if (count($relatorio) > 0) {
     ?>
 
-    <table border="1" cellpadding="5">
+    <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
                 <td class="tabela_teste">Operador ID</td>
+                <td class="tabela_teste" style='text-align: center;'>Perfil</td>  
                 <td class="tabela_teste">Nome</td>
-
-                                    <!--<td class="tabela_teste">Nascimento</td>-->   
-
-                                    <!--<td class="tabela_teste">Nome da Mãe</td>-->
-                <td class="tabela_teste">Email</td>  
-                <td class="tabela_teste">Perfil</td>  
-                <!--<td class="tabela_teste">Situação CPF</td>-->  
-
-                                    <!--<td class="tabela_teste">Situação</td>-->
-                                    <!--<td class="tabela_teste">Registros</td>-->
-                                    <!--<td class="tabela_teste">Nome da Mãe</td>-->
-                                    <!--<td class="tabela_teste">CPF</td>-->
+                <td class="tabela_teste">Nascimento</td>   
+                <td class="tabela_teste">Telefone</td>  
+                <td class="tabela_teste" style='text-align: center;'>Email</td>  
+                <td class="tabela_teste">CPF</td>  
+                <td class="tabela_teste" style='text-align: center;'>Ocupação</td>  
             </tr>
         </thead>
         <hr>
@@ -64,22 +58,20 @@
 
 
                 <tr >
-
                     <td><?= $item->operador_id; ?></td>
-                    <td><?= $item->nome; ?></td>
-                    <!--<td style='text-align: center;'><? //if($item->nascimento != ''){echo date('d/m/Y', strtotime($item->nascimento)); }   ?></td>-->
-
-
-
-                                                                        <!--<td style='text-align: center;'><font size="-1"><? //= utf8_decode($item->nome_mae);      ?></td>-->
-
-
-                    <td style='text-align: center;'><?= $item->email ?></td>
                     <td style='text-align: center;'><?= $item->perfil ?></td>
-                    <!--<td style='text-align: center;'><? //= $situacao    ?></td>-->
-
-                                                                        <!--<td style='text-align: center;'><? //= $item->conta              ?></td>-->
-
+                    <td><?= $item->nome; ?></td>
+                    <td style='text-align: center;'><? if($item->nascimento != ''){ echo date('d/m/Y', strtotime($item->nascimento)); }   ?></td>
+                    <?
+                    $telefone = $item->telefone;
+                    if($telefone == ''){
+                        $telefone = $item->celular;
+                    }
+                    ?>
+                    <td><?= $telefone ?></td>
+                    <td style='text-align: center;'><?= $item->email ?></td>
+                    <td style='text-align: center;'><?= $item->cpf ?></td>
+                    <td style='text-align: center;'><?= $item->cbo ?></td>
                 </tr>
 
                 <?

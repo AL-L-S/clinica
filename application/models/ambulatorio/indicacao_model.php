@@ -128,7 +128,12 @@ class indicacao_model extends Model {
             
             if ($this->session->userdata('recomendacao_configuravel') == "t") {
                 
-                if ($_POST['criarcredor'] == "on") {
+                $result = array();
+                if ($_POST['txtlaboratorio_id'] != ''){
+                    $this->db->select('credor_devedor_id')->from('tb_paciente_indicacao')->where('paciente_indicacao_id', $_POST['paciente_indicacao_id']);
+                    $result = $this->db->get()->result();
+                }
+                if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
                     $this->db->set('razao_social', $_POST['txtNome']);
                     $horario = date("Y-m-d H:i:s");
                     $operador_id = $this->session->userdata('operador_id');
@@ -138,13 +143,11 @@ class indicacao_model extends Model {
                     $credor_devedor_id = $this->db->insert_id();
                 }
             
+                if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
+                    $this->db->set('credor_devedor_id', $credor_devedor_id);
+                }
                 if ($_POST['conta'] != "") {
                     $this->db->set('conta_id', $_POST['conta']);
-                }
-                if ($_POST['criarcredor'] == "on") {
-                    $this->db->set('credor_devedor_id', $credor_devedor_id);
-                } elseif ($_POST['credor_devedor'] != "") {
-                    $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
                 }
                 $this->db->set('classe', $_POST['classe']);
                 $this->db->set('tipo_id', $_POST['tipo']);

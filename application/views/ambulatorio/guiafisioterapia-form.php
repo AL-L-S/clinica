@@ -172,6 +172,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
         $medico_solicitante = "";
         $medico_solicitante_id = "";
         $convenio_paciente = "";
+        $promotor_id = @$exames[count($exames) - 1]->indicacao;
         if ($contador > 0) {
             $sala_id = $exames[0]->agenda_exames_nome_id;
             $sala = $exames[0]->sala;
@@ -368,7 +369,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         $indicacao = $this->paciente->listaindicacao($_GET);
                                         foreach ($indicacao as $item) {
                                             ?>
-                                            <option value="<?php echo $item->paciente_indicacao_id; ?>"> <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
+                                            <option value="<?php echo $item->paciente_indicacao_id; ?>" <?= ($item->paciente_indicacao_id == $promotor_id)?'selected':'' ?>><?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
                                             <?php
                                         }
                                         ?> 

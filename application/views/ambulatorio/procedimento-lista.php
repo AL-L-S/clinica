@@ -57,6 +57,7 @@
                     <tr>
                         <th class="tabela_header" width="50%">Nome</th>
                         <th class="tabela_header" width="10%">Grupo</th>
+                        <th class="tabela_header" width=""></th>
                         <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
                         if($subgrupo_procedimento == 't') { ?>
                             <th class="tabela_header" width="10%">Subgrupo</th>
@@ -89,6 +90,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><? if($item->agrupador == 't'){ echo "AGRUPADOR";}?></td>
                                 <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
                                 if($subgrupo_procedimento == 't') { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->subgrupo; ?></td>
@@ -96,7 +98,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
 
-                                <? if ($item->grupo != "AGRUPADOR") { ?>
+                                <? if($item->agrupador != 't') { ?>
                                     <? if ($perfil_id != 10) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" ><div class="bt_link">
                                                 <a style="cursor: pointer;" onclick="javascript: return confirm('Deseja realmente excluir o procedimento');" href="<?= base_url() . "ambulatorio/procedimento/excluir/$item->procedimento_tuss_id"; ?>"

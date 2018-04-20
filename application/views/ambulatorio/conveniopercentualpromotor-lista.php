@@ -4,25 +4,18 @@
         <tr>
             <td>
                 <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentualmedico">
+                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novoprocedimentopercentualpromotor">
                         Novo Convenio
-                    </a>
-                </div>
-            </td>
-            <td>
-                <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/replicarpercentualmedico">
-                        Replicar Percentual
                     </a>
                 </div>
             </td>
         </tr>
     </table>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Convenio Honor&aacute;rios M&eacute;dicos</a></h3>
+        <h3 class="singular"><a href="#">Manter Convenio Honorários Promotores</a></h3>
         <div>
             <? $convenio = $this->convenio->listardados(); ?>
-            <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentual">
+            <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">
                 <table>
                     <thead>
                         <tr>
@@ -72,7 +65,7 @@
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->procedimentoplano->listarpercentualconvenio($_GET);
+                $consulta = $this->procedimentoplano->listarpercentualconveniopromotor($_GET);
                 $total = $consulta->count_all_results();
                 $limit = 10;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
@@ -81,7 +74,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->procedimentoplano->listarpercentualconvenio($_GET)->orderby('c.nome')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->procedimentoplano->listarpercentualconveniopromotor($_GET)->orderby('c.nome')->limit($limit, $pagina)->get()->result();
 //                        echo '<pre>';
 //                        var_dump($lista);
 //                        die;
@@ -94,9 +87,9 @@
                                 <td class="<?php echo $estilo_linha; ?>"></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                     <a onclick="javascript: return confirm('Deseja realmente excluir os percentuais associados a esse convenio?');"
-                                       href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualconvenio/<?= $item->convenio_id; ?>">Excluir&nbsp;
+                                       href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualconveniopromotor/<?= $item->convenio_id; ?>">Excluir&nbsp;
                                     </a>
-                                    <a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentual/<?= $item->convenio_id; ?>">Editar</a>  
+                                    <a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentualpromotor/<?= $item->convenio_id; ?>">Editar</a>  
                                 </td>
                             </tr>
 

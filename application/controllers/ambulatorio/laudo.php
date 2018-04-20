@@ -3902,14 +3902,13 @@ class Laudo extends BaseController {
 
         if ($_POST['situacao'] == 'FINALIZADO') {
             $validar = $this->laudo->validar();
-            //$validar = $this->laudo->validar();
-//            var_dump($validar); die;
+            
+            $empresa_id = $this->session->userdata('empresa_id');
+            $empresapermissao = $this->guia->listarempresasaladepermissao($empresa_id);
 
-            if ($validar == '1') {
+            if ($validar == '1' || $empresapermissao[0]->senha_finalizar_laudo == 'f') {
                 $gravar = $this->laudo->gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id, $procedimento_tuss_id);
-//                var_dump($gravar); die;
                 if ($gravar == 0) {
-//                    echo 'teste'; die;
                     $this->gerarxmlsalvar($ambulatorio_laudo_id, $exame_id, $sala_id);
                 }
                 $messagem = 2;

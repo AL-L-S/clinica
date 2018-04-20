@@ -24,6 +24,20 @@ class agenda_model extends Model {
         return $this->db;
     }
 
+    function listarferiados($args = array()) {
+        $this->db->select('feriado_id,
+                            nome, data');
+        $this->db->from('tb_feriado');
+        $this->db->where('ativo', 'true');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('nome ilike',"%".$args['nome']."%");
+        }
+        if (isset($args['data']) && strlen($args['data']) > 0) {
+            $this->db->where('data', $args['data']);
+        }
+        return $this->db;
+    }
+
     function listarempresa() {
         $this->db->select('empresa_id,
                             nome');
@@ -73,6 +87,22 @@ class agenda_model extends Model {
         }
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function excluirferiado($feriado_id) {
+
+        $this->db->set('ativo', 'f');
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('feriado_id', $feriado_id);
+        $this->db->update('tb_feriado');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
     }
 
     function excluir($agenda_id) {
@@ -213,6 +243,39 @@ class agenda_model extends Model {
             $this->db->set('sala_id', $sala_id);
             $this->db->where('horarioagenda_id', $horario_id);
             $this->db->update('tb_horarioagenda');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarferiado() {
+        try {
+
+            /* inicia o mapeamento no banco */
+            $feriado_id = $_POST['feriado_id'];
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->set('data', $_POST['data']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($feriado_id == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_feriado');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $agenda_id = $this->db->insert_id();
+            }
+            else { // update
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('feriado_id', $feriado_id);
+                $this->db->update('tb_feriado');
+            }
+            return $feriado_id;
         } catch (Exception $exc) {
             return -1;
         }
@@ -2641,6 +2704,16 @@ class agenda_model extends Model {
         $this->db->orderby('dia');
         $return = $this->db->get();
 //        var_dump($agenda_id, $return->result()); die;
+        return $return->result();
+    }
+
+    function instanciarferiado($feriado_id = null) {
+        $this->db->select('feriado_id,
+                           nome,
+                           data');
+        $this->db->from('tb_feriado');
+        $this->db->where('feriado_id', $feriado_id);
+        $return = $this->db->get();
         return $return->result();
     }
 

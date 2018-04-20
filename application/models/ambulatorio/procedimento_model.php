@@ -34,6 +34,7 @@ class procedimento_model extends Model {
                             pt.codigo,
                             pt.descricao,
                             pt.grupo,
+                            pt.agrupador,
                             sub.nome as subgrupo');
         $this->db->from('tb_procedimento_tuss pt');
         $this->db->join('tb_ambulatorio_subgrupo sub', 'sub.ambulatorio_subgrupo_id = pt.subgrupo_id', 'left');
@@ -71,6 +72,7 @@ class procedimento_model extends Model {
                             oi.valor_total,
                             (oi.valor_ajustado * oi.quantidade) as valor_total_ajustado,
                             ao.paciente_id,
+                            ao.autorizado,
                             pc.convenio_id,
                             c.nome as convenio,
                             pt.codigo,
@@ -165,7 +167,7 @@ class procedimento_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
 
             $this->db->set('nome', $_POST['txtNome']);
-            $this->db->set('grupo', 'AGRUPADOR');
+            $this->db->set('grupo', $_POST['agrupador_grupo']);
             $this->db->set('agrupador', 't');
             $this->db->set('agrupador_grupo', $_POST['agrupador_grupo']);
             $this->db->set('codigo', '');
@@ -970,13 +972,15 @@ class procedimento_model extends Model {
                 $vlr = str_replace(",", ".", $_POST['ajuste_percentual']);
                 $sql = "UPDATE ponto.tb_procedimento_tuss
                         SET perc_medico = perc_medico + (perc_medico * {$vlr} / 100)
-                        WHERE grupo = '{$_POST['grupo']}' ";
+                        WHERE grupo = '{$_POST['grupo']}' 
+                        AND pt.agrupador = 'f'";
 //                die($sql);
             } else {
                 $vlr = str_replace(",", ".", $_POST['txtperc_medico']);
                 $sql = "UPDATE ponto.tb_procedimento_tuss
                         SET perc_medico = {$vlr}, percentual = '{$_POST['percentual']}'
-                        WHERE grupo = '{$_POST['grupo']}' ";
+                        WHERE grupo = '{$_POST['grupo']}'
+                        AND pt.agrupador = 'f' ";
             }
 
             $this->db->query($sql);

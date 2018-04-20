@@ -191,11 +191,13 @@
                                     </center>
                                 </th>
                                 <th colspan="2" align="center">
-                                    <center>
-                                        <div class="bt_linkf">
-                                            <a href="<?= base_url() . "ambulatorio/exame/gravarautorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
-                                        </div>
-                                    </center>
+                                    <? if ($exames[0]->autorizado != 't') { ?>
+                                        <center>
+                                            <div class="bt_linkf">
+                                                <a href="<?= base_url() . "ambulatorio/exame/gravarautorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
+                                            </div>
+                                        </center>
+                                    <? } ?>
                                     <center>
                                         <div class="bt_linkf">
                                             <a href="<?= base_url() . "ambulatorio/guia/transformaorcamentocredito/" . $orcamento; ?>" target='_blank'>Transformar em Crédito</a>

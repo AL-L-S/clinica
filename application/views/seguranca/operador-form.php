@@ -61,17 +61,18 @@
                     <?php
                     if (@$obj->_consulta == "t") {
                         ?>
-                        <input type="checkbox" name="txtconsulta" checked ="true"/>Realiza consulta
+                        <input type="checkbox" name="txtconsulta" checked ="true"/>Realiza consulta / exame
                         <?php
                     } else {
                         ?>
-                        <input type="checkbox" name="txtconsulta"  />Realiza consulta
+                        <input type="checkbox" name="txtconsulta"  />Realiza consulta / exame
                         <?php
                     }
-                    ?>
-
-                    <input type="checkbox" name="txtsolicitante" <? if (@$obj->_solicitante == "t") echo 'checked' ?> />Médico Solicitante
-                    <input type="checkbox" name="ocupacao_painel" <? if (@$obj->_ocupacao_painel == "t") echo 'checked' ?> />Ocupação no Painel
+                    
+                    if (@$empresapermissao[0]->retirar_flag_solicitante == 'f') { ?>
+                        <input type="checkbox" name="txtsolicitante" <? if (@$obj->_solicitante == "t") echo 'checked' ?> />Médico Solicitante
+                        <input type="checkbox" name="ocupacao_painel" <? if (@$obj->_ocupacao_painel == "t") echo 'checked' ?> />Ocupação no Painel
+                    <? } ?>
                 </div>
             </fieldset>
             <fieldset>
@@ -222,37 +223,34 @@
             </fieldset>
             <fieldset>
                 <legend>Financeiro</legend>
-                <div>
+<!--                <div>
                     <label>Criar Credor</label>
-                    <input type="checkbox" name="criarcredor"/></div>
+                    <input type="checkbox" name="criarcredor"/></div>-->
 
                 <div>
 
 
 
                     <label>Credor / Devedor</label>
-
-
-                    <select name="credor_devedor" id="credor_devedor" class="size2" >
+                    <input type="text" id="credor_devedor" class="texto08" name="credor_devedor" value="<?= @$obj->_credor; ?>" readonly=""/>
+<!--                    <select name="credor_devedor" id="credor_devedor" class="size4" disabled="">
                         <option value='' >Selecione</option>
                         <?php
-                        $credor_devedor = $this->convenio->listarcredordevedor();
-                        foreach ($credor_devedor as $item) {
+//                        $credor_devedor = $this->convenio->listarcredordevedor();
+//                        foreach ($credor_devedor as $item) {
                             ?>
 
                             <option   value =<?php echo $item->financeiro_credor_devedor_id; ?> <?
-                            if (@$obj->_credor_devedor_id == $item->financeiro_credor_devedor_id):echo 'selected';
-                            endif;
-                            ?>><?php echo $item->razao_social; ?></option>
+//                            if (@$obj->_credor_devedor_id == $item->financeiro_credor_devedor_id):echo 'selected';
+//                            endif;
+                            ?>><?php // echo $item->razao_social; ?></option>
                                       <?php
-                                  }
+//                                  }
                                   ?> 
-                    </select>
+                    </select>-->
                 </div>
                 <div>
                     <label>Conta</label>
-
-
                     <select name="conta" id="conta" class="size2" >
                         <option value='' >Selecione</option>
                         <?php

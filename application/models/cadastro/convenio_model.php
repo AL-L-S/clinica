@@ -201,6 +201,7 @@ class Convenio_model extends Model {
         $this->db->select('financeiro_credor_devedor_id,
                             razao_social,');
         $this->db->from('tb_financeiro_credor_devedor');
+        $this->db->where("ativo", 't');
         $this->db->orderby('razao_social');
         $return = $this->db->get();
         return $return->result();
@@ -611,6 +612,62 @@ class Convenio_model extends Model {
         }
     }
 
+    function removerpercentuaisnaopertenceprincipal($convenio_id) {
+
+
+        $operador_id = $this->session->userdata('operador_id');
+        $data = date('Y-m-d H:i:s');
+
+        try {
+            $this->db->select('pmc.*');
+            $this->db->from('tb_procedimento_percentual_medico_convenio pmc');
+            $this->db->join('tb_procedimento_percentual_medico pm', 'pm.procedimento_percentual_medico_id = pmc.procedimento_percentual_medico_id');
+            $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pm.procedimento_tuss_id');
+            $this->db->where('pmc.ativo', 't');
+            $this->db->where('pc.convenio_id', $convenio_id);
+            $return = $this->db->get()->result();
+            
+            if(count($return) > 0){
+                
+                foreach($return as $item){
+                    
+                    $procedimentos .= $item->procedimento_percentual_medico_id.",";
+                    
+                    $this->db->set('procedimento_percentual_medico_convenio_id', $item->procedimento_percentual_medico_convenio_id);
+                    $this->db->set('procedimento_percentual_medico_id', $item->procedimento_percentual_medico_id);
+                    $this->db->set('medico', $item->medico);
+                    $this->db->set('valor', $item->valor);
+                    $this->db->set('percentual', $item->percentual);
+                    $this->db->set('dia_recebimento', $item->dia_recebimento);
+                    $this->db->set('tempo_recebimento', $item->tempo_recebimento);
+                    $this->db->set('data_cadastro', $data);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_procedimento_percentual_medico_convenio_antigo');
+                }
+                
+                $procedimentosLista = substr($procedimentos, 0, -1);
+                
+                $sql = "UPDATE ponto.tb_procedimento_percentual_medico 
+                        SET ativo = 'f', data_atualizacao = '{$data}', operador_atualizacao = {$operador_id}
+                        WHERE procedimento_percentual_medico_id IN ({$procedimentosLista})
+                        AND ativo = 't'";
+                $this->db->query($sql);
+                
+                $sql = "UPDATE ponto.tb_procedimento_percentual_medico_convenio 
+                        SET ativo = 'f', data_atualizacao = '{$data}', operador_atualizacao = {$operador_id}
+                        WHERE procedimento_percentual_medico_id IN ({$procedimentosLista})
+                        AND ativo = 't'";
+                $this->db->query($sql);
+
+            }
+            
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function removerprocedimentosnaopertenceprincipal($convenio_id) {
 
 
@@ -621,6 +678,26 @@ class Convenio_model extends Model {
 
             $sql = "UPDATE ponto.tb_procedimento_convenio SET ativo = 'f', data_atualizacao = '{$data}', operador_atualizacao = {$operador_id}
                     WHERE convenio_id = {$convenio_id} 
+                    AND ativo = 't'";
+
+            $this->db->query($sql);
+
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function removeassociacoescomoutrosconvenios($convenio_id) {
+
+
+        $operador_id = $this->session->userdata('operador_id');
+        $data = date('Y-m-d H:i:s');
+
+        try {
+
+            $sql = "UPDATE ponto.tb_convenio_secudario_associacao SET ativo = 'f', data_atualizacao = '{$data}', operador_atualizacao = {$operador_id}
+                    WHERE convenio_secundario_id = {$convenio_id} 
                     AND ativo = 't'";
 
             $this->db->query($sql);
@@ -738,6 +815,7 @@ class Convenio_model extends Model {
             return -1;
         }
     }
+    
 
     function gravarvaloresassociacaoeditar($convenio_id) {
 
@@ -773,8 +851,7 @@ class Convenio_model extends Model {
                     $this->db->where('pt.grupo', $_POST['grupo'][$key]);
                     $this->db->where('pc.convenio_id', $_POST['convenio'][$key]);
                     $this->db->where('pc.ativo', 't');
-                    $return2 = $this->db->get();
-                    $result2 = $return2->result();
+                    $result2 = $this->db->get()->result();
 
                     $this->db->set('data_atualizacao', $horario);
                     $this->db->set('operador_atualizacao', $operador_id);
@@ -806,6 +883,43 @@ class Convenio_model extends Model {
                             $this->db->set('convenio_id', $convenio_id);
                             $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
                             $this->db->insert('tb_procedimento_convenio');
+                            $pc_id = $this->db->insert_id();
+                            
+                            // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico)
+                            $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico(procedimento_tuss_id, medico, valor, data_cadastro, operador_cadastro)
+                                    SELECT {$pc_id}, ppm.medico, ppm.valor, '{$horario}', {$operador_id}
+                                    FROM ponto.tb_procedimento_percentual_medico ppm
+                                    WHERE ppm.ativo = 't'
+                                    AND ppm.procedimento_tuss_id = {$value->procedimento_convenio_id}";
+                            $this->db->query($sql);
+                            
+                            // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico_convenio)
+                            $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico_convenio(
+                                        medico, 
+                                        procedimento_percentual_medico_id, 
+                                        valor, 
+                                        percentual, 
+                                        dia_recebimento, 
+                                        tempo_recebimento, 
+                                        data_cadastro, 
+                                        operador_cadastro
+                                    )
+                                    SELECT ppmc.medico, 
+                                           (SELECT procedimento_percentual_medico_id FROM ponto.tb_procedimento_percentual_medico 
+                                           WHERE procedimento_tuss_id = {$pc_id} LIMIT 1), 
+                                           ppmc.valor, 
+                                           percentual, 
+                                           dia_recebimento, 
+                                           tempo_recebimento, 
+                                           '{$horario}', {$operador_id}
+                                    FROM ponto.tb_procedimento_percentual_medico_convenio ppmc
+                                    INNER JOIN ponto.tb_procedimento_percentual_medico ppm 
+                                    ON ppm.procedimento_percentual_medico_id = ppmc.procedimento_percentual_medico_id
+                                    WHERE ppmc.ativo = 't'
+                                    AND ppm.ativo = 't'
+                                    AND ppm.procedimento_tuss_id = {$value->procedimento_convenio_id}";
+                            $this->db->query($sql);
+                            
                         }
                     }
                 } else {
@@ -1110,7 +1224,42 @@ class Convenio_model extends Model {
 
     function gravar() {
         try {
+            $result = array();
+            if ($_POST['txtconvenio_id'] != ''){
+                $this->db->select('credor_devedor_id')->from('tb_convenio c');
+                $this->db->join("tb_financeiro_credor_devedor cd", "cd.financeiro_credor_devedor_id = c.credor_devedor_id");
+                $this->db->where('convenio_id', $_POST['txtconvenio_id'])->where('cd.ativo', 't');
+                $result = $this->db->get()->result();
+            }
+            
+            if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
+                $this->db->set('razao_social', $_POST['txtNome']);
+                $this->db->set('cep', $_POST['cep']);
+                $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
+                $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
+                if ($_POST['tipo_logradouro'] != "") {
+                    $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
+                }
+                
+                if ($_POST['municipio_id'] != '') {
+                    $this->db->set('municipio_id', $_POST['municipio_id']);
+                }
 
+                $this->db->set('logradouro', $_POST['endereco']);
+                $this->db->set('numero', $_POST['numero']);
+                $this->db->set('bairro', $_POST['bairro']);
+                $this->db->set('complemento', $_POST['complemento']);
+                if ($_POST['municipio_id'] != "") {
+                    $this->db->set('municipio_id', $_POST['municipio_id']);
+                }
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_credor_devedor');
+                $financeiro_credor_devedor_id = $this->db->insert_id();
+            }
+            
             /* inicia o mapeamento no banco */
             $convenio_id = $_POST['txtconvenio_id'];
             $this->db->set('nome', $_POST['txtNome']);
@@ -1128,16 +1277,14 @@ class Convenio_model extends Model {
 
             if (isset($_POST['associaconvenio'])) {
                 $this->db->set('associado', 't');
-//                $this->db->set('associacao_percentual', str_replace(",", ".", $_POST['valorpercentual']));
-//                $this->db->set('associacao_convenio_id', $_POST['convenio_associacao']);
             } else {
                 $this->db->set('associado', 'f');
                 $this->db->set('associacao_percentual', 0);
                 $this->db->set('associacao_convenio_id', null);
             }
 
-            if ($_POST['credor_devedor'] != "") {
-                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
+            if ($financeiro_credor_devedor_id != "") {
+                $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
             }
 //            if ($_POST['fidadelidade_endereco_ip'] != "") {
             $this->db->set('fidelidade_endereco_ip', $_POST['fidelidade_endereco_ip']);
@@ -1421,10 +1568,12 @@ class Convenio_model extends Model {
                                 co.razao_social,
                                 co.guia_prestador_unico,
                                 co.dia_aquisicao,
-                                co.valor_ajuste_cbhpm');
+                                co.valor_ajuste_cbhpm,
+                                fcd.razao_social as credor');
             $this->db->from('tb_convenio co');
             $this->db->join('tb_municipio c', 'c.municipio_id = co.municipio_id', 'left');
             $this->db->join('tb_tipo_logradouro tp', 'tp.tipo_logradouro_id = co.tipo_logradouro_id', 'left');
+            $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = co.credor_devedor_id', 'left');
             $this->db->where("convenio_id", $convenio_id);
             $query = $this->db->get();
             $return = $query->result();
@@ -1472,6 +1621,7 @@ class Convenio_model extends Model {
             $this->_guia_prestador_unico = $return[0]->guia_prestador_unico;
             $this->_dia_aquisicao = $return[0]->dia_aquisicao;
             $this->_valor_ajuste_cbhpm = $return[0]->valor_ajuste_cbhpm;
+            $this->_credor = $return[0]->credor;
         } else {
             $this->_convenio_id = null;
         }

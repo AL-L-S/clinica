@@ -123,3 +123,32 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();    
+-- Dia 07/04/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN senha_finalizar_laudo boolean DEFAULT true;
+
+-- Dia 16/04/2018
+CREATE TABLE ponto.tb_feriado
+(
+  feriado_id serial NOT NULL,
+  nome character varying(200) NOT NULL,
+  data character varying(15),
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_feriado_pkey PRIMARY KEY (feriado_id)
+);
+
+-- Dia 17/04/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN retirar_flag_solicitante boolean DEFAULT false;
+
+UPDATE ponto.tb_procedimento_tuss
+   SET grupo=agrupador_grupo
+ WHERE grupo = 'AGRUPADOR';
+
+DELETE FROM ponto.tb_ambulatorio_grupo WHERE tipo = 'AGRUPADOR';
+
+-- Dia 19/04/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN cadastrar_painel_sala boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN apenas_procedimentos_multiplos boolean DEFAULT false;

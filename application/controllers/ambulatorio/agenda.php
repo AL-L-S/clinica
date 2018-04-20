@@ -36,6 +36,13 @@ class Agenda extends BaseController {
 //            $this->carregarView($data);
     }
 
+    function pesquisarferiados($limite = 10) {
+        $data["limite_paginacao"] = $limite;
+        $this->loadView('ambulatorio/feriados-lista', $data);
+
+//            $this->carregarView($data);
+    }
+
     function listarhorarioagenda($agenda) {
         $data['agenda'] = $agenda;
         $data['lista'] = $this->agenda->listarhorarioagenda($agenda);
@@ -196,6 +203,12 @@ class Agenda extends BaseController {
         $this->loadView('ambulatorio/agenda-form', $data);
     }
 
+    function carregarferiado($feriado_id) {
+        $feriado = $this->agenda->instanciarferiado($feriado_id);
+        $data['obj'] = @$feriado[0];
+        $this->loadView('ambulatorio/feriado-form', $data);
+    }
+
     function excluir($agenda_id) {
         if ($this->agenda->excluir($agenda_id)) {
             $mensagem = 'Sucesso ao excluir o Agenda';
@@ -205,6 +218,28 @@ class Agenda extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/agenda");
+    }
+
+    function excluirferiado($feriado_id) {
+        if ( $this->agenda->excluirferiado($feriado_id) ) {
+            $mensagem = 'Sucesso ao excluir o Feriado';
+        } else {
+            $mensagem = 'Erro ao excluir o Feriado. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/agenda/pesquisarferiados");
+    }
+
+    function gravarferiado() {
+        $agenda_id = $this->agenda->gravarferiado();
+        if ($agenda_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar o Feriado. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar o Feriado.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/agenda/pesquisarferiados");
     }
 
     function gravar() {

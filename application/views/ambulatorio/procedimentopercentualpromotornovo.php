@@ -3,7 +3,7 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Cadastro de Honor&aacute;rios M&eacute;dicos</a></h3>
         <div>
-            <form name="form_procedimentonovopromotor" id="form_procedimentonovopromotor" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarnovopromotor/<?= $procedimento_percentual_promotor_id ?>" method="post" onSubmit="enviardados();">
+            <form name="form_procedimentonovopromotor" id="form_procedimentonovopromotor" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarnovopromotor/<?= $procedimento_percentual_promotor_id ?>/<?= $convenio_id ?>" method="post" onSubmit="enviardados();">
 
                 <dl class="dl_desconto_lista">
                     <dt>
@@ -26,7 +26,7 @@
 
                     </dd>
                     <dt>
-                        <label>Medico</label>
+                        <label>Promotor</label>
                     </dt>
                     <dd>                    
                         <select name="promotor" id="promotor" class="size4" required="true">

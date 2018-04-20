@@ -823,9 +823,14 @@ class Laboratorio_model extends Model {
 
     function gravar() {
         try {
-            echo '<pre>';
-//            var_dump($_POST); die;
-            if ($_POST['criarcredor'] == "on") {
+            $result = array();
+            if ($_POST['txtlaboratorio_id'] != ''){
+                $this->db->select('credor_devedor_id')->from('tb_laboratorio')->where('laboratorio_id', $_POST['txtlaboratorio_id']);
+                $result = $this->db->get()->result();
+            }
+                               
+           
+            if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
                 $this->db->set('razao_social', $_POST['txtNome']);
                 $this->db->set('razao_social', $_POST['txtNome']);
                 $this->db->set('cep', $_POST['cep']);
@@ -867,10 +872,8 @@ class Laboratorio_model extends Model {
             if ($_POST['conta'] != "") {
                 $this->db->set('conta_id', $_POST['conta']);
             }
-            if ($_POST['criarcredor'] == "on") {
+            if ($financeiro_credor_devedor_id != "") {
                 $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
-            } elseif ($_POST['credor_devedor'] != "") {
-                $this->db->set('credor_devedor_id', $_POST['credor_devedor']);
             }
             $this->db->set('classe', $_POST['classe']);
             $this->db->set('tipo', $_POST['tipo']);
@@ -1108,10 +1111,12 @@ class Laboratorio_model extends Model {
                                 co.associado,
                                 co.associacao_percentual,
                                 co.associacao_laboratorio_id,
-                                co.razao_social');
+                                co.razao_social,
+                                fcd.razao_social as credor');
             $this->db->from('tb_laboratorio co');
             $this->db->join('tb_municipio c', 'c.municipio_id = co.municipio_id', 'left');
             $this->db->join('tb_tipo_logradouro tp', 'tp.tipo_logradouro_id = co.tipo_logradouro_id', 'left');
+            $this->db->join('tb_financeiro_credor_devedor fcd', 'fcd.financeiro_credor_devedor_id = co.credor_devedor_id', 'left');
             $this->db->where("laboratorio_id", $laboratorio_id);
             $query = $this->db->get();
             $return = $query->result();
@@ -1160,6 +1165,7 @@ class Laboratorio_model extends Model {
             $this->_associado = $return[0]->associado;
             $this->_associacao_percentual = $return[0]->associacao_percentual;
             $this->_associacao_laboratorio_id = $return[0]->associacao_laboratorio_id;
+            $this->_credor = $return[0]->credor;
         } else {
             $this->_laboratorio_id = null;
         }
