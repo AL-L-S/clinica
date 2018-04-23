@@ -1101,6 +1101,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('relatorio_ordem', 'f');
                     }
+                    if (isset($_POST['desativar_taxa_administracao'])) {
+                        $this->db->set('desativar_taxa_administracao', 't');
+                    } else {
+                        $this->db->set('desativar_taxa_administracao', 'f');
+                    }
                     if (isset($_POST['relatorio_producao'])) {
                         $this->db->set('relatorio_producao', 't');
                     } else {
@@ -1290,13 +1295,13 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('retirar_flag_solicitante', 'f');
                     }
-                    
+
                     if (isset($_POST['cadastrar_painel_sala'])) {
                         $this->db->set('cadastrar_painel_sala', 't');
                     } else {
                         $this->db->set('cadastrar_painel_sala', 'f');
                     }
-                    
+
                     if (isset($_POST['apenas_procedimentos_multiplos'])) {
                         $this->db->set('apenas_procedimentos_multiplos', 't');
                     } else {
@@ -1347,6 +1352,11 @@ class empresa_model extends Model {
                         $this->db->set('valor_convenio_nao', 't');
                     } else {
                         $this->db->set('valor_convenio_nao', 'f');
+                    }
+                    if (isset($_POST['desativar_taxa_administracao'])) {
+                        $this->db->set('desativar_taxa_administracao', 't');
+                    } else {
+                        $this->db->set('desativar_taxa_administracao', 'f');
                     }
                     if (isset($_POST['tecnica_enviar'])) {
                         $this->db->set('tecnica_enviar', 't');
@@ -1593,13 +1603,13 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('retirar_flag_solicitante', 'f');
                     }
-                    
+
                     if (isset($_POST['cadastrar_painel_sala'])) {
                         $this->db->set('cadastrar_painel_sala', 't');
                     } else {
                         $this->db->set('cadastrar_painel_sala', 'f');
                     }
-                    
+
                     if (isset($_POST['apenas_procedimentos_multiplos'])) {
                         $this->db->set('apenas_procedimentos_multiplos', 't');
                     } else {
@@ -1727,6 +1737,7 @@ class empresa_model extends Model {
                                ep.campos_obrigatorios_pac_telefone,
                                ep.campos_obrigatorios_pac_municipio,
                                ep.repetir_horarios_agenda,
+                               ep.desativar_taxa_administracao,
                                ep.subgrupo_procedimento,
                                ep.senha_finalizar_laudo,
                                ep.retirar_flag_solicitante,
@@ -1759,6 +1770,7 @@ class empresa_model extends Model {
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_caixa = $return[0]->caixa;
             $this->_valor_convenio_nao = $return[0]->valor_convenio_nao;
+            $this->_desativar_taxa_administracao = $return[0]->desativar_taxa_administracao;
             $this->_promotor_medico = $return[0]->promotor_medico;
             $this->_municipio = $return[0]->municipio;
             $this->_encaminhamento_email = $return[0]->encaminhamento_email;

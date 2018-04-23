@@ -644,6 +644,12 @@
                         <dd>
                             <input type="checkbox" id="apenas_procedimentos_multiplos" name="apenas_procedimentos_multiplos" <? if (@$obj->_apenas_procedimentos_multiplos == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ativando essa opção, irá sumir a taxa de administração.">Desativar Taxa Administração</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="desativar_taxa_administracao" name="desativar_taxa_administracao" <? if (@$obj->_desativar_taxa_administracao == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

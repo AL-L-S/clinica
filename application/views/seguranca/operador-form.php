@@ -311,10 +311,12 @@
 
                 <fieldset>
                     <legend>Impostos e Taxas</legend>
+                    <? if (@$empresapermissao[0]->desativar_taxa_administracao == 'f'){ ?>
                     <div>
                         <label>Taxa Adminsitração</label>
                         <input type="text" id="taxaadm" class="texto02" name="taxaadm" alt="decimal" value="<?= @$obj->_taxa_administracao; ?>" />
                     </div>
+                    <? } ?>
                     <div>
                         <label>IR</label>
                         <input type="text" id="ir" class="texto02" name="ir" alt="decimal" value="<?= @$obj->_ir; ?>" />
