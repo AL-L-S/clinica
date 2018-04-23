@@ -3,7 +3,6 @@
         <a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mostraautorizarcirurgia/<?php echo $solicitacao_id; ?>">
             Voltar
         </a>
-
     </div>
     <div class="clear"></div>
     <form name="form_solicitacaoitens" id="form_solicitacaoitens" action="<?= base_url() ?>centrocirurgico/centrocirurgico/gravarsolicitacaomateriais" method="post">
@@ -75,13 +74,13 @@
                         <td>
                             <select name="material_id" id="material_id" class="size4 chosen-select" required>
                                 <option value="">Selecione</option>
-                                <optgroup label="Procedimentos">
-                                    <? foreach ($procedimento as $item) { ?>
+                                <optgroup label="Agrupadores">
+                                    <? foreach ($agrupador as $item) { ?>
                                         <option value="<?= $item->procedimento_tuss_id ?>"><?= $item->nome ?></option>
                                     <? } ?>
                                 </optgroup>
-                                <optgroup label="Agrupadores">
-                                    <? foreach ($agrupador as $item) { ?>
+                                <optgroup label="Procedimentos">
+                                    <? foreach ($procedimento as $item) { ?>
                                         <option value="<?= $item->procedimento_tuss_id ?>"><?= $item->nome ?></option>
                                     <? } ?>
                                 </optgroup>

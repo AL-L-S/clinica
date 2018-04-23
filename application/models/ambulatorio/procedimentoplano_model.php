@@ -696,8 +696,8 @@ class procedimentoplano_model extends Model {
         $query = $this->db->get();
         $return = $query->result();
         $qtde = count($return);
-        $qtde = 0;
-        if ($qtde == 0) {
+        
+        if ($qtde == 0) {// verifica se esse agrupador ja esta associado a esse convenio
 
             $this->db->select('grupo_pagamento_id');
             $this->db->from('tb_convenio_grupopagamento cg');
@@ -1019,6 +1019,7 @@ class procedimentoplano_model extends Model {
         $this->db->from('tb_procedimento_tuss');
         $this->db->orderby('nome');
         $this->db->where("ativo", 't');
+        $this->db->where("agrupador", 'f');
         $this->db->where("(grupo != 'AGRUPADOR' OR grupo IS NULL)");
         $return = $this->db->get();
 //        echo "<pre>";
@@ -1036,6 +1037,19 @@ class procedimentoplano_model extends Model {
         $this->db->orderby('nome');
         $this->db->where("ativo", 't');
         $this->db->where("grupo !=", 'AGRUPADOR');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimento4() {
+        $this->db->select('procedimento_tuss_id,
+                            nome,
+                            grupo,
+                            codigo');
+        $this->db->from('tb_procedimento_tuss');
+        $this->db->where("ativo", 't');
+        $this->db->orderby('grupo');
+        $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
     }
@@ -2244,7 +2258,10 @@ class procedimentoplano_model extends Model {
                         $this->db->from('tb_procedimento_convenio pc');
                         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
                         $this->db->where('pc.ativo', 't');
-                        $this->db->where('pc.empresa_id', $empresa_id);
+                        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+                        if ($procedimento_multiempresa == 't') {
+                            $this->db->where('pc.empresa_id', $empresa_id);
+                        }
                         $this->db->where("pc.convenio_id", $convenio_id);
                         $this->db->where("pt.procedimento_tuss_id", $_POST['procedimento_id'][$key]);
                         $query = $this->db->get();

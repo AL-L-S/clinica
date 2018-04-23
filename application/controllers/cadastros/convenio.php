@@ -114,6 +114,7 @@ class Convenio extends BaseController {
     }
 
     function excluir($convenio_id) {
+//        $this->convenio->removeassociacoescomoutrosconvenios($convenio_id);
         $result = $this->convenio->excluir($convenio_id);
         if ($result == "-1") {
             $mensagem = 'Erro ao excluir a Convenio. Opera&ccedil;&atilde;o cancelada.';

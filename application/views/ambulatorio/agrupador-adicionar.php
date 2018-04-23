@@ -16,15 +16,20 @@
                         <label>Convenio</label>
                     </dt>
                     <dd>
-                        <select  name="convenio" id="convenio" class="size2" required="" >
-                            <option value="">Selecione</option>
-                            <? foreach ($convenio as $item) : ?>
-                                <option value="<?= $item->convenio_id; ?>" 
-                                    <? if (@$relatorio[count($relatorio)-1]->convenio_id == $item->convenio_id) echo "selected"; ?>>
-                                    <?= $item->nome; ?>
-                                </option>
-                            <? endforeach; ?>
-                        </select>
+                        <? if ( count($relatorio) == 0 ) { ?>
+                            <select name="convenio" id="convenio" class="size2" required="" >
+                                <option value="">Selecione</option>
+                                <? foreach ($convenio as $item) : ?>
+                                    <option value="<?= $item->convenio_id; ?>" 
+                                        <? if (@$relatorio[count($relatorio)-1]->convenio_id == $item->convenio_id) echo "selected"; ?>>
+                                        <?= $item->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+                            </select>
+                        <? } else { ?>
+                        <input type="hidden" name="convenio" id="convenio" class="texto05" value="<?= @$relatorio[0]->convenio_id; ?>" readonly=""/>
+                        <input type="text" name="convenio_n" id="convenio_n" class="texto05" value="<?= @$relatorio[0]->convenio; ?>" readonly=""/>
+                        <? } ?>
                     </dd>
                     <dt>
                         <label>Procedimento</label>
