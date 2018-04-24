@@ -5608,7 +5608,7 @@ class exametemp_model extends Model {
         $this->db->where("pa.ativo", 't');
         $query = $this->db->get();
         $agrupados = $query->result();
-//        
+        
         $this->db->select('procedimento_convenio_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->where("procedimento_tuss_id IN (SELECT procedimento_tuss_id 
@@ -5619,12 +5619,12 @@ class exametemp_model extends Model {
         $query = $this->db->get();
         $procedimentos = $query->result();
 
+//        echo "<pre>";var_dump($procedimentos); die;
         $string = '';
         for ($i = 0; $i < count($procedimentos); $i++) {
             $string .= $procedimentos[$i]->procedimento_convenio_id . (($i != count($procedimentos) - 1) ? ',' : '');
         }
 
-//        echo "<pre>";var_dump($string); die;
 
         if (count($agrupados) == count($procedimentos)) {
             $this->db->select('SUM(valortotal) AS valor_pacote');

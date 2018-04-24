@@ -118,14 +118,24 @@ class solicita_cirurgia_model extends BaseModel {
         return $this->db;
     }
 
-    function listarprocedimentosagrupador($agrupador) {
-        $this->db->select('pa.procedimento_tuss_id as procedimento_id, pc.valortotal');
-        $this->db->from('tb_procedimentos_agrupados pa');
-        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pa.procedimento_tuss_id');
-        $this->db->where('pa.ativo', 't');
-        $this->db->where('agrupador_id', $agrupador);
-        $return = $this->db->get();
-        return $return->result();
+    function listarprocedimentosagrupador($procedimento) {
+        $this->db->select("procedimento_tuss_id, convenio_id");
+        $this->db->from('tb_procedimento_convenio');
+        $this->db->where('procedimento_convenio_id', $procedimento);
+        $return = $this->db->get()->result();
+        
+        $this->db->select("pc.procedimento_convenio_id");
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->where('pc.ativo', 't');
+        $this->db->where("pc.convenio_id", $return[0]->convenio_id);
+        $this->db->where("pc.procedimento_tuss_id IN (
+                SELECT procedimento_tuss_id FROM ponto.tb_procedimentos_agrupados_ambulatorial 
+                WHERE procedimento_agrupador_id = ".$return[0]->procedimento_tuss_id."
+            )
+        ");
+        $procedimentos = $this->db->get()->result();
+        
+        return $procedimentos;
     }
 
     function verificasolicitacaoprocedimentorepetidos() {
@@ -236,15 +246,32 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
+    function verificaprocedimentoagrupador($procedimento_tuss_id) {
+        $this->db->select('grupo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
+        $this->db->where('pt.agrupador', 't');
+        $return = $this->db->get()->result();
+        
+        if($return[0]->grupo == 'CIRURGICO'){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     function verificamaterialagrupador($procedimento_tuss_id) {
 
 
-        $this->db->select('agrupador_grupo');
+        $this->db->select('grupo');
         $this->db->from('tb_procedimento_tuss pt');
         $this->db->where('pt.procedimento_tuss_id', $procedimento_tuss_id);
+        $this->db->where('pt.agrupador', 't');
         $return = $this->db->get()->result();
         
-        if($return[0]->agrupador_grupo == 'OPME'){
+        if($return[0]->grupo == 'OPME'){
             return true;
         }
         else{
@@ -259,8 +286,9 @@ class solicita_cirurgia_model extends BaseModel {
                            pt.procedimento_tuss_id,
                            pt.nome');
         $this->db->from('tb_procedimento_tuss pt');
-        $this->db->where("pt.agrupador_grupo = 'OPME'");
+        $this->db->where("pt.grupo = 'OPME'");
         $this->db->where('pt.ativo', 'true');
+        $this->db->where('pt.agrupador', 'true');
 //        $this->db->where('pc.convenio_id', $convenio_id);
         $return = $this->db->get();
         return $return->result();
@@ -280,14 +308,20 @@ class solicita_cirurgia_model extends BaseModel {
         return $return->result();
     }
 
-    function carregarsolicitacaoagrupador() {
+    function carregarsolicitacaoagrupador($convenio_id = null) {
 
-
-        $this->db->select('an.agrupador_id, an.nome');
-        $this->db->from('tb_agrupador_procedimento_nome an');
-//        $this->db->where('convenio_id', $convenio_id);
-        $this->db->where('an.ativo', 't');
-
+        $this->db->select('pc.procedimento_convenio_id,
+                           pt.codigo,
+                           pt.procedimento_tuss_id,
+                           pt.nome');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->where("pt.grupo = 'CIRURGICO'");
+        $this->db->where('pc.ativo', 'true');
+        $this->db->where('pc.agrupador', 'true');
+        if($convenio_id != null){
+            $this->db->where('pc.convenio_id', $convenio_id);
+        }
         $return = $this->db->get();
         return $return->result();
     }
@@ -797,7 +831,7 @@ class solicita_cirurgia_model extends BaseModel {
         $this->db->where("c.ativo", 'true');
         $this->db->where("ce.empresa_id", $empresa_id);
         $this->db->where("ce.ativo", 'true');
-        $this->db->where("ce.dinheiro", 'false');
+        $this->db->where("c.dinheiro", 'false');
         $this->db->orderby("c.nome");
         $query = $this->db->get();
         $return = $query->result();

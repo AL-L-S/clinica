@@ -322,6 +322,12 @@ class Convenio_model extends Model {
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->where('convenio_id', $convenio_id);
             $this->db->update('tb_procedimento_convenio');
+
+            $sql = "UPDATE ponto.tb_convenio_secudario_associacao SET ativo = 'f', data_atualizacao = '{$horario}', operador_atualizacao = {$operador_id}
+                    WHERE convenio_secundario_id = {$convenio_id} 
+                    AND ativo = 't'";
+            $this->db->query($sql);
+            
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;

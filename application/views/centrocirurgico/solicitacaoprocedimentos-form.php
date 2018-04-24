@@ -17,6 +17,7 @@
                 <label>Paciente</label>
                 <input type="text" class="texto06" readonly value="<?= $dados[0]->nome ?>"/> 
                 <!--<input type="text" class="texto06" readonly value="//<?= $dados[0]->orcamento ?>"/>--> 
+                <input type="hidden" name="solicitacao_id" class="texto06" readonly value="<?= $solicitacao_id ?>"/> 
             </div>
 
             <div>
@@ -29,55 +30,33 @@
             </div>
 
         </fieldset>
-        <fieldset>
-            <legend>Escolha</legend>
-            <input type="hidden" name="solicitacao_id" value="<?php echo $solicitacao_id; ?>"/>
-
-            <div id="opcoes">
-                <input type="radio" name="tipo" id="opcao_agrupador" value="agrupador" onclick="mostraagrupador()"> 
-                <label for="opcao_agrupador" id="label"> Agrupador</label><br>
-                <input type="radio" name="tipo" id="opcao_procedimento" value="procedimento" onclick="mostraprocedimentos()">
-                <label for="opcao_procedimento" id="label">Procedimento</label>
-            </div>
-        </fieldset>    
-
-        <fieldset id="fieldset_procedimento"> 
+        <fieldset> 
 
             <div>
-                <label > Quantidade</label>
+                <label>Quantidade</label>
                 <input type="number" name="quantidade" id="quantidade" value="1"/>  
-
             </div>
-            <div ><label for="procedimento">Procedimento</label>
+            <div>
+                <label for="procedimento">Procedimento</label>
                 <select style="" name="procedimentoID" id="procedimento" class="chosen-select" tabindex="1" >
                     <option value="">Selecione</option>
-                    <? foreach (@$procedimento as $item3) : ?>   
-                        <option value="<? echo $item3->procedimento_convenio_id; ?>"><? echo $item3->codigo . " - " . $item3->nome; ?></option>
-                    <? endforeach; ?> 
+                    <optgroup label="Agrupadores">
+                        <? foreach ($agrupador as $value) : ?>
+                            <option value='<?= $value->procedimento_convenio_id; ?>'><?php echo $value->nome; ?></option>
+                        <? endforeach; ?>
+                    </optgroup>
+                    <optgroup label="Procedimentos">
+                        <? foreach ($procedimento as $item3) : ?>   
+                            <option value="<? echo $item3->procedimento_convenio_id; ?>"><? echo $item3->codigo . " - " . $item3->nome; ?></option>
+                        <? endforeach; ?> 
+                    </optgroup>
                 </select>
-
             </div>
-            <div id="btnEnviar"><label>&nbsp;</label>
+            <div id="btnEnviar">
+                <label>&nbsp;</label>
                 <button type="submit" name="btnEnviar">Adicionar</button>
             </div>
         </fieldset>
-        <fieldset id="fieldset_agrupador"> 
-            <div id="div_agrupador"><label>Agrupador</label>
-                <select name="agrupador_id" id="agrupador_id" class="size4">
-                    <option value="">SELECIONE</option>
-                    <? foreach ($agrupador as $value) : ?>
-                        <option value='<?= $value->agrupador_id; ?>'><?php echo $value->nome; ?></option>
-                    <? endforeach; ?>
-                </select>
-
-            </div>
-
-            <div id="btnEnviar"><label>&nbsp;</label>
-                <button type="submit" name="btnEnviar">Adicionar</button>
-            </div>
-        </fieldset>
-
-
 
         <fieldset > 
             <div class="bt_link">                                  
@@ -157,21 +136,21 @@
 
 
 
-                    function mostraagrupador() {
-                        $('#fieldset_procedimento').hide();
-                        $('#fieldset_agrupador').show();
-
-                    }
-
-
-                    function mostraprocedimentos() {
-                        $('#fieldset_agrupador').hide();
-                        $('#fieldset_procedimento').show();
-
-                    }
-
-                    $('#fieldset_procedimento').hide();
-                    $('#fieldset_agrupador').hide();
+//                    function mostraagrupador() {
+//                        $('#fieldset_procedimento').hide();
+//                        $('#fieldset_agrupador').show();
+//
+//                    }
+//
+//
+//                    function mostraprocedimentos() {
+//                        $('#fieldset_agrupador').hide();
+//                        $('#fieldset_procedimento').show();
+//
+//                    }
+//
+//                    $('#fieldset_procedimento').hide();
+//                    $('#fieldset_agrupador').hide();
 
 
 
