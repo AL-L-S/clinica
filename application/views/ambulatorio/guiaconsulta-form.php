@@ -275,7 +275,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">Autorizacao</th>
-                                <th class="tabela_header"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
+                                <th id="valorth" class="tabela_header"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Promotor</th>
                                 <th class="tabela_header">Ordenador</th>
@@ -329,7 +329,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 </td>
 
                                 <td  ><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
                                 <td >
                                     <select  name="formapamento" id="formapamento" class="size1" >
                                         <option value="0">Selecione</option>
@@ -757,6 +757,54 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                 }
                                             });
                                         });
+                                        
+                                        
+                                                        $(function () {
+                                                            $('#convenio1').change(function () {
+                                                                if ($(this).val()) {
+                                                                    $('.carregando').show();
+                                                                    $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
+                                                                        options = '<option value=""></option>';
+                                                                        if (j[0].dinheiro == 't') {
+                                                                            $("#valorth").show();
+                                                                            $("#valortd").show();
+                                                                        } else {
+                                                                            $("#valorth").hide();
+                                                                            $("#valortd").hide();
+                                                                        }
+                                                                        if (j[0].carteira_obrigatoria == 't') {
+                                                                            $("#autorizacao").prop('required', true);
+                                                                        } else {
+                                                                            $("#autorizacao").prop('required', false);
+                                                                        }
+
+                                                                    });
+                                                                }
+                                                            });
+                                                        });
+
+
+                                                        if ($('#convenio1').val()) {
+                                                            $('.carregando').show();
+                                                            $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $('#convenio1').val()}, function (j) {
+                                                                options = '<option value=""></option>';
+                                                                if (j[0].dinheiro == 't') {
+                                                                    $("#valorth").show();
+                                                                    $("#valortd").show();
+                                                                } else {
+                                                                    $("#valorth").hide();
+                                                                    $("#valortd").hide();
+                                                                }
+                                                                if (j[0].carteira_obrigatoria == 't') {
+                                                                    $("#autorizacao").prop('required', true);
+                                                                } else {
+                                                                    $("#autorizacao").prop('required', false);
+                                                                }
+
+                                                            });
+                                                        }
+                                        
+                                        
 
                                         $(function () {
                                             $('#convenio1').change(function () {

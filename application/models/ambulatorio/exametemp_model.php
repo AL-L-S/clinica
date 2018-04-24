@@ -6543,6 +6543,7 @@ class exametemp_model extends Model {
 
     function listarautocompleteconveniocarteira($parametro) {
         $this->db->select(' c.convenio_id,
+                            c.dinheiro,
                             c.carteira_obrigatoria');
         $this->db->from('tb_convenio c');
         $this->db->where('c.convenio_id', $parametro);

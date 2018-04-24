@@ -3081,6 +3081,7 @@ class exame_model extends Model {
                             p.celular,
                             p.cpf,
                             pt.grupo,
+                            emp.nome as empresa,
                             c.nome as convenio,
                             p.telefone,
                             pc.valortotal,
@@ -3090,6 +3091,7 @@ class exame_model extends Model {
                             p.cns as email');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_empresa emp', 'emp.empresa_id = ae.empresa_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -3111,6 +3113,9 @@ class exame_model extends Model {
 
         if ($_POST['grupo'] != "") {
             $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        if ($_POST['empresa'] > 0) {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
         $this->db->orderby('ae.data');

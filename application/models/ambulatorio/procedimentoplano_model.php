@@ -3377,7 +3377,7 @@ class procedimentoplano_model extends Model {
                         } else {
                             $procedimento_percentual_medico_id = $pr[0]->procedimento_percentual_medico_id;
                         }
-
+//                        var_dump($procedimentos2); die;
                         foreach ($medicos as $item) {
                             $operador = $item->operador_id;
 
@@ -3488,7 +3488,7 @@ class procedimentoplano_model extends Model {
             if (trim($erro) != "") // erro de banco
                 return -1;
             else
-                $procedimento_id = $this->db->insert_id();
+//                $procedimento_id = $this->db->insert_id();
 
             
             return 0;
