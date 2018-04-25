@@ -104,6 +104,15 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Somar Crédito</label>
+                    </dt>
+                    <dd>
+                        <select name="somarcredito" id="somarcredito" class="size1" >
+                            <option value='NAO' >NÃO</option>
+                            <option value='SIM' >SIM</option>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Forma de Pagamento</label>
                     </dt>
                     <dd>

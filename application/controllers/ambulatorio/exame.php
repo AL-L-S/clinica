@@ -275,6 +275,7 @@ class Exame extends BaseController {
     }
 
     function relatoriopacientetelefone() {
+        $data['empresa'] = $this->guia->listarempresas();
         $data['convenio'] = $this->convenio->listardados();
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['procedimento'] = $this->procedimento->listarprocedimento2();

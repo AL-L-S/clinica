@@ -74,35 +74,36 @@ switch ($MES) {
         ?>
 
         <? if (count($relatorio) > 0): ?>
-            <table border="1">
+    <table  border='1' cellspacing=0 cellpadding=5>
                 <thead>
-                    <tr>
+<!--                    <tr>
                         <td colspan="50"><center>PRODUÇÃO AMBULATORIAL</center></td>
-                </tr>
+                </tr>-->
                 <tr>
 
 
                     <th class="tabela_header"><font size="-1">Convenio</th>
                     <th class="tabela_header"><font size="-1">Nome</th>
                     <th class="tabela_header"><font size="-1">Medico</th>
-                    <th class="tabela_header" width="100px;" title="Data do agendamento. Data onde o paciente foi agendado"><font size="-1">Data Agend.</th>
                     <th class="tabela_header" width="100px;" title="Data do atendimento. Data em que foi enviado da sala de espera"><font size="-1">Data Atend.</th>
-                    <th class="tabela_header" width="100px;" title="Data de recebimento. Data em que o relatorio se baseia"><font size="-1">Data Receb.</th>
+
                     <th class="tabela_header"><font size="-1">Qtde</th>
                     <th class="tabela_header" width="220px;"><font size="-1">Procedimento</th>
                     <? if ($clinica == 'SIM') { ?>
-                        <th class="tabela_header" ><font size="-1">Valor Bruto</th>
-                        <th class="tabela_header" ><font size="-1">ISS</th>
-                        <th class="tabela_header" ><font size="-1">Valor Liquido</th>
+                        <th class="tabela_header" ><font size="-1">Valor Proced.</th>
                     <? } ?>
                     <? if ($_POST['forma_pagamento'] == 'SIM') { ?>
                         <th class="tabela_header" ><font size="-1">F. Pagamento Cartão</th>
                         <th class="tabela_header" ><font size="-1">F. Pagamento Dinheiro</th>
                     <? } ?>
                     <? if ($clinica == 'SIM') { ?>    
-                        <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor</th>
+                        <th class="tabela_header" width="80px;"><font size="-1">% Medico</th>
                     <? } ?>
                     <th class="tabela_header" width="80px;"><font size="-1">Valor Medico</th>
+                    <? if ($clinica == 'SIM') { ?>    
+                        <th class="tabela_header" width="100px;"><font size="-1">% Clinica</th>
+                        <th class="tabela_header" width="130px;"><font size="-1">Valor Clinica</th>
+                    <? } ?>
                     <? if ($_POST['promotor'] == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Indice/Valor Promotor</th>
                         <th class="tabela_header" width="80px;"><font size="-1">Valor Promotor</th>   
@@ -118,7 +119,7 @@ switch ($MES) {
                         <th class="tabela_header" ><font size="-1">Taxa Administração</th>
                     <? } ?>
                     <? if ($clinica == 'SIM') { ?>    
-                        <th class="tabela_header"><font size="-1">Revisor</th>
+                        <!--<th class="tabela_header"><font size="-1">Revisor</th>-->
                     <? } ?>
                     <? if ($solicitante == 'SIM') { ?>
                         <th class="tabela_header" width="80px;"><font size="-1">Solicitante</th>
@@ -154,6 +155,7 @@ switch ($MES) {
                     $valor_total = 0;
                     $valor_total_calculo = 0;
                     $valor_credito = 0;
+                    $valor_clinica = 0;
                     foreach ($relatorio as $item) :
                         $i++;
                         $procedimentopercentual = $item->procedimento_convenio_id;
@@ -169,7 +171,9 @@ switch ($MES) {
 //                        $valor_total = $valor_total_formas + $item->desconto_ajuste1 + $item->desconto_ajuste2 + $item->desconto_ajuste3 + $item->desconto_ajuste4;
                         if ($item->forma_pagamento1 != 1000 && $item->forma_pagamento2 != 1000 && $item->forma_pagamento3 != 1000 && $item->forma_pagamento4 != 1000) {
                             $valor_total_calculo = $item->valor_total;
+                            $uso_credito = false;
                         } else {
+                            $uso_credito = true;
                             if ($item->forma_pagamento1 == 1000) {
                                 $valorSemCreditoTotal = $item->valor2 + $item->valor3 + $item->valor4;
                                 $valor_credito = $valor_credito + $item->valor1;
@@ -196,32 +200,16 @@ switch ($MES) {
                             <td><font size="-2"><?= $item->convenio; ?></td>
                             <td><font size="-2"><?= $item->paciente; ?></td>
                             <td><font size="-2"><?= $item->medico; ?></td>
-                            <td><font size="-2">
-                                <?
-                                $modificado = "";
-                                $onclick = "";
-                                if ($item->data_antiga != "") {
-                                    $modificado = " ** ";
-                                }
 
-                                echo $modificado,
-                                substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4),
-                                ($item->sala_pendente != "f") ? " (PENDENTE)" : "",
-                                $modificado;
-                                ?>
-                            </td>
-                            <td ><font size="-2"><?= date('d/m/Y', strtotime($item->data_laudo)); ?></td>
                             <td ><font size="-2"><?= date('d/m/Y', strtotime($item->data_producao)); ?></td>
                             <td ><font size="-2"><?= $item->quantidade; ?></td>
 
                             <td><font size="-2"><?= $item->procedimento; ?></td>
                             <? if ($clinica == 'SIM') { ?>
-                                <td style='text-align: right;'><font size="-2"><?= number_format($valor_total, 2, ",", "."); ?></td>
-                                <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->iss, 2, ",", "."); ?> (%)</td>
                                 <?
 //                                $valorLiqMed = ((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100)) - ((float) $valor_total * ((float) $item->taxa_administracao / 100))); 
                                 ?>
-                                <td style='text-align: right;'><font size="-2"><?= number_format(((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
+                                <td style='text-align: right;'><font size="-2">R$: <?= number_format(((float) $valor_total - ((float) $valor_total * ((float) $item->iss / 100))), 2, ",", "."); ?></td>
                                 <?
                             }
                             if ($_POST['forma_pagamento'] == 'SIM') {
@@ -318,6 +306,7 @@ switch ($MES) {
 //                                        echo '<pre>';
                                         $perc = $perc - $percpromotor;
                                     }
+                                    $valor_clinica_perc = 100 - $item->valor_medico . " %";
                                 } else {
                                     // SE FOR VALOR, É O VALOR * A QUANTIDADE
                                     $simbolopercebtual = "";
@@ -330,6 +319,7 @@ switch ($MES) {
 //                                        echo '<pre>';
                                         $perc = $perc - $percpromotor;
                                     }
+                                    $valor_clinica_perc = $valor_total - $perc;
                                 }
 //                                var_dump($item->valor_promotor);
 //                                var_dump($perc);
@@ -349,14 +339,17 @@ switch ($MES) {
                                     $simbolopercebtual = " %";
 
                                     $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
+                                    $valor_clinica_perc = 100 - $item->valor_medico . " %";
 
                                     $perc = $valor_total * ($valorpercentualmedico / 100);
                                 } else {
                                     $simbolopercebtual = "";
                                     $valorpercentualmedico = $item->valor_medico/* - ((float) $item->valor_medico * ((float) $item->taxa_administracao / 100)) */;
 
+
 //                                    $perc = $valorpercentualmedico;
                                     $perc = $valorpercentualmedico * $item->quantidade;
+                                    $valor_clinica_perc = $valor_total - $perc;
                                 }
 
                                 $totalperc = $totalperc + $perc;
@@ -381,6 +374,12 @@ switch ($MES) {
                                 $totalpercpromotor = $totalpercpromotor + $percpromotor;
                                 $totalgeralpromotor = $totalgeralpromotor + $valor_total;
                             }
+                            if ($_POST['somarcredito'] == 'SIM') {
+                                $valor_clinica = $valor_total - $perc;
+                            } else {
+                                $valor_clinica = $valor_total_calculo - $perc;
+                            }
+
 
                             @$tempoRecebimento[str_replace("-", "", $item->data_producao)][$item->medico_parecer1] = array(
                                 "medico_nome" => @$item->medico,
@@ -391,8 +390,17 @@ switch ($MES) {
                             <? if ($clinica == 'SIM') { ?>    
                                 <td style='text-align: right;'><font size="-2"><?= number_format($valorpercentualmedico, 2, ",", "") . $simbolopercebtual ?></td>
                             <? } ?>
-                            <td style='text-align: right;'><font size="-2"><?= number_format($perc, 2, ",", "."); ?></td>
+                            <td style='text-align: right;'><font size="-2">R$ <?= number_format($perc, 2, ",", "."); ?></td>
 
+
+
+
+
+                           
+                            <? if ($clinica == 'SIM') { ?>    
+                                <td style='text-align: right;'><font size="-2"><?= $valor_clinica_perc; ?></td>
+                                <td style='text-align: right;'><font size="-2">R$ <?= number_format($valor_clinica, 2, ",", "."); ?> <? if ($uso_credito) { ?> <span style="color:red">(Crédito)</span><? } ?></td>
+                            <? } ?>
                             <? if ($_POST['promotor'] == 'SIM') { ?>
                                 <td style='text-align: right;'><font size="-2"><?= number_format($valorpercentualpromotor, 2, ",", "") . $simbolopercebtual ?></td>
 
@@ -409,19 +417,15 @@ switch ($MES) {
 
                             <? }
                             ?>
-
-
+                            <? if ($solicitante == 'SIM') { ?>
+                                <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
+                            <? } ?>
                             <? if ($mostrar_taxa == 'SIM') { ?>
                                 <td style='text-align: right;' width="50"><font size="-2"><?= number_format($item->taxa_administracao, 2, ",", "."); ?> (%)</td>
                                 <? $taxaAdministracao += ((float) $perc * ((float) $item->taxa_administracao / 100)); ?>
                             <? } ?>
-                            <? if ($clinica == 'SIM') { ?>    
-                                <td><font size="-2"><?= $item->revisor; ?></td>
-                            <? } ?>
 
-                            <? if ($solicitante == 'SIM') { ?>
-                                <td style='text-align: right;'><font size="-2"><?= $item->medicosolicitante; ?></td>
-                            <? } ?>
+
                         </tr>
 
 
@@ -435,7 +439,11 @@ switch ($MES) {
 //                    var_dump(@$empresa_permissao[0]->valor_laboratorio);
                     if ($_POST['promotor'] == 'SIM') {
 //                        if (@$empresa_permissao[0]->promotor_medico == 't') {
-                        $resultadototalgeral = $totalgeral - $totalperc - $totalpercpromotor;
+                        if (@$empresa_permissao[0]->valor_laboratorio == 't') {
+                            $resultadototalgeral = $totalgeral - $totalperc - $totalpercpromotor;
+                        } else {
+                            $resultadototalgeral = $totalgeral - $totalperc - $totalperclaboratorio - $totalpercpromotor;
+                        }
 //                            $totalperc = $totalperc - $totalpercpromotor;
 //                        } else {
 //                        $resultadototalgeral = $totalgeral - $totalperc - $totalpercpromotor;
@@ -447,36 +455,43 @@ switch ($MES) {
                             $resultadototalgeral = $totalgeral - $totalperc - $totalperclaboratorio;
                         }
                     }
+//                    var_dump($totalperclaboratorio);die;
                     ?>
-                    <tr>
-                        <td ><font size="-1">TOTAL</td>
-                        <td  colspan="2" style='text-align: right;'><font size="-1">Nr. Procedimentos: <?= $qtdetotal; ?></td>
+                    <tr style="font-weight: bold;">
+                        <td colspan="2" style="text-align: center;"><font size="-1">TOTAL</td>
+                        <td  colspan="3" style='text-align: center;'><font size="-1">Nr. Procedimentos: <?= $qtdetotal; ?></td>
+                        <td colspan="2" style='text-align: right;'><font size="-1">TOTAL MEDICO:</td>
+                        <td colspan="1" style='text-align: right;'><font size="-1">R$ <?= number_format($totalperc, 2, ",", "."); ?></td>
                         <? if ($clinica == 'SIM') { ?>
                             <? if ($_POST['somarcredito'] == 'SIM') { ?>
-                                <td colspan="2" style='text-align: right;'><font size="-1">TOTAL CLINICA: <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
-                                <td colspan="2" style='text-align: right;'><font size="-1">CRÉDITOS: <?= number_format($valor_credito, 2, ",", "."); ?></td>
-                            <? }else{?>
-                                <td colspan="4" style='text-align: right;'><font size="-1">TOTAL CLINICA: <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
-                            <?} ?>
+
+                                <td colspan="1" style='text-align: right;'><font size="-1">TOTAL CLINICA:</td>
+                                <td colspan="1" style='text-align: right;'><font size="-1"> R$ <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
+                                <td colspan="1" style='text-align: right;'><font size="-1">CRÉDITOS: <?= number_format($valor_credito, 2, ",", "."); ?></td>
+
+                            <? } else { ?>
+                                <td colspan="2" style='text-align: right;'><font size="-1">TOTAL CLINICA:</td>
+                                <td colspan="1" style='text-align: right;'><font size="-1">R$ <?= number_format($resultadototalgeral, 2, ",", "."); ?></td>
+                            <? } ?>
                         <? } else { ?>
                             <td colspan="4" style='text-align: right;'><font size="-1">&nbsp;</td>
                         <? } ?>
                         <!--                            As váriaveis estão invertidas-->
                         <? if ($_POST['forma_pagamento'] == 'SIM') { ?>
-                            <td colspan="2" style='text-align: right;'><font size="-1">T. CARTÃO: <?= number_format($vlrTotalDinheiro, 2, ",", "."); ?></td>
-                            <td colspan="3" style='text-align: right;'><font size="-1">T. DINHEIRO: <?= number_format($vlrTotalCartao, 2, ",", "."); ?></td>
+                            <td colspan="1" style='text-align: right;'><font size="-1">T. CARTÃO:  R$ <?= number_format($vlrTotalDinheiro, 2, ",", "."); ?></td>
+                            <td colspan="1" style='text-align: right;'><font size="-1">T. DINHEIRO: R$ <?= number_format($vlrTotalCartao, 2, ",", "."); ?></td>
                         <? } ?>
                         <? if ($_POST['promotor'] == 'SIM') { ?>
-                            <td colspan="2" style='text-align: right;'><font size="-1">TOTAL PROMOTOR: <?= number_format($totalpercpromotor, 2, ",", "."); ?></td>
+                            <td colspan="2" style='text-align: right;'><font size="-1">TOTAL PROMOTOR: R$ <?= number_format($totalpercpromotor, 2, ",", "."); ?></td>
                             <td colspan="2" style='text-align: right;'
                                 title="Diferença entre o valor do médico e o valor do promotor."><font size="-1">DIFERENÇA: <?= number_format($totalperc - $totalpercpromotor, 2, ",", "."); ?></td>
                             <? }
                             ?>
                             <? if ($_POST['laboratorio'] == 'SIM') { ?>
-                            <td colspan="2" style='text-align: right;'><font size="-1">TOTAL LABORATÓRIO: <?= number_format($totalperclaboratorio, 2, ",", "."); ?></td>
+                            <td colspan="2" style='text-align: right;'><font size="-1">TOTAL LABORATÓRIO: R$ <?= number_format($totalperclaboratorio, 2, ",", "."); ?></td>
                         <? }
                         ?>
-                        <td colspan="3" style='text-align: right;'><font size="-1">TOTAL MEDICO: <?= number_format($totalperc, 2, ",", "."); ?></td>
+
                     </tr>
                 </tbody>
             </table>
@@ -782,10 +797,10 @@ switch ($MES) {
                             $resultado = $resultado - $pis - $csll - $cofins;
                             ?>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <!--                            <tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>TAXA ADMINISTRAÇÃO</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </tr>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <!--                            <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>TAXA ADMINISTRAÇÃO</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td style='text-align: right;'><?= number_format($taxaAdministracao, 2, ",", "."); ?></td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </tr>-->
                             <tr>
                                 <td>PIS</td>
                                 <td style='text-align: right;'><?= number_format($pis, 2, ",", "."); ?></td>
@@ -974,65 +989,65 @@ switch ($MES) {
 
                                 $dt_recebimento = date("d/m/Y", strtotime($item['data_recebimento']));
                                 ?>
-                                                                                                                                                                                                                                                                                                                                                                                                            <tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                <td><?= $item['medico_nome'] ?></td>
-                                                                                                                                                                                                                                                                                                                                                                                                                <td><?= number_format($vlr, 2, ",", "."); ?></td>
-                                                                                                                                                                                                                                                                                                                                                                                                                <td><?= $dt_recebimento ?></td>
-                                                                                                                                                                                                                                                                                                                                                                                                            </tr> 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td><?= $item['medico_nome'] ?></td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td><?= number_format($vlr, 2, ",", "."); ?></td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td><?= $dt_recebimento ?></td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </tr> 
                                 <?
                             }
                         }
                         ?>
-                                                                                                                                                                                                        </table>
-                                                                                                                                                                                                        <hr>
+                                                                                                                                                                                                                                        </table>
+                                                                                                                                                                                                                                        <hr>
             <? } ?>
-                                                                                                        <style>
+                                                                                                                        <style>
                 /*.pagebreak { page-break-before: always; }*/
-                                                                                                        </style>
+                                                                                                                        </style>
             <? if ($medico != 0 && $recibo == 'SIM') { ?>
-                                                                                                                                                                                                        <div>
+                                                                                                                                                                                                                                        <div>
 
-                                                                                                                                                                                                            <!--                    <div>
-                                                                                                                                                                                                                                    <p><center><img align = 'center'  width='400px' height='200px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>
-                                                                                                                                                                                                                                </div>-->
-                                                                                                                                                                                                            <div>
-                                                                                                                                                                                                                <p style="text-align: center;font-size: 14pt"> <strong>RECIBO</strong></p>
+                                                                                                                                                                                                                                            <!--                    <div>
+                                                                                                                                                                                                                                                                    <p><center><img align = 'center'  width='400px' height='200px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>
+                                                                                                                                                                                                                                                                </div>-->
+                                                                                                                                                                                                                                            <div>
+                                                                                                                                                                                                                                                <p style="text-align: center;font-size: 14pt"> <strong>RECIBO</strong></p>
                         <?
                         $valor = number_format($totalperc, 2, ",", ".");
                         $valoreditado = str_replace(",", "", str_replace(".", "", $valor));
                         $extenso = GExtenso::moeda($valoreditado);
                         ?>
-                                                                                                                                                                                                                <p style="text-align: center;">EU   <u><b><?= $medico[0]->operador ?></b></u>, RECEBI DA CLÍNICA,</p>
-                                                                                                                                                                                                                <p style="text-align: center;">  A QUANTIA DE R$ <?= number_format($totalperc, 2, ",", "."); ?> (<?= strtoupper($extenso) ?>)
+                                                                                                                                                                                                                                                <p style="text-align: center;">EU   <u><b><?= $medico[0]->operador ?></b></u>, RECEBI DA CLÍNICA,</p>
+                                                                                                                                                                                                                                                <p style="text-align: center;">  A QUANTIA DE R$ <?= number_format($totalperc, 2, ",", "."); ?> (<?= strtoupper($extenso) ?>)
 
-                                                                                                                                                                                                                <p style="text-align: center;">REFERENTE AOS ATENDIMENTOS 
-                                                                                                                                                                                                                    CLÍNICOS DO PERÍODO DE <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> a <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?> </p>
-                                                                                                                                                                                                                <!--<p><?= $empresamunicipio[0]->municipio ?> </p>-->
-                                                                                                                                                                                                                <p style="text-align: center"><?= $empresamunicipio[0]->municipio ?>,
+                                                                                                                                                                                                                                                <p style="text-align: center;">REFERENTE AOS ATENDIMENTOS 
+                                                                                                                                                                                                                                                    CLÍNICOS DO PERÍODO DE <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> a <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?> </p>
+                                                                                                                                                                                                                                                <!--<p><?= $empresamunicipio[0]->municipio ?> </p>-->
+                                                                                                                                                                                                                                                <p style="text-align: center"><?= $empresamunicipio[0]->municipio ?>,
                             <?= date("d") . " de " . $MES . " de " . date("Y"); ?> -
 
                             <?= date("H:i") ?>
-                                                                                                                                                                                                                </p>
-                                                                                                                                                                                                            <!--<p><center><font size = 4><b>DECLARA&Ccedil;&Atilde;O</b></font></center></p>-->
-                                                                                                                                                                                                                <br>
+                                                                                                                                                                                                                                                </p>
+                                                                                                                                                                                                                                            <!--<p><center><font size = 4><b>DECLARA&Ccedil;&Atilde;O</b></font></center></p>-->
+                                                                                                                                                                                                                                                <br>
 
 
-                                                                                                                                                                                                                <h4><center>______________________________________________________________</center></h4>
-                                                                                                                                                                                                                <h4><center>Assinatura do Profissional</center></h4>
-                                                                                                                                                                                                                <h4><center>Carimbo</center></h4>
-                                                                                                                                                                                                                <br>
-                                                                                                                                                                                                                <br>
-                                                                                                                                                                                                                <p style="text-align: center"><b>AVISO:</b> CARO PROFISSIONAL, INFORMAMOS QUE QUSQUER RECLAMAÇÃO DAREMOS UM 
-                                                                                                                                                                                                                    PRAZO DE 05(CINCO DIAS) A CONTAR DA DATA DE RECEBIMENTO PARA REINVIDICAR SEUS 
-                                                                                                                                                                                                                    DIREITOS. A CLINICA NÃO RECEBERÁ CONTESTAÇÃO SOB HIPÓTESE ALGUMA FORA DO PRAZO DETERMINADO ACIMA
-                                                                                                                                                                                                                </p>
-                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                <h4><center>______________________________________________________________</center></h4>
+                                                                                                                                                                                                                                                <h4><center>Assinatura do Profissional</center></h4>
+                                                                                                                                                                                                                                                <h4><center>Carimbo</center></h4>
+                                                                                                                                                                                                                                                <br>
+                                                                                                                                                                                                                                                <br>
+                                                                                                                                                                                                                                                <p style="text-align: center"><b>AVISO:</b> CARO PROFISSIONAL, INFORMAMOS QUE QUSQUER RECLAMAÇÃO DAREMOS UM 
+                                                                                                                                                                                                                                                    PRAZO DE 05(CINCO DIAS) A CONTAR DA DATA DE RECEBIMENTO PARA REINVIDICAR SEUS 
+                                                                                                                                                                                                                                                    DIREITOS. A CLINICA NÃO RECEBERÁ CONTESTAÇÃO SOB HIPÓTESE ALGUMA FORA DO PRAZO DETERMINADO ACIMA
+                                                                                                                                                                                                                                                </p>
+                                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                        </div>
             <? } ?>
             <?
         } else {
             ?>
-                                                                                                        <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
+                                                                                                                        <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
             <?
         }
         ?>

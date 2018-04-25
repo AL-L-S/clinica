@@ -484,6 +484,56 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
     <? } ?>
                                                                     }
                                                                 });
+                                                                
+                                                                
+                                                     //         $(function () {
+                                                                 $('#convenio<?= $b; ?>').change(function () {
+                                                    //                 alert('asdasd');
+                                                                     if ($(this).val()) {
+                                                    //                     $('.carregando').show();
+                                                                         $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
+                                                                             options = '<option value=""></option>';
+                                                                             <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
+                                                                              if (j[0].dinheiro == 't') {
+                                                                                 $("#valor<?= $b; ?>").show();
+                                                    //                           $("#valortd<?= $b; ?>").show();
+                                                                              } else {
+                                                                                 $("#valor<?= $b; ?>").hide();
+                                                    //                       $("#valortd<?= $b; ?>").hide();
+                                                                              }
+                                                                              <?}?>
+                                                                             if (j[0].carteira_obrigatoria == 't') {
+                                                                                 $("#autorizacao<?= $b; ?>").prop('required', true);
+                                                                             } else {
+                                                                                 $("#autorizacao<?= $b; ?>").prop('required', false);
+                                                                             }
+
+                                                                         });
+                                                                     }
+                                                                 });
+                                                    //         });
+
+                                                             if ($('#convenio<?= $b; ?>').val()) {
+                                                    //             $('.carregando').show();
+                                                                 $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $('#convenio<?= $b; ?>').val()}, function (j) {
+                                                                     options = '<option value=""></option>';
+                                                                     <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
+                                                                             if (j[0].dinheiro == 't') {
+                                                                                 $("#valor<?= $b; ?>").show();
+                                                    //                             $("#valortd<?= $b; ?>").show();
+                                                                             } else {
+                                                                                 $("#valor<?= $b; ?>").hide();
+                                                    //                             $("#valortd<?= $b; ?>").hide();
+                                                                             }
+                                                                     <?}?>
+                                                                     if (j[0].carteira_obrigatoria == 't') {
+                                                                         $("#autorizacao<?= $b; ?>").prop('required', true);
+                                                                     } else {
+                                                                         $("#autorizacao<?= $b; ?>").prop('required', false);
+                                                                     }
+
+                                                                 });
+                                                             }    
 
 
                                                                 $(function () {

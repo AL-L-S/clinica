@@ -127,6 +127,8 @@ class guia_model extends Model {
                             ep.campos_obrigatorios_pac_municipio,
                             ep.repetir_horarios_agenda,
                             ep.senha_finalizar_laudo,
+                            ep.valor_convenio_nao,
+                            ep.producao_alternativo,
                             ep.apenas_procedimentos_multiplos,
                             ');
         $this->db->from('tb_empresa e');
@@ -10933,7 +10935,8 @@ class guia_model extends Model {
                             // por parcela
                             if ($parcelas != '') {
                                 $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
-
+//                                echo '1';
+//                                var_dump($jurosporparcelas); die;
                                 if ($jurosporparcelas[0]->taxa_juros > 0) {
                                     $taxa_juros = $jurosporparcelas[0]->taxa_juros;
                                 } else {
@@ -11018,7 +11021,8 @@ class guia_model extends Model {
 
                                 if ($parcelas != '') {
                                     $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
-//                                    var_dump($jurosporparcelas); die;
+//                                    echo '2';
+                                   
                                     if (@$jurosporparcelas[0]->taxa_juros > 0) {
                                         $taxa_juros = $jurosporparcelas[0]->taxa_juros;
                                     } else {
@@ -11030,6 +11034,7 @@ class guia_model extends Model {
                                 } else {
                                     $valor_parcelado = $valor;
                                 }
+//                                 var_dump($valor); die;
 
                                 $tempo_receber = $value->tempo_receber;
 //                                if ($parcelas > 1) {
@@ -11473,6 +11478,7 @@ ORDER BY ae.paciente_credito_id)";
         $this->db->where('forma_pagamento_id', $formapagamento_id);
         $this->db->where('parcelas_inicio <=', $parcelas);
         $this->db->where('parcelas_fim >=', $parcelas);
+        $this->db->where('ativo', 't');
         $query = $this->db->get();
 
         return $query->result();

@@ -465,6 +465,7 @@ function debug($object) {
                                                 <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/pesquisarmedicosolicitante">Editar Medico Solicitante</a></span></ul>
                                             <? } ?>
                                         <? } ?>
+                                          <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/pesquisaragendatelefonica">Agenda Telefônica</a></span></ul>
                                     <? } elseif ($perfil_id == 9) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperacaixa">Fila Caixa</a></span></ul>
                                     <? } ?>

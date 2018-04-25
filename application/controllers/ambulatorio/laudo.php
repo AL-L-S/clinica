@@ -721,6 +721,7 @@ class Laudo extends BaseController {
 //        if ($imagem_id == 7){
 //            $this->laudo->deletarregistroimagem($exame_id, $imagem_id);
 //        }
+//        var_dump($sequencia); die;
         $contador = $this->laudo->contadorimagem($exame_id, $sequencia);
 //        var_dump($imagem_id);
 //        echo '-------------';
@@ -743,6 +744,7 @@ class Laudo extends BaseController {
 
             if (count($contador) == 0) {
                 $this->laudo->deletarregistroimagem($exame_id, $imagem_id);
+                $sequencia = $sequencia .".jpg";
                 $this->laudo->gravarnome($exame_id, $sequencia, $novonome, $sequencia);
                 $nometemp = "./upload/$exame_id/9999999";
                 $newname = "./upload/$exame_id/$sequencia";
@@ -751,6 +753,7 @@ class Laudo extends BaseController {
                 rename($nometemp, $oldname);
                 redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
             } elseif ($sequencia == trim($_POST['imagem_id'])) {
+                $sequencia = $sequencia .".jpg";
                 $this->laudo->alterarnome($exame_id, $imagem_id, $novonome, $sequencia);
                 $nometemp = "./upload/$exame_id/9999999";
                 $newname = "./upload/$exame_id/$sequencia";

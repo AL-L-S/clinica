@@ -261,7 +261,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <th class="tabela_header">Medico*</th>
                                 <th colspan="2" class="tabela_header">Solicitante</th>
                                 <th class="tabela_header">Autorizacão</th>
-                                <th class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>Valor</th>
+                                <th id="valorth" class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>Valor</th>
                                 <th class="tabela_header">Sessões</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Promotor</th>
@@ -330,7 +330,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td  width="20px;" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                <td id="valortd"  width="20px;" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
                                     <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
                                     <input type="hidden" name="valorunitario" id="valorunitario" class="texto01" readonly=""/>
                                 </td>
@@ -849,6 +849,52 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         $('.carregando').hide();
                                     });
                                 }
+                                
+                                
+                                $(function () {
+                                                            $('#convenio1').change(function () {
+                                                                if ($(this).val()) {
+                                                                    $('.carregando').show();
+                                                                    $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
+                                                                        options = '<option value=""></option>';
+                                                                        if (j[0].dinheiro == 't') {
+                                                                            $("#valorth").show();
+                                                                            $("#valortd").show();
+                                                                        } else {
+                                                                            $("#valorth").hide();
+                                                                            $("#valortd").hide();
+                                                                        }
+                                                                        if (j[0].carteira_obrigatoria == 't') {
+                                                                            $("#autorizacao").prop('required', true);
+                                                                        } else {
+                                                                            $("#autorizacao").prop('required', false);
+                                                                        }
+
+                                                                    });
+                                                                }
+                                                            });
+                                                        });
+
+
+                                                        if ($('#convenio1').val()) {
+                                                            $('.carregando').show();
+                                                            $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $('#convenio1').val()}, function (j) {
+                                                                options = '<option value=""></option>';
+                                                                if (j[0].dinheiro == 't') {
+                                                                    $("#valorth").show();
+                                                                    $("#valortd").show();
+                                                                } else {
+                                                                    $("#valorth").hide();
+                                                                    $("#valortd").hide();
+                                                                }
+                                                                if (j[0].carteira_obrigatoria == 't') {
+                                                                    $("#autorizacao").prop('required', true);
+                                                                } else {
+                                                                    $("#autorizacao").prop('required', false);
+                                                                }
+
+                                                            });
+                                                        }
                                 
                                 $(function () {
                                     $('#convenio1').change(function () {

@@ -162,7 +162,7 @@ if (count($pacs) > 0) {
                         </td>
                         <td width="60px;"><center>
                             <div class="bt_link_new">
-                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/anexarimagemmedico/" . $exame_id . "/" . @$obj->_sala_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=yes,width=1200,height=400');">
+                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/anexarimagemmedico/" . $exame_id . "/" . @$obj->_sala_id; ?> ', '_blank', 'width=1200,height=700');">
                                     <font size="-1"> adicionar/excluir</font>
                                 </a>
                             </div></center>

@@ -27,6 +27,16 @@
                         </select>
                     </dd>
                     <dt>
+                    <label>Descontar Valor Lab.</label>
+                    </dt>
+                    <dd>
+                        <select name="descontarlab" id="descontarlab" class="size2">
+                            
+                            <option value="NAO">NÃO</option>
+                            <option value="SIM">SIM</option>
+                        </select>
+                    </dd>
+                    <dt>
                     <label>Empresa</label>
                     </dt>
                     <dd>

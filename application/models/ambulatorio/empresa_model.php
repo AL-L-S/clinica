@@ -1071,6 +1071,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('conjuge', 'f');
                     }
+                    if (isset($_POST['producao_alternativo'])) {
+                        $this->db->set('producao_alternativo', 't');
+                    } else {
+                        $this->db->set('producao_alternativo', 'f');
+                    }
                     if (isset($_POST['valor_laboratorio'])) {
                         $this->db->set('valor_laboratorio', 't');
                     } else {
@@ -1357,6 +1362,11 @@ class empresa_model extends Model {
                         $this->db->set('desativar_taxa_administracao', 't');
                     } else {
                         $this->db->set('desativar_taxa_administracao', 'f');
+                    }
+                    if (isset($_POST['producao_alternativo'])) {
+                        $this->db->set('producao_alternativo', 't');
+                    } else {
+                        $this->db->set('producao_alternativo', 'f');
                     }
                     if (isset($_POST['tecnica_enviar'])) {
                         $this->db->set('tecnica_enviar', 't');
@@ -1738,6 +1748,7 @@ class empresa_model extends Model {
                                ep.campos_obrigatorios_pac_municipio,
                                ep.repetir_horarios_agenda,
                                ep.desativar_taxa_administracao,
+                               ep.producao_alternativo,
                                ep.subgrupo_procedimento,
                                ep.senha_finalizar_laudo,
                                ep.retirar_flag_solicitante,
@@ -1766,6 +1777,7 @@ class empresa_model extends Model {
             $this->_horario_sab = $return[0]->horario_sab;
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;
+            $this->_producao_alternativo = $return[0]->producao_alternativo;
             $this->_bairro = $return[0]->bairro;
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_caixa = $return[0]->caixa;

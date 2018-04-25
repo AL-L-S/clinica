@@ -1,7 +1,11 @@
 <meta charset="UTF-8">
 <div class="content"> <!-- Inicio da DIV content -->
-
-    <h4>TODAS AS CLINICAS</h4>
+    <?if($_POST['empresa'] > 0){?>
+       <h4><?=@$relatorio[0]->empresa?></h4>  
+    <?}else{?>
+       <h4>TODAS AS CLINICAS</h4> 
+    <?}?>
+    
 
     <h4>Relatorio Paciente Telefone</h4>
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
@@ -20,6 +24,7 @@
             <th class="tabela_header">Email</th>
             <th class="tabela_header">Data</th>
             <th class="tabela_header">Previsao Retorno</th>
+            <th class="tabela_header">Empresa</th>
 
         </tr>
     </thead>
@@ -77,6 +82,7 @@
                             echo "--";
                         }?>
                     </td>
+                    <td><?=$item->empresa; ?></td>
                 </tr>
 
             </tbody>

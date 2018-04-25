@@ -3703,7 +3703,12 @@ class Guia extends BaseController {
         $data['relatoriocirurgico'] = $this->guia->relatoriocirurgicomedicoconveniofinanceiro();
         $data['relatoriocirurgicogeral'] = $this->guia->relatoriocirurgicomedicoconveniofinanceirotodos();
 //        echo "<pre>"; var_dump($data['relatorio']);die;
-        $this->load->View('ambulatorio/impressaorelatoriomedicoconveniofinanceiro', $data);
+        if($data['empresa_permissao'][0]->producao_alternativo == 't'){
+           $this->load->View('ambulatorio/impressaorelatoriomedicoconveniofinanceiroalternativo', $data); 
+        }else{
+           $this->load->View('ambulatorio/impressaorelatoriomedicoconveniofinanceiro', $data); 
+        }
+        
     }
 
     function gerarelatoriolaboratorioconveniofinanceiro() {
