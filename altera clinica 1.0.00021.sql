@@ -154,3 +154,25 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN cadastrar_painel_sala boolean
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN apenas_procedimentos_multiplos boolean DEFAULT false;
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN desativar_taxa_administracao boolean DEFAULT false;
+
+--24/04/2018
+
+CREATE TABLE ponto.tb_agenda_telefonica
+(
+  agenda_telefonica_id serial NOT NULL,
+  nome text,
+  telefone1 text,
+  telefone2 text,
+  telefone3 text,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_agenda_telefonica_pkey PRIMARY KEY (agenda_telefonica_id)
+);
+
+
+-- 25/04/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN producao_alternativo boolean DEFAULT false;

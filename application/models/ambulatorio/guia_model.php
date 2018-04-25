@@ -128,6 +128,7 @@ class guia_model extends Model {
                             ep.repetir_horarios_agenda,
                             ep.senha_finalizar_laudo,
                             ep.valor_convenio_nao,
+                            ep.producao_alternativo,
                             ep.apenas_procedimentos_multiplos,
                             ');
         $this->db->from('tb_empresa e');

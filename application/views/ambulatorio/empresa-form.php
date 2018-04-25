@@ -650,6 +650,12 @@
                         <dd>
                             <input type="checkbox" id="desativar_taxa_administracao" name="desativar_taxa_administracao" <? if (@$obj->_desativar_taxa_administracao == 't') echo "checked"; ?>/> 
                         </dd>
+                        <dt>
+                            <label title="Ativando essa opção, o relatório de produção terá o visual alternativo (Ronaldo).">Relatório Produção M. Alternativo</label>
+                        </dt>
+                        <dd>
+                            <input type="checkbox" id="producao_alternativo" name="producao_alternativo" <? if (@$obj->_producao_alternativo == 't') echo "checked"; ?>/> 
+                        </dd>
                     <? } ?>
                 </dl>    
                 <hr/>

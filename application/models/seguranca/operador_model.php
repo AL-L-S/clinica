@@ -113,6 +113,19 @@ class Operador_model extends BaseModel {
         return $this->db;
     }
 
+    function listaragendatelefonica($args = array()) {
+        $this->db->select('agenda_telefonica_id, nome, telefone1, telefone2, telefone3');
+        $this->db->from('tb_agenda_telefonica');
+        $this->db->where('ativo', 'true');
+
+        if ($args) {
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where("(tb_agenda_telefonica.nome ilike '%" . $args['nome'] . "%')");
+            }
+        }
+        return $this->db;
+    }
+
     function gravarcopiaroperadorconvenioempresa() {
         try {
             $operador_id = (int) $_POST['txtoperador_id'];
@@ -125,7 +138,7 @@ class Operador_model extends BaseModel {
             $this->db->where('operador_id', $operador_id);
             $this->db->where('empresa_id', $empresa_id_origem);
             $return = $this->db->get()->result();
-            
+
             foreach ($return as $conv) {
 
                 $convenio_id = (int) $conv->convenio_id;
@@ -264,32 +277,31 @@ class Operador_model extends BaseModel {
             return -1;
         }
     }
-    
-    
+
     function vinculaoperadorconveniotodos($operador_id) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_atual_id = $this->session->userdata('operador_id');
-            
+
             // SETANDO REGISTROS ANTIGOS PARA FALSE PARA NÃO DUPLICAR
             $this->db->set('ativo', 'f');
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_atual_id);
             $this->db->where('operador_id', $operador_id);
-            $this->db->update('tb_ambulatorio_empresa_operador');   
-            
+            $this->db->update('tb_ambulatorio_empresa_operador');
+
             $this->db->set('ativo', 'f');
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_atual_id);
             $this->db->where('operador_id', $operador_id);
             $this->db->update('tb_ambulatorio_convenio_operador');
-            
+
             $this->db->set('ativo', 'f');
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_atual_id);
             $this->db->where('operador', $operador_id);
             $this->db->insert('tb_convenio_operador_procedimento');
-            
+
 
             $this->db->select('empresa_id');
             $this->db->from('tb_empresa');
@@ -323,11 +335,10 @@ class Operador_model extends BaseModel {
                     $this->db->set('operador_cadastro', $operador_atual_id);
                     $this->db->insert('tb_ambulatorio_convenio_operador');
                     $ambulatorio_convenio_id = $this->db->insert_id();
-
                 }
                 // SELECT PROCEDIMENTOS
                 $procedimento_multiempresa = $this->listarempresapermissoes($emp->empresa_id);
-                
+
                 $this->db->select('pc.procedimento_convenio_id,pc.convenio_id');
                 $this->db->from('tb_procedimento_convenio pc');
                 $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
@@ -336,7 +347,6 @@ class Operador_model extends BaseModel {
                 $this->db->where("ag.tipo !=", 'CIRURGICO');
                 $this->db->where("pc.ativo", 't');
 //                    $this->db->where('pc.convenio_id', $conv->convenio_id);
-                
 //                    $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
                 if ($procedimento_multiempresa == 't') {
                     $this->db->where('pc.empresa_id', $emp->empresa_id);
@@ -360,7 +370,7 @@ class Operador_model extends BaseModel {
             return -1;
         }
     }
-    
+
     function listarempresapermissoes($empresa_id) {
 //        if ($empresa_id == null) {
 //            $empresa_id = $this->session->userdata('empresa_id');
@@ -1059,10 +1069,10 @@ class Operador_model extends BaseModel {
         $this->db->where('o.ativo', 'true');
         $this->db->where('o.email !=', '');
         $this->db->orderby('o.nome');
-        if($_POST['perfil'] > 0){
-           $this->db->where('o.perfil_id', $_POST['perfil']); 
+        if ($_POST['perfil'] > 0) {
+            $this->db->where('o.perfil_id', $_POST['perfil']);
         }
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -1143,6 +1153,22 @@ class Operador_model extends BaseModel {
         return $return->result();
     }
 
+    function listaragendatelefonicaeditar($agenda_telefonica_id) {
+        $this->db->select('agenda_telefonica_id,
+                               nome,
+                               telefone1,
+                               telefone2,
+                               telefone3
+                               ');
+        $this->db->from('tb_agenda_telefonica');
+        $this->db->where('ativo', 't');
+        $this->db->where('agenda_telefonica_id', $agenda_telefonica_id);
+        $this->db->orderby('nome');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarcpfcontador() {
         $this->db->select('cpf
                                ');
@@ -1168,14 +1194,14 @@ class Operador_model extends BaseModel {
 
     function gravar() {
         try {
-            
+
             $result = array();
-            if ($_POST['txtlaboratorio_id'] != ''){
+            if ($_POST['txtlaboratorio_id'] != '') {
                 $this->db->select('credor_devedor_id')->from('tb_operador')->where('operador_id', $_POST['operador_id']);
                 $result = $this->db->get()->result();
             }
-                               
-           
+
+
             if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
                 $this->db->set('razao_social', $_POST['nome']);
                 $this->db->set('cep', $_POST['cep']);
@@ -1268,7 +1294,7 @@ class Operador_model extends BaseModel {
             if (isset($financeiro_credor_devedor_id) && @$financeiro_credor_devedor_id != '') {
                 $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
             }
-            
+
             $this->db->set('cabecalho', $_POST['cabecalho']);
             $this->db->set('rodape', $_POST['rodape']);
             $this->db->set('timbrado', $_POST['timbrado']);
@@ -1645,6 +1671,37 @@ class Operador_model extends BaseModel {
             }
         } catch (Exception $exc) {
             return false;
+        }
+    }
+
+    function excluiragendatelefonica($agenda_telefonica_id) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_exclusao_id = $this->session->userdata('operador_id');
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_exclusao_id);
+        $this->db->where('agenda_telefonica_id', $agenda_telefonica_id);
+        $this->db->update('tb_agenda_telefonica');
+    }
+
+    function gravaragendatelefonica() {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('nome', $_POST['nome']);
+        $this->db->set('telefone1', $_POST['telefone1']);
+        $this->db->set('telefone2', $_POST['telefone2']);
+        $this->db->set('telefone3', $_POST['telefone3']);
+        if ($_POST['agenda_telefonica_id'] != "") {
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('agenda_telefonica_id', $_POST['agenda_telefonica_id']);
+            $this->db->update('tb_agenda_telefonica');
+        } else {
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_agenda_telefonica');
         }
     }
 

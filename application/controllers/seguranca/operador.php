@@ -81,6 +81,16 @@ class Operador extends BaseController {
         $this->loadView('seguranca/operador-formrecepcao');
     }
 
+    function novoagendatelefonica() {
+        $this->loadView('seguranca/agendatelefonica-form');
+    }
+
+    function excluiragendatelefonica($agenda_telefonica_id) {
+
+        $teste = $this->operador_m->excluiragendatelefonica($agenda_telefonica_id);
+        redirect(base_url() . "seguranca/operador/pesquisaragendatelefonica");
+    }
+
     function excluirmedicosolicitante($operador_id) {
 
         redirect(base_url() . "seguranca/operador/associarempresas/$operador_id");
@@ -90,6 +100,12 @@ class Operador extends BaseController {
         $obj_operador_id = new operador_model($operador_id);
         $data['obj'] = $obj_operador_id;
         $this->loadView('seguranca/operador-formrecepcao', $data);
+    }
+
+    function alteraragendatelefonica($agenda_telefonica_id) {
+        $data['agenda'] = $this->operador_m->listaragendatelefonicaeditar($agenda_telefonica_id);
+
+        $this->loadView('seguranca/agendatelefonica-form', $data);
     }
 
     function alterar($operador_id) {
@@ -148,6 +164,10 @@ class Operador extends BaseController {
 
     function pesquisarmedicosolicitante($filtro = -1, $inicio = 0) {
         $this->loadView('seguranca/editarmedicosolicitante-lista');
+    }
+
+    function pesquisaragendatelefonica($filtro = -1, $inicio = 0) {
+        $this->loadView('seguranca/editaragendatelefonica-lista');
     }
 
     function pesquisarrecepcao($filtro = -1, $inicio = 0) {
@@ -573,6 +593,15 @@ class Operador extends BaseController {
 //            redirect(base_url()."seguranca/operador/index/$data","refresh");
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarmedicosolicitante", $data);
+    }
+
+    function gravaragendatelefonica() {
+        $this->operador_m->gravaragendatelefonica();
+        $data['mensagem'] = 'Operador cadastrado com sucesso.';
+        
+//            redirect(base_url()."seguranca/operador/index/$data","refresh");
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisaragendatelefonica", $data);
     }
 
     function excluirOperador($operador_id) {
