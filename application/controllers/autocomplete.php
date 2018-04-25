@@ -1421,6 +1421,13 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoagrupadorgrupo() {
+
+        $result = $this->exametemp->listarautocompleteprocedimentoagrupadorgrupo($_GET['grupo1']);
+
+        echo json_encode($result);
+    }
+
     function procedimentoconveniogrupo() {
 
         if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {

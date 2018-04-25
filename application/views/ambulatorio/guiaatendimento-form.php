@@ -1,3 +1,12 @@
+
+<?
+$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');
+$empresa = $this->guia->listarempresapermissoes();
+$odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
+$retorno_alterar = $empresa[0]->selecionar_retorno;
+$desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
+//var_dump($retorno_alterar); die;
+?>
 <style>
     .custom-combobox {
         position: relative;
@@ -41,6 +50,9 @@
                         .appendTo(this.wrapper)
                         .val(value)
                         .attr("title", "")
+                        <? if ($recomendacao_obrigatorio == 't'){ ?>
+                        .attr("required", "")
+                        <? } ?>
                         .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left text-input-recomendacao")
                         .autocomplete({
                             delay: 0,
@@ -138,14 +150,6 @@
         $("#indicacao").combobox();
     });
 </script>
-<?
-$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');
-$empresa = $this->guia->listarempresapermissoes();
-$odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
-$retorno_alterar = $empresa[0]->selecionar_retorno;
-$desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
-//var_dump($retorno_alterar); die;
-?>
 <div class="content ficha_ceatox">
     <div class="bt_link_new" style="width: 150pt">
         <a style="width: 150pt" onclick="javascript:window.open('<?= base_url() ?>seguranca/operador/novorecepcao');">
@@ -296,10 +300,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     </select>
                                 </td>
 
-                                <td  width="50px;">
-<!--                                    <select  name="procedimento1" id="procedimento1" class="size1" required="" >
-                                        <option value="">Selecione</option>
-                                    </select>-->
+                                <td width="50px;">
                                     <select name="procedimento1" id="procedimento1" class="size4" data-placeholder="Selecione" tabindex="1">
                                         <option value="">Selecione</option>
                                     </select>
@@ -328,11 +329,6 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 
                                 <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
-
-                                
-
-                                
-
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
                                 <td  width="20px;" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
                                     <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
@@ -351,12 +347,12 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     </select>
                                 </td>
                                 <td  width="50px;">
-                                    <select name="indicacao" id="indicacao" class="size1 ui-widget" <?= $recomendacao_obrigatorio == 't' ? 'required' : '' ?>>
+                                    <select name="indicacao" id="indicacao" class="size1 ui-widget" <?= ($recomendacao_obrigatorio == 't')? 'required' : '';?>>
                                         <option value='' >Selecione</option>
                                         <?php
                                         $indicacao = $this->paciente->listaindicacao($_GET);
                                         foreach ($indicacao as $item) {
-                                            ?>
+                                            // Não dê enter na hora de mostrar o valor no option, se não ele não vai mostrar o texto do jeito certo ?>
                                             <option value="<?= $item->paciente_indicacao_id; ?>" <?= ($item->paciente_indicacao_id == $promotor_id)?'selected':'' ?>><?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
                                             <?php
                                         }
@@ -386,7 +382,9 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         </tfoot>
                     </table> 
                     <hr/>
-                    <button type="submit" name="btnEnviar" id="submitButton">Adicionar</button>
+                    <button type="submit" name="btnEnviar" id="submitButton" <? if ($recomendacao_obrigatorio == 't') echo "onclick='verificaValorPromotor()'";?>>
+                        Adicionar
+                    </button>
                 </fieldset>
             </form>
             <fieldset>
@@ -728,6 +726,14 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 
 <script type="text/javascript">
+//    
+    function verificaValorPromotor(){
+        var indicacao = $("#indicacao").val();
+        alert(indicacao);
+//        if(indicacao == ''){
+//            
+//        }
+    }
                                 // Fazendo com que ao clicar no botão de submit, este passe a ficar desabilitado
                                 var formID = document.getElementById("form_guia");
                                 var send = $("#submitButton");

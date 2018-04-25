@@ -892,7 +892,7 @@ class Convenio_model extends Model {
                             $pc_id = $this->db->insert_id();
                             
                             // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico)
-                            $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico(procedimento_tuss_id, medico, valor, data_cadastro, operador_cadastro)
+                            $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico (procedimento_tuss_id, medico, valor, data_cadastro, operador_cadastro)
                                     SELECT {$pc_id}, ppm.medico, ppm.valor, '{$horario}', {$operador_id}
                                     FROM ponto.tb_procedimento_percentual_medico ppm
                                     WHERE ppm.ativo = 't'
