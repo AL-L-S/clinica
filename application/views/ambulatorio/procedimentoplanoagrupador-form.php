@@ -28,6 +28,19 @@
                             </select>
                         </td>
                     </tr>
+                    <tr>
+                        <td>    
+                            <label>Grupo</label>
+                        </td>
+                        <td>                  
+                            <select name="grupo" id="grupo" class="size4">
+                                <option value="">SELECIONE</option>                        
+                                <? foreach ($grupos as $value) : ?>
+                                    <option value="<?= $value->nome; ?>"><?php echo $value->nome; ?></option>
+                                <? endforeach; ?>
+                            </select>
+                        </td>
+                    </tr>
                     <tr id="procedimentodiv">
                         <td>
                             <label>Procedimento *</label>
@@ -106,6 +119,23 @@
         $("tr#aviso").hide();
         $("#valor_div").hide();
     });
+    
+    $(function () {
+        $('#grupo').change(function () {
+            $.getJSON('<?= base_url() ?>autocomplete/procedimentoagrupadorgrupo', {grupo1: $(this).val()}, function (j) {
+                var options = '<option value="">Selecione</option>';
+                for (var c = 0; c < j.length; c++) {
+                    options += '<option value="' + j[c].procedimento_tuss_id + '">' + j[c].nome + '</option>';
+                }
+
+                $('#procedimento option').remove();
+                $('#procedimento').append(options);
+                $("#procedimento").trigger("chosen:updated");
+                $('.carregando').hide();
+            });
+        });
+    });
+    
     
     $(function () {
         $('#procedimento').change(function () {

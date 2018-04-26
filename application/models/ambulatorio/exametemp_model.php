@@ -6726,6 +6726,22 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarautocompleteprocedimentoagrupadorgrupo($grupo = null) {
+        
+        $this->db->select('procedimento_tuss_id,
+                            nome,
+                            codigo');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->orderby('nome');
+        $this->db->where("ativo", 't');
+        $this->db->where("agrupador", 't');
+        if($grupo != ''){
+            $this->db->where("pt.grupo", $grupo);
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompleteprocedimentosgrupo($parametro = null, $parametro2 = null) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,

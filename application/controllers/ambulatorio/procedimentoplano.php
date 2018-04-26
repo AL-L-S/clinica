@@ -175,7 +175,7 @@ class Procedimentoplano extends BaseController {
         $data['obj'] = $obj_procedimentoplano;
         $data['procedimento'] = $this->procedimentoplano->listaragrupadoresprocedimento();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
-        $data['grupos'] = $this->procedimento->listargruposmatmed();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
 
         $this->loadView('ambulatorio/procedimentoplanoagrupador-form', $data);
