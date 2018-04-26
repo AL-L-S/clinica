@@ -327,9 +327,21 @@ class Exametemp extends BaseController {
         $this->load->view('ambulatorio/impressaosaldopacientecredito', $data);
     }
 
-    function gerarecibocredito($paciente_credito_id) {
+    function gerarecibocredito($paciente_credito_id, $paciente_id) {
         $data['paciente_credito_id'] = $paciente_credito_id;
 
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+
+        $data['impressaorecibo'] = $this->guia->listarconfiguracaoimpressaorecibo($empresa_id);
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
+        
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        
         $credito = $this->exametemp->gerarecibocredito($paciente_credito_id);
 //        var_dump($credito); die;
         if ($credito[0]->valor == '0,00') {
@@ -340,8 +352,38 @@ class Exametemp extends BaseController {
         }
 
         $data['credito'] = $credito;
+        
+                if ($data['empresapermissoes'][0]->recibo_config == 't') {
 
-        $this->load->view('ambulatorio/reciboprocedimentocredito', $data);
+            if ($data['impressaorecibo'][0]->cabecalho == 't') {
+                if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
+                    $cabecalho = "$cabecalho_config";
+                } else {
+                    $cabecalho = "<table><tr><td><img width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr></table>";
+                }
+            } else {
+                $cabecalho = '';
+            }
+
+            if ($data['impressaorecibo'][0]->rodape == 't') { // rodape da empresa
+                if ($data['empresa'][0]->rodape_config == 't') {
+                    $rodape = $rodape_config;
+                } else {
+                    $rodape = "";
+                }
+            } else {
+                $rodape = "";
+            }
+            $data['cabecalho'] = $cabecalho;
+            $data['rodape'] = $rodape;
+            
+            $this->load->View('ambulatorio/impressaorecibocreditoconfiguravel', $data);
+        }else{
+            $this->load->view('ambulatorio/reciboprocedimentocredito', $data);
+        }
+        
+
+        
     }
 
     function enviarpendenteatendimento($exames_id, $sala_id, $agenda_exames_id) {

@@ -176,3 +176,6 @@ CREATE TABLE ponto.tb_agenda_telefonica
 -- 25/04/2018
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN producao_alternativo boolean DEFAULT false;
+ALTER TABLE ponto.tb_empresa_impressao_recibo ADD COLUMN linha_procedimento text;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_cadastro text;

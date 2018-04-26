@@ -121,7 +121,9 @@ class guia_model extends Model {
                             ep.profissional_completo,
                             ep.tecnica_promotor,
                             ep.tecnica_enviar,
+                            recibo_config,
                             ep.campos_obrigatorios_pac_sexo,
+                            ep.campos_cadastro,
                             ep.campos_obrigatorios_pac_nascimento,
                             ep.campos_obrigatorios_pac_telefone,
                             ep.campos_obrigatorios_pac_municipio,
@@ -856,6 +858,80 @@ class guia_model extends Model {
             $this->db->orderby('ae.guia_id');
             $this->db->orderby('ae.data');
         }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriocomparativomensal($data1, $data2) {
+
+        $this->db->select('c.nome as convenio,
+                            sum(ae.valor_total) as valor_total
+                            ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
+        $this->db->join('tb_tuss tu', 'tu.tuss_id = pt.tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
+        $this->db->join('tb_empresa emp', 'emp.empresa_id = ae.empresa_id', 'left');
+        $this->db->where('ae.realizada', 'true');
+        $this->db->where('ae.cancelada', 'false');
+
+        if ($_POST['data_atendimento'] != "0") {
+            $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $data1))));
+            $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $data2))));
+        } else {
+            $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $data1))));
+            $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $data2))));
+        }
+
+        if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
+            $this->db->where("pc.convenio_id", $_POST['convenio']);
+        }
+        if (@$_POST['situacao_faturamento'] != "") {
+            $this->db->where("ae.situacao_faturamento", $_POST['situacao_faturamento']);
+        }
+        if ($_POST['faturamento'] != "0") {
+            $this->db->where("ae.faturado", $_POST['faturamento']);
+        }
+
+        if (isset($_POST['medico'])) {
+            if (in_array("0", $_POST['medico'])) {
+                $todos = true;
+            } else {
+                $todos = false;
+            }
+        } else {
+            $todos = false;
+        }
+        @$medicos = array_unique($_POST['medico']);
+        @$medicos = implode(', ', $medicos);
+//        var_dump($medicos);
+//        die;
+
+        if (count(@$_POST['medico']) != 0 && !$todos) {
+            $this->db->where("al.medico_parecer1 IN ($medicos)");
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['procedimentos'] != "0") {
+            $this->db->where('pt.procedimento_tuss_id', $_POST['procedimentos']);
+        }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+            $this->db->where('pt.grupo !=', 'TOMOGRAFIA');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        $this->db->groupby('c.nome, c.convenio_id');
+        $this->db->orderby('c.nome');
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -5386,14 +5462,14 @@ class guia_model extends Model {
 
         $this->db->where("per.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:00");
         $this->db->where("per.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
-        
+
         if ($_POST['operador_id'] != '') {
             $this->db->where("per.operador_cadastro", $_POST['operador']);
         }
         if ($_POST['empresa'] != '') {
             $this->db->where("per.empresa_id", $_POST['empresa']);
         }
-        
+
         $this->db->orderby("per.data_cadastro");
 
         $return = $this->db->get();
@@ -7492,6 +7568,70 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarexamesguianaoconvenio($guia_id, $convenioid) {
+
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.operador_autorizacao,
+                            op.nome as operador,
+                            ae.inicio,
+                            ae.fim,
+                            ae.ativo,
+                            ae.situacao,
+                            ae.valor_total,
+                            es.nome as agenda,
+                            ae.guia_id,
+                            ae.paciente_id,
+                            ae.quantidade,
+                            ae.data_atualizacao,
+                            ae.data_autorizacao,
+                            p.nome as paciente,
+                            ae.forma_pagamento,
+                            ae.forma_pagamento2,
+                            ae.forma_pagamento3,
+                            ae.forma_pagamento4,
+                            p.sexo,
+                            es.nome as sala,
+                            c.nome as convenio,
+                            c.dinheiro,
+                            c.convenio_id,
+                            ae.autorizacao,
+                            g.valor_guia,
+                            fp.nome as formadepagamento,
+                            fp2.nome as formadepagamento2,
+                            fp3.nome as formadepagamento3,
+                            fp4.nome as formadepagamento4,
+                            o.nome as medicosolicitante,
+                            ae.procedimento_tuss_id,
+                            oz.nome as atendente,
+                            pt.grupo,
+                            pt.codigo,
+                            pc.convenio_id,
+                            pt.nome as procedimento');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_guia g', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_operador oz', 'oz.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id =ae.forma_pagamento', 'left');
+        $this->db->join('tb_forma_pagamento fp2', 'fp2.forma_pagamento_id =ae.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento fp3', 'fp3.forma_pagamento_id =ae.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento fp4', 'fp4.forma_pagamento_id =ae.forma_pagamento4', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->where("ae.guia_id", $guia_id);
+//        $this->db->where("c.convenio_id", $convenioid);
+        $this->db->where("ae.cancelada", "f");
+        $this->db->where("c.dinheiro", "t");
+        $this->db->orderby('ae.guia_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function guiavalor($guia_id) {
 
 
@@ -7643,6 +7783,125 @@ class guia_model extends Model {
         $this->db->join('tb_cid cid', 'cid.co_cid = ae.cid', 'left');
         $this->db->where("ae.agenda_exames_id", $exames_id);
         $this->db->where("ae.cancelada", "f");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarexamerecibo($exames_id) {
+
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.inicio,
+                            pi.nome as indicacao,
+                            es.nome as agenda,
+                            ae.fim,
+                            ae.data_entregue,
+                            (ae.valor * ae.quantidade) as valor,
+                            ae.valor_total,
+                            ae.ativo,
+                            ae.situacao,
+                            ae.guia_id,
+                            ae.situacao_faturamento,
+                            ae.tipo,
+                            ae.data_atualizacao,
+                            ae.data_realizacao,
+                            ae.paciente_id,
+                            ae.data_entrega,
+                            p.nome as paciente,
+                            p.sexo,
+                            p.paciente_id,
+                            pc.convenio_id,
+                            c.nome as convenio,
+                            c.dinheiro,
+                            ae.autorizacao,
+                            ae.valor1,
+                            ae.valor2,
+                            ae.valor3,
+                            ae.valor4,
+                            ae.forma_pagamento,
+                            ae.forma_pagamento2,
+                            ae.forma_pagamento3,
+                            ae.forma_pagamento4,
+                            ae.desconto,
+                            ae.data_autorizacao,
+                            ae.agrupador_fisioterapia,
+                            ae.numero_sessao,
+                            ae.observacoes,
+                            ae.qtde_sessao,
+                            ae.texto,
+                            o.nome as medicosolicitante,
+                            op.nome as atendente,
+                            opm.nome as medico,
+                            opf.nome as atendente_fatura,
+                            ex.exames_id,
+                            fp.nome as formadepagamento,
+                            ae.procedimento_tuss_id,
+                            pt.grupo,
+                            pt.codigo,
+                            ep.logradouro,
+                            ep.razao_social,
+                            ep.cnpj,
+                            ep.numero,
+                            ep.telefone as telefoneempresa,
+                            ep.celular as celularempresa,
+                            ep.bairro,
+                            ep.razao_social,
+                            es.nome as sala,
+                            ae.cid,
+                            p.logradouro as logradouro_paciente,
+                            p.numero as numero_paciente,
+                            p.complemento as complemento_paciente,
+                            p.bairro as bairro_paciente,
+                            p.raca_cor,
+                            p.rg,
+                            piae.nome as promotor,
+                            cid.no_cid,
+                            c.convenio_id,
+                            c.nome as convenio,
+                            ag.data_cadastro as data_guia,
+                            ae.guiaconvenio,
+                            ag.ambulatorio_guia_id,
+                            p.nascimento,
+                            p.celular,
+                            p.telefone,
+                            c.dinheiro,
+                            ae.diabetes,
+                            ae.hipertensao,
+                            ae.medico_solicitante,
+                            ae.agenda_exames_nome_id,
+                            ae.medico_agenda,
+                            cbo.descricao as profissaos,
+                            pt.perc_medico,
+                            m.nome as municipio,
+                            m.estado,
+                            l.data_atualizacao as data_finalizado,
+                            pt.codigo,
+                            pt.nome as procedimento');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = p.indicacao', 'left');
+        $this->db->join('tb_paciente_indicacao piae', 'piae.paciente_indicacao_id = ae.indicacao', 'left');
+        $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = p.profissao', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames ex', 'ex.agenda_exames_id =ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = ex.exames_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id =ae.forma_pagamento', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_operador opm', 'opm.operador_id = ae.medico_agenda', 'left');
+        $this->db->join('tb_operador opf', 'opf.operador_id = ae.operador_faturamento', 'left');
+        $this->db->join('tb_empresa ep', 'ep.empresa_id = ae.empresa_id', 'left');
+        $this->db->join('tb_ambulatorio_guia ag', 'ag.ambulatorio_guia_id = ae.guia_id', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = ep.municipio_id', 'left');
+        $this->db->join('tb_cid cid', 'cid.co_cid = ae.cid', 'left');
+        $this->db->where("ae.agenda_exames_id", $exames_id);
+        $this->db->where("ae.cancelada", "f");
+//        $this->db->where("c.dinheiro", "t");
+        $this->db->orderby("ae.agenda_exames_id");
         $return = $this->db->get();
         return $return->result();
     }
@@ -8224,7 +8483,7 @@ class guia_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->insert('tb_solicitacao_sadt');
-            
+
             $insert_id = $this->db->insert_id();
             return $insert_id;
         } catch (Exception $exc) {
@@ -10226,7 +10485,7 @@ class guia_model extends Model {
 
         $teste = $_POST['qtde'];
         foreach ($forma_pagamento as $value) {
-                        // Selecionando a conta baseada na empresa
+            // Selecionando a conta baseada na empresa
 
             $this->db->select('conta_id');
             $this->db->from('tb_formapagamento_conta_empresa');
@@ -10347,7 +10606,7 @@ class guia_model extends Model {
                                 $this->db->set('valor', $valor_parcelado);
                                 $this->db->set('devedor', $value->credor_devedor);
                                 $this->db->set('parcela', $i);
-                                
+
                                 $proximoDiaUtil = $this->retornaProximoDiaUtil(strtotime($data_receber_p));
 
                                 $this->db->set('data', $proximoDiaUtil);
@@ -10383,8 +10642,7 @@ class guia_model extends Model {
                         }
                         $this->db->set('ativo', 'f');
                         $this->db->update('tb_financeiro_contasreceber_temp');
-                    } 
-                    else {
+                    } else {
                         if (isset($value->tempo_receber) && $value->tempo_receber > 0) {
                             $valor_n_parcelado = $valor_total;
                             $agenda_exames_id = $this->relatoriocaixapersonalizadoforma($value->forma_pagamento_id);
@@ -10437,9 +10695,9 @@ class guia_model extends Model {
                                     $this->db->set('valor', $valor_parcelado);
                                     $this->db->set('devedor', $value->credor_devedor);
                                     $this->db->set('parcela', $i);
-                                    
+
                                     $proximoDiaUtil = $this->retornaProximoDiaUtil(strtotime($data_receber_p));
-                                    
+
                                     $this->db->set('data', $proximoDiaUtil);
                                     $this->db->set('classe', $classe);
                                     $this->db->set('conta', $value->conta_id);
@@ -10477,7 +10735,7 @@ class guia_model extends Model {
                 }
             }
         }
-        
+
         // Update na tabela agenda exames
         $procedimentos = substr($_POST['agenda_exames_id'], 0, (strlen($_POST['agenda_exames_id']) - 1));
         $sql = "UPDATE ponto.tb_agenda_exames
@@ -10491,19 +10749,18 @@ class guia_model extends Model {
     function retornaProximoDiaUtil($data) {
         $feriados = array();
         $result = $this->db->select("data")->from("tb_feriado")->where("ativo", 't')->get()->result();
-        foreach($result as $item){
+        foreach ($result as $item) {
             $feriados[] = $item->data;
         }
-        
-        if(in_array(date("d/m", $data), $feriados) || date("N", $data) > 5){
+
+        if (in_array(date("d/m", $data), $feriados) || date("N", $data) > 5) {
             $diaSeguinte = strtotime("+1 day", $data);
             return $this->retornaProximoDiaUtil($diaSeguinte);
-        }
-        else{
+        } else {
             return date("Y-m-d", $data);
         }
     }
-    
+
     function fecharcaixapersonalizadocredito() {
 //        die($_POST['empresa']);
 //        try {
@@ -11022,7 +11279,7 @@ class guia_model extends Model {
                                 if ($parcelas != '') {
                                     $jurosporparcelas = $this->jurosporparcelas($value->forma_pagamento_id, $parcelas);
 //                                    echo '2';
-                                   
+
                                     if (@$jurosporparcelas[0]->taxa_juros > 0) {
                                         $taxa_juros = $jurosporparcelas[0]->taxa_juros;
                                     } else {
@@ -11829,6 +12086,20 @@ ORDER BY ae.paciente_credito_id)";
         return $return->result();
     }
 
+    function listarconfiguracaoimpressaorecibo() {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_recibo_id,ei.cabecalho,ei.texto,ei.rodape, e.nome as empresa, linha_procedimento');
+        $this->db->from('tb_empresa_impressao_recibo ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_id', $empresa_id);
+        $this->db->where('ei.ativo', 't');
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarempresamunicipio() {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -12344,7 +12615,7 @@ ORDER BY ae.paciente_credito_id)";
             return -1;
         }
     }
-    
+
     function gravarexamesagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio, $grupo) {
         try {
 //            var_dump($_POST); die;
@@ -12424,7 +12695,7 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('ativo', 'f');
             $this->db->set('situacao', 'OK');
             $this->db->set('guia_id', $ambulatorio_guia_id);
-            
+
             $this->db->set('agrupador_pacote_id', $agrupador_id);
             $this->db->set('pacote_diferenciado', $valor_diferenciado);
 
@@ -12547,7 +12818,7 @@ ORDER BY ae.paciente_credito_id)";
         } else {
             $valor = (float) $procedimentos[0]->valor_pacote;
         }
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
 
@@ -13130,7 +13401,7 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('ativo', 'f');
             $this->db->set('situacao', 'OK');
             $this->db->set('guia_id', $ambulatorio_guia_id);
-            
+
             $this->db->set('tipo', $grupo);
             $this->db->set('agrupador_pacote_id', $agrupador_id);
             $this->db->set('pacote_diferenciado', $valor_diferenciado);
@@ -13153,7 +13424,7 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
             }
-            
+
             return $agenda_exames_id;
         } catch (Exception $exc) {
             return -1;

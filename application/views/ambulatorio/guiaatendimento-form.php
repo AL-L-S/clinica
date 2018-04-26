@@ -240,7 +240,29 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                     </div>
                 </fieldset>
+                <fieldset>
+                    <legend>Consultas anteriores</legend>
+                    <?
+                    if (count($consultasanteriores) > 0) {
+                        foreach ($consultasanteriores as $value) {
 
+                            $data_atual = date('Y-m-d');
+                            $data1 = new DateTime($data_atual);
+                            $data2 = new DateTime($value->data);
+
+                            $intervalo = $data1->diff($data2);
+                            ?>
+                            <h6><?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?> - <?= $intervalo->days ?> dia(s)</h6>
+
+                            <?
+                        }
+                    } else {
+                        ?>
+                        <h6>NENHUMA CONSULTA ENCONTRADA</h6>
+                        <?
+                    }
+                    ?>
+                </fieldset>
                 <fieldset>
                     <table id="table_justa">
                         <thead>
