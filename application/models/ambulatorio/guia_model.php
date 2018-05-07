@@ -12280,7 +12280,7 @@ ORDER BY ae.paciente_credito_id)";
         $this->db->set('empresa_id', $empresa_id);
         $this->db->set('tipo', 'EXAME');
         $this->db->set('data_criacao', $data);
-        $this->db->set('convenio_id', $_POST['convenio1']);
+        $this->db->set('convenio_id', @$_POST['convenio1']);
         $this->db->set('paciente_id', $paciente_id);
         $this->db->set('data_cadastro', $horario);
         $this->db->set('operador_cadastro', $operador_id);
@@ -12445,12 +12445,13 @@ ORDER BY ae.paciente_credito_id)";
 //            var_dump($_POST); die;
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->select('dinheiro');
+            $this->db->select('dinheiro, fidelidade_endereco_ip');
             $this->db->from('tb_convenio');
             $this->db->where("convenio_id", $_POST['convenio1']);
             $query = $this->db->get();
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
+            $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
             if ($_POST['indicacao'] != "") {
                 $this->db->select('mc.valor as valor_promotor, mc.percentual as percentual_promotor');
                 $this->db->from('tb_procedimento_percentual_promotor_convenio mc');
@@ -12535,6 +12536,66 @@ ORDER BY ae.paciente_credito_id)";
                 return -1;
             } else {
                 $agenda_exames_id = $this->db->insert_id();
+
+                if ($fidelidade_endereco_ip != '') {
+                    $numero_consultas = 1;
+                    $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
+//                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
+                    $this->db->select('p.cpf');
+                    $this->db->from('tb_paciente p');
+                    $this->db->where("p.paciente_id", $_POST['txtpaciente_id']);
+                    $dados_paciente = $this->db->get()->result();
+
+
+
+
+                    $informacoes['paciente_id'] = $_POST['txtpaciente_id'];
+                    $informacoes['procedimento'] = $_POST['procedimento1'];
+                    $informacoes['parceiro_id'] = $_POST['convenio1'];
+                    $informacoes['cpf'] = @$dados_paciente[0]->cpf;
+                    $informacoes['grupo'] = $tipo_grupo;
+                    $informacoes['agenda_exames_id'] = $agenda_exames_id;
+                    $informacoes['numero_consultas'] = $numero_consultas;
+                    $informacoes['valor'] = $_POST['valor1'];
+
+                    $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+//                        var_dump($fidelidade);
+//                        die;
+                    if ($fidelidade == 'true') {
+                        $fidelidade_liberado = true;
+                    } elseif ($fidelidade == 'false') {
+                        $fidelidade_liberado = false;
+                    } else {
+                        $fidelidade_liberado = false;
+                    }
+                } else {
+                    $fidelidade_liberado = false;
+                }
+
+
+                if ($fidelidade_liberado) {
+                    $this->db->set('valor', 0);
+                    $this->db->set('valor_total', $valortotal);
+                } else {
+                    $this->db->set('valor', $_POST['valor1']);
+                    $this->db->set('valor_total', $valortotal);
+                }
+
+                if ($fidelidade_liberado) {
+                    $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                    $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                    $this->db->set('operador_faturamento', $operador_id);
+                    $this->db->set('data_faturamento', $horario);
+                } elseif ($_POST['formapamento'] != 0 && $dinheiro == "t") {
+                    $this->db->set('faturado', 't');
+                    $this->db->set('valor1', $valortotal);
+                    $this->db->set('operador_faturamento', $operador_id);
+                    $this->db->set('data_faturamento', $horario);
+                    $this->db->set('forma_pagamento', $_POST['formapamento']);
+                }
+
                 $this->db->set('senha', md5($agenda_exames_id));
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
@@ -12614,6 +12675,36 @@ ORDER BY ae.paciente_credito_id)";
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function autorizarpacientefidelidade($endereco, $informacoes) {
+        $paciente_id = $informacoes['paciente_id'];
+        $procedimento = $informacoes['procedimento'];
+        $parceiro_id = $informacoes['parceiro_id'];
+        $cpf = $informacoes['cpf'];
+        $grupo = $informacoes['grupo'];
+        $valor = $informacoes['valor'];
+        $agenda_exames_id = $informacoes['agenda_exames_id'];
+        $numero_consultas = $informacoes['numero_consultas'];
+//        var_dump($informacoes); die;
+        $return = file_get_contents("http://{$endereco}/autocomplete/autorizaratendimentoweb?paciente_id=$paciente_id&procedimento=$procedimento&parceiro_id=$parceiro_id&cpf=$cpf&grupo=$grupo&agenda_exames_id=$agenda_exames_id&numero_consultas=$numero_consultas&valor=$valor");
+        $resposta = json_decode($return);
+//        var_dump($return);
+//        die;
+        // Caso venha "no_exists" o paciente não existe no Fidelidade
+        return $resposta;
+    }
+
+    function verificatipoprocedimento($procedimento_convenio_id) {
+
+        $this->db->select('ag.tipo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->where("pc.procedimento_convenio_id", $procedimento_convenio_id);
+        $query = $this->db->get();
+        $tipo = $query->result();
+        return $tipo[0]->tipo;
     }
 
     function gravarexamesagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio, $grupo) {
@@ -13012,12 +13103,13 @@ ORDER BY ae.paciente_credito_id)";
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->select('dinheiro');
+            $this->db->select('dinheiro, fidelidade_endereco_ip');
             $this->db->from('tb_convenio');
             $this->db->where("convenio_id", $_POST['convenio1']);
             $query = $this->db->get();
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
+            $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
 
 
             $hora = date("H:i:s");
@@ -13128,15 +13220,80 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->set('operador_autorizacao', $operador_id);
                 $this->db->insert('tb_agenda_exames');
-            }
-            $erro = $this->db->_error_message();
-            if (trim($erro) != "") { // erro de banco
-                return -1;
-            } else {
-                $agenda_exames_id = $this->db->insert_id();
-                $this->db->set('senha', md5($agenda_exames_id));
-                $this->db->where('agenda_exames_id', $agenda_exames_id);
-                $this->db->update('tb_agenda_exames');
+
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") { // erro de banco
+                    return -1;
+                } else {
+                    $agenda_exames_id = $this->db->insert_id();
+
+                    if ($fidelidade_endereco_ip != '' && $index == 1) {
+                        $numero_consultas = 1;
+                        $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
+//                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
+                        $this->db->select('p.cpf');
+                        $this->db->from('tb_paciente p');
+                        $this->db->where("p.paciente_id", $_POST['txtpaciente_id']);
+                        $dados_paciente = $this->db->get()->result();
+
+
+
+
+                        $informacoes['paciente_id'] = $_POST['txtpaciente_id'];
+                        $informacoes['procedimento'] = $_POST['procedimento1'];
+                        $informacoes['parceiro_id'] = $_POST['convenio1'];
+                        $informacoes['cpf'] = @$dados_paciente[0]->cpf;
+                        $informacoes['grupo'] = $tipo_grupo;
+                        $informacoes['agenda_exames_id'] = $agenda_exames_id;
+                        $informacoes['numero_consultas'] = $numero_consultas;
+                        $informacoes['valor'] = $_POST['valor1'];
+
+                        $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+//                        var_dump($fidelidade);
+//                        die;
+                        if ($fidelidade == 'true') {
+                            $fidelidade_liberado = true;
+                        } elseif ($fidelidade == 'false') {
+                            $fidelidade_liberado = false;
+                        } else {
+                            $fidelidade_liberado = false;
+                        }
+                    } else {
+                        $fidelidade_liberado = false;
+                    }
+
+
+                    if ($fidelidade_liberado) {
+                        $this->db->set('valor', 0);
+                        $this->db->set('valor_total', $valor);
+                    } else {
+                        $this->db->set('valor', $_POST['valor1']);
+                        $this->db->set('valor_total', $valor);
+                    }
+
+                    if ($fidelidade_liberado) {
+                        $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                        $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                        $this->db->set('operador_faturamento', $operador_id);
+                        $this->db->set('data_faturamento', $horario);
+                    } elseif ($_POST['formapamento'] != 0 && $dinheiro == "t") {
+                        $this->db->set('faturado', 't');
+                        if ($index == 1) {
+                            $this->db->set('valor1', $_POST['valor1']);
+                        } else {
+                            $this->db->set('valor1', 0);
+                        }
+                        $this->db->set('operador_faturamento', $operador_id);
+                        $this->db->set('data_faturamento', $horario);
+                        $this->db->set('forma_pagamento', $_POST['formapamento']);
+                    }
+
+                    $this->db->set('senha', md5($agenda_exames_id));
+                    $this->db->where('agenda_exames_id', $agenda_exames_id);
+                    $this->db->update('tb_agenda_exames');
+                }
             }
         } catch (Exception $exc) {
             return -1;
@@ -13226,12 +13383,13 @@ ORDER BY ae.paciente_credito_id)";
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->select('dinheiro');
+            $this->db->select('dinheiro, fidelidade_endereco_ip');
             $this->db->from('tb_convenio');
             $this->db->where("convenio_id", $_POST['convenio1']);
             $query = $this->db->get();
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
+            $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
 
 
             if ($_POST['indicacao'] != "") {
@@ -13314,6 +13472,67 @@ ORDER BY ae.paciente_credito_id)";
                 return -1;
             } else {
                 $agenda_exames_id = $this->db->insert_id();
+
+                if ($fidelidade_endereco_ip != '') {
+                    $numero_consultas = 1;
+                    $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
+//                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
+                    $this->db->select('p.cpf');
+                    $this->db->from('tb_paciente p');
+                    $this->db->where("p.paciente_id", $_POST['txtpaciente_id']);
+                    $dados_paciente = $this->db->get()->result();
+
+
+
+
+                    $informacoes['paciente_id'] = $_POST['txtpaciente_id'];
+                    $informacoes['procedimento'] = $_POST['procedimento1'];
+                    $informacoes['parceiro_id'] = $_POST['convenio1'];
+                    $informacoes['cpf'] = @$dados_paciente[0]->cpf;
+                    $informacoes['grupo'] = $tipo_grupo;
+                    $informacoes['agenda_exames_id'] = $agenda_exames_id;
+                    $informacoes['numero_consultas'] = $numero_consultas;
+                    $informacoes['valor'] = $_POST['valor1'];
+
+                    $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+//                        var_dump($fidelidade);
+//                        die;
+                    if ($fidelidade == 'true') {
+                        $fidelidade_liberado = true;
+                    } elseif ($fidelidade == 'false') {
+                        $fidelidade_liberado = false;
+                    } else {
+                        $fidelidade_liberado = false;
+                    }
+                } else {
+                    $fidelidade_liberado = false;
+                }
+
+
+                if ($fidelidade_liberado) {
+                    $this->db->set('valor', 0);
+                    $this->db->set('valor_total', $valortotal);
+                } else {
+                    $this->db->set('valor', $_POST['valor1']);
+                    $this->db->set('valor_total', $valortotal);
+                }
+
+                if ($fidelidade_liberado) {
+                    $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                    $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                    $this->db->set('operador_faturamento', $operador_id);
+                    $this->db->set('data_faturamento', $horario);
+                } elseif ($_POST['formapamento'] != 0 && $dinheiro == "t") {
+                    $this->db->set('faturado', 't');
+                    $this->db->set('valor1', $valortotal);
+                    $this->db->set('operador_faturamento', $operador_id);
+                    $this->db->set('data_faturamento', $horario);
+                    $this->db->set('forma_pagamento', $_POST['formapamento']);
+                }
+
+
                 $this->db->set('senha', md5($agenda_exames_id));
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
@@ -13436,12 +13655,13 @@ ORDER BY ae.paciente_credito_id)";
 //            var_dump($percentual); die;
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $this->db->select('dinheiro');
+            $this->db->select('dinheiro, fidelidade_endereco_ip');
             $this->db->from('tb_convenio');
             $this->db->where("convenio_id", $_POST['convenio1']);
             $query = $this->db->get();
             $return = $query->result();
             $dinheiro = $return[0]->dinheiro;
+            $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
 //            var_dump($_POST['homecare']); die;
 //            if ((isset($_POST['indicacao']) && isset($_POST['indicacao_paciente'])) && ($_POST['indicacao'] != $_POST['indicacao_paciente'])) {
 //                $this->db->set('indicacao_id', $_POST['indicacao']);
@@ -13579,15 +13799,82 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->set('operador_autorizacao', $operador_id);
                 $this->db->insert('tb_agenda_exames');
+                
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") { // erro de banco
+                    return -1;
+                } else {
+                    $agenda_exames_id = $this->db->insert_id();
+
+                    if ($fidelidade_endereco_ip != '' && $index == 1) {
+                        $numero_consultas = 1;
+                        $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
+//                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
+                        $this->db->select('p.cpf');
+                        $this->db->from('tb_paciente p');
+                        $this->db->where("p.paciente_id", $_POST['txtpaciente_id']);
+                        $dados_paciente = $this->db->get()->result();
+
+
+
+
+                        $informacoes['paciente_id'] = $_POST['txtpaciente_id'];
+                        $informacoes['procedimento'] = $_POST['procedimento1'];
+                        $informacoes['parceiro_id'] = $_POST['convenio1'];
+                        $informacoes['cpf'] = @$dados_paciente[0]->cpf;
+                        $informacoes['grupo'] = $tipo_grupo;
+                        $informacoes['agenda_exames_id'] = $agenda_exames_id;
+                        $informacoes['numero_consultas'] = $numero_consultas;
+                        $informacoes['valor'] = $_POST['valor1'];
+
+                        $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+//                        var_dump($fidelidade);
+//                        die;
+                        if ($fidelidade == 'true') {
+                            $fidelidade_liberado = true;
+                        } elseif ($fidelidade == 'false') {
+                            $fidelidade_liberado = false;
+                        } else {
+                            $fidelidade_liberado = false;
+                        }
+                    } else {
+                        $fidelidade_liberado = false;
+                    }
+
+
+                    if ($fidelidade_liberado) {
+                        $this->db->set('valor', 0);
+                        $this->db->set('valor_total', $valor);
+                    } else {
+                        $this->db->set('valor', $_POST['valor1']);
+                        $this->db->set('valor_total', $valor);
+                    }
+
+                    if ($fidelidade_liberado) {
+                        $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                        $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                        $this->db->set('operador_faturamento', $operador_id);
+                        $this->db->set('data_faturamento', $horario);
+                    } elseif ($_POST['formapamento'] != 0 && $dinheiro == "t") {
+                        $this->db->set('faturado', 't');
+                        if ($index == 1) {
+                            $this->db->set('valor1', $_POST['valor1']);
+                        } else {
+                            $this->db->set('valor1', 0);
+                        }
+                        $this->db->set('operador_faturamento', $operador_id);
+                        $this->db->set('data_faturamento', $horario);
+                        $this->db->set('forma_pagamento', $_POST['formapamento']);
+                    }
+
+                    $this->db->set('senha', md5($agenda_exames_id));
+                    $this->db->where('agenda_exames_id', $agenda_exames_id);
+                    $this->db->update('tb_agenda_exames');
+                }
             }
-            if (trim($erro) != "") { // erro de banco
-                return -1;
-            } else {
-                $agenda_exames_id = $this->db->insert_id();
-                $this->db->set('senha', md5($agenda_exames_id));
-                $this->db->where('agenda_exames_id', $agenda_exames_id);
-                $this->db->update('tb_agenda_exames');
-            }
+
             return $agenda_exames_id;
         } catch (Exception $exc) {
             return -1;

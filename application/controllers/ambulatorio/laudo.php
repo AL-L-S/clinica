@@ -1071,7 +1071,10 @@ class Laudo extends BaseController {
 //            }
 
             $html = $this->load->view('ambulatorio/impressaolaudoconfiguravel', $data, true);
-
+//            echo '<pre>';
+//            var_dump($html); die;
+//            $cabecalho = '';
+//            $rodape = '';
             pdf($html, $filename, $cabecalho, $rodape);
         } else { // CASO O LAUDO NÃO CONFIGURÁVEL
             //////////////////////////////////////////////////////////////////////////////////////////////////

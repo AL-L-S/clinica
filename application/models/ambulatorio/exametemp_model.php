@@ -819,13 +819,21 @@ class exametemp_model extends Model {
                             es.nome as sala,
                             a.medico_agenda,
                             o.nome as medico,
+                            c.nome as convenio,
+                            c.convenio_id as convenio_id_proc,
+                            c.fidelidade_parceiro_id,
+                            c.fidelidade_endereco_ip,
                             a.procedimento_tuss_id,
+                            p.paciente_id,
+                            p.cpf,
+                            ag.tipo,
                             pc.convenio_id as convenio_agenda,
                             a.observacoes,
                             p.convenio_id');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
@@ -4410,7 +4418,7 @@ class exametemp_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $data = date("Y-m-d");
             $operador_id = $this->session->userdata('operador_id');
-
+            $numero_consultas = 0;
             foreach ($_POST['procedimento'] as $procedimento_tuss_id) {
                 $formapagamento = 0;
                 $z = 0;
@@ -4463,12 +4471,13 @@ class exametemp_model extends Model {
                         $w++;
                         if ($i == $w) {
                             $convenio = $itemconvenio;
-                            $this->db->select('dinheiro');
+                            $this->db->select('dinheiro, fidelidade_endereco_ip');
                             $this->db->from('tb_convenio');
                             $this->db->where("convenio_id", $convenio);
                             $query = $this->db->get();
                             $return = $query->result();
                             $dinheiro = $return[0]->dinheiro;
+                            $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
 
                             break;
                         }
@@ -4582,6 +4591,43 @@ class exametemp_model extends Model {
                             break;
                         }
                     }
+
+                    if ($fidelidade_endereco_ip != '') {
+                        $numero_consultas = 1;
+                        $tipo_grupo = $this->verificatipoprocedimento($procedimento_tuss_id);
+//                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
+                        $this->db->select('p.cpf');
+                        $this->db->from('tb_paciente p');
+                        $this->db->where("p.paciente_id", $paciente_id);
+                        $dados_paciente = $this->db->get()->result();
+
+
+
+
+                        $informacoes['paciente_id'] = $paciente_id;
+                        $informacoes['procedimento'] = $procedimento_tuss_id;
+                        $informacoes['parceiro_id'] = $convenio;
+                        $informacoes['cpf'] = @$dados_paciente[0]->cpf;
+                        $informacoes['grupo'] = $tipo_grupo;
+                        $informacoes['agenda_exames_id'] = $agenda_exames_id;
+                        $informacoes['numero_consultas'] = $numero_consultas;
+                        $informacoes['valor'] = $valor;
+
+                        $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+//                        var_dump($fidelidade);
+//                        die;
+                        if ($fidelidade == 'true') {
+                            $fidelidade_liberado = true;
+                        } elseif ($fidelidade == 'false') {
+                            $fidelidade_liberado = false;
+                        } else {
+                            $fidelidade_liberado = false;
+                        }
+                    } else {
+                        $fidelidade_liberado = false;
+                    }
+
+
                     $horario = date("Y-m-d H:i:s");
                     $operador_id = $this->session->userdata('operador_id');
                     $procedimento_tuss_id = (int) $procedimento_tuss_id;
@@ -4629,11 +4675,26 @@ class exametemp_model extends Model {
                     $this->db->set('guiaconvenio', $guiaconvenio);
                     $this->db->set('guia_id', $ambulatorio_guia_id);
                     $this->db->set('quantidade', $qtde);
-                    $this->db->set('valor', $valor);
+//                    $this->db->set('valor', $valor);
                     $valortotal = $valor * $qtde;
-                    $this->db->set('valor_total', $valortotal);
+//                    $this->db->set('valor_total', $valortotal);
 
-                    if ($formapagamento != 0 && $dinheiro == "t") {
+                    if ($fidelidade_liberado) {
+                        $this->db->set('valor', 0);
+                        $this->db->set('valor_total', $valortotal);
+                    } else {
+                        $this->db->set('valor', $valor);
+                        $this->db->set('valor_total', $valortotal);
+                    }
+
+                    if ($fidelidade_liberado) {
+                        $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                        $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                        $this->db->set('operador_faturamento', $operador_id);
+                        $this->db->set('data_faturamento', $horario);
+                    } elseif ($formapagamento != 0 && $dinheiro == "t") {
                         $this->db->set('faturado', 't');
                         $this->db->set('forma_pagamento', $formapagamento);
                         $this->db->set('valor1', $valortotal);
@@ -4722,6 +4783,24 @@ class exametemp_model extends Model {
         }
     }
 
+    function autorizarpacientefidelidade($endereco, $informacoes) {
+        $paciente_id = $informacoes['paciente_id'];
+        $procedimento = $informacoes['procedimento'];
+        $parceiro_id = $informacoes['parceiro_id'];
+        $cpf = $informacoes['cpf'];
+        $grupo = $informacoes['grupo'];
+        $valor = $informacoes['valor'];
+        $agenda_exames_id = $informacoes['agenda_exames_id'];
+        $numero_consultas = $informacoes['numero_consultas'];
+//        var_dump($informacoes); die;
+        $return = file_get_contents("http://{$endereco}/autocomplete/autorizaratendimentoweb?paciente_id=$paciente_id&procedimento=$procedimento&parceiro_id=$parceiro_id&cpf=$cpf&grupo=$grupo&agenda_exames_id=$agenda_exames_id&numero_consultas=$numero_consultas&valor=$valor");
+        $resposta = json_decode($return);
+//        var_dump($return);
+//        die;
+        // Caso venha "no_exists" o paciente não existe no Fidelidade
+        return $resposta;
+    }
+
     function autorizarpacientetempconsulta($paciente_id, $ambulatorio_guia_id) {
         try {
 //            $testemedico = $_POST['medico_id'];
@@ -4731,7 +4810,7 @@ class exametemp_model extends Model {
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
+            $numero_consultas = 0;
             foreach ($_POST['procedimento'] as $procedimento_tuss_id) {
                 $formapagamento = 0;
                 $z = 0;
@@ -4790,12 +4869,13 @@ class exametemp_model extends Model {
                         $w++;
                         if ($i == $w) {
                             $convenio = $itemconvenio;
-                            $this->db->select('dinheiro');
+                            $this->db->select('dinheiro, fidelidade_endereco_ip');
                             $this->db->from('tb_convenio');
                             $this->db->where("convenio_id", $convenio);
                             $query = $this->db->get();
                             $return = $query->result();
                             $dinheiro = $return[0]->dinheiro;
+                            $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
 
                             break;
                         }
@@ -4824,6 +4904,42 @@ class exametemp_model extends Model {
 
                     if ($medico_id == '') {
                         $medico_id = 0;
+                    }
+
+
+                    if ($fidelidade_endereco_ip != '') {
+                        $numero_consultas = 1;
+                        $tipo_grupo = $this->verificatipoprocedimento($procedimento_tuss_id);
+//                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
+                        $this->db->select('p.cpf');
+                        $this->db->from('tb_paciente p');
+                        $this->db->where("p.paciente_id", $paciente_id);
+                        $dados_paciente = $this->db->get()->result();
+
+
+
+
+                        $informacoes['paciente_id'] = $paciente_id;
+                        $informacoes['procedimento'] = $procedimento_tuss_id;
+                        $informacoes['parceiro_id'] = $convenio;
+                        $informacoes['cpf'] = @$dados_paciente[0]->cpf;
+                        $informacoes['grupo'] = $tipo_grupo;
+                        $informacoes['agenda_exames_id'] = $agenda_exames_id;
+                        $informacoes['numero_consultas'] = $numero_consultas;
+                        $informacoes['valor'] = $valor;
+
+                        $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+//                        var_dump($fidelidade);
+//                        die;
+                        if ($fidelidade == 'true') {
+                            $fidelidade_liberado = true;
+                        } elseif ($fidelidade == 'false') {
+                            $fidelidade_liberado = false;
+                        } else {
+                            $fidelidade_liberado = false;
+                        }
+                    } else {
+                        $fidelidade_liberado = false;
                     }
 
                     // Função do Percentual
@@ -4900,9 +5016,22 @@ class exametemp_model extends Model {
                     $this->db->set('guia_id', $ambulatorio_guia_id);
                     $this->db->set('quantidade', '1');
                     $this->db->set('agenda_exames_nome_id', $sala);
-                    $this->db->set('valor', $valor);
-                    $this->db->set('valor_total', $valor);
-                    if ($formapagamento != 0 && $dinheiro == "t") {
+                    if ($fidelidade_liberado) {
+                        $this->db->set('valor', 0);
+                        $this->db->set('valor_total', $valor);
+                    } else {
+                        $this->db->set('valor', $valor);
+                        $this->db->set('valor_total', $valor);
+                    }
+
+                    if ($fidelidade_liberado) {
+                        $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                        $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                        $this->db->set('operador_faturamento', $operador_id);
+                        $this->db->set('data_faturamento', $horario);
+                    } elseif ($formapagamento != 0 && $dinheiro == "t") {
                         $this->db->set('faturado', 't');
                         $this->db->set('forma_pagamento', $formapagamento);
                         $this->db->set('valor1', $valor);
@@ -4937,7 +5066,7 @@ class exametemp_model extends Model {
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
+            $numero_consultas = 0;
             foreach ($_POST['procedimento'] as $procedimento_tuss_id) {
                 $z = 0;
                 $c = 0;
@@ -5045,6 +5174,41 @@ class exametemp_model extends Model {
                     }
                     if ($medico_id == '') {
                         $medico_id = 0;
+                    }
+
+                    if ($fidelidade_endereco_ip != '') {
+                        $numero_consultas = 1;
+                        $tipo_grupo = $this->verificatipoprocedimento($procedimento_tuss_id);
+//                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
+                        $this->db->select('p.cpf');
+                        $this->db->from('tb_paciente p');
+                        $this->db->where("p.paciente_id", $paciente_id);
+                        $dados_paciente = $this->db->get()->result();
+
+
+
+
+                        $informacoes['paciente_id'] = $paciente_id;
+                        $informacoes['procedimento'] = $procedimento_tuss_id;
+                        $informacoes['parceiro_id'] = $convenio;
+                        $informacoes['cpf'] = @$dados_paciente[0]->cpf;
+                        $informacoes['grupo'] = $tipo_grupo;
+                        $informacoes['agenda_exames_id'] = $agenda_exames_id;
+                        $informacoes['numero_consultas'] = $numero_consultas;
+                        $informacoes['valor'] = $valor;
+
+                        $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+//                        var_dump($fidelidade);
+//                        die;
+                        if ($fidelidade == 'true') {
+                            $fidelidade_liberado = true;
+                        } elseif ($fidelidade == 'false') {
+                            $fidelidade_liberado = false;
+                        } else {
+                            $fidelidade_liberado = false;
+                        }
+                    } else {
+                        $fidelidade_liberado = false;
                     }
 
                     // Função do Percentual
@@ -5198,7 +5362,7 @@ class exametemp_model extends Model {
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
+            $numero_consultas = 0;
             foreach ($_POST['procedimento'] as $procedimento_tuss_id) {
                 $z = 0;
                 $c = 0;
@@ -5261,12 +5425,13 @@ class exametemp_model extends Model {
                         $w++;
                         if ($i == $w) {
                             $convenio = $itemconvenio;
-                            $this->db->select('dinheiro');
+                            $this->db->select('dinheiro, fidelidade_endereco_ip');
                             $this->db->from('tb_convenio');
                             $this->db->where("convenio_id", $convenio);
                             $query = $this->db->get();
                             $return = $query->result();
                             $dinheiro = $return[0]->dinheiro;
+                            $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
                             break;
                         }
                     }
@@ -5309,6 +5474,44 @@ class exametemp_model extends Model {
                     if ($medico_id == '') {
                         $medico_id = 0;
                     }
+
+                    if ($fidelidade_endereco_ip != '') {
+                        $numero_consultas = 1;
+                        $tipo_grupo = $this->verificatipoprocedimento($procedimento_tuss_id);
+//                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
+                        $this->db->select('p.cpf');
+                        $this->db->from('tb_paciente p');
+                        $this->db->where("p.paciente_id", $paciente_id);
+                        $dados_paciente = $this->db->get()->result();
+
+
+
+
+                        $informacoes['paciente_id'] = $paciente_id;
+                        $informacoes['procedimento'] = $procedimento_tuss_id;
+                        $informacoes['parceiro_id'] = $convenio;
+                        $informacoes['cpf'] = @$dados_paciente[0]->cpf;
+                        $informacoes['grupo'] = $tipo_grupo;
+                        $informacoes['agenda_exames_id'] = $agenda_exames_id;
+                        $informacoes['numero_consultas'] = $numero_consultas;
+                        $informacoes['valor'] = $valor;
+
+                        $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+//                        var_dump($fidelidade);
+//                        die;
+                        if ($fidelidade == 'true') {
+                            $fidelidade_liberado = true;
+                        } elseif ($fidelidade == 'false') {
+                            $fidelidade_liberado = false;
+                        } else {
+                            $fidelidade_liberado = false;
+                        }
+                    } else {
+                        $fidelidade_liberado = false;
+                    }
+
+
+
                     $valor_convenio = $valor / $qtde;
 
                     $this->db->select('pc.procedimento_convenio_id, 
@@ -5410,25 +5613,42 @@ class exametemp_model extends Model {
                     $this->db->set('guia_id', $ambulatorio_guia_id);
                     $this->db->set('quantidade', '1');
                     $this->db->set('agenda_exames_nome_id', $sala);
-                    if ($dinheiro == "t") {
-                        $this->db->set('valor', $valor);
-                        $this->db->set('valor_total', $valor);
-                        $this->db->set('confirmado', 't');
-                    } else {
-                        $this->db->set('valor', $valor_convenio);
-                        $this->db->set('valor_total', $valor_convenio);
-                        $this->db->set('confirmado', 't');
-                    }
+
                     $this->db->set('agrupador_fisioterapia', $agrupador_fisioterapia);
                     $this->db->set('numero_sessao', '1');
                     $this->db->set('qtde_sessao', $qtde);
-                    if ($formapagamento != 0 && $dinheiro == "t") {
+
+                    if ($fidelidade_liberado) {
+                        $this->db->set('valor', 0);
+                        $this->db->set('valor_total', $valor);
+                        $this->db->set('confirmado', 't');
+                    } else {
+                        if ($dinheiro == "t") {
+                            $this->db->set('valor', $valor);
+                            $this->db->set('valor_total', $valor);
+                            $this->db->set('confirmado', 't');
+                        } else {
+                            $this->db->set('valor', $valor_convenio);
+                            $this->db->set('valor_total', $valor_convenio);
+                            $this->db->set('confirmado', 't');
+                        }
+                    }
+
+                    if ($fidelidade_liberado) {
+                        $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                        $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                        $this->db->set('operador_faturamento', $operador_id);
+                        $this->db->set('data_faturamento', $horario);
+                    } elseif ($formapagamento != 0 && $dinheiro == "t") {
                         $this->db->set('faturado', 't');
                         $this->db->set('forma_pagamento', $formapagamento);
                         $this->db->set('valor1', $valor);
                         $this->db->set('operador_faturamento', $operador_id);
                         $this->db->set('data_faturamento', $horario);
                     }
+
                     $this->db->set('ativo', 'f');
 //                    $data = date("Y-m-d");
                     $this->db->set('data_faturar', $data);
@@ -5465,20 +5685,33 @@ class exametemp_model extends Model {
                             $this->db->set('valor_medico', $percentual[0]->perc_medico);
                             $this->db->set('percentual_medico', $percentual[0]->percentual);
 //                            var_dump($sessao2_valor); die;
-                            if ($dinheiro == "t") {
-                                $this->db->set('valor', $valor);
+                            if ($fidelidade_liberado) {
+                                $this->db->set('valor', 0);
                                 $this->db->set('valor_total', $valor);
                                 $this->db->set('confirmado', 'f');
                             } else {
-                                $this->db->set('valor', $valor_convenio);
-                                $this->db->set('valor_total', $valor_convenio);
-                                $this->db->set('confirmado', 'f');
+                                if ($dinheiro == "t") {
+                                    $this->db->set('valor', $valor);
+                                    $this->db->set('valor_total', $valor);
+                                    $this->db->set('confirmado', 'f');
+                                } else {
+                                    $this->db->set('valor', $valor_convenio);
+                                    $this->db->set('valor_total', $valor_convenio);
+                                    $this->db->set('confirmado', 'f');
+                                }
                             }
                             $this->db->set('situacao', 'OK');
 //                        $this->db->set('agrupador_fisioterapia', $agrupador_fisioterapia);
 //                        $this->db->set('numero_sessao', $index);
 //                        $this->db->set('qtde_sessao', $qtde);
-                            if ($formapagamento != 0 && $dinheiro == "t") {
+                            if ($fidelidade_liberado) {
+                                $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                                $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                                $this->db->set('operador_faturamento', $operador_id);
+                                $this->db->set('data_faturamento', $horario);
+                            } elseif ($formapagamento != 0 && $dinheiro == "t") {
                                 $this->db->set('faturado', 't');
                                 $this->db->set('forma_pagamento', $formapagamento);
                                 $this->db->set('valor1', $valor);
@@ -5608,7 +5841,7 @@ class exametemp_model extends Model {
         $this->db->where("pa.ativo", 't');
         $query = $this->db->get();
         $agrupados = $query->result();
-        
+
         $this->db->select('procedimento_convenio_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->where("procedimento_tuss_id IN (SELECT procedimento_tuss_id 
@@ -5664,6 +5897,18 @@ class exametemp_model extends Model {
         return $tipo[0]->nome;
     }
 
+    function verificatipoprocedimento($procedimento_convenio_id) {
+
+        $this->db->select('ag.tipo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->where("pc.procedimento_convenio_id", $procedimento_convenio_id);
+        $query = $this->db->get();
+        $tipo = $query->result();
+        return $tipo[0]->tipo;
+    }
+
     function autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id) {
         try {
 //            $testemedico = $_POST['medico_id'];
@@ -5674,7 +5919,7 @@ class exametemp_model extends Model {
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
+            $numero_consultas = 0;
             foreach ($_POST['procedimento'] as $procedimento_tuss_id) {
                 $z = 0;
                 $c = 0;
@@ -5744,12 +5989,13 @@ class exametemp_model extends Model {
                         $w++;
                         if ($i == $w) {
                             $convenio = $itemconvenio;
-                            $this->db->select('dinheiro');
+                            $this->db->select('dinheiro, fidelidade_endereco_ip');
                             $this->db->from('tb_convenio');
                             $this->db->where("convenio_id", $convenio);
                             $query = $this->db->get();
                             $return = $query->result();
                             $dinheiro = $return[0]->dinheiro;
+                            $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
                             break;
                         }
                     }
@@ -5784,6 +6030,44 @@ class exametemp_model extends Model {
                     if ($medico_id == '') {
                         $medico_id = 0;
                     }
+
+                    if ($fidelidade_endereco_ip != '') {
+
+                        $numero_consultas = 1;
+
+                        $tipo_grupo = $this->verificatipoprocedimento($procedimento_tuss_id);
+//                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
+                        $this->db->select('p.cpf');
+                        $this->db->from('tb_paciente p');
+                        $this->db->where("p.paciente_id", $paciente_id);
+                        $dados_paciente = $this->db->get()->result();
+
+
+
+
+                        $informacoes['paciente_id'] = $paciente_id;
+                        $informacoes['procedimento'] = $procedimento_tuss_id;
+                        $informacoes['parceiro_id'] = $convenio;
+                        $informacoes['cpf'] = @$dados_paciente[0]->cpf;
+                        $informacoes['grupo'] = $tipo_grupo;
+                        $informacoes['agenda_exames_id'] = $agenda_exames_id;
+                        $informacoes['numero_consultas'] = $numero_consultas;
+                        $informacoes['valor'] = $valor;
+
+                        $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+//                        var_dump($fidelidade);
+//                        die;
+                        if ($fidelidade == 'true') {
+                            $fidelidade_liberado = true;
+                        } elseif ($fidelidade == 'false') {
+                            $fidelidade_liberado = false;
+                        } else {
+                            $fidelidade_liberado = false;
+                        }
+                    } else {
+                        $fidelidade_liberado = false;
+                    }
+
 
                     $valor_convenio = $valor / $qtde;
 
@@ -5912,25 +6196,41 @@ class exametemp_model extends Model {
 //                    $_POST['qtdeProc'][$i];
                     $this->db->set('quantidade', (int) $_POST['qtdeProc'][$i]);
                     $this->db->set('agenda_exames_nome_id', $sala);
-                    if ($dinheiro == "t") {
-                        $this->db->set('valor', $valor);
+                    if ($fidelidade_liberado) {
+                        $this->db->set('valor', 0);
                         $this->db->set('valor_total', $valor);
                         $this->db->set('confirmado', 't');
                     } else {
-                        $this->db->set('valor', $valor_convenio);
-                        $this->db->set('valor_total', $valor_convenio);
-                        $this->db->set('confirmado', 't');
+                        if ($dinheiro == "t") {
+                            $this->db->set('valor', $valor);
+                            $this->db->set('valor_total', $valor);
+                            $this->db->set('confirmado', 't');
+                        } else {
+                            $this->db->set('valor', $valor_convenio);
+                            $this->db->set('valor_total', $valor_convenio);
+                            $this->db->set('confirmado', 't');
+                        }
                     }
+
                     $this->db->set('agrupador_fisioterapia', $ambulatorio_guia_id);
                     $this->db->set('numero_sessao', '1');
                     $this->db->set('qtde_sessao', $qtde);
-                    if ($formapagamento != 0 && $dinheiro == "t") {
+
+                    if ($fidelidade_liberado) {
+                        $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                        $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                        $this->db->set('operador_faturamento', $operador_id);
+                        $this->db->set('data_faturamento', $horario);
+                    } elseif ($formapagamento != 0 && $dinheiro == "t") {
                         $this->db->set('faturado', 't');
                         $this->db->set('forma_pagamento', $formapagamento);
                         $this->db->set('valor1', $valor);
                         $this->db->set('operador_faturamento', $operador_id);
                         $this->db->set('data_faturamento', $horario);
                     }
+
                     $this->db->set('ativo', 'f');
 
                     $this->db->set('ambulatorio_pacientetemp_id', null);
@@ -5964,20 +6264,33 @@ class exametemp_model extends Model {
                             $valor = 0;
                         }
 //                            var_dump($sessao2_valor); die;
-                        if ($dinheiro == "t") {
-                            $this->db->set('valor', $valor);
+                        if ($fidelidade_liberado) {
+                            $this->db->set('valor', 0);
                             $this->db->set('valor_total', $valor);
                             $this->db->set('confirmado', 'f');
                         } else {
-                            $this->db->set('valor', $valor_convenio);
-                            $this->db->set('valor_total', $valor_convenio);
-                            $this->db->set('confirmado', 'f');
+                            if ($dinheiro == "t") {
+                                $this->db->set('valor', $valor);
+                                $this->db->set('valor_total', $valor);
+                                $this->db->set('confirmado', 'f');
+                            } else {
+                                $this->db->set('valor', $valor_convenio);
+                                $this->db->set('valor_total', $valor_convenio);
+                                $this->db->set('confirmado', 'f');
+                            }
                         }
                         $this->db->set('situacao', 'OK');
                         $this->db->set('agrupador_fisioterapia', $ambulatorio_guia_id);
                         $this->db->set('numero_sessao', $index);
                         $this->db->set('qtde_sessao', $qtde);
-                        if ($formapagamento != 0 && $dinheiro == "t") {
+                        if ($fidelidade_liberado) {
+                            $this->db->set('faturado', 't');
+//                        $this->db->set('forma_pagamento', $formapagamento);
+                            $this->db->set('valor1', 0);
+//                        $this->db->set('valor_total', $valor);
+                            $this->db->set('operador_faturamento', $operador_id);
+                            $this->db->set('data_faturamento', $horario);
+                        } elseif ($formapagamento != 0 && $dinheiro == "t") {
                             $this->db->set('faturado', 't');
                             $this->db->set('forma_pagamento', $formapagamento);
                             $this->db->set('valor1', $valor);
@@ -6485,11 +6798,11 @@ class exametemp_model extends Model {
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("pc.ativo", 't');
         $this->db->where('pc.convenio_id', $parametro);
-        $empresa_id = $this->session->userdata('empresa_id');
-        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
-        if ($procedimento_multiempresa == 't') {
-            $this->db->where('pc.empresa_id', $empresa_id);
-        }
+//        $empresa_id = $this->session->userdata('empresa_id');
+//        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+//        if ($procedimento_multiempresa == 't') {
+//            $this->db->where('pc.empresa_id', $empresa_id);
+//        }
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -6727,7 +7040,7 @@ class exametemp_model extends Model {
     }
 
     function listarautocompleteprocedimentoagrupadorgrupo($grupo = null) {
-        
+
         $this->db->select('procedimento_tuss_id,
                             nome,
                             codigo');
@@ -6735,7 +7048,7 @@ class exametemp_model extends Model {
         $this->db->orderby('nome');
         $this->db->where("ativo", 't');
         $this->db->where("agrupador", 't');
-        if($grupo != ''){
+        if ($grupo != '') {
             $this->db->where("pt.grupo", $grupo);
         }
         $return = $this->db->get();
