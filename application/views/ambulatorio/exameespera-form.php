@@ -99,7 +99,7 @@ $empresa_p = $this->guia->listarempresapermissoes();
         </div>
     </div>
 </div> <!-- Final da DIV content -->
-<? // var_dump($url); die;?>
+<? //  var_dump($url); die;?>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 //        $('#btnVoltar').click(function () {
@@ -119,7 +119,7 @@ $empresa_p = $this->guia->listarempresapermissoes();
                 url: "<?= $url ?>",
                 success: function (data) {
     //                console.log(data);
-    //                alert(data.id);
+//                    alert(data.id);
                     $("#idChamada").val(data.id);
 
                 },

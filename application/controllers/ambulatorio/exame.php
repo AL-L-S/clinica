@@ -949,7 +949,7 @@ class Exame extends BaseController {
             $medico = $this->exame->listarmedicoagendatoten($agenda_exames_id);
             $nome_medico = $medico[0]->nome;
             $medico_id = $medico[0]->operador_id;
-            $data['url'] = "$endereco/webService/telaAtendimento/enviarFicha/$idFila/$paciente_nome/$paciente_cpf/$medico_id/$nome_medico/1/false";
+            $data['url'] = "$endereco/webService/telaAtendimento/enviarFicha/$idFila/$paciente_nome/$paciente_cpf/$medico_id/$nome_medico/1/true";
         }else{
             $data['url'] = '';
         }
