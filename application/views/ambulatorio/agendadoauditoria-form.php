@@ -35,7 +35,7 @@
                                 </tr>
                                 <tr>
                                     <td width="400px;">Hora do Agendamento</td>
-                                    <td width="150px;"><?= date("H:i:s", strtotime(str_replace("/", "-", $item->data_atualizacao)))?></td>
+                                    <td width="150px;"><?= date("H:i:s", strtotime(str_replace("/", "-", $item->data_atualizacao))) ?></td>
                                 </tr>
                                 <tr>
                                     <td width="400px;">Operador autorizacao</td>
@@ -55,20 +55,43 @@
                                 </tr>
                                 <tr>
                                     <td width="400px;">Medico Solicitante</td>
-                                    <td width="150px;"><?=  $item->medico?></td>
+                                    <td width="150px;"><?= $item->medico ?></td>
                                 </tr>
                                 <tr>
                                     <td width="400px;">Medico Executante</td>
-                                    <td width="150px;"><?= $item->operadorautorizacao?></td>
+                                    <td width="150px;"><?= $item->operadorautorizacao ?></td>
                                 </tr>
                                 <tr>
                                     <td width="400px;">Operador Bloqueio</td>
-                                    <td width="150px;"><?= @$item->operador_bloqueio?></td>
+                                    <td width="150px;"><?= @$item->operador_bloqueio ?></td>
                                 </tr>
                             <? endforeach; ?>
                         </tbody>
                     </table>
+
                     <hr/>
+                    <h3 class="singular">Cancelamentos</h3>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th class="tabela_header">Paciente</th>
+                                <th class="tabela_header">Operador</th>
+                                <th class="tabela_header">Data</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?
+                            foreach ($exclusao as $item) :
+                                ?>
+                                <tr>
+                                    <td width="400px;"><?= $item->paciente ?></td>
+                                    <td width="400px;"><?= $item->operador_exclusao ?></td>
+                                    <td width="200px;"><?=date("d/m/Y H:i:s", strtotime($item->data_cadastro));?></td>
+                                </tr>
+                            <? endforeach; ?>
+                        </tbody>
+                    </table>
             </form>
             </fieldset>
         </div>
@@ -76,8 +99,8 @@
 </body>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
 <script type="text/javascript">
-    (function($) {
-        $(function() {
+    (function ($) {
+        $(function () {
             $('input:text').setMask();
         });
     })(jQuery);

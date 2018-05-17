@@ -1937,6 +1937,29 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/faturarprocedimentos-form', $data);
     }
 
+    function faturarprocedimentosfiladecaixa($guia_id, $financeiro_grupo_id = null) {
+        $data['exame'][0] = new stdClass();
+        // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
+        // A linha acima inicia o Objeto antes de atribuir um valor
+        if (isset($financeiro_grupo_id)) {
+            $data['forma_pagamento'] = $this->guia->formadepagamentoguiaprocedimentos($guia_id, $financeiro_grupo_id);
+            $data['exame'] = $this->guia->listarexameguiaformaprocedimentos($guia_id, $financeiro_grupo_id);
+        } else {
+            $data['forma_pagamento'] = $this->guia->formadepagamento();
+            $data['exame1'] = $this->guia->listarexameguiaprocedimentos($guia_id);
+            $data['exame2'] = $this->guia->listarexameguiaformaprocedimentos($guia_id, $financeiro_grupo_id);
+            $data['exame'][0]->total = $data['exame1'][0]->total - $data['exame2'][0]->total;
+        }
+//        echo '<pre>';
+//        var_dump($data['exame']); die;
+
+        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
+        $data['guia_id'] = $guia_id;
+        $data['valor'] = 0.00;
+
+        $this->load->View('ambulatorio/faturarprocedimentosfiladecaixa-form', $data);
+    }
+
     function faturaramentomanualguias($guia_id) {
 
         $data['guia'] = $this->guia->instanciarguia($guia_id);
@@ -2105,6 +2128,92 @@ class Guia extends BaseController {
                 }
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+            } else {
+                $mensagem = $data['mensagem'];
+                echo "<html>
+                    <meta charset='UTF-8'>
+        <script type='text/javascript'>
+        
+        alert('$mensagem');
+        window.onunload = fechaEstaAtualizaAntiga;
+        function fechaEstaAtualizaAntiga() {
+            window.opener.location.reload();
+            }
+        window.close();
+            </script>
+            </html>";
+//                echo "<meta charset='UTF-8'><script>alert('$mensagem');</script>";
+            }
+        } else {
+            $this->load->View('ambulatorio/erro');
+        }
+    }
+
+    function gravarfaturadoprocedimentosfiladecaixa() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $resulta = $_POST['valortotal'];
+        if ($resulta == "0.00") {
+
+            $erro = false;
+            if ($_POST['valorMinimo1'] != '' && ( ((float) $_POST['valorMinimo1']) > ((float) $_POST['valor1']) / $_POST['parcela1'] ) && $_POST['parcela1'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 1 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo2'] != '' && ( ((float) $_POST['valorMinimo2']) > ((float) $_POST['valor2']) / $_POST['parcela2'] ) && $_POST['parcela2'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 2 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo3'] != '' && ( ((float) $_POST['valorMinimo3']) > ((float) $_POST['valor3']) / $_POST['parcela3'] ) && $_POST['parcela3'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 3 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo4'] != '' && ( ((float) $_POST['valorMinimo4']) > ((float) $_POST['valor4']) / $_POST['parcela4'] ) && $_POST['parcela4'] != 1) {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Valor da forma de pagamento 4 é menor que o valor da parcela minima cadastrado na forma de pagamento.';
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+            if ($_POST['valorMinimo4'] != '' && $_POST['valorMinimo3'] != '' && $_POST['valorMinimo2'] != '' && $_POST['valorMinimo1'] != '') {
+                $erro = true;
+//                echo "<script>alert('something');</script>";
+            }
+
+            $_POST['parcela1'] = ($_POST['parcela1'] == '' || $_POST['parcela1'] == 0) ? 1 : $_POST['parcela1'];
+            $_POST['parcela2'] = ($_POST['parcela2'] == '' || $_POST['parcela2'] == 0) ? 1 : $_POST['parcela2'];
+            $_POST['parcela3'] = ($_POST['parcela3'] == '' || $_POST['parcela3'] == 0) ? 1 : $_POST['parcela3'];
+            $_POST['parcela4'] = ($_POST['parcela4'] == '' || $_POST['parcela4'] == 0) ? 1 : $_POST['parcela4'];
+
+            if (!$erro) {
+                $ambulatorio_guia_id = $this->guia->gravarfaturamentototalprocedimentos();
+
+                if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
+                    $this->guia->descontacreditopaciente();
+                }
+
+                if ($ambulatorio_guia_id == "-1") {
+                    $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
+                } else {
+                    $data['mensagem'] = 'Sucesso ao gravar faturamento.';
+                }
+
+                if (isset($_POST['saladeespera'])) {
+                    $paciente = $this->guia->listaenviartodosfiladecaixa($_POST['guia_id']);
+                    $guia_id = $_POST['guia_id'];
+                    $paciente_id = $paciente[0]->paciente_id;
+                    $procedimento_tuss_id = $paciente[0]->procedimento_tuss_id;
+                    $agenda_exames_id = $paciente[0]->agenda_exames_id;
+                    
+                    $this->session->set_flashdata('message', $data['mensagem']);
+                    redirect(base_url() . "ambulatorio/exame/examesalatodosfiladecaixa/$paciente_id/$procedimento_tuss_id/$guia_id/$agenda_exames_id", $data);
+                    
+                } else {
+                    $this->session->set_flashdata('message', $data['mensagem']);
+                    redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+                }
             } else {
                 $mensagem = $data['mensagem'];
                 echo "<html>
@@ -2331,7 +2440,7 @@ class Guia extends BaseController {
         $data['mes1_fim'] = date("Y-m-t", strtotime(str_replace('/', '-', $_POST['mes1_inicio'])));
         $data['mes2_inicio'] = date("Y-m-01", strtotime(str_replace('/', '-', $_POST['mes2_inicio'])));
         $data['mes2_fim'] = date("Y-m-t", strtotime(str_replace('/', '-', $_POST['mes2_inicio'])));
-        
+
         $data['mes1_inicio_view'] = date("01/m/Y", strtotime(str_replace('/', '-', $_POST['mes1_inicio'])));
         $data['mes1_fim_view'] = date("t/m/Y", strtotime(str_replace('/', '-', $_POST['mes1_inicio'])));
         $data['mes2_inicio_view'] = date("01/m/Y", strtotime(str_replace('/', '-', $_POST['mes2_inicio'])));
@@ -2363,8 +2472,8 @@ class Guia extends BaseController {
         if ($_POST['procedimentos'] != '0') {
             $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
         }
-        $data['relatorio'] = $this->guia->relatoriocomparativomensal($data['mes1_inicio'],$data['mes1_fim']);
-        $data['relatorio2'] = $this->guia->relatoriocomparativomensal($data['mes2_inicio'],$data['mes2_fim']);
+        $data['relatorio'] = $this->guia->relatoriocomparativomensal($data['mes1_inicio'], $data['mes1_fim']);
+        $data['relatorio2'] = $this->guia->relatoriocomparativomensal($data['mes2_inicio'], $data['mes2_fim']);
 //        echo '<pre>';
 //        var_dump($data['relatorio2']); die;
         $this->load->View('ambulatorio/impressaorelatoriocomparativomensal', $data);

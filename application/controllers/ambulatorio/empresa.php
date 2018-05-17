@@ -31,6 +31,10 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/empresa-lista', $args);
     }
 
+    function pesquisartotensetor($args = array()) {
+        $this->loadView('ambulatorio/pesquisartotensetor-lista', $args);
+    }
+
     function pesquisarlembrete($args = array()) {
         $this->loadView('ambulatorio/lembrete-lista', $args);
     }
@@ -415,6 +419,19 @@ class Empresa extends BaseController {
         $data['obj'] = $obj_empresa;
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/empresa-form', $data);
+    }
+
+    function carregartotensetor() {
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
+        $endereco = $data['empresa'][0]->endereco_toten;
+        $setor_busca = file_get_contents("$endereco/webService/telaAtendimento/setores");
+        $data['setores'] = json_decode($setor_busca);
+        echo '<pre>';
+        var_dump($data['setores']); die;
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/pesquisartotensetor-form', $data);
     }
 
     function configuraremail($empresa_id) {

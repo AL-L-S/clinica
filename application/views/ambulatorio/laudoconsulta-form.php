@@ -111,10 +111,19 @@
                 <table>
                     <tr>
                         <td >
-                            <div class="bt_link_new">
-                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
-                                    Chamar</a>
-                            </div>
+                            <? if (@$obj->_id_chamada != '') { ?>
+
+                                <div class="bt_link_new">
+                                    <a href='#' id='botaochamar' >Chamar</a>
+                                </div>
+
+
+                            <? } else { ?>
+                                <div class="bt_link_new">
+                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
+                                        Chamar</a>
+                                </div>
+                            <? } ?>
                         </td>
 
                         <td>
@@ -1371,242 +1380,264 @@
             document.getElementById('senha').style.display = "none";
         }
     }
+<? if (@$obj->_id_chamada != '') { ?>
+        $("#botaochamar").click(function () {
+            //        alert('asadasdadad');
+            $.ajax({
+                type: "POST",
+                data: {teste: 'teste'},
+                //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_id_chamada ?>",
+                            success: function (data) {
+
+                                alert('Operação efetuada com sucesso');
 
 
-    $(function () {
-        $("#txtCICPrimariolabel").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#txtCICPrimariolabel").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtCICPrimariolabel").val(ui.item.value);
-                $("#txtCICPrimario").val(ui.item.id);
-                return false;
-            }
-        });
-    });
-    $(function () {
-        $("#txtCodigoTusslabel").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentotusspesquisa",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#txtCodigoTusslabel").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtCodigoTusslabel").val(ui.item.value);
-                $("#txtCodigoTuss").val(ui.item.id);
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                alert('Erro ao chamar paciente');
+                            }
+                        });
+                    });
+<? } ?>
+
+
+
+                $(function () {
+                    $("#txtCICPrimariolabel").autocomplete({
+                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                        minLength: 3,
+                        focus: function (event, ui) {
+                            $("#txtCICPrimariolabel").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtCICPrimariolabel").val(ui.item.value);
+                            $("#txtCICPrimario").val(ui.item.id);
+                            return false;
+                        }
+                    });
+                });
+                $(function () {
+                    $("#txtCodigoTusslabel").autocomplete({
+                        source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentotusspesquisa",
+                        minLength: 3,
+                        focus: function (event, ui) {
+                            $("#txtCodigoTusslabel").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtCodigoTusslabel").val(ui.item.value);
+                            $("#txtCodigoTuss").val(ui.item.id);
 //                                                                $("#txtcodigo").val(ui.item.codigo);
 //                                                                $("#txtdescricao").val(ui.item.descricao);
-                return false;
-            }
-        });
-    });
+                            return false;
+                        }
+                    });
+                });
 
-    $(function () {
-        $("#txtCICSecundariolabel").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#txtCICSecundariolabel").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtCICSecundariolabel").val(ui.item.value);
-                $("#txtCICSecundario").val(ui.item.id);
-                return false;
-            }
-        });
-    });
-    var readonly = <?= $readonly ?>;
-    tinyMCE.init({
-        // General options
-        mode: "exact",
-        elements: "laudo",
-        theme: "advanced",
-        readonly: readonly,
-        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-        menubar: "tools",
-        toolbar: "spellchecker",
-        spellchecker_languages: 'pt_BR',
-        browser_spellcheck: true,
-        theme_url: 'js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js',
+                $(function () {
+                    $("#txtCICSecundariolabel").autocomplete({
+                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                        minLength: 3,
+                        focus: function (event, ui) {
+                            $("#txtCICSecundariolabel").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#txtCICSecundariolabel").val(ui.item.value);
+                            $("#txtCICSecundario").val(ui.item.id);
+                            return false;
+                        }
+                    });
+                });
+                var readonly = <?= $readonly ?>;
+                tinyMCE.init({
+                    // General options
+                    mode: "exact",
+                    elements: "laudo",
+                    theme: "advanced",
+                    readonly: readonly,
+                    plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                    menubar: "tools",
+                    toolbar: "spellchecker",
+                    spellchecker_languages: 'pt_BR',
+                    browser_spellcheck: true,
+                    theme_url: 'js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js',
 //                                                        external_plugins: 'js/tinymce/jscripts/tiny_mce/plugins/spellchecker/plugin.min.js',
 
-        // Theme options
-        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-        theme_advanced_toolbar_location: "top",
-        theme_advanced_toolbar_align: "left",
-        theme_advanced_statusbar_location: "bottom",
-        theme_advanced_resizing: true,
-        // Example content CSS (should be your site CSS)
-        //                                    content_css : "css/content.css",
-        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-        // Drop lists for link/image/media/template dialogs
-        template_external_list_url: "lists/template_list.js",
-        external_link_list_url: "lists/link_list.js",
-        external_image_list_url: "lists/image_list.js",
-        media_external_list_url: "lists/media_list.js",
-        // Style formats
-        style_formats: [
-            {title: 'Bold text', inline: 'b'},
-            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-            {title: 'Example 1', inline: 'span', classes: 'example1'},
-            {title: 'Example 2', inline: 'span', classes: 'example2'},
-            {title: 'Table styles'},
-            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-        ],
-        // Replace values for the template plugin
-        template_replace_values: {
-            username: "Some User",
-            staffid: "991234"
-        }
+                    // Theme options
+                    theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                    theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                    theme_advanced_toolbar_location: "top",
+                    theme_advanced_toolbar_align: "left",
+                    theme_advanced_statusbar_location: "bottom",
+                    theme_advanced_resizing: true,
+                    // Example content CSS (should be your site CSS)
+                    //                                    content_css : "css/content.css",
+                    content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                    // Drop lists for link/image/media/template dialogs
+                    template_external_list_url: "lists/template_list.js",
+                    external_link_list_url: "lists/link_list.js",
+                    external_image_list_url: "lists/image_list.js",
+                    media_external_list_url: "lists/media_list.js",
+                    // Style formats
+                    style_formats: [
+                        {title: 'Bold text', inline: 'b'},
+                        {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                        {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                        {title: 'Example 1', inline: 'span', classes: 'example1'},
+                        {title: 'Example 2', inline: 'span', classes: 'example2'},
+                        {title: 'Table styles'},
+                        {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                    ],
+                    // Replace values for the template plugin
+                    template_replace_values: {
+                        username: "Some User",
+                        staffid: "991234"
+                    }
 
-    });
+                });
 
-    tinyMCE.init({
-        // General options
-        mode: "exact",
-        elements: "adendo",
-        theme: "advanced",
-        // plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-        menubar: "tools",
-        toolbar: "spellchecker",
-        spellchecker_languages: 'pt_BR',
-        browser_spellcheck: true,
-        theme_url: 'js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js',
+                tinyMCE.init({
+                    // General options
+                    mode: "exact",
+                    elements: "adendo",
+                    theme: "advanced",
+                    // plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                    menubar: "tools",
+                    toolbar: "spellchecker",
+                    spellchecker_languages: 'pt_BR',
+                    browser_spellcheck: true,
+                    theme_url: 'js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js',
 //                                                        external_plugins: 'js/tinymce/jscripts/tiny_mce/plugins/spellchecker/plugin.min.js',
 
-        // Theme options
-        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-        theme_advanced_toolbar_location: "top",
-        theme_advanced_toolbar_align: "left",
-        theme_advanced_statusbar_location: "bottom",
-        theme_advanced_resizing: true,
-        // Example content CSS (should be your site CSS)
-        //                                    content_css : "css/content.css",
-        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-        // Drop lists for link/image/media/template dialogs
-        template_external_list_url: "lists/template_list.js",
-        external_link_list_url: "lists/link_list.js",
-        external_image_list_url: "lists/image_list.js",
-        media_external_list_url: "lists/media_list.js",
-        // Style formats
-        style_formats: [
-            {title: 'Bold text', inline: 'b'},
-            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-            {title: 'Example 1', inline: 'span', classes: 'example1'},
-            {title: 'Example 2', inline: 'span', classes: 'example2'},
-            {title: 'Table styles'},
-            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-        ],
-        // Replace values for the template plugin
-        template_replace_values: {
-            username: "Some User",
-            staffid: "991234"
-        }
+                    // Theme options
+                    theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                    theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                    theme_advanced_toolbar_location: "top",
+                    theme_advanced_toolbar_align: "left",
+                    theme_advanced_statusbar_location: "bottom",
+                    theme_advanced_resizing: true,
+                    // Example content CSS (should be your site CSS)
+                    //                                    content_css : "css/content.css",
+                    content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                    // Drop lists for link/image/media/template dialogs
+                    template_external_list_url: "lists/template_list.js",
+                    external_link_list_url: "lists/link_list.js",
+                    external_image_list_url: "lists/image_list.js",
+                    media_external_list_url: "lists/media_list.js",
+                    // Style formats
+                    style_formats: [
+                        {title: 'Bold text', inline: 'b'},
+                        {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                        {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                        {title: 'Example 1', inline: 'span', classes: 'example1'},
+                        {title: 'Example 2', inline: 'span', classes: 'example2'},
+                        {title: 'Table styles'},
+                        {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                    ],
+                    // Replace values for the template plugin
+                    template_replace_values: {
+                        username: "Some User",
+                        staffid: "991234"
+                    }
 
-    });
-
-    $(function () {
-        $('#exame').change(function () {
-            if ($(this).val()) {
-                //$('#laudo').hide();
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
-                    options = "";
-
-                    options += j[0].texto;
-                    //                                                document.getElementById("laudo").value = options
-
-                    $('#laudo').val(options)
-                    var ed = tinyMCE.get('laudo');
-                    ed.setContent($('#laudo').val());
-
-                    //$('#laudo').val(options);
-                    //$('#laudo').html(options).show();
-                    //                                                $('.carregando').hide();
-                    //history.go(0) 
                 });
-            } else {
-                $('#laudo').html('value=""');
-            }
-        });
-    });
 
-    $(function () {
-        $('#linha').change(function () {
-            if ($(this).val()) {
-                //$('#laudo').hide();
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
-                    options = "";
+                $(function () {
+                    $('#exame').change(function () {
+                        if ($(this).val()) {
+                            //$('#laudo').hide();
+                            $('.carregando').show();
+                            $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
+                                options = "";
 
-                    options += j[0].texto;
-                    //                                                document.getElementById("laudo").value = $('#laudo').val() + options
-                    $('#laudo').val() + options
-                    var ed = tinyMCE.get('laudo');
-                    ed.setContent($('#laudo').val());
-                    //$('#laudo').html(options).show();
+                                options += j[0].texto;
+                                //                                                document.getElementById("laudo").value = options
+
+                                $('#laudo').val(options)
+                                var ed = tinyMCE.get('laudo');
+                                ed.setContent($('#laudo').val());
+
+                                //$('#laudo').val(options);
+                                //$('#laudo').html(options).show();
+                                //                                                $('.carregando').hide();
+                                //history.go(0) 
+                            });
+                        } else {
+                            $('#laudo').html('value=""');
+                        }
+                    });
                 });
-            } else {
-                $('#laudo').html('value=""');
-            }
-        });
-    });
 
-    $(function () {
-        $("#linha2").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
-            minLength: 1,
-            focus: function (event, ui) {
-                $("#linha2").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#linha2").val(ui.item.value);
-                tinyMCE.triggerSave(true, true);
-                document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
-                $('#laudo').val() + ui.item.id
-                var ed = tinyMCE.get('laudo');
-                ed.setContent($('#laudo').val());
-                //$( "#laudo" ).val() + ui.item.id;
-                document.getElementById("linha2").value = ''
-                return false;
-            }
-        });
-    });
+                $(function () {
+                    $('#linha').change(function () {
+                        if ($(this).val()) {
+                            //$('#laudo').hide();
+                            $('.carregando').show();
+                            $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
+                                options = "";
 
-    $(function (a) {
-        $('#anteriores').change(function () {
-            if ($(this).val()) {
-                //$('#laudo').hide();
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
-                    option = "";
-
-                    option = i[0].texto;
-                    tinyMCE.triggerSave();
-                    document.getElementById("laudo").value = option
-                    //$('#laudo').val(options);
-                    //$('#laudo').html(options).show();
-                    $('.carregando').hide();
-                    history.go(0)
+                                options += j[0].texto;
+                                //                                                document.getElementById("laudo").value = $('#laudo').val() + options
+                                $('#laudo').val() + options
+                                var ed = tinyMCE.get('laudo');
+                                ed.setContent($('#laudo').val());
+                                //$('#laudo').html(options).show();
+                            });
+                        } else {
+                            $('#laudo').html('value=""');
+                        }
+                    });
                 });
-            } else {
-                $('#laudo').html('value="texto"');
-            }
-        });
-    });
-    //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-    $('.jqte-test').jqte();
+
+                $(function () {
+                    $("#linha2").autocomplete({
+                        source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
+                        minLength: 1,
+                        focus: function (event, ui) {
+                            $("#linha2").val(ui.item.label);
+                            return false;
+                        },
+                        select: function (event, ui) {
+                            $("#linha2").val(ui.item.value);
+                            tinyMCE.triggerSave(true, true);
+                            document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
+                            $('#laudo').val() + ui.item.id
+                            var ed = tinyMCE.get('laudo');
+                            ed.setContent($('#laudo').val());
+                            //$( "#laudo" ).val() + ui.item.id;
+                            document.getElementById("linha2").value = ''
+                            return false;
+                        }
+                    });
+                });
+
+                $(function (a) {
+                    $('#anteriores').change(function () {
+                        if ($(this).val()) {
+                            //$('#laudo').hide();
+                            $('.carregando').show();
+                            $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
+                                option = "";
+
+                                option = i[0].texto;
+                                tinyMCE.triggerSave();
+                                document.getElementById("laudo").value = option
+                                //$('#laudo').val(options);
+                                //$('#laudo').html(options).show();
+                                $('.carregando').hide();
+                                history.go(0)
+                            });
+                        } else {
+                            $('#laudo').html('value="texto"');
+                        }
+                    });
+                });
+                //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+                $('.jqte-test').jqte();
 
 
 

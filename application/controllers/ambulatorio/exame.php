@@ -20,6 +20,7 @@ class Exame extends BaseController {
         $this->load->model('ambulatorio/sala_model', 'sala');
         $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->model('ambulatorio/laudo_model', 'laudo');
+        $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('login_model', 'login');
         $this->load->model('ambulatorio/tipoconsulta_model', 'tipoconsulta');
         $this->load->model('seguranca/operador_model', 'operador_m');
@@ -64,6 +65,40 @@ class Exame extends BaseController {
     function listaresperacaixa($args = array()) {
 
         $this->loadView('ambulatorio/exameesperacaixa-lista', $args);
+    }
+
+    function listaresperasenhas() {
+//        echo '<pre>';
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
+        $endereco = $data['empresa'][0]->endereco_toten;
+        $data['endereco'] = $endereco;
+        if ($endereco != '') {
+
+            $setor_busca = file_get_contents("$endereco/webService/telaAtendimento/setores");
+            $data['setores'] = json_decode($setor_busca);
+
+//        var_dump($data['setores']); die;
+            $setor_string = '';
+            foreach ($data['setores'] as $item) {
+                if ($setor_string == '') {
+                    $setor_string = $setor_string . $item->id;
+                } else {
+                    $setor_string = $setor_string . "," . $item->id;
+                }
+            }
+            $data['setor_string'] = $setor_string;
+
+
+            $senhas_busca = file_get_contents("$endereco/webService/fialaDeespera/$setor_string");
+            $data['senhas'] = json_decode($senhas_busca);
+//        var_dump($data['senhas']); die;    
+            $this->loadView('ambulatorio/exameesperasenhas-lista', $data);
+        } else {
+            $mensagem = 'Erro: Não há endereço do Toten cadastrado na empresa';
+            $this->session->set_flashdata('message', $mensagem);
+            redirect(base_url() . "cadastros/pacientes");
+        }
     }
 
     function listarmultifuncao($args = array()) {
@@ -892,6 +927,37 @@ class Exame extends BaseController {
     }
 
     function examesala($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id) {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
+
+        $endereco = @$data['empresa'][0]->endereco_toten;
+        $data['endereco'] = $endereco;
+        
+
+        if ($endereco != '') {
+            $senha = $this->exame->listarultimasenhatoten();
+            $idFila = $senha[0]->id;
+            $paciente = $this->exame->listarpacientetoten($paciente_id);
+            $paciente_nome = $paciente[0]->nome;
+            if ($paciente[0]->cpf != '') {
+                $paciente_cpf = $paciente[0]->cpf;
+            } else {
+                $paciente_cpf = 'null';
+            }
+
+            $medico = $this->exame->listarmedicoagendatoten($agenda_exames_id);
+            $nome_medico = $medico[0]->nome;
+            $medico_id = $medico[0]->operador_id;
+            $data['url'] = "$endereco/webService/telaAtendimento/enviarFicha/$idFila/$paciente_nome/$paciente_cpf/$medico_id/$nome_medico/1/false";
+        }else{
+            $data['url'] = '';
+        }
+//        var_dump($data['url']);
+//        die;
+
+
+
         $data['salas'] = $this->exame->listarsalas();
         $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
         $data['agenda_exames_nome_id'] = $this->exame->listarsalaagenda($agenda_exames_id);
@@ -920,6 +986,8 @@ class Exame extends BaseController {
     }
 
     function agendadoauditoria($agenda_exames_id) {
+        $data['exclusao'] = $this->exame->listarexclusaoagendamento($agenda_exames_id);
+//        var_dump($data['exclusao']); die;
         $data['guia'] = $this->exame->listaragendadoauditoria($agenda_exames_id);
         $this->load->View('ambulatorio/agendadoauditoria-form', $data);
     }
@@ -986,6 +1054,21 @@ class Exame extends BaseController {
         $data['guia_id'] = $guia_id;
         $data['agenda_exames_id'] = $agenda_exames_id;
         $this->loadView('ambulatorio/exameesperatodos-form', $data);
+    }
+
+    function examesalatodosfiladecaixa($paciente_id, $procedimento_tuss_id, $guia_id, $agenda_exames_id) {
+
+        $data['salas'] = $this->exame->listarsalas();
+        $data['grupo'] = $this->exame->listargrupo($agenda_exames_id);
+        $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
+        $data['agenda_exames_nome_id'] = $this->exame->listarsalaagenda($agenda_exames_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['tecnicos'] = $this->operador_m->listartecnicos();
+        $data['paciente_id'] = $paciente_id;
+        $data['procedimento_tuss_id'] = $procedimento_tuss_id;
+        $data['guia_id'] = $guia_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $this->loadView('ambulatorio/exameesperatodosfiladecaixa-form', $data);
     }
 
     function esperacancelamento($agenda_exames_id, $paciente_id, $procedimento_tuss_id) {
@@ -1250,6 +1333,8 @@ class Exame extends BaseController {
     function gravarexame() {
         $total = $this->exame->contadorexames();
 //        var_dump($total);die('morreu');
+
+
         if ($total == 0) {
             $preparo = $this->guia->listarprocedimentopreparo();
             $procedimentopercentual = $_POST['txtprocedimento_tuss_id'];
@@ -1287,6 +1372,27 @@ class Exame extends BaseController {
     }
 
     function gravarexametodos() {
+        $total = $this->exame->contadorexamestodos();
+        if ($total == 0) {
+            $laudo_id = $this->exame->gravarexametodos();
+
+            if (count($laudo_id) == 0) {
+                $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao gravar o Exame.';
+//                $this->gerarcr($agenda_exames_id); //clinica humana
+                foreach ($laudo_id as $value) {
+                    $this->gerardicom($value); //clinica ronaldo
+                }
+            }
+        } else {
+            $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exame/listarsalasespera");
+    }
+
+    function gravarexametodosfiladecaixa() {
         $total = $this->exame->contadorexamestodos();
         if ($total == 0) {
             $laudo_id = $this->exame->gravarexametodos();
@@ -3300,7 +3406,8 @@ class Exame extends BaseController {
         $convenio = @$listarexame[0]->convenio;
         $versao = $_POST['xml'];
         $modelo = $_POST['modelo'];
-//        var_dump($_POST); die;
+//        echo '<pre>';
+//        var_dump($listarpacienete); die;
 
         $limite = ($_POST['limite'] == '0') ? false : true;
 

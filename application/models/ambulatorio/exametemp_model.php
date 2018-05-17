@@ -140,6 +140,32 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function salvaragendamentoexcluido($ambulatorio_pacientetemp_id) {
+        $this->db->select('agenda_exames_id,
+                            paciente_id,
+                            procedimento_tuss_id,
+                            data,
+                            empresa_id,
+                            observacoes');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where("agenda_exames_id", $ambulatorio_pacientetemp_id);
+        $return = $this->db->get()->result();
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('agenda_exames_id', $return[0]->agenda_exames_id);
+        $this->db->set('paciente_id', $return[0]->paciente_id);
+        $this->db->set('procedimento_tuss_id', $return[0]->procedimento_tuss_id);
+        $this->db->set('empresa_id', $return[0]->empresa_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_ambulatorio_atendimentos_excluiragendado');
+
+//        var_dump($return);
+//        die;
+    }
+
     function listaragendaspaciente($pacientetemp_id) {
         $data = date("Y-m-d");
 //        var_dump($data);
@@ -4006,6 +4032,52 @@ class exametemp_model extends Model {
 //            $this->db->where("paciente_id is null");
             $retorno_data = $this->db->get()->result();
             return $retorno_data;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravarsenhatoten() {
+        try {
+            $operador_id = $this->session->userdata('operador_id');
+            $horario = date("Y-m-d H:i:s");
+
+            $this->db->set('senha', $_POST['senha']);
+            $this->db->set('id', $_POST['id']);
+            $this->db->set('data', $_POST['data']);
+            $this->db->set('operador', $operador_id);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->insert('tb_toten_senha');
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function atendersenhatoten() {
+        try {
+            $operador_id = $this->session->userdata('operador_id');
+            $horario = date("Y-m-d H:i:s");
+            $this->db->select('toten_senha_id');
+            $this->db->from('tb_toten_senha');
+            $this->db->where('id', (string) $_POST['id']);
+            $this->db->orderby("toten_senha_id desc");
+            $retorno_data = $this->db->get()->result();
+
+
+            if (count($retorno_data) > 0) {
+                $id = @$retorno_data[0]->toten_senha_id;
+                $this->db->set('atendida', 't');
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->where('toten_senha_id', $id);
+                $this->db->update('tb_toten_senha');
+            }
+
+
+            return true;
         } catch (Exception $exc) {
             return false;
         }

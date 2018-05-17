@@ -15,7 +15,7 @@ class versao_model extends Model {
                             sistema,
                             banco_de_dados');
         $this->db->from('tb_versao');
-
+//        $this->db->orderby('versao_id');
         return $this->db;
     }
     

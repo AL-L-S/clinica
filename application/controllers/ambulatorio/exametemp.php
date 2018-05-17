@@ -638,51 +638,61 @@ class Exametemp extends BaseController {
     }
 
     function excluirexametemp($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametemp($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
     }
 
     function excluirconsultatempgeral($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametemp($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$pacientetemp_id");
     }
 
     function excluirconsultatemp($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametemp($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
     }
 
     function excluirconsultatempmedico($agenda_exames_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametemp($agenda_exames_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function excluirconsultatempencaixe($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
     }
 
     function excluirexametempencaixeodontologia($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametempencaixeodontologia($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
     }
 
     function excluirexametempencaixe($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
     }
 
     function examecancelamentoencaixe($agenda_exames_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exame/listarmultifuncaomedicofisioterapia");
     }
 
     function excluirfisioterapiatempencaixe($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametempencaixe($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
     }
 
     function excluirfisioterapiatemp($agenda_exames_id, $pacientetemp_id) {
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametemp($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientefisioterapiatemp/$pacientetemp_id");
     }
@@ -690,7 +700,7 @@ class Exametemp extends BaseController {
     function excluirfisioterapiatempmultifuncaomedico($agenda_exames_id) {
 //        $args = str_replace('!', '=', $url);
 //        $args = str_replace('@', '&', $args);
-
+        $this->exametemp->salvaragendamentoexcluido($agenda_exames_id);
         $this->exametemp->excluirexametempmultifuncaomedico($agenda_exames_id);
         redirect(base_url() . "ambulatorio/exame/listarmultifuncaomedicofisioterapia");
     }

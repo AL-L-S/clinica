@@ -41,11 +41,11 @@
 
             <div>
                 <label>Autorizacao Sisreg</label>
-                <input type="text" id="txtsisreg" class="texto06" name="sisreg" value="<?= @$obj->_codigo; ?>" required/>
+                <input type="text" id="txtsisreg" class="texto06" name="sisreg" value="<?= @$obj->_codigo; ?>" />
             </div>
             <div>
                 <label>AIH</label>
-                <input type="text" id="txtaih" class="texto06" maxlength="9" name="aih" value="<?= @$obj->_aih; ?>" required/>
+                <input type="text" id="txtaih" class="texto06" maxlength="9" name="aih" value="<?= @$obj->_aih; ?>" />
             </div>
             <div>
                 <label>Autorizacao central</label>
@@ -177,64 +177,7 @@
                         });
                     });
 
-                    $(document).ready(function () {
-                        jQuery('#form_unidade').validate({
-                            rules: {
-                                nome: {
-                                    required: true,
-                                },
-                                txtleito: {
-                                    required: true
-                                },
-                                txtoperador: {
-                                    required: true
-                                },
-                                txtcid1: {
-                                    required: true
-                                },
-                                sisreg: {
-                                    required: true
-                                },
-                                aih: {
-                                    required: true
-                                },
-                                txtprocedimento: {
-                                    required: true
-                                },
-                                data: {
-                                    required: true
-                                },
-
-                            },
-                            messages: {
-                                nome: {
-                                    required: "*"
-                                },
-                                txtleito: {
-                                    required: "*"
-                                },
-                                txtoperador: {
-                                    required: "*"
-                                },
-                                txtcid1: {
-                                    required: "*"
-                                },
-                                sisreg: {
-                                    required: "*"
-                                },
-                                aih: {
-                                    required: "*"
-                                },
-                                txtprocedimento: {
-                                    required: "*"
-                                },
-                                data: {
-                                    required: "*"
-                                },
-
-                            }
-                        });
-                    });
+                
 
                     $(function () {
                         $("#txtoperador").autocomplete({

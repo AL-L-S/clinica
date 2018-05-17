@@ -93,13 +93,14 @@
                                     <? } ?>
                         </select>
                     </dd>
+                    <?$empresa_id = $this->session->userdata('empresa_id');?>
                     <dt>
                         <label>Empresa</label>
                     </dt>
                     <dd>
-                        <select name="empresa" id="empresa" class="size2" required="">
+                        <select name="empresa" id="empresa" class="size2">
                             <? foreach ($empresa as $value) : ?>
-                                <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
+                                <option value="<?= $value->empresa_id; ?>" <?if($empresa_id == $value->empresa_id){?>selected<?}?>><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
                             <option value="0">TODOS</option>
                         </select>

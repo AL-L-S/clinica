@@ -28,6 +28,7 @@ $empresa_p = $this->guia->listarempresapermissoes();
                         <input type="hidden" name="txtguia_id" value="<?= $guia_id; ?>" />
                         <input type="hidden" name="txttipo" value="<?= $agenda_exames_nome_id[0]->tipo; ?>" />
                         <input type="hidden" name="txtagenda_exames_id" value="<?= $agenda_exames_id; ?>" />
+                        <input type="hidden" name="idChamada" id="idChamada"/>
                         <select name="txtsalas" id="txtsalas" class="size4">
                             <option value="">Selecione</option>
                             <? foreach ($salas as $item) : ?>
@@ -64,7 +65,7 @@ $empresa_p = $this->guia->listarempresapermissoes();
                             <? endforeach; ?>
                         </select>
                     </dd>
-                    <? if(($perfil_id == 1 || $perfil_id == 10) && $empresa_p[0]->tecnica_promotor == 't') { ?>
+                    <? if (($perfil_id == 1 || $perfil_id == 10) && $empresa_p[0]->tecnica_promotor == 't') { ?>
                         <dt>
                             <label>Recomendação</label>
                         </dt>
@@ -75,8 +76,12 @@ $empresa_p = $this->guia->listarempresapermissoes();
                                 $indicacao = $this->paciente->listaindicacao($_GET);
                                 foreach ($indicacao as $item) {
                                     ?>
-                                    <option value="<?php echo $item->paciente_indicacao_id; ?>" <?php if($item->paciente_indicacao_id == $agenda_exames_nome_id[0]->indicacao ){echo 'selected';} ?>> 
-                                        <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?>
+                                    <option value="<?php echo $item->paciente_indicacao_id; ?>" <?php
+                                    if ($item->paciente_indicacao_id == $agenda_exames_nome_id[0]->indicacao) {
+                                        echo 'selected';
+                                    }
+                                    ?>> 
+                                                <?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?>
                                     </option>
                                     <?php
                                 }
@@ -94,7 +99,7 @@ $empresa_p = $this->guia->listarempresapermissoes();
         </div>
     </div>
 </div> <!-- Final da DIV content -->
-
+<? // var_dump($url); die;?>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 //        $('#btnVoltar').click(function () {
@@ -104,23 +109,28 @@ $empresa_p = $this->guia->listarempresapermissoes();
         $(function () {
             $("#accordion").accordion();
         });
+//        alert('asadasdadad');
 
+<? if ($url != '') { ?>
+            $.ajax({
+                type: "POST",
+                data: {teste: 'teste'},
+                //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                url: "<?= $url ?>",
+                success: function (data) {
+    //                console.log(data);
+    //                alert(data.id);
+                    $("#idChamada").val(data.id);
 
-
-        $(document).ready(function () {
-            jQuery('#form_exameespera').validate({
-                rules: {
-                    txtsalas: {
-                        required: true
-                    }
                 },
-                messages: {
-                    txtsalas: {
-                        required: "*"
-                    }
+                error: function (data) {
+                    console.log(data);
+    //                alert('DEU MERDA');
                 }
             });
-        });
+<? } ?>
+
+
 
 
 </script>

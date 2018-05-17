@@ -1565,9 +1565,10 @@ class guia_model extends Model {
         $this->db->where('ae.empresa_id', $_POST['empresa']);
 //        $this->db->where('ae.faturado', 't');
         $this->db->where("pt.grupo", $_POST['grupo']);
+        $this->db->where("ae.realizada", 't');
         $this->db->where("pc.convenio_id", $_POST['convenio1']);
-        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->where("ae.data_faturar >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data_faturar <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $return = $this->db->get()->result();
 //        echo '<pre>';
 //        var_dump($return);
@@ -1609,7 +1610,8 @@ class guia_model extends Model {
 //            $this->db->groupby('ae.agenda_exames_id');
             $this->db->orderby('ae.valor_total desc');
             $return2 = $this->db->get()->result();
-
+//            var_dump($return2);
+//            die;
             $b = 0;
 
 
@@ -7986,12 +7988,23 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = ae.procedimento_tuss_id');
         $this->db->where("guia_id", $guia_id);
         $this->db->where("ae.faturado", 'f');
+        $this->db->where("ae.confirmado", 't');
         $this->db->where("cp.ativo", 't');
         if ($financeiro_grupo_id != null) {
             $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
         }
         $return = $this->db->get();
 //        var_dump($financeiro_grupo_id); die;
+        return $return->result();
+    }
+    
+    function listaenviartodosfiladecaixa($guia_id) {
+        $this->db->select('agenda_exames_id, procedimento_tuss_id, paciente_id');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->where("guia_id", $guia_id);
+        $this->db->where("ae.realizada", 'f');
+        $this->db->where("ae.confirmado", 't');
+        $return = $this->db->get();
         return $return->result();
     }
 
@@ -13799,7 +13812,7 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->set('operador_autorizacao', $operador_id);
                 $this->db->insert('tb_agenda_exames');
-                
+
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return -1;

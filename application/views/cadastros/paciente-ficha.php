@@ -3,15 +3,14 @@
         <!--        Chamando o Script para a Webcam   -->
         <script src="<?= base_url() ?>js/webcam.js"></script>
         <fieldset>
-            <? 
-            if(@$empresapermissoes[0]->campos_cadastro != ''){
-               $campos_obrigatorios = json_decode(@$empresapermissoes[0]->campos_cadastro); 
-            }else{
-               $campos_obrigatorios = array(); 
+            <?
+            if (@$empresapermissoes[0]->campos_cadastro != '') {
+                $campos_obrigatorios = json_decode(@$empresapermissoes[0]->campos_cadastro);
+            } else {
+                $campos_obrigatorios = array();
             }
-            
+
 //            var_dump(); die;
-            
             ?>
             <legend>Dados do Paciente</legend>
             <div>
@@ -66,21 +65,21 @@
                 <label>Sexo</label>
                 <select name="sexo" id="txtSexo" class="size1" <?= (in_array('nascimento', $campos_obrigatorios)) ? 'required' : '' ?>>
                     <option value="" <?
-                    if (@$obj->_sexo == ""):echo 'selected';
-                    endif;
-                    ?>>Selecione</option>
+                       if (@$obj->_sexo == ""):echo 'selected';
+                       endif;
+                       ?>>Selecione</option>
                     <option value="M" <?
                     if (@$obj->_sexo == "M"):echo 'selected';
                     endif;
-                    ?>>Masculino</option>
+                       ?>>Masculino</option>
                     <option value="F" <?
                     if (@$obj->_sexo == "F"):echo 'selected';
                     endif;
-                    ?>>Feminino</option>
+                       ?>>Feminino</option>
                     <option value="O" <?
                     if (@$obj->_sexo == "O"):echo 'selected';
                     endif;
-                    ?>>Outro</option>
+                       ?>>Outro</option>
                 </select>
 
             </div>
@@ -90,15 +89,15 @@
                     <option value="" <?
                     if (@$obj->_sexo_real == ""):echo 'selected';
                     endif;
-                    ?>>Selecione</option>
+                       ?>>Selecione</option>
                     <option value="M" <?
                     if (@$obj->_sexo_real == "M"):echo 'selected';
                     endif;
-                    ?>>Masculino</option>
+                       ?>>Masculino</option>
                     <option value="F" <?
                     if (@$obj->_sexo_real == "F"):echo 'selected';
                     endif;
-                    ?>>Feminino</option>
+                       ?>>Feminino</option>
                 </select>
 
             </div>
@@ -116,7 +115,13 @@
                 <label>CPF</label>
 
 
-                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" <?= (@$empresapermissoes[0]->campos_obrigatorios_pac_cpf == 't') ? 'required' : '' ?>/>
+                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" />
+            </div>
+            <div id="cpf_responsavel_label">
+                <label>CPF Responsável</label>
+
+
+                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf_responsavel" id ="cpf_responsavel" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf_responsavel; ?>"/>
             </div>
             <div>
                 <label>RG</label>
@@ -165,8 +170,8 @@
                         ?>
 
                         <option   value =<?php echo $item->tipo_logradouro_id; ?> <?
-                        if (@$obj->_tipoLogradouro == $item->tipo_logradouro_id):echo 'selected';
-                        endif;
+                    if (@$obj->_tipoLogradouro == $item->tipo_logradouro_id):echo 'selected';
+                    endif;
                         ?>><?php echo $item->descricao; ?></option>
                                   <?php
                               }
@@ -186,7 +191,7 @@
                             if (@$obj->_indicacao == $item->paciente_indicacao_id):echo 'selected';
                             endif;
                             ?>>
-                                        <?php echo $item->nome; ?>
+                                    <?php echo $item->nome; ?>
                             </option>
                             <?php
                         }
@@ -294,8 +299,8 @@
                         ?>
 
                         <option   value =<?php echo $item->convenio_id; ?> <?
-                        if (@$obj->_convenio == $item->convenio_id):echo 'selected';
-                        endif;
+                    if (@$obj->_convenio == $item->convenio_id):echo 'selected';
+                    endif;
                         ?>><?php echo $item->nome; ?></option>
                                   <?php
                               }
@@ -309,15 +314,15 @@
                 <select name="leito" id="leito" class="size2" <?= (in_array('leito', $campos_obrigatorios)) ? 'required' : '' ?>>
                     <option value='' >Selecione</option>
                     <option value='ENFERMARIA' <?
-                    if (@$obj->_leito == 'ENFERMARIA') {
-                        echo 'selected';
-                    }
-                    ?>>ENFERMARIA</option>
+                              if (@$obj->_leito == 'ENFERMARIA') {
+                                  echo 'selected';
+                              }
+                              ?>>ENFERMARIA</option>
                     <option value='APARTAMENTO'<?
                     if (@$obj->_leito == 'APARTAMENTO') {
                         echo 'selected';
                     }
-                    ?>>APARTAMENTO</option>
+                              ?>>APARTAMENTO</option>
 
                 </select>
             </div>
@@ -332,10 +337,10 @@
 
 
                 <input type="text" id="vencimento_carteira" class="texto03" name="vencimento_carteira" value="<?
-                if (@$obj->_vencimento_carteira != '') {
-                    echo date("d/m/Y", strtotime(@$obj->_vencimento_carteira));
-                }
-                ?>" <?= (in_array('vencimento_carteira', $campos_obrigatorios)) ? 'required' : '' ?>/>
+                    if (@$obj->_vencimento_carteira != '') {
+                        echo date("d/m/Y", strtotime(@$obj->_vencimento_carteira));
+                    }
+                              ?>" <?= (in_array('vencimento_carteira', $campos_obrigatorios)) ? 'required' : '' ?>/>
             </div>
             <div>
                 <label>Ocupa&ccedil;&atilde;o</label>
@@ -353,29 +358,29 @@
                 <select name="raca_cor" id="txtRacaCor" class="size2" <?= (in_array('raca_cor', $campos_obrigatorios)) ? 'required' : '' ?>>
 
                     <option value=''  <?
-                    if (@$obj->_raca_cor == ''):echo 'selected';
-                    endif;
-                    ?>>Selecione</option>
+                if (@$obj->_raca_cor == ''):echo 'selected';
+                endif;
+                              ?>>Selecione</option>
                     <option value=1 <?
                     if (@$obj->_raca_cor == 1):echo 'selected';
                     endif;
-                    ?>>Branca</option>
+                              ?>>Branca</option>
                     <option value=2 <?
                     if (@$obj->_raca_cor == 2):echo 'selected';
                     endif;
-                    ?>>Amarela</option>
+                              ?>>Amarela</option>
                     <option value=3 <?
                     if (@$obj->_raca_cor == 3):echo 'selected';
                     endif;
-                    ?>>Preta</option>
+                              ?>>Preta</option>
                     <option value=4 <?
                     if (@$obj->_raca_cor == 4):echo 'selected';
                     endif;
-                    ?>>Parda</option>
+                              ?>>Parda</option>
                     <option value=5 <?
                     if (@$obj->_raca_cor == 5):echo 'selected';
                     endif;
-                    ?>>Ind&iacute;gena</option>
+                              ?>>Ind&iacute;gena</option>
                 </select>
             </div>
             <div>
@@ -386,27 +391,27 @@
                     <option value='' <?
                     if (@$obj->_estado_civil == ''):echo 'selected';
                     endif;
-                    ?>>Selecione</option>
+                              ?>>Selecione</option>
                     <option value=1 <?
                     if (@$obj->_estado_civil == 1):echo 'selected';
                     endif;
-                    ?>>Solteiro</option>
+                              ?>>Solteiro</option>
                     <option value=2 <?
                     if (@$obj->_estado_civil == 2):echo 'selected';
                     endif;
-                    ?>>Casado</option>
+                              ?>>Casado</option>
                     <option value=3 <?
                     if (@$obj->_estado_civil == 3):echo 'selected';
                     endif;
-                    ?>>Divorciado</option>
+                              ?>>Divorciado</option>
                     <option value=4 <?
                     if (@$obj->_estado_civil == 4):echo 'selected';
                     endif;
-                    ?>>Viuvo</option>
+                              ?>>Viuvo</option>
                     <option value=5 <?
                     if (@$obj->_estado_civil == 5):echo 'selected';
                     endif;
-                    ?>>Outros</option>
+                              ?>>Outros</option>
                 </select>
             </div>
             <div>
@@ -416,39 +421,39 @@
                     <option value='' <?
                     if (@$obj->_escolaridade_id == ''):echo 'selected';
                     endif;
-                    ?>>Selecione</option>
+                              ?>>Selecione</option>
                     <option value=1 <?
                     if (@$obj->_escolaridade_id == 1):echo 'selected';
                     endif;
-                    ?>>Fundamental-Incompleto </option>
+                              ?>>Fundamental-Incompleto </option>
                     <option value=2 <?
                     if (@$obj->_escolaridade_id == 2):echo 'selected';
                     endif;
-                    ?>>Fundamental-Completo</option>
+                              ?>>Fundamental-Completo</option>
 
                     <option value=3 <?
                     if (@$obj->_escolaridade_id == 3):echo 'selected';
                     endif;
-                    ?>>Médio 
+                              ?>>Médio 
                         -
                         Incompleto</option>
                     <option value=4 <?
                     if (@$obj->_escolaridade_id == 4):echo 'selected';
                     endif;
-                    ?>>Médio 
+                              ?>>Médio 
                         -
                         Completo
                     </option>
                     <option value=5 <?
                     if (@$obj->_escolaridade_id == 5):echo 'selected';
                     endif;
-                    ?>>Superior 
+                              ?>>Superior 
                         -
                         Incompleto</option>
                     <option value=6 <?
                     if (@$obj->_escolaridade_id == 6):echo 'selected';
                     endif;
-                    ?>>Superior-Completo </option>
+                              ?>>Superior-Completo </option>
 
 
                 </select>
@@ -839,8 +844,18 @@
             if (dtAtual < aniversario) {
                 idade--;
             }
+            if (idade <= 10) {
+                $("#cpf_responsavel_label").show();
+                $("#cpf_responsavel").prop('required', true);
+            } else {
+                $("#cpf_responsavel_label").hide();
+                $("#cpf_responsavel").prop('required', false);
+            }
 
             document.getElementById("idade2").value = idade + " ano(s)";
+        } else {
+            $("#cpf_responsavel_label").hide();
+            $("#cpf_responsavel").prop('required', false);
         }
     }
     calculoIdade();

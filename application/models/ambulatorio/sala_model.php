@@ -226,6 +226,10 @@ class sala_model extends Model {
 
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('nome', $_POST['txtNome']);
+            if($_POST['toten_sala_id'] > 0){
+               $this->db->set('toten_sala_id', $_POST['toten_sala_id']);  
+            }
+           
 //            $this->db->set('nome_chamada', $_POST['txtnomechamada']);
 //            $this->db->set('tipo', $_POST['tipo']);
 //            $this->db->set('painel_id', $_POST['painel_id']);
@@ -297,7 +301,7 @@ class sala_model extends Model {
     private function instanciar($exame_sala_id) {
 
         if ($exame_sala_id != 0) {
-            $this->db->select('exame_sala_id, nome, tipo, nome_chamada, armazem_id, grupo, painel_id');
+            $this->db->select('exame_sala_id, nome, tipo, nome_chamada, armazem_id, grupo, painel_id, toten_sala_id');
             $this->db->from('tb_exame_sala');
             $this->db->where("exame_sala_id", $exame_sala_id);
             $query = $this->db->get();
@@ -305,6 +309,7 @@ class sala_model extends Model {
             $this->_exame_sala_id = $exame_sala_id;
             $this->_nome = $return[0]->nome;
             $this->_tipo = $return[0]->tipo;
+            $this->_toten_sala_id = $return[0]->toten_sala_id;
             $this->_grupo = $return[0]->grupo;
             $this->_painel_id = $return[0]->painel_id;
             $this->_armazem_id = $return[0]->armazem_id;

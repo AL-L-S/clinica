@@ -165,7 +165,7 @@
                             <input type="text" id="endereco_externo" class="texto08" name="endereco_externo" value="<?= @$obj->_endereco_externo; ?>" />
                         </dd>
                         <dt>
-                            <label>Endereço Toten EX: (http://192.168.25.47:8099)</label>
+                            <label>Endereço Toten EX: (http://192.168.25.47:8099/)</label>
                         </dt>
                         <dd>
                             <input type="text" id="endereco_toten" class="texto08" name="endereco_toten" value="<?= @$obj->_endereco_toten; ?>" />

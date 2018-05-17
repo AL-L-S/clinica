@@ -384,6 +384,7 @@ function debug($object) {
                                         <? if ($perfil_id != 11 && $perfil_id != 4 && $perfil_id != 15) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperacaixa">Fila Caixa</a></span></ul>
                                         <? } ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperasenhas">Senhas</a></span></ul>
 
                                         <? if ($perfil_id != 4 && $perfil_id != 13) { ?>
                                             <? if ($calendario == 't') { ?>
@@ -1174,6 +1175,7 @@ function debug($object) {
                                         <? if ($perfil_id == 1) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/pesquisarlembrete">Manter Lembretes</a></span></ul>
                                         <? } ?>
+                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/pesquisartotensetor">Manter Setor Toten</a></span></ul>-->
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa">Manter Empresa</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/versao">Vers&atilde;o</a></span></ul>
                                     <? } ?>

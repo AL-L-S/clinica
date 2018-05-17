@@ -49,6 +49,28 @@ class empresa_model extends Model {
         return $this->db;
     }
 
+    function listartotensetor($args = array()) {
+
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('ts.toten_setor_id,
+                            ts.nome,
+                            ts.sigla,
+                            ts.toten_webService_id,
+                            e.nome as empresa');
+        $this->db->from('tb_toten_setor ts');
+        $this->db->join('tb_empresa e', "e.empresa_id = ts.empresa_id", 'left');
+        if ($operador_id != 1) {
+            $this->db->where('empresa_id', $empresa_id);
+        }
+        $this->db->where('ts.ativo', 't');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('ts.nome ilike', $args['nome'] . "%");
+        }
+        return $this->db;
+    }
+
     function listarempresasativo() {
 
         $this->db->select('empresa_id,
@@ -254,6 +276,18 @@ class empresa_model extends Model {
         $this->db->select('exame_empresa_id,
                             nome, tipo');
         $this->db->from('tb_exame_empresa');
+        $this->db->orderby('nome');
+        $this->db->where('empresa_id', $empresa_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarempresatoten() {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('endereco_toten,
+                            nome');
+        $this->db->from('tb_empresa');
         $this->db->orderby('nome');
         $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get();
@@ -603,6 +637,7 @@ class empresa_model extends Model {
             return false;
         }
     }
+
     function gravarconfiguracaoimpressaorecibo() {
         try {
 //            var_dump($_POST['impressao_id']); die;
@@ -1118,6 +1153,7 @@ class empresa_model extends Model {
             $perfil_id = $this->session->userdata('perfil_id');
             if ($_POST['txtempresaid'] == "") {// insert
                 $this->db->set('endereco_externo', $_POST['endereco_externo']);
+                $this->db->set('endereco_toten', $_POST['endereco_toten']);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa');
@@ -1416,6 +1452,7 @@ class empresa_model extends Model {
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->set('endereco_externo', $_POST['endereco_externo']);
+                $this->db->set('endereco_toten', $_POST['endereco_toten']);
                 $empresa_id = $_POST['txtempresaid'];
                 $this->db->where('empresa_id', $empresa_id);
                 $this->db->update('tb_empresa');
@@ -1793,6 +1830,7 @@ class empresa_model extends Model {
                                selecionar_retorno,
                                administrador_cancelar,
                                servicoemail,
+                               endereco_toten,
                                endereco_externo,
                                excluir_transferencia,
                                chat,
@@ -1889,6 +1927,7 @@ class empresa_model extends Model {
             $this->_profissional_completo = $return[0]->profissional_completo;
             $this->_tecnica_promotor = $return[0]->tecnica_promotor;
             $this->_tecnica_enviar = $return[0]->tecnica_enviar;
+            $this->_endereco_toten = $return[0]->endereco_toten;
             $this->_estado = $return[0]->estado;
             $this->_cep = $return[0]->cep;
             $this->_chat = $return[0]->chat;
