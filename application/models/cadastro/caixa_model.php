@@ -1478,7 +1478,13 @@ class caixa_model extends Model {
 
     function gravarentrada() {
         try {
-            $empresa_id = $this->session->userdata('empresa_id');
+            if($_POST['empresa_id'] != ''){
+                $empresa_id = $_POST['empresa_id'];
+            }
+            else{
+                $empresa_id = $this->session->userdata('empresa_id');
+            }
+            
             $operador_id = $this->session->userdata('operador_id');
             $horario = date("Y-m-d H:i:s");
 
@@ -1547,7 +1553,14 @@ class caixa_model extends Model {
 
     function gravarsaida() {
         try {
-            $empresa_id = $this->session->userdata('empresa_id');
+            
+            if($_POST['empresa_id'] != ''){
+                $empresa_id = $_POST['empresa_id'];
+            }
+            else{
+                $empresa_id = $this->session->userdata('empresa_id');
+            }
+            
             $_POST['inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['inicio'])));
             if ($_POST['devedor'] == "") {
 

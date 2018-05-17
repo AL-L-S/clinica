@@ -505,10 +505,20 @@ class Operador extends BaseController {
         $this->loadView('seguranca/copiaroperadorconvenio-form', $data);
     }
 
-    function operadorconvenioprocedimento($convenio_id, $operador_id, $empresa_id) {
+    function operadorconvenioprocedimentoadicionar($convenio_id, $operador_id, $empresa_id) {
         $data['empresa_id'] = $empresa_id;
         $data['grupo'] = $this->operador_m->listargrupo();
         $data['operador'] = $this->operador_m->listarCada($operador_id);
+        $data['procedimentos'] = $this->operador_m->listarprocedimentoconvenio($convenio_id);
+        $this->loadView('seguranca/operadorconvenioprocedimentoadicionar-form', $data);
+    }
+
+    function operadorconvenioprocedimento($convenio_id, $operador_id, $empresa_id) {
+        $data['empresa_id'] = $empresa_id;
+        $data['convenio_id'] = $convenio_id;
+        $data['grupo'] = $this->operador_m->listargrupo();
+        $data['operador'] = $this->operador_m->listarCada($operador_id);
+        $data['convenio'] = $this->convenio->listarconvenioselecionado($convenio_id);
         $data['procedimentos'] = $this->operador_m->listarprocedimentoconvenio($convenio_id);
         $data['procedimentos_cadastrados'] = $this->operador_m->listarprocedimentoconveniooperador($operador_id, $convenio_id, $empresa_id);
         $this->loadView('seguranca/operadorconvenioprocedimento-form', $data);
@@ -560,11 +570,14 @@ class Operador extends BaseController {
     }
 
     function gravaroperadorconvenioprocedimento() {
-        $operador_id = $_POST['txtoperador_id'];
-        $convenio_id = $_POST['txtconvenio_id'];
-        $empresa_id = $_POST['txtempresa_id'];
-        $this->operador_m->gravaroperadorconvenioprocedimento();
-        redirect(base_url() . "seguranca/operador/operadorconvenioprocedimento/$convenio_id/$operador_id/$empresa_id");
+//        echo "<pre>";
+//        var_dump($_POST["procedimento"]); die;
+        if ( count($_POST["procedimento"]) > 0 ){
+            foreach($_POST["procedimento"] as $procedimento_id => $value){
+                $this->operador_m->gravaroperadorconvenioprocedimento($procedimento_id);
+            }
+        }
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function excluiroperadorconvenioempresa($operador_id, $empresa_id) {
@@ -577,8 +590,14 @@ class Operador extends BaseController {
         redirect(base_url() . "seguranca/operador/operadorconvenio/$operador_id/$empresa_id");
     }
 
-    function excluiroperadorconvenioprocedimento($convenio_operador_procedimento_id, $convenio_id, $operador_id, $empresa_id) {
-        $this->operador_m->excluiroperadorconvenioprocedimento($convenio_operador_procedimento_id);
+    function excluiroperadorconvenioprocedimento($convenio_id, $operador_id, $empresa_id) {
+//        echo "<pre>";
+//        var_dump($_POST); die;
+        if(count($_POST['procedimento']) != 0){
+            foreach ($_POST['procedimento'] as $procedimento_id => $value) {
+                $this->operador_m->excluiroperadorconvenioprocedimento($procedimento_id);
+            }
+        }
         redirect(base_url() . "seguranca/operador/operadorconvenioprocedimento/$convenio_id/$operador_id/$empresa_id");
     }
 

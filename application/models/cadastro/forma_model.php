@@ -43,14 +43,18 @@ class forma_model extends Model {
         return $return->result();
     }
     
-    function listarformaempresa() {
+    function listarformaempresa($empresa_id = null) {
+        if($empresa_id == null){
+            $empresa_id = $this->session->userdata('empresa_id');
+        }
+//        echo $empresa_id;
+//        die;
         $this->db->select('forma_entradas_saida_id,
                             agencia,
                             conta,
                             descricao');
         $this->db->from('tb_forma_entradas_saida');
-        $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('empresa_id', (int)$empresa_id);
         $this->db->where('ativo', 'true');
         $this->db->orderby('descricao');
         $return = $this->db->get();

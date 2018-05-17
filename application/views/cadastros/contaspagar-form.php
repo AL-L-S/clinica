@@ -37,6 +37,20 @@
                     <dd>
                         <input type="text" name="tiponumero" id="tiponumero" class="texto04" value="<?= @$obj->_tipo_numero; ?>"/>
                     </dd>
+                    
+                    <dt>
+                        <label>Empresa*</label>
+                    </dt>
+                    <dd>
+                        <select name="empresa_id" id="empresa_id" class="size4">
+                            <option value="">Selecione</option>
+                            <? foreach ($empresas as $value) : ?>
+                                <option value="<?= $value->empresa_id; ?>" <?if($empresa_id == $value->empresa_id || @$obj->_empresa_id == $value->empresa_id) echo 'selected'?>>
+                                    <?php echo $value->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
                     <dt>
                         <label>Tipo</label>
                     </dt>

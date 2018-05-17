@@ -81,6 +81,8 @@
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">Forma de Pagamento</th>
+                                <th class="tabela_header">Dia</th>
+                                <th class="tabela_header">Turno</th>
                                 <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">V. Unit</th>
                                 <th class="tabela_header">V. Ajuste</th>
@@ -118,13 +120,9 @@
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-
                                 <td  width="50px;">
-<!--                                    <select  name="procedimento1" id="procedimento1" class="size1" >
-                                        <option value="">Selecione</option>
-                                    </select>-->
 
-                                    <select name="procedimento1" id="procedimento1" required class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                                    <select name="procedimento1" id="procedimento1" required class="size2 chosen-select" data-placeholder="Selecione" tabindex="1">
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
@@ -136,6 +134,27 @@
                                         <? foreach ($forma_pagamento as $item) : ?>
                                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
                                         <? endforeach; ?>
+                                    </select>
+                                </td>
+                                
+                                <td>
+                                    <select name="dia_preferencia" id="dia_preferencia" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <option value="segunda" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "segunda") echo 'selected';?>>Segunda-Feira</option>
+                                        <option value="terca" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "terca") echo 'selected';?>>Terça-Feira</option>
+                                        <option value="quarta" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "quarta") echo 'selected';?>>Quarta-Feira</option>
+                                        <option value="quinta" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "quinta") echo 'selected';?>>Quinta-Feira</option>
+                                        <option value="sexta" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "sexta") echo 'selected';?>>Sexta-Feira</option>
+                                        <option value="sabado" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "sabado") echo 'selected';?>>Sábado</option>
+                                        <option value="domingo" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "domingo") echo 'selected';?>>Domingo</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="turno_preferencia" id="turno_preferencia" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <option value="manha" <?if(@$exames[count($exames)-1]->turno_prefencia == "manha") echo 'selected';?>>Manhã</option>
+                                        <option value="tarde" <?if(@$exames[count($exames)-1]->turno_prefencia == "tarde") echo 'selected';?>>Tarde</option>
+                                        <option value="noite" <?if(@$exames[count($exames)-1]->turno_prefencia == "noite") echo 'selected';?>>Noite</option>
                                     </select>
                                 </td>
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
@@ -173,7 +192,8 @@
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento</th>
                                 <th class="tabela_header">Forma de Pagamento</th>
-                                <th class="tabela_header">Descriçao</th>
+                                <th class="tabela_header" width="80">Descrição</th>
+                                <th class="tabela_header">Preferência</th>
                                 <th class="tabela_header">V. Total</th>
                                 <th class="tabela_header">V. Ajuste</th>
                                 <th class="tabela_header"></th>
@@ -186,6 +206,48 @@
                             $total = $total + $item->valor_total;
                             $totalCartao = $totalCartao + $item->valor_total_ajustado;
                             $orcamento = $item->orcamento_id;
+                            
+                            switch ($item->turno_prefencia){
+                                case 'manha':
+                                    $turno = "Manhã";
+                                    break;
+                                case 'tarde':
+                                    $turno = "Tarde";
+                                    break;
+                                case 'noite':
+                                    $turno = "Noite";
+                                    break;
+                                default:
+                                    $turno = "Não informado";
+                                    break;
+                            }
+                            
+                            switch ($item->dia_semana_preferencia){
+                                case 'segunda':
+                                    $dia = "Segunda-Feira";
+                                    break;
+                                case 'terca':
+                                    $dia = "Terça-Feira";
+                                    break;
+                                case 'quarta':
+                                    $dia = "Quarta-Feira";
+                                    break;
+                                case 'quinta':
+                                    $dia = "Quinta-Feira";
+                                    break;
+                                case 'sexta':
+                                    $dia = "Sexta-Feira";
+                                    break;
+                                case 'sabado':
+                                    $dia = "Sábado";
+                                    break;
+                                case 'domingo':
+                                    $dia = "Domingo";
+                                    break;
+                                default:
+                                    $dia = "Não informado";
+                                    break;
+                            }
                             ?>
                             <tbody>
                                 <tr>
@@ -194,6 +256,12 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->forma_pagamento; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>">
+                                        <p style="font-size: 8pt;">
+                                            <span style="font-weight: bold">Dia:</span> <?= $dia ?><br>
+                                            <span style="font-weight: bold">Turno:</span> <?= $turno ?>
+                                        </p>
+                                    </td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total_ajustado; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>">
@@ -214,7 +282,7 @@
                                 <th class="tabela_footer" colspan="2" style="vertical-align: top;">
                                     Valor Total Ajustado: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
                                 </th>
-                                <th colspan="1" align="center">
+                                <th colspan="2" align="center">
                                     <center>
                                         <div class="bt_linkf">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/impressaoorcamento/" . $orcamento; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento</a>
@@ -262,7 +330,8 @@
 <!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <style>
-    .chosen-container{ margin-top: 5pt; }
+    .chosen-container{ margin-top: 5pt;}
+    #procedimento1_chosen a { width: 100%; }
 </style>
 <script type="text/javascript">
                                 if ($('#convenio1').val() != '-1') {

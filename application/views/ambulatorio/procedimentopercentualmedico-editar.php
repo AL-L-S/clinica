@@ -5,11 +5,11 @@
             Voltar
         </a>
     </div>
-    <div class="bt_link_new">
+<!--    <div class="bt_link_new">
         <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novomedico/<?= $dados ?>/<?= $convenio_id; ?>">
             Novo M&eacute;dico
         </a>
-    </div>
+    </div>-->
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento Honor&aacute;rios M&eacute;dicos</a></h3>
         <div>

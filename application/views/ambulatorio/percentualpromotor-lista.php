@@ -1,15 +1,10 @@
 
 <div class="content"> <!-- Inicio da DIV content -->    
-    <div class="bt_link_voltar">
-        <a href="<?= base_url() ?>ambulatorio/procedimentoplano/laboratoriopercentual">
-            Voltar
-        </a>
-    </div>
     <table>
         <tr>
             <td>
                 <div class="bt_link_new">
-                    <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentuallaboratorio/<?=$laboratorio_id?>">
+                    <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novoprocedimentopercentualpromotor">
                         Novo Percentual
                     </a>
                 </div>
@@ -17,31 +12,27 @@
         </tr>
     </table>
     <div id="accordion">
-        <h3 class="singular"><a href="#">Manter Convenio Honor&aacute;rios Laboratório Terceirizado</a></h3>
+        <h3 class="singular"><a href="#">Manter Convenio Honorários Promotores</a></h3>
         <div>
-            <? $convenio = $this->convenio->listardados(); ?>
-            <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentuallaboratorio/<?=$laboratorio_id?>">
+            <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/promotorpercentual">
                 <table>
                     <thead>
                         <tr>
                             <th colspan="5" class="tabela_title">
                         </tr>
                         <tr>
-    <!--                        <th class="tabela_title">Procedimento</th>
-                            <th class="tabela_title" >Grupo</th>                  -->
-                            <th class="tabela_title">Convenio</th>                        
+                            <th class="tabela_title">Promotor</th>                        
                         </tr>
+                        <? $promotor = $this->paciente->listaindicacao(); ?>
                         <tr>
                             <th class="tabela_title">
-                                <select name="convenio" id="convenio" class="size2">
+                                <select name="promotor_id" id="promotor_id" class="size4">
                                     <option value="">Selecione</option>
-                                    <? foreach ($convenio as $value) : ?>
-                                        <option value="<?= $value->convenio_id; ?>"
-                                                <?if($value->convenio_id == @$_GET['convenio']) echo 'selected';?>>
-                                                <?= $value->nome; ?>
+                                    <? foreach ($promotor as $value) : ?>
+                                        <option value="<?= $value->paciente_indicacao_id; ?>" <?if($value->paciente_indicacao_id == @$_GET['promotor_id']) echo "selected"; ?>>
+                                            <?php echo $value->nome; ?>
                                         </option>
                                     <? endforeach; ?>
-
                                 </select>
                             </th>
                             <th class="tabela_title">
@@ -51,8 +42,8 @@
                     </thead>
                 </table>
             </form>
-            <form id="form_menuitens" action="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentuallaboratorioconvenio" method="post" target="_blank">
-                <input type="hidden" name="laboratorio_id" value="<?=$laboratorio_id?>">
+            <form id="form_menuitens" action="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualpromotorgeral" method="post" target="_blank">
+                
                 <div id="marcarTodos" style="float: right">
                     <input type="checkbox" name="selecionaTodos" id="selecionaTodos">
                     Todos
@@ -63,7 +54,7 @@
     <!--                        <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">Grupo</th>
                             <td class="tabela_header" width="120px;"></td>-->
-                            <th class="tabela_header">Convenio</th>
+                            <th class="tabela_header">Promotor</th>
                             <td class="tabela_header" width="120px;"></td>
                             <th class="tabela_header" colspan="">Detalhes</th>
                             <th class="tabela_header" colspan="" style="text-align: center">Excluir?</th>
@@ -71,7 +62,7 @@
                     </thead>
                     <?php
                     $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                    $consulta = $this->procedimentoplano->listarpercentualconveniolaboratorio($laboratorio_id, $_GET);
+                    $consulta = $this->procedimentoplano->listarpercentualpromotor($_GET);
                     $total = $consulta->count_all_results();
                     $limit = 10;
                     isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
@@ -80,27 +71,23 @@
                         ?>
                         <tbody>
                             <?php
-                            $lista = $this->procedimentoplano->listarpercentualconveniolaboratorio($laboratorio_id, $_GET)->orderby('c.nome')->limit($limit, $pagina)->get()->result();
-    //                        echo '<pre>';
-    //                        var_dump($lista);
-    //                        die;
+                            $lista = $this->procedimentoplano->listarpercentualpromotor($_GET)->orderby('pi.nome')->limit($limit, $pagina)->get()->result();
                             $estilo_linha = "tabela_content01";
                             foreach ($lista as $item) {
                                 ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                                 ?>
                                 <tr>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->promotor; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"></td>
                                     <td class="<?php echo $estilo_linha; ?>">
-                                        <a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentuallaboratorial/<?=$laboratorio_id?>/<?= $item->convenio_id; ?>">
-                                            Editar
-                                        </a>  
+                                        <a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentualpromotor/<?= $item->promotor_id; ?>">Editar</a>  
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>"  style="text-align: center">
-<!--                                        <a onclick="javascript: return confirm('Deseja realmente excluir os percentuais associados a esse convenio?');" target="_blank"
-                                           href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentuallaboratorioconvenio/<?=$laboratorio_id?>/<?= $item->convenio_id; ?>">Excluir&nbsp;
+<!--                                        <a onclick="javascript: return confirm('Deseja realmente excluir os percentuais associados a esse promotor?');" target="_blank"
+                                           href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualpromotorgeral/<?= $item->promotor_id; ?>">Excluir&nbsp;
                                         </a>-->
-                                        <input type="checkbox" id="percentual" name="convenio[<?= $item->convenio_id; ?>]"/>
+                                        <input type="checkbox" id="percentual" name="promotor[<?= $item->promotor_id; ?>]"/>
+
                                     </td>
                                 </tr>
 
@@ -141,6 +128,5 @@
             }
         });
     });
-
 
 </script>

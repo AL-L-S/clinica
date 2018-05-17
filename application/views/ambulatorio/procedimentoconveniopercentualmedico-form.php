@@ -6,18 +6,70 @@
             <form name="form_procedimentohonorario" id="form_procedimentohonorario" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarpercentualmedico" method="post">
 
                 <dl class="dl_desconto_lista">
-                    <dt>
-                        <label>Convênio</label>
-                    </dt>
-                    <dd>
-                        <select name="covenio" id="covenio" class="size4" required>
-                            <option value="">SELECIONE</option>
-                            <? foreach ($convenio as $value) : ?>
-                                <option  value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>                            
-                            <? endforeach; ?>                                                                                             
-                        </select>               
+                    <? if(@$medico_id != '') { ?>
+                        <dt>
+                            <label>Médico</label>
+                        </dt>
+                        <dd>
+                            <? 
+                            foreach ($medicos as $value) {
+                                if ($value->operador_id == @$medico_id) {
+                                    $medicoNome = $value->nome;
+                                }
+                            }
+                            ?>
+                            <input type="text" name="texto_medico" value="<?=@$medicoNome?>" readonly="">
+                            <input type="hidden" name="medico" id="medico" value="<?=@$medico_id?>">
+                        </dd>       
+                        
+                    <? } else { ?>                        
+                        <dt>
+                            <label>Médico</label>
+                        </dt>
+                        <dd>                    
+                            <select name="medico" id="medico" class="size4" required="">
+                                <option value="">SELECIONE</option>
+                                <option>TODOS</option>
+                                <? foreach ($medicos as $value) : ?>
+                                    <option value="<?= $value->operador_id; ?>">
+                                        <?php echo $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+                            </select>
+                        </dd>
+                    <? } 
+                    if(@$convenio_id != '') { ?>
+                        <dt>
+                            <label>Convênio</label>
+                        </dt>
+                        <dd>
+                            <? 
+                            foreach ($convenio as $value) {
+                                if ($value->convenio_id == @$convenio_id) {
+                                    $convenioNome = $value->nome;
+                                }
+                            }
+                            ?>
+                            <input type="text" name="texto_convenio" value="<?=@$convenioNome?>" readonly="">
+                            <input type="hidden" name="covenio" id="covenio" value="<?=@$convenio_id?>">
 
-                    </dd>                                                           
+                        </dd>       
+                    <? } else { ?>
+                        <dt>
+                            <label>Convênio</label>
+                        </dt>
+                        <dd>
+                            <select name="covenio" id="covenio" class="size4" required>
+                                <option value="">SELECIONE</option>
+                                <? foreach ($convenio as $value) : ?>
+                                    <option  value="<?= $value->convenio_id; ?>">
+                                        <?php echo $value->nome; ?>
+                                    </option>                            
+                                <? endforeach; ?>                                                                                             
+                            </select>               
+
+                        </dd>   
+                    <? } ?>                                                        
                     <dt>                         
                         <label>Grupo</label>
                     </dt>                    
@@ -43,18 +95,6 @@
                             <option value="">Selecione</option>
                         </select>
 
-                    </dd>
-                    <dt>
-                        <label>Medico</label>
-                    </dt>
-                    <dd>                    
-                        <select name="medico" id="medico" class="size4" required="">
-                            <option value="">SELECIONE</option>
-                            <option>TODOS</option>
-                            <? foreach ($medicos as $value) : ?>
-                                <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
-                            <? endforeach; ?>
-                        </select>
                     </dd>
                     <dt>
                         <label>Valor</label>
@@ -141,7 +181,7 @@
                     });
                 }
                 else{
-                    if ( $('#grupo').val() != "SELECIONE") {
+                    if ( $('#grupo').val() != "") {
                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $('#grupo').val(), convenio1: $(this).val()}, function (j) {
                             options = '<option value="">TODOS</option>';
                             for (var c = 0; c < j.length; c++) {

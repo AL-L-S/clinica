@@ -76,6 +76,21 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function buscadadosgraficorelatoriodemandagrupo() {
+        $result = $this->exame->buscadadosgraficorelatoriodemandagrupo();
+        $array = array(
+            'manha' => 0,
+            'tarde' => 0,
+            'noite' => 0,
+            'indiferente' => 0
+        );
+        foreach ($result as $value) {
+            $indice = ($value->turno_prefencia != '') ? $value->turno_prefencia : 'indiferente';
+            @$array[$indice]++;
+        }
+        echo json_encode($array);
+    }
+
     function procedimentoconveniocirurgicoagrupador() {
 
         if (isset($_GET['convenio1'])) {

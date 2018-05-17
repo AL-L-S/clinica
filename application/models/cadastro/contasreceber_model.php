@@ -401,7 +401,12 @@ class contasreceber_model extends Model {
 
     function gravar($dia, $parcela, $devedor_id) {
         try {
-            $empresa_id = $this->session->userdata('empresa_id');
+            if($_POST['empresa_id'] != ''){
+                $empresa_id = $_POST['empresa_id'];
+            }
+            else{
+                $empresa_id = $this->session->userdata('empresa_id');
+            }
             //busca tipo
             $this->db->select('t.descricao');
             $this->db->from('tb_tipo_entradas_saida t');
@@ -469,6 +474,7 @@ class contasreceber_model extends Model {
                             fc.data,
                             cd.razao_social,
                             fc.tipo_numero,
+                            fc.empresa_id,
                             fc.classe');
             $this->db->from('tb_financeiro_contasreceber fc');
             $this->db->where('fc.ativo', 'true');
@@ -490,6 +496,7 @@ class contasreceber_model extends Model {
             $this->_conta = $return[0]->descricao;
             $this->_conta_id = $return[0]->forma_entradas_saida_id;
             $this->_classe = $return[0]->classe;
+            $this->_empresa_id = $return[0]->empresa_id;
         } else {
             $this->_estoque_produto_id = null;
         }

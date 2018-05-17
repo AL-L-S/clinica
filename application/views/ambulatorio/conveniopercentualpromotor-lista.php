@@ -1,11 +1,16 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
+    <div class="bt_link_voltar">
+        <a href="<?= base_url() ?>ambulatorio/procedimentoplano/promotorpercentual">
+            Voltar
+        </a>
+    </div>
     <table>
         <tr>
             <td>
                 <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novoprocedimentopercentualpromotor">
-                        Novo Convenio
+                    <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novoprocedimentopercentualpromotor/<?= $promotor_id ?>">
+                        Novo Percentual
                     </a>
                 </div>
             </td>
@@ -15,7 +20,7 @@
         <h3 class="singular"><a href="#">Manter Convenio Honorários Promotores</a></h3>
         <div>
             <? $convenio = $this->convenio->listardados(); ?>
-            <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">
+            <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentualpromotor/<?= $promotor_id ?>">
                 <table>
                     <thead>
                         <tr>
@@ -52,61 +57,75 @@
                     </thead>
                 </table>
             </form>
-            <table>
-                <thead>
-                    <tr>
-<!--                        <th class="tabela_header">Procedimento</th>
-                        <th class="tabela_header">Grupo</th>
-                        <td class="tabela_header" width="120px;"></td>-->
-                        <th class="tabela_header">Convenio</th>
-                        <td class="tabela_header" width="120px;"></td>
-                        <th class="tabela_header" colspan="2">Detalhes</th>
-                    </tr>
-                </thead>
-                <?php
-                $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->procedimentoplano->listarpercentualconveniopromotor($_GET);
-                $total = $consulta->count_all_results();
-                $limit = 10;
-                isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+            <form id="form_menuitens" action="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualconveniopromotor" method="post" target="_blank">
+                <input type="hidden" name="promotor_id" value="<?=$promotor_id?>">
+                <div id="marcarTodos" style="float: right">
+                    <input type="checkbox" name="selecionaTodos" id="selecionaTodos">
+                    Todos
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+    <!--                        <th class="tabela_header">Procedimento</th>
+                            <th class="tabela_header">Grupo</th>
+                            <td class="tabela_header" width="120px;"></td>-->
+                            <th class="tabela_header">Convenio</th>
+                            <td class="tabela_header" width="20%;"></td>
+                            <th class="tabela_header" colspan="">Detalhes</th>
+                            <th class="tabela_header" colspan="" style="text-align: center">Excluir?</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    $url = $this->utilitario->build_query_params(current_url(), $_GET);
+                    $consulta = $this->procedimentoplano->listarpercentualconveniopromotor($promotor_id, $_GET);
+                    $total = $consulta->count_all_results();
+                    $limit = 10;
+                    isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
-                if ($total > 0) {
-                    ?>
-                    <tbody>
-                        <?php
-                        $lista = $this->procedimentoplano->listarpercentualconveniopromotor($_GET)->orderby('c.nome')->limit($limit, $pagina)->get()->result();
-//                        echo '<pre>';
-//                        var_dump($lista);
-//                        die;
-                        $estilo_linha = "tabela_content01";
-                        foreach ($lista as $item) {
-                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            ?>
-                            <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                    <a onclick="javascript: return confirm('Deseja realmente excluir os percentuais associados a esse convenio?');"
-                                       href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualconveniopromotor/<?= $item->convenio_id; ?>">Excluir&nbsp;
-                                    </a>
-                                    <a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentualpromotor/<?= $item->convenio_id; ?>">Editar</a>  
-                                </td>
-                            </tr>
+                    if ($total > 0) {
+                        ?>
+                        <tbody>
+                            <?php
+                            $lista = $this->procedimentoplano->listarpercentualconveniopromotor($promotor_id, $_GET)->orderby('c.nome')->limit($limit, $pagina)->get()->result();
+    //                        echo '<pre>';
+    //                        var_dump($lista);
+    //                        die;
+                            $estilo_linha = "tabela_content01";
+                            foreach ($lista as $item) {
+                                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                                ?>
+                                <tr>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"></td>
+                                    <td class="<?php echo $estilo_linha; ?>">
+                                        <a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentualpromotor/<?= $promotor_id ?>/<?= $item->convenio_id; ?>">Editar</a>  
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>" style="text-align: center">
+    <!--                                    <a onclick="javascript: return confirm('Deseja realmente excluir os percentuais associados a esse convenio?');" target="_blank"
+                                           href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualconveniopromotor/<?= $promotor_id ?>/<?= $item->convenio_id; ?>">Excluir&nbsp;
+                                        </a>-->
+                                        <input type="checkbox" id="percentual" name="convenio[<?= $item->convenio_id; ?>]"/>
+                                    </td>
+                                </tr>
 
-                        </tbody>
-                        <?php
+                            </tbody>
+                            <?php
+                        }
                     }
-                }
-                ?>
-                <tfoot>
-                    <tr>
-                        <th class="tabela_footer" colspan="7">
-                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            Total de registros: <?php echo $total; ?>
-                        </th>
-                    </tr>
-                </tfoot>
-            </table>
+                    ?>
+                    <tfoot>
+                        <tr>
+                            <th class="tabela_footer" colspan="3">
+                                <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                                Total de registros: <?php echo $total; ?>
+                            </th>
+                            <th class="tabela_footer" colspan="3">
+                                <button type="submit" style="font-weight: bold">Excluir</button>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
         </div>
     </div>
 
@@ -117,4 +136,15 @@
         $("#accordion").accordion();
     });
 
+    
+    $(function () {
+        $('#selecionaTodos').change(function () {
+            if ($(this).is(":checked")) {
+                $("input[id='percentual']").attr("checked", "checked");
+
+            } else {
+                $("input[id='percentual']").attr("checked", false);
+            }
+        });
+    });
 </script>

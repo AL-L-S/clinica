@@ -291,11 +291,10 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                     <select  name="sala1" id="sala1" class="size1"  required="">
                                         <option value="">Selecione</option>
                                         <? foreach ($salas as $item) : ?>
-                                            <option value="<?= $item->exame_sala_id; ?>"<?
-                                        if ($sala == $item->nome):echo 'selected';
-                                        endif;
-                                            ?>><?= $item->nome; ?></option>
-                                                <? endforeach; ?>
+                                            <option value="<?= $item->exame_sala_id; ?>"<? if ($sala == $item->nome || count($salas) == 1) echo 'selected';?>>
+                                                <?= $item->nome; ?>
+                                            </option>
+                                        <? endforeach; ?>
                                     </select></td>
 
                                 <td > 

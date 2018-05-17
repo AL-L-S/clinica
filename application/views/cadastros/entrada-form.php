@@ -1,10 +1,10 @@
 <div class="content"> <!-- Inicio da DIV content -->
-    <div class="bt_link_voltar">
+<!--    <div class="bt_link_voltar">
         <a href="<?= base_url() ?>ponto/horariostipo">
             Voltar
         </a>
 
-    </div>
+    </div>-->
     <div id="accordion">
         <h3 class="singular"><a href="#">Entrada</a></h3>
         <div>
@@ -29,6 +29,19 @@
                     <dd>
                         <input type="hidden" id="devedor" class="texto_id" name="devedor" value="<?= @$obj->_devedor; ?>" />
                         <input type="text" id="devedorlabel" class="texto09" name="devedorlabel" value="<?= @$obj->_razao_social; ?>" required=""/>
+                    </dd>
+                    <dt>
+                        <label>Empresa*</label>
+                    </dt>
+                    <dd>
+                        <select name="empresa_id" id="empresa_id" class="size4">
+                            <option value="">Selecione</option>
+                            <? foreach ($empresas as $value) : ?>
+                                <option value="<?= $value->empresa_id; ?>" <?if($empresa_id == $value->empresa_id) echo 'selected'?>>
+                                    <?php echo $value->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
                     </dd>
                     <dt>
                         <label>Tipo *</label>

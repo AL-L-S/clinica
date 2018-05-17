@@ -4,7 +4,7 @@
         <tr>
             <td>
                 <div class="bt_link_new">
-                    <a href="<?php echo base_url() ?>cadastros/caixa/novasaida">
+                    <a target="_blank" href="<?php echo base_url() ?>cadastros/caixa/novasaida/<?=@$_GET['txtempresa']?>">
                         Nova saida
                     </a>
                 </div>
@@ -28,7 +28,7 @@
     $credores = $this->caixa->empresa();
     $empresas = $this->exame->listarempresas();
     $empresa_permissao = $this->guia->listarempresapermissoes();
-    $conta = $this->forma->listarformaempresa();
+    $conta = $this->forma->listarformaempresa(@$_GET['txtempresa']);
     $tipo = $this->tipo->listartipo();
     
     $perfil_id = $this->session->userdata('perfil_id');
@@ -41,17 +41,28 @@
                 <thead>
                 <form method="get" action="<?= base_url() ?>cadastros/caixa/pesquisar2">
                     <tr>
+                        <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Conta</th>
                         <th class="tabela_title">Data Inicio</th>
                         <th class="tabela_title">Data Fim</th>
                         <th class="tabela_title">Tipo</th>
                         <th class="tabela_title">Classe</th>
                         <th class="tabela_title">Credor/Devedor</th>
-                        <th class="tabela_title">Empresa</th>
                         <th class="tabela_title">Observacao</th>
                     </tr>
 
                     <tr>
+                        <th class="tabela_title">
+                            <select name="txtempresa" id="txtempresa" class="size1" onchange="atualizaRestultados(this.value)">
+                                <option value="">TODOS</option>
+                                <? foreach ($empresas as $value) : ?>
+                                    <option value="<?= $value->empresa_id; ?>" <?
+                                    if (@$_GET['txtempresa'] == $value->empresa_id):echo 'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
+                                        <? endforeach; ?>
+                            </select>
+                        </th>
                         <th class="tabela_title">
                             <select name="conta" id="conta" class="size2">
                                 <option value="">TODAS</option>
@@ -116,17 +127,6 @@
                             </select>
                         </th>
                         <th class="tabela_title">
-                            <select name="txtempresa" id="txtempresa" class="size1">
-                                <option value="">TODOS</option>
-                                <? foreach ($empresas as $value) : ?>
-                                    <option value="<?= $value->empresa_id; ?>" <?
-                                    if (@$_GET['txtempresa'] == $value->empresa_id):echo 'selected';
-                                    endif;
-                                    ?>><?php echo $value->nome; ?></option>
-                                        <? endforeach; ?>
-                            </select>
-                        </th>
-                        <th class="tabela_title">
                             <input type="text"  id="obs" name="obs" class="size2"  value="<?php echo @$_GET['obs']; ?>" />
                         </th>
                         <th class="tabela_title">
@@ -138,7 +138,7 @@
                 </tr>
                 <tr>
 
-                    <th class="tabela_title">Saldo Total em Caixa:  <?= number_format($saldo[0]->sum, 2, ",", ".") ?></th>
+                    <th class="tabela_title" colspan="6">Saldo Total em Caixa:  <?= number_format($saldo[0]->sum, 2, ",", ".") ?></th>
                 </tr>
                 </thead>
             </table>
@@ -264,7 +264,15 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-
+    
+    function atualizaRestultados(empresaID){
+        var parametros = "txtempresa="+empresaID;
+        parametros += "&datainicio=<?= @$_GET['datainicio'] ?>&datafim=<?= @$_GET['datafim'] ?>"; 
+        parametros += "&nome=<?= @$_GET['nome'] ?>&nome_classe=<?= @$_GET['nome_classe'] ?>";
+        parametros += "&empresa=<?= @$_GET['empresa'] ?>&obs=<?= @$_GET['obs'] ?>";
+        window.location.replace("<?= base_url() ?>cadastros/caixa/pesquisar2?"+parametros);
+    }
+    
                                     $(function () {
                                         $('#nome').change(function () {
                                             if ($(this).val()) {

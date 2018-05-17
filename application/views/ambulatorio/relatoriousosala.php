@@ -116,7 +116,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
             <table>
                 <tr>
                     <th>
-                        Mapa Cirúrgico
+                        Mapa de Uso de Salas
                     </th>
 
                 </tr>
@@ -126,7 +126,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
         </h3>
         <div>
             <?
-            $medicos = $this->operador_m->listarmedicos();
+            $salas = $this->exame->listartodassalas();
 //            $empresas = $this->exame->listarempresas();
             $empresa_logada = $this->session->userdata('empresa_id');
 //            $tipo_consulta = $this->tipoconsulta->listarcalendario();
@@ -152,7 +152,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                 $tipoagenda = 0;
             }
             ?>
-            <form method="get" action="<?= base_url() ?>centrocirurgico/centrocirurgico/mapacirurgico">
+            <form method="get" action="<?= base_url() ?>ambulatorio/exame/relatoriousosala">
 
                 <table>
                     <thead>
@@ -163,7 +163,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                                 <table border="1">
                                     <tr>
 
-                                        <th colspan="2" class="tabela_title">Médico</th>
+                                        <th colspan="2" class="tabela_title">Sala</th>
                                     </tr>
 
                                     <tr>
@@ -173,10 +173,10 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                                             <!--                                        <label>Médicos </label>-->
 
 
-                                            <select  name="medico" id="medico" class="size4" >
+                                            <select  name="sala" id="sala" class="size4" >
                                                 <option value="">Selecione</option>
-                                                <? foreach ($medicos as $item) : ?>
-                                                    <option value="<?= $item->operador_id; ?>" <?= ( @$_GET['medico'] == $item->operador_id ) ? 'selected' : '' ?>>
+                                                <? foreach ($salas as $item) : ?>
+                                                    <option value="<?= $item->exame_sala_id; ?>" <?= ( @$_GET['sala'] == $item->exame_sala_id ) ? 'selected' : '' ?>>
                                                         <?= $item->nome; ?>
                                                     </option>
                                                 <? endforeach; ?>
@@ -257,6 +257,13 @@ if (@$_GET['sala'] != '') {
     $sala = "";
 }
 ?>
+<style>
+    .titulo{
+        font-weight: bold;
+        font-size: 15pt;
+        text-align: center;
+    }
+</style>
 <script>
 
 //alert();
@@ -343,43 +350,25 @@ if (@$_GET['sala'] != '') {
             listWeek: {buttonText: 'Lista Semana'}
         },
         height: 900,
-//        theme: true,
         dayRender: function (date, cell) {
             var data_escolhida = $('#data').val();
             var today = moment(new Date()).format('YYYY-MM-DD');
             var check = moment(date).format('YYYY-MM-DD');
-//            alert(data_escolhida);
-//            var today = $.fullCalendar.formatDate(new Date(), 'yyyy-MM-dd');
             if (data_escolhida == check && data_escolhida != today) {
                 cell.css("background-color", "#BCD2EE");
             }
+//            cell.css("height", "5pt");
         },
         dayClick: function (date, cell) {
             var data = date.format();
-//            cell.css("background-color", "#BCD2EE");
-            window.open('<?= base_url() ?>centrocirurgico/centrocirurgico/mapacirurgico?&medico=' + $('#medico').val() + '&data=' + moment(data).format('DD%2FMM%2FYYYY') + '', '_self');
-//            alert('Event: ' + calEvent.title);
-
-
+            window.open('<?= base_url() ?>ambulatorio/exame/relatoriousosala?&sala=' + $('#sala').val() + '&data=' + moment(data).format('DD%2FMM%2FYYYY') + '', '_self');
         },
+                
         eventClick: function (calEvent, jsEvent, view) {
-
             alert(calEvent.texto);
-//            alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-//            alert('View: ' + view.name);
-
-            // change the border color just for fun
-//            $(this).css('border-color', 'red');
-
         },
-//        eventDragStop: function (date, jsEvent, view) {
-////            alert(date.format());
-//        },
-//        navLinks: true,
+//        contentHeight: 600,
         showNonCurrentDates: false,
-//            weekends: false,
-
-//                navLinks: true, // can click day/week names to navigate views
         defaultDate: '<?= $data ?>',
         locale: 'pt-br',
         editable: false,
@@ -387,54 +376,26 @@ if (@$_GET['sala'] != '') {
         eventLimit: false, // allow "more" link when too many events
         schedulerLicenseKey: 'CC-Attribution-Commercial-NoDerivatives',
         eventSources: [
-            // your event source
             {
-                url: '<?= base_url() ?>centrocirurgico/centrocirurgico/listarhorarioscalendariocirurgico',
-                type: 'POST',
+                url: '<?= base_url() ?>ambulatorio/exame/listarusosala',
+                type: 'GET',
                 data: {
-                    medico: $('#medico').val();
+                    sala: $('#sala').val()
+
                 },
                 error: function (e) {
                     console.log(e);
                 }
-            }
-            // any other sources...
 
+            }
         ],
         timeFormat: 'H:mm'
 
     });
+    
     $(function () {
-        $('#grupo').change(function () {
-
-            if ($(this).val()) {
-//                alert($(this).val());
-                $('.carregando').show();
-//                                                        alert('teste_parada');
-                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
-                    options = '<option value=""></option>';
-//                    alert(j);
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                    }
-                    $('#sala').html(options).show();
-                    $('.carregando').hide();
-                });
-
-            } else {
-                $('.carregando').show();
-//                                                        alert('teste_parada');
-                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasalatodos', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
-                    options = '<option value=""></option>';
-//                    alert(j);
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                    }
-                    $('#sala').html(options).show();
-                    $('.carregando').hide();
-                });
-            }
-
+        $('#sala').change(function () {
+            window.open('<?= base_url() ?>ambulatorio/exame/relatoriousosala?&sala=' + $('#sala').val() + '&data=' + moment(data).format('DD%2FMM%2FYYYY') + '', '_self');
         });
     });
 

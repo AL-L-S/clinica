@@ -1,3 +1,8 @@
+<? 
+$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');
+$empresa_id = $this->session->userdata('empresa_id');
+$empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
+?>
 <style>
     .custom-combobox {
         position: relative;
@@ -43,6 +48,9 @@
                         .appendTo(this.wrapper)
                         .val(value)
                         .attr("title", "")
+                        <? if ($recomendacao_obrigatorio == 't'){ ?>
+                        .attr("required", "")
+                        <? } ?>
                         .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left input-recomendacao-combobox")
                         .autocomplete({
                             delay: 0,
@@ -141,11 +149,7 @@
         <? } ?>
     });
 </script>
-<? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio');
-$empresa_id = $this->session->userdata('empresa_id');
-$empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
 
-?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
     <div class="bt_link_new" style="width: 150pt">

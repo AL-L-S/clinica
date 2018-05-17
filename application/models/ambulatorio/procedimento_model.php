@@ -70,6 +70,8 @@ class procedimento_model extends Model {
                             oi.data,
                             oi.orcamento_id,
                             oi.valor_total,
+                            oi.dia_semana_preferencia,
+                            oi.turno_prefencia,
                             (oi.valor_ajustado * oi.quantidade) as valor_total_ajustado,
                             ao.paciente_id,
                             ao.autorizado,
@@ -89,6 +91,7 @@ class procedimento_model extends Model {
 //        $this->db->where('oi.empresa_id', $empresa_id);
         $this->db->where("oi.orcamento_id", $orcamento_id);
         $this->db->where("oi.ativo", 't');
+        $this->db->orderby("oi.data_cadastro");
         $return = $this->db->get();
         return $return->result();
     }

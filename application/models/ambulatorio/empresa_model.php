@@ -822,12 +822,27 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('impressao_orcamento', null);
                 }
-                if ($_POST['horario_sab'] != "") {
-                    $this->db->set('horario_sab', $_POST['horario_sab']);
+                
+                if ($_POST['horSegSexta_i'] != "") {
+                    $this->db->set('horario_seg_sex_inicio', $_POST['horSegSexta_i']);
                 }
-                if ($_POST['horario_seg_sex'] != "") {
-                    $this->db->set('horario_seg_sex', $_POST['horario_seg_sex']);
+                if ($_POST['horSegSexta_f'] != "") {
+                    $this->db->set('horario_seg_sex_fim', $_POST['horSegSexta_f']);
                 }
+                if ($_POST['horSegSexta_i'] != "" || $_POST['horSegSexta_f'] != "") {
+                    $this->db->set('horario_seg_sex', $_POST['horSegSexta_i']." às ".$_POST['horSegSexta_f']." hr(s)");
+                }
+                
+                if ($_POST['horSab_i'] != "") {
+                    $this->db->set('horario_sab_inicio', $_POST['horSab_i']);
+                }
+                if ($_POST['horSab_f'] != "") {
+                    $this->db->set('horario_sab_fim', $_POST['horSab_f']);
+                }
+                if ($_POST['horSab_i'] != "" || $_POST['horSab_f'] != "") {
+                    $this->db->set('horario_sab', $_POST['horSab_i']." às ".$_POST['horSab_f']." hr(s)");
+                }
+                
                 if ($_POST['impressao_laudo'] != "") {
                     $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
                 } else {
@@ -1754,6 +1769,10 @@ class empresa_model extends Model {
                                ep.retirar_flag_solicitante,
                                ep.cadastrar_painel_sala,
                                ep.apenas_procedimentos_multiplos,
+                               f.horario_seg_sex_inicio,
+                               f.horario_seg_sex_fim,
+                               f.horario_sab_inicio,
+                               f.horario_sab_fim,
                                ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -1874,6 +1893,10 @@ class empresa_model extends Model {
             $this->_retirar_flag_solicitante = $return[0]->retirar_flag_solicitante;
             $this->_cadastrar_painel_sala = $return[0]->cadastrar_painel_sala;
             $this->_apenas_procedimentos_multiplos = $return[0]->apenas_procedimentos_multiplos;
+            $this->_horario_seg_sex_inicio = $return[0]->horario_seg_sex_inicio;
+            $this->_horario_seg_sex_fim = $return[0]->horario_seg_sex_fim;
+            $this->_horario_sab_inicio = $return[0]->horario_sab_inicio;
+            $this->_horario_sab_fim = $return[0]->horario_sab_fim;
         } else {
             $this->_empresa_id = null;
         }

@@ -526,13 +526,13 @@ class exametemp_model extends Model {
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         if ($grupo != '') {
             $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id', 'left');
+            $this->db->where("esg.ativo", 'true');
         }
         $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
 //        $this->db->where("ae.tipo IN ('CONSULTA', 'ESPECIALIDADE', 'FISIOTERAPIA', 'EXAME') OR ae.tipo is null");
         $this->db->where("ae.data is not null");
-        if ($grupo != '') {
-            $this->db->where("esg.ativo", 'true');
-        }
+//        if ($grupo != '') {
+//        }
         $this->db->where("ae.data >", $data_passado);
         $this->db->where("ae.data <", $data_futuro);
         $this->db->where('ae.bloqueado', 'f');
@@ -2099,6 +2099,8 @@ class exametemp_model extends Model {
                             oi.valor_total,
                             oi.orcamento_id,
                             oi.paciente_id,
+                            oi.dia_semana_preferencia,
+                            oi.turno_prefencia,
                             ao.autorizado,
                             (oi.valor_ajustado * oi.quantidade) as valor_total_ajustado,
                             pc.convenio_id,
@@ -2120,6 +2122,8 @@ class exametemp_model extends Model {
         $this->db->where("oi.paciente_id", $paciente_id);
         $this->db->where("oi.data", $horario);
         $this->db->where("oi.ativo", "t");
+        $this->db->orderby("oi.data_cadastro");
+        
         $return = $this->db->get();
         return $return->result();
     }
@@ -5611,6 +5615,7 @@ class exametemp_model extends Model {
         
         $this->db->select('procedimento_convenio_id');
         $this->db->from('tb_procedimento_convenio pc');
+        
         $this->db->where("procedimento_tuss_id IN (SELECT procedimento_tuss_id 
                                                    FROM ponto.tb_procedimentos_agrupados_ambulatorial
                                                    WHERE ativo = 't' AND procedimento_agrupador_id = $procedimento_agrupador_id)");
@@ -5625,8 +5630,8 @@ class exametemp_model extends Model {
             $string .= $procedimentos[$i]->procedimento_convenio_id . (($i != count($procedimentos) - 1) ? ',' : '');
         }
 
-
-        if (count($agrupados) == count($procedimentos)) {
+        
+        if (count($agrupados) == count($procedimentos) && count($procedimentos) != 0) {
             $this->db->select('SUM(valortotal) AS valor_pacote');
             $this->db->from('tb_procedimento_convenio pc');
             $this->db->where("procedimento_convenio_id IN ($string)");
@@ -5666,10 +5671,6 @@ class exametemp_model extends Model {
 
     function autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id) {
         try {
-//            $testemedico = $_POST['medico_id'];
-//            echo '<pre>';
-//            var_dump($_POST); die;
-//            die;
             $i = 0;
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
@@ -6719,6 +6720,7 @@ class exametemp_model extends Model {
         $this->db->from('tb_exame_sala_grupo esg');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = esg.exame_sala_id');
         $this->db->where("esg.ativo", 't');
+        $this->db->where('es.excluido', 'f');
         $this->db->where('esg.grupo', $grupo);
         $this->db->where('es.empresa_id', $empresa_id);
         $this->db->orderby("es.nome");

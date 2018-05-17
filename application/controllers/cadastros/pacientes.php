@@ -249,7 +249,6 @@ class pacientes extends BaseController {
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['exames'] = $this->exametemp->listaragendaspaciente($paciente_id);
         $data['grupos'] = $this->procedimento->listargruposexame();
-//        var_dump($data['grupos']);die;
         $this->loadView('ambulatorio/procedimentoautorizar-form', $data);
     }
 
