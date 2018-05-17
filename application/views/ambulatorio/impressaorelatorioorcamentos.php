@@ -6,6 +6,15 @@
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
     <h4>Relatorio Orcamentos</h4>
+    <h4>TIPO DE BUSCA: <?if ($_POST['tipo_orcamento'] == '0') {
+        echo "PRÉ-CADASTROS";
+    } elseif($_POST['tipo_orcamento'] == '1'){
+        echo "CLIENTES";
+    } else {
+        echo "TODOS";
+    }
+    ?>
+    </h4>    
     <h4>GRUPO: <?= ($grupo != '') ? $grupo: "TODOS" ?></h4>
     <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> até <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     

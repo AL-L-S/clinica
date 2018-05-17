@@ -57,19 +57,21 @@ class Caixa extends BaseController {
         $this->loadView('cadastros/saida-form', $data);
     }
 
-    function novaentrada() {
+    function novaentrada($empresa_id = null) {
         $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
         $data['conta'] = $this->forma->listarformaempresa();
+        $data['empresas'] = $this->exame->listarempresas();
+        $data['empresa_id'] = $empresa_id;
         $this->loadView('cadastros/entrada-form', $data);
     }
 
-    function novasaida() {
+    function novasaida($empresa_id = null) {
         $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
         $data['conta'] = $this->forma->listarformaempresa();
-//        $r = $this->classe->listarautocompleteclassessaida('CUSTO FIXO IMPRESSÃO'); 
-//        var_dump($r); die;
+        $data['empresas'] = $this->exame->listarempresas();
+        $data['empresa_id'] = $empresa_id;
         $this->loadView('cadastros/saida-form', $data);
     }
 
@@ -153,22 +155,17 @@ class Caixa extends BaseController {
         } else {
             $data['mensagem'] = 'Sucesso ao gravar a entrada.';
         }
-        redirect(base_url() . "cadastros/caixa", $data);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravarsaida() {
-//        if ($_POST['devedor'] == '') {
-//            $mensagem = 'É necessário selecionar o item no campo Pagar a: ';
-//            $this->session->set_flashdata('message', $mensagem);
-//            redirect(base_url() . "cadastros/caixa/novasaida");
-//        }
         $caixa_id = $this->caixa->gravarsaida();
         if ($caixa_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Saida. Opera&ccedil;&atilde;o cancelada.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar a Saida.';
         }
-        redirect(base_url() . "cadastros/caixa/pesquisar2", $data);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravartransferencia() {

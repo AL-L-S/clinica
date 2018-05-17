@@ -285,6 +285,7 @@ class exame_model extends Model {
         $this->db->from('tb_exame_sala');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->where('ativo', 'true');
+        $this->db->where('excluido', 'false');
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
@@ -612,6 +613,53 @@ class exame_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         return $this->db;
+    }
+
+    function horariofuncionamentoempresa() {
+        $empresa_atual = $this->session->userdata('empresa_id');
+        $this->db->select('horario_seg_sex_inicio,
+                           horario_seg_sex_fim,
+                           horario_sab_inicio,
+                           horario_sab_fim');
+        $this->db->from('tb_empresa e');
+        $this->db->where('e.empresa_id', $empresa_atual);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarusosala($sala_id, $args = array()) {
+        $data = date('Y-m-d');
+        $data_passado = date('Y-m-d', strtotime("-1 year", strtotime($data)));
+        $data_futuro = date('Y-m-d', strtotime("+1 year", strtotime($data)));
+        $empresa_atual = $this->session->userdata('empresa_id');
+        
+//        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('es.nome as sala, 
+                           es.exame_sala_id,
+                           ae.data,
+                           ae.inicio,
+                           ae.fim');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->where("(ae.situacao = 'OK' OR ae.situacao = 'LIVRE')");
+        $this->db->where('ae.encaixe IS NULL');
+        $this->db->where("ae.data >=", $data_passado);
+        $this->db->where("ae.data <=", $data_futuro);
+        $this->db->where('ae.empresa_id', $empresa_atual);
+        $this->db->where('ae.sala_preparo', 'f');
+        $this->db->where('ae.cancelada', 'f');
+        $this->db->where('ae.bloqueado', 'f');
+        if ($sala_id != '') {
+            $this->db->where('es.exame_sala_id', $sala_id);
+        }
+        $this->db->groupby('es.nome, 
+                           es.exame_sala_id,
+                           ae.data,
+                           ae.inicio,
+                           ae.fim');
+        $this->db->orderby('ae.data');
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listarexamesficha($args = array()) {
@@ -2868,10 +2916,116 @@ class exame_model extends Model {
                 AND pt.grupo = '{$_POST['grupo']}'
             )");
         }
+        if ($_POST['tipo_orcamento'] == "0") {
+            $this->db->where("p.paciente_id NOT IN (
+                SELECT DISTINCT(paciente_id)
+                FROM ponto.tb_ambulatorio_guia ag
+                WHERE ag.paciente_id IS NOT NULL                
+            )");
+        }
+        if ($_POST['tipo_orcamento'] == "1") {
+            $this->db->where("p.paciente_id IN (
+                SELECT DISTINCT(paciente_id)
+                FROM ponto.tb_ambulatorio_guia ag
+                WHERE ag.paciente_id IS NOT NULL                
+            )");
+        }
+        
         $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-
         $this->db->orderby('ao.data_criacao');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function buscadadosgraficorelatoriodemandagrupo() {
+        // $this->db->select("column1, column2, ...", false) # O false serve para avisar o CI não pôr aspas
+        $this->db->select(" ao.ambulatorio_orcamento_id,
+                            p.nome as paciente,
+                            ao.data_criacao,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            aoi.dia_semana_preferencia,
+                            aoi.turno_prefencia,
+                            e.nome as empresa_nome", false);
+        $this->db->from('tb_ambulatorio_orcamento_item aoi');
+        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ao.paciente_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ao.empresa_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'aoi.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('aoi.ativo', 't');
+        $this->db->where('ao.ativo', 't');
+        $this->db->where('pt.grupo', $_GET['grupo']);
+        $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_GET['txtdata_inicio']))));
+        $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_GET['txtdata_fim']))));
+        if ($_GET['empresa'] != "0") {
+            $this->db->where('ao.empresa_id', $_GET['empresa']);
+        }
+        if ($_GET['dia'] != "indiferente") {
+            $this->db->where('aoi.dia_semana_preferencia', $_GET['dia']);
+        } else {
+            $this->db->where("(aoi.dia_semana_preferencia IS NULL OR aoi.dia_semana_preferencia = '')");
+        }
+        $this->db->orderby('ao.ambulatorio_orcamento_id');
+        $this->db->orderby('ao.data_criacao');
+        $this->db->orderby('pt.grupo');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gerarelatoriodemandagrupo($args = array()) {
+        // $this->db->select("column1, column2, ...", false) # O false serve para avisar o CI não pôr aspas
+        $this->db->select(" ao.ambulatorio_orcamento_id,
+                            p.nome as paciente,
+                            p.celular,
+                            p.telefone,
+                            ao.data_criacao,
+                            ao.autorizado,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            aoi.dia_semana_preferencia,
+                            aoi.turno_prefencia,
+                            CASE dia_semana_preferencia
+                                WHEN 'segunda' THEN 1
+                                WHEN 'terca' THEN 2
+                                WHEN 'quarta' THEN 3
+                                WHEN 'quinta' THEN 4
+                                WHEN 'sexta' THEN 5
+                                WHEN 'segunda' THEN 6
+                                WHEN 'sabado' THEN 7
+                                WHEN 'domingo' THEN 8
+                                ELSE 9
+                            END AS num_dia_preferencia,
+                            CASE turno_prefencia
+                                WHEN 'manha' THEN 1
+                                WHEN 'tarde' THEN 2
+                                WHEN 'noite' THEN 3
+                                ELSE 4
+                            END AS num_turno_preferencia,
+                            e.nome as empresa_nome", false);
+        $this->db->from('tb_ambulatorio_orcamento_item aoi');
+        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ao.paciente_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ao.empresa_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'aoi.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('aoi.ativo', 't');
+        $this->db->where('ao.ativo', 't');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ao.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] != "") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('11');
+        $this->db->orderby('ao.ambulatorio_orcamento_id');
+        $this->db->orderby('ao.data_criacao');
+        $this->db->orderby('pt.grupo');
         $this->db->orderby('p.nome');
         $return = $this->db->get();
         return $return->result();

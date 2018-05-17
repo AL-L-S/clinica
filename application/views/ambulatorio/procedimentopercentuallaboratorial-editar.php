@@ -99,12 +99,12 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" ></td>                                
                                 <td class="<?php echo $estilo_linha; ?>" width="45px;">
-                                    <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento');"
+                                    <a onclick="javascript: return confirm('Deseja realmente excluir o procedimento');" target="_blank"
                                        href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirlaboratoriopercentual/<?= $item->procedimento_percentual_laboratorio_convenio_id; ?>/<?= $dados ?>/<?= $convenio_id; ?>">Excluir
                                     </a>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="45px;">
-                                    <a href="<?= base_url() ?>ambulatorio/procedimentoplano/editarlaboratoriopercentual/<?= $item->procedimento_percentual_laboratorio_convenio_id; ?>/<?= $dados; ?>/<?= $convenio_id; ?>">Editar
+                                    <a  target="_blank" href="<?= base_url() ?>ambulatorio/procedimentoplano/editarlaboratoriopercentual/<?= $item->procedimento_percentual_laboratorio_convenio_id; ?>/<?= $dados; ?>/<?= $convenio_id; ?>">Editar
                                     </a>
                                 </td>
                             </tr>

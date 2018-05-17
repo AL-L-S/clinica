@@ -1,3 +1,4 @@
+
 <style>
     .custom-combobox {
         position: relative;
@@ -271,7 +272,9 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                     <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1"  >
                                         <option value="">Selecione</option>
                                         <? foreach ($salas as $itens) : ?>
-                                            <option value="<?= $itens->exame_sala_id; ?>"><?= $itens->nome; ?></option>
+                                            <option value="<?= $itens->exame_sala_id; ?>" <? if (count($salas) == 1) echo 'selected';?>>
+                                                <?= $itens->nome; ?>
+                                            </option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>

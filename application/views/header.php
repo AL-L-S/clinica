@@ -33,6 +33,7 @@ $financeiro_cadastro = $this->session->userdata('financeiro_cadastro');
 $caixa_personalizado = $this->session->userdata('caixa_personalizado');
 $gerente_contasapagar = $this->session->userdata('gerente_contasapagar');
 $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
+$procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
 
 //var_dump($gerente_contasapagar); die;
 function alerta($valor) {
@@ -493,6 +494,8 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacienteduplicado">Relatorio Pacientes Duplicados</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacientecpfvalido">Relatorio Paciente CPF Válido</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriosituacaoatendimento">Relatorio Situação de Atendimento</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriodemandagrupo">Relatorio de Demanda Grupo</a></span></ul>
+                                        <ul><span class="file"><a target="_blank" href="<?= base_url() ?>ambulatorio/exame/relatoriousosala">Uso de Salas</a></span></ul>
 
                                         <?
                                     }
@@ -960,7 +963,7 @@ function debug($object) {
                                     <li><span class="folder">Rotinas</span>
                                         <ul><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico">Listar Solicitações</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarcirurgia">Fila de Cirurgia</a></span></ul>
-                                        <ul><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/mapacirurgico">Mapa Cirurgico</a></span></ul>
+                                        <ul><span class="file"><a target="_blank" href="<?= base_url() ?>centrocirurgico/centrocirurgico/mapacirurgico">Mapa Cirurgico</a></span></ul>
                                                         <!--<li><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/pesquisarequipecirurgica">Equipe Cirurgica</a></span></li>-->
                                     </li>
                                 <? } ?>
@@ -1055,14 +1058,18 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoconvenio">Manter grupo convenio</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/convenio">Manter convenio</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/laboratorio">Manter Lab. Terceirizado</a></span></ul>
-                                        <? } ?>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano">Manter Procedimentos Convenio</a></span></ul>
-                                        <? if ($perfil_id != 10) { ?> 
+                                        <? } 
+                                        if($procedimento_multiempresa != 't') { ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano">Manter Procedimentos Convenio</a></span></ul>
+                                        <? } else { ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/pesquisar2">Manter Procedimentos Convenio</a></span></ul>
+                                        <? }
+                                        if ($perfil_id != 10) { ?> 
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/relatorioprocedimentoconvenio">Relatorio Procedimentos Convenio</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentual">Manter Percentual M&eacute;dico</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/medicopercentual">Manter Percentual M&eacute;dico</a></span></ul>
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">Manter Percentual M&eacute;dico</a></span></ul>-->
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentualpromotor">Manter Percentual Promotor</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentuallaboratorio">Manter Percentual Lab. Terceirizado</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/promotorpercentual">Manter Percentual Promotor</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/laboratoriopercentual">Manter Percentual Lab. Terceirizado</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificação</a></span></ul>
                                             <? if($subgrupo_procedimento != 't') { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao">Manter Grupo Classificação</a></span></ul>

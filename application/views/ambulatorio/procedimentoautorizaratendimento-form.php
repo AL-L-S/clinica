@@ -1,3 +1,13 @@
+<? 
+$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); 
+$empresa = $this->guia->listarempresapermissoes(); 
+$odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
+$retorno_alterar = $empresa[0]->selecionar_retorno;
+$empresa_id = $this->session->userdata('empresa_id');
+$empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
+$desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
+//var_dump($retorno_alterar); die;
+?>
 <style>
     .custom-combobox {
         position: relative;
@@ -43,6 +53,9 @@
                         .appendTo(this.wrapper)
                         .val(value)
                         .attr("title", "")
+                        <? if ($recomendacao_obrigatorio == 't'){ ?>
+                        .attr("required", "")
+                        <? } ?>
                         .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left input-recomendacao-combobox")
                         .autocomplete({
                             delay: 0,
@@ -141,17 +154,8 @@
         <? } ?>
     });
 </script>
-<? 
-$recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); 
-$empresa = $this->guia->listarempresapermissoes(); 
-$odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
-$retorno_alterar = $empresa[0]->selecionar_retorno;
-$empresa_id = $this->session->userdata('empresa_id');
-$empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
-$desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
-//var_dump($retorno_alterar); die;
 
-?>
+
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <!--<div class="clear"></div>-->
     <div class="bt_link_new" style="width: 150pt">
@@ -482,7 +486,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                             options = '<option value=""></option>';
                             for (var x = 0; x < j.length; x++) {
                                 
-                                if(j[x].exame_sala_id == sala_selecionada[<?= $b - 1 ?>]){
+                                if(j[x].exame_sala_id == sala_selecionada[<?= $b - 1 ?>] || j.length == 1){
                                   options += '<option selected="" value="' + j[x].exame_sala_id + '">' + j[x].nome + '</option>';  
                                 }else{
                                   options += '<option value="' + j[x].exame_sala_id + '">' + j[x].nome + '</option>';  
@@ -541,7 +545,11 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         $.getJSON('<?= base_url() ?>autocomplete/listarsalaporgrupo', {grupo1: $(this).val(), ajax: true}, function (j) {
                             options = '<option value=""></option>';
                             for (var c = 0; c < j.length; c++) {
-                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                if(j.length == 1){
+                                    options += '<option value="' + j[c].exame_sala_id + '" selected>' + j[c].nome + '</option>';
+                                } else {
+                                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                }
                             }
                             $('#sala<?= $b ?>').html(options).show();
                             $('.carregando').hide();

@@ -38,12 +38,14 @@ class Contasreceber extends BaseController {
 //            $this->carregarView($data);
     }
 
-    function carregar($financeiro_contasreceber_id) {
+    function carregar($financeiro_contasreceber_id, $empresa_id = null) {
         $obj_contasreceber = new contasreceber_model($financeiro_contasreceber_id);
         $data['obj'] = $obj_contasreceber;
         $data['conta'] = $this->forma->listarformaempresa();
         $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
+        $data['empresas'] = $this->exame->listarempresas();
+        $data['empresa_id'] = $empresa_id;
         $this->loadView('cadastros/contasreceber-form', $data);
     }
 
@@ -348,7 +350,7 @@ class Contasreceber extends BaseController {
             $data['mensagem'] = 'Sucesso ao gravar a Contas a recebr.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "cadastros/contasreceber");
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function confirmar() {

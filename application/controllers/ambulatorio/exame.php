@@ -56,7 +56,11 @@ class Exame extends BaseController {
 
         $this->loadView('ambulatorio/examepreparo-lista', $args);
     }
-
+    
+    function relatoriousosala($args = array()) {
+        $this->load->View('ambulatorio/relatoriousosala');
+    }
+    
     function listarsalasespera($limite = 25) {
         $data["limite_paginacao"] = $limite;
         $this->loadView('ambulatorio/exameespera-lista', $data);
@@ -277,6 +281,80 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/relatorioorcamentos', $data);
     }
 
+    function relatoriodemandagrupo() {
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $this->loadView('ambulatorio/relatoriodemandagrupo', $data);
+    }
+    
+    function listarusosala() {
+        if (count($_GET) > 0) {
+            $empresaFuncionamento = $this->exame->horariofuncionamentoempresa();
+            
+            // Pega o tempo total (em minutos) que a empresa vai funcionar durante nos dias da semana
+            $datetime1 = new DateTime($empresaFuncionamento[0]->horario_seg_sex_inicio);
+            $datetime2 = new DateTime($empresaFuncionamento[0]->horario_seg_sex_fim);
+            $intervalo = $datetime1->diff($datetime2);
+            $tempoFuncionamentoSemana = ((int)$intervalo->format('%H'))*60 + ((int)$intervalo->format('%i'));
+            
+            // Pega o tempo total (em minutos) que a empresa vai funcionar durante os dias do fds
+            $datetime1 = new DateTime($empresaFuncionamento[0]->horario_sab_inicio);
+            $datetime2 = new DateTime($empresaFuncionamento[0]->horario_sab_fim);
+            $intervalo = $datetime1->diff($datetime2);
+            $tempoFuncionamentoSabado = ((int)$intervalo->format('%H'))*60 + ((int)$intervalo->format('%i'));
+            
+            // Busca os horarios que essa sala vai estar em uso (ou agendada)
+            $result = $this->exame->listarusosala($_GET['sala']);
+            $retornoJSON = array();
+            $dias = array();
+            
+            for ($i = 0; $i < count($result); $i++){
+                
+                // Calcula o tempo que essa sala vai estar sendo usada (em minutos)
+                $datetime1 = new DateTime($result[$i]->inicio);
+                $datetime2 = new DateTime($result[$i]->fim);
+                $intervalo = $datetime1->diff($datetime2);
+                $tempoOcupacao = ((int)$intervalo->format('%H'))*60 + ((int)$intervalo->format('%i'));
+                
+                if (date("N", strtotime($result[$i]->data)) > 5) { // Caso seja um FDS
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento'] = $tempoFuncionamentoSabado;
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_sab_inicio));
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_sab_fim));
+                }
+                else { // Caso seja um dia normal 
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento'] = $tempoFuncionamentoSemana;
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_seg_sex_inicio));
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_seg_sex_fim));
+                }
+                
+                // Incrementa o tempo calculado nesse laço, com o valor dos laços passados
+                @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoUso'] += $tempoOcupacao;                
+                $percentual = (($dias[date("Ymd", strtotime($result[$i]->data))]['tempoUso'] / $dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento']) * 100);
+                // Transforma o valor acima em um percentual
+                @$dias[date("Ymd", strtotime($result[$i]->data))]['title'] = number_format($percentual, 2, ",", "") . "%";
+                
+                
+                $retorno['id'] = $i;
+                $retorno['title'] = $result[$i]->sala;
+                $retorno['texto'] = "Subtitulo das paradas loucas";
+                $retorno['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($result[$i]->inicio));
+                $retorno['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($result[$i]->fim));
+                $retornoJSON[] = $retorno;
+            }
+            
+            foreach($dias as $value){ // Esses valores irão aparecer na linha "ALL DAY"
+                $i++;
+                $value['color'] = '#62C462'; // Definindo uma cor
+                $value['className'] = 'titulo'; // Definindo um estilo CSS
+                $value['allDay'] = 'true'; // Informando que essas informações é para aparecer na linha "ALL DAY"
+                $value['id'] = $i;
+                $retornoJSON[] = $value;
+            }
+            
+            echo json_encode($retornoJSON);
+        } 
+    }
+    
     function relatorioteleoperadora() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarteleoperadora();
@@ -349,6 +427,19 @@ class Exame extends BaseController {
         }
     }
 
+    function gerarelatoriodemandagrupo() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['empresa_id'] = $_POST['empresa'];
+        $data['grupo'] = $_POST['grupo'];
+        $data['relatorio'] = $this->exame->gerarelatoriodemandagrupo();
+
+//        echo "<pre>";
+//        var_dump($data['relatorio']); die;
+        $this->load->View('ambulatorio/impressaorelatoriodemandagrupo', $data);
+    }
+
     function gerarelatorioorcamentos() {
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
@@ -356,7 +447,6 @@ class Exame extends BaseController {
         $data['empresa_id'] = $_POST['empresa'];
         $data['grupo'] = $_POST['grupo'];
         $data['relatorio'] = $this->exame->gerarelatorioorcamentos();
-
         $this->load->View('ambulatorio/impressaorelatorioorcamentos', $data);
     }
 

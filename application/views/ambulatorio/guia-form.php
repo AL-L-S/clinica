@@ -229,8 +229,6 @@
 
                     <div>
                         <label>Nome da M&atilde;e</label>
-
-
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                     </div>
 
@@ -264,11 +262,10 @@
                                     <select  name="sala1" id="sala1" class="size1" required="">
                                         <option value="">Selecione</option>
                                         <? foreach ($salas as $item) : ?>
-                                            <option value="<?= $item->exame_sala_id; ?>"<?
-                                            if ($sala == $item->nome):echo 'selected';
-                                            endif;
-                                            ?>><?= $item->nome; ?></option>
-                                                <? endforeach; ?>
+                                            <option value="<?= $item->exame_sala_id; ?>"<? if ($sala == $item->nome || count($salas) == 1) echo 'selected';?>>
+                                                <?= $item->nome; ?>
+                                            </option>
+                                        <? endforeach; ?>
                                     </select></td>
                                 <td> 
                                     <select  name="medicoagenda" id="medicoagenda" class="size1"  required="">

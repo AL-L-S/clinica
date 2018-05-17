@@ -9,9 +9,7 @@
                     <dt>
                         <label>Laboratório</label>
                     </dt>
-                    <dd>     
-                        <input type="hidden" name="percentual_laboratorio_id" value="<?= $percentual_laboratorio_id ?>"/>
-                        <input type="hidden" name="convenio_id" value="<?= $convenio_id ?>"/>
+                    <dd>
                         <input type="text" name="laboratorio" id="laboratorio" class="texto05" value="<?= $busca[0]->nome ?>" readonly/>
                     </dd>
                     <dt>
@@ -80,9 +78,9 @@
     </div>
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
-    $('#btnVoltar').click(function () {
-        $(location).attr('href', '<?= base_url(); ?>ambulatorio/procedimentoplano/procedimentopercentual');
-    });
+//    $('#btnVoltar').click(function () {
+//        $(location).attr('href', '<?= base_url(); ?>ambulatorio/procedimentoplano/procedimentopercentual');
+//    });
 
     $(function () {
         $("#accordion").accordion();

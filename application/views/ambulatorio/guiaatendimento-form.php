@@ -404,7 +404,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         </tfoot>
                     </table> 
                     <hr/>
-                    <button type="submit" name="btnEnviar" id="submitButton" <? if ($recomendacao_obrigatorio == 't') echo "onclick='verificaValorPromotor()'";?>>
+                    <button type="submit" name="btnEnviar" id="submitButton">
                         Adicionar
                     </button>
                 </fieldset>
@@ -748,14 +748,6 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 
 <script type="text/javascript">
-//    
-    function verificaValorPromotor(){
-        var indicacao = $("#indicacao").val();
-        alert(indicacao);
-//        if(indicacao == ''){
-//            
-//        }
-    }
                                 // Fazendo com que ao clicar no botão de submit, este passe a ficar desabilitado
                                 var formID = document.getElementById("form_guia");
                                 var send = $("#submitButton");
@@ -865,7 +857,11 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     $.getJSON('<?= base_url() ?>autocomplete/listarsalaporgrupo', {grupo1: $('#grupo1').val(), ajax: true}, function (j) {
                                         options = '<option value=""></option>';
                                         for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                            if(j.length == 1){
+                                                options += '<option value="' + j[c].exame_sala_id + '" selected>' + j[c].nome + '</option>';
+                                            } else {
+                                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                            }
                                         }
                                         $('#sala1').html(options).show();
                                         $('.carregando').hide();
@@ -955,15 +951,24 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val(), teste: $('#medico_id1').val(), ajax: true}, function (j) {
                                                 options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
-                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                    if(j.length == 1){
+                                                        options += '<option value="' + j[c].procedimento_convenio_id + '" selected>' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                    } else {
+                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                    }
                                                 }
                                                 $('#procedimento1').html(options).show();
                                                 $('.carregando').hide();
                                             });
+                                            
                                             $.getJSON('<?= base_url() ?>autocomplete/listarsalaporgrupo', {grupo1: $(this).val(), ajax: true}, function (j) {
-                                                options = '<option value=""></option>';
+                                                var options = '<option value=""></option>';
                                                 for (var c = 0; c < j.length; c++) {
-                                                    options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                                    if(j.length == 1){
+                                                        options += '<option value="' + j[c].exame_sala_id + '" selected>' + j[c].nome + '</option>';
+                                                    } else {
+                                                        options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                                    }
                                                 }
                                                 $('#sala1').html(options).show();
                                                 $('.carregando').hide();
@@ -999,7 +1004,11 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 $.getJSON('<?= base_url() ?>autocomplete/listarsalaporgrupo', {grupo1: j[0].grupo, ajax: true}, function (i) {
                                                     options = '<option value=""></option>';
                                                     for (var c = 0; c < i.length; c++) {
-                                                        options += '<option value="' + i[c].exame_sala_id + '">' + i[c].nome + '</option>';
+                                                        if(j.length == 1){
+                                                            options += '<option value="' + i[c].exame_sala_id + '" selected>' + i[c].nome + '</option>';
+                                                        } else {
+                                                            options += '<option value="' + i[c].exame_sala_id + '">' + i[c].nome + '</option>';
+                                                        }                                                        
                                                     }
                                                     $('#sala1').html(options).show();
                                                     $('.carregando').hide();

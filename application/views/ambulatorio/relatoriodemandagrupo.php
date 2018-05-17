@@ -1,8 +1,8 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar relatorio orçamentos</a></h3>
+        <h3><a href="#">Gerar Relatório Demanda de Grupo Orçamento</a></h3>
         <div>
-            <form method="post" action="<?= base_url() ?>ambulatorio/exame/gerarelatorioorcamentos">
+            <form method="post" action="<?= base_url() ?>ambulatorio/exame/gerarelatoriodemandagrupo">
                 <dl>
                     <dt>
                         <label>Data inicio</label>
@@ -16,15 +16,25 @@
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
+<!--                    <dt>
+                        <label>Situação</label>
+                    </dt>
+                    <dd>
+                        <select name="situacao" id="situacao" class="size2">
+                            <option value=''>SELECIONE</option>
+                            <option value='AGUARDANDO'>Autorizado</option>
+                            <option value='DIGITANDO'>Não autorizado</option>
+                        </select>
+                    </dd>-->
                     <dt>
                         <label>Grupo</label>
                     </dt>
                     <dd>
-                        <select name="grupo" id="grupo" class="size2">
-                            <? foreach ($grupos as $value) : ?>
-                                <option value="<?= $value->nome; ?>" ><?php echo $value->nome; ?></option>
-                            <? endforeach; ?>
-                            <option value="" selected="">TODOS</option>
+                        <select name="grupo" id="grupo" class="size2" >
+                            <option value=''>SELECIONE</option>
+                            <? foreach ($grupos as $grupo) { ?>                                
+                                <option value='<?= $grupo->nome ?>'><?= $grupo->nome ?></option>
+                            <? } ?>
                         </select>
                     </dd>
                     <dt>
@@ -35,19 +45,12 @@
                             <? foreach ($empresa as $value) : ?>
                                 <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
-                            <option value="0">TODOS</option>
-                        </select>
-                    </dd>
-                    <dt>
-                        <label>Buscar por?</label>
-                    </dt>
-                    <dd>
-                        <select name="tipo_orcamento" id="tipo_orcamento" class="size2">
                             <option value="">TODOS</option>
-                            <option value="0">PRÉ-CADASTROS</option>
-                            <option value="1">CLIENTES</option>
                         </select>
                     </dd>
+                    
+                    
+                    <dt>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>
