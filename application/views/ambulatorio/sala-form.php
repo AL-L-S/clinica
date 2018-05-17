@@ -63,26 +63,12 @@
                                     <? // } ?>
                         </select>
                     </dd>-->
-<!--                    <dt>
-                        <label>Painel</label>
+                    <dt>
+                        <label>Toten Sala ID</label>
                     </dt>
                     <dd>
-                        <select name="painel_id" id="painel_id" class="size2" required>
-                            <option value='' >Selecione</option>
-                            <? for ($i = 1; $i <= 10; $i++){?>
-                            <option <?
-                            if(@$obj->_painel_id == $i){
-                                echo 'selected';
-                            }
-                            ?> value='<?=$i?>' ><?=$i?></option>
-                                
-                            <?}
-                            
-                            
-                            ?>
-                            
-                        </select>
-                    </dd>-->
+                       <input type="number" name="toten_sala_id" class="texto01" value="<?= @$obj->_toten_sala_id; ?>" />
+                    </dd>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

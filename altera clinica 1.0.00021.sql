@@ -194,3 +194,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT insereValor();
+ALTER TABLE ponto.tb_empresa_impressao_recibo ADD COLUMN linha_procedimento text;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_cadastro text;

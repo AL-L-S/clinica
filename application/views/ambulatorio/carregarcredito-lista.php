@@ -75,7 +75,7 @@ $perfil_id = $this->session->userdata('perfil_id');
                                 <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valor, 2, ",", ""); ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/exametemp/gerarecibocredito/<?= $item->paciente_credito_id ?>">Recibo</a></div>
+                                        <a href="<?= base_url() ?>ambulatorio/exametemp/gerarecibocredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>">Recibo</a></div>
                                 </td>
                                 <?if($perfil_id == 1){?>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">

@@ -97,18 +97,16 @@
                         <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_municipio; ?>" />
                     </dd>
                     <dt>
-                        <label>Horário Seg à Sex</label>
+                        <label>Horário Seg á Sex</label>
                     </dt>
                     <dd>
-                        <input type="text" id="horSegSexta_i" class="texto01" name="horSegSexta_i" alt="29:99" value="<?= @$obj->_horario_seg_sex_inicio; ?>" /> às
-                        <input type="text" id="horSegSexta_f" class="texto01" name="horSegSexta_f" alt="29:99" value="<?= @$obj->_horario_seg_sex_fim; ?>" />
+                        <input type="text" id="horario_seg_sex" class="texto05" name="horario_seg_sex" value="<?= @$obj->_horario_seg_sex; ?>" />
                     </dd>
                     <dt>
                         <label>Horário Sab</label>
                     </dt>
                     <dd>
-                        <input type="text" id="horSab_i" class="texto01" name="horSab_i" alt="29:99" value="<?= @$obj->_horario_sab_inicio; ?>" /> às
-                        <input type="text" id="horSab_f" class="texto01" name="horSab_f" alt="29:99" value="<?= @$obj->_horario_sab_fim; ?>" />
+                        <input type="text" id="horario_sab" class="texto05" name="horario_sab" value="<?= @$obj->_horario_sab; ?>" />
                     </dd>
 
                     <? if ($this->session->userdata('operador_id') == 1) { ?>
@@ -167,7 +165,7 @@
                             <input type="text" id="endereco_externo" class="texto08" name="endereco_externo" value="<?= @$obj->_endereco_externo; ?>" />
                         </dd>
                         <dt>
-                            <label>Endereço Toten EX: (http://192.168.25.47:8099)</label>
+                            <label>Endereço Toten EX: (http://192.168.25.47:8099/)</label>
                         </dt>
                         <dd>
                             <input type="text" id="endereco_toten" class="texto08" name="endereco_toten" value="<?= @$obj->_endereco_toten; ?>" />

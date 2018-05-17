@@ -66,6 +66,32 @@ class Autocomplete extends Controller {
         echo json_encode($var);
     }
 
+    function gravarsenhatoten() {
+        header('Access-Control-Allow-Origin: *');
+        $result = $this->exametemp->gravarsenhatoten();
+
+        if ($result) {
+            echo json_encode('true');
+        } else {
+            echo json_encode('false');
+        }
+    }
+
+    function atendersenhatoten() {
+        header('Access-Control-Allow-Origin: *');
+
+        set_time_limit(0); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
+        ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão
+        
+        $result = $this->exametemp->atendersenhatoten();
+
+        if ($result) {
+            echo json_encode('true');
+        } else {
+            echo json_encode('false');
+        }
+    }
+
     function procedimentoconveniocirurgico() {
 
         if (isset($_GET['convenio1'])) {
@@ -198,6 +224,76 @@ class Autocomplete extends Controller {
 //        var_dump($_GET); die;
         $convenio = $this->procedimentoplano->listarconveniointegracaofidelidade($_GET['parceiro_id']);
         echo json_encode($convenio);
+    }
+
+    function testandototen() {
+        echo '<pre>';
+//        header('Access-Control-Allow-Origin: *');
+//        var_dump('dasdasd'); die;
+//        $url = 'http://localhost/clinicas/autocomplete/TESTEPARTE2TOTENFODIDO';
+//        $url = "http://192.168.25.47:8099/webService/telaAtendimento/proximo/'27'/Guichê1/false/true/12";
+//        
+        $data = array(
+            'setores' => '27',
+            'guiche' => 'Guichê 1',
+            'fila' => 'false',
+            'filaPrioridade' => 'true',
+            'idUsuarioStg' => '12'
+        );
+//
+//// use key 'http' even if you send the request to https://...
+        $options = array(
+            'http' => array(
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST'
+            )
+        );
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+//        $grupo_busca = file_get_contents($url);
+        if ($result === FALSE) { /* Handle error */
+        }
+
+        var_dump($result);
+        # Our new data
+//        $data = array(
+//            'election' => 1,
+//            'name' => 'Test'
+//        );
+//        
+//       
+# Create a connection
+//       $url = 'http://localhost/clinicas/autocomplete/TESTEPARTE2TOTENFODIDO';
+        $url = 'http://192.168.25.47:8099/webService/telaAtendimento/proximo/"27"/Guichê1/false/true/12';
+        $ch = curl_init($url);
+# Form data string
+        $postString = http_build_query($data, '', '&');
+# Setting our options
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postString);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+# Get the response
+        $response = curl_exec($ch);
+        var_dump($response);
+//        die;
+        curl_close($ch);
+
+
+//        $r = new HttpRequest('http://192.168.25.47:8099/webService/telaAtendimento/proximo/"27"/Guichê1/false/true/12', HttpRequest::METH_POST);
+//        $r->setOptions(array('cookies' => array('lang' => 'pt')));
+//        $r->addPostFields(array('user' => 'mike', 'pass' => 's3c|r3t'));
+//        $r->addPostFile('image', 'profile.jpg', 'image/jpeg');
+//        try {
+//            echo $r->send()->getBody();
+//        } catch (HttpException $ex) {
+//            echo $ex;
+//        }
+
+        $grupo_busca = file_get_contents("http://192.168.25.47:8099/webService/telaAtendimento/setores");
+        $grupo = json_decode($grupo_busca);
+        var_dump($grupo);
+//        var_dump($grupo[0]->nome);
+        die;
     }
 
     function enviaremailstg() {
@@ -1035,7 +1131,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($var);
     }
-    
+
     function alterardatacirurgiajson() {
 //        var_dump(123);die;
 
@@ -1045,7 +1141,7 @@ class Autocomplete extends Controller {
         } else {
             $retorno = false;
         }
-        
+
         echo json_encode($retorno);
     }
 
@@ -1344,7 +1440,7 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
+
     function procedimentoconvenioatendimentonovo() {
 
         if (isset($_GET['convenio1'])) {

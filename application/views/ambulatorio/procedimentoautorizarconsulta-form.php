@@ -352,7 +352,7 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
     </div> <!-- Final da DIV content -->
 </div> <!-- Final da DIV content -->
 <!--</body>-->
-
+<? //echo '<pre>'; var_dump(@$exames); die;?>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>

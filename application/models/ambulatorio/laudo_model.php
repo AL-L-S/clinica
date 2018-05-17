@@ -4029,6 +4029,7 @@ class laudo_model extends Model {
                             ag.texto,
                             ag.medico_parecer1,
                             ag.medico_parecer2,
+                            ag.id_chamada,
                             ag.revisor,
                             ag.diabetes,
                             ag.hipertensao,
@@ -4160,6 +4161,7 @@ class laudo_model extends Model {
             $this->_paciente_id = $return[0]->paciente_id;
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;
+            $this->_id_chamada = $return[0]->id_chamada;
             $this->_bairro = $return[0]->bairro;
             $this->_medico_solicitante = $return[0]->medico_solicitante;
             $this->_primeiro_atendimento = $return[0]->primeiro_atendimento;

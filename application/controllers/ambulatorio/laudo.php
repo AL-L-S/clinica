@@ -272,7 +272,12 @@ class Laudo extends BaseController {
 //                        copy($local, $destino);
 //                }
 //            }
-//        }        
+//        }     
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
+        $endereco = $data['empresa'][0]->endereco_toten;
+        $data['endereco'] = $endereco;
 
         $data['integracao'] = $this->laudo->listarlaudosintegracao($agenda_exames_id);
         if (count($data['integracao']) > 0) {
@@ -493,7 +498,13 @@ class Laudo extends BaseController {
         if ($data['arquivos_paciente'] != false) {
             sort($data['arquivos_paciente']);
         }
+
         $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
+        $endereco = $data['empresa'][0]->endereco_toten;
+        $data['endereco'] = $endereco;
+
+//        $empresa_id = $this->session->userdata('empresa_id');
         $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
         $data['listarades'] = $this->laudo->listarades();
         $data['listaradcl'] = $this->laudo->listaradcl();
@@ -744,7 +755,7 @@ class Laudo extends BaseController {
 
             if (count($contador) == 0) {
                 $this->laudo->deletarregistroimagem($exame_id, $imagem_id);
-                $sequencia = $sequencia .".jpg";
+                $sequencia = $sequencia . ".jpg";
                 $this->laudo->gravarnome($exame_id, $sequencia, $novonome, $sequencia);
                 $nometemp = "./upload/$exame_id/9999999";
                 $newname = "./upload/$exame_id/$sequencia";
@@ -753,7 +764,7 @@ class Laudo extends BaseController {
                 rename($nometemp, $oldname);
                 redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
             } elseif ($sequencia == trim($_POST['imagem_id'])) {
-                $sequencia = $sequencia .".jpg";
+                $sequencia = $sequencia . ".jpg";
                 $this->laudo->alterarnome($exame_id, $imagem_id, $novonome, $sequencia);
                 $nometemp = "./upload/$exame_id/9999999";
                 $newname = "./upload/$exame_id/$sequencia";
@@ -1071,7 +1082,10 @@ class Laudo extends BaseController {
 //            }
 
             $html = $this->load->view('ambulatorio/impressaolaudoconfiguravel', $data, true);
-
+//            echo '<pre>';
+//            var_dump($html); die;
+//            $cabecalho = '';
+//            $rodape = '';
             pdf($html, $filename, $cabecalho, $rodape);
         } else { // CASO O LAUDO NÃO CONFIGURÁVEL
             //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3905,7 +3919,7 @@ class Laudo extends BaseController {
 
         if ($_POST['situacao'] == 'FINALIZADO') {
             $validar = $this->laudo->validar();
-            
+
             $empresa_id = $this->session->userdata('empresa_id');
             $empresapermissao = $this->guia->listarempresasaladepermissao($empresa_id);
 

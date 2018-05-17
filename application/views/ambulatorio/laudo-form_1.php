@@ -104,7 +104,7 @@ if (count($pacs) > 0) {
 
                         <td width="40px;"><div class="bt_link_new">
                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
-                                    chamar</a></div>
+                                    Chamar</a></div>
                         </td>
 
                         <td>

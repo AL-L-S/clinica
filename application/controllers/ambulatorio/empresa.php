@@ -31,6 +31,10 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/empresa-lista', $args);
     }
 
+    function pesquisartotensetor($args = array()) {
+        $this->loadView('ambulatorio/pesquisartotensetor-lista', $args);
+    }
+
     function pesquisarlembrete($args = array()) {
         $this->loadView('ambulatorio/lembrete-lista', $args);
     }
@@ -54,14 +58,21 @@ class Empresa extends BaseController {
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaolaudo-lista');
     }
-    
+
     function listarorcamentoconfig() {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
 //        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaoorcamento-lista');
     }
-    
+
+    function listarreciboconfig() {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaorecibo-lista');
+    }
+
     function listarencaminhamentoconfig() {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
 //        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
@@ -70,12 +81,12 @@ class Empresa extends BaseController {
     }
 
     function configurarlogomarca($empresa_id) {
-        
+
         $obj_empresa = new empresa_model($empresa_id);
         $data['obj'] = $obj_empresa;
-        
+
         $this->load->helper('directory');
-        
+
         if (!is_dir("./upload/logomarca")) {
             mkdir("./upload/logomarca");
             $destino = "./upload/logomarca";
@@ -91,14 +102,14 @@ class Empresa extends BaseController {
 //        echo "<pre>"; var_dump($data); die;
         $this->loadView('ambulatorio/configurarlogomarca-form', $data);
     }
-    
+
     function gravarlogomarca() {
         $empresa_id = $_POST['empresa_id'];
         $data = $_FILES['userfile'];
         $nome = $_FILES['userfile']['name'];
-        
+
         $this->empresa->gravarlogomarca();
-        
+
         if (!is_dir("./upload/logomarca")) {
             mkdir("./upload/logomarca");
             $destino = "./upload/logomarca";
@@ -109,10 +120,10 @@ class Empresa extends BaseController {
             $destino = "./upload/logomarca/$empresa_id";
             chmod($destino, 0777);
         }
-        
+
         array_map('unlink', glob("./upload/logomarca/$empresa_id/*.*"));
-        
-        
+
+
         $config['upload_path'] = "./upload/logomarca/$empresa_id/";
         $config['allowed_types'] = 'gif|jpg|JPG|png|jpeg|JPEG|pdf|doc|docx|xls|xlsx|ppt|zip|rar|bmp|BMP';
         $config['max_size'] = '0';
@@ -136,9 +147,9 @@ class Empresa extends BaseController {
 
         redirect(base_url() . "ambulatorio/empresa/configurarlogomarca/$empresa_id");
     }
-    
+
     function excluirlogomarca($empresa_id) {
-        
+
         if (!is_dir("./upload/logomarca")) {
             mkdir("./upload/logomarca");
             $destino = "./upload/logomarca";
@@ -149,7 +160,7 @@ class Empresa extends BaseController {
             $destino = "./upload/logomarca/$empresa_id";
             chmod($destino, 0777);
         }
-        
+
         array_map('unlink', glob("./upload/logomarca/$empresa_id/*.*"));
 
         redirect(base_url() . "ambulatorio/empresa/configurarlogomarca/$empresa_id");
@@ -244,14 +255,21 @@ class Empresa extends BaseController {
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaoorcamento-form', $data);
     }
-    
+
+    function configurarrecibo($empresa_impressao_recibo_id) {
+        $data['empresa_impressao_recibo_id'] = $empresa_impressao_recibo_id;
+        $data['impressao'] = $this->empresa->listarconfiguracaoimpressaoreciboform($empresa_impressao_recibo_id);
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaorecibo-form', $data);
+    }
+
     function configurarencaminhamento($empresa_impressao_encaminhamento_id) {
         $data['empresa_impressao_encaminhamento_id'] = $empresa_impressao_encaminhamento_id;
         $data['impressao'] = $this->empresa->listarconfiguracaoimpressaoencaminhamentoform($empresa_impressao_encaminhamento_id);
 //        var_dump($data['impressao']); die;
         $this->loadView('ambulatorio/configurarimpressaoencaminhamento-form', $data);
     }
-    
+
     function configurarlaudo($empresa_impressao_laudo_id) {
         $data['empresa_impressao_laudo_id'] = $empresa_impressao_laudo_id;
         $data['impressao'] = $this->empresa->listarconfiguracaoimpressaolaudoform($empresa_impressao_laudo_id);
@@ -280,7 +298,7 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/listarlaudoconfig");
     }
-    
+
     function ativarconfiguracaoorcamento($impressao_id) {
         if ($this->empresa->ativarconfiguracaoorcamento($impressao_id)) {
             $mensagem = 'Orçamento ativado com sucesso';
@@ -369,7 +387,7 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/listarlaudoconfig");
     }
-    
+
     function gravarimpressaoorcamento() {
 //        var_dump($_POST); die;
         $impressao_id = $_POST['impressao_id'];
@@ -383,11 +401,37 @@ class Empresa extends BaseController {
         redirect(base_url() . "ambulatorio/empresa/listarorcamentoconfig");
     }
 
+    function gravarimpressaorecibo() {
+//        var_dump($_POST); die;
+        $impressao_id = $_POST['impressao_id'];
+        if ($this->empresa->gravarconfiguracaoimpressaorecibo($impressao_id)) {
+            $mensagem = 'Sucesso ao gravar cabeçalho e rodapé';
+        } else {
+            $mensagem = 'Erro ao gravar cabeçalho e rodapé. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/listarreciboconfig");
+    }
+
     function carregarempresa($exame_empresa_id) {
         $obj_empresa = new empresa_model($exame_empresa_id);
         $data['obj'] = $obj_empresa;
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/empresa-form', $data);
+    }
+
+    function carregartotensetor() {
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
+        $endereco = $data['empresa'][0]->endereco_toten;
+        $setor_busca = file_get_contents("$endereco/webService/telaAtendimento/setores");
+        $data['setores'] = json_decode($setor_busca);
+        echo '<pre>';
+        var_dump($data['setores']); die;
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/pesquisartotensetor-form', $data);
     }
 
     function configuraremail($empresa_id) {
@@ -452,7 +496,7 @@ class Empresa extends BaseController {
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/configuraracessoexterno/$empresa_id");
     }
-    
+
     function excluirempresa($servidor_id, $empresa_id) {
         if ($this->empresa->excluirempresa($servidor_id)) {
             $mensagem = 'Sucesso ao desativar a empresa';

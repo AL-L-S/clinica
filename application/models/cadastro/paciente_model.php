@@ -243,6 +243,7 @@ class paciente_model extends BaseModel {
 
             $this->_paciente_id = $paciente_id;
             $this->_cpf = $return[0]->cpf;
+            $this->_cpf_responsavel = $return[0]->cpf_responsavel;
             $this->_nome = $return[0]->nome;
             $this->_cns = $return[0]->cns;
             if (isset($return[0]->nascimento)) {
@@ -348,6 +349,9 @@ class paciente_model extends BaseModel {
             $this->db->set('nome', $_POST['nome']);
             if ($_POST['cpf'] != '') {
                 $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
+            }
+            if ($_POST['cpf_responsavel'] != '') {
+                $this->db->set('cpf_responsavel', str_replace("-", "", str_replace(".", "", $_POST['cpf_responsavel'])));
             }
             if ($_POST['nascimento'] != '') {
                 $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));

@@ -173,7 +173,7 @@ class pacientes extends BaseController {
 
     function autorizarambulatoriotempconsulta($paciente_id) {
         $resultadoguia = $this->guia->listarguia($paciente_id);
-        $ambulatorio_guia_id = $resultadoguia['ambulatorio_guia_id'];
+        $ambulatorio_guia_id = @$resultadoguia['ambulatorio_guia_id'];
         if ($ambulatorio_guia_id == 0) {
             $ambulatorio_guia_id = $this->guia->gravarguia($paciente_id);
         }
