@@ -575,6 +575,16 @@ class Procedimentoplano extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
+    function excluirdesativado($procedimentoplano_tuss_id) {
+        if ($this->procedimentoplano->excluirdesativado($procedimentoplano_tuss_id)) {
+            $mensagem = 'Sucesso ao excluir o Procedimentoplano';
+        } else {
+            $mensagem = 'Erro ao excluir o Procedimentoplano. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function excluir($procedimentoplano_tuss_id) {
         if ($this->procedimentoplano->excluir($procedimentoplano_tuss_id)) {
             $mensagem = 'Sucesso ao excluir o Procedimentoplano';

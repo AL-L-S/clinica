@@ -366,14 +366,16 @@ if (@$_GET['sala'] != '') {
                 
         eventClick: function (calEvent, jsEvent, view) {
             alert(calEvent.texto);
+//            console.log(calEvent);
         },
 //        contentHeight: 600,
         showNonCurrentDates: false,
         defaultDate: '<?= $data ?>',
         locale: 'pt-br',
+        allDayText: "Dia todo",
         editable: false,
         navLinks: true,
-        eventLimit: false, // allow "more" link when too many events
+        eventLimit: true, // allow "more" link when too many events
         schedulerLicenseKey: 'CC-Attribution-Commercial-NoDerivatives',
         eventSources: [
             {

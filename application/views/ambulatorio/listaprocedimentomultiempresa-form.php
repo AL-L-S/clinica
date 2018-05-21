@@ -48,11 +48,13 @@
                                                 Desativar
                                             </a>
                                         </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"> 
-                                            <a target="_blank" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplano/<?= $item->procedimento_convenio_id ?>');">
-                                                Editar
-                                            </a>
-                                        </td>
+                                        <? if($item->associado != 't') { ?>
+                                            <td class="<?php echo $estilo_linha; ?>" width="60px;"> 
+                                                <a target="_blank" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoplano/<?= $item->procedimento_convenio_id ?>');">
+                                                    Editar
+                                                </a>
+                                            </td>
+                                        <? } ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
                                             <a target="_blank" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/carregarprocedimentoformapagamento/<?= $item->procedimento_convenio_id ?>');">
                                                 Pagamento
@@ -70,6 +72,11 @@
                                                 Reativar
                                             </a>
                                         </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                            <a target="_blank" onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirdesativado/<?= $item->procedimento_convenio_id ?>">
+                                                Excluir
+                                            </a>
+                                        </td>
                                     <? } ?>
 
                                 <? } 
@@ -78,7 +85,7 @@
                                         <td class="<?php echo $estilo_linha; ?>" width="80px;"> </td>
                                         <td class="<?php echo $estilo_linha; ?>" width="80px;"> </td>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <a target="_blank" onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
+                                            <a target="_blank" onclick="javascript: return confirm('Deseja realmente desativar o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
                                                 Desativar
                                             </a>
                                         </td>
@@ -93,6 +100,11 @@
                                             <a onclick="javascript: return confirm('Deseja realmente ativar o procedimento? ');" target="_blank"
                                                href="<?= base_url() ?>ambulatorio/procedimentoplano/reativarprocedimentoconvenio/<?= $item->procedimento_convenio_id ?>">
                                                 Reativar
+                                            </a>
+                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                            <a target="_blank" onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirdesativado/<?= $item->procedimento_convenio_id ?>">
+                                                Excluir
                                             </a>
                                         </td>
                                 <?  } 

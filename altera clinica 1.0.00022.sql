@@ -59,6 +59,21 @@ UPDATE ponto.tb_empresa
    SET horario_seg_sex_inicio='08:00', horario_seg_sex_fim='18:00', horario_sab_inicio='08:00', horario_sab_fim='12:00'
  WHERE (horario_seg_sex_inicio IS NULL OR horario_seg_sex_inicio = '');
 
+-- Dia 19/05/2018
+ALTER TABLE ponto.tb_procedimento_convenio ADD COLUMN excluido boolean DEFAULT false;
+COMMENT ON COLUMN ponto.tb_procedimento_convenio.excluido IS 'Campo usado ao utilizar a flag de procedimentos multiplos. Baseado nele o sistema irá saber se é ou não para mostrar o procedimento em manter proc. convenio';
+
+-- Caso haja mais de um procedimento ativo na mesma empresa, desativa um deles
+UPDATE ponto.tb_procedimento_convenio SET ativo = false WHERE procedimento_convenio_id IN (
+    WITH t AS (
+        SELECT procedimento_convenio_id, convenio_id, procedimento_tuss_id, empresa_id, 
+        ROW_NUMBER() OVER (PARTITION BY convenio_id, procedimento_tuss_id, empresa_id) AS row_number 
+        FROM ponto.tb_procedimento_convenio
+        --WHERE excluido = 'f'
+	ORDER BY convenio_id, procedimento_tuss_id, empresa_id, procedimento_convenio_id
+    ) 
+    SELECT procedimento_convenio_id FROM t WHERE row_number > 1  
+);
 
 ALTER TABLE ponto.tb_internacao ALTER COLUMN motivo_saida TYPE integer USING motivo_saida::integer;
 

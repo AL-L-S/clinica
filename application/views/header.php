@@ -453,6 +453,8 @@ function debug($object) {
 
 
                                             <? } ?>
+                                            <ul><span class="file"><a target="_blank" href="<?= base_url() ?>ambulatorio/exame/relatoriousosala">Uso de Salas</a></span></ul>
+                                                    
                                             <? if (($perfil_id != 11 && $perfil_id != 12 && $perfil_id != 5 && $perfil_id != 18 && $perfil_id != 6) || $orcamento_recepcao == 't') { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoplanoconsulta">Pre&ccedil;o procedimento</a></span></ul>
                                             <? } ?>
@@ -495,7 +497,6 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacientecpfvalido">Relatorio Paciente CPF Válido</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriosituacaoatendimento">Relatorio Situação de Atendimento</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriodemandagrupo">Relatorio de Demanda Grupo</a></span></ul>
-                                        <ul><span class="file"><a target="_blank" href="<?= base_url() ?>ambulatorio/exame/relatoriousosala">Uso de Salas</a></span></ul>
 
                                         <?
                                     }

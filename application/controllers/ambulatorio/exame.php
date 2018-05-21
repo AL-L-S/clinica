@@ -288,7 +288,7 @@ class Exame extends BaseController {
     }
 
     function listarusosala() {
-        if (count($_GET) > 0) {
+        if (count($_GET) > 0 && $_GET['sala'] != '') {
             $empresaFuncionamento = $this->exame->horariofuncionamentoempresa();
 
             // Pega o tempo total (em minutos) que a empresa vai funcionar durante nos dias da semana
@@ -320,10 +320,13 @@ class Exame extends BaseController {
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento'] = $tempoFuncionamentoSabado;
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_sab_inicio));
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_sab_fim));
-                } else { // Caso seja um dia normal 
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['texto'] = $result[$i]->sala."\n".@date("H:i", strtotime($empresaFuncionamento[0]->horario_sab_inicio))." as ".@date("H:i", strtotime($empresaFuncionamento[0]->horario_sab_fim));
+                }
+                else { // Caso seja um dia normal 
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento'] = $tempoFuncionamentoSemana;
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_seg_sex_inicio));
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_seg_sex_fim));
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['texto'] = $result[$i]->sala."\n".@date("H:i", strtotime($empresaFuncionamento[0]->horario_seg_sex_inicio))." as ".@date("H:i", strtotime($empresaFuncionamento[0]->horario_seg_sex_fim));
                 }
 
                 // Incrementa o tempo calculado nesse laço, com o valor dos laços passados
@@ -331,11 +334,13 @@ class Exame extends BaseController {
                 $percentual = (($dias[date("Ymd", strtotime($result[$i]->data))]['tempoUso'] / $dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento']) * 100);
                 // Transforma o valor acima em um percentual
                 @$dias[date("Ymd", strtotime($result[$i]->data))]['title'] = number_format($percentual, 2, ",", "") . "%";
+                
 
-
+                
+                
                 $retorno['id'] = $i;
                 $retorno['title'] = $result[$i]->sala;
-                $retorno['texto'] = "Subtitulo das paradas loucas";
+                $retorno['texto'] = $result[$i]->sala."\n".date("H:i", strtotime($result[$i]->inicio))." as ".date("H:i:s", strtotime($result[$i]->fim));
                 $retorno['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($result[$i]->inicio));
                 $retorno['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($result[$i]->fim));
                 $retornoJSON[] = $retorno;
