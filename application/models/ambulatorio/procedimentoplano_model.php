@@ -114,13 +114,15 @@ class procedimentoplano_model extends Model {
                             pc.valortotal,
                             pt.grupo,
                             e.nome as empresa,
-                            pc.ativo');
+                            pc.ativo,
+                            c.associado');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_empresa e', 'e.empresa_id = pc.empresa_id', 'left');
         $this->db->where("pc.procedimento_tuss_id", $procedimento_tuss_id);
         $this->db->where("pc.convenio_id", $convenio_id);
+        $this->db->where("pc.excluido", "f");
         $this->db->orderby("pc.ativo DESC");
         
         $return = $this->db->get();
@@ -1908,6 +1910,64 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
+    function excluirdesativado($procedimento_convenio_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        /* EXCLUINDO ESSE PROCEDIMENTO NOS CONVENIOS SECUNDARIOS */
+
+        // Trazendo convenio e procedimento desse plano
+        $this->db->select(' pc.convenio_id,
+                            pc.procedimento_tuss_id, 
+                            pt.grupo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', "pt.procedimento_tuss_id = pc.procedimento_tuss_id");
+        $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);
+        $return = $this->db->get();
+        $plano = $return->result();
+
+        // Buscando os convenios secundarios associados a esse Convenio
+        $this->db->select('convenio_secundario_id');
+        $this->db->from('tb_convenio_secudario_associacao');
+        $this->db->where('convenio_primario_id', $plano[0]->convenio_id);
+        $this->db->where('grupo', $plano[0]->grupo);
+        $this->db->where('ativo', 't');
+        $return = $this->db->get();
+        $conv_sec = $return->result();
+
+        if (count($conv_sec) > 0) { // Caso tenha convenios secundarios associados
+            foreach ($conv_sec as $value) { // Excluido o proc em todos os planos secundarios
+                $this->db->set('excluido', 't');
+                $this->db->set('ativo', 'f');
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('convenio_id', $value->convenio_secundario_id);
+                $this->db->where('procedimento_tuss_id', $plano[0]->procedimento_tuss_id);
+                $this->db->update('tb_procedimento_convenio');
+            }
+        }
+        
+//        echo "<pre>";
+//        var_dump($conv_sec); die;
+
+        /* FIM DA EXCLUSAO NOS SECUNDARIOS */
+
+        $this->db->set('excluido', 't');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->update('tb_procedimento_convenio');
+        $erro = $this->db->_error_message();
+
+
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
     function excluir($procedimento_convenio_id) {
 
         $horario = date("Y-m-d H:i:s");
@@ -2475,6 +2535,7 @@ class procedimentoplano_model extends Model {
                         $this->db->select('procedimento_convenio_id');
                         $this->db->from('tb_procedimento_convenio pc');
                         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+                        $this->db->where('pc.excluido', 'f');
                         if($procedimento_multiempresa != 't'){ //vide chamado #1950
                             $this->db->where('pc.ativo', 't');
                         } 
@@ -2529,6 +2590,20 @@ class procedimentoplano_model extends Model {
                             $secundarios = $query->result();
 
                             foreach ($secundarios as $sec) {
+                                $this->db->select('procedimento_convenio_id');
+                                $this->db->from('tb_procedimento_convenio pc');
+                                $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+                                $this->db->where('pc.excluido', 'f');
+                                if($procedimento_multiempresa != 't'){ //vide chamado #1950
+                                    $this->db->where('pc.ativo', 't');
+                                } 
+                                else {
+                                    $this->db->where('pc.empresa_id', $empresa_id);
+                                }
+                                $this->db->where('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
+                                $this->db->where('convenio_id', $sec->convenio_secundario_id);
+                                $query = $this->db->get()->result();
+                                
                                 $this->db->set('qtdech', (($_POST['qtdech'][$key] == "") ? 0 : $_POST['qtdech'][$key]));
                                 $this->db->set('valorch', (($_POST['valorch'][$key] == "") ? 0 : $_POST['valorch'][$key]));
                                 $this->db->set('qtdefilme', (($_POST['qtdefilme'][$key] == "") ? 0 : $_POST['qtdefilme'][$key]));
@@ -2539,12 +2614,21 @@ class procedimentoplano_model extends Model {
                                 $this->db->set('valoruco', (($_POST['valoruco'][$key] == "") ? 0 : $_POST['valoruco'][$key]));
                                 $this->db->set('valortotal', ($_POST['valortotal'][$key] + ($_POST['valortotal'][$key] * (float) $sec->valor_percentual / 100)));
                                 $this->db->set('empresa_id', $_POST['empresa']);
-                                $this->db->set('data_atualizacao', $horario);
-                                $this->db->set('operador_atualizacao', $operador_id);
-                                $this->db->set('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
-                                $this->db->set('convenio_id', $sec->convenio_secundario_id);
-                                $this->db->insert('tb_procedimento_convenio');
-                                $secundario_id = $this->db->insert_id();
+                                if (count($query) == 0) {
+                                    $this->db->set('data_cadastro', $horario);
+                                    $this->db->set('operador_cadastro', $operador_id);
+                                    $this->db->set('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
+                                    $this->db->set('convenio_id', $sec->convenio_secundario_id);
+                                    $this->db->insert('tb_procedimento_convenio');
+                                    $secundario_id = $this->db->insert_id();
+                                } else {
+                                    $this->db->set('data_atualizacao', $horario);
+                                    $this->db->set('operador_atualizacao', $operador_id);
+                                    $this->db->where('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
+                                    $this->db->where('convenio_id', $sec->convenio_secundario_id);
+                                    $this->db->update('tb_procedimento_convenio');
+                                    $secundario_id = $this->db->insert_id();
+                                }
 
                                 // Adicionando o grupo de pagamento 
                                 $this->db->select('grupo_pagamento_id');
@@ -2560,7 +2644,8 @@ class procedimentoplano_model extends Model {
                                     $this->db->insert('tb_procedimento_convenio_pagamento');
                                 }
                             }
-                        } else {
+                        } 
+                        else {
                             $this->db->set('ativo', 't');
                             $this->db->set('data_atualizacao', $horario);
                             $this->db->set('operador_atualizacao', $operador_id);

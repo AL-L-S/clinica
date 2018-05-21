@@ -58,7 +58,6 @@ class Convenio_model extends Model {
 
     function listardados() {
 
-        $empresa_id = $this->session->userdata('empresa_id');
 
         $this->db->select(' c.convenio_id,
                             c.nome,
@@ -67,8 +66,14 @@ class Convenio_model extends Model {
         $this->db->from('tb_convenio c');
         $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
         $this->db->where("c.ativo", 'true');
-        $this->db->where("ce.empresa_id", $empresa_id);
-        $this->db->where("ce.ativo", 'true');
+        
+        $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+        if ($procedimento_multiempresa != 't'){
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->where("ce.empresa_id", $empresa_id);
+            $this->db->where("ce.ativo", 'true');
+        }
+        
         $this->db->orderby("c.nome");
         $query = $this->db->get();
         $return = $query->result();
@@ -829,8 +834,6 @@ class Convenio_model extends Model {
         $operador_id = $this->session->userdata('operador_id');
 
         try {
-//            echo '<pre>';
-//            var_dump($_POST); die;
             foreach ($_POST['grupo'] as $key => $n) {
 
                 if ($_POST['convenio'][$key] != '' && $_POST['valor'][$key] != '') {
@@ -856,12 +859,17 @@ class Convenio_model extends Model {
                     $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
                     $this->db->where('pt.grupo', $_POST['grupo'][$key]);
                     $this->db->where('pc.convenio_id', $_POST['convenio'][$key]);
-                    $this->db->where('pc.ativo', 't');
+                    $this->db->where('pc.excluido', 'f');
+                    $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+                    if($procedimento_multiempresa != 't'){ //vide chamado #1950
+                        $this->db->where('pc.ativo', 't');
+                    }
                     $result2 = $this->db->get()->result();
 
                     $this->db->set('data_atualizacao', $horario);
                     $this->db->set('operador_atualizacao', $operador_id);
                     $this->db->set('ativo', 'f');
+//                    $this->db->set('excluido', 't');
                     $this->db->where('convenio_id', $convenio_id);
                     $grupo = $_POST['grupo'][$key];
                     $this->db->where("procedimento_tuss_id IN ( SELECT procedimento_tuss_id 
@@ -883,6 +891,7 @@ class Convenio_model extends Model {
                             $this->db->set('valorporte', $value->valorporte);
                             $this->db->set('qtdeuco', $value->qtdeuco);
                             $this->db->set('valoruco', $value->valoruco);
+                            $this->db->set('empresa_id', $value->empresa_id);
                             $this->db->set('valortotal', $valortotal);
                             $this->db->set('data_cadastro', $horario);
                             $this->db->set('operador_cadastro', $operador_id);
@@ -939,6 +948,7 @@ class Convenio_model extends Model {
                         $conv_sec = $return->result();
 
                         foreach ($conv_sec as $value) { // Excluido o proc em todos os planos secundarios
+//                            $this->db->set('excluido', 'f');
                             $this->db->set('ativo', 'f');
                             $this->db->set('data_atualizacao', $horario);
                             $this->db->set('operador_atualizacao', $operador_id);
