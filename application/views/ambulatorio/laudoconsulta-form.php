@@ -1387,7 +1387,7 @@
                 type: "POST",
                 data: {teste: 'teste'},
                 //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_id_chamada ?>",
+                url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>",
                             success: function (data) {
 
                                 alert('Operação efetuada com sucesso');
