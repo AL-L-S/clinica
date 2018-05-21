@@ -133,7 +133,7 @@
                             if ($i == 1) {
                                 ?>
                                 <tr>
-                                    <td colspan="8"><font ><b>Operador:&nbsp;<?= utf8_decode($item->nome); ?></b></td>
+                                    <td colspan="8"><font ><b>Operador:&nbsp;<?= $item->nome; ?></b></td>
                                 </tr>
                             <? }
                             ?>
@@ -246,7 +246,7 @@
                                     <? } ?>
                                     <? if ($item->operador_editar != '') { ?>
                                         <td style="text-align: right"><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?> 
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'width=1400,height=600');">
                                                 <font size="-1">  --(*)</font>
                                             </a></td>
                                     <? } else { ?>
@@ -274,7 +274,7 @@
                                     <? } ?>
                                     <? if ($item->operador_editar != '') { ?>
                                         <td style="text-align: right"><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?> 
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'width=1400,height=600');">
                                                 <font size="-1">  --(*)</font>
                                             </a></td>
                                     <? } else { ?>
@@ -433,7 +433,7 @@
                                 <td colspan="5"></td><td colspan="2"><font size="-1"><b>VALOR TOTAL: <?= number_format($valor, 2, ',', '.'); ?></b></td>
                             </tr>
                             <tr>
-                                <td colspan="8"><font ><b>Operador:&nbsp;<?= utf8_decode($item->nome); ?></b></td>
+                                <td colspan="8"><font ><b>Operador:&nbsp;<?= $item->nome; ?></b></td>
                             </tr>
                             <tr><td></td></tr>
                             <tr><td></td></tr>
@@ -447,12 +447,12 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= $item->guia_id; ?></td>
                                     <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
-                                    <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>
+                                    <td><font size="-2"><?= $item->paciente; ?></td>
                                 <? } ?>
                                 <? if ($item->exames_id == "") { ?>
-                                    <td><font color="red" size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
+                                    <td><font color="red" size="-2"><?= $item->exame . " " . $item->numero_sessao; ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
+                                    <td><font size="-2"><?= $item->exame . " " . $item->numero_sessao; ?></td>
                                 <? } ?>
                                 <? if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
                                     <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
@@ -728,7 +728,7 @@
                             if ($i == 1) {
                                 ?>
                                 <tr>
-                                    <td colspan="8"><font ><b>Operador:&nbsp;<?= utf8_decode($item->nome); ?></b></td>
+                                    <td colspan="8"><font ><b>Operador:&nbsp;<?= $item->nome; ?></b></td>
                                 </tr>
                             <? }
                             ?>
@@ -841,7 +841,7 @@
                                     <? } ?>
                                     <? if ($item->operador_editar != '') { ?>
                                         <td style="text-align: right"><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?> 
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'width=1400,height=600');">
                                                 <font size="-1">  --(*)</font>
                                             </a></td>
                                     <? } else { ?>
@@ -869,7 +869,7 @@
                                     <? } ?>
                                     <? if ($item->operador_editar != '') { ?>
                                         <td style="text-align: right"><font size="-2"><?= number_format($item->valor_total, 2, ',', '.') ?> 
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/valoralterado/$item->agenda_exames_id"; ?> ', '_blank', 'width=1400,height=600');">
                                                 <font size="-1">  --(*)</font>
                                             </a></td>
                                     <? } else { ?>
@@ -1027,7 +1027,7 @@
                                 <td colspan="5"></td><td colspan="2"><font size="-1"><b>VALOR TOTAL: <?= number_format($valor, 2, ',', '.'); ?></b></td>
                             </tr>
                             <tr>
-                                <td colspan="8"><font ><b>Operador:&nbsp;<?= utf8_decode($item->nome); ?></b></td>
+                                <td colspan="8"><font ><b>Operador:&nbsp;<?= $item->nome; ?></b></td>
                             </tr>
                             <tr><td><b>HOME CARE</b></td></tr>
                             <tr><td></td></tr>
@@ -1041,12 +1041,12 @@
                                 <? } else { ?>
                                     <td><font size="-2"><?= $item->guia_id; ?></td>
                                     <td><font size="-2"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
-                                    <td><font size="-2"><?= utf8_decode($item->paciente); ?></td>
+                                    <td><font size="-2"><?= $item->paciente; ?></td>
                                 <? } ?>
                                 <? if ($item->exames_id == "") { ?>
-                                    <td><font color="red" size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
+                                    <td><font color="red" size="-2"><?= $item->exame . " " . $item->numero_sessao; ?></td>
                                 <? } else { ?>
-                                    <td><font size="-2"><?= utf8_decode($item->exame) . " " . $item->numero_sessao; ?></td>
+                                    <td><font size="-2"><?= $item->exame . " " . $item->numero_sessao; ?></td>
                                 <? } ?>
                                 <? if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 != '') { ?>
                                     <td><font size="-2"><?= $item->forma_pagamento; ?><br><?= $item->forma_pagamento_2; ?><br><?= $item->forma_pagamento_3; ?><br><?= $item->forma_pagamento_4; ?></td>
@@ -1675,7 +1675,7 @@
                         $valorsangria = $valorsangria + $item->valor;
                         ?>
                         <tr>
-                            <td><?= utf8_decode($item->operador_caixa); ?></td>
+                            <td><?= $item->operador_caixa; ?></td>
                             <td><?= number_format($item->valor, 2, ',', '.'); ?></td>
                         </tr>
         <? endforeach; ?>

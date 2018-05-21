@@ -111,7 +111,8 @@
                 <table>
                     <tr>
                         <td >
-                            <? if (@$obj->_id_chamada != '') { ?>
+                            <?//=date("Y-m-d",strtotime(@$obj->_data_senha))?>
+                            <? if (@$obj->_data_senha == date("Y-m-d")) { ?>
 
                                 <div class="bt_link_new">
                                     <a href='#' id='botaochamar' >Chamar</a>
@@ -1380,9 +1381,40 @@
             document.getElementById('senha').style.display = "none";
         }
     }
-<? if (@$obj->_id_chamada != '') { ?>
+
+
+
+
+
+<? if (@$obj->_data_senha == date("Y-m-d")) { ?>
+    <?
+    if ($obj->_cpf != '') {
+        $cpf = $obj->_cpf;
+    } else {
+        $cpf = 'null';
+    }
+    $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$obj->_toten_fila_id/$obj->_nome/$cpf/$obj->_medico_parecer1/$obj->_medico_nome/$obj->_toten_sala_id/false";
+    ?>
         $("#botaochamar").click(function () {
             //        alert('asadasdadad');
+            $.ajax({
+                type: "POST",
+                data: {teste: 'teste'},
+                //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                url: "<?= $url_enviar_ficha ?>",
+                success: function (data) {
+                    //                console.log(data);
+    //                    alert(data.id);
+                    $("#idChamada").val(data.id);
+
+                },
+                error: function (data) {
+                    console.log(data);
+                    //                alert('DEU MERDA');
+                }
+            });
+
+
             $.ajax({
                 type: "POST",
                 data: {teste: 'teste'},
@@ -1399,7 +1431,7 @@
                                 alert('Erro ao chamar paciente');
                             }
                         });
-                    });
+                });
 <? } ?>
 
 

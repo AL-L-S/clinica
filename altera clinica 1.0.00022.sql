@@ -58,3 +58,24 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN horario_sab_fim text;
 UPDATE ponto.tb_empresa
    SET horario_seg_sex_inicio='08:00', horario_seg_sex_fim='18:00', horario_sab_inicio='08:00', horario_sab_fim='12:00'
  WHERE (horario_seg_sex_inicio IS NULL OR horario_seg_sex_inicio = '');
+
+
+ALTER TABLE ponto.tb_internacao ALTER COLUMN motivo_saida TYPE integer USING motivo_saida::integer;
+
+
+ALTER TABLE ponto.tb_toten_senha ADD COLUMN associada boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_paciente ADD COLUMN toten_senha_id integer;
+ALTER TABLE ponto.tb_paciente ADD COLUMN toten_fila_id integer;
+ALTER TABLE ponto.tb_paciente ADD COLUMN senha text;
+
+ALTER TABLE ponto.tb_toten_senha ADD COLUMN data_associada timestamp without time zone;
+ALTER TABLE ponto.tb_toten_senha ADD COLUMN operador_associada integer;
+
+ALTER TABLE ponto.tb_paciente ADD COLUMN data_senha date;
+
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN toten_senha_id integer;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN toten_fila_id integer;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN senha text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN data_senha date;

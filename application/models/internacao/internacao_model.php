@@ -72,6 +72,41 @@ class internacao_model extends BaseModel {
         }
     }
 
+    function mostrartermoresponsabilidade($internacao_id) {
+
+        $this->db->select('i.internacao_id,
+                           p.*,
+                           p.paciente_id,
+                           i.prelaudo,
+                           o.nome as medico,
+                           o.conselho,
+                           i.data_internacao,
+                           i.data_saida,
+                           i.forma_de_entrada,
+                           i.estado,
+                           il.nome as leito,
+                           m.nome as municio,
+                           m.codigo_ibge,
+                           i.cid1solicitado,
+                           pt.nome as procedimento,
+                           i.procedimentosolicitado,
+                           c.nome as convenio,
+                           cbo.descricao as profissao,
+                           p.sexo,
+                           p.nascimento');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = p.profissao', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'i.procedimentosolicitado = pt.procedimento_tuss_id', 'left');
+        $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
+        $this->db->where('i.internacao_id', $internacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function gravarinternacaonutricao($paciente_id) {
 
         try {
@@ -138,6 +173,33 @@ class internacao_model extends BaseModel {
         } catch (Exception $exc) {
             return 0;
         }
+    }
+
+    function mostrarsaidapaciente($internacao_id) {
+
+        $this->db->select('i.internacao_id,
+                           p.nome as paciente,
+                           m.nome as motivosaida,
+                           i.motivo_saida,
+                           i.hospital_transferencia,
+                           m.internacao_motivosaida_id,
+                           p.paciente_id,
+                           i.data_internacao,
+                           i.observacao_saida,
+                           i.leito,
+                           p.sexo,
+                           p.nascimento');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
+        $this->db->join('tb_internacao_motivosaida m', 'm.internacao_motivosaida_id = i.motivo_saida', 'left');
+        $this->db->where('i.internacao_id', $internacao_id);
+//        $this->db->where('p.paciente_id = i.paciente_id');
+//        $this->db->where('o.operador_id = i.medico_id');
+        // $this->db->where('m.internacao_motivosaida_id = i.motivo_saida ');
+
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function gravarevolucaointernacao() {
@@ -544,7 +606,7 @@ class internacao_model extends BaseModel {
         $this->db->set('operador_exclusao', $operador_id);
         $this->db->where('internacao_prescricao_id', $internacao_prescricao_id);
         $this->db->update('tb_internacao_prescricao');
-        
+
         $this->db->select('fs.internacao_prescricao_id, fs.farmacia_saida_id');
         $this->db->from('tb_farmacia_saida fs');
         $this->db->where('fs.internacao_prescricao_id', $internacao_prescricao_id);
@@ -558,8 +620,8 @@ class internacao_model extends BaseModel {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('farmacia_saida_id', $return[0]->farmacia_saida_id);
         $this->db->update('tb_farmacia_saida');
-        
-        
+
+
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);

@@ -67,12 +67,12 @@ class pacientes extends BaseController {
 
         $this->load->helper('directory');
         if (!is_dir("./upload/paciente")) {
-          mkdir("./upload/paciente");
+            mkdir("./upload/paciente");
             $destino = "./upload/paciente";
             chmod($destino, 0777);
         }
         if (!is_dir("./upload/paciente/$paciente_id")) {
-          mkdir("./upload/paciente/$paciente_id");
+            mkdir("./upload/paciente/$paciente_id");
             $destino = "./upload/paciente/$paciente_id";
             chmod($destino, 0777);
         }
@@ -87,27 +87,34 @@ class pacientes extends BaseController {
 
     function importarimagem() {
         $paciente_id = $_POST['paciente_id'];
-        if (!is_dir("./upload/paciente/$paciente_id")) {
-            mkdir("./upload/paciente/$paciente_id");
-            $destino = "./upload/paciente/$paciente_id";
-            chmod($destino, 0777);
-        }
-        
-//        var_dump($_FILES); die;
 
-        $config['upload_path'] = "./upload/paciente/" . $paciente_id . "/";
-//        $config['upload_path'] = "./upload/paciente/paciente/" . $paciente_id . "/";
-        $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf|doc|docx|xls|xlsx|ppt';
-        $config['max_size'] = '0';
-        $config['overwrite'] = FALSE;
-        $config['encrypt_name'] = FALSE;
-        $this->load->library('upload', $config);
+        for ($i = 0; $i < count($_FILES['arquivos']['name']); $i++) {
+            $_FILES['userfile']['name'] = $_FILES['arquivos']['name'][$i];
+            $_FILES['userfile']['type'] = $_FILES['arquivos']['type'][$i];
+            $_FILES['userfile']['tmp_name'] = $_FILES['arquivos']['tmp_name'][$i];
+            $_FILES['userfile']['error'] = $_FILES['arquivos']['error'][$i];
+            $_FILES['userfile']['size'] = $_FILES['arquivos']['size'][$i];
 
-        if (!$this->upload->do_upload()) {
-            $error = array('error' => $this->upload->display_errors());
-        } else {
-            $error = null;
-            $data = array('upload_data' => $this->upload->data());
+            if (!is_dir("./upload/paciente/$paciente_id")) {
+                mkdir("./upload/paciente/$paciente_id");
+                $destino = "./upload/paciente/$paciente_id";
+                chmod($destino, 0777);
+            }
+
+            //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
+            $config['upload_path'] = "./upload/paciente/" . $paciente_id . "/";
+            $config['allowed_types'] = 'gif|jpg|BMP|bmp|png|jpeg|pdf|doc|docx|xls|xlsx|ppt|zip|rar|xml|txt';
+            $config['max_size'] = '0';
+            $config['overwrite'] = FALSE;
+            $config['encrypt_name'] = FALSE;
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) {
+                $error = array('error' => $this->upload->display_errors());
+            } else {
+                $error = null;
+                $data = array('upload_data' => $this->upload->data());
+            }
         }
         $data['paciente_id'] = $paciente_id;
 
@@ -213,9 +220,9 @@ class pacientes extends BaseController {
         if ($ambulatorio_guia_id == 0) {
             $ambulatorio_guia_id = $this->guia->gravarguia($paciente_id);
         }
-        
+
         $teste = $this->exametemp->autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id);
-        
+
         if ($teste == 0) {
 //            $this->gerardicom($ambulatorio_guia_id);
             $data['mensagem'] = 'Paciente gravado com sucesso';

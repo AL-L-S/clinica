@@ -56,55 +56,72 @@
         </form>
     </div>
     <? foreach ($guia as $test) : ?>
-    <table >
-        <thead>
-            <tr>
-                <th class="tabela_header" colspan="2">Guia: <?= $test->ambulatorio_guia_id ?></th>
-                <th class="tabela_header">Exame</th>
-                <th class="tabela_header">Laudo</th>
-                <th class="tabela_header">RecebiDo</th>
-                <th class="tabela_header" >Entregue</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?
-            $estilo_linha = "tabela_content01";
-            foreach ($exames as $item) :
-            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-            if ($test->ambulatorio_guia_id == $item->guia_id) {
-            ?>
-            <tr>
-                <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->procedimento ?></td>
-                <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
-                <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->situacaoexame ?></td>
-                <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->situacaolaudo ?></td>
-                <? if ($item->recebido == 'f') { ?>
-                <td class="<?php echo $estilo_linha; ?>" width="50px;"><a href="<?= base_url() ?>ambulatorio/guia/recebidoresultado/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>">N&Atilde;O
-                    </a></td>
-                <? } else {
-                ?>
-                <td class="<?php echo $estilo_linha; ?>" width="50px;"><a onclick="javascript: return confirm('Deseja realmente cancelar recebimento');" href="<?= base_url() ?>ambulatorio/guia/cancelarrecebidoresultado/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>"><b>SIM</b> Por: <?= $item->operadorrecebido . " - Dia:" . substr($item->data_recebido, 8, 2) . "/" . substr($item->data_recebido, 5, 2) . "/" . substr($item->data_recebido, 0, 4) ?></a>
-        </td>
-        <?
-        }
-        if ($item->entregue == "") {
-        ?>
-        <td class="<?php echo $estilo_linha; ?>" width="100px;"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/entregaexame/$paciente_id/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
-                N&Atilde;O
-            </a></td>
-<? } else { ?>
-        <td class="<?php echo $estilo_linha; ?>" width="50px;"><center><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarobservacao/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');"><?=$item->entregue?></b> Fone: <b><?=$item->entregue_telefone?></b> DIA: <?= substr($item->data_entregue, 8, 2) . "/" . substr($item->data_entregue, 5, 2) . "/" . substr($item->data_entregue, 0, 4) ?> Hora:  <?=substr($item->data_entregue, 11, 8);?> Por: <b><?= $item->operadorentregue; ?></b></a></center>
-        </td>
-<?} ?>
-        </tr>
+        <table >
+            <thead>
+                <tr>
+                    <th class="tabela_header" colspan="2">Guia: <?= $test->ambulatorio_guia_id ?></th>
+                    <th class="tabela_header">Exame</th>
+                    <th class="tabela_header">Laudo</th>
+                    <th class="tabela_header">Recebido</th>
+                    <th class="tabela_header" >Entregue</th>
+                    <th class="tabela_header" style="text-align: center;" colspan="5">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?
+                $estilo_linha = "tabela_content01";
+                foreach ($exames as $item) :
+                    ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                    if ($test->ambulatorio_guia_id == $item->guia_id) {
+                        ?>
+                        <tr>
+                            <td class="<?php echo $estilo_linha; ?>" width="100px;"><?= $item->procedimento ?></td>
+                            <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                            <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->situacaoexame ?></td>
+                            <td class="<?php echo $estilo_linha; ?>" width="50px;"><?= $item->situacaolaudo ?></td>
+                            <? if ($item->recebido == 'f') { ?>
+                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><a href="<?= base_url() ?>ambulatorio/guia/recebidoresultado/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>">N&Atilde;O
+                                    </a></td>
+                            <? } else {
+                                ?>
+                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><a onclick="javascript: return confirm('Deseja realmente cancelar recebimento');" href="<?= base_url() ?>ambulatorio/guia/cancelarrecebidoresultado/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>"><b>SIM</b> Por: <?= $item->operadorrecebido . " - Dia:" . substr($item->data_recebido, 8, 2) . "/" . substr($item->data_recebido, 5, 2) . "/" . substr($item->data_recebido, 0, 4) ?></a>
+                                </td>
+                                <?
+                            }
+                            if ($item->entregue == "") {
+                                ?>
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/entregaexame/$paciente_id/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">
+                                        N&Atilde;O
+                                    </a></td>
+                            <? } else { ?>
+                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><center><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarobservacao/$item->agenda_exames_id"; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');"><?= $item->entregue ?></b> Fone: <b><?= $item->entregue_telefone ?></b> DIA: <?= substr($item->data_entregue, 8, 2) . "/" . substr($item->data_entregue, 5, 2) . "/" . substr($item->data_entregue, 0, 4) ?> Hora:  <?= substr($item->data_entregue, 11, 8); ?> Por: <b><?= $item->operadorentregue; ?></b></a></center>
+                        </td>
+                    <? } ?>
+                    <td class="<?php echo $estilo_linha; ?>" width="50px;">
+                        <a target="_blank" href="<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $item->ambulatorio_laudo_id; ?>/<?= $item->exames_id ?>">Impressão
+                        </a>
+                    </td>
+                    <td class="<?php echo $estilo_linha; ?>" width="50px;">
+                        <a target="_blank" href="<?= base_url() ?>ambulatorio/laudo/impressaoimagem/<?= $item->ambulatorio_laudo_id; ?>/<?= $item->exames_id ?>">Imagem
+                        </a>
+                    </td>
+                    <td class="<?php echo $estilo_linha; ?>" width="50px;">
+                        <a target="_blank" href="<?= base_url() ?>ambulatorio/guia/impressaoetiquetaunica/<?= $item->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>">Etiqueta Única
+                        </a>
+                    </td>
+                    <td class="<?php echo $estilo_linha; ?>" width="50px;">
+                        <a target="_blank" href="<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $item->ambulatorio_laudo_id ?>">Arquivos
+                        </a>
+                    </td>
+                    </tr>
 
-        </tbody>
-        <?
-        }
-        endforeach;
-        ?>
-        <br>
-<? endforeach; ?>
+                    </tbody>
+                    <?
+                }
+            endforeach;
+            ?>
+            <br>
+        <? endforeach; ?>
         <tfoot>
             <tr>
                 <th class="tabela_footer" colspan="5">
@@ -116,16 +133,16 @@
 
 
 <script type="text/javascript">
-                        $(function() {
-                            $(".competencia").accordion({autoHeight: false});
-                            $(".accordion").accordion({autoHeight: false, active: false});
-                            $(".lotacao").accordion({
-                                active: true,
-                                autoheight: false,
-                                clearStyle: true
+    $(function () {
+        $(".competencia").accordion({autoHeight: false});
+        $(".accordion").accordion({autoHeight: false, active: false});
+        $(".lotacao").accordion({
+            active: true,
+            autoheight: false,
+            clearStyle: true
 
-                            });
+        });
 
 
-                        });
+    });
 </script>

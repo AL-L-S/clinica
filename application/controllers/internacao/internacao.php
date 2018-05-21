@@ -11,6 +11,7 @@ class internacao extends BaseController {
         $this->load->model('farmacia/produto_model', 'produto_m');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/laudo_model', 'laudo_m');
+        $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->model('internacao/internacao_model', 'internacao_m');
         $this->load->model('internacao/unidade_model', 'unidade_m');
         $this->load->model('internacao/motivosaida_model', 'motivosaida');
@@ -154,6 +155,36 @@ class internacao extends BaseController {
     function mostrafichapaciente($leito_id) {
         $data['paciente'] = $this->unidade_m->mostrafichapaciente($leito_id);
         $this->loadView('internacao/mostrafichapaciente', $data);
+    }
+
+    function termoresponsabilidade($internacao_id) {
+        $this->load->plugin('mpdf');
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
+
+        if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
+            $cabecalho = "$cabecalho_config";
+        } else {
+            $cabecalho = "<table><tr><td><img width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr></table>";
+        }
+
+        $data['cabecalho_form'] = $cabecalho;
+
+        $data['paciente'] = $this->internacao_m->mostrartermoresponsabilidade($internacao_id);
+        $paciente_id = $data['paciente'][0]->paciente_id;
+        $data['historicoantigo'] = $this->laudo_m->listarlaudohistoricointernacao($paciente_id);
+        $data['historicoexame'] = $this->laudo_m->listarexamehistorico($paciente_id);
+//        echo '<pre>';
+//        var_dump($data['historicoantigo']); die;
+        $html = $this->load->View('internacao/impressaotermoresponsabilidade', $data, true);
+        $filename = 'Termo de Responsabilidade';
+        $rodape = '';
+        $cabecalho_file = '';
+        pdf($html, $filename, $cabecalho_file, $rodape);
     }
 
     function mostrarnovasaidapaciente($internacao_id) {
@@ -515,15 +546,15 @@ class internacao extends BaseController {
         redirect(base_url() . "internacao/internacao/prescricaopaciente/$internacao_id");
 //        redirect(base_url() . "internacao/internacao/prescricaopacientefarmacia/$internacao_id");
     }
-    
+
     function cancelarprescricaopaciente($internacao_prescricao_id, $internacao_id) {
         $this->internacao_m->cancelarprescricaopaciente($internacao_prescricao_id);
 //        $this->prescricaopaciente($internacao_id);
         redirect(base_url() . "internacao/internacao/prescricaopaciente/$internacao_id");
 //        redirect(base_url() . "internacao/internacao/prescricaopacientefarmacia/$internacao_id");
     }
-    
-    function confirmarprescricaofarmacia($internacao_prescricao_id,$internacao_id) {
+
+    function confirmarprescricaofarmacia($internacao_prescricao_id, $internacao_id) {
         $this->internacao_m->confirmarprescricaofarmacia($internacao_prescricao_id);
 //        $this->prescricaopaciente($internacao_id);
         redirect(base_url() . "internacao/internacao/prescricaopaciente/$internacao_id");

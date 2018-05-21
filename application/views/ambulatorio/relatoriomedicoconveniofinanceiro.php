@@ -50,6 +50,17 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Sala</label>
+                    </dt>
+                    <dd>
+                        <select name="sala_id" id="sala_id" class="size2">
+                            <option value='0' >TODOS</option>
+                            <? foreach ($salas as $value) : ?>
+                                <option value="<?= $value->exame_sala_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Data inicio</label>
                     </dt>
                     <dd>

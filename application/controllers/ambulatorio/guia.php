@@ -3802,6 +3802,7 @@ class Guia extends BaseController {
     }
 
     function relatoriomedicoconveniofinanceiro() {
+        $data['salas'] = $this->exame->listarsalas();
         $data['convenio'] = $this->convenio->listardados();
         $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -3884,6 +3885,11 @@ class Guia extends BaseController {
             $data['revisor'] = $this->operador_m->listarCada($revisor);
         } else {
             $data['revisor'] = 0;
+        }
+        if ($_POST['sala_id'] != 0) {
+            $data['sala'] = $this->exame->listarsalanomeproducao($_POST['sala_id']);
+        } else {
+            $data['sala'] = 0;
         }
 
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
@@ -4148,6 +4154,7 @@ class Guia extends BaseController {
 
     function valoralterado($agenda_exames_id) {
         $data['alterado'] = $this->guia->valoralterado($agenda_exames_id);
+        $data['historico'] = $this->guia->valoralteradohistorico($agenda_exames_id);
         $this->load->View('ambulatorio/valoralterado-form', $data);
     }
 

@@ -7,19 +7,19 @@
                     <tr>
                         <th class="tabela_title" colspan="4">
                             Lista de Saidas
-                <form method="get" action="<?php echo base_url() ?>internacao/internacao/pesquisarsaida">
-                    <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />
-                    <button type="submit" name="enviar">Pesquisar</button>
-                </form>
-                </th>
-                </tr>
-                <tr>
-                    <th class="tabela_header">Prontuario</th>
-                    <th class="tabela_header">Nome</th>
-                    <th class="tabela_header">Data da Saida</th>
-                    <th class="tabela_header" width="30px;"><center></center></th>
-                    <th class="tabela_header" width="30px;"><center></center></th>
-                    <th class="tabela_header">Detalhes</th>
+                            <form method="get" action="<?php echo base_url() ?>internacao/internacao/pesquisarsaida">
+                                <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />
+                                <button type="submit" name="enviar">Pesquisar</button>
+                            </form>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="tabela_header">Prontuario</th>
+                        <th class="tabela_header">Nome</th>
+                        <th class="tabela_header">Data da Saida</th>
+                        <th class="tabela_header" width="30px;"><center></center></th>
+                <th class="tabela_header" width="30px;"><center></center></th>
+                <th class="tabela_header" colspan="2">Detalhes</th>
                 </tr>
                 </thead>
                 <?php
@@ -41,18 +41,27 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->paciente_id; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo substr($item->data_saida, 8,2) . '/' . substr($item->data_saida, 5,2) . '/' . substr($item->data_saida, 0,4) . ' ' . substr($item->data_saida, 11,8); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo substr($item->data_saida, 8, 2) . '/' . substr($item->data_saida, 5, 2) . '/' . substr($item->data_saida, 0, 4) . ' ' . substr($item->data_saida, 11, 8); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                    <a href="<?= base_url() ?>internacao/internacao/mostrarsaidapaciente/<?= $item->internacao_id ?>">
-                                        <img border="0" title="Detalhes" alt="Detalhes"
-                                             src="<?= base_url() ?>img/form/page_white_edit.png" />
-                                    </a>
+                                    <div class="bt_link_new">
+                                        <a href="<?= base_url() ?>internacao/internacao/mostrarsaidapaciente/<?= $item->internacao_id ?>">
+                                            Detalhes
+                                        </a>
+                                    </div>
+
                                 </td>
-                                
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                    <div class="bt_link_new">
+                                        <a href="<?= base_url() ?>internacao/internacao/termoresponsabilidade/<?= $item->internacao_id ?>">
+                                            Termo de Respon[...]
+                                        </a>
+                                    </div>
+                                </td>
+
                             </tr>
                         </tbody>
                         <?php
@@ -75,9 +84,9 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-   
-    $(function() {
-        $( "#accordion" ).accordion();
+
+    $(function () {
+        $("#accordion").accordion();
     });
 
 </script>
