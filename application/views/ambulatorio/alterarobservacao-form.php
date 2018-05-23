@@ -8,9 +8,18 @@
                     
                 <dl class="dl_desconto_lista">
                     <dt>
+                    <label>Operador Observação</label>
+                    </dt>
+                        <input type="text" name="txtoperador"  class="texto07" value="<?= @$observacao[0]->operador; ?>" readonly>
+
+                     
+                </dl> 
+                    
+                <dl class="dl_desconto_lista">
+                    <dt>
                     <label>Observacao</label>
                     </dt>
-                        <textarea type="text" name="txtobservacao" cols="55" class="texto12"><?= $observacao[0]->observacoes; ?></textarea>
+                        <textarea type="text" name="txtobservacao" cols="55" class="texto12"><?= @$observacao[0]->observacoes; ?></textarea>
 
                      
                 </dl>    

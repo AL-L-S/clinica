@@ -56,11 +56,11 @@ class Exame extends BaseController {
 
         $this->loadView('ambulatorio/examepreparo-lista', $args);
     }
-    
+
     function relatoriousosala($args = array()) {
         $this->load->View('ambulatorio/relatoriousosala');
     }
-    
+
     function listarsalasespera($limite = 25) {
         $data["limite_paginacao"] = $limite;
         $this->loadView('ambulatorio/exameespera-lista', $data);
@@ -286,36 +286,36 @@ class Exame extends BaseController {
         $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriodemandagrupo', $data);
     }
-    
+
     function listarusosala() {
         if (count($_GET) > 0 && $_GET['sala'] != '') {
             $empresaFuncionamento = $this->exame->horariofuncionamentoempresa();
-            
+
             // Pega o tempo total (em minutos) que a empresa vai funcionar durante nos dias da semana
             $datetime1 = new DateTime($empresaFuncionamento[0]->horario_seg_sex_inicio);
             $datetime2 = new DateTime($empresaFuncionamento[0]->horario_seg_sex_fim);
             $intervalo = $datetime1->diff($datetime2);
-            $tempoFuncionamentoSemana = ((int)$intervalo->format('%H'))*60 + ((int)$intervalo->format('%i'));
-            
+            $tempoFuncionamentoSemana = ((int) $intervalo->format('%H')) * 60 + ((int) $intervalo->format('%i'));
+
             // Pega o tempo total (em minutos) que a empresa vai funcionar durante os dias do fds
             $datetime1 = new DateTime($empresaFuncionamento[0]->horario_sab_inicio);
             $datetime2 = new DateTime($empresaFuncionamento[0]->horario_sab_fim);
             $intervalo = $datetime1->diff($datetime2);
-            $tempoFuncionamentoSabado = ((int)$intervalo->format('%H'))*60 + ((int)$intervalo->format('%i'));
-            
+            $tempoFuncionamentoSabado = ((int) $intervalo->format('%H')) * 60 + ((int) $intervalo->format('%i'));
+
             // Busca os horarios que essa sala vai estar em uso (ou agendada)
             $result = $this->exame->listarusosala($_GET['sala']);
             $retornoJSON = array();
             $dias = array();
-            
-            for ($i = 0; $i < count($result); $i++){
-                
+
+            for ($i = 0; $i < count($result); $i++) {
+
                 // Calcula o tempo que essa sala vai estar sendo usada (em minutos)
                 $datetime1 = new DateTime($result[$i]->inicio);
                 $datetime2 = new DateTime($result[$i]->fim);
                 $intervalo = $datetime1->diff($datetime2);
-                $tempoOcupacao = ((int)$intervalo->format('%H'))*60 + ((int)$intervalo->format('%i'));
-                
+                $tempoOcupacao = ((int) $intervalo->format('%H')) * 60 + ((int) $intervalo->format('%i'));
+
                 if (date("N", strtotime($result[$i]->data)) > 5) { // Caso seja um FDS
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento'] = $tempoFuncionamentoSabado;
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_sab_inicio));
@@ -328,9 +328,9 @@ class Exame extends BaseController {
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_seg_sex_fim));
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['texto'] = $result[$i]->sala."\n".@date("H:i", strtotime($empresaFuncionamento[0]->horario_seg_sex_inicio))." as ".@date("H:i", strtotime($empresaFuncionamento[0]->horario_seg_sex_fim));
                 }
-                
+
                 // Incrementa o tempo calculado nesse laço, com o valor dos laços passados
-                @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoUso'] += $tempoOcupacao;                
+                @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoUso'] += $tempoOcupacao;
                 $percentual = (($dias[date("Ymd", strtotime($result[$i]->data))]['tempoUso'] / $dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento']) * 100);
                 // Transforma o valor acima em um percentual
                 @$dias[date("Ymd", strtotime($result[$i]->data))]['title'] = number_format($percentual, 2, ",", "") . "%";
@@ -345,8 +345,8 @@ class Exame extends BaseController {
                 $retorno['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($result[$i]->fim));
                 $retornoJSON[] = $retorno;
             }
-            
-            foreach($dias as $value){ // Esses valores irão aparecer na linha "ALL DAY"
+
+            foreach ($dias as $value) { // Esses valores irão aparecer na linha "ALL DAY"
                 $i++;
                 $value['color'] = '#62C462'; // Definindo uma cor
                 $value['className'] = 'titulo'; // Definindo um estilo CSS
@@ -354,11 +354,11 @@ class Exame extends BaseController {
                 $value['id'] = $i;
                 $retornoJSON[] = $value;
             }
-            
+
             echo json_encode($retornoJSON);
-        } 
+        }
     }
-    
+
     function relatorioteleoperadora() {
         $data['convenio'] = $this->convenio->listardados();
         $data['medicos'] = $this->operador_m->listarteleoperadora();
@@ -470,12 +470,20 @@ class Exame extends BaseController {
     }
 
     function gravarautorizarorcamento($ambulatorio_orcamento_id) {
-        $paciente_id = $this->exame->gravarautorizacaoorcamento($ambulatorio_orcamento_id);
-        if ($paciente_id == '-1') {
-            $mensagem = 'Erro ao autorizar o Orçamento. Opera&ccedil;&atilde;o cancelada.';
-            $this->session->set_flashdata('message', $mensagem);
-            redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+        $teste = $this->exame->testarautorizarorcamento($ambulatorio_orcamento_id);
+//        var_dump($teste);
+//        die;
+        if ($teste[0]->autorizado == 'f') {
+            $paciente_id = $this->exame->gravarautorizacaoorcamento($ambulatorio_orcamento_id);
+            if ($paciente_id == '-1') {
+                $mensagem = 'Erro ao autorizar o Orçamento. Opera&ccedil;&atilde;o cancelada.';
+                $this->session->set_flashdata('message', $mensagem);
+                redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+            } else {
+                redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
+            }
         } else {
+            $paciente_id = $teste[0]->paciente_id;
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
         }
     }
@@ -1027,30 +1035,28 @@ class Exame extends BaseController {
 
         $endereco = @$data['empresa'][0]->endereco_toten;
         $data['endereco'] = $endereco;
-        
 
-        if ($endereco != '') {
-            $senha = $this->exame->listarultimasenhatoten();
-            $idFila = $senha[0]->id;
-            $paciente = $this->exame->listarpacientetoten($paciente_id);
-            $paciente_nome = $paciente[0]->nome;
-            if ($paciente[0]->cpf != '') {
-                $paciente_cpf = $paciente[0]->cpf;
-            } else {
-                $paciente_cpf = 'null';
-            }
 
-            $medico = $this->exame->listarmedicoagendatoten($agenda_exames_id);
-            $nome_medico = $medico[0]->nome;
-            $medico_id = $medico[0]->operador_id;
-            $data['url'] = "$endereco/webService/telaAtendimento/enviarFicha/$idFila/$paciente_nome/$paciente_cpf/$medico_id/$nome_medico/1/true";
-        }else{
-            $data['url'] = '';
-        }
+//        if ($endereco != '') {
+//            $senha = $this->exame->listarultimasenhatoten();
+//            $idFila = $senha[0]->id;
+//            $paciente = $this->exame->listarpacientetoten($paciente_id);
+//            $paciente_nome = $paciente[0]->nome;
+//            if ($paciente[0]->cpf != '') {
+//                $paciente_cpf = $paciente[0]->cpf;
+//            } else {
+//                $paciente_cpf = 'null';
+//            }
+//
+//            $medico = $this->exame->listarmedicoagendatoten($agenda_exames_id);
+//            $nome_medico = $medico[0]->nome;
+//            $medico_id = $medico[0]->operador_id;
+//            $data['url'] = "$endereco/webService/telaAtendimento/enviarFicha/$idFila/$paciente_nome/$paciente_cpf/$medico_id/$nome_medico/1/true";
+//        }else{
+        $data['url'] = '';
+//        }
 //        var_dump($data['url']);
 //        die;
-
-
 
         $data['salas'] = $this->exame->listarsalas();
         $data['medico_id'] = $this->exame->listarmedicoagenda($agenda_exames_id);
@@ -1466,22 +1472,22 @@ class Exame extends BaseController {
     }
 
     function gravarexametodos() {
-        $total = $this->exame->contadorexamestodos();
-        if ($total == 0) {
-            $laudo_id = $this->exame->gravarexametodos();
+//        $total = $this->exame->contadorexamestodos();
+//        if ($total == 0) {
+        $laudo_id = $this->exame->gravarexametodos();
 
-            if (count($laudo_id) == 0) {
-                $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
-            } else {
-                $data['mensagem'] = 'Sucesso ao gravar o Exame.';
-//                $this->gerarcr($agenda_exames_id); //clinica humana
-                foreach ($laudo_id as $value) {
-                    $this->gerardicom($value); //clinica ronaldo
-                }
-            }
+        if (count($laudo_id) == 0) {
+            $data['mensagem'] = 'Erro ao gravar o Exame. Opera&ccedil;&atilde;o cancelada.';
         } else {
-            $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
+            $data['mensagem'] = 'Sucesso ao gravar o Exame.';
+//                $this->gerarcr($agenda_exames_id); //clinica humana
+            foreach ($laudo_id as $value) {
+                $this->gerardicom($value); //clinica ronaldo
+            }
         }
+//        } else {
+//            $data['mensagem'] = 'Erro ao gravar o Exame. Exame ja cadastrato.';
+//        }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/listarsalasespera");
     }
@@ -1948,28 +1954,39 @@ class Exame extends BaseController {
     function importarimagem() {
         $exame_id = $_POST['exame_id'];
         $sala_id = $_POST['sala_id'];
-        $data = $_FILES['userfile'];
+//        $data = $_FILES['userfile'];
 //        var_dump($data);
 //        die;
-        if (!is_dir("./upload/$exame_id")) {
-            mkdir("./upload/$exame_id");
-            $destino = "./upload/$exame_id";
-            chmod($destino, 0777);
+        for ($i = 0; $i < count($_FILES['arquivos']['name']); $i++) {
+            $_FILES['userfile']['name'] = $_FILES['arquivos']['name'][$i];
+            $_FILES['userfile']['type'] = $_FILES['arquivos']['type'][$i];
+            $_FILES['userfile']['tmp_name'] = $_FILES['arquivos']['tmp_name'][$i];
+            $_FILES['userfile']['error'] = $_FILES['arquivos']['error'][$i];
+            $_FILES['userfile']['size'] = $_FILES['arquivos']['size'][$i];
+
+            if (!is_dir("./upload/$exame_id")) {
+                mkdir("./upload/$exame_id");
+                $destino = "./upload/$exame_id";
+                chmod($destino, 0777);
+            }
+
+            //        $config['upload_path'] = "/home/vivi/projetos/clinica/upload/consulta/" . $paciente_id . "/";
+            $config['upload_path'] = "./upload/" . $exame_id . "/";
+            $config['allowed_types'] = 'gif|jpg|png|jpeg';
+            $config['max_size'] = '0';
+            $config['overwrite'] = FALSE;
+            $config['encrypt_name'] = FALSE;
+            $this->load->library('upload', $config);
+
+            if (!$this->upload->do_upload()) {
+                $error = array('error' => $this->upload->display_errors());
+            } else {
+                $error = null;
+                $data = array('upload_data' => $this->upload->data());
+            }
         }
 
-        $config['upload_path'] = "./upload/" . $exame_id . "/";
-        $config['allowed_types'] = 'gif|jpg|png|jpeg';
-        $config['max_size'] = '0';
-        $config['overwrite'] = TRUE;
-        $config['encrypt_name'] = TRUE;
-        $this->load->library('upload', $config);
 
-        if (!$this->upload->do_upload()) {
-            $error = array('error' => $this->upload->display_errors());
-        } else {
-            $error = null;
-            $data = array('upload_data' => $this->upload->data());
-        }
         $data['exame_id'] = $exame_id;
         $this->anexarimagem($exame_id, $sala_id);
     }

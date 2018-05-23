@@ -8,7 +8,7 @@
         <div >
             <?= form_open_multipart(base_url() . 'ambulatorio/exame/importarimagem'); ?>
             <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
-            <input type="file" name="userfile"/>
+            <input type="file" multiple="" name="arquivos[]"/>
             <button type="submit" name="btnEnviar">Enviar</button>
             <input type="hidden" name="exame_id" value="<?= $exame_id; ?>" />
             <input type="hidden" name="sala_id" value="<?= $sala_id; ?>" />

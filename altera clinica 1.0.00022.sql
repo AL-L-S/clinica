@@ -75,6 +75,40 @@ UPDATE ponto.tb_procedimento_convenio SET ativo = false WHERE procedimento_conve
     SELECT procedimento_convenio_id FROM t WHERE row_number > 1  
 );
 
+ALTER TABLE ponto.tb_internacao ALTER COLUMN motivo_saida TYPE integer USING motivo_saida::integer;
+
+
+ALTER TABLE ponto.tb_toten_senha ADD COLUMN associada boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_paciente ADD COLUMN toten_senha_id integer;
+ALTER TABLE ponto.tb_paciente ADD COLUMN toten_fila_id integer;
+ALTER TABLE ponto.tb_paciente ADD COLUMN senha text;
+
+ALTER TABLE ponto.tb_toten_senha ADD COLUMN data_associada timestamp without time zone;
+ALTER TABLE ponto.tb_toten_senha ADD COLUMN operador_associada integer;
+
+ALTER TABLE ponto.tb_paciente ADD COLUMN data_senha date;
+
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN toten_senha_id integer;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN toten_fila_id integer;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN senha text;
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN data_senha date;
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000022');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000022', '1.0.000022');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
 -- Dia 22/05/2018
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN percentual_multiplo boolean DEFAULT false;
 

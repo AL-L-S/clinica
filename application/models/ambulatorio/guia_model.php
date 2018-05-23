@@ -369,6 +369,8 @@ class guia_model extends Model {
                             ae.empresa_id,
                             ae.entregue,
                             ae.data_entregue,
+                            al.ambulatorio_laudo_id, 
+                            al.exame_id,
                             p.nome as paciente,
                             p.indicacao,
                             p.nascimento,
@@ -4522,6 +4524,9 @@ class guia_model extends Model {
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
         }
+        if ($_POST['sala_id'] != "0") {
+            $this->db->where('ae.agenda_exames_nome_id', $_POST['sala_id']);
+        }
         if ($_POST['convenio'] == "") {
             $this->db->where("c.dinheiro", "f");
         }
@@ -4737,6 +4742,9 @@ class guia_model extends Model {
             $this->db->where('al.situacao', 'FINALIZADO');
         } elseif ($_POST['situacao'] == "0") {
             $this->db->where('al.situacao !=', 'FINALIZADO');
+        }
+        if ($_POST['sala_id'] != "0") {
+            $this->db->where('ae.agenda_exames_nome_id', $_POST['sala_id']);
         }
 
         if ($_POST['medicos'] != "0") {
@@ -4972,6 +4980,9 @@ class guia_model extends Model {
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
         }
+        if ($_POST['sala_id'] != "0") {
+            $this->db->where('ae.agenda_exames_nome_id', $_POST['sala_id']);
+        }
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "") {
             $this->db->where("pc.convenio_id", $_POST['convenio']);
         }
@@ -5086,7 +5097,9 @@ class guia_model extends Model {
         } elseif ($_POST['situacao'] == "0") {
             $this->db->where('al.situacao !=', 'FINALIZADO');
         }
-
+        if ($_POST['sala_id'] != "0") {
+            $this->db->where('ae.agenda_exames_nome_id', $_POST['sala_id']);
+        }
         if ($_POST['medicos'] != "0") {
             $this->db->where('al.medico_parecer1', $_POST['medicos']);
         }
@@ -5563,6 +5576,9 @@ class guia_model extends Model {
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['sala_id'] != "0") {
+            $this->db->where('ae.agenda_exames_nome_id', $_POST['sala_id']);
         }
         if ($_POST['grupo'] == "1") {
             $this->db->where('pt.grupo !=', 'RM');
@@ -6831,6 +6847,43 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function valoralteradohistorico($agenda_exames_id) {
+
+        $this->db->select('ae.agenda_exames_id,
+                            pt.codigo,
+                            c.nome as convenio,
+                            pt.nome as procedimento,
+                            ae.forma_pagamento,
+                            ae.forma_pagamento2,
+                            ae.forma_pagamento3,
+                            ae.forma_pagamento4,
+                            ae.valor,
+                            ae.valor2,
+                            ae.valor3,
+                            ae.valor4,
+                            o.nome,
+                            ae.valor_total,
+                            ae.valor,
+                            f.nome as forma,
+                            f2.nome as forma2,
+                            f3.nome as forma3,
+                            f4.nome as forma4,
+                            ');
+        $this->db->from('tb_agenda_exames_valor ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = ae.forma_pagamento', 'left');
+        $this->db->join('tb_forma_pagamento f2', 'f2.forma_pagamento_id = ae.forma_pagamento2', 'left');
+        $this->db->join('tb_forma_pagamento f3', 'f3.forma_pagamento_id = ae.forma_pagamento3', 'left');
+        $this->db->join('tb_forma_pagamento f4', 'f4.forma_pagamento_id = ae.forma_pagamento4', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.operador_cadastro', 'left');
+//        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_faturamentoantigo', 'left');
+        $this->db->where("ae.agenda_exames_id", $agenda_exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function verificado($agenda_exames_id) {
 
         $this->db->select('ae.agenda_exames_id,
@@ -7998,7 +8051,7 @@ class guia_model extends Model {
 //        var_dump($financeiro_grupo_id); die;
         return $return->result();
     }
-    
+
     function listaenviartodosfiladecaixa($guia_id) {
         $this->db->select('agenda_exames_id, procedimento_tuss_id, paciente_id');
         $this->db->from('tb_agenda_exames ae');
@@ -13339,10 +13392,10 @@ ORDER BY ae.paciente_credito_id)";
             if ($_POST['formapamento'] != '') {
                 $this->db->set('forma_pagamento', $_POST['formapamento']);
             }
-            
+
             $this->db->set('dia_semana_preferencia', $_POST['dia_preferencia']);
             $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
-            
+
 
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('data', $data);
@@ -13376,7 +13429,7 @@ ORDER BY ae.paciente_credito_id)";
 
             $this->db->set('dia_semana_preferencia', $_POST['dia_preferencia']);
             $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
-            
+
             $this->db->set('valor', $_POST['valor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);

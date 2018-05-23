@@ -151,8 +151,9 @@ class exame_model extends Model {
     }
 
     function listarobservacoes($agenda_exame_id) {
-        $this->db->select('observacoes');
-        $this->db->from('tb_agenda_exames');
+        $this->db->select('observacoes, operador_observacoes, o.nome as operador');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_operador o', 'ae.operador_observacoes = o.operador_id', 'left');
         $this->db->where('agenda_exames_id', $agenda_exame_id);
         $return = $this->db->get();
         return $return->result();
@@ -233,6 +234,47 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listarsenhatotenassociarpaciente($operador_id, $paciente_id) {
+        $horario = date("Y-m-d H:i:s");
+        $data_ficha = date("Y-m-d");
+
+        $this->db->select('toten_senha_id, id, senha');
+        $this->db->from('tb_toten_senha');
+        $this->db->orderby('toten_senha_id desc');
+        $this->db->where('ativo', 'true');
+        $this->db->where('associada', 'false');
+//        $this->db->where('atendida', 'true');
+        $this->db->where('operador_cadastro', $operador_id);
+        $this->db->where("data_cadastro >=", date("Y-m-d") . ' 00:00:00');
+        $this->db->where("data_cadastro <=", date("Y-m-d") . ' 23:59:59');
+//        $this->db->where('data', $operador_id);
+        $this->db->orderby('toten_senha_id desc');
+        $return = $this->db->get()->result();
+        if (count($return) > 0) {
+
+            $toten_id = $return[0]->toten_senha_id;
+            $senha = $return[0]->senha;
+            $toten_fila_id = $return[0]->id;
+
+            $this->db->set('associada', 't');
+            $this->db->set('atendida', 't');
+            $this->db->set('operador_associada', $operador_id);
+            $this->db->set('data_associada', $horario);
+            $this->db->where('toten_senha_id', $toten_id);
+            $this->db->update('tb_toten_senha');
+
+            $this->db->set('data_senha', $data_ficha);
+            $this->db->set('toten_senha_id', $toten_id);
+            $this->db->set('toten_fila_id', $toten_fila_id);
+            $this->db->set('senha', $senha);
+            $this->db->where('paciente_id', $paciente_id);
+            $this->db->update('tb_paciente');
+        }
+
+
+        return $return;
+    }
+
     function listarespecialidade() {
         $this->db->select('distinct(co.cbo_ocupacao_id),
                                co.descricao');
@@ -260,6 +302,18 @@ class exame_model extends Model {
         $this->db->from('tb_exame_sala');
         $this->db->where('empresa_id', $empresa_id);
         $this->db->where('ativo', 'true');
+        $this->db->where('excluido', 'f');
+        $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarsalanomeproducao($exame_sala_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('exame_sala_id,
+                            nome');
+        $this->db->from('tb_exame_sala');
+        $this->db->where('exame_sala_id', $exame_sala_id);
         $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
@@ -626,13 +680,13 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarusosala($sala_id, $args = array()) {
         $data = date('Y-m-d');
         $data_passado = date('Y-m-d', strtotime("-1 year", strtotime($data)));
         $data_futuro = date('Y-m-d', strtotime("+1 year", strtotime($data)));
         $empresa_atual = $this->session->userdata('empresa_id');
-        
+
 //        $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('es.nome as sala, 
                            es.exame_sala_id,
@@ -2930,7 +2984,7 @@ class exame_model extends Model {
                 WHERE ag.paciente_id IS NOT NULL                
             )");
         }
-        
+
         $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->orderby('ao.data_criacao');
@@ -3387,6 +3441,16 @@ class exame_model extends Model {
             $this->db->where('ae.operador_atualizacao', $_POST['medicos']);
         }
 
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function testarautorizarorcamento($ambulatorio_orcamento_id) {
+//        $data = date("Y-m-d");
+//        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('autorizado,paciente_id');
+        $this->db->from('tb_ambulatorio_orcamento ao');
+        $this->db->where('ao.ambulatorio_orcamento_id', $ambulatorio_orcamento_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -7317,6 +7381,14 @@ class exame_model extends Model {
             $this->db->where("al.medico_parecer1", $_POST['txtmedico']);
             $atendimentos = $this->db->get()->result();
 
+            $this->db->select('data_senha, senha, toten_fila_id, toten_senha_id');
+            $this->db->from('tb_paciente p');
+            $this->db->where("p.paciente_id", $_POST['txtpaciente_id']);
+            $paciente_inf = $this->db->get()->result();
+
+
+
+
 //            var_dump($atendimentos); die;
             if (count($atendimentos) > 0) {
                 $primeiro_atendimento = 'f';
@@ -7372,6 +7444,13 @@ class exame_model extends Model {
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data', $data);
+                if (count($paciente_inf) > 0) {
+                    $this->db->set('toten_senha_id', $paciente_inf[0]->toten_senha_id);
+                    $this->db->set('toten_fila_id', $paciente_inf[0]->toten_fila_id);
+                    $this->db->set('senha ', $paciente_inf[0]->senha);
+                    $this->db->set('data_senha', $paciente_inf[0]->data_senha);
+                }
+
                 $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
@@ -7439,6 +7518,13 @@ class exame_model extends Model {
 
                 $this->db->set('empresa_id', $empresa_id);
                 $this->db->set('data', $data);
+                if (count($paciente_inf) > 0) {
+                    $this->db->set('toten_senha_id', $paciente_inf[0]->toten_senha_id);
+                    $this->db->set('toten_fila_id', $paciente_inf[0]->toten_fila_id);
+                    $this->db->set('senha ', $paciente_inf[0]->senha);
+                    $this->db->set('data_senha', $paciente_inf[0]->data_senha);
+                }
+//                var_dump($guia_id); die;
                 $this->db->set('data_producao', $dataProducao);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
@@ -7518,6 +7604,13 @@ class exame_model extends Model {
                 if ($_POST['txtmedico'] != "") {
                     $this->db->set('medico_parecer1', $_POST['txtmedico']);
                 }
+                if (count($paciente_inf) > 0) {
+                    $this->db->set('toten_senha_id', $paciente_inf[0]->toten_senha_id);
+                    $this->db->set('toten_fila_id', $paciente_inf[0]->toten_fila_id);
+                    $this->db->set('senha ', $paciente_inf[0]->senha);
+                    $this->db->set('data_senha', $paciente_inf[0]->data_senha);
+                }
+
                 $this->db->set('id_chamada', $_POST['idChamada']);
                 $this->db->set('primeiro_atendimento', $primeiro_atendimento);
                 $this->db->insert('tb_ambulatorio_laudo');
@@ -7639,6 +7732,7 @@ class exame_model extends Model {
             $this->db->where('e.situacao !=', 'CANCELADO');
             $this->db->where("e.guia_id", $_POST['txtguia_id']);
             $this->db->where("pt.grupo", $_POST['txtgrupo']);
+            $this->db->where("e.realizada", 'f');
             $query = $this->db->get();
             $return = $query->result();
             $this->db->trans_start();
