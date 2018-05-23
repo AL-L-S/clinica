@@ -132,6 +132,7 @@ class guia_model extends Model {
                             ep.valor_convenio_nao,
                             ep.producao_alternativo,
                             ep.apenas_procedimentos_multiplos,
+                            ep.percentual_multiplo,
                             ');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);

@@ -713,6 +713,12 @@
                             <dd>
                                 <input type="checkbox" id="producao_alternativo" name="producao_alternativo" <? if (@$obj->_producao_alternativo == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ativando essa opção, a tela de cadastrar percentual irá seguir o padrão dos procedimentos multiplos.">Novo Percentual similar ao Proc. Multiplos</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="percentual_multiplo" name="percentual_multiplo" <? if (@$obj->_percentual_multiplo == 't') echo "checked"; ?>/> 
+                            </dd>
                         </fieldset>
                     <? } ?>
                 </dl>    

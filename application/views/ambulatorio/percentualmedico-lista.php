@@ -1,14 +1,25 @@
-
+<? $permissoes = $this->guia->listarempresapermissoes(); ?>
 <div class="content"> <!-- Inicio da DIV content -->
     <table>
         <tr>
-            <td>
-                <div class="bt_link_new">
-                    <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentualmedico">
-                        Novo Percentual
-                    </a>
-                </div>
-            </td>
+            <? if($permissoes[0]->percentual_multiplo != 't') {?>
+                <td>
+                    <div class="bt_link_new">
+                        <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentualmedico">
+                            Novo Percentual
+                        </a>
+                    </div>
+                </td>
+            <? } 
+            else { ?>
+                <td>
+                    <div class="bt_link_new">
+                        <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/percentualmedicomultiplo">
+                            Novo Percentual
+                        </a>
+                    </div>
+                </td>
+            <? } ?>
             <td>
                 <div class="bt_link_new">
                     <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/replicarpercentualmedico">

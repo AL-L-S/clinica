@@ -1,7 +1,8 @@
-
+<? $permissoes = $this->guia->listarempresapermissoes(); ?>
 <div class="content"> <!-- Inicio da DIV content -->    
     <table>
         <tr>
+            <? if($permissoes[0]->percentual_multiplo != 't') {?>
             <td>
                 <div class="bt_link_new">
                     <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/novoprocedimentopercentualpromotor">
@@ -9,6 +10,16 @@
                     </a>
                 </div>
             </td>
+            <? } 
+            else { ?>
+                <td>
+                    <div class="bt_link_new">
+                        <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/percentualpromotormultiplo">
+                            Novo Percentual
+                        </a>
+                    </div>
+                </td>
+            <? } ?>
         </tr>
     </table>
     <div id="accordion">

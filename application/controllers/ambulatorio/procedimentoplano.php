@@ -75,6 +75,9 @@ class Procedimentoplano extends BaseController {
     }
     
     function laboratoriopercentual($args = array()) {
+//        ini_set('display_errors',1);
+//        ini_set('display_startup_erros',1);
+//        error_reporting(E_ALL);
         $this->loadView('ambulatorio/percentuallaboratorio-lista', $args);
     }
 
@@ -380,6 +383,55 @@ class Procedimentoplano extends BaseController {
         $data['medico_id'] = $medico_id;
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/ajustarpercentualmedico-form', $data);
+    }
+    
+    function percentualmedicomultiplo($convenio_id = null, $medico_id = null) {
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['grupos'] = $this->procedimentoplano->listargrupo();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['convenio_id'] = $convenio_id;
+        $data['medico_id'] = $medico_id;
+        
+        if ($convenio_id != null){
+            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual($convenio_id);
+        }
+        else {
+            $data['procedimento'] = array();
+        }
+        $this->loadView('ambulatorio/percentualmedicomultiplo-form', $data);
+    }
+    
+    function percentualpromotormultiplo($convenio_id = null, $promotor_id = null) {
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['grupos'] = $this->procedimentoplano->listargrupo();
+        $data['promotor'] = $this->paciente->listaindicacao();
+        $data['convenio_id'] = $convenio_id;
+        $data['promotor_id'] = $promotor_id;
+        
+        if ($convenio_id != null){
+            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual($convenio_id);
+        }
+        else {
+            $data['procedimento'] = array();
+        }
+        $this->loadView('ambulatorio/percentualpromotormultiplo-form', $data);
+    }
+    
+    
+    function percentuallaboratoriomultiplo($convenio_id = null, $laboratorio_id = null) {
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['grupos'] = $this->procedimentoplano->listargrupo();
+        $data['laboratorios'] = $this->laboratorio->listarlaboratorios();
+        $data['laboratorio_id'] = $laboratorio_id;
+        $data['convenio_id'] = $convenio_id;
+        
+        if ($convenio_id != null){
+            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual($convenio_id);
+        }
+        else {
+            $data['procedimento'] = array();
+        }
+        $this->loadView('ambulatorio/percentuallaboratoriomultiplo-form', $data);
     }
     
     function procedimentoconveniopercentualmedico($medico_id = null, $convenio_id = null) {
@@ -823,6 +875,42 @@ class Procedimentoplano extends BaseController {
             $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Opera&ccedil;&atilde;o cancelada.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar o Procedimentoplano.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function gravarpercentualmedicomultiplo() {
+        
+        $procedimentoplano_tuss_id = $this->procedimentoplano->gravarpercentualmedicomultiplo();
+        if ($procedimentoplano_tuss_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar o(s) Procedimentoplano(s). Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar o(s) Procedimentoplano(s).';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function gravarpercentualpromotormultiplo() {
+        
+        $procedimentoplano_tuss_id = $this->procedimentoplano->gravarpercentualpromotormultiplo();
+        if ($procedimentoplano_tuss_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar o(s) Procedimentoplano(s). Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar o(s) Procedimentoplano(s).';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function gravarpercentuallaboratoriomultiplo() {
+        
+        $procedimentoplano_tuss_id = $this->procedimentoplano->gravarpercentuallaboratoriomultiplo();
+        if ($procedimentoplano_tuss_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar o(s) Procedimentoplano(s). Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar o(s) Procedimentoplano(s).';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");

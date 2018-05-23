@@ -119,8 +119,8 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                 <thead>
                     <tr>
                         <th class="tabela_header">Plano</th>
-                        <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">Grupo</th>
+                        <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">Código</th>
                         <th class="tabela_header" colspan="4"><center>Detalhes</center></th>
                     </tr>
@@ -147,8 +147,8 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>                               
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
                                     <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/listaprocedimentomultiempresa/<?= $item->procedimento_tuss_id ?>/<?=$item->convenio_id ?>">

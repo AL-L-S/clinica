@@ -74,3 +74,7 @@ UPDATE ponto.tb_procedimento_convenio SET ativo = false WHERE procedimento_conve
     ) 
     SELECT procedimento_convenio_id FROM t WHERE row_number > 1  
 );
+
+-- Dia 22/05/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN percentual_multiplo boolean DEFAULT false;
+
