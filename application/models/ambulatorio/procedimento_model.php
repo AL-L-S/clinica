@@ -973,14 +973,14 @@ class procedimento_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             if (isset($_POST['ajuste'])) {
                 $vlr = str_replace(",", ".", $_POST['ajuste_percentual']);
-                $sql = "UPDATE ponto.tb_procedimento_tuss
+                $sql = "UPDATE ponto.tb_procedimento_tuss pt
                         SET perc_medico = perc_medico + (perc_medico * {$vlr} / 100)
                         WHERE grupo = '{$_POST['grupo']}' 
                         AND pt.agrupador = 'f'";
 //                die($sql);
             } else {
                 $vlr = str_replace(",", ".", $_POST['txtperc_medico']);
-                $sql = "UPDATE ponto.tb_procedimento_tuss
+                $sql = "UPDATE ponto.tb_procedimento_tuss pt
                         SET perc_medico = {$vlr}, percentual = '{$_POST['percentual']}'
                         WHERE grupo = '{$_POST['grupo']}'
                         AND pt.agrupador = 'f' ";

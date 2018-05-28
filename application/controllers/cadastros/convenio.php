@@ -37,6 +37,13 @@ class Convenio extends BaseController {
 
 //            $this->carregarView($data);
     }
+    
+    function pesquisarlogs($args = array()) {
+
+        $this->loadView('cadastros/conveniolog-lista', $args);
+
+//            $this->carregarView($data);
+    }
 
     function carregar($convenio_id) {
 //        die('morreu');
@@ -129,6 +136,10 @@ class Convenio extends BaseController {
     }
 
     function gravar() {
+        if($_POST['txtconvenio_id'] > 0){
+             $log = $this->convenio->gravarlog();
+        }
+       
         $convenio_id = $this->convenio->gravar();
 //        var_dump($convenio_id);
 //        die;

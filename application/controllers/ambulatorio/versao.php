@@ -33,6 +33,13 @@ class Versao extends BaseController {
 //            $this->carregarView($data);
     }
 
+    function pesquisardetalhes($versao) {
+        $data['lista'] = $this->versao->listardetalhesversao($versao);
+        $this->loadView('ambulatorio/versaodetalhes-lista', $data);
+
+//            $this->carregarView($data);
+    }
+
 }
 
 /* End of file welcome.php */

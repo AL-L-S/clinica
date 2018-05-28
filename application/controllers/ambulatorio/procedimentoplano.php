@@ -37,10 +37,10 @@ class Procedimentoplano extends BaseController {
 
     function pesquisar($limite = 50) {
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
-        if ($procedimento_multiempresa == 't'){
+        if ($procedimento_multiempresa == 't') {
             redirect(base_url() . "ambulatorio/procedimentoplano/pesquisar2/$limite");
         }
-        
+
         $data["limite_paginacao"] = $limite;
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento4();
         $this->loadView('ambulatorio/procedimentoplano-lista', $data);
@@ -69,11 +69,11 @@ class Procedimentoplano extends BaseController {
     function medicopercentual($args = array()) {
         $this->loadView('ambulatorio/percentualmedico-lista', $args);
     }
-    
+
     function promotorpercentual($args = array()) {
         $this->loadView('ambulatorio/percentualpromotor-lista', $args);
     }
-    
+
     function laboratoriopercentual($args = array()) {
         $this->loadView('ambulatorio/percentuallaboratorio-lista', $args);
     }
@@ -186,7 +186,7 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
-        
+
         $this->loadView('ambulatorio/multiplosprocedimentoplano-form', $data);
     }
 
@@ -274,6 +274,32 @@ class Procedimentoplano extends BaseController {
         }
     }
 
+    function gravarorcamentorecepcaonaocadastro() {
+        if ($_POST['procedimento1'] == '' || $_POST['convenio1'] == '-1' || $_POST['qtde1'] == '') {
+            $data['mensagem'] = 'Informe o convenio, o procedimento e a quantidade.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/orcamento/0");
+        } else {
+            if ($_POST['txtNomeid'] > 0) {
+                $paciente_id = $_POST['txtNomeid'];
+            } else {
+                $paciente_id = null;
+            }
+            if ($_POST['orcamento_id'] > 0) {
+                $ambulatorio_orcamento = $_POST['orcamento_id'];
+            } else {
+                $ambulatorio_orcamento = $this->guia->gravarorcamentorecepcaonaocadastro($paciente_id);
+            }
+
+            $this->guia->gravarorcamentoitemrecepcaonaocadastro($ambulatorio_orcamento, $paciente_id);
+            if ($paciente_id > 0) {
+                redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/$paciente_id/$ambulatorio_orcamento");
+            } else {
+                redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/0/$ambulatorio_orcamento");
+            }
+        }
+    }
+
     function excluirorcamentorecepcao($ambulatorio_orcamento_item_id, $paciente_id, $orcamento_id) {
         if ($this->procedimento->excluirorcamentorecepcao($ambulatorio_orcamento_item_id)) {
             $mensagem = 'Sucesso ao excluir o Procedimento';
@@ -289,17 +315,22 @@ class Procedimentoplano extends BaseController {
 
         $obj_paciente = new paciente_model($paciente_id);
         $data['obj'] = $obj_paciente;
-
+        $empresa_id = $this->session->userdata('empresa_id');
+        $permissoes = $this->guia->listarempresapermissoes($empresa_id);
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
         $data['exames'] = $this->procedimento->listarorcamentosrecepcao($ambulatorio_orcamento);
         $data['responsavel'] = $this->procedimento->listaresponsavelorcamento($ambulatorio_orcamento);
+        $data['orcamento_id'] = $ambulatorio_orcamento;
 //        echo "<pre>";
 //        var_dump($data['exames']); die;
-
-        $this->loadView('ambulatorio/orcamentogeral-form_1', $data);
+        if (@$permissoes[0]->orcamento_cadastro == 't') {
+            $this->loadView('ambulatorio/orcamentogeral-form_1', $data);
+        } else {
+            $this->loadView('ambulatorio/orcamentogeralnaocadastro-form', $data);
+        }
     }
 
     function orcamentorecepcaofila($orcamento) {
@@ -370,7 +401,7 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $this->loadView('ambulatorio/conveniopercentualmedico-lista', $data);
     }
-    
+
     function ajustarpercentualmedico($medico_id = null, $convenio_id = null) {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento();
@@ -381,7 +412,7 @@ class Procedimentoplano extends BaseController {
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/ajustarpercentualmedico-form', $data);
     }
-    
+
     function procedimentoconveniopercentualmedico($medico_id = null, $convenio_id = null) {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento();
@@ -476,7 +507,7 @@ class Procedimentoplano extends BaseController {
         $data['promotor'] = $this->paciente->listaindicacao();
         $this->loadView('ambulatorio/novoprocedimentopromotor-form', $data);
     }
-    
+
     function novopromotor($procedimento_percentual_promotor_id, $convenio_id) {
         $data['dados'] = $this->procedimentoplano->novopromotor($procedimento_percentual_promotor_id);
         $data['promotors'] = $this->paciente->listaindicacao();
@@ -608,8 +639,8 @@ class Procedimentoplano extends BaseController {
 
     function excluirpercentualconveniopromotor() {
         $promotor_id = $_POST['promotor_id'];
-        
-        foreach($_POST['convenio'] as $key => $value){
+
+        foreach ($_POST['convenio'] as $key => $value) {
             $convenio_id = $key;
             $this->procedimentoplano->excluirpercentualconveniopromotor($promotor_id, $convenio_id);
         }
@@ -621,8 +652,8 @@ class Procedimentoplano extends BaseController {
 
     function excluirpercentualconvenio() {
         $medico_id = $_POST['medico_id'];
-        
-        foreach($_POST['convenio'] as $key => $value){
+
+        foreach ($_POST['convenio'] as $key => $value) {
             $convenio_id = $key;
             $this->procedimentoplano->excluirpercentualconvenio($medico_id, $convenio_id);
         }
@@ -634,7 +665,7 @@ class Procedimentoplano extends BaseController {
 
     function excluirpercentuallaboratorioconvenio() {
         $laboratorio_id = $_POST['laboratorio_id'];
-        foreach($_POST['convenio'] as $key => $value){
+        foreach ($_POST['convenio'] as $key => $value) {
             $convenio_id = $key;
             $this->procedimentoplano->excluirpercentuallaboratorioconvenio($laboratorio_id, $convenio_id);
         }
@@ -645,19 +676,19 @@ class Procedimentoplano extends BaseController {
     }
 
     function excluirpercentuallaboratorio() {
-        foreach($_POST['laboratorio'] as $key => $value){
+        foreach ($_POST['laboratorio'] as $key => $value) {
             $laboratorio_id = $key;
             $this->procedimentoplano->excluirpercentuallaboratorio($laboratorio_id);
         }
-        
+
         $mensagem = 'Sucesso ao excluir o Percentual medico';
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function excluirpercentual() {
-        
-        foreach($_POST['percentual'] as $key => $value){
+
+        foreach ($_POST['percentual'] as $key => $value) {
             $procedimento_percentual_medico_convenio_id = $key;
             $this->procedimentoplano->excluirpercentual($procedimento_percentual_medico_convenio_id);
         }
@@ -668,7 +699,7 @@ class Procedimentoplano extends BaseController {
     }
 
     function excluirpercentualpromotorgeral() {
-        foreach($_POST['promotor'] as $key => $value){
+        foreach ($_POST['promotor'] as $key => $value) {
             $promotor_id = $key;
             $this->procedimentoplano->excluirpercentualpromotorgeral($promotor_id);
         }
@@ -679,8 +710,8 @@ class Procedimentoplano extends BaseController {
     }
 
     function excluirmedicopercentual() {
-        
-        foreach($_POST['medico'] as $key => $value){
+
+        foreach ($_POST['medico'] as $key => $value) {
             $medico_id = $key;
             $this->procedimentoplano->excluirmedicopercentual($medico_id);
         }
@@ -691,7 +722,7 @@ class Procedimentoplano extends BaseController {
     }
 
     function excluirlaboratoriopercentual() {
-        foreach($_POST['percentual'] as $key => $value){
+        foreach ($_POST['percentual'] as $key => $value) {
             $procedimento_percentual_laboratorio_convenio_id = $key;
             $this->procedimentoplano->excluirlaboratoriopercentual($procedimento_percentual_laboratorio_convenio_id);
         }
@@ -702,8 +733,8 @@ class Procedimentoplano extends BaseController {
     }
 
     function excluirpromotorpercentual() {
-        
-        foreach($_POST['percentual'] as $key => $value){
+
+        foreach ($_POST['percentual'] as $key => $value) {
             $procedimento_percentual_promotor_convenio_id = $key;
             $this->procedimentoplano->excluirpromotorpercentual($procedimento_percentual_promotor_convenio_id);
         }

@@ -307,7 +307,7 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarsalanomeproducao($exame_sala_id) {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('exame_sala_id,
@@ -3083,6 +3083,42 @@ class exame_model extends Model {
         $this->db->orderby('p.nome');
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function gravarpacienteorcamento($ambulatorio_orcamento_id) {
+
+        try {
+            if ($_POST['txtNomeid'] == '') {
+                if ($_POST['nascimento'] != '') {
+                    $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
+                }
+                $this->db->set('celular', $_POST['txtCelular']);
+                $this->db->set('telefone', $_POST['txtTelefone']);
+                $this->db->set('nome', $_POST['txtNome']);
+                $this->db->insert('tb_paciente');
+                $paciente_id = $this->db->insert_id();
+            } else {
+                $paciente_id = $_POST['txtNomeid'];
+
+                $this->db->set('celular', $_POST['txtCelular']);
+                $this->db->set('telefone', $_POST['txtTelefone']);
+                $this->db->set('nome', $_POST['txtNome']);
+                $this->db->where('paciente_id', $paciente_id);
+                $this->db->update('tb_paciente');
+            }
+
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->where('ambulatorio_orcamento_id', $ambulatorio_orcamento_id);
+            $this->db->update('tb_ambulatorio_orcamento');
+
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->where('orcamento_id', $ambulatorio_orcamento_id);
+            $this->db->update('tb_ambulatorio_orcamento_item');
+
+            return true;
+        } catch (Exception $exc) {
+            return -1;
+        }
     }
 
     function gravarautorizacaoorcamento($ambulatorio_orcamento_id) {

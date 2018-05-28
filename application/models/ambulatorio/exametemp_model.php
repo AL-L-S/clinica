@@ -3688,6 +3688,169 @@ class exametemp_model extends Model {
             return -1;
         }
     }
+    function gravargeralpacientetempreagendar($ambulatorio_pacientetemp_id) {
+        try {
+            $this->db->select('a.agenda_exames_id,
+                            a.inicio,
+                            a.data,
+                            a.nome,
+                            a.encaixe,
+                            a.guia_id,
+                            a.procedimento_tuss_id,
+                            a.data,
+                            a.situacao,
+                            a.ativo,
+                            a.tipo,
+                            a.cancelada,
+                            a.observacoes,
+                            a.realizada,
+                            a.confirmado,
+                            a.convenio_id,
+                            a.agrupador_fisioterapia,
+                            a.numero_sessao,
+                            a.qtde_sessao,
+                            valor1, 
+                            valor, 
+                            ordenador, 
+                            forma_pagamento,
+                            forma_pagamento2, 
+                            valor2, 
+                            forma_pagamento3, 
+                            valor3, 
+                            forma_pagamento4, 
+                            valor4,
+                            quantidade,
+                            data_autorizacao,
+                            operador_autorizacao,
+                            valor_total,
+                            a.agenda_exames_nome_id,
+                            a.medico_agenda,
+                            a.medico_consulta_id,
+                            a.observacoes');
+            $this->db->from('tb_agenda_exames a');
+//            $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+//            $this->db->join('tb_operador o', 'o.operador_id = a.medico_consulta_id', 'left');
+            $this->db->where("a.agenda_exames_id", $_POST['agenda_exames_id']);
+
+            $return = $this->db->get()->result();
+//            $return;
+//            echo '<pre>';
+//            var_dump($return);
+//            die;
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+            if ($_POST['horarios'] != "") {
+//                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('tipo', $return[0]->tipo);
+                $this->db->set('ativo', $return[0]->ativo);
+                $this->db->set('cancelada', $return[0]->cancelada);
+                $this->db->set('confirmado', $return[0]->confirmado);
+                $this->db->set('realizada', $return[0]->realizada);
+                $this->db->set('situacao', $return[0]->situacao);
+                $this->db->set('observacoes', $return[0]->observacoes);
+                if ($return[0]->ordenador != '') {
+                    $this->db->set('ordenador', $return[0]->ordenador);
+                }
+                if ($return[0]->operador_autorizacao != '') {
+                    $this->db->set('operador_autorizacao', $return[0]->operador_autorizacao);
+                }
+                if ($return[0]->data_autorizacao != '') {
+                    $this->db->set('data_autorizacao', $return[0]->data_autorizacao);
+                }
+                if ($return[0]->quantidade != '') {
+                    $this->db->set('quantidade', $return[0]->quantidade);
+                }
+                if ($return[0]->valor != '') {
+                    $this->db->set('valor', $return[0]->valor);
+                }
+                if ($return[0]->valor_total != '') {
+                    $this->db->set('valor_total', $return[0]->valor_total);
+                }
+                if ($return[0]->forma_pagamento4 != '') {
+                    $this->db->set('forma_pagamento4', $return[0]->forma_pagamento4);
+                }
+                if ($return[0]->forma_pagamento3 != '') {
+                    $this->db->set('forma_pagamento3', $return[0]->forma_pagamento3);
+                }
+                if ($return[0]->forma_pagamento2 != '') {
+                    $this->db->set('forma_pagamento2', $return[0]->forma_pagamento2);
+                }
+                if ($return[0]->forma_pagamento != '') {
+                    $this->db->set('forma_pagamento', $return[0]->forma_pagamento);
+                }
+                if ($return[0]->valor4 != '') {
+                    $this->db->set('valor4', $return[0]->valor4);
+                }
+                if ($return[0]->valor3 != '') {
+                    $this->db->set('valor3', $return[0]->valor3);
+                }
+                if ($return[0]->valor2 != '') {
+                    $this->db->set('valor2', $return[0]->valor2);
+                }
+                if ($return[0]->valor1 != '') {
+                    $this->db->set('valor1', $return[0]->valor1);
+                }
+                if ($return[0]->agrupador_fisioterapia != '') {
+                    $this->db->set('agrupador_fisioterapia', $return[0]->agrupador_fisioterapia);
+                }
+                if ($return[0]->convenio_id != '') {
+                    $this->db->set('convenio_id', $return[0]->convenio_id);
+                }
+                if ($return[0]->numero_sessao != '') {
+                    $this->db->set('numero_sessao', $return[0]->numero_sessao);
+                }
+                if ($return[0]->qtde_sessao != '') {
+                    $this->db->set('qtde_sessao', $return[0]->qtde_sessao);
+                }
+                if ($return[0]->guia_id != '') {
+                    $this->db->set('guia_id', $return[0]->guia_id);
+                }
+                if ($return[0]->procedimento_tuss_id != '') {
+                    $this->db->set('procedimento_tuss_id', $return[0]->procedimento_tuss_id);
+                }
+                $this->db->set('paciente_id', $ambulatorio_pacientetemp_id);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('agenda_exames_id', $_POST['horarios']);
+                $this->db->update('tb_agenda_exames');
+
+
+
+                $this->db->set('paciente_id', null);
+                $this->db->set('procedimento_tuss_id', null);
+                $this->db->set('convenio_id', null);
+                $this->db->set('guia_id', null);
+                $this->db->set('agrupador_fisioterapia', null);
+                $this->db->set('numero_sessao', null);
+                $this->db->set('qtde_sessao', null);
+                $this->db->set('realizada', 'f');
+                $this->db->set('cancelada', 'f');
+                $this->db->set('confirmado', 'f');
+//        $this->db->set('medico_consulta_id', null);
+//        $this->db->set('medico_agenda', null);
+                $this->db->set('ativo', 't');
+                $this->db->set('encaixe', 'f');
+                $this->db->set('situacao', 'LIVRE');
+                $this->db->set('observacoes', "");
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('ambulatorio_pacientetemp_id', null);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
+                $this->db->update('tb_agenda_exames');
+
+
+                $this->db->set('agenda_exames_id', $_POST['horarios']);
+                $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
+                $this->db->update('tb_exames');
+            }
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
 
     function gravarunificacao() {
         try {

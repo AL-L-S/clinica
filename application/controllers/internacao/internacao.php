@@ -8,6 +8,7 @@ class internacao extends BaseController {
         parent::__construct();
         $this->load->model('emergencia/solicita_acolhimento_model', 'acolhimento');
         $this->load->model('cadastro/paciente_model', 'paciente');
+        $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('farmacia/produto_model', 'produto_m');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/laudo_model', 'laudo_m');
@@ -104,6 +105,138 @@ class internacao extends BaseController {
         }
     }
 
+    function mantertipodependencia() {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->loadView('internacao/mantertipodependencia-lista');
+    }
+
+    function configurartipodependencia($internacao_tipo_dependencia_id) {
+        $data['config'] = $this->internacao_m->listartipodependenciaform($internacao_tipo_dependencia_id);
+        $data['internacao_tipo_dependencia_id'] = $internacao_tipo_dependencia_id;
+        $this->loadView('internacao/mantertipodependencia-form', $data);
+    }
+
+    function gravartipodependencia() {
+
+        if ($this->internacao_m->gravartipodependencia()) {
+            $data['mensagem'] = 'Tipo gravado com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao gravar Tipo';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/mantertipodependencia");
+    }
+
+    function excluirtipodependencia($internacao_modelo_grupo_id) {
+
+        if ($this->internacao_m->excluirtipodependencia($internacao_modelo_grupo_id)) {
+            $data['mensagem'] = 'Modelo excluido com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao excluido Modelo';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/mantertipodependencia");
+    }
+
+    function mantermodelogrupo() {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->loadView('internacao/mantermodelogrupo-lista');
+    }
+
+    function configurarmodelogrupo($internacao_modelo_grupo_id) {
+        $data['config'] = $this->internacao_m->listarmodelogrupoform($internacao_modelo_grupo_id);
+        $data['internacao_modelo_grupo_id'] = $internacao_modelo_grupo_id;
+        $this->loadView('internacao/mantermodelogrupo-form', $data);
+    }
+
+    function gravarmodelogrupo() {
+
+        if ($this->internacao_m->gravarmodelogrupo()) {
+            $data['mensagem'] = 'Modelo gravado com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao gravar Modelo';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/mantermodelogrupo");
+    }
+
+    function excluirmodelogrupo($internacao_modelo_grupo_id) {
+
+        if ($this->internacao_m->excluirmodelogrupo($internacao_modelo_grupo_id)) {
+            $data['mensagem'] = 'Modelo excluido com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao excluido Modelo';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/mantermodelogrupo");
+    }
+
+    function manterfichaquestionario($args = array()) {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->loadView('internacao/manterfichaquestionario-lista', $args);
+    }
+
+    function carregarfichaquestionario($internacao_ficha_questionario_id) {
+        $data['convenio'] = $this->convenio->listardados();
+        $data['modelo_grupo'] = $this->internacao_m->listarmodelogrupoquestionario();
+//        var_dump($data['modelo_grupo']); die;
+        $data['config'] = $this->internacao_m->listarfichaquestionarioform($internacao_ficha_questionario_id);
+        $data['internacao_ficha_questionario_id'] = $internacao_ficha_questionario_id;
+        $this->loadView('internacao/manterfichaquestionario-form', $data);
+    }
+
+    function gravarfichaquestionario() {
+//        echo '<pre>';
+//        var_dump($_POST); die;
+
+        if ($this->internacao_m->gravarfichaquestionario()) {
+            $data['mensagem'] = 'Pré-Cadastro gravado com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao gravar Pré-Cadastro';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/manterfichaquestionario");
+    }
+
+    function excluirfichaquestionario($internacao_modelo_grupo_id) {
+
+        if ($this->internacao_m->excluirfichaquestionario($internacao_modelo_grupo_id)) {
+            $data['mensagem'] = 'Modelo excluido com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao excluido Modelo';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/manterfichaquestionario");
+    }
+
+    function confirmarligacaofichaquestionario($internacao_modelo_grupo_id) {
+
+        if ($this->internacao_m->confirmarligacaofichaquestionario($internacao_modelo_grupo_id)) {
+            $data['mensagem'] = 'Confirmação efetuada com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao efetuar confirmação';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/manterfichaquestionario");
+    }
+
+    function confirmaraprovacaofichaquestionario($internacao_modelo_grupo_id, $paciente_id) {
+
+        if ($this->internacao_m->confirmaraprovacaofichaquestionario($internacao_modelo_grupo_id)) {
+            $data['mensagem'] = 'Aprovada com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao Aprovar';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/novointernacao/$paciente_id");
+    }
+
     function novointernacaonutricao($paciente_id) {
         $data['numero'] = $this->internacao_m->verificainternacao($paciente_id);
 //        var_dump($data['numero']);
@@ -159,7 +292,7 @@ class internacao extends BaseController {
 
     function termoresponsabilidade($internacao_id) {
         $this->load->plugin('mpdf');
-        
+
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);

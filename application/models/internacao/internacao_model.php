@@ -34,6 +34,24 @@ class internacao_model extends BaseModel {
             $this->db->set('cid1solicitado', $_POST['cid1ID']);
             $this->db->set('cid2solicitado', $_POST['cid2ID']);
             $this->db->set('justificativa', $_POST['observacao']);
+            $this->db->set('nome_responsavel', $_POST['nome_responsavel']);
+            $this->db->set('cep_responsavel', $_POST['cep_responsavel']);
+            $this->db->set('logradouro_responsavel', $_POST['logradouro_responsavel']);
+            $this->db->set('numero_responsavel', $_POST['numero_responsavel']);
+//            $this->db->set('complemento_responsavel', $_POST['complemento_responsavel']);
+            $this->db->set('bairro_responsavel', $_POST['bairro_responsavel']);
+            $this->db->set('rg_responsavel', $_POST['rg_responsavel']);
+//            $this->db->set('cpf_responsavel', $_POST['cpf_responsavel']);
+            $this->db->set('cpf_responsavel', str_replace("-", "", str_replace(".", "", $_POST['cpf_responsavel'])));
+            $this->db->set('email_responsavel', $_POST['email_responsavel']);
+            $this->db->set('celular_responsavel', $_POST['celular_responsavel']);
+            $this->db->set('telefone_responsavel', $_POST['telefone_responsavel']);
+            $this->db->set('grau_parentesco', $_POST['grau_parentesco']);
+
+            if ($_POST['municipio_responsavel_id'] != '') {
+                $this->db->set('municipio_responsavel_id', $_POST['municipio_responsavel_id']);
+            }
+
             $this->db->set('paciente_id', $paciente_id);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -70,6 +88,114 @@ class internacao_model extends BaseModel {
         } catch (Exception $exc) {
             return false;
         }
+    }
+
+    function listarmodelogrupoquestionario() {
+
+        $this->db->select('im.internacao_modelo_grupo_id, im.nome, e.nome as empresa, im.texto');
+        $this->db->from('tb_internacao_modelo_grupo im');
+        $this->db->join('tb_empresa e', 'im.empresa_id = e.empresa_id', 'left');
+        $this->db->where('im.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarmodelogrupo() {
+
+        $this->db->select('im.internacao_modelo_grupo_id, im.nome, e.nome as empresa');
+        $this->db->from('tb_internacao_modelo_grupo im');
+        $this->db->join('tb_empresa e', 'im.empresa_id = e.empresa_id', 'left');
+        $this->db->where('im.ativo', 't');
+        return $this->db;
+    }
+
+    function listarautocompletemodelosgrupo($internacao_modelo_grupo_id = null) {
+
+        $this->db->select('im.*');
+        $this->db->from('tb_internacao_modelo_grupo im');
+//        $this->db->join('tb_empresa_id e', 'im.empresa_id = e.empresa_id', 'left');
+        if ($internacao_modelo_grupo_id != null) {
+            $this->db->where('im.internacao_modelo_grupo_id', $internacao_modelo_grupo_id);
+        }
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarmodelogrupoform($internacao_modelo_grupo_id) {
+
+        $this->db->select('im.*');
+        $this->db->from('tb_internacao_modelo_grupo im');
+//        $this->db->join('tb_empresa_id e', 'im.empresa_id = e.empresa_id', 'left');
+        $this->db->where('im.internacao_modelo_grupo_id', $internacao_modelo_grupo_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarfichaquestionario($args = array()) {
+
+        $this->db->select('if.internacao_ficha_questionario_id, 
+                             if.nome, 
+                             p.nome as paciente, 
+                             if.data_cadastro,
+                             if.paciente_id,
+                             if.confirmado,
+                             if.aprovado');
+        $this->db->from('tb_internacao_ficha_questionario if');
+        $this->db->join('tb_paciente p', 'p.paciente_id = if.paciente_id', 'left');
+        $this->db->where('if.ativo', 't');
+        if (isset($args['confirmado']) && strlen($args['confirmado']) > 0) {
+            $this->db->where('if.confirmado', $args['confirmado']);
+        }
+        if (isset($args['aprovado']) && strlen($args['aprovado']) > 0) {
+            $this->db->where('if.aprovado', $args['aprovado']);
+        }
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('p.nome ilike', '%' . $args['nome'] . '%');
+        }
+
+        return $this->db;
+    }
+
+    function listarfichaquestionarioform($internacao_ficha_questionario_id) {
+
+        $this->db->select('im.*, p.nome as paciente, p.nascimento, p.sexo, m.nome as cidade');
+        $this->db->from('tb_internacao_ficha_questionario im');
+        $this->db->join('tb_paciente p', 'p.paciente_id = im.paciente_id', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = im.municipio_id', 'left');
+        $this->db->where('im.internacao_ficha_questionario_id', $internacao_ficha_questionario_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listartipodependencia() {
+
+        $this->db->select('im.internacao_tipo_dependencia_id, im.nome');
+        $this->db->from('tb_internacao_tipo_dependencia im');
+//        $this->db->join('tb_empresa e', 'im.empresa_id = e.empresa_id', 'left');
+        $this->db->where('im.ativo', 't');
+        return $this->db;
+    }
+
+    function listartipodependenciaform($internacao_tipo_dependencia_id) {
+
+        $this->db->select('im.*');
+        $this->db->from('tb_internacao_tipo_dependencia im');
+//        $this->db->join('tb_empresa_id e', 'im.empresa_id = e.empresa_id', 'left');
+        $this->db->where('im.internacao_tipo_dependencia_id', $internacao_tipo_dependencia_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listartipodependenciaquestionario() {
+
+        $this->db->select('im.*');
+        $this->db->from('tb_internacao_tipo_dependencia im');
+//        $this->db->join('tb_empresa_id e', 'im.empresa_id = e.empresa_id', 'left');
+//        $this->db->where('im.internacao_tipo_dependencia_id', $internacao_tipo_dependencia_id);
+        $this->db->where('im.ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function mostrartermoresponsabilidade($internacao_id) {
@@ -529,6 +655,250 @@ class internacao_model extends BaseModel {
                     }
                 }
             }
+        }
+    }
+
+    function gravarmodelogrupo() {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('nome', $_POST['nome']);
+            $this->db->set('texto', $_POST['texto']);
+            $this->db->set('empresa_id', $empresa_id);
+//            var_dump($_POST['internacao_modelo_grupo_id']); die;
+            if ($_POST['internacao_modelo_grupo_id'] > 0) {
+                $internacao_modelo_grupo_id = $_POST['internacao_modelo_grupo_id'];
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('internacao_modelo_grupo_id', $internacao_modelo_grupo_id);
+                $this->db->update('tb_internacao_modelo_grupo');
+            } else {
+
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_internacao_modelo_grupo');
+                $internacao_modelo_grupo_id = $this->db->insert_id();
+            }
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function excluirmodelogrupo($internacao_modelo_grupo_id) {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+//            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('internacao_modelo_grupo_id', $internacao_modelo_grupo_id);
+            $this->db->update('tb_internacao_modelo_grupo');
+
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravarfichaquestionario() {
+
+        try {
+            if ($_POST['txtPacienteId'] == '') {
+
+
+                $this->db->set('nome', $_POST['nome_paciente']);
+                $this->db->set('sexo', $_POST['sexo']);
+                if ($_POST['municipio_id'] > 0) {
+                    $this->db->set('municipio_id', $_POST['municipio_id']);
+                }
+                if ($_POST['convenio'] > 0) {
+                    $this->db->set('convenio_id', $_POST['convenio']);
+                }
+                if ($_POST['nascimento'] != '') {
+                    $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
+                }
+                $this->db->insert('tb_paciente');
+                $paciente_id = $this->db->insert_id();
+            } else {
+                $paciente_id = $_POST['txtPacienteId'];
+//                die;
+//                $this->db->set('sexo', $_POST['sexo']);
+//                $this->db->set('nome', $_POST['nome_paciente']);
+//                $this->db->where('paciente_id', $paciente_id);
+//                $this->db->update('tb_paciente');
+            }
+
+
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+//            $empresa_id = $this->session->userdata('empresa_id');
+
+
+            $this->db->set('nome', $_POST['nome_responsavel']);
+            $this->db->set('grau_parentesco', $_POST['grau_parentesco']);
+            $this->db->set('ocupacao_responsavel', $_POST['ocupacao']);
+//            $this->db->set('grau_parentesco', $empresa_id);
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->set('idade_inicio', $_POST['idade_inicio']);
+            if ($_POST['tipo_dependencia'] > 0) {
+                $this->db->set('tipo_dependencia', $_POST['tipo_dependencia']);
+            }
+            $this->db->set('idade_inicio', $_POST['idade_inicio']);
+            $this->db->set('paciente_agressivo', $_POST['paciente_agressivo']);
+            $this->db->set('aceita_tratamento', $_POST['aceita_tratamento']);
+            if ($_POST['indicacao'] > 0) {
+                $this->db->set('tomou_conhecimento', $_POST['indicacao']);
+            }
+            $this->db->set('plano_saude', $_POST['plano_saude']);
+            $this->db->set('tratamento_anterior', $_POST['tratamento_anterior']);
+            $this->db->set('telefone_contato', $_POST['telefone_contato']);
+            if ($_POST['convenio'] > 0) {
+                $this->db->set('convenio_id', $_POST['convenio']);
+            }
+            if ($_POST['municipio_id'] > 0) {
+                $this->db->set('municipio_id', $_POST['municipio_id']);
+            }
+
+            $this->db->set('observacao', $_POST['observacao']);
+            $this->db->set('grupo', $_POST['grupo']);
+
+//            var_dump($_POST['internacao_ficha_questionario_id']); die;
+            if ($_POST['internacao_ficha_questionario_id'] > 0) {
+                $internacao_ficha_questionario_id = $_POST['internacao_ficha_questionario_id'];
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('internacao_ficha_questionario_id', $internacao_ficha_questionario_id);
+                $this->db->update('tb_internacao_ficha_questionario');
+            } else {
+
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_internacao_ficha_questionario');
+                $internacao_ficha_questionario_id = $this->db->insert_id();
+            }
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function excluirfichaquestionario($internacao_ficha_questionario_id) {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+//            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('internacao_ficha_questionario_id', $internacao_ficha_questionario_id);
+            $this->db->update('tb_internacao_ficha_questionario');
+
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function confirmarligacaofichaquestionario($internacao_ficha_questionario_id) {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+//            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('confirmado', 't');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('internacao_ficha_questionario_id', $internacao_ficha_questionario_id);
+            $this->db->update('tb_internacao_ficha_questionario');
+
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function confirmaraprovacaofichaquestionario($internacao_ficha_questionario_id) {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+//            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('aprovado', 't');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('internacao_ficha_questionario_id', $internacao_ficha_questionario_id);
+            $this->db->update('tb_internacao_ficha_questionario');
+
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravartipodependencia() {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('nome', $_POST['nome']);
+//            var_dump($_POST['internacao_tipo_dependencia_id']); die;
+            if ($_POST['internacao_tipo_dependencia_id'] > 0) {
+                $internacao_tipo_dependencia_id = $_POST['internacao_tipo_dependencia_id'];
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('internacao_tipo_dependencia_id', $internacao_tipo_dependencia_id);
+                $this->db->update('tb_internacao_tipo_dependencia');
+            } else {
+
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_internacao_tipo_dependencia');
+                $internacao_tipo_dependencia_id = $this->db->insert_id();
+            }
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function excluirtipodependencia($internacao_tipo_dependencia_id) {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+//            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('internacao_tipo_dependencia_id', $internacao_tipo_dependencia_id);
+            $this->db->update('tb_internacao_tipo_dependencia');
+
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
         }
     }
 

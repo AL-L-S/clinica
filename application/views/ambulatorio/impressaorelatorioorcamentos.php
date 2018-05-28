@@ -6,18 +6,19 @@
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
     <h4>Relatorio Orcamentos</h4>
-    <h4>TIPO DE BUSCA: <?if ($_POST['tipo_orcamento'] == '0') {
-        echo "PRÉ-CADASTROS";
-    } elseif($_POST['tipo_orcamento'] == '1'){
-        echo "CLIENTES";
-    } else {
-        echo "TODOS";
-    }
-    ?>
+    <h4>TIPO DE BUSCA: <?
+        if ($_POST['tipo_orcamento'] == '0') {
+            echo "PRÉ-CADASTROS";
+        } elseif ($_POST['tipo_orcamento'] == '1') {
+            echo "CLIENTES";
+        } else {
+            echo "TODOS";
+        }
+        ?>
     </h4>    
-    <h4>GRUPO: <?= ($grupo != '') ? $grupo: "TODOS" ?></h4>
-    <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> até <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
-    
+    <h4>GRUPO: <?= ($grupo != '') ? $grupo : "TODOS" ?></h4>
+    <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> até <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
+
     <hr>
     <table border="1" cellpadding="5">
         <thead>
@@ -46,31 +47,46 @@
                     }
                     ?>
                     <tr>
-                        <td><b><?= $item->paciente; ?></b></td>
+                        <td><b><?
+                                if ($item->paciente != '') {
+                                    echo $item->paciente;
+                                } else {
+                                    echo 'NÃO INFORMADO';
+                                }
+                                ?></b></td>
                         <td><?= $telefone ?></td>
-                        <td><?= date( "d/m/Y", strtotime($item->data_criacao) ) ?></td>
+                        <td><?= date("d/m/Y", strtotime($item->data_criacao)) ?></td>
                         <td style="text-align: right">
                             <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}"; ?>/', '_blank', 'width=800,height=800');">
-                                    <?= number_format($item->valor, 2, ',', "") ?>
-                                </a>
+                                <?= number_format($item->valor, 2, ',', "") ?>
+                            </a>
                         </td>
                         <td style="text-align: right">
                             <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}"; ?>/', '_blank', 'width=800,height=800');">
-                                    <?= number_format($item->valorcartao, 2, ',', "") ?>
-                                </a>
+                                <?= number_format($item->valorcartao, 2, ',', "") ?>
+                            </a>
                         </td>
                         <td><b><?= $item->empresa_nome; ?></b></td>
-                        <td><b><? 
-                        if ($item->autorizado == 't'){
-                            echo "<span style='color: green; font-size: 12pt'>Autorizado</span>";
-                        } else {
-                            echo "<span style='font-size: 9pt'>Não Autorizado</span>"; 
-                        }
-                        ?></b></td>
+                        <td><b><?
+                                if ($item->autorizado == 't') {
+                                    echo "<span style='color: green; font-size: 12pt'>Autorizado</span>";
+                                } else {
+                                    echo "<span style='font-size: 9pt'>Não Autorizado</span>";
+                                }
+                                ?></b></td>
                         <td align="center">
-                            <? if ($item->autorizado == 'f'){ ?>
-                                <a href="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a>
+
+
+
+                            <? if ($item->autorizado == 'f') { ?>
+                                <? if ($item->paciente != '') { ?>
+                                    <a href="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a>
+                                <? } else { ?>
+                                    <a  href="<?= base_url() ?>ambulatorio/exame/autorizarorcamentonaocadastro/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a>
+                                <? } ?>
                             <? } ?>
+
+
                         </td>
                     </tr>
 
@@ -89,7 +105,7 @@
 
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 

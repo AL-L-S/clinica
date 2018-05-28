@@ -109,3 +109,4 @@ BEGIN
     RETURN 'SUCESSO';
 END;
 $$ LANGUAGE plpgsql;
+SELECT insereValor();

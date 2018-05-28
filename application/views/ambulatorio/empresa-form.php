@@ -713,6 +713,12 @@
                             <dd>
                                 <input type="checkbox" id="producao_alternativo" name="producao_alternativo" <? if (@$obj->_producao_alternativo == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ativando essa opção irá necessitar de cadastro e logicamente, desativando não irá necessitar">Orçamento com cadastro</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="orcamento_cadastro" name="orcamento_cadastro" <? if (@$obj->_orcamento_cadastro == 't') echo "checked"; ?>/> 
+                            </dd>
                         </fieldset>
                     <? } ?>
                 </dl>    

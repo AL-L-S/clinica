@@ -14,6 +14,11 @@
                             Encaixar Horario
                         </a>
                     </div></th>
+                <th >        <div class="bt_link_new">
+                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/agenda/medicoagendageral');">
+                            Bloquear Agenda
+                        </a>
+                    </div></th>
 
             </tr>
 

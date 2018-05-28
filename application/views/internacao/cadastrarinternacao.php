@@ -1,5 +1,5 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <h3 class="h3_title">Internacao</h3>
+    <h3 class="h3_title">Internação</h3>
     <form name="form_unidade" id="form_unidade" action="<?= base_url() ?>internacao/internacao/gravarinternacao/<?= $paciente_id; ?>" method="post">
         <fieldset>
             <legend>Dados do Pacienete</legend>
@@ -29,6 +29,78 @@
             </div>
         </fieldset>
         <fieldset>
+            <legend>Dados do Responsável</legend>
+            <div>
+                <label>Nome</label>                      
+                <input type="text" id="txtNome" name="nome_responsavel"  class="texto09" />
+            </div>
+            <div>
+                <label>CPF</label>
+                <input type="text" name="cpf_responsavel" alt="cpf" id="cpf_responsavel" class="texto03"/>
+            </div>
+            <div>
+                <label>RG</label>
+                <input type="text" name="rg_responsavel" id="rg_responsavel" class="texto04"  />
+            </div>
+            <div>
+                <label>Grau Parentesco</label>
+                <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  />
+            </div>
+
+            <div>
+                <label>Endere&ccedil;o</label>
+                <input type="text" id="txtendereco" class="texto10" name="logradouro_responsavel"  />
+            </div>
+            <div>
+                <label>N&uacute;mero</label>
+
+
+                <input type="text" id="txtNumero" class="texto02" name="numero_responsavel" />
+            </div>
+
+            <div>
+                <label>Bairro</label>
+
+
+                <input type="text" id="txtBairro" class="texto03" name="bairro_responsavel" />
+            </div>
+
+
+            <div>
+                <label>Município</label>
+
+
+                <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_responsavel_id"  readonly="true" />
+                <input type="text" id="txtCidade" class="texto04" name="cidade_responsavel" />
+            </div>
+            <div>
+                <label>CEP</label>
+
+
+                <input type="text" id="cep" class="texto02" name="cep_responsavel" />
+                <!--<input type="text" id="cep" class="texto02" name="cep"  value="<?= @$obj->_cep; ?>" />-->
+
+            </div>
+
+
+            <div>
+                <label>Telefone </label>
+
+
+                <input type="text" id="telefone_responsavel" class="texto02" name="telefone_responsavel"  />
+            </div>
+            <div>
+                <label>Celular </label>
+                <input type="text" id="celular_responsavel" class="texto02" name="celular_responsavel" />
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="text" id="email_responsavel" class="texto05" name="email_responsavel"  />
+            </div>
+
+
+        </fieldset>
+        <fieldset>
             <legend>Dados da internacao</legend>
             <div>
                 <label>Leito</label>
@@ -55,12 +127,15 @@
                 <label>Medico</label>
                 <select name="operadorID" id="txtoperadorID" class="texto08" selected="<?= @$obj->_forma_de_entrada; ?>" required>
                     <option value="">Selecione</option>   
-                    <?
-                    foreach($medicos as $item){?>
-                    <option value="<?=$item->operador_id?>" <?if($item->operador_id == @$obj->_operador){ echo 'selected';}?>><?=$item->nome?></option>   
-                    <?}
-                    ?>
-                    
+                    <? foreach ($medicos as $item) { ?>
+                        <option value="<?= $item->operador_id ?>" <?
+                        if ($item->operador_id == @$obj->_operador) {
+                            echo 'selected';
+                        }
+                        ?>><?= $item->nome ?></option>   
+                            <? }
+                            ?>
+
 
 
 
@@ -159,8 +234,119 @@
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript">
 
+                    jQuery("#celular_responsavel")
+                            .mask("(99) 9999-9999?9")
+                            .focusout(function (event) {
+                                var target, phone, element;
+                                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                                phone = target.value.replace(/\D/g, '');
+                                element = $(target);
+                                element.unmask();
+                                if (phone.length > 10) {
+                                    element.mask("(99) 99999-999?9");
+                                } else {
+                                    element.mask("(99) 9999-9999?9");
+                                }
+                            });
+
+                    jQuery("#telefone_responsavel")
+                            .mask("(99) 9999-9999?9")
+                            .focusout(function (event) {
+                                var target, phone, element;
+                                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                                phone = target.value.replace(/\D/g, '');
+                                element = $(target);
+                                element.unmask();
+                                if (phone.length > 10) {
+                                    element.mask("(99) 99999-999?9");
+                                } else {
+                                    element.mask("(99) 9999-9999?9");
+                                }
+                            });
+                    $(document).ready(function () {
+
+                        function limpa_formulário_cep() {
+                            // Limpa valores do formulário de cep.
+
+                        }
+                        $("#cep").mask("99999-999");
+                        //Quando o campo cep perde o foco.
+                        $("#cep").blur(function () {
+
+                            //Nova variável "cep" somente com dígitos.
+                            var cep = $(this).val().replace(/\D/g, '');
+
+                            //Verifica se campo cep possui valor informado.
+                            if (cep != "") {
+
+                                //Expressão regular para validar o CEP.
+                                var validacep = /^[0-9]{8}$/;
+
+                                //Valida o formato do CEP.
+                                if (validacep.test(cep)) {
+
+                                    //Preenche os campos com "..." enquanto consulta webservice.
+//                    $("#rua").val("Aguarde...");
+//                    $("#bairro").val("Aguarde...");
+//                    $("#txtCidade").val("Aguarde...");
+//                    $("#uf").val("Aguarde...");
+
+                                    //Consulta o webservice viacep.com.br/
+                                    $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                                        if (!("erro" in dados)) {
+                                            //Atualiza os campos com os valores da consulta.
+                                            $("#txtendereco").val(dados.logradouro);
+                                            $("#txtBairro").val(dados.bairro);
+                                            $("#txtCidade").val(dados.localidade);
+//                            $("#uf").val(dados.uf);
+                                            $("#ibge").val(dados.ibge);
+                                            $.getJSON('<?= base_url() ?>autocomplete/cidadeibge', {ibge: dados.ibge}, function (j) {
+                                                $("#txtCidade").val(j[0].value);
+                                                $("#txtCidadeID").val(j[0].id);
+
+//                                console.log(j);
+                                            });
+//                            console.log(dados);
+//                            console.log(dados.bairro);
+
+                                        } //end if.
+                                        else {
+                                            //CEP pesquisado não foi encontrado.
+//                            limpa_formulário_cep();
+                                            alert("CEP não encontrado.");
+
+//                            swal({
+//                                title: "Correios informa!",
+//                                text: "CEP não encontrado.",
+//                                imageUrl: "<?= base_url() ?>img/correios.png"
+//                            });
+                                        }
+                                    });
+
+                                } //end if.
+                                else {
+                                    //cep é inválido.
+                                    limpa_formulário_cep();
+//                    alert("Formato de CEP inválido.");
+                                    swal({
+                                        title: "Correios informa!",
+                                        text: "Formato de CEP inválido.",
+                                        imageUrl: "<?= base_url() ?>img/correios.png"
+                                    });
+                                }
+                            } //end if.
+                            else {
+                                //cep sem valor, limpa formulário.
+                                limpa_formulário_cep();
+                            }
+                        });
+                    });
                     $(function () {
                         $("#txtleito").autocomplete({
                             source: "<?= base_url() ?>index.php?c=autocomplete&m=leito",
@@ -177,7 +363,23 @@
                         });
                     });
 
-                
+                    $(function () {
+                        $("#txtCidade").autocomplete({
+                            source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
+                            minLength: 3,
+                            focus: function (event, ui) {
+                                $("#txtCidade").val(ui.item.label);
+                                return false;
+                            },
+                            select: function (event, ui) {
+                                $("#txtCidade").val(ui.item.value);
+                                $("#txtCidadeID").val(ui.item.id);
+                                return false;
+                            }
+                        });
+                    });
+
+
 
                     $(function () {
                         $("#txtoperador").autocomplete({

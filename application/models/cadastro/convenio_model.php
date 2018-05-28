@@ -66,19 +66,37 @@ class Convenio_model extends Model {
         $this->db->from('tb_convenio c');
         $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
         $this->db->where("c.ativo", 'true');
-        
+
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
-        if ($procedimento_multiempresa != 't'){
+        if ($procedimento_multiempresa != 't') {
             $empresa_id = $this->session->userdata('empresa_id');
             $this->db->where("ce.empresa_id", $empresa_id);
             $this->db->where("ce.ativo", 'true');
         }
-        
+
         $this->db->orderby("c.nome");
         $query = $this->db->get();
         $return = $query->result();
 
         return $return;
+    }
+
+    function listarconveniolog() {
+
+
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            o.nome as operador,
+                            cl.alteracao,
+                            cl.informacao_antiga,
+                            cl.informacao_nova,
+                            cl.data_cadastro,
+                         ');
+        $this->db->from('tb_convenio_log cl');
+        $this->db->join('tb_convenio c', 'cl.convenio_id = c.convenio_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = cl.operador_cadastro', 'left');
+
+        return $this->db;
     }
 
     function listarconveniosprimarios() {
@@ -316,6 +334,14 @@ class Convenio_model extends Model {
         if (count($return) == 0) {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('alteracao', 'Exclusão');
+            $this->db->set('informacao_antiga', 'Ativo');
+            $this->db->set('informacao_nova', 'Excluído');
+            $this->db->set('convenio_id', $convenio_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_convenio_log');
+
             $this->db->set('ativo', 'f');
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
@@ -332,7 +358,7 @@ class Convenio_model extends Model {
                     WHERE convenio_secundario_id = {$convenio_id} 
                     AND ativo = 't'";
             $this->db->query($sql);
-            
+
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
@@ -637,13 +663,13 @@ class Convenio_model extends Model {
             $this->db->where('pmc.ativo', 't');
             $this->db->where('pc.convenio_id', $convenio_id);
             $return = $this->db->get()->result();
-            
-            if(count($return) > 0){
-                
-                foreach($return as $item){
-                    
-                    $procedimentos .= $item->procedimento_percentual_medico_id.",";
-                    
+
+            if (count($return) > 0) {
+
+                foreach ($return as $item) {
+
+                    $procedimentos .= $item->procedimento_percentual_medico_id . ",";
+
                     $this->db->set('procedimento_percentual_medico_convenio_id', $item->procedimento_percentual_medico_convenio_id);
                     $this->db->set('procedimento_percentual_medico_id', $item->procedimento_percentual_medico_id);
                     $this->db->set('medico', $item->medico);
@@ -655,23 +681,22 @@ class Convenio_model extends Model {
                     $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_procedimento_percentual_medico_convenio_antigo');
                 }
-                
+
                 $procedimentosLista = substr($procedimentos, 0, -1);
-                
+
                 $sql = "UPDATE ponto.tb_procedimento_percentual_medico 
                         SET ativo = 'f', data_atualizacao = '{$data}', operador_atualizacao = {$operador_id}
                         WHERE procedimento_percentual_medico_id IN ({$procedimentosLista})
                         AND ativo = 't'";
                 $this->db->query($sql);
-                
+
                 $sql = "UPDATE ponto.tb_procedimento_percentual_medico_convenio 
                         SET ativo = 'f', data_atualizacao = '{$data}', operador_atualizacao = {$operador_id}
                         WHERE procedimento_percentual_medico_id IN ({$procedimentosLista})
                         AND ativo = 't'";
                 $this->db->query($sql);
-
             }
-            
+
 
             return 1;
         } catch (Exception $exc) {
@@ -826,7 +851,6 @@ class Convenio_model extends Model {
             return -1;
         }
     }
-    
 
     function gravarvaloresassociacaoeditar($convenio_id) {
 
@@ -861,7 +885,7 @@ class Convenio_model extends Model {
                     $this->db->where('pc.convenio_id', $_POST['convenio'][$key]);
                     $this->db->where('pc.excluido', 'f');
                     $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
-                    if($procedimento_multiempresa != 't'){ //vide chamado #1950
+                    if ($procedimento_multiempresa != 't') { //vide chamado #1950
                         $this->db->where('pc.ativo', 't');
                     }
                     $result2 = $this->db->get()->result();
@@ -899,7 +923,7 @@ class Convenio_model extends Model {
                             $this->db->set('procedimento_tuss_id', $value->procedimento_tuss_id);
                             $this->db->insert('tb_procedimento_convenio');
                             $pc_id = $this->db->insert_id();
-                            
+
                             // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico)
                             $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico (procedimento_tuss_id, medico, valor, data_cadastro, operador_cadastro)
                                     SELECT {$pc_id}, ppm.medico, ppm.valor, '{$horario}', {$operador_id}
@@ -907,7 +931,7 @@ class Convenio_model extends Model {
                                     WHERE ppm.ativo = 't'
                                     AND ppm.procedimento_tuss_id = {$value->procedimento_convenio_id}";
                             $this->db->query($sql);
-                            
+
                             // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico_convenio)
                             $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico_convenio(
                                         medico, 
@@ -934,7 +958,6 @@ class Convenio_model extends Model {
                                     AND ppm.ativo = 't'
                                     AND ppm.procedimento_tuss_id = {$value->procedimento_convenio_id}";
                             $this->db->query($sql);
-                            
                         }
                     }
                 } else {
@@ -1238,16 +1261,168 @@ class Convenio_model extends Model {
         $this->db->query($sql);
     }
 
+    function testarnomecampopostlog($key_POST) {
+        if ($key_POST == 'txtNome') {
+
+            $key_POST_NEW = 'nome';
+        } elseif ($key_POST == 'txtrazaosocial') {
+
+            $key_POST_NEW = 'razao_social';
+        } elseif ($key_POST == 'txtCNPJ') {
+
+            $key_POST_NEW = 'cnpj';
+        } elseif ($key_POST == 'txtregistroans') {
+
+            $key_POST_NEW = 'registroans';
+        } elseif ($key_POST == 'txtcodigo') {
+
+            $key_POST_NEW = 'codigoidentificador';
+        } elseif ($key_POST == 'conta') {
+
+            $key_POST_NEW = 'conta_id';
+        } elseif ($key_POST == 'grupoconvenio') {
+
+            $key_POST_NEW = 'convenio_grupo_id';
+        } elseif ($key_POST == 'tipo_logradouro') {
+
+            $key_POST_NEW = 'tipo_logradouro_id';
+        } elseif ($key_POST == 'endereco') {
+
+            $key_POST_NEW = 'logradouro';
+        } elseif ($key_POST == 'tipo') {
+
+            $key_POST_NEW = 'tabela';
+        } elseif ($key_POST == 'txtdinheiro') {
+
+            $key_POST_NEW = 'dinheiro';
+        } elseif ($key_POST == 'txtcarteira') {
+
+            $key_POST_NEW = 'carteira_obrigatoria';
+        } elseif ($key_POST == 'txtObservacao') {
+
+            $key_POST_NEW = 'observacao';
+        } else {
+            $key_POST_NEW = $key_POST;
+        }
+
+
+        return $key_POST_NEW;
+    }
+
+    function gravarlog() {
+        try {
+//            $result = array();
+            $alteracao = array();
+            $informacao_antiga = array();
+            $informacao_nova = array();
+
+
+            $convenio_id = $_POST['txtconvenio_id'];
+
+            $this->db->select('c.*');
+            $this->db->from('tb_convenio c');
+            $this->db->where("c.convenio_id", $convenio_id);
+            $return = $this->db->get();
+
+            $return_objeto = $return->result();
+
+            $return_array = $return->result_array();
+
+            $json_objeto = json_encode($return_objeto);
+
+
+            // Aqui tem dois foreachs, o exterior roda o array recebido na função que busca na tabela de convênio
+            // Já o interno roda o post que vem do navegador
+
+            foreach ($return_array[0] as $key_select => $value_select) {
+
+                foreach ($_POST as $key_POST => $value_post) {
+                    $key_POST = $this->testarnomecampopostlog($key_POST);
+                    // ^ Corrige o nome da Key do array que vem do post e deixa o nome igual ao da coluna no banco
+                    // Isso é necessário para as colunas que no form do convênio não tem o mesmo nome da coluna no banco
+                    // Verifica se o valor das Keys dos foreachs batem, ou seja, se o campo que ele tá observando no array do SQL
+                    // E no array do POST são iguais, se forem, ele vai verificar dentro se os valores são diferentes, caso sejam
+                    // ele vai gravar uma alteração no log
+                    if ($key_select == $key_POST) {
+
+                        // Tem alguns campos no form que vem formatados pelo javascript pra valor em reais, daí
+                        // é preciso fazer esse if aqui embaixo e verificar se é um deles
+                        // Pois se for um deles você precisa usar a linha dentro do IF pra converter o valor e ele não lançar
+                        // acideltamente como uma alteração, já que pode vir do POST '0,00' e no banco tá '0.00'
+                        // 
+                        // Caso seja numero
+                        if (is_numeric($value_select)) {
+                            $value_post = str_replace(",", ".", str_replace(".", "", $value_post));
+
+                            if ($value_select != $value_post) {
+
+
+                                $alteracao[] = $key_select;
+                                $informacao_antiga[] = $value_select;
+                                $informacao_nova[] = $value_post;
+                            }
+                        } else {
+                            // Caso seja texto 
+                            // Caso seja um checkbox, o valor do post vem "on" enquanto no banco é 't'
+                            // sendo assim o if abaixo é só pra fazer isso
+                            if ($value_post == 'on') {
+                                $value_post = 't';
+                            }
+                            if ($value_select != $value_post) {
+
+
+                                $alteracao[] = $key_select;
+                                $informacao_antiga[] = $value_select;
+                                $informacao_nova[] = $value_post;
+                            }
+                        }
+                    }
+                }
+            }
+//            echo '<pre>';
+//            var_dump($alteracao);
+//            var_dump($informacao_antiga);
+//            var_dump($informacao_nova);
+//            die;
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            foreach ($alteracao as $key => $item) {
+                $coluna = $item;
+                $old = $informacao_antiga[$key];
+                $new = $informacao_nova[$key];
+
+
+                $this->db->set('convenio_id', $convenio_id);
+                $this->db->set('alteracao', $coluna);
+                $this->db->set('informacao_antiga', $old);
+                $this->db->set('informacao_nova', $new);
+                $this->db->set('json', $json_objeto);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_convenio_log');
+            }
+
+
+
+
+
+            return true;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravar() {
         try {
             $result = array();
-            if ($_POST['txtconvenio_id'] != ''){
+            if ($_POST['txtconvenio_id'] != '') {
                 $this->db->select('credor_devedor_id')->from('tb_convenio c');
                 $this->db->join("tb_financeiro_credor_devedor cd", "cd.financeiro_credor_devedor_id = c.credor_devedor_id");
                 $this->db->where('convenio_id', $_POST['txtconvenio_id'])->where('cd.ativo', 't');
                 $result = $this->db->get()->result();
             }
-            
+
             if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
                 $this->db->set('razao_social', $_POST['txtNome']);
                 $this->db->set('cep', $_POST['cep']);
@@ -1256,7 +1431,7 @@ class Convenio_model extends Model {
                 if ($_POST['tipo_logradouro'] != "") {
                     $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
                 }
-                
+
                 if ($_POST['municipio_id'] != '') {
                     $this->db->set('municipio_id', $_POST['municipio_id']);
                 }
@@ -1275,7 +1450,7 @@ class Convenio_model extends Model {
                 $this->db->insert('tb_financeiro_credor_devedor');
                 $financeiro_credor_devedor_id = $this->db->insert_id();
             }
-            
+
             /* inicia o mapeamento no banco */
             $convenio_id = $_POST['txtconvenio_id'];
             $this->db->set('nome', $_POST['txtNome']);
@@ -1572,6 +1747,7 @@ class Convenio_model extends Model {
                                 co.procedimento1,
                                 co.procedimento2,
                                 co.tabela,
+                                co.tipo_logradouro_id,
                                 co.conta_id,
                                 co.enteral,
                                 co.registroans,
@@ -1583,6 +1759,8 @@ class Convenio_model extends Model {
                                 co.associacao_convenio_id,
                                 co.razao_social,
                                 co.guia_prestador_unico,
+                                c.nome as cidade_nome,
+                                c.municipio_id,
                                 co.dia_aquisicao,
                                 co.valor_ajuste_cbhpm,
                                 fcd.razao_social as credor');
@@ -1598,6 +1776,7 @@ class Convenio_model extends Model {
             $this->_convenio_grupo_id = $return[0]->convenio_grupo_id;
             $this->_razao_social = $return[0]->razao_social;
             $this->_cnpj = $return[0]->cnpj;
+            $this->_tipo_logradouro = $return[0]->tipo_logradouro_id;
             $this->_logradouro = $return[0]->logradouro;
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_celular = $return[0]->celular;
@@ -1608,6 +1787,7 @@ class Convenio_model extends Model {
             $this->_home_care = $return[0]->home_care;
             $this->_tipo_logradouro_id = $return[0]->tipo_logradouro_id;
             $this->_numero = $return[0]->numero;
+            $this->_cidade_nome = $return[0]->cidade_nome;
             $this->_bairro = $return[0]->bairro;
             $this->_complemento = $return[0]->complemento;
             $this->_cep = $return[0]->cep;

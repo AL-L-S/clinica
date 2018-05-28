@@ -19,11 +19,13 @@
                 <td ><font size = -1>Fone: <?= $empresa[0]->telefone; ?></td>
                 <td ></td>
             </tr>
+            <? if ($exames['0']->paciente != '') { ?>
+                <tr>
+                    <td ><b><font size = -1>Paciente: <?= $exames['0']->paciente; ?></b></td>
+                    <td ></td>
+                </tr>   
+            <? } ?>
 
-            <tr>
-                <td ><b><font size = -1>Paciente: <?= $exames['0']->paciente; ?></b></td>
-                <td ></td>
-            </tr>
         </tbody>
     </table>
     <hr>
@@ -60,15 +62,15 @@
             <?
         endforeach;
         ?>
-            <tr>
-                <td colspan="6"></td>
-                <td colspan="">
-                    <span class="negrito">Total:</span> <?= number_format($total, 2, ',', '.') ?>
-                </td>
-                <td colspan="">
-                    <span class="negrito">Total Ajustado:</span> <?= number_format($totalCartao, 2, ',', '.') ?>
-                </td>
-            </tr>
+        <tr>
+            <td colspan="6"></td>
+            <td colspan="">
+                <span class="negrito">Total:</span> <?= number_format($total, 2, ',', '.') ?>
+            </td>
+            <td colspan="">
+                <span class="negrito">Total Ajustado:</span> <?= number_format($totalCartao, 2, ',', '.') ?>
+            </td>
+        </tr>
     </table>
 
 

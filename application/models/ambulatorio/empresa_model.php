@@ -939,7 +939,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('impressao_orcamento', null);
                 }
-                
+
                 if ($_POST['horSegSexta_i'] != "") {
                     $this->db->set('horario_seg_sex_inicio', $_POST['horSegSexta_i']);
                 }
@@ -947,9 +947,9 @@ class empresa_model extends Model {
                     $this->db->set('horario_seg_sex_fim', $_POST['horSegSexta_f']);
                 }
                 if ($_POST['horSegSexta_i'] != "" || $_POST['horSegSexta_f'] != "") {
-                    $this->db->set('horario_seg_sex', $_POST['horSegSexta_i']." às ".$_POST['horSegSexta_f']." hr(s)");
+                    $this->db->set('horario_seg_sex', $_POST['horSegSexta_i'] . " às " . $_POST['horSegSexta_f'] . " hr(s)");
                 }
-                
+
                 if ($_POST['horSab_i'] != "") {
                     $this->db->set('horario_sab_inicio', $_POST['horSab_i']);
                 }
@@ -957,9 +957,9 @@ class empresa_model extends Model {
                     $this->db->set('horario_sab_fim', $_POST['horSab_f']);
                 }
                 if ($_POST['horSab_i'] != "" || $_POST['horSab_f'] != "") {
-                    $this->db->set('horario_sab', $_POST['horSab_i']." às ".$_POST['horSab_f']." hr(s)");
+                    $this->db->set('horario_sab', $_POST['horSab_i'] . " às " . $_POST['horSab_f'] . " hr(s)");
                 }
-                
+
                 if ($_POST['impressao_laudo'] != "") {
                     $this->db->set('impressao_laudo', $_POST['impressao_laudo']);
                 } else {
@@ -1326,6 +1326,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('recomendacao_configuravel', 'f');
                     }
+                    if (isset($_POST['orcamento_cadastro'])) {
+                        $this->db->set('orcamento_cadastro', 't');
+                    } else {
+                        $this->db->set('orcamento_cadastro', 'f');
+                    }
 
                     if (isset($_POST['recomendacao_obrigatorio'])) {
                         $this->db->set('recomendacao_obrigatorio', 't');
@@ -1501,6 +1506,11 @@ class empresa_model extends Model {
                         $this->db->set('valor_convenio_nao', 't');
                     } else {
                         $this->db->set('valor_convenio_nao', 'f');
+                    }
+                    if (isset($_POST['orcamento_cadastro'])) {
+                        $this->db->set('orcamento_cadastro', 't');
+                    } else {
+                        $this->db->set('orcamento_cadastro', 'f');
                     }
                     if (isset($_POST['desativar_taxa_administracao'])) {
                         $this->db->set('desativar_taxa_administracao', 't');
@@ -1900,6 +1910,7 @@ class empresa_model extends Model {
                                ep.campos_cadastro,
                                ep.cadastrar_painel_sala,
                                ep.apenas_procedimentos_multiplos,
+                               ep.orcamento_cadastro,
                                f.horario_seg_sex_inicio,
                                f.horario_seg_sex_fim,
                                f.horario_sab_inicio,
@@ -1923,6 +1934,7 @@ class empresa_model extends Model {
             $this->_subgrupo = $return[0]->subgrupo;
             $this->_laudo_sigiloso = $return[0]->laudo_sigiloso;
             $this->_campos_cadastro = $return[0]->campos_cadastro;
+            $this->_orcamento_cadastro = $return[0]->orcamento_cadastro;
             $this->_conjuge = $return[0]->conjuge;
             $this->_horario_seg_sex = $return[0]->horario_seg_sex;
             $this->_horario_sab = $return[0]->horario_sab;

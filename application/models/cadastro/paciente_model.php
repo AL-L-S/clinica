@@ -254,6 +254,7 @@ class paciente_model extends BaseModel {
             $this->_cbo_nome = $return[0]->cbo_nome;
             $this->_cbo_ocupacao_id = $return[0]->profissao;
             $this->_documento = $return[0]->rg;
+//            $this->_grau_parentesco = $return[0]->grau_parentesco;
             $this->_estado_id_expedidor = $return[0]->uf_rg;
             $this->_vencimento_carteira = $return[0]->vencimento_carteira;
             $this->_titulo_eleitor = $return[0]->titulo_eleitor;
