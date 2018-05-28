@@ -110,3 +110,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+-- Dia 22/05/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN percentual_multiplo boolean DEFAULT false;
+
+

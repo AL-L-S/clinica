@@ -1455,6 +1455,12 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('apenas_procedimentos_multiplos', 'f');
                     }
+                    
+                    if (isset($_POST['percentual_multiplo'])) {
+                        $this->db->set('percentual_multiplo', 't');
+                    } else {
+                        $this->db->set('percentual_multiplo', 'f');
+                    }
                 }
 
 
@@ -1779,6 +1785,12 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('apenas_procedimentos_multiplos', 'f');
                     }
+                    
+                    if (isset($_POST['percentual_multiplo'])) {
+                        $this->db->set('percentual_multiplo', 't');
+                    } else {
+                        $this->db->set('percentual_multiplo', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -1915,6 +1927,7 @@ class empresa_model extends Model {
                                f.horario_seg_sex_fim,
                                f.horario_sab_inicio,
                                f.horario_sab_fim,
+                               ep.percentual_multiplo,
                                ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -2042,6 +2055,7 @@ class empresa_model extends Model {
             $this->_horario_seg_sex_fim = $return[0]->horario_seg_sex_fim;
             $this->_horario_sab_inicio = $return[0]->horario_sab_inicio;
             $this->_horario_sab_fim = $return[0]->horario_sab_fim;
+            $this->_percentual_multiplo = $return[0]->percentual_multiplo;
         } else {
             $this->_empresa_id = null;
         }

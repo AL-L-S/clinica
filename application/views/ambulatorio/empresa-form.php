@@ -184,12 +184,12 @@
                             </dt>
                             <dd>
                                 <?
-                                if(@$obj->_campos_cadastro != ''){
-                                   $campos_obrigatorios = json_decode(@$obj->_campos_cadastro); 
-                                }else{
-                                   $campos_obrigatorios = array(); 
+                                if (@$obj->_campos_cadastro != '') {
+                                    $campos_obrigatorios = json_decode(@$obj->_campos_cadastro);
+                                } else {
+                                    $campos_obrigatorios = array();
                                 }
-                                
+
 //                                in_array('', $campos_obrigatorios);
 //                                var_dump($campos_obrigatorios); die;
                                 ?>
@@ -712,6 +712,13 @@
                             </dt>
                             <dd>
                                 <input type="checkbox" id="producao_alternativo" name="producao_alternativo" <? if (@$obj->_producao_alternativo == 't') echo "checked"; ?>/> 
+                            </dd>
+                            <dt>
+                                <label title="Ativando essa opção, a tela de cadastrar percentual irá seguir o padrão dos procedimentos multiplos.">Novo Percentual similar ao Proc. Multiplos</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="percentual_multiplo" name="percentual_multiplo" <? if (@$obj->_percentual_multiplo == 't') echo "checked"; ?>/> 
+
                             </dd>
                             <dt>
                                 <label title="Ativando essa opção irá necessitar de cadastro e logicamente, desativando não irá necessitar">Orçamento com cadastro</label>
