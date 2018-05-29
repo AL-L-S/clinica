@@ -70,7 +70,7 @@
                             ?>
 
                             <option   value =<?php echo $item->tipo_logradouro_id; ?> <?
-                            if (@$obj->_tipoLogradouro == $item->tipo_logradouro_id):echo 'selected';
+                            if (@$obj->_tipo_logradouro == $item->tipo_logradouro_id):echo 'selected';
                             endif;
                             ?>><?php echo $item->descricao; ?></option>
                                       <?php
@@ -97,7 +97,7 @@
 
                 <div>
                     <label>Município</label>
-                    <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_cidade; ?>" readonly="true" />
+                    <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_municipio_id; ?>" readonly="true" />
                     <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_cidade_nome; ?>" />
                 </div>
                 <div>

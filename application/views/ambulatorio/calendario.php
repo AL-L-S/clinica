@@ -46,11 +46,18 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                             Encaixar Paciente
                         </a>
                     </div></th>
-                <th >        <div class="bt_link_new">
+                <th >   <div class="bt_link_new">
                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novohorarioencaixegeral');">
                             Encaixar Horario
                         </a>
-                    </div></th>
+                    </div>
+                </th>
+                <th >   <div class="bt_link_new">
+                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/agenda/medicoagendageral');">
+                            Bloquear Agenda
+                        </a>
+                    </div>
+                </th>
 
             </tr>
 
@@ -468,10 +475,10 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
 
                         <? } ?>  
                         <!-- OBSERVAÇOES -->
-                        <!--<td class="<?php // echo $estilo_linha;            ?>"><?= $item->observacoes; ?></td>-->
+                        <!--<td class="<?php // echo $estilo_linha;             ?>"><?= $item->observacoes; ?></td>-->
 
                         <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style=" cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                width=500,height=230');">=><?= substr($item->observacoes, 0, 5); ?>(...)</td>
+                                                                                                                                                                                        width=500,height=230');">=><?= substr($item->observacoes, 0, 5); ?>(...)</td>
                             <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -616,7 +623,7 @@ if (@$_GET['nome'] != '') {
         dayClick: function (date, cell) {
             var data = date.format();
 //            cell.css("background-color", "#BCD2EE");
-            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() +  '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=' + paciente + '', '_self');
+            window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() + '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=' + paciente + '', '_self');
 
 
 
@@ -661,7 +668,7 @@ if (@$_GET['nome'] != '') {
         ]
 
     });
-    
+
     $(function () {
         $('#tipoagenda').change(function () {
             $('.carregando').show();
@@ -678,7 +685,7 @@ if (@$_GET['nome'] != '') {
             });
         });
     });
-    
+
     $(function () {
         $('#grupo').change(function () {
 

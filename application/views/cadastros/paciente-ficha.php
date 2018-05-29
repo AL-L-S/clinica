@@ -84,7 +84,7 @@
 
             </div>
             <div id="sexo_real_div" style="display: none;">
-                <label>Sexo Inicial</label>
+                <label>Sexo Biológico</label>
                 <select name="sexo_real" id="sexo_real" class="size1">
                     <option value="" <?
                     if (@$obj->_sexo_real == ""):echo 'selected';

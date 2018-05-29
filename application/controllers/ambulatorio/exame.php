@@ -320,13 +320,12 @@ class Exame extends BaseController {
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento'] = $tempoFuncionamentoSabado;
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_sab_inicio));
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_sab_fim));
-                    @$dias[date("Ymd", strtotime($result[$i]->data))]['texto'] = $result[$i]->sala."\n".@date("H:i", strtotime($empresaFuncionamento[0]->horario_sab_inicio))." as ".@date("H:i", strtotime($empresaFuncionamento[0]->horario_sab_fim));
-                }
-                else { // Caso seja um dia normal 
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['texto'] = $result[$i]->sala . "\n" . @date("H:i", strtotime($empresaFuncionamento[0]->horario_sab_inicio)) . " as " . @date("H:i", strtotime($empresaFuncionamento[0]->horario_sab_fim));
+                } else { // Caso seja um dia normal 
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento'] = $tempoFuncionamentoSemana;
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_seg_sex_inicio));
                     @$dias[date("Ymd", strtotime($result[$i]->data))]['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($empresaFuncionamento[0]->horario_seg_sex_fim));
-                    @$dias[date("Ymd", strtotime($result[$i]->data))]['texto'] = $result[$i]->sala."\n".@date("H:i", strtotime($empresaFuncionamento[0]->horario_seg_sex_inicio))." as ".@date("H:i", strtotime($empresaFuncionamento[0]->horario_seg_sex_fim));
+                    @$dias[date("Ymd", strtotime($result[$i]->data))]['texto'] = $result[$i]->sala . "\n" . @date("H:i", strtotime($empresaFuncionamento[0]->horario_seg_sex_inicio)) . " as " . @date("H:i", strtotime($empresaFuncionamento[0]->horario_seg_sex_fim));
                 }
 
                 // Incrementa o tempo calculado nesse laço, com o valor dos laços passados
@@ -334,13 +333,13 @@ class Exame extends BaseController {
                 $percentual = (($dias[date("Ymd", strtotime($result[$i]->data))]['tempoUso'] / $dias[date("Ymd", strtotime($result[$i]->data))]['tempoFuncionamento']) * 100);
                 // Transforma o valor acima em um percentual
                 @$dias[date("Ymd", strtotime($result[$i]->data))]['title'] = number_format($percentual, 2, ",", "") . "%";
-                
 
-                
-                
+
+
+
                 $retorno['id'] = $i;
                 $retorno['title'] = $result[$i]->sala;
-                $retorno['texto'] = $result[$i]->sala."\n".date("H:i", strtotime($result[$i]->inicio))." as ".date("H:i:s", strtotime($result[$i]->fim));
+                $retorno['texto'] = $result[$i]->sala . "\n" . date("H:i", strtotime($result[$i]->inicio)) . " as " . date("H:i:s", strtotime($result[$i]->fim));
                 $retorno['start'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($result[$i]->inicio));
                 $retorno['end'] = date("Y-m-d", strtotime($result[$i]->data)) . "T" . date("H:i:s", strtotime($result[$i]->fim));
                 $retornoJSON[] = $retorno;
@@ -488,11 +487,49 @@ class Exame extends BaseController {
         }
     }
 
+    function gravarautorizarorcamentonaocadastro($ambulatorio_orcamento_id) {
+
+
+
+        $teste = $this->exame->testarautorizarorcamento($ambulatorio_orcamento_id);
+//        var_dump($_POST);
+//        die;
+        if ($_POST['txtNome'] != '') {
+            if ($teste[0]->autorizado == 'f') {
+                $gravar_paciente = $this->exame->gravarpacienteorcamento($ambulatorio_orcamento_id);
+                $paciente_id = $this->exame->gravarautorizacaoorcamento($ambulatorio_orcamento_id);
+                if ($paciente_id == '-1') {
+                    $mensagem = 'Erro ao autorizar o Orçamento. Opera&ccedil;&atilde;o cancelada.';
+                    $this->session->set_flashdata('message', $mensagem);
+                    redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+                } else {
+                    redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
+                }
+            } else {
+                $paciente_id = $teste[0]->paciente_id;
+                redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
+            }
+        } else {
+            $mensagem = 'Erro ao autorizar o orçamento: É necessário informar o paciente';
+            $this->session->set_flashdata('message', $mensagem);
+            redirect(base_url() . "ambulatorio/exame/autorizarorcamentonaocadastro/$ambulatorio_orcamento_id");
+        }
+    }
+
     function autorizarorcamento($ambulatorio_orcamento_id) {
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['salas'] = $this->guia->listarsalas();
         $this->load->View('ambulatorio/autorizarorcamento-form', $data);
+    }
+
+    function autorizarorcamentonaocadastro($ambulatorio_orcamento_id) {
+        $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['salas'] = $this->guia->listarsalas();
+        $data['exames'] = $this->procedimento->listarorcamentosrecepcao($ambulatorio_orcamento_id);
+        $data['responsavel'] = $this->procedimento->listaresponsavelorcamento($ambulatorio_orcamento_id);
+        $this->loadView('ambulatorio/autorizarorcamentonaocadastro', $data);
     }
 
     function autorizarencaminhamento($agenda_exames_id) {
@@ -3518,7 +3555,10 @@ class Exame extends BaseController {
         $versao = $_POST['xml'];
         $modelo = $_POST['modelo'];
 //        echo '<pre>';
-//        var_dump($listarpacienete); die;
+//        var_dump($listarexame);
+//        die;
+//        
+
 
         $limite = ($_POST['limite'] == '0') ? false : true;
 
@@ -3627,6 +3667,11 @@ class Exame extends BaseController {
                         } else {
                             $conselho = $item->conselho;
                         }
+                        if ($item->cbo_ocupacao_id == '') {
+                            $cbo_medico = '999999';
+                        } else {
+                            $cbo_medico = $item->cbo_ocupacao_id;
+                        }
                         if ($item->medicosolicitante == '') {
                             $medicosolicitante = $item->medico;
                         } else {
@@ -3666,7 +3711,7 @@ class Exame extends BaseController {
                     <ans:conselhoProfissional>06</ans:conselhoProfissional>
                     <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                         <ans:UF>" . $codigoUF . "</ans:UF>
-                    <ans:CBOS>999999</ans:CBOS>
+                    <ans:CBOS>$cbo_medico</ans:CBOS>
                  </ans:profissionalSolicitante>
               </ans:dadosSolicitante>
               <ans:dadosSolicitacao>
@@ -3711,7 +3756,7 @@ class Exame extends BaseController {
                             <ans:conselho>01</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                             <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
+                            <ans:CBOS>$cbo_medico</ans:CBOS>
                         </ans:equipeSadt>
                   </ans:procedimentoExecutado>
               </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
@@ -3773,7 +3818,7 @@ class Exame extends BaseController {
                     <ans:conselhoProfissional>06</ans:conselhoProfissional>
                     <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                         <ans:UF>" . $codigoUF . "</ans:UF>
-                    <ans:CBOS>999999</ans:CBOS>
+                    <ans:CBOS>$cbo_medico</ans:CBOS>
                  </ans:profissionalSolicitante>
               </ans:dadosSolicitante>
               <ans:dadosSolicitacao>
@@ -3817,7 +3862,7 @@ class Exame extends BaseController {
                             <ans:conselho>01</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                             <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
+                            <ans:CBOS>$cbo_medico</ans:CBOS>
                         </ans:equipeSadt>
                   </ans:procedimentoExecutado>
               </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
@@ -4007,6 +4052,11 @@ class Exame extends BaseController {
                                     } else {
                                         $conselho = $item->conselho;
                                     }
+                                    if ($item->cbo_ocupacao_id == '') {
+                                        $cbo_medico = '999999';
+                                    } else {
+                                        $cbo_medico = $item->cbo_ocupacao_id;
+                                    }
                                     if ($item->medicosolicitante == '') {
                                         $medicosolicitante = $item->medico;
                                     } else {
@@ -4051,7 +4101,7 @@ class Exame extends BaseController {
                                 <ans:conselhoProfissional>06</ans:conselhoProfissional>
                                 <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                 <ans:UF>" . $codigoUF . "</ans:UF>
-                                <ans:CBOS>999999</ans:CBOS>
+                                <ans:CBOS>$cbo_medico</ans:CBOS>
                             </ans:profissionalSolicitante>
 
                           </ans:dadosSolicitante>
@@ -4099,7 +4149,7 @@ class Exame extends BaseController {
                                         <ans:conselho>01</ans:conselho>
                                         <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                                         <ans:UF>" . $codigoUF . "</ans:UF>
-                                        <ans:CBOS>999999</ans:CBOS>
+                                        <ans:CBOS>$cbo_medico</ans:CBOS>
                                     </ans:equipeSadt>
                           </ans:procedimentoExecutado>
                           </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
@@ -4160,7 +4210,7 @@ class Exame extends BaseController {
                                 <ans:conselhoProfissional>06</ans:conselhoProfissional>
                                 <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                 <ans:UF>" . $codigoUF . "</ans:UF>
-                                <ans:CBOS>999999</ans:CBOS>
+                                <ans:CBOS>$cbo_medico</ans:CBOS>
                              </ans:profissionalSolicitante>
                           </ans:dadosSolicitante>
 
@@ -4207,7 +4257,7 @@ class Exame extends BaseController {
                                         <ans:conselho>01</ans:conselho>
                                         <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                                         <ans:UF>" . $codigoUF . "</ans:UF>
-                                        <ans:CBOS>999999</ans:CBOS>
+                                        <ans:CBOS>$cbo_medico</ans:CBOS>
                                     </ans:equipeSadt>
                           </ans:procedimentoExecutado>
                         </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
@@ -4365,6 +4415,11 @@ class Exame extends BaseController {
                                 } else {
                                     $medico = $value->medico;
                                 }
+                                if ($value->cbo_ocupacao_id == '') {
+                                    $cbo_medico = '999999';
+                                } else {
+                                    $cbo_medico = $value->cbo_ocupacao_id;
+                                }
                                 if ($value->conselho == '') {
                                     $conselho = '0000000';
                                 } else {
@@ -4397,7 +4452,7 @@ class Exame extends BaseController {
                                 <ans:conselhoProfissional>06</ans:conselhoProfissional>
                                 <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
                                 <ans:UF>15</ans:UF>
-                                <ans:CBOS>225120</ans:CBOS>
+                                <ans:CBOS>$cbo_medico</ans:CBOS>
                             </ans:profissionalExecutante>
                             <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
                             <ans:dadosAtendimento>
@@ -4522,6 +4577,12 @@ class Exame extends BaseController {
                                     $guianumero = $item->guiaconvenio;
                                 }
 
+                                if ($item->cbo_ocupacao_id == '') {
+                                    $cbo_medico = '999999';
+                                } else {
+                                    $cbo_medico = $item->cbo_ocupacao_id;
+                                }
+
                                 if ($value->paciente_id == $item->paciente_id && $value->ambulatorio_guia_id == $item->ambulatorio_guia_id) {
                                     $tabela = '22';
 
@@ -4596,7 +4657,7 @@ class Exame extends BaseController {
                                 <ans:conselhoProfissional>06</ans:conselhoProfissional>
                                 <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                     <ans:UF>" . $codigoUF . "</ans:UF>
-                                <ans:CBOS>999999</ans:CBOS>
+                                <ans:CBOS>$cbo_medico</ans:CBOS>
                              </ans:profissionalSolicitante>
                           </ans:dadosSolicitante>
                           <ans:dadosSolicitacao>
@@ -4641,7 +4702,7 @@ class Exame extends BaseController {
                                         <ans:conselho>01</ans:conselho>
                                         <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                                         <ans:UF>" . $codigoUF . "</ans:UF>
-                                        <ans:CBOS>999999</ans:CBOS>
+                                        <ans:CBOS>$cbo_medico</ans:CBOS>
                                     </ans:equipeSadt>
                               </ans:procedimentoExecutado>
                           </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
@@ -4703,7 +4764,7 @@ class Exame extends BaseController {
                                 <ans:conselhoProfissional>06</ans:conselhoProfissional>
                                 <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                     <ans:UF>" . $codigoUF . "</ans:UF>
-                                <ans:CBOS>999999</ans:CBOS>
+                                <ans:CBOS>$cbo_medico</ans:CBOS>
                              </ans:profissionalSolicitante>
                           </ans:dadosSolicitante>
                           <ans:dadosSolicitacao>
@@ -4747,7 +4808,7 @@ class Exame extends BaseController {
                                         <ans:conselho>01</ans:conselho>
                                         <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                                         <ans:UF>" . $codigoUF . "</ans:UF>
-                                        <ans:CBOS>999999</ans:CBOS>
+                                        <ans:CBOS>$cbo_medico</ans:CBOS>
                                     </ans:equipeSadt>
                               </ans:procedimentoExecutado>
                           </ans:procedimentosExecutados>" : "<ans:outrasDespesas>
@@ -4920,6 +4981,11 @@ class Exame extends BaseController {
                                 } else {
                                     $guianumero = $value->guiaconvenio;
                                 }
+                                if ($value->cbo_ocupacao_id == '') {
+                                    $cbo_medico = '999999';
+                                } else {
+                                    $cbo_medico = $value->cbo_ocupacao_id;
+                                }
                                 $corpo = $corpo . "
                         <ans:guiaConsulta>
                             <ans:cabecalhoConsulta>
@@ -4941,8 +5007,8 @@ class Exame extends BaseController {
                                 <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>
                                 <ans:conselhoProfissional>06</ans:conselhoProfissional>
                                 <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
-                                <ans:UF>15</ans:UF>
-                                <ans:CBOS>225120</ans:CBOS>
+                                <ans:UF>" . $codigoUF . "</ans:UF>
+                                <ans:CBOS>$cbo_medico</ans:CBOS>
                             </ans:profissionalExecutante>
                             <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
                             <ans:dadosAtendimento>
@@ -5102,6 +5168,12 @@ class Exame extends BaseController {
                                     } else {
                                         $medicosolicitante = $item->medicosolicitante;
                                     }
+                                    if ($item->cbo_ocupacao_id == '') {
+                                        $cbo_medico = '999999';
+                                    } else {
+                                        $cbo_medico = $item->cbo_ocupacao_id;
+                                    }
+
                                     if ($item->conselhosolicitante == '') {
                                         $conselhosolicitante = $item->conselho;
                                     } else {
@@ -5138,7 +5210,7 @@ class Exame extends BaseController {
                                 <ans:conselhoProfissional>6</ans:conselhoProfissional>
                                 <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                     <ans:UF>" . $codigoUF . "</ans:UF>
-                                <ans:CBOS>999999</ans:CBOS>
+                                <ans:CBOS>$cbo_medico</ans:CBOS>
                              </ans:profissionalSolicitante>
                           </ans:dadosSolicitante>
                           <ans:dadosSolicitacao>
@@ -5182,7 +5254,7 @@ class Exame extends BaseController {
                                     <ans:conselho>1</ans:conselho>
                                     <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                                     <ans:UF>" . $codigoUF . "</ans:UF>
-                                    <ans:CBOS>999999</ans:CBOS>
+                                    <ans:CBOS>$cbo_medico</ans:CBOS>
                                 </ans:equipeSadt>
                           </ans:procedimentoExecutado>
                           </ans:procedimentosExecutados>
@@ -5225,7 +5297,7 @@ class Exame extends BaseController {
                                 <ans:conselhoProfissional>6</ans:conselhoProfissional>
                                 <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                     <ans:UF>" . $codigoUF . "</ans:UF>
-                                <ans:CBOS>999999</ans:CBOS>
+                                <ans:CBOS>$cbo_medico</ans:CBOS>
                              </ans:profissionalSolicitante>
                           </ans:dadosSolicitante>
                           <ans:dadosSolicitacao>
@@ -5269,7 +5341,7 @@ class Exame extends BaseController {
                                     <ans:conselho>1</ans:conselho>
                                     <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                                     <ans:UF>" . $codigoUF . "</ans:UF>
-                                    <ans:CBOS>999999</ans:CBOS>
+                                    <ans:CBOS>$cbo_medico</ans:CBOS>
                                 </ans:equipeSadt>
                           </ans:procedimentoExecutado>
                           </ans:procedimentosExecutados>
@@ -5399,8 +5471,8 @@ class Exame extends BaseController {
                             <ans:nomeProfissional>" . $medico . "</ans:nomeProfissional>
                             <ans:conselhoProfissional>6</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
-                            <ans:UF>15</ans:UF>
-                            <ans:CBOS>225120</ans:CBOS>
+                            <ans:UF>$codigoUF</ans:UF>
+                            <ans:CBOS>$cbo_medico</ans:CBOS>
                         </ans:profissionalExecutante>
                         <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
                         <ans:dadosAtendimento>
@@ -5527,6 +5599,11 @@ class Exame extends BaseController {
                                     } else {
                                         $conselhosolicitante = $item->conselhosolicitante;
                                     }
+                                    if ($item->cbo_ocupacao_id == '') {
+                                        $cbo_medico = '999999';
+                                    } else {
+                                        $cbo_medico = $item->cbo_ocupacao_id;
+                                    }
 
                                     if ($_POST['autorizacao'] == 'SIM') {
                                         $corpo = $corpo . "
@@ -5557,7 +5634,7 @@ class Exame extends BaseController {
                             <ans:conselhoProfissional>6</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                 <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
+                            <ans:CBOS>$cbo_medico</ans:CBOS>
                          </ans:profissionalSolicitante>
                       </ans:dadosSolicitante>
                       <ans:dadosSolicitacao>
@@ -5600,7 +5677,7 @@ class Exame extends BaseController {
                             <ans:conselho>1</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                             <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
+                            <ans:CBOS>$cbo_medico</ans:CBOS>
                             </ans:equipeSadt>
                       </ans:procedimentoExecutado>
                       </ans:procedimentosExecutados>
@@ -5643,7 +5720,7 @@ class Exame extends BaseController {
                             <ans:conselhoProfissional>6</ans:conselhoProfissional>
                             <ans:numeroConselhoProfissional >" . $conselhosolicitante . "</ans:numeroConselhoProfissional >
                                 <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
+                            <ans:CBOS>$cbo_medico</ans:CBOS>
                          </ans:profissionalSolicitante>
                       </ans:dadosSolicitante>
                       <ans:dadosSolicitacao>
@@ -5686,7 +5763,7 @@ class Exame extends BaseController {
                             <ans:conselho>1</ans:conselho>
                             <ans:numeroConselhoProfissional>$conselho</ans:numeroConselhoProfissional>
                             <ans:UF>" . $codigoUF . "</ans:UF>
-                            <ans:CBOS>999999</ans:CBOS>
+                            <ans:CBOS>$cbo_medico</ans:CBOS>
                             </ans:equipeSadt>
                       </ans:procedimentoExecutado>
                       </ans:procedimentosExecutados>
@@ -5805,7 +5882,7 @@ class Exame extends BaseController {
                 <ans:guiaConsulta>
                     <ans:cabecalhoConsulta>
                         <ans:registroANS>" . $registroans . "</ans:registroANS>
-                        <ans:numeroGuiaPrestador>" . $value->ambulatorio_guia_id . "</ans:numeroGuiaPrestador>
+                        <ans:numeroGuiaPrestador>" . (($value->guia_prestador_unico == 'f' ? $value->ambulatorio_guia_id : $value->agenda_exames_id)) . "</ans:numeroGuiaPrestador>
                     </ans:cabecalhoConsulta>
                     <ans:numeroGuiaOperadora>" . $guianumero . "</ans:numeroGuiaOperadora>
                     <ans:dadosBeneficiario>
@@ -5823,7 +5900,7 @@ class Exame extends BaseController {
                         <ans:conselhoProfissional>6</ans:conselhoProfissional>
                         <ans:numeroConselhoProfissional>" . $conselho . "</ans:numeroConselhoProfissional>
                         <ans:UF>15</ans:UF>
-                        <ans:CBOS>225120</ans:CBOS>
+                        <ans:CBOS>$cbo_medico</ans:CBOS>
                     </ans:profissionalExecutante>
                     <ans:indicacaoAcidente>9</ans:indicacaoAcidente>
                     <ans:dadosAtendimento>

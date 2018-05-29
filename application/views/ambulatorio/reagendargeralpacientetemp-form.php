@@ -1,48 +1,51 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
 
-    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarpacientetempgeral" method="post">
+    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravargeralpacientetempreagendar" method="post">
 
         <fieldset>
-            <legend>Marcar Atendimento</legend>
+            <legend>Reagendar Geral</legend>
 
             <div>
                 <label>Nome</label>
-                <input type="text" name="txtNome" class="texto10 bestupper" value="<?= @$obj->_nome; ?>"/>
+                <input type="text" name="txtNome" class="texto10 bestupper" value="<?= @$obj->_nome; ?>" readonly/>
             </div>
             <div>
                 <label>Dt de nascimento</label>
 
-                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" onblur="calculoIdade()"/>
+                <input readonly type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>"/>
             </div>
             <div>
                 <label>Idade</label>
                 <input type="text" name="idade2" id="idade2" class="texto01" readonly/>
             </div>
             <div>
-                <input type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= @$obj->_idade; ?>"  />
+                <input readonly type="hidden" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= @$obj->_idade; ?>"  />
 
             </div>
             <div>
                 <label>Telefone</label>
-                <input type="text" id="txtTelefone" class="texto02" name="telefone"  value="<?= @$obj->_telefone; ?>" />
+                <input type="text" id="txtTelefone" class="texto02" readonly name="telefone"  value="<?= @$obj->_telefone; ?>" />
             </div>
             <div>
                 <label>Celular</label>
-                <input type="text" id="txtCelular" class="texto02" name="celular" value="<?= @$obj->_celular; ?>" />
+                <input type="text" id="txtCelular" class="texto02" readonly name="celular" value="<?= @$obj->_celular; ?>" />
             </div>
             <div>
                 <label>Convenio</label>
-                <input type="text" id="txtCelular" class="texto02" name="convenio" value="<?= @$obj->_descricaoconvenio; ?>" readonly/>
+                <input type="text" id="txtconvenio" class="texto02" readonly name="convenio" value="<?= @$obj->_descricaoconvenio; ?>" readonly />
             </div>
         </fieldset>
         <fieldset>
             <div>
                 <label>Data</label>
-                <input type="text"  id="data_ficha" name="data_ficha" class="size1" required/>
-                <input type="hidden" name="txtpaciente_id" value="<?= @$obj->_paciente_id; ?>" />
+                <input type="text"  id="data_ficha" name="data_ficha" class="size1"  required/>
+                <input type="hidden" name="txtpaciente_id" id="txtpaciente_id" value="<?= @$obj->_paciente_id; ?>" />
+                <input type="hidden" name="agenda_exames_id" id="txtpaciente_id" value="<?= @$agenda_exames_id; ?>" />
+                <input type="hidden" name="medico_consulta_id" id="txtpaciente_id" value="<?= @$medico_consulta_id; ?>" />
+                <!--<input type="hidden" name="txtpaciente_id" id="txtpaciente_id" value="<?= @$medico_consulta_id; ?>" />-->
             </div>
-            <legend>Medicos</legend>
+            <legend>Novo Horário</legend>
 
             <div>
                 <label>Medico</label>
@@ -61,19 +64,7 @@
                 </select>
             </div>
             <div>
-                <label>Convenio *</label>
-                <select name="convenio1" id="convenio1" class="size4" required>
-                    <option value="">Selecione</option>
-                </select>
-            </div>
-            <div>
-                <label>Procedimento</label>
-                <select  name="procedimento1" id="procedimento1" class="size1" required>
-                    <option value="">Selecione</option>
-                </select>
-            </div>
-            <div>
-                <label>Obsedrva&ccedil;&otilde;es</label>
+                <label>Observa&ccedil;&otilde;es</label>
                 <input type="text" id="observacoes" class="size3" name="observacoes" />
             </div>
 
@@ -85,8 +76,9 @@
 </fieldset>
 
 <fieldset>
+    <legend>Horário Atual</legend>
     <?
-    if (count($exames) > 0) {
+    if ($contador > 0) {
         ?>
         <table id="table_agente_toxico" border="0">
             <thead>
@@ -94,10 +86,9 @@
                 <tr>
                     <th class="tabela_header">Data</th>
                     <th class="tabela_header">Hora</th>
-                    <th class="tabela_header">Empresa</th>
                     <th class="tabela_header">M&eacute;dico</th>
                     <th class="tabela_header">Observa&ccedil;&otilde;es</th>
-                    <th class="tabela_header" colspan="4">&nbsp;</th>
+                    <!--<th class="tabela_header" colspan="2">&nbsp;</th>-->
                 </tr>
             </thead>
             <?
@@ -109,21 +100,19 @@
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
-                        <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                                                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
                             <? if (empty($faltou)) { ?>
-                            <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>ambulatorio/exametemp/excluirconsultatempgeral/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
-                                        excluir</a></td></div>
-                        <? } ?>    
-                        <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
-                                <a href="<?= base_url() ?>ambulatorio/exametemp/reservartempgeral/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>/<?= $item->data; ?>">
-                                    reservar</a></div></td>
-                        <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
-                                <a href="<?= base_url() ?>ambulatorio/exametemp/reangedargeraltemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>">
-                                    Re-Agendar</a></div></td>
+                                <? if ($item->encaixe == 't') { ?>
+
+                            <? } else { ?>
+
+
+                            <? } ?>
+                        <? } ?>
+
+
 
                     </tr>
 
@@ -142,19 +131,20 @@
     <?
     if (count($consultasanteriores) > 0) {
         foreach ($consultasanteriores as $value) {
+
             $data_atual = date('Y-m-d');
             $data1 = new DateTime($data_atual);
             $data2 = new DateTime($value->data);
 
             $intervalo = $data1->diff($data2);
             ?>
-            <h6>ULTIMO ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?> - <?= $intervalo->days ?> dia(s)</h6>
+            <h6><b><?= $intervalo->days ?> dia(s)</b>&nbsp;&nbsp;&nbsp;- ULTIMA ATENDIMENTO: <?= $value->procedimento; ?> - DATA: <b><?= substr($value->data, 8, 2) . '/' . substr($value->data, 5, 2) . '/' . substr($value->data, 0, 4); ?> </b> - M&eacute;dico: <b> <?= $value->medico; ?></b> - Convenio:  <?= $value->convenio; ?></h6>
 
             <?
         }
     } else {
         ?>
-        <h6>NENHUM ATENDIMENTO ENCONTRADO</h6>
+        <h6>NENHUMA CONSULTA ENCONTRADA</h6>
         <?
     }
     ?>
@@ -168,52 +158,52 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script>
-                            function mascaraTelefone(campo) {
+                    function mascaraTelefone(campo) {
 
-                                function trata(valor, isOnBlur) {
+                        function trata(valor, isOnBlur) {
 
-                                    valor = valor.replace(/\D/g, "");
-                                    valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+                            valor = valor.replace(/\D/g, "");
+                            valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-                                    if (isOnBlur) {
+                            if (isOnBlur) {
 
-                                        valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
-                                    } else {
+                                valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                            } else {
 
-                                        valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
-                                    }
-                                    return valor;
-                                }
-
-                                campo.onkeypress = function (evt) {
-
-                                    var code = (window.event) ? window.event.keyCode : evt.which;
-                                    var valor = this.value
-
-                                    if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
-                                        return false;
-                                    } else {
-                                        this.value = trata(valor, false);
-                                    }
-                                }
-
-                                campo.onblur = function () {
-
-                                    var valor = this.value;
-                                    if (valor.length < 13) {
-                                        this.value = ""
-                                    } else {
-                                        this.value = trata(this.value, true);
-                                    }
-                                }
-
-                                campo.maxLength = 14;
+                                valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
                             }
+                            return valor;
+                        }
+
+                        campo.onkeypress = function (evt) {
+
+                            var code = (window.event) ? window.event.keyCode : evt.which;
+                            var valor = this.value
+
+                            if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
+                                return false;
+                            } else {
+                                this.value = trata(valor, false);
+                            }
+                        }
+
+                        campo.onblur = function () {
+
+                            var valor = this.value;
+                            if (valor.length < 13) {
+                                this.value = ""
+                            } else {
+                                this.value = trata(this.value, true);
+                            }
+                        }
+
+                        campo.maxLength = 14;
+                    }
 
 
 </script>
 <script type="text/javascript">
-    jQuery("#telefone")
+    jQuery("#txtTelefone")
             .mask("(99) 9999-9999?9")
             .focusout(function (event) {
                 var target, phone, element;
@@ -243,6 +233,7 @@
                 }
             });
 
+
     $(function () {
         $("#data_ficha").datepicker({
             autosize: true,
@@ -258,6 +249,7 @@
     $(function () {
         $('#exame').change(function () {
             if ($(this).val()) {
+                $('#horarios').hide();
                 $('.carregando').show();
                 $.getJSON('<?= base_url() ?>autocomplete/horariosambulatoriogeral', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
                     var options = '<option value=""></option>';
@@ -272,42 +264,8 @@
             }
         });
     });
-    $(function () {
-        $('#exame').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/medicoconvenio', {exame: $(this).val(), ajax: true}, function (j) {
-                    var options = '<option value=""></option>';
-                    for (var i = 0; i < j.length; i++) {
-                        options += '<option value="' + j[i].convenio_id + '">' + j[i].nome + '</option>';
-                    }
-                    $('#convenio1').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#convenio1').html('<option value="">-- Escolha um hora --</option>');
-            }
-        });
-    });
 
 
-    $(function () {
-        $('#convenio1').change(function () {
-            if ($(this).val()) {
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $(this).val(), ajax: true}, function (j) {
-                    options = '<option value=""></option>';
-                    for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                    }
-                    $('#procedimento1').html(options).show();
-                    $('.carregando').hide();
-                });
-            } else {
-                $('#procedimento1').html('<option value="">Selecione</option>');
-            }
-        });
-    });
 
 
 
@@ -344,50 +302,24 @@
                 txtNome: {
                     required: true,
                     minlength: 3
-                },
-                data_ficha: {
-                    required: true
-                },
-                exame: {
-                    required: true
-                },
-                convenio1: {
-                    required: true
-                },
-                procedimento1: {
-                    required: true
                 }
             },
             messages: {
                 txtNome: {
                     required: "*",
                     minlength: "!"
-                },
-                data_ficha: {
-                    required: "*"
-                },
-                exame: {
-                    required: "*"
-                },
-                convenio1: {
-                    required: "*"
-                },
-                procedimento1: {
-                    required: "*"
                 }
             }
         });
     });
 
-
 //    function calculoIdade() {
 //        var data = document.getElementById("txtNascimento").value;
 //        var ano = data.substring(6, 12);
 //        var idade = new Date().getFullYear() - ano;
-//        if (idade < 500) {
-//            document.getElementById("idade2").value = idade;
-//        }
+//        document.getElementById("idade2").value = idade;
 //    }
+    
     function calculoIdade() {
         var data = document.getElementById("txtNascimento").value;
 
@@ -406,7 +338,6 @@
             document.getElementById("idade2").value = idade + " ano(s)";
         }
     }
-
     calculoIdade();
 
 </script>

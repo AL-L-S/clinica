@@ -127,6 +127,7 @@ class guia_model extends Model {
                             ep.campos_obrigatorios_pac_nascimento,
                             ep.campos_obrigatorios_pac_telefone,
                             ep.campos_obrigatorios_pac_municipio,
+                            ep.orcamento_cadastro,
                             ep.repetir_horarios_agenda,
                             ep.senha_finalizar_laudo,
                             ep.valor_convenio_nao,
@@ -7743,6 +7744,7 @@ class guia_model extends Model {
                             ae.guia_id,
                             ae.situacao_faturamento,
                             ae.tipo,
+                            ae.financeiro,
                             ae.data_atualizacao,
                             ae.data_realizacao,
                             ae.paciente_id,
@@ -12471,6 +12473,27 @@ ORDER BY ae.paciente_credito_id)";
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->set('empresa_id', $empresa_id);
         $this->db->set('data_criacao', $data);
+//        if ($paciente_id == null) {
+//            $this->db->set('cadastro', 'f');
+//        }
+        $this->db->set('paciente_id', $paciente_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_ambulatorio_orcamento');
+        $ambulatorio_guia_id = $this->db->insert_id();
+        return $ambulatorio_guia_id;
+    }
+
+    function gravarorcamentorecepcaonaocadastro($paciente_id) {
+        $horario = date("Y-m-d H:i:s");
+        $data = date("Y-m-d");
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('data_criacao', $data);
+        if ($paciente_id == null) {
+            $this->db->set('cadastro', 'f');
+        }
         $this->db->set('paciente_id', $paciente_id);
         $this->db->set('data_cadastro', $horario);
         $this->db->set('operador_cadastro', $operador_id);
@@ -13398,6 +13421,47 @@ ORDER BY ae.paciente_credito_id)";
 
 
             $this->db->set('paciente_id', $paciente_id);
+            $this->db->set('data', $data);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_ambulatorio_orcamento_item');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return -1;
+            }
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarorcamentoitemrecepcaonaocadastro($ambulatorio_orcamento_id, $paciente_id) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $data = date("Y-m-d");
+            $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
+            if ($_POST['ajustevalor1'] != '') {
+                $this->db->set('valor_ajustado', $_POST['ajustevalor1']);
+            }
+            $this->db->set('valor', $_POST['valor1']);
+            $valortotal = $_POST['valor1'] * $_POST['qtde1'];
+            $this->db->set('valor_total', $valortotal);
+            $this->db->set('quantidade', $_POST['qtde1']);
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('empresa_id', $empresa_id);
+            if (isset($_POST['observacao'])) {
+                $this->db->set('observacao', $_POST['observacao']);
+            }
+            $this->db->set('orcamento_id', $ambulatorio_orcamento_id);
+
+            if ($_POST['formapamento'] != '') {
+                $this->db->set('forma_pagamento', $_POST['formapamento']);
+            }
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->set('dia_semana_preferencia', $_POST['dia_preferencia']);
+            $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
             $this->db->set('data', $data);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);

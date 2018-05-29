@@ -41,7 +41,8 @@
 
 
                 <tr>
-                    <td style="background-color: #aaaaaf;font-size: 9pt;width: 400px;" >Paciente: <?= $exames['0']->paciente; ?></td>
+                    
+                    <td style="background-color: #aaaaaf;font-size: 9pt;width: 400px;" ><? if ($exames['0']->paciente != '') { ?> Paciente: <?= $exames['0']->paciente; ?><? } ?></td>
                     <td style="width: 250px;"> Orçamento Solicitado Por Paciente</td>
                     <td style="background-color: #aaaaaf;font-size: 9pt;width: 130px;" >Data do Orçamento: </td>
                     <td ><?= date("d/m/Y H:i:s",strtotime($exames['0']->data_cadastro));?></td>

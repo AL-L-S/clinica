@@ -3492,6 +3492,9 @@ class Laudo extends BaseController {
                             $data2 = new DateTime($item->nascimento);
                             $intervalo = $data1->diff($data2);
                             $teste = $intervalo->y;
+                            if($convenio == 'UNIMED MAIS'){
+                                $convenio = 'UNIMED UBERLANDIA';
+                            }
 
                             $sl_cod_doc = $item->ambulatorio_laudo_id;
                             if (!is_dir($origem . '/' . $convenio)) {

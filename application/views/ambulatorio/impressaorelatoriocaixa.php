@@ -1625,22 +1625,7 @@
 //        $PERCENTUALCARTAOHIPER = ($NUMEROCARTAOHIPER * 100) / $i;
 //        $PERCENTUALCARTAOELO = ($NUMEROCARTAOELO * 100) / $i;
 //        $PERCENTUALOUTROS = ($NUMEROOUTROS * 100) / $i;
-//        if ($valortotal != 0) {
-//            $PERCENTUALVALORDINHEIRO = ($DINHEIRO * 100) / $valortotal;
-//            $PERCENTUALVALORDEBITO_CONTA = ($DEBITO_CONTA * 100) / $valortotal;
-//            $PERCENTUALVALORCARTAOVISA = ($CARTAOVISA * 100) / $valortotal;
-//            $PERCENTUALVALORCARTAOMASTER = ($CARTAOMASTER * 100) / $valortotal;
-//            $PERCENTUALVALORCARTAOHIPER = ($CARTAOHIPER * 100) / $valortotal;
-//            $PERCENTUALVALORCARTAOELO = ($CARTAOELO * 100) / $valortotal;
-//            $PERCENTUALVALOROUTROS = ($OUTROS * 100) / $valortotal;
-//        } else {
-//            $PERCENTUALVALORDINHEIRO = 0;
-//            $PERCENTUALVALORDEBITO_CONTA = 0;
-//            $PERCENTUALVALORCARTAOVISA = 0;
-//            $PERCENTUALVALORCARTAOMASTER = 0;
-//            $PERCENTUALVALORCARTAOHIPER = 0;
-//            $PERCENTUALVALORCARTAOELO = 0;
-//            $PERCENTUALVALOROUTROS = 0;
+
 //        }
 //        $VALORDINHEIRO = (str_replace("", ".", str_replace("", ",", $DINHEIRO))) / 100;
 //        $VALORDEBITO_CONTA = (str_replace("", ".", str_replace("", ",", $DEBITO_CONTA))) / 100;

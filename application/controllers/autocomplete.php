@@ -82,7 +82,7 @@ class Autocomplete extends Controller {
 
         set_time_limit(0); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
         ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão
-        
+
         $result = $this->exametemp->atendersenhatoten();
 
         if ($result) {
@@ -112,7 +112,7 @@ class Autocomplete extends Controller {
         );
         foreach ($result as $value) {
             $indice = ($value->turno_prefencia != '') ? $value->turno_prefencia : 'indiferente';
-            @$array[$indice]++;
+            @$array[$indice] ++;
         }
         echo json_encode($array);
     }
@@ -2461,6 +2461,18 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompletemodelos($_GET['exame']);
         } else {
             $result = $this->exametemp->listarautocompletemodelos();
+            //$result = 'oi nao';
+        }
+        echo json_encode($result);
+    }
+
+    function modelosgrupo() {
+
+        if (isset($_GET['exame'])) {
+            //$result = 'oi';
+            $result = $this->internacao_m->listarautocompletemodelosgrupo($_GET['exame']);
+        } else {
+            $result = $this->internacao_m->listarautocompletemodelosgrupo();
             //$result = 'oi nao';
         }
         echo json_encode($result);
