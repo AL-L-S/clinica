@@ -95,7 +95,7 @@ class login_model extends Model {
             $empresanome = "";
             $internacao = false;
         }
-//        var_dump($gerente_contasapagar); die;
+        
         if (isset($return) && count($return) > 0) {
 
             //marcando o usuario como 'online'

@@ -171,14 +171,12 @@ class Login extends Controller {
             //Pegando somente o numero da versao.
             preg_match('/[0-9].+/', $browserPC[0], $verificanavegador['versao']);
 
-            if (($this->login->autenticar($usuario, $senha, $empresa)) &&
-                    ($this->session->userdata('autenticado') == true)) {
-                $valuecalculado = 0;
-
-//                $this->verificasms();
-
+            if ( ($this->login->autenticar($usuario, $senha, $empresa)) && ($this->session->userdata('autenticado') == true) ) {
+                
+                $valuecalculado = 0;                
                 setcookie("TestCookie", $valuecalculado);
                 redirect(base_url() . "home", "refresh");
+                
             } else {
                 $data['mensagem'] = $this->mensagem->getMensagem('login002');
                 $this->carregarView($data);

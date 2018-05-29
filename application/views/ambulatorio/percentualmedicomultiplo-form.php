@@ -20,23 +20,117 @@
                             <? endforeach; ?>
                         </select>
                     </dd>
-                    <dt>
-                        <label>Convenio *</label>
-                    </dt>
-                    <dd>
-                        <select name="covenio" id="covenio" class="size4" required="">
-                            <option value="">Selecione</option>
-                            <? foreach ($convenio as $value) : ?>
-                                <option value="<?= $value->convenio_id; ?>"<? if (@$convenio_id == $value->convenio_id) echo'selected';?>>
-                                    <?php echo $value->nome; ?>
-                                </option>
-                            <? endforeach; ?>
-                        </select>
-                    </dd>
                     
                     <br>
                     
                     <div class="divTabela">
+                        <table id="procedimentos">
+                            <tr id="trBase">
+                                <td>
+                                    <select name="convenioText" id="convenioText" class="size1">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($convenio as $value) : ?>
+                                        <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="grupoText" class="size1">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($grupos as $value) {?>
+                                        <option value="<?= $value->nome ?>"><?= $value->nome ?></option>
+                                        <? } ?>
+                                    </select>
+                                </td>
+                                <td width="50px;">
+                                    <select name="procedimentoText" id="procedimentoText" class="size2 chosen-select" tabindex="1" data-placeholder="Procedimento">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($procedimentoLista as $value) {?>
+                                        <option value="<?= $value->procedimento_tuss_id; ?>"><?= $value->codigo . " - " . $value->nome; ?></option>
+                                        <? } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button type="button" style="display: inline-block" onclick="filtrarTabela()">Buscar</button>
+                                </td>
+                                <td class="tdValorText">
+                                    <input type="text" id="valorText" class="texto01">
+                                </td>
+                                <td class="tdPercText">
+                                    <select id="percText" name="percText" class="size1">
+                                        <option value="">Selecione</option>
+                                        <option value="1">Sim</option>
+                                        <option value="0">Nao</option>
+                                    </select>
+                                </td>
+                                <td class="tdRevText">
+                                    <select id="revText" name="revText" class="size1">
+                                        <option value="">Selecione</option>
+                                        <option value="1">Sim</option>
+                                        <option value="0">Nao</option>
+                                    </select>
+                                </td>
+                                <td class="tdDiaRecText">
+                                    <input type="text" id="diaRecText" class="texto01">
+                                </td>
+                                <td class="tdTempoRecText">
+                                    <input type="text" id="tempoRecText" class="texto01">
+                                </td>
+                                <td>
+                                    <button type="button" onclick="aplicandoValores()">Aplicar</button>
+                                </td>
+                            </tr>
+                            <tr id="trBase">
+                                <td class="tabela_title">Convenio</td>
+                                <td class="tabela_title">Grupo</td>
+                                <td class="tabela_title">Procedimento</td>
+                                <td class="tabela_title"></td>
+                                <td class="tabela_title">Valor</td>
+                                <td class="tabela_title">Percentual</td>
+                                <td class="tabela_title">Revisor</td>
+                                <td class="tabela_title">Dia Faturamento</td>
+                                <td class="tabela_title">Tempo Recebimento</td>
+                                <td class="tabela_title">Limpar?</td>
+                            </tr>
+                            <? 
+                            $i = 0;
+                            foreach($procedimento as $item){ ?>
+                                <tr class="linhaTabela">
+                                    <td class="<?= $item->convenio_id ?>"><?= $item->convenio ?></td>
+                                    <td class="<?= $item->grupo ?>"><?= $item->grupo ?></td>
+                                    <td colspan="2" class="<?= $item->procedimento_tuss_id ?>">
+                                        <input type="hidden" name="procedimento_convenio_id[<?= $i ?>]" value="<?= $item->procedimento_convenio_id ?>"/>
+                                        <?= $item->codigo ?> - <?= $item->procedimento ?>
+                                    </td>
+                                    <td class="tdValor">
+                                        <input type="text" name="valor[<?= $i ?>]"  id="valor<?= $i ?>" class="texto01"/>
+                                    </td>
+                                    <td class="tdPercentual">
+                                        <select name="percentual[<?= $i ?>]"  id="percentual<?= $i ?>" class="size1">
+                                            <option value="1"> SIM</option>
+                                            <option value="0"> NÃO</option>
+                                        </select>
+                                    </td>
+                                    <td class="tdRevisor">
+                                        <select name="revisor[<?= $i ?>]"  id="revisor<?= $i ?>" class="size1">
+                                            <option value="1"> SIM</option>
+                                            <option value="0"> NÃO</option>
+                                        </select>
+                                    </td>
+                                    <td class="tdDiaRecebimento">
+                                        <input type="text" name="dia_recebimento[<?= $i ?>]" alt="99" id="dia_recebimento<?= $i ?>" class="texto01"/>
+                                    </td>
+                                    <td class="tdTempoRecebimento">
+                                        <input type="text" name="tempo_recebimento[<?= $i ?>]" alt="99" id="tempo_recebimento<?= $i ?>" class="texto01"/>
+                                    </td>
+                                    <td class="tdLimpar">
+                                        <input type="checkbox" name="limparLinha" id="limparLinha" class="<?= $i ?>"/>
+                                    </td>
+                                 </tr>
+                                <? 
+                                $i++;
+                            } ?>
+                        </table>
                     </div>
 
                 </dl>    
@@ -52,8 +146,16 @@
 <style>
     .divTabela { border: 1pt solid #aaa; border-radius: 10pt; padding: 5pt; }
     .linhaTabela { border-bottom: 1pt solid #aaa; }
+    #procedimentoText_chosen a { width: 90%; }
 </style>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
@@ -67,140 +169,85 @@
     });
     
     $(function () {
-        $('#covenio').change(function () {
-//            alert('teste');
-            window.open('<?= base_url() ?>ambulatorio/procedimentoplano/percentualmedicomultiplo/'+$('#covenio').val()+"/"+$('#medico').val(), '_self');
+        $('input[name=limparLinha]').change(function () {
+            var id = $(this).attr('class');
+            
+            $("#valor"+id).val('');
+            $("#revisor"+id).val('');
+            $("#percentual"+id).val('');
+            $("#dia_recebimento"+id).val('');
+            $("#tempo_recebimento"+id).val('');
+            
+            $(this).removeAttr('checked');
         }); 
     });
     
-    var totResultados = <?= count($procedimento) ?>;  
-    
-    $(function () {
-        $("#selTodos").live('click', function () {
-            if ($(this).attr('class') == 'marcaTodos') {
-                $(this).attr('class', 'desmarcaTodos');
-                for (var n = 0; n < totResultados; n++) {
-                    $('.checkbox').attr('checked', true);
-                }
-            }
-            else{
-                $(this).attr('class', 'marcaTodos');
-                for (var n = 0; n < totResultados; n++) {
-                    $('.checkbox').removeAttr('checked');
-                }
-            }
-        });
-    });
-    
-    function filtrarTabela() {        
-        var input, procedimento, select, grupo, table, tr, td, i;
-        input = document.getElementById("procText");
-        procedimento = input.value.toUpperCase();
+    function aplicandoValores(){
         
-        select = document.getElementById("grupoText");
-//        select.selectedIndex        
-        grupo = select.options[select.selectedIndex].value.toUpperCase();
+        var tr = document.getElementById('procedimentos').getElementsByTagName("tr"),
+            valor = $("#valorText").val(),
+            diaRecebimento = $("#diaRecText").val(),
+            tempoRecebimento = $("#tempoRecText").val(),
+            revisor = $("#revText option:selected").val(),
+            percentual = $("#percText option:selected").val();
         
-        var id = 'procedimentos';
-        table = document.getElementById(id);
-        tr = table.getElementsByTagName("tr");
-        
-        if (grupo == "" && procedimento != "") { // CASO TENHA INFORMADO SOMENTE PROCEDIMENTO
-//            alert('1');
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1) {
-                      tr[i].style.display = "";
-                    } else {
-                      tr[i].style.display = "none";
-                    }
-                }       
+        for (var i = 0; i < tr.length; i++) {
+            if(tr[i].getAttribute("id") != 'trBase' && tr[i].style.display == ""){
+                var td = tr[i].getElementsByTagName("td");
+                var checkbox = td[td.length - 1].getElementsByTagName("input")[0];
+                var id = checkbox.getAttribute("class");
+                
+                if(valor != "") $("#valor"+id).val(valor);
+                if(revisor != "") $("#revisor"+id).val(revisor);
+                if(percentual != "") $("#percentual"+id).val(percentual);
+                if(diaRecebimento != "") $("#dia_recebimento"+id).val(diaRecebimento);
+                if(tempoRecebimento != "") $("#tempo_recebimento"+id).val(tempoRecebimento);
             }
         }
-        else if (grupo != "" && procedimento == "") { // CASO TENHA INFORMADO APENAS O GRUPO
-//            alert('2');
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    var id = tr[i].getAttribute("id");
-                    if (grupo == id) {
-                      tr[i].style.display = "";
-                    } else {
-                      tr[i].style.display = "none";
-                    }
+    }
+    
+    function filtrarTabela() {
+        var procedimento = document.getElementById("procedimentoText").value;
+        var convenio = document.getElementById("convenioText").value;
+        var grupo = document.getElementById("grupoText").value;
+        
+        var tr = document.getElementById('procedimentos').getElementsByTagName("tr")
+
+        for (var i = 0; i < tr.length; i++) {
+            if(tr[i].getAttribute("id") != 'trBase'){
+                
+                var td = tr[i].getElementsByTagName("td");
+                
+                var visivelConv = true, visivelGrupo = true;
+                
+                // Filtro do convenio
+                if (convenio == td[0].getAttribute("class") || convenio == '') {
+                    tr[i].style.display = "";
                 } 
-            }       
-        }
-        else if (grupo != "" && procedimento != "") { // CASO TENHA INFORMADO O GRUPO E O PROCEDIMENTO
-//            alert('3');
-            for (i = 0; i < tr.length; i++) {
+                else {
+                    visivelConv = false;
+                    tr[i].style.display = "none";
+                }
                 
-                td = tr[i].getElementsByTagName("td")[0];
-                var id = tr[i].getAttribute("id");
+                // Filtro do grupo
+                if (grupo == td[1].getAttribute("class") || grupo == '') {
+                    if (visivelConv) tr[i].style.display = "";
+                } 
+                else { 
+                    visivelGrupo = false;
+                    tr[i].style.display = "none";
+                }
                 
-                if (td) {
-                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1 && grupo == id) {
-                      tr[i].style.display = "";
-                    } else {
-                      tr[i].style.display = "none";
-                    }
-                }       
-            }
-        }
-        else{
-//            console.log(grupo);
-//            alert(grupo);
-            for (i = 0; i < tr.length; i++) {
-                tr[i].style.display = "";
+                // Filtro do procedimento
+                if (procedimento == td[2].getAttribute("class") || procedimento == '') {
+                    if (visivelConv && visivelGrupo) tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+                
             }
         }
         
     }
-    
-    var divPesquisa = '<div style="float: right; margin-bottom: 20pt;"><input type="text" id="procText" onkeypress="filtrarTabela()" placeholder="Pesquisar texto..." title="Pesquise pelo nome do procedimento ou pelo codigo"><select id="grupoText"><option value="">TODOS</option>';
-    <? foreach ($grupos as $value) {?>
-        divPesquisa +='<option value="<?= $value->nome ?>"><?= $value->nome ?></option>';
-    <? } ?>
-    divPesquisa += '</select><button type="button" onclick="filtrarTabela()">Buscar</button></div>';
-    
-    var tabelaPadrao = '<table id="procedimentos">\n\
-                            <thead>\n\
-                                <th class="tabela_title">Procedimento</th>\n\
-                                <th class="tabela_title">Grupo</th>\n\
-                                <th class="tabela_title valor">Valor</th>\n\
-                                <th class="tabela_title valor">Percentual</th>\n\
-                                <th class="tabela_title valor">Revisor</th>\n\
-                                <th class="tabela_title valor">Dia Faturamento</th>\n\
-                                <th class="tabela_title valor">Tempo Recebimento</th>\n\
-                            </thead>\n\
-                        <tbody>';
-    
-    <? $i = 0;
-    foreach($procedimento as $item){ ?>
-        tabelaPadrao += '<tr class="linhaTabela" id="<?= $item->grupo ?>">\n\
-                            <td><input type="hidden" name="procedimento_convenio_id[<?= $i ?>]" value="<?= $item->procedimento_convenio_id ?>"/><?= $item->codigo ?> - <?= $item->procedimento ?></td>\n\
-                            <td><?= $item->grupo ?></td>\n\
-                            <td class="valor"><input type="text" name="valor[<?= $i ?>]"  id="valor<?= $i ?>" class="texto01" value=""/></td>\n\
-                            <td>\n\
-                                <select name="percentual[<?= $i ?>]"  id="percentual<?= $i ?>" class="size1">\n\
-                                    <option value="1"> SIM</option>\n\
-                                    <option value="0"> NÃO</option>\n\
-                                </select>\n\
-                            </td>\n\
-                            <td>\n\
-                                <select name="revisor[<?= $i ?>]"  id="revisor<?= $i ?>" class="size1">\n\
-                                    <option value="1"> SIM</option>\n\
-                                    <option value="0"> NÃO</option>\n\
-                                </select>\n\
-                            </td>\n\
-                            <td class="valor"><input type="text" name="dia_recebimento[<?= $i ?>]" alt="99" id="dia_recebimento<?= $i ?>" class="texto01"/></td>\n\
-                            <td class="valor"><input type="text" name="tempo_recebimento[<?= $i ?>]" alt="99" id="tempo_recebimento<?= $i ?>" class="texto01"/></td>\n\
-                         </tr>';
-        
-        <? $i++;
-    } ?>
-    tabelaPadrao += '</tbody></table>';
-    $(".divTabela").append("<div class='base'>"+divPesquisa+tabelaPadrao+"</div>");
         
 </script>
