@@ -253,3 +253,23 @@ END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2201');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000023', 
+            'Adicionado a possiblidade de fazer a criação e edição de percentuais médicos da mesma maneira que o cadastro de multiplos procedimentos. Para usar, ative a flag "Percentual similar ao Proc. Multiplos" no cadastro de empresa.',
+            '2201',
+            'Melhoria'
+            );
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
