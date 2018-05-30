@@ -253,3 +253,67 @@ END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2115');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000023', 
+            'Adicionada a função de Pré-Cadastro na internação',
+            '2115',
+            'Melhoria'
+            );
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE TABLE ponto.tb_internacao_leito_movimentacao
+(
+  internacao_leito_movimentacao_id serial NOT NULL,
+  internacao_id integer,
+  leito_id integer,
+  status character varying(500),
+  tipo character varying(500),
+  ativo boolean DEFAULT true,
+  data timestamp without time zone,
+  operador_movimentacao integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  CONSTRAINT tb_internacao_leito_movimentacao_pkey PRIMARY KEY (internacao_leito_movimentacao_id)
+);
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000023');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000023', '1.0.000023');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+-- Dia 22/05/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN percentual_multiplo boolean DEFAULT false;
+
+
+
+
+-- Fechando a versão 1.0.00023 e adicionando uma alteração que faz com que
+-- todas as alterações em leitos sejam salvas na tabela 
+-- tb_internacao_leito_movimentacao

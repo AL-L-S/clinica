@@ -61,6 +61,7 @@ class internacao_model extends BaseModel {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_internacao');
+
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return false;
@@ -69,11 +70,22 @@ class internacao_model extends BaseModel {
                 $this->db->set('ativo', 'false');
                 $this->db->where('internacao_leito_id', $_POST['leitoID']);
                 $this->db->update('tb_internacao_leito');
+
                 $this->db->set('paciente_id', $paciente_id);
                 $this->db->set('leito_id', $_POST['leitoID']);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_internacao_ocupacao');
+
+                $this->db->set('internacao_id', $internacao_id);
+                $this->db->set('leito_id', $_POST['leitoID']);
+                $this->db->set('tipo', 'ENTRADA');
+                $this->db->set('status', 'INTERNACAO');
+                $this->db->set('data', $_POST['data']);
+                $this->db->set('operador_movimentacao', $operador_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_internacao_leito_movimentacao');
             }
             else { // update
                 $internacao_id = $_POST['internacao_id'];
@@ -1155,6 +1167,51 @@ class internacao_model extends BaseModel {
         return $return->result();
     }
 
+    function pesquisarenfermaria($unidade_id) {
+        $this->db->select(' internacao_enfermaria_id,
+                            nome');
+        $this->db->from('tb_internacao_enfermaria');
+        $this->db->where('internacao_enfermaria_id', $unidade_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function pesquisarindicaco($unidade_id) {
+        $this->db->select('paciente_indicacao_id,
+                            nome');
+        $this->db->from('tb_paciente_indicacao');
+        $this->db->where('paciente_indicacao_id', $unidade_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function pesquisarconvenio($unidade_id) {
+        $this->db->select('convenio_id,
+                            nome');
+        $this->db->from('tb_convenio');
+        $this->db->where('convenio_id', $unidade_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function pesquisartipodependencia($unidade_id) {
+        $this->db->select('internacao_tipo_dependencia_id,
+                            nome');
+        $this->db->from('tb_internacao_tipo_dependencia');
+        $this->db->where('internacao_tipo_dependencia_id', $unidade_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function pesquisarcidade($unidade_id) {
+        $this->db->select('municipio_id,
+                            nome');
+        $this->db->from('tb_municipio');
+        $this->db->where('municipio_id', $unidade_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listapacienteinternado($paciente_id) {
         $this->db->select(' p.nome as paciente,
                             p.paciente_id,
@@ -1323,6 +1380,112 @@ class internacao_model extends BaseModel {
         return $return->result();
     }
 
+    function relatorioprecadastro() {
+        $data = date("Y-m-d");
+        $this->db->select(' 
+                          p.nome as paciente,
+                          ifq.nome as responsavel,
+                          ifq.aceita_tratamento,
+                          ifq.data_cadastro,
+                          ifq.telefone_contato as telefone,
+                          m.nome as cidade,
+                          c.nome as convenio,
+                          pi.nome as indicacao,
+                          itd.nome as dependencia,
+                          ifq.confirmado,
+                          ifq.aprovado,
+                          ');
+        $this->db->from('tb_internacao_ficha_questionario ifq');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ifq.paciente_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = ifq.convenio_id', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = ifq.municipio_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = ifq.tomou_conhecimento', 'left');
+        $this->db->join('tb_internacao_tipo_dependencia itd', 'itd.internacao_tipo_dependencia_id = ifq.tipo_dependencia', 'left');
+        $this->db->where('ifq.ativo', 't');
+        $this->db->where("ifq.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00');
+        $this->db->where("ifq.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
+
+
+        if ($_POST['aceita_tratamento'] != '') {
+            $this->db->where('ifq.aceita_tratamento', $_POST['aceita_tratamento']);
+        }
+        if ($_POST['indicacao'] > 0) {
+            $this->db->where('ifq.tomou_conhecimento', $_POST['indicacao']);
+        }
+        if ($_POST['convenio'] != 0) {
+            if ($_POST['convenio'] == '-1') {
+                $this->db->where('ifq.convenio_id', null);
+            } else {
+                $this->db->where('ifq.convenio_id', $_POST['convenio']);
+            }
+        }
+        if ($_POST['cidade'] > 0) {
+
+            $this->db->where('ifq.municipio_id', $_POST['cidade']);
+        }
+        if ($_POST['tipo_dependencia'] > 0) {
+            $this->db->where('ifq.tipo_dependencia', $_POST['tipo_dependencia']);
+        }
+        if ($_POST['confirmado'] != '') {
+            $this->db->where('ifq.confirmado', $_POST['confirmado']);
+        }
+        if ($_POST['aprovado'] != '') {
+            $this->db->where('ifq.aprovado', $_POST['aprovado']);
+        }
+
+        $this->db->orderby('ifq.data_cadastro desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriocensodiario() {
+        $data = date("Y-m-d");
+        $this->db->select(' 
+                          il.nome as leito,
+                          il.condicao,
+                          il.ativo,
+                          ie.nome as enfermaria,
+                          ie.unidade_id,
+                          iu.nome as unidade,
+                          i.cid1solicitado as cid1,
+                          i.data_internacao,
+                          p.nome as paciente,
+                          p.sexo,
+                          p.nascimento,
+                          pt.nome as procedimento,
+                          
+                          ');
+        $this->db->from('tb_internacao_leito il');
+        $this->db->join('tb_internacao i', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = i.procedimentosolicitado', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
+        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
+        $this->db->where('il.excluido', 'f');
+        $this->db->where('(i.ativo = true OR i.ativo is null)');
+
+        if ($_POST['unidade'] != '') {
+            $this->db->where('ie.unidade_id', $_POST['unidade']);
+        }
+        if ($_POST['enfermaria'] != '') {
+            $this->db->where('il.enfermaria_id', $_POST['enfermaria']);
+        }
+        if ($_POST['status_leito'] != '') {
+
+            if ($_POST['status_leito'] == 'Vago') {
+                $this->db->where('il.ativo', 't');
+            } elseif ($_POST['status_leito'] == 'Ocupado') {
+                $this->db->where('il.ativo', 'f');
+            } else {
+                $this->db->where('il.condicao', $_POST['status_leito']);
+            }
+        }
+
+        $this->db->orderby('il.ativo, il.nome, i.data_cadastro desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listaprescricoesequipodata() {
         $data = date("Y-m-d");
         $this->db->select(' ipp.internacao_precricao_produto_id,
@@ -1359,7 +1522,7 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->where('il.ativo', 't');
-        $this->db->where('il.condicao', 'Vago');
+        $this->db->where('il.condicao', 'Normal');
         $this->db->where('iu.internacao_unidade_id', $unidade_id);
         $return = $this->db->get();
         return $return->result();
@@ -1372,7 +1535,7 @@ class internacao_model extends BaseModel {
         $this->db->from('tb_internacao_leito il, tb_internacao_enfermaria ie');
         $this->db->where('ie.internacao_enfermaria_id = il.enfermaria_id');
         $this->db->where('il.ativo', 't');
-        $this->db->where('il.condicao', 'Vago');
+        $this->db->where('il.condicao', 'Normal');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->where('iu.internacao_unidade_id', $unidade_id);
         $return = $this->db->get();
@@ -1454,22 +1617,75 @@ class internacao_model extends BaseModel {
     }
 
     function permutapacientes() {
-        //trocando os leito na tabela internacao
+        //trocando os leitos na tabela internacao
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->select('i.internacao_id');
+        $this->db->from('tb_internacao i');
+//        $this->db->where('i.leito',  $_POST['leito_troca']);
+        $this->db->where('i.paciente_id', $_POST['paciente_id_selecionado']);
+        $this->db->where('i.ativo', 't');
+        $return1 = $this->db->get()->result();
+        $internacao_id1 = $return1[0]->internacao_id;
+
         $this->db->set('leito', $_POST['leito_troca']);
-        $this->db->where('paciente_id', $_POST['paciente_id_selecionado']);
+        $this->db->where('internacao_id', $internacao_id1);
         $this->db->update('tb_internacao');
-        $erro = $this->db->_error_message();
-        if (trim($erro) != "") { // erro de banco
-            return false;
-        }
+
+
+        $this->db->select('i.internacao_id');
+        $this->db->from('tb_internacao i');
+//        $this->db->where('i.leito',  $_POST['leito_troca']);
+        $this->db->where('i.paciente_id', $_POST['id_paciente_troca'][0]->paciente_id);
+        $this->db->where('i.ativo', 't');
+        $return2 = $this->db->get()->result();
+        $internacao_id2 = $return2[0]->internacao_id;
+
 
         $this->db->set('leito', $_POST['leito_id_selecionado']);
-        $this->db->where('paciente_id', $_POST['id_paciente_troca'][0]->paciente_id);
+        $this->db->where('internacao_id', $internacao_id2);
         $this->db->update('tb_internacao');
-        $erro = $this->db->_error_message();
-        if (trim($erro) != "") { // erro de banco
-            return false;
-        }
+        // Inserindo na tabela as informações de alteração de leito do paciente 1 (O paciente cujo os dados vem carregados)
+        $this->db->set('internacao_id', $internacao_id1);
+        $this->db->set('leito_id', $_POST['leito_id_selecionado']);
+        $this->db->set('tipo', 'SAIDA');
+        $this->db->set('status', 'PERMUTA');
+        $this->db->set('data', $horario);
+        $this->db->set('operador_movimentacao', $operador_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_internacao_leito_movimentacao');
+
+        $this->db->set('internacao_id', $internacao_id1);
+        $this->db->set('leito_id', $_POST['leito_troca']);
+        $this->db->set('tipo', 'ENTRADA');
+        $this->db->set('status', 'PERMUTA');
+        $this->db->set('data', $horario);
+        $this->db->set('operador_movimentacao', $operador_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_internacao_leito_movimentacao');
+        // Inserindo na tabela a saida e a entrada do paciente 2 (O que foi escolhido no select)
+        $this->db->set('internacao_id', $internacao_id2);
+        $this->db->set('leito_id', $_POST['leito_troca']);
+        $this->db->set('tipo', 'SAIDA');
+        $this->db->set('status', 'PERMUTA');
+        $this->db->set('data', $horario);
+        $this->db->set('operador_movimentacao', $operador_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_internacao_leito_movimentacao');
+
+        $this->db->set('internacao_id', $internacao_id2);
+        $this->db->set('leito_id', $_POST['leito_id_selecionado']);
+        $this->db->set('tipo', 'ENTRADA');
+        $this->db->set('status', 'PERMUTA');
+        $this->db->set('data', $horario);
+        $this->db->set('operador_movimentacao', $operador_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_internacao_leito_movimentacao');
 
         //atualizando a tabela ocupacao
         $this->db->set('ocupado', 'f');
@@ -1491,8 +1707,7 @@ class internacao_model extends BaseModel {
 
         //inserindo na tabela ocupacao
         try {
-            $horario = date("Y-m-d H:i:s");
-            $operador_id = $this->session->userdata('operador_id');
+
 
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
@@ -1525,11 +1740,42 @@ class internacao_model extends BaseModel {
     }
 
     function transferirpacienteleito() {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->select('i.internacao_id');
+        $this->db->from('tb_internacao i');
+//        $this->db->where('i.leito',  $_POST['leito_troca']);
+        $this->db->where('i.paciente_id', $_POST['paciente_id']);
+        $this->db->where('i.ativo', 't');
+        $return1 = $this->db->get()->result();
+        $internacao_id = $return1[0]->internacao_id;
+        
+        // Inserindo na tabela a saida e a entrada do paciente 2 (O que foi escolhido no select)
+        $this->db->set('internacao_id', $internacao_id);
+        $this->db->set('leito_id', $_POST['leito_id']);
+        $this->db->set('tipo', 'SAIDA');
+        $this->db->set('status', 'TRANSFERENCIA');
+        $this->db->set('data', $horario);
+        $this->db->set('operador_movimentacao', $operador_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_internacao_leito_movimentacao');
+
+        $this->db->set('internacao_id', $internacao_id);
+        $this->db->set('leito_id', $_POST['novo_leito']);
+        $this->db->set('tipo', 'ENTRADA');
+        $this->db->set('status', 'TRANSFERENCIA');
+        $this->db->set('data', $horario);
+        $this->db->set('operador_movimentacao', $operador_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_internacao_leito_movimentacao');
 
         //atualizando o leito na tabela internacao e ocupacao
         $this->db->set('leito', $_POST['novo_leito']);
-        $this->db->where('paciente_id', $_POST['paciente_id']);
+        $this->db->where('internacao_id', $internacao_id);
         $this->db->update('tb_internacao');
+
         $erro = $this->db->_error_message();
         if (trim($erro) != "") { // erro de banco
             return false;
@@ -1547,8 +1793,7 @@ class internacao_model extends BaseModel {
 
         //inserindo na tabela ocupacao
         try {
-            $horario = date("Y-m-d H:i:s");
-            $operador_id = $this->session->userdata('operador_id');
+
 
             if ($_POST['internacao_unidade_id'] == "") {// insert
                 $this->db->set('data_cadastro', $horario);

@@ -96,7 +96,7 @@ class leito_model extends BaseModel {
         $this->db->from('tb_internacao_leito il');
         $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
-        $this->db->where('il.ativo', 't');
+//        $this->db->where('il.ativo', 't');
         $this->db->where('il.excluido', 'f');
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
@@ -118,7 +118,7 @@ class leito_model extends BaseModel {
         from ponto.tb_internacao_leito il
         join ponto.tb_internacao_enfermaria as ie on ie.internacao_enfermaria_id = il.enfermaria_id
         join ponto.tb_internacao_unidade as iu on iu.internacao_unidade_id = ie.unidade_id
-        where il.ativo = true and il.condicao != 'Cirurgico'
+        where il.ativo = true and il.condicao = 'Normal'
         and (il.nome ilike '%$parametro%'
         or ie.nome ilike '%$parametro%'
         or iu.nome ilike '%$parametro%')

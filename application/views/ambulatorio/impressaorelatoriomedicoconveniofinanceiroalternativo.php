@@ -48,7 +48,7 @@ switch ($MES) {
     <? } else { ?>
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
-    <h4>Medico Convenios</h4>
+    <h4>Produção Médica</h4>
     <? $sit = ($situacao == '') ? "TODOS" : (($situacao == '0') ? 'ABERTO' : 'FINALIZADO' ); ?>
     <h4>SITUAÇÃO: <?= $sit ?></h4>
     <h4>PERIODO: <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> ate <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?></h4>
@@ -64,8 +64,8 @@ switch ($MES) {
     <? } else { ?>
         <h4>Medico: <?= $medico[0]->operador; ?></h4>
     <? } ?>
-    <? if (count($sala) > 0) { ?>
-        <h4>SALA: <?= $sala[0]->nome; ?></h4>
+    <? if (count(@$sala) > 0) { ?>
+        <h4>SALA: <?= @$sala[0]->nome; ?></h4>
     <? } else { ?>
         <h4>TODAS AS SALAS</h4>
     <? } ?>

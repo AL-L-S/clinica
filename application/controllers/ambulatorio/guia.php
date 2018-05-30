@@ -3889,8 +3889,9 @@ class Guia extends BaseController {
         if ($_POST['sala_id'] != 0) {
             $data['sala'] = $this->exame->listarsalanomeproducao($_POST['sala_id']);
         } else {
-            $data['sala'] = 0;
+            $data['sala'] = array();
         }
+//        var_dump($data['sala']); die;
 
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));

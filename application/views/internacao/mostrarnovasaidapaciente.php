@@ -12,6 +12,8 @@
                     <div>
                         <label>Leito</label>
                         <input type="text"  name="leito" id="leito" class="texto09" value="<?= @$paciente[0]->leito; ?>" readonly/>
+                        <input type="hidden"  name="leito_id" id="leito" class="texto09" value="<?= @$paciente[0]->leito_id; ?>" readonly/>
+                        <input type="hidden"  name="internacao_id" id="leito" class="texto09" value="<?= @$paciente[0]->internacao_id; ?>" readonly/>
                     </div>
                     
                     

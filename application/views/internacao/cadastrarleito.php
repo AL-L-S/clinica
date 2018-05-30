@@ -23,54 +23,51 @@
                 <label>Tipo</label>
                 <select name="tipo" id="txtTipo" class="size2" selected="<?= @$obj->_tipo; ?>" required>
                     <option value=Idoso <?
-                            if (@$obj->_tipo == 'Idoso'):echo 'selected';
-                            endif;
-                                        ?>>Idoso</option>
+                    if (@$obj->_tipo == 'Idoso'):echo 'selected';
+                    endif;
+                    ?>>Idoso</option>
                     <option value=Masculino <?
-                            if (@$obj->_tipo == 'Masculino'):echo 'selected';
-                            endif;
-                                        ?>>Masculino</option>
+                    if (@$obj->_tipo == 'Masculino'):echo 'selected';
+                    endif;
+                    ?>>Masculino</option>
                     <option value=Feminino <?
-                            if (@$obj->_tipo == 'Feminino'):echo 'selected';
-                            endif;
-                                        ?>>Feminino</option>
+                    if (@$obj->_tipo == 'Feminino'):echo 'selected';
+                    endif;
+                    ?>>Feminino</option>
                     <option value=Misto <?
-                            if (@$obj->_tipo == 'Misto'):echo 'selected';
-                            endif;
-?>>Misto</option>
+                    if (@$obj->_tipo == 'Misto'):echo 'selected';
+                    endif;
+                    ?>>Misto</option>
                     <option value=Infantil <?
-                            if (@$obj->_tipo == 'Infantil'):echo 'selected';
-                            endif;
-?>>Infantil</option>
+                    if (@$obj->_tipo == 'Infantil'):echo 'selected';
+                    endif;
+                    ?>>Infantil</option>
                     <option value=Outros <?
-                            if (@$obj->_tipol == 'Outros'):echo 'selected';
-                            endif;
-?>>Outros</option>
+                    if (@$obj->_tipol == 'Outros'):echo 'selected';
+                    endif;
+                    ?>>Outros</option>
                 </select>
             </div>
             <div>
                 <label>Condi&ccedil;&atilde;o do leito</label>
                 <select name="condicao" id="txtcondicao" class="size2" selected="<?= @$obj->_condicao; ?>">
-                    <option value=Vago <?
-                            if (@$obj->_condicao == 'Vago'):echo 'selected';
-                            endif;
-                                        ?>>Vago</option>
+                    <option value=Normal <?
+                    if (@$obj->_condicao == 'Normal'):echo 'selected';
+                    endif;
+                    ?>>Normal</option>
                     <option value=Manutencao <?
-                            if (@$obj->_condicao == 'Manutencao'):echo 'selected';
-                            endif;
-                                        ?>>Manutencao</option>
+                    if (@$obj->_condicao == 'Manutencao'):echo 'selected';
+                    endif;
+                    ?>>Manutencao</option>
                     <option value=Higienizacao <?
-                            if (@$obj->_condicao == 'Higienizacao'):echo 'selected';
-                            endif;
-                                        ?>>Higienizacao</option>
+                    if (@$obj->_condicao == 'Higienizacao'):echo 'selected';
+                    endif;
+                    ?>>Higienizacao</option>
                     <option value=Fechado <?
-                            if (@$obj->_condicao == 'Fechado'):echo 'selected';
-                            endif;
-?>>Fechado</option>
-                    <option value=Cirurgico <?
-                            if (@$obj->_condicao == 'Cirurgico'):echo 'selected';
-                            endif;
-?>>Cirurgico</option>
+                    if (@$obj->_condicao == 'Fechado'):echo 'selected';
+                    endif;
+                    ?>>Fechado</option>
+
                 </select>
             </div>
         </fieldset>
@@ -84,24 +81,24 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-    $(function() {
-        $( "#txtEnfermaria" ).autocomplete({
+    $(function () {
+        $("#txtEnfermaria").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=enfermaria",
             minLength: 2,
-            focus: function( event, ui ) {
-                $( "#txtEnfermaria" ).val( ui.item.label );
+            focus: function (event, ui) {
+                $("#txtEnfermaria").val(ui.item.label);
                 return false;
             },
-            select: function( event, ui ) {
-                $( "#txtEnfermaria" ).val( ui.item.value );
-                $( "#txtEnfermariaID" ).val( ui.item.id );
+            select: function (event, ui) {
+                $("#txtEnfermaria").val(ui.item.value);
+                $("#txtEnfermariaID").val(ui.item.id);
                 return false;
             }
         });
     });
 
-    $(document).ready(function(){
-        jQuery('#form_paciente').validate( {
+    $(document).ready(function () {
+        jQuery('#form_paciente').validate({
             rules: {
                 nome: {
                     required: true,
@@ -114,11 +111,11 @@
                     required: true
                 },
                 cns: {
-                    maxLength:15
+                    maxLength: 15
                 }, rg: {
-                    maxLength:20
+                    maxLength: 20
                 }
-   
+
             },
             messages: {
                 nome: {

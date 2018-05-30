@@ -590,24 +590,83 @@ class internacao extends BaseController {
         $this->loadView('internacao/listarprescricaoenteral', $data);
     }
 
-    function listarprescricao() {
+    function relatorioprecadastro() {
         $data['unidade'] = $this->internacao_m->listaunidade();
-        $this->loadView('internacao/relatorioprescricao', $data);
+        $this->loadView('internacao/relatorioprecadastro', $data);
     }
 
-    function gerarelatoriointernacao() {
-        $data['prescricao'] = $this->internacao_m->listaprescricoesdata();
+    function gerarelatorioprecadastro() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
         $data['data_inicio'] = $_POST['txtdata_inicio'];
         $data['data_fim'] = $_POST['txtdata_fim'];
-        $data['tipo'] = $_POST['tipo'];
+        $data['precadastro'] = $this->internacao_m->relatorioprecadastro();
+//        var_dump($data['precadastro']);die;
+        if ($_POST['indicacao'] != 0) {
+            $indicacao = $this->internacao_m->pesquisarindicaco($_POST['indicacao']);
+            $data['indicacao'] = $indicacao[0]->nome;
+        } else {
+            $data['indicacao'] = 'TODOS';
+        }
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
+        } else {
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
+            } else {
+                $data['convenio'] = 'TODOS';
+            }
+        }
+
+        if ($_POST['tipo_dependencia'] != 0) {
+            $tipo_dependencia = $this->internacao_m->pesquisartipodependencia($_POST['tipo_dependencia']);
+            $data['tipo_dependencia'] = $tipo_dependencia[0]->nome;
+        } else {
+            $data['tipo_dependencia'] = 'TODOS';
+        }
+        if ($_POST['cidade'] != 0) {
+            $cidade = $this->internacao_m->pesquisarcidade($_POST['cidade']);
+            $data['cidade'] = $cidade[0]->nome;
+        } else {
+            $data['cidade'] = 'TODOS';
+        }
+
+        $this->load->View('internacao/impressaorelatorioprecadastro', $data);
+    }
+
+    function relatoriocensodiario() {
+        $data['unidade'] = $this->internacao_m->listaunidade();
+        $this->loadView('internacao/relatoriocensodiario', $data);
+    }
+
+    function gerarelatoriocensodiario() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $data['censodiario'] = $this->internacao_m->relatoriocensodiario();
+//        echo '<pre>';
+//        var_dump($data['censodiario']);
+//        die;
         if ($_POST['unidade'] != 0) {
             $unidade = $this->internacao_m->pesquisarunidade($_POST['unidade']);
             $data['unidade'] = $unidade[0]->nome;
         } else {
             $data['unidade'] = 'TODOS';
         }
-        $data['prescricaoequipo'] = $this->internacao_m->listaprescricoesequipodata();
-        $this->load->View('internacao/listarprescricoes', $data);
+
+        if ($_POST['enfermaria'] != 0) {
+            $enfermaria = $this->internacao_m->pesquisarenfermaria($_POST['enfermaria']);
+            $data['enfermaria'] = $enfermaria[0]->nome;
+        } else {
+            $data['enfermaria'] = 'TODOS';
+        }
+
+
+
+
+        $this->load->View('internacao/impressaorelatoriocensodiario', $data);
     }
 
     function mostratransferirpaciente($paciente_id) {

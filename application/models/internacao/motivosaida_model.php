@@ -110,12 +110,14 @@ class motivosaida_model extends BaseModel {
                            i.carater_internacao,
                            i.justificativa,
                            i.observacao_saida,
-                           i.leito,
+                           i.leito as leito_id,
+                           il.nome as leito,
                            i.procedimentosolicitado,
                            i.cid1solicitado,
                            p.sexo,
                            p.nascimento');
         $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
         $this->db->join('tb_internacao_motivosaida m', 'm.internacao_motivosaida_id = i.motivo_saida', 'left');
@@ -150,6 +152,16 @@ class motivosaida_model extends BaseModel {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
 
+        $this->db->set('internacao_id', $_POST['internacao_id']);
+        $this->db->set('leito_id', $_POST['leito_id']);
+        $this->db->set('tipo', 'SAIDA');
+        $this->db->set('status', 'SAIDA');
+        $this->db->set('data', $horario);
+        $this->db->set('operador_movimentacao', $operador_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_internacao_leito_movimentacao');
+
         //Tabela internação alteração
         if ($_POST['motivosaida'] == 'transferencia') {
             $this->db->set('ativo', 'f');
@@ -182,7 +194,7 @@ class motivosaida_model extends BaseModel {
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->set('ativo', 't');
-        $this->db->where('internacao_leito_id', $_POST['leito']);
+        $this->db->where('internacao_leito_id', $_POST['leito_id']);
         $this->db->update('tb_internacao_leito');
     }
 

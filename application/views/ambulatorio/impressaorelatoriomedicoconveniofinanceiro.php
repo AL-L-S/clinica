@@ -65,8 +65,8 @@ switch ($MES) {
         <h4>Medico: <?= $medico[0]->operador; ?></h4>
     <? } ?>
         
-    <? if (count($sala) > 0) { ?>
-        <h4>SALA: <?= $sala[0]->nome; ?></h4>
+    <? if (count(@$sala) > 0) { ?>
+        <h4>SALA: <?= @$sala[0]->nome; ?></h4>
     <? } else { ?>
         <h4>TODAS AS SALAS</h4>
     <? } ?>
