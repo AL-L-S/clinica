@@ -150,7 +150,7 @@ if (@$exame[0]->forma_pagamento4 == 1000) {
                     </dl>    
 
                     <hr/>
-                    <? if ($exame[0]->paciente_id == 'f') { ?>
+                    <? if ($exame[0]->financeiro == 'f') { ?>
                         <button type="submit" name="btnEnviar" id="btnEnviar" <?= $usouCredito ? "disabled='true'" : '' ?>>
                             Enviar
                         </button>
