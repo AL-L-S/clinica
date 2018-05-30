@@ -170,23 +170,121 @@ class procedimentoplano_model extends Model {
     function listarconvenioprocedimentopercentual($convenio_id = null) {
         $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
+                            c.nome as convenio,
                             pt.grupo,
+                            pc.convenio_id,
                             pt.nome as procedimento,
+                            pc.procedimento_tuss_id,
                             pc.empresa_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
         $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("c.associado", 'false');
         $this->db->where("pc.ativo", 't');
-        $this->db->where("c.convenio_id", $convenio_id);
+        if ($convenio_id != null) {
+            $this->db->where("c.convenio_id", $convenio_id);
+        }
         $empresa_id = $this->session->userdata('empresa_id');
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
         if ($procedimento_multiempresa == 't') {
             $this->db->where('pc.empresa_id', $empresa_id);
         }
 
-        $this->db->orderby("pt.nome");
+        $this->db->orderby("c.nome, pt.grupo, pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarconvenioprocedimentopercentualpromotoreditar($promotor_id) {
+        $this->db->select(' ppmc.procedimento_percentual_promotor_convenio_id as percentual_id,
+                            pt.grupo,
+                            pt.codigo,
+                            ppmc.valor,
+                            pc.convenio_id,
+                            ppmc.percentual,
+                            c.nome as convenio,
+                            pt.nome as procedimento,
+                            pc.procedimento_tuss_id,
+                            pc.procedimento_convenio_id,
+                            pc.empresa_id');
+        $this->db->from('tb_procedimento_percentual_promotor_convenio ppmc');
+        $this->db->join('tb_procedimento_percentual_promotor ppm', 'ppm.procedimento_percentual_promotor_id = ppmc.procedimento_percentual_promotor_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'ppm.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("ppm.ativo", 't');
+        $this->db->where("ppmc.ativo", 't');
+        $this->db->where("ppmc.promotor", $promotor_id);
+
+        $this->db->orderby("c.nome, pt.grupo, pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarconvenioprocedimentopercentualmedicoeditar($medico_id) {
+        $this->db->select(' ppmc.procedimento_percentual_medico_convenio_id as percentual_id,
+                            ppmc.valor,
+                            ppmc.percentual,
+                            ppmc.tempo_recebimento,
+                            ppmc.dia_recebimento,
+                            ppmc.revisor,
+                            pc.procedimento_convenio_id,
+                            pt.codigo,
+                            c.nome as convenio,
+                            pt.grupo,
+                            pc.convenio_id,
+                            pt.nome as procedimento,
+                            pc.procedimento_tuss_id,
+                            pc.empresa_id');
+        $this->db->from('tb_procedimento_percentual_medico_convenio ppmc');
+        $this->db->join('tb_procedimento_percentual_medico ppm', 'ppm.procedimento_percentual_medico_id = ppmc.procedimento_percentual_medico_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'ppm.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("ppm.ativo", 't');
+        $this->db->where("ppmc.ativo", 't');
+        $this->db->where("ppmc.medico", $medico_id);
+
+        $this->db->orderby("c.nome, pt.grupo, pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarconvenioprocedimentopercentuallaboratorioreditar($laboratorio_id) {
+        $this->db->select(' ppmc.procedimento_percentual_laboratorio_convenio_id as percentual_id,
+                            ppmc.valor,
+                            ppmc.percentual,
+                            ppmc.tempo_recebimento,
+                            ppmc.dia_recebimento,
+                            pc.procedimento_convenio_id,
+                            pt.codigo,
+                            c.nome as convenio,
+                            pt.grupo,
+                            pc.convenio_id,
+                            pt.nome as procedimento,
+                            pc.procedimento_tuss_id,
+                            pc.empresa_id');
+        $this->db->from('tb_procedimento_percentual_laboratorio_convenio ppmc');
+        $this->db->join('tb_procedimento_percentual_laboratorio ppm', 'ppm.procedimento_percentual_laboratorio_id = ppmc.procedimento_percentual_laboratorio_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'ppm.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo');
+        $this->db->where("ag.tipo !=", 'CIRURGICO');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("ppm.ativo", 't');
+        $this->db->where("ppmc.ativo", 't');
+        $this->db->where("ppmc.laboratorio", $laboratorio_id);
+
+        $this->db->orderby("c.nome, pt.grupo, pt.nome");
         $return = $this->db->get();
         return $return->result();
     }
@@ -330,7 +428,6 @@ class procedimentoplano_model extends Model {
         if (isset($args['laboratorio_id']) && @$args['laboratorio_id'] != '') {
             $this->db->where('l.laboratorio_id', $args['laboratorio_id']);
         }
-
         return $this->db;
     }
 
@@ -1210,6 +1307,26 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
+    function listarconveniopercentual() {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+//        $this->db->where("c.associado", 'false');
+        $this->db->where("ce.empresa_id", $empresa_id);
+        $this->db->where("ce.ativo", 'true');
+        $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
+    }
+
     function listarconvenio() {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -1809,6 +1926,141 @@ class procedimentoplano_model extends Model {
             } catch (Exception $exc) {
                 return 0;
             }
+        }
+    }
+
+    function gravareditarpromotorpercentualmultiplos() {
+        try {
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            foreach($_POST["percentual"] as $key => $item){
+                $procedimento_percentual_promotor_convenio_id = $_POST["percentual_id"][$key];
+                $percentual = $_POST["percentual"][$key];
+                $valor = $_POST["valor"][$key];
+                
+                if($valor != ''){
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_id);
+                    $this->db->set('valor', $valor);
+                    $this->db->set('percentual', $percentual);
+                    $this->db->where("procedimento_percentual_promotor_convenio_id", $procedimento_percentual_promotor_convenio_id);
+                    $this->db->update('tb_procedimento_percentual_promotor_convenio ');
+                }
+            }
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return false;
+            else
+                return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravareditarlaboratoriopercentualmultiplos() {
+        try {
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            foreach($_POST["percentual"] as $key => $item){
+                $procedimento_percentual_laboratorio_convenio_id = $_POST["percentual_id"][$key];
+                $tempo_recebimento = $_POST["tempo_recebimento"][$key];
+                $dia_recebimento = $_POST["dia_recebimento"][$key];
+                $percentual = $_POST["percentual"][$key];
+                $valor = $_POST["valor"][$key];
+                if($valor != ''){
+                    
+                    $sql = "INSERT INTO ponto.tb_procedimento_percentual_laboratorio_convenio_antigo(procedimento_percentual_laboratorio_convenio_id, 
+                            procedimento_percentual_laboratorio_id, laboratorio, valor, percentual, 
+                            ativo, data_cadastro, operador_cadastro, data_atualizacao, operador_atualizacao, 
+                            dia_recebimento, tempo_recebimento)
+                            SELECT procedimento_percentual_laboratorio_convenio_id, procedimento_percentual_laboratorio_id, 
+                            laboratorio, valor, percentual, ativo, '$horario', $operador_id, 
+                            '$horario', $operador_id, dia_recebimento, tempo_recebimento
+                            FROM ponto.tb_procedimento_percentual_laboratorio_convenio
+                            WHERE procedimento_percentual_laboratorio_convenio_id = $procedimento_percentual_laboratorio_convenio_id";
+                    $this->db->query($sql);
+
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_id);
+                    $this->db->set('valor', $valor);
+                    $this->db->set('percentual', $percentual);
+                    if ($dia_recebimento != '') {
+                        $this->db->set('dia_recebimento', $dia_recebimento);
+                    }
+                    if ($tempo_recebimento != '') {
+                        $this->db->set('tempo_recebimento', $tempo_recebimento);
+                    }
+                    $this->db->where("procedimento_percentual_laboratorio_convenio_id", $procedimento_percentual_laboratorio_convenio_id);
+                    $this->db->update('tb_procedimento_percentual_laboratorio_convenio');
+                }
+            }
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return false;
+            else
+                return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravareditarmedicopercentualmultiplos() {
+        try {
+//            echo "<pre>";
+//            var_dump($_POST); die;
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            foreach($_POST["percentual"] as $key => $item){
+                $procedimento_percentual_medico_convenio_id = $_POST["percentual_id"][$key];
+                $tempo_recebimento = $_POST["tempo_recebimento"][$key];
+                $dia_recebimento = $_POST["dia_recebimento"][$key];
+                $percentual = $_POST["percentual"][$key];
+                $revisor = $_POST["revisor"][$key];
+                $valor = $_POST["valor"][$key];
+                if($valor != ''){
+                    $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico_convenio_antigo(procedimento_percentual_medico_convenio_id, 
+                    procedimento_percentual_medico_id, medico, valor, percentual, 
+                    ativo, data_cadastro, operador_cadastro, data_atualizacao, operador_atualizacao, 
+                    dia_recebimento, tempo_recebimento)
+                    SELECT procedimento_percentual_medico_convenio_id, procedimento_percentual_medico_id, 
+                    medico, valor, percentual, ativo, '$horario', $operador_id, 
+                    '$horario', $operador_id, dia_recebimento, tempo_recebimento
+                    FROM ponto.tb_procedimento_percentual_medico_convenio
+                    WHERE procedimento_percentual_medico_convenio_id = $procedimento_percentual_medico_convenio_id";
+                    $this->db->query($sql);
+
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_id);
+                    $this->db->set('valor', $valor);
+                    $this->db->set('percentual', $percentual);
+                    if (isset($revisor)) {
+                        $this->db->set('revisor', 't');
+                    } else {
+                        $this->db->set('revisor', 'f');
+                    }
+                    if ($dia_recebimento != '') {
+                        $this->db->set('dia_recebimento', $dia_recebimento);
+                    }
+                    if ($tempo_recebimento != '') {
+                        $this->db->set('tempo_recebimento', $tempo_recebimento);
+                    }
+                    $this->db->where("procedimento_percentual_medico_convenio_id", $procedimento_percentual_medico_convenio_id);
+                    $this->db->update('tb_procedimento_percentual_medico_convenio');
+                }
+            }
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return false;
+            else
+                return true;
+        } catch (Exception $exc) {
+            return false;
         }
     }
 
@@ -4088,10 +4340,10 @@ class procedimentoplano_model extends Model {
                         if ($tempoRecebimento != '') {
                             $this->db->set('tempo_recebimento', $tempoRecebimento);
                         }
-                        $this->db->set('percentual', $percentual);
                         if ($revisor == '1') {
                             $this->db->set('revisor', 't');
                         }
+                        $this->db->set('percentual', $percentual);
 
                         if (count($prm) == 0) {
                             $this->db->set('data_cadastro', $horario);
@@ -4123,8 +4375,8 @@ class procedimentoplano_model extends Model {
     
     function gravarpercentualpromotormultiplo() {
         try {
-            $grupo = "TODOS";
-            $convenio = $_POST['covenio'];
+//            $grupo = "TODOS";
+//            $convenio = $_POST['convenio'];
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             
@@ -4160,7 +4412,7 @@ class procedimentoplano_model extends Model {
                             $this->db->insert('tb_procedimento_percentual_promotor');
                             $procedimento_percentual_medico_id = $this->db->insert_id();
                         } else {
-                            $procedimento_percentual_medico_id = $pr[0]->procedimento_percentual_medico_id;
+                            $procedimento_percentual_medico_id = $pr[0]->procedimento_percentual_promotor_id;
                         }
 
                         $this->db->select('procedimento_percentual_promotor_convenio_id');
@@ -4183,7 +4435,7 @@ class procedimentoplano_model extends Model {
                         } else {
                             $this->db->set('data_atualizacao', $horario);
                             $this->db->set('operador_atualizacao', $operador_id);
-                            $this->db->where('procedimento_percentual_medico_convenio_id', $prm[0]->procedimento_percentual_promotor_convenio_id);
+                            $this->db->where('procedimento_percentual_promotor_convenio_id', $prm[0]->procedimento_percentual_promotor_convenio_id);
                             $this->db->update('tb_procedimento_percentual_promotor_convenio');
                         }
                     }
@@ -4203,8 +4455,8 @@ class procedimentoplano_model extends Model {
     
     function gravarpercentuallaboratoriomultiplo() {
         try {
-            $grupo = "TODOS";
-            $convenio = $_POST['covenio'];
+//            $grupo = "TODOS";
+//            $convenio = $_POST['covenio'];
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             
@@ -4222,9 +4474,12 @@ class procedimentoplano_model extends Model {
                 foreach($_POST['procedimento_convenio_id'] as $key => $value){
                     
                     $procedimento_convenio_id = $_POST['procedimento_convenio_id'][$key];
+                    $tempoRecebimento = $_POST['tempo_recebimento'][$key];
+                    $diaRecebimento = $_POST['dia_recebimento'][$key];
                     $percentual = $_POST['percentual'][$key];
-                    $valor = $_POST['valor'][$key];
                     $laboratorio_id = $item->laboratorio_id;
+//                    $revisor = $_POST['revisor'][$key];
+                    $valor = $_POST['valor'][$key];
                     
                     if ($valor != '') {
                         
@@ -4241,13 +4496,13 @@ class procedimentoplano_model extends Model {
                             $this->db->insert('tb_procedimento_percentual_laboratorio');
                             $procedimento_percentual_medico_id = $this->db->insert_id();
                         } else {
-                            $procedimento_percentual_medico_id = $pr[0]->procedimento_percentual_medico_id;
+                            $procedimento_percentual_medico_id = $pr[0]->procedimento_percentual_laboratorio_id;
                         }
 
                         $this->db->select('procedimento_percentual_laboratorio_convenio_id');
                         $this->db->from('tb_procedimento_percentual_laboratorio_convenio');
                         $this->db->where('procedimento_percentual_laboratorio_id', $procedimento_percentual_medico_id);
-                        $this->db->where('laboratorio', $promotor);
+                        $this->db->where('laboratorio', $laboratorio_id);
                         $this->db->where('ativo', 'true');
                         $return = $this->db->get();
                         $prm = $return->result();
@@ -4256,6 +4511,15 @@ class procedimentoplano_model extends Model {
                         $this->db->set('laboratorio', $laboratorio_id);
                         $this->db->set('valor', (float) $valor);
                         $this->db->set('percentual', $percentual);
+                        if ($diaRecebimento != '') {
+                            $this->db->set('dia_recebimento', $diaRecebimento);
+                        }
+                        if ($tempoRecebimento != '') {
+                            $this->db->set('tempo_recebimento', $tempoRecebimento);
+                        }
+//                        if ($revisor == '1') {
+//                            $this->db->set('revisor', 't');
+//                        }
 
                         if (count($prm) == 0) {
                             $this->db->set('data_cadastro', $horario);

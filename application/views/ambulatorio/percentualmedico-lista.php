@@ -2,7 +2,7 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <table>
         <tr>
-            <? if($permissoes[0]->percentual_multiplo != 't') {?>
+            <? if($permissoes[0]->percentual_multiplo != 't') { ?>
                 <td>
                     <div class="bt_link_new">
                         <a target="_blank" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/procedimentoconveniopercentualmedico">
@@ -104,13 +104,16 @@
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->operador; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"></td>
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentualmedico/<?= $item->operador_id; ?>">Editar</a>  
-                                    </td>
+                                    <? if($permissoes[0]->percentual_multiplo != 't') { ?>
+                                        <td class="<?php echo $estilo_linha; ?>">
+                                            <a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentualmedico/<?= $item->operador_id; ?>">Editar</a>  
+                                        </td>
+                                    <? } else { ?>
+                                        <td class="<?php echo $estilo_linha; ?>">
+                                            <a target="_blank" href="<?= base_url() ?>ambulatorio/procedimentoplano/editarmedicopercentualmultiplos/<?= $item->operador_id; ?>">Editar</a>  
+                                        </td>                                        
+                                    <? } ?>
                                     <td class="<?php echo $estilo_linha; ?>" style="text-align: center">
-                                        <!--                                        <a onclick="javascript: return confirm('Deseja realmente excluir os percentuais associados a esse convenio?');" target="_blank"
-                                                                                   href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirmedicopercentual/<?= $item->operador_id; ?>">Excluir&nbsp;
-                                                                                </a>-->
                                         <input type="checkbox" id="percentual" name="medico[<?= $item->operador_id; ?>]"/>
                                     </td>
                                 </tr>

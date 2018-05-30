@@ -416,52 +416,69 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/ajustarpercentualmedico-form', $data);
     }
     
+    function editarlaboratoriopercentualmultiplos($laboratorio_id) {
+        $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentuallaboratorioreditar($laboratorio_id);
+        $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
+        $data['convenio'] = $this->procedimentoplano->listarconveniopercentual();
+        $data['grupos'] = $this->procedimentoplano->listargrupo();
+        $data['laboratorio_id'] = $laboratorio_id;
+        
+        $this->loadView('ambulatorio/editarlaboratoriopercentualmultiplos-form', $data);
+    }
+    
+    function editarpromotorpercentualmultiplos($promotor_id) {
+        $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentualpromotoreditar($promotor_id);
+        $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
+        $data['convenio'] = $this->procedimentoplano->listarconveniopercentual();
+        $data['grupos'] = $this->procedimentoplano->listargrupo();
+        $data['promotor_id'] = $promotor_id;
+        
+        $this->loadView('ambulatorio/editarpromotorpercentualmultiplos-form', $data);
+    }
+    
+    function editarmedicopercentualmultiplos($medico_id) {
+        $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentualmedicoeditar($medico_id);
+        $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
+        $data['convenio'] = $this->procedimentoplano->listarconveniopercentual();
+        $data['grupos'] = $this->procedimentoplano->listargrupo();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['medico_id'] = $medico_id;
+//        echo "<pre>";
+//        var_dump($data['procedimento']); die;
+        $this->loadView('ambulatorio/editarmedicopercentualmultiplos-form', $data);
+    }
+    
     function percentualmedicomultiplo($convenio_id = null, $medico_id = null) {
+        $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+        $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['convenio_id'] = $convenio_id;
         $data['medico_id'] = $medico_id;
-        
-        if ($convenio_id != null){
-            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual($convenio_id);
-        }
-        else {
-            $data['procedimento'] = array();
-        }
         $this->loadView('ambulatorio/percentualmedicomultiplo-form', $data);
     }
     
     function percentualpromotormultiplo($convenio_id = null, $promotor_id = null) {
+        $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+        $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
         $data['promotor'] = $this->paciente->listaindicacao();
         $data['convenio_id'] = $convenio_id;
         $data['promotor_id'] = $promotor_id;
-        
-        if ($convenio_id != null){
-            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual($convenio_id);
-        }
-        else {
-            $data['procedimento'] = array();
-        }
         $this->loadView('ambulatorio/percentualpromotormultiplo-form', $data);
     }
     
     
     function percentuallaboratoriomultiplo($convenio_id = null, $laboratorio_id = null) {
+        $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+        $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
+        $data['laboratorios'] = $this->laboratorio->listarlaboratorios();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
-        $data['laboratorios'] = $this->laboratorio->listarlaboratorios();
         $data['laboratorio_id'] = $laboratorio_id;
         $data['convenio_id'] = $convenio_id;
-        
-        if ($convenio_id != null){
-            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual($convenio_id);
-        }
-        else {
-            $data['procedimento'] = array();
-        }
         $this->loadView('ambulatorio/percentuallaboratoriomultiplo-form', $data);
     }
 
@@ -738,6 +755,42 @@ class Procedimentoplano extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
+    function excluirpromotorpercentualmultiplos() {
+        $lista = explode(",",$_GET['percentual']);
+        
+        foreach($lista as $value){
+            $this->procedimentoplano->excluirpromotorpercentual($value);
+        }
+
+        $mensagem = 'Sucesso ao excluir o Percentual promotor';
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+    function excluirlaboratoriopercentualmultiplos() {
+        $lista = explode(",",$_GET['percentual']);
+        
+        foreach($lista as $value){
+            $this->procedimentoplano->excluirlaboratoriopercentual($value);
+        }
+
+        $mensagem = 'Sucesso ao excluir o Percentual medico';
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+    function excluirpercentualmultiplos() {
+        $lista = explode(",",$_GET['percentual']);
+        
+        foreach($lista as $value){
+            $this->procedimentoplano->excluirpercentual($value);
+        }
+
+        $mensagem = 'Sucesso ao excluir o Percentual medico';
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function excluirpercentual() {
 
         foreach ($_POST['percentual'] as $key => $value) {
@@ -816,6 +869,42 @@ class Procedimentoplano extends BaseController {
 //        $data['convenio_id'] = $convenio_id;
         $data['procedimento_percentual_promotor_convenio_id'] = $procedimento_percentual_promotor_convenio_id;
         $this->loadView("ambulatorio/promotorpercentual-editar", $data);
+    }
+
+    function gravareditarlaboratoriopercentualmultiplos() {
+
+        if ($this->procedimentoplano->gravareditarlaboratoriopercentualmultiplos()) {
+            $mensagem = 'Sucesso ao editar o Percentual medico';
+        } else {
+            $mensagem = 'Erro ao editar o Percentual medico. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function gravareditarmedicopercentualmultiplos() {
+
+        if ($this->procedimentoplano->gravareditarmedicopercentualmultiplos()) {
+            $mensagem = 'Sucesso ao editar o Percentual medico';
+        } else {
+            $mensagem = 'Erro ao editar o Percentual medico. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function gravareditarpromotorpercentualmultiplos() {
+
+        if ($this->procedimentoplano->gravareditarpromotorpercentualmultiplos()) {
+            $mensagem = 'Sucesso ao editar o Percentual promotor';
+        } else {
+            $mensagem = 'Erro ao editar o Percentual promotor. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravareditarmedicopercentual($procedimento_percentual_medico_convenio_id, $medico_id, $convenio_id) {

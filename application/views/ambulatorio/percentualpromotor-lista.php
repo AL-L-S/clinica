@@ -90,13 +90,21 @@
                                 <tr>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->promotor; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"></td>
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentualpromotor/<?= $item->promotor_id; ?>">Editar</a>  
-                                    </td>
+                                    <? if($permissoes[0]->percentual_multiplo != 't') { ?>
+                                    
+                                        <td class="<?php echo $estilo_linha; ?>">
+                                            <a href="<?= base_url() ?>ambulatorio/procedimentoplano/conveniopercentualpromotor/<?= $item->promotor_id; ?>">Editar</a>  
+                                        </td>
+                                        
+                                    <? } else { ?>
+                                        
+                                        <td class="<?php echo $estilo_linha; ?>">
+                                            <a target="_blank" href="<?= base_url() ?>ambulatorio/procedimentoplano/editarpromotorpercentualmultiplos/<?= $item->promotor_id; ?>">Editar</a>  
+                                        </td>  
+                                        
+                                    <? } ?>
+                                        
                                     <td class="<?php echo $estilo_linha; ?>"  style="text-align: center">
-<!--                                        <a onclick="javascript: return confirm('Deseja realmente excluir os percentuais associados a esse promotor?');" target="_blank"
-                                           href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirpercentualpromotorgeral/<?= $item->promotor_id; ?>">Excluir&nbsp;
-                                        </a>-->
                                         <input type="checkbox" id="percentual" name="promotor[<?= $item->promotor_id; ?>]"/>
 
                                     </td>
