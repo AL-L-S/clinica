@@ -86,32 +86,6 @@ CREATE TABLE ponto.tb_internacao_ficha_questionario
 (
   internacao_ficha_questionario_id serial NOT NULL,
   paciente_id integer,
-  ocupacao_id integer,
-  municipio_id integer,
-  nome text,
-  tipo_dependencia text,
-  idade_inicio integer,
-  paciente_agressivo text,
-  aceita_tratamento text,
-  tomou_conhecimento text,
-  plano_saude text,
-  plano_saude_qual text,
-  tratamento_anterior text,
-  telefone_contato text,
-  operador_atendimento integer,
-  observacao text,
-  ativo boolean DEFAULT true,
-  data_cadastro timestamp without time zone,
-  operador_cadastro integer,
-  data_atualizacao timestamp without time zone,
-  operador_atualizacao integer,
-  CONSTRAINT tb_internacao_ficha_questionario_pkey PRIMARY KEY (internacao_ficha_questionario_id)
-);
-
-CREATE TABLE ponto.tb_internacao_ficha_questionario
-(
-  internacao_ficha_questionario_id serial NOT NULL,
-  paciente_id integer,
   municipio_id integer,
   convenio_id integer,
   nome text,

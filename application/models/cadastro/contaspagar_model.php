@@ -99,6 +99,7 @@ class contaspagar_model extends Model {
                             fc.credor,
                             fc.observacao,
                             fc.data,
+                            fc.parcela,
                             e.nome as empresa,
                             fcd.razao_social,
                             fe.descricao as conta,

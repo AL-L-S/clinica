@@ -15,6 +15,7 @@
     $tipo = $this->tipo->listartipo();
 
     $perfil_id = $this->session->userdata('perfil_id');
+    $empresa_id = $this->session->userdata('empresa_id');
     ?>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Entrada</a></h3>
@@ -39,7 +40,7 @@
                                 <option value="">TODOS</option>
                                 <? foreach ($empresas as $value) : ?>
                                     <option value="<?= $value->empresa_id; ?>" <?
-                                    if (@$_GET['txtempresa'] == $value->empresa_id):echo 'selected';
+                                    if (@$_GET['txtempresa'] == $value->empresa_id || ($empresa_id == $value->empresa_id && @$_GET['txtempresa'] == '')):echo 'selected';
                                     endif;
                                     ?>><?php echo $value->nome; ?></option>
                                         <? endforeach; ?>
