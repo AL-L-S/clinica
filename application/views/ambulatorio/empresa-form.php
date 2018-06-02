@@ -726,6 +726,12 @@
                             <dd>
                                 <input type="checkbox" id="orcamento_cadastro" name="orcamento_cadastro" <? if (@$obj->_orcamento_cadastro == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ativando essa opção o Gerente de Recepção irá ter acesso á alguns relatórios do financeiro e do faturamento">Gerente de Recepção Rel. Financeiro</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="gerente_recepcao_financeiro" name="gerente_relatorio_financeiro" <? if (@$obj->_gerente_relatorio_financeiro == 't') echo "checked"; ?>/> 
+                            </dd>
                         </fieldset>
                     <? } ?>
                 </dl>    
