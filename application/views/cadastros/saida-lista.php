@@ -1,10 +1,17 @@
-
+<?
+$empresa_id = $this->session->userdata('empresa_id');
+if (@$_GET['txtempresa'] != '') {
+    $empresa_form_id = @$_GET['txtempresa'];
+} else {
+    $empresa_form_id = $empresa_id;
+}
+?>
 <div class="content"> <!-- Inicio da DIV content -->
     <table>
         <tr>
             <td>
                 <div class="bt_link_new">
-                    <a target="_blank" href="<?php echo base_url() ?>cadastros/caixa/novasaida/<?=@$_GET['txtempresa']?>">
+                    <a target="_blank" href="<?php echo base_url() ?>cadastros/caixa/novasaida/<?=@$empresa_form_id?>">
                         Nova saida
                     </a>
                 </div>
@@ -32,7 +39,7 @@
     $tipo = $this->tipo->listartipo();
     
     $perfil_id = $this->session->userdata('perfil_id');
-    $empresa_id = $this->session->userdata('empresa_id');
+//    $empresa_id = $this->session->userdata('empresa_id');
     ?>
 
     <div id="accordion">

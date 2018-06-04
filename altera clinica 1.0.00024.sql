@@ -19,3 +19,23 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2170');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000024',
+            'Criada uma nova tela onde se tem uma lista das internações',
+            '2170',
+            'Melhoria'
+            );
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();

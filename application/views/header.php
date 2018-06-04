@@ -959,7 +959,9 @@ function debug($object) {
                             <ul>
                                 <li><span class="folder">Rotinas</span>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/manterfichaquestionario">Listar Pré-Cadastro</a></span></ul>
+                                    
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarsolicitacaointernacao">Listar Solicitações</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarinternacaolista">Listar Internações</a></span></ul>
                                     <!--<ul><span class="file"><a href="<?= base_url() ?>internacao/internacao">Listar Internacoes</a></span></ul>-->
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarsaida">Listar Saidas</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pacientesinternados/Todas">Pacientes Internados</a></span></ul>

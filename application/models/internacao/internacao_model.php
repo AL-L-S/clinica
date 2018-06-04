@@ -761,11 +761,15 @@ class internacao_model extends BaseModel {
             $this->db->set('ocupacao_responsavel', $_POST['ocupacao']);
 //            $this->db->set('grau_parentesco', $empresa_id);
             $this->db->set('paciente_id', $paciente_id);
-            $this->db->set('idade_inicio', $_POST['idade_inicio']);
             if ($_POST['tipo_dependencia'] > 0) {
                 $this->db->set('tipo_dependencia', $_POST['tipo_dependencia']);
             }
-            $this->db->set('idade_inicio', $_POST['idade_inicio']);
+            if ($_POST['idade_inicio'] > 0) {
+//                echo 'asdad';
+                $this->db->set('idade_inicio', $_POST['idade_inicio']);
+            }
+//            var_dump($_POST['idade_inicio']); die;
+
             $this->db->set('paciente_agressivo', $_POST['paciente_agressivo']);
             $this->db->set('aceita_tratamento', $_POST['aceita_tratamento']);
             if ($_POST['indicacao'] > 0) {
@@ -1749,7 +1753,7 @@ class internacao_model extends BaseModel {
         $this->db->where('i.ativo', 't');
         $return1 = $this->db->get()->result();
         $internacao_id = $return1[0]->internacao_id;
-        
+
         // Inserindo na tabela a saida e a entrada do paciente 2 (O que foi escolhido no select)
         $this->db->set('internacao_id', $internacao_id);
         $this->db->set('leito_id', $_POST['leito_id']);
@@ -1924,6 +1928,32 @@ class internacao_model extends BaseModel {
         }
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function listarinternacaolista($args = array()) {
+        $this->db->select('pt.nome as procedimento,
+                           p.nome as paciente,
+                           cid.no_cid as nomecid,
+                           cid.co_cid as codcid,
+                           i.data_internacao,
+                           o.nome as medico,
+                           il.nome as leito,
+                           i.internacao_id,
+                           i.paciente_id,
+                           i.procedimentosolicitado,
+                           i.estado');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = i.procedimentosolicitado', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
+        $this->db->where('i.ativo', 't');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');
+//                $this->db->orwhere('i.paciente_id', $args['nome']);
+        }
+        return $this->db;
     }
 
     function listarleitosinternacao($parametro) {

@@ -181,6 +181,12 @@ class internacao extends BaseController {
 //        var_dump($data['impressao']); die;
         $this->loadView('internacao/manterfichaquestionario-lista', $args);
     }
+    function pesquisarinternacaolista($args = array()) {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->loadView('internacao/pesquisarinternacao-lista', $args);
+    }
 
     function carregarfichaquestionario($internacao_ficha_questionario_id) {
         $data['convenio'] = $this->convenio->listardados();
