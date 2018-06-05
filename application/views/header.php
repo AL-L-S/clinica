@@ -1049,7 +1049,7 @@ function debug($object) {
                                     <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 13 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelodeclaracao">Modelo Declara&ccedil;&atilde;o</a></span></ul>
                                     <? } ?>
-                                    <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/relatorioemailoperador">Relatorio Email Operador</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/relatorioemailoperador">Relatorio Operador</a></span></ul>
                                 </li>
                                 <li><span class="folder">Procedimento</span>                    
                                     <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10) { ?>

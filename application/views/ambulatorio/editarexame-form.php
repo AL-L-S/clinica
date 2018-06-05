@@ -13,18 +13,13 @@
                     </div>
                     <div>
                         <label>Sexo</label>
-                        <option value="M" <?
-                        if ($paciente['0']->sexo == "M"):echo 'selected';
-                        endif;
-                        ?>>Masculino</option>
-                        <option value="F" <?
-                        if ($paciente['0']->sexo == "F"):echo 'selected';
-                        endif;
-                        ?>>Feminino</option>
-                        <option value="O" <?
-                        if ($paciente['0']->sexo == "O"):echo 'selected';
-                        endif;
-                        ?>>Outro</option>
+                        <?
+                        if ($paciente['0']->sexo == "M") $sexo = "Masculino";
+                        elseif ($paciente['0']->sexo == "F") $sexo = "Feminino";
+                        else $sexo = "Outro";
+                        ?>
+                        <input type="text" id="txtSexo" name="txtSexo"  class="texto02" value="<?= $sexo; ?>" readonly/>
+                        
                     </div>
 
                     <div>

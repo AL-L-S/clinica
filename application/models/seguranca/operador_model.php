@@ -132,71 +132,77 @@ class Operador_model extends BaseModel {
             $empresa_id_origem = (int) $_POST['empresa_id_origem'];
             $empresa_id_destino = (int) $_POST['empresa_id_destino'];
 
+            $horario = date("Y-m-d H:i:s");
+            $operador_cadastro_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_cadastro_id);
+            $this->db->where('empresa_id', $empresa_id_destino);
+            $this->db->update('tb_ambulatorio_empresa_operador');
+            
+            $this->db->set('operador_id', $operador_id);
+            $this->db->set('empresa_id', $empresa_id_destino);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_cadastro_id);
+            $this->db->insert('tb_ambulatorio_empresa_operador');
+            
             $this->db->select('convenio_id');
             $this->db->from('tb_ambulatorio_convenio_operador');
             $this->db->where('ativo', 't');
             $this->db->where('operador_id', $operador_id);
             $this->db->where('empresa_id', $empresa_id_origem);
             $return = $this->db->get()->result();
-
+            
             foreach ($return as $conv) {
 
                 $convenio_id = (int) $conv->convenio_id;
 
-                $this->db->select('ambulatorio_convenio_operador_id');
-                $this->db->from('tb_ambulatorio_convenio_operador');
-                $this->db->where('ativo', 't');
+                $this->db->set('ativo', 'f');
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_cadastro_id);
                 $this->db->where('operador_id', $operador_id);
                 $this->db->where('convenio_id', $convenio_id);
                 $this->db->where('empresa_id', $empresa_id_destino);
-                $return = $this->db->get()->result();
+                $this->db->update('tb_ambulatorio_convenio_operador');
+            
+                $this->db->set('operador_id', $operador_id);
+                $this->db->set('convenio_id', $convenio_id);
+                $this->db->set('empresa_id', $empresa_id_destino);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_cadastro_id);
+                $this->db->insert('tb_ambulatorio_convenio_operador');
 
-                if (count($return) == 0) {
-                    $this->db->set('operador_id', $operador_id);
-                    $this->db->set('convenio_id', $convenio_id);
-                    $this->db->set('empresa_id', $empresa_id_destino);
-                    $horario = date("Y-m-d H:i:s");
-                    $operador_id = $this->session->userdata('operador_id');
-                    $this->db->set('data_cadastro', $horario);
-                    $this->db->set('operador_cadastro', $operador_id);
-                    $this->db->insert('tb_ambulatorio_convenio_operador');
-                }
-
+                $this->db->set('ativo', 'f');
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_cadastro_id);
+                $this->db->where('operador', $operador_id);
+                $this->db->where('convenio_id', $convenio_id);
+                $this->db->where('empresa_id', $empresa_id_destino);
+                $this->db->update('tb_convenio_operador_procedimento');
+                
                 $this->db->select('cop.procedimento_convenio_id');
                 $this->db->from('tb_convenio_operador_procedimento cop');
                 $this->db->where('cop.ativo', 't');
                 $this->db->where('cop.operador', $operador_id);
                 $this->db->where('cop.convenio_id', $convenio_id);
                 $this->db->where('cop.empresa_id', $empresa_id_origem);
-                $return = $this->db->get()->result();
+                $return2 = $this->db->get()->result();
 
-                if (count($return) > 0) {
-
-                    $horario = date("Y-m-d H:i:s");
-                    $operador_id = $this->session->userdata('operador_id');
-
-                    foreach ($return as $value) {
-                        $this->db->select('cop.procedimento_convenio_id');
-                        $this->db->from('tb_convenio_operador_procedimento cop');
-                        $this->db->where('ativo', 't');
-                        $this->db->where('operador', $operador_id);
-                        $this->db->where('convenio_id', $convenio_id);
-                        $this->db->where('empresa_id', $empresa_id_destino);
-                        $this->db->where('procedimento_convenio_id', $value->procedimento_convenio_id);
-                        $pr = $this->db->get()->result();
-
-                        if (count($pr) == 0) {
-                            $this->db->set('operador', $operador_id);
-                            $this->db->set('convenio_id', $convenio_id);
-                            $this->db->set('empresa_id', $empresa_id_destino);
-                            $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
-                            $this->db->set('data_cadastro', $horario);
-                            $this->db->set('operador_cadastro', $operador_id);
-                            $this->db->insert('tb_convenio_operador_procedimento');
-                        }
-                    }
+                foreach ($return2 as $value) {                    
+                    $this->db->set('operador', $operador_id);
+                    $this->db->set('convenio_id', $convenio_id);
+                    $this->db->set('empresa_id', $empresa_id_destino);
+                    $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_cadastro_id);
+                    $this->db->insert('tb_convenio_operador_procedimento');
                 }
+                
+
+                
             }
+            
         } catch (Exception $exc) {
             return -1;
         }
@@ -300,8 +306,7 @@ class Operador_model extends BaseModel {
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_atual_id);
             $this->db->where('operador', $operador_id);
-            $this->db->insert('tb_convenio_operador_procedimento');
-
+            $this->db->update('tb_convenio_operador_procedimento');
 
             $this->db->select('empresa_id');
             $this->db->from('tb_empresa');
@@ -428,26 +433,46 @@ class Operador_model extends BaseModel {
             $convenio_id = $_POST['convenio_id'];
             $empresa_id_origem = $_POST['empresa_id_origem'];
             $empresa_id_destino = $_POST['empresa_id_destino'];
-
-            $this->db->select('ambulatorio_convenio_operador_id');
-            $this->db->from('tb_ambulatorio_convenio_operador');
-            $this->db->where('ativo', 't');
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_cadastro_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_cadastro_id);
+            $this->db->where('operador_id', $operador_id);
+            $this->db->where('empresa_id', $empresa_id_destino);
+            $this->db->update('tb_ambulatorio_empresa_operador');
+            
+            $this->db->set('operador_id', $operador_id);
+            $this->db->set('empresa_id', $empresa_id_destino);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_cadastro_id);
+            $this->db->insert('tb_ambulatorio_empresa_operador');
+                
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_cadastro_id);
             $this->db->where('operador_id', $operador_id);
             $this->db->where('convenio_id', $convenio_id);
             $this->db->where('empresa_id', $empresa_id_destino);
-            $return = $this->db->get()->result();
+            $this->db->update('tb_ambulatorio_convenio_operador');
 
-            if (count($return) == 0) {
-                $this->db->set('operador_id', $operador_id);
-                $this->db->set('convenio_id', $convenio_id);
-                $this->db->set('empresa_id', $empresa_id_destino);
-                $horario = date("Y-m-d H:i:s");
-                $operador_id = $this->session->userdata('operador_id');
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_ambulatorio_convenio_operador');
-            }
-
+            $this->db->set('operador_id', $operador_id);
+            $this->db->set('convenio_id', $convenio_id);
+            $this->db->set('empresa_id', $empresa_id_destino);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_cadastro_id);
+            $this->db->insert('tb_ambulatorio_convenio_operador');
+                
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_cadastro_id);
+            $this->db->where('operador', $operador_id);
+            $this->db->where('convenio_id', $convenio_id);
+            $this->db->where('empresa_id', $empresa_id_destino);
+            $this->db->update('tb_convenio_operador_procedimento');
+            
             $this->db->select('cop.procedimento_convenio_id');
             $this->db->from('tb_convenio_operador_procedimento cop');
             $this->db->where('cop.ativo', 't');
@@ -456,32 +481,18 @@ class Operador_model extends BaseModel {
             $this->db->where('cop.empresa_id', $empresa_id_origem);
             $return = $this->db->get()->result();
 
-            if (count($return) > 0) {
-
-                $horario = date("Y-m-d H:i:s");
-                $operador_id = $this->session->userdata('operador_id');
-
-                foreach ($return as $value) {
-                    $this->db->select('cop.procedimento_convenio_id');
-                    $this->db->from('tb_convenio_operador_procedimento cop');
-                    $this->db->where('ativo', 't');
-                    $this->db->where('operador', $operador_id);
-                    $this->db->where('convenio_id', $convenio_id);
-                    $this->db->where('empresa_id', $empresa_id_destino);
-                    $this->db->where('procedimento_convenio_id', $value->procedimento_convenio_id);
-                    $pr = $this->db->get()->result();
-
-                    if (count($pr) == 0) {
-                        $this->db->set('operador', $operador_id);
-                        $this->db->set('convenio_id', $convenio_id);
-                        $this->db->set('empresa_id', $empresa_id_destino);
-                        $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
-                        $this->db->set('data_cadastro', $horario);
-                        $this->db->set('operador_cadastro', $operador_id);
-                        $this->db->insert('tb_convenio_operador_procedimento');
-                    }
-                }
+            foreach ($return as $value) {
+                
+                $this->db->set('operador', $operador_id);
+                $this->db->set('convenio_id', $convenio_id);
+                $this->db->set('empresa_id', $empresa_id_destino);
+                $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_convenio_operador_procedimento');
+                
             }
+            
         } catch (Exception $exc) {
             return -1;
         }
@@ -1114,7 +1125,7 @@ class Operador_model extends BaseModel {
                                ');
         $this->db->from('tb_operador');
         $this->db->where('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
-        $this->db->where('ativo', 't');
+//        $this->db->where('ativo', 't');
 
         $return = $this->db->count_all_results();
         return $return;
@@ -1136,13 +1147,14 @@ class Operador_model extends BaseModel {
         try {
 
             $result = array();
-            if ($_POST['txtlaboratorio_id'] != '') {
-                $this->db->select('credor_devedor_id')->from('tb_operador')->where('operador_id', $_POST['operador_id']);
-                $result = $this->db->get()->result();
-            }
+            $this->db->select('financeiro_credor_devedor_id')->from('tb_financeiro_credor_devedor');
+            $this->db->where('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
+            $this->db->where('ativo', 't');
+            $result = $this->db->get()->result();
+            
 
 
-            if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
+            if (count($result) == 0) {
                 $this->db->set('razao_social', $_POST['nome']);
                 $this->db->set('cep', $_POST['cep']);
                 if ($_POST['cpf'] != '') {
@@ -1168,6 +1180,9 @@ class Operador_model extends BaseModel {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_credor_devedor');
                 $financeiro_credor_devedor_id = $this->db->insert_id();
+            }
+            else {
+                $financeiro_credor_devedor_id = $result[0]->financeiro_credor_devedor_id;
             }
 
 
@@ -1648,7 +1663,28 @@ class Operador_model extends BaseModel {
     function excluirOperador($operador_id) {
         $horario = date("Y-m-d H:i:s");
         $operador_exclusao_id = $this->session->userdata('operador_id');
-
+        
+        // Excluindo credor associado a esse operador
+        $result = $this->db->select('credor_devedor_id')->from('tb_operador')->where('operador_id', $operador_id)->get()->result();
+        @$credor_id = (int)$result[0]->credor_devedor_id;
+        
+        $this->db->select('convenio_id')->from('tb_convenio')->where('ativo', 't')->where('credor_devedor_id', @$credor_id);
+        $convenio = $this->db->get()->result();
+        
+        $this->db->select('cep')->from('tb_estoque_fornecedor')->where('ativo', 't')->where('credor_devedor_id', @$credor_id);
+        $fornecedor = $this->db->get()->result();
+        
+//        $this->db->select('operador_id')->from('tb_operador')->where('ativo', 't')->where('credor_devedor_id', @$credor_id);
+//        $operador = $this->db->get()->result();
+        if(count($convenio) == 0 && count($fornecedor) == 0){
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_exclusao_id);
+            $this->db->where('financeiro_credor_devedor_id', $credor_id);
+            $this->db->update('tb_financeiro_credor_devedor');
+        }
+        
+        // Excluindo operador
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_exclusao_id);
@@ -1657,7 +1693,12 @@ class Operador_model extends BaseModel {
     }
 
     function reativaroperador($operador_id) {
-
+        // Excluindo credor associado a esse operador
+        $result = $this->db->select('credor_devedor_id')->from('tb_operador')->where('operador_id', $operador_id)->get()->result();
+        @$credor_id = (int)$result[0]->credor_devedor_id;
+        $this->db->set('ativo', 't');
+        $this->db->where('financeiro_credor_devedor_id', $credor_id);
+        $this->db->update('tb_financeiro_credor_devedor');
 
         $this->db->set('ativo', 't');
         $this->db->where('operador_id', $operador_id);

@@ -376,11 +376,16 @@ class procedimento_model extends Model {
                             pc.data_atualizacao,
                             pc.data_cadastro,
                             c.nome as convenio,
+                            e.nome as empresa,
                             pc.valortotal');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = pc.empresa_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where("pc.ativo", 't');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('pc.empresa_id', $_POST['empresa']);
+        }
         if ($_POST['grupo'] == "1") {
             $this->db->where('pt.grupo !=', 'RM');
         }
@@ -398,6 +403,7 @@ class procedimento_model extends Model {
         }
         $this->db->orderby("pc.convenio_id");
         $this->db->orderby("pt.nome");
+        $this->db->orderby("e.nome");
         $return = $this->db->get();
         return $return->result();
     }

@@ -141,8 +141,6 @@ class Convenio extends BaseController {
         }
        
         $convenio_id = $this->convenio->gravar();
-//        var_dump($convenio_id);
-//        die;
 
         if ($convenio_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar Convenio. Opera&ccedil;&atilde;o cancelada.';

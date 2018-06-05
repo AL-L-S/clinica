@@ -149,6 +149,7 @@ class Procedimento extends BaseController {
 
         $data['convenio'] = $this->convenio->listardados();
         $data['grupo'] = $this->guia->listargrupo();
+        $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatorioprocedimentoconvenio', $data);
     }
 

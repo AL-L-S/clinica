@@ -42,15 +42,31 @@ class Fornecedor extends BaseController {
         $this->loadView('cadastros/fornecedor-form', $data);
     }
 
-    function excluir($financeiro_credor_devedor_id) {
-        $valida = $this->fornecedor->excluir($financeiro_credor_devedor_id);
+    function reativar($financeiro_credor_devedor_id) {
+        $valida = $this->fornecedor->reativar($financeiro_credor_devedor_id);
         if ($valida == 0) {
-            $data['mensagem'] = 'Sucesso ao excluir a Fornecedor';
+            $data['mensagem'] = 'Sucesso ao reativar o Fornecedor';
         } else {
-            $data['mensagem'] = 'Erro ao excluir a fornecedor. Opera&ccedil;&atilde;o cancelada.';
+            $data['mensagem'] = 'Erro ao reativar o fornecedor. Opera&ccedil;&atilde;o cancelada.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/fornecedor");
+    }
+
+    function excluir($financeiro_credor_devedor_id) {
+        $valida = $this->fornecedor->excluir($financeiro_credor_devedor_id);
+        if ($valida == 0) {
+            $data['mensagem'] = 'Sucesso ao excluir o Fornecedor';
+        } else {
+            $data['mensagem'] = 'Erro ao excluir o fornecedor. Opera&ccedil;&atilde;o cancelada.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "cadastros/fornecedor");
+    }
+
+    function verificadependenciasexclusao($financeiro_credor_devedor_id) {
+        $valida = $this->fornecedor->verificadependenciasexclusao($financeiro_credor_devedor_id);
+        echo json_encode($valida);
     }
 
     function gravar() {

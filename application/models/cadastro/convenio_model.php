@@ -324,6 +324,29 @@ class Convenio_model extends Model {
     }
 
     function excluir($convenio_id) {
+        
+        // Excluindo credor associado a esse operador
+        $result = $this->db->select('credor_devedor_id')->from('tb_convenio')->where('convenio_id', $convenio_id)->get()->result();
+        @$credor_id = (int)$result[0]->credor_devedor_id;
+        
+//        $this->db->select('convenio_id')->from('tb_convenio')->where('ativo', 't')->where('credor_devedor_id', @$credor_id);
+//        $convenio = $this->db->get()->result();
+        
+        $this->db->select('cep')->from('tb_estoque_fornecedor')->where('ativo', 't')->where('credor_devedor_id', @$credor_id);
+        $fornecedor = $this->db->get()->result();
+        
+        $this->db->select('operador_id')->from('tb_operador')->where('ativo', 't')->where('credor_devedor_id', @$credor_id);
+        $operador = $this->db->get()->result();
+        
+        if(count($operador) == 0 && count($fornecedor) == 0){
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_exclusao_id);
+            $this->db->where('financeiro_credor_devedor_id', $credor_id);
+            $this->db->update('tb_financeiro_credor_devedor');
+        }
+        
+        
         $this->db->select('convenio_secudario_associacao_id');
         $this->db->from('tb_convenio_secudario_associacao');
         $this->db->where("ativo", 't');
@@ -1415,16 +1438,17 @@ class Convenio_model extends Model {
 
     function gravar() {
         try {
+            $cnpj = str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ'])));
+            
             $result = array();
-            if ($_POST['txtconvenio_id'] != '') {
-                $this->db->select('credor_devedor_id')->from('tb_convenio c');
-                $this->db->join("tb_financeiro_credor_devedor cd", "cd.financeiro_credor_devedor_id = c.credor_devedor_id");
-                $this->db->where('convenio_id', $_POST['txtconvenio_id'])->where('cd.ativo', 't');
-                $result = $this->db->get()->result();
-            }
+            $this->db->select('financeiro_credor_devedor_id')->from('tb_financeiro_credor_devedor');
+            $this->db->where('cnpj', $cnpj);
+            $this->db->where('ativo', 't');
+            $result = $this->db->get()->result();
 
-            if (count($result) == 0 || @$result[0]->credor_devedor_id == '') {
+            if ( count($result) == 0 ) {
                 $this->db->set('razao_social', $_POST['txtNome']);
+                $this->db->set('cnpj', $cnpj);
                 $this->db->set('cep', $_POST['cep']);
                 $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
                 $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
@@ -1450,12 +1474,15 @@ class Convenio_model extends Model {
                 $this->db->insert('tb_financeiro_credor_devedor');
                 $financeiro_credor_devedor_id = $this->db->insert_id();
             }
+            else{
+                $financeiro_credor_devedor_id = $result[0]->financeiro_credor_devedor_id;
+            }
 
             /* inicia o mapeamento no banco */
             $convenio_id = $_POST['txtconvenio_id'];
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
-            $this->db->set('cnpj', $_POST['txtCNPJ']);
+            $this->db->set('cnpj', $cnpj);
             $this->db->set('registroans', $_POST['txtregistroans']);
             $this->db->set('codigoidentificador', $_POST['txtcodigo']);
 
@@ -1473,7 +1500,7 @@ class Convenio_model extends Model {
                 $this->db->set('associacao_percentual', 0);
                 $this->db->set('associacao_convenio_id', null);
             }
-
+            
             if ($financeiro_credor_devedor_id != "") {
                 $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
             }

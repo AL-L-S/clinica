@@ -25,6 +25,7 @@
                         <th class="tabela_header">Nome Fantasia</th>
                         <th class="tabela_header">Raz&atilde;o Social</th>
                         <th class="tabela_header">CNPJ</th>
+                        <th class="tabela_header">CPF</th>
                         <th class="tabela_header" width="70px;" colspan="2"><center>Detalhes</center></th>
                 </tr>
                 </thead>
@@ -48,6 +49,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->fantasia; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->razao_social; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->cnpj; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->cpf; ?></td>
                                 <?if($perfil_id != 10){?>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">                                  
                                     <a href="<?= base_url() ?>estoque/fornecedor/carregarfornecedor/<?= $item->estoque_fornecedor_id ?>">Editar</a>
@@ -74,7 +76,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="5">
+                        <th class="tabela_footer" colspan="7">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

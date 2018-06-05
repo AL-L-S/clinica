@@ -6,7 +6,7 @@
 
 
         <tr>
-            <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Email Operador</th>
+            <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Operador</th>
         </tr>
         <tr>
             <th style='width:10pt;border:solid windowtext 1.0pt;

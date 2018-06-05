@@ -26,6 +26,12 @@
                         <input type="text" name="txtCNPJ" maxlength="14" alt="cnpj" class="texto03" value="<?= @$obj->_cnpj; ?>" />
                     </dd>
                     <dt>
+                    <label>CPF</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="txtCPF" maxlength="11" alt="cpf" class="texto03" value="<?= @$obj->_cpf; ?>" />
+                    </dd>
+                    <dt>
                     <label>Tipo</label>
                     </dt>
                     <dd>
@@ -80,31 +86,17 @@
                         <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_municipio_id; ?>" readonly="true" />
                         <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_nome; ?>" />
                     </dd>
-                     <dt>
+<!--                     <dt>
                     <label>Criar Credor</label>
                     </dt>
                     <dd>
                         <input type="checkbox" name="criarcredor"/>
-                    </dd>
+                    </dd>-->
                     <dt>
-                    <label>Credor / Devedor</label>
+                        <label>Credor / Devedor</label>
                     </dt>
-                    <dd>
-                        <select name="credor_devedor" id="credor_devedor" class="size2" >
-                            <option value='' >selecione</option>
-                            <?php
-                            $credor_devedor = $this->convenio->listarcredordevedor();
-                            foreach ($credor_devedor as $item) {
-                                ?>
-
-                                <option   value =<?php echo $item->financeiro_credor_devedor_id; ?> <?
-                                if (@$obj->_credor_devedor_id == $item->financeiro_credor_devedor_id):echo 'selected';
-                                endif;
-                                ?>><?php echo $item->razao_social; ?></option>
-                                          <?php
-                                      }
-                                      ?> 
-                        </select>
+                    <dd>                        
+                        <input type="text" id="credor_devedor" class="texto08" name="credor_devedor" value="<?= @$obj->_credor; ?>" readonly=""/>
                     </dd>
                 </dl>    
                 <hr/>

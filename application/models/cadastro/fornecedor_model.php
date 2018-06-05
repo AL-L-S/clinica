@@ -25,17 +25,21 @@ class fornecedor_model extends Model {
     }
 
     function listar($args = array()) {
-        $this->db->select('financeiro_credor_devedor_id,
+        $this->db->select(' financeiro_credor_devedor_id,
                             razao_social,
+                            ativo,
                             cnpj,
                             cpf,
                             telefone');
         $this->db->from('tb_financeiro_credor_devedor');
-        $this->db->where('ativo', 'true');
+        if(@$args['ativo'] == 'f'){
+            $this->db->where('ativo', 'false');
+        }
+        else{
+            $this->db->where('ativo', 'true');
+        }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('razao_social ilike', "%" . $args['nome'] . "%");
-            $this->db->orwhere('cnpj ilike', $args['nome'] . "%");
-            $this->db->orwhere('cpf ilike', $args['nome'] . "%");
+            $this->db->where("(razao_social ilike '%{$args['nome']}%' OR cnpj ilike '%{$args['nome']}%' OR cpf ilike '%{$args['nome']}%')");
         }
         return $this->db;
     }
@@ -48,8 +52,69 @@ class fornecedor_model extends Model {
         return $return->result();
     }
 
-    function excluir($financeiro_credor_devedor_id) {
+    function reativar($financeiro_credor_devedor_id) {
+        $this->db->select('financeiro_credor_devedor_id');
+        $this->db->from('tb_financeiro_credor_devedor');
+        $this->db->where('ativo', 't');
+        $this->db->where("(cpf = (
+                                 SELECT cpf FROM ponto.tb_financeiro_credor_devedor 
+                                 WHERE financeiro_credor_devedor_id = $financeiro_credor_devedor_id LIMIT 1 ) 
+                        OR cnpj = (
+                                 SELECT cnpj FROM ponto.tb_financeiro_credor_devedor 
+                                 WHERE financeiro_credor_devedor_id = $financeiro_credor_devedor_id LIMIT 1 )
+                        )");
+        $return = $this->db->get()->result();
+        
+        if( count($return) == 0 ){
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('ativo', 't');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('financeiro_credor_devedor_id', $financeiro_credor_devedor_id);
+            $this->db->update('tb_financeiro_credor_devedor');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+                return 0;
+        }
+        else {
+            return -1;
+        }
+    }
 
+    function verificadependenciasexclusao($financeiro_credor_devedor_id) {
+        
+        $this->db->select('operador_id');
+        $this->db->from('tb_operador');
+        $this->db->where('credor_devedor_id', $financeiro_credor_devedor_id);
+        $this->db->where('ativo', 't');
+        $operadores = $this->db->get()->result();
+        
+        $this->db->select('convenio_id');
+        $this->db->from('tb_convenio');
+        $this->db->where('credor_devedor_id', $financeiro_credor_devedor_id);
+        $this->db->where('ativo', 't');
+        $convenios = $this->db->get()->result();
+        
+        $this->db->select('estoque_fornecedor_id');
+        $this->db->from('tb_estoque_fornecedor');
+        $this->db->where('credor_devedor_id', $financeiro_credor_devedor_id);
+        $this->db->where('ativo', 't');
+        $fornecedores = $this->db->get()->result();
+        
+        $result = array(
+            "fornecedores" => count($fornecedores),
+            "operadores" => count($operadores),
+            "convenios" => count($convenios)
+        );
+        
+        return $result;
+    }
+
+    function excluir($financeiro_credor_devedor_id) {
+        
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('ativo', 'f');
@@ -66,6 +131,16 @@ class fornecedor_model extends Model {
 
     function gravar() {
         try {
+            $cpf = str_replace("-", "", str_replace(".", "", $_POST['txtCPF']));
+            $cnpj =  str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ'])));
+            
+            $this->db->select('financeiro_credor_devedor_id');
+            $this->db->from('tb_financeiro_credor_devedor fcd');
+            $this->db->where("(fcd.cpf = '{$cpf}' OR fcd.cnpj = '{$cnpj}')");
+            $this->db->where("fcd.ativo", 't');
+            $return = $this->db->get()->result();
+            
+        
             /* inicia o mapeamento no banco */
             $financeiro_credor_devedor_id = $_POST['txtcadastrosfornecedorid'];
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
@@ -91,6 +166,11 @@ class fornecedor_model extends Model {
 
             
             if ($_POST['txtcadastrosfornecedorid'] == "") {// insert
+                
+                if(count($return) > 0){
+                    return -1;
+                }
+                
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_credor_devedor');

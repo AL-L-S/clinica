@@ -45,7 +45,7 @@
             <tr>
                 <th style='width:10pt;border:solid windowtext 1.0pt;
                     border-bottom:none;mso-border-top-alt:none;border-left:
-                    none;border-right:none;' colspan="5">&nbsp;</th>
+                    none;border-right:none;' colspan="6">&nbsp;</th>
             </tr>
             <? if (count($relatorio) > 0) {
                 ?>
@@ -55,6 +55,7 @@
                     <td><font width="180px;"></td>
                     <td class="tabela_teste"><font size="-1">Codigo</th>
                     <td class="tabela_teste"><font size="-1">Procedimento</th>
+                    <td class="tabela_teste"><font size="-1">Empresa</th>
                     <td class="tabela_teste"><font size="-1">Data cadastro</th>
                     <td class="tabela_teste"><font size="-1">Data atualiza&ccedil;&atilde;o</th>
                     <td class="tabela_teste"><font size="-1">Valor</th>
@@ -62,7 +63,7 @@
                 <tr>
                     <th style='width:10pt;border:solid windowtext 1.0pt;
                         border-bottom:none;mso-border-top-alt:none;border-left:
-                        none;border-right:none;' colspan="5">&nbsp;</th>
+                        none;border-right:none;' colspan="6">&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
@@ -94,6 +95,7 @@
                             <td><font width="180px;"></td>
                             <td><font size="-2"><?= $item->codigo; ?></td>
                             <td><font size="-2"><?= $item->procedimento; ?></td>
+                            <td><font size="-2"><?= $item->empresa; ?></td>
                             <td><font size="-2"><?= substr($item->data_cadastro, 8,2) . "/" . substr($item->data_cadastro, 5,2) . "/" . substr($item->data_cadastro, 0,4); ?></td>
                             <td><font size="-2"><?= substr($item->data_atualizacao, 8,2) . "/" . substr($item->data_atualizacao, 5,2) . "/" . substr($item->data_atualizacao, 0,4); ?></td>
                             <td><font size="-2"><?= number_format($item->valortotal, 2, ',', '.') ?></td>
@@ -111,6 +113,7 @@
                             <td><font width="180px;"></td>
                             <td><font size="-2"><?= $item->codigo; ?></td>
                             <td><font size="-2"><?= $item->procedimento; ?></td>
+                            <td><font size="-2"><?= $item->empresa; ?></td>
                             <td><font size="-2"><?= substr($item->data_cadastro, 8,2) . "/" . substr($item->data_cadastro, 5,2) . "/" . substr($item->data_cadastro, 0,4); ?></td>
                             <td><font size="-2"><?= substr($item->data_atualizacao, 8,2) . "/" . substr($item->data_atualizacao, 5,2) . "/" . substr($item->data_atualizacao, 0,4); ?></td>
                             <td><font size="-2"><?= number_format($item->valortotal, 2, ',', '.') ?></td>

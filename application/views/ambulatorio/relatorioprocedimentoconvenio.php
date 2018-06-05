@@ -29,6 +29,17 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Empresa</label>
+                    </dt>
+                    <dd>
+                        <select name="empresa" id="empresa" class="size2">
+                            <? foreach ($empresa as $value) : ?>
+                                <option value="<?= $value->empresa_id; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+                            <option value="0">TODOS</option>
+                        </select>
+                    </dd>
+                    <dt>
                     <label>Gerar Planilha</label>
                     </dt>
                     <dd>

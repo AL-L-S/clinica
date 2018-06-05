@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar relatorio email Operador</a></h3>
+        <h3><a href="#">Gerar relatorio Operador</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>seguranca/operador/gerarelatorioemailoperador">
                 <dl>

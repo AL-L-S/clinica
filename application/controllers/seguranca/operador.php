@@ -36,8 +36,10 @@ class Operador extends BaseController {
         $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
         $data['listarPerfil'] = $this->operador_m->listarPerfil();
-//        $data['listarempresas'] = $this->operador_m->listarempresas();
-//        echo "<pre>"; var_dump($data);die;
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
+        
         $this->loadView('seguranca/operador-form', $data);
     }
 
