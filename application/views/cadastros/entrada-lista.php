@@ -1,7 +1,15 @@
+<?
+$empresa_id = $this->session->userdata('empresa_id');
+if (@$_GET['txtempresa'] != '') {
+    $empresa_form_id = @$_GET['txtempresa'];
+} else {
+    $empresa_form_id = $empresa_id;
+}
+?>
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
-        <a target="_blank" href="<?php echo base_url() ?>cadastros/caixa/novaentrada/<?=@$_GET['txtempresa']?>">
+        <a target="_blank" href="<?php echo base_url() ?>cadastros/caixa/novaentrada/<?= @$empresa_form_id ?>">
             Nova entrada
         </a>
     </div>
@@ -39,8 +47,8 @@
                                 <option value="">TODOS</option>
                                 <? foreach ($empresas as $value) : ?>
                                     <option value="<?= $value->empresa_id; ?>" <?
-                                    if (@$_GET['txtempresa'] == $value->empresa_id):echo 'selected';
-                                    endif;
+                                if (@$_GET['txtempresa'] == $value->empresa_id || ($empresa_id == $value->empresa_id && @$_GET['txtempresa'] == '')):echo 'selected';
+                                endif;
                                     ?>><?php echo $value->nome; ?></option>
                                         <? endforeach; ?>
                             </select>
@@ -50,8 +58,8 @@
                                 <option value="">TODAS</option>
                                 <? foreach ($conta as $value) : ?>
                                     <option value="<?= $value->forma_entradas_saida_id; ?>" <?
-                                    if (@$_GET['conta'] == $value->forma_entradas_saida_id):echo 'selected';
-                                    endif;
+                                if (@$_GET['conta'] == $value->forma_entradas_saida_id):echo 'selected';
+                                endif;
                                     ?>><?php echo $value->descricao; ?></option>
                                         <? endforeach; ?>
                             </select>
@@ -79,8 +87,8 @@
                                 <option value="">TODOS</option>
                                 <? foreach ($tipo as $value) : ?>
                                     <option value="<?= $value->tipo_entradas_saida_id; ?>" <?
-                                    if (@$_GET['nome'] == $value->tipo_entradas_saida_id):echo 'selected';
-                                    endif;
+                                if (@$_GET['nome'] == $value->tipo_entradas_saida_id):echo 'selected';
+                                endif;
                                     ?>><?php echo $value->descricao; ?></option>
                                         <? endforeach; ?>
                             </select>
@@ -90,8 +98,8 @@
                                 <option value="">TODOS</option>
                                 <? foreach ($classe as $value) : ?>
                                     <option value="<?= $value->descricao; ?>" <?
-                                    if (@$_GET['nome_classe'] == $value->descricao):echo 'selected';
-                                    endif;
+                                if (@$_GET['nome_classe'] == $value->descricao):echo 'selected';
+                                endif;
                                     ?>><?php echo $value->descricao; ?></option>
                                         <? endforeach; ?>
                             </select>
@@ -101,8 +109,8 @@
                                 <option value="">TODOS</option>
                                 <? foreach ($credores as $value) : ?>
                                     <option value="<?= $value->financeiro_credor_devedor_id; ?>" <?
-                                    if (@$_GET['empresa'] == $value->financeiro_credor_devedor_id):echo 'selected';
-                                    endif;
+                                if (@$_GET['empresa'] == $value->financeiro_credor_devedor_id):echo 'selected';
+                                endif;
                                     ?>><?php echo $value->razao_social; ?></option>
                                         <? endforeach; ?>
                             </select>
@@ -246,101 +254,101 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    
-    function atualizaRestultados(empresaID){
-        var parametros = "txtempresa="+empresaID;
-        parametros += "&datainicio=<?= @$_GET['datainicio'] ?>&datafim=<?= @$_GET['datafim'] ?>"; 
-        parametros += "&nome=<?= @$_GET['nome'] ?>&nome_classe=<?= @$_GET['nome_classe'] ?>";
-        parametros += "&empresa=<?= @$_GET['empresa'] ?>&obs=<?= @$_GET['obs'] ?>";
-        window.location.replace("<?= base_url() ?>cadastros/caixa/pesquisar?"+parametros);
-    }
-    
-                                      $(function () {
-                                          $('#nome').change(function () {
-                                              if ($(this).val()) {
-                                                  $('.carregando').show();
-                                                  $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
-                                                      options = '<option value=""></option>';
-                                                      for (var c = 0; c < j.length; c++) {
-                                                          options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
-                                                      }
-                                                      $('#nome_classe').html(options).show();
-                                                      $('.carregando').hide();
-                                                  });
-                                              } else {
-                                                  $('#nome_classe').html('<option value="">TODOS</option>');
-                                              }
-                                          });
-                                      });
 
-                                      $(function () {
-                                          $('#txtempresa').change(function () {
+                                                function atualizaRestultados(empresaID) {
+                                                    var parametros = "txtempresa=" + empresaID;
+                                                    parametros += "&datainicio=<?= @$_GET['datainicio'] ?>&datafim=<?= @$_GET['datafim'] ?>";
+                                                    parametros += "&nome=<?= @$_GET['nome'] ?>&nome_classe=<?= @$_GET['nome_classe'] ?>";
+                                                    parametros += "&empresa=<?= @$_GET['empresa'] ?>&obs=<?= @$_GET['obs'] ?>";
+                                                    window.location.replace("<?= base_url() ?>cadastros/caixa/pesquisar?" + parametros);
+                                                }
+
+                                                $(function () {
+                                                    $('#nome').change(function () {
+                                                        if ($(this).val()) {
+                                                            $('.carregando').show();
+                                                            $.getJSON('<?= base_url() ?>autocomplete/classeportiposaidalista', {nome: $(this).val(), ajax: true}, function (j) {
+                                                                options = '<option value=""></option>';
+                                                                for (var c = 0; c < j.length; c++) {
+                                                                    options += '<option value="' + j[c].classe + '">' + j[c].classe + '</option>';
+                                                                }
+                                                                $('#nome_classe').html(options).show();
+                                                                $('.carregando').hide();
+                                                            });
+                                                        } else {
+                                                            $('#nome_classe').html('<option value="">TODOS</option>');
+                                                        }
+                                                    });
+                                                });
+
+                                                $(function () {
+                                                    $('#txtempresa').change(function () {
 //                                            if ($(this).val()) {
-                                              $('.carregando').show();
-                                              $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $(this).val(), ajax: true}, function (j) {
-                                                  options = '<option value=""></option>';
-                                                  for (var c = 0; c < j.length; c++) {
-                                                      options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
-                                                  }
-                                                  $('#conta').html(options).show();
-                                                  $('.carregando').hide();
-                                              });
+                                                        $('.carregando').show();
+                                                        $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $(this).val(), ajax: true}, function (j) {
+                                                            options = '<option value=""></option>';
+                                                            for (var c = 0; c < j.length; c++) {
+                                                                options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                                                            }
+                                                            $('#conta').html(options).show();
+                                                            $('.carregando').hide();
+                                                        });
 //                                            } else {
 //                                                $('#nome_classe').html('<option value="">TODOS</option>');
 //                                            }
-                                          });
-                                      });
+                                                    });
+                                                });
 
-                                      if ($('#txtempresa').val() > 0) {
+                                                if ($('#txtempresa').val() > 0) {
 //                                          $('.carregando').show();
-                                          $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $('#txtempresa').val(), ajax: true}, function (j) {
-                                              options = '<option value=""></option>';
-                                              <?
-                                              if(@$_GET['conta'] > 0){
-                                                 $conta = $_GET['conta']; 
-                                              }else{
-                                                 $conta = 0;
-                                              }
-                                              ?>  
-                                              for (var c = 0; c < j.length; c++) {
-                                                
-                                                  if(<?=$conta?> == j[c].forma_entradas_saida_id){
-                                                      options += '<option selected value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
-                                                  }else{
-                                                      options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>'; 
-                                                  }
-                                                  
-                                              }
-                                              $('#conta').html(options).show();
-                                              $('.carregando').hide();
-                                          });
-                                      }
+                                                    $.getJSON('<?= base_url() ?>autocomplete/contaporempresa', {empresa: $('#txtempresa').val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+<?
+if (@$_GET['conta'] > 0) {
+    $conta = $_GET['conta'];
+} else {
+    $conta = 0;
+}
+?>
+                                                        for (var c = 0; c < j.length; c++) {
+
+                                                            if (<?= $conta ?> == j[c].forma_entradas_saida_id) {
+                                                                options += '<option selected value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                                                            } else {
+                                                                options += '<option value="' + j[c].forma_entradas_saida_id + '">' + j[c].descricao + '</option>';
+                                                            }
+
+                                                        }
+                                                        $('#conta').html(options).show();
+                                                        $('.carregando').hide();
+                                                    });
+                                                }
 
 
-                                      $(function () {
-                                          $("#datainicio").datepicker({
-                                              autosize: true,
-                                              changeYear: true,
-                                              changeMonth: true,
-                                              monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                              dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                              buttonImage: '<?= base_url() ?>img/form/date.png',
-                                              dateFormat: 'dd/mm/yy'
-                                          });
-                                      });
-                                      $(function () {
-                                          $("#datafim").datepicker({
-                                              autosize: true,
-                                              changeYear: true,
-                                              changeMonth: true,
-                                              monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                              dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                              buttonImage: '<?= base_url() ?>img/form/date.png',
-                                              dateFormat: 'dd/mm/yy'
-                                          });
-                                      });
-                                      $(function () {
-                                          $("#accordion").accordion();
-                                      });
+                                                $(function () {
+                                                    $("#datainicio").datepicker({
+                                                        autosize: true,
+                                                        changeYear: true,
+                                                        changeMonth: true,
+                                                        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                        dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                        buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                        dateFormat: 'dd/mm/yy'
+                                                    });
+                                                });
+                                                $(function () {
+                                                    $("#datafim").datepicker({
+                                                        autosize: true,
+                                                        changeYear: true,
+                                                        changeMonth: true,
+                                                        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                        dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                        buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                        dateFormat: 'dd/mm/yy'
+                                                    });
+                                                });
+                                                $(function () {
+                                                    $("#accordion").accordion();
+                                                });
 
 </script>

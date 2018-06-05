@@ -1125,6 +1125,7 @@ class Guia extends BaseController {
 //        ini_set('display_errors',1);
 //        ini_set('display_startup_erros',1);
 //        error_reporting(E_ALL);
+//        var_dump($_POST); die;
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
@@ -1151,7 +1152,7 @@ class Guia extends BaseController {
 //                $percentual_laboratorio = array();
 //            }
 
-            if ($_POST['crm1'] == '' && $grupo != 'CONSULTA') {
+            if ($_POST['crm1'] == '' && ($grupo == 'EXAME' || $grupo == 'ESPECIALIDADE')) {
                 $data['mensagem'] = 'Favor, selecione um medico solicitante da lista.';
                 $this->session->set_flashdata('message', $data['mensagem']);
                 if (isset($_POST['guia_id'])) {
@@ -1164,6 +1165,7 @@ class Guia extends BaseController {
 
 
             if ($_POST['medicoagenda'] != '') {
+//                echo 'teste'; die;
 //        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 if ($resultadoguia == null) {
                     $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
@@ -1177,7 +1179,7 @@ class Guia extends BaseController {
                     $this->session->set_flashdata('message', $data['mensagem']);
                 } else {
                     $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
-                    ;
+                    
                     if ($agrupador[0]->agrupador != 't') {
                         $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
                     } else {
@@ -1223,7 +1225,8 @@ class Guia extends BaseController {
                     }
                 }
             }
-
+//            var_dump($ambulatorio_guia);
+//            die;
             redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
         }
     }

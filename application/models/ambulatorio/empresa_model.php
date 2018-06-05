@@ -927,6 +927,7 @@ class empresa_model extends Model {
             $this->db->set('cnes', $_POST['txtCNES']);
             $this->db->set('email', $_POST['email']);
 
+
             if ($operador_id == 1) {
 
                 if ($_POST['impressao_tipo'] != "") {
@@ -995,6 +996,7 @@ class empresa_model extends Model {
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
 
+            $this->db->set('endereco_upload', $_POST['endereco_upload']);
             if ($operador_id == 1) {
                 if (isset($_POST['sms'])) {
                     $this->db->set('servicosms', 't');
@@ -1223,6 +1225,21 @@ class empresa_model extends Model {
                         $this->db->set('gerente_contasapagar', 't');
                     } else {
                         $this->db->set('gerente_contasapagar', 'f');
+                    }
+                    if (isset($_POST['gerente_relatorio_financeiro'])) {
+                        $this->db->set('gerente_relatorio_financeiro', 't');
+                    } else {
+                        $this->db->set('gerente_relatorio_financeiro', 'f');
+                    }
+                    if (isset($_POST['botao_imagem_paciente'])) {
+                        $this->db->set('botao_imagem_paciente', 't');
+                    } else {
+                        $this->db->set('botao_imagem_paciente', 'f');
+                    }
+                    if (isset($_POST['botao_arquivos_paciente'])) {
+                        $this->db->set('botao_arquivos_paciente', 't');
+                    } else {
+                        $this->db->set('botao_arquivos_paciente', 'f');
                     }
                     if (isset($_POST['cpf_obrigatorio'])) {
                         $this->db->set('cpf_obrigatorio', 't');
@@ -1455,7 +1472,7 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('apenas_procedimentos_multiplos', 'f');
                     }
-                    
+
                     if (isset($_POST['percentual_multiplo'])) {
                         $this->db->set('percentual_multiplo', 't');
                     } else {
@@ -1507,6 +1524,21 @@ class empresa_model extends Model {
                         $this->db->set('tecnica_promotor', 't');
                     } else {
                         $this->db->set('tecnica_promotor', 'f');
+                    }
+                    if (isset($_POST['botao_imagem_paciente'])) {
+                        $this->db->set('botao_imagem_paciente', 't');
+                    } else {
+                        $this->db->set('botao_imagem_paciente', 'f');
+                    }
+                    if (isset($_POST['botao_arquivos_paciente'])) {
+                        $this->db->set('botao_arquivos_paciente', 't');
+                    } else {
+                        $this->db->set('botao_arquivos_paciente', 'f');
+                    }
+                    if (isset($_POST['gerente_relatorio_financeiro'])) {
+                        $this->db->set('gerente_relatorio_financeiro', 't');
+                    } else {
+                        $this->db->set('gerente_relatorio_financeiro', 'f');
                     }
                     if (isset($_POST['valor_convenio_nao'])) {
                         $this->db->set('valor_convenio_nao', 't');
@@ -1785,7 +1817,7 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('apenas_procedimentos_multiplos', 'f');
                     }
-                    
+
                     if (isset($_POST['percentual_multiplo'])) {
                         $this->db->set('percentual_multiplo', 't');
                     } else {
@@ -1923,6 +1955,10 @@ class empresa_model extends Model {
                                ep.cadastrar_painel_sala,
                                ep.apenas_procedimentos_multiplos,
                                ep.orcamento_cadastro,
+                               ep.gerente_relatorio_financeiro,
+                               ep.botao_arquivos_paciente,
+                               ep.botao_imagem_paciente,
+                               f.endereco_upload,
                                f.horario_seg_sex_inicio,
                                f.horario_seg_sex_fim,
                                f.horario_sab_inicio,
@@ -1945,9 +1981,13 @@ class empresa_model extends Model {
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
             $this->_subgrupo = $return[0]->subgrupo;
+            $this->_botao_imagem_paciente = $return[0]->botao_imagem_paciente;
+            $this->_botao_arquivos_paciente = $return[0]->botao_arquivos_paciente;
+            $this->_gerente_relatorio_financeiro = $return[0]->gerente_relatorio_financeiro;
             $this->_laudo_sigiloso = $return[0]->laudo_sigiloso;
             $this->_campos_cadastro = $return[0]->campos_cadastro;
             $this->_orcamento_cadastro = $return[0]->orcamento_cadastro;
+            $this->_endereco_upload = $return[0]->endereco_upload;
             $this->_conjuge = $return[0]->conjuge;
             $this->_horario_seg_sex = $return[0]->horario_seg_sex;
             $this->_horario_sab = $return[0]->horario_sab;

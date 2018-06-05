@@ -867,6 +867,49 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         $('.carregando').hide();
                                     });
                                 }
+                                function procedimentoSelected(procedimento_id){
+                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia', {procedimento1: procedimento_id, ajax: true}, function (j) {
+                                                options = "";
+                                                options += j[0].valortotal;
+                                                qtde = "";
+                                                qtde += j[0].qtde;
+                                                <? if ($odontologia_alterar == 't') { ?>
+                                                    if (j[0].grupo == 'ODONTOLOGIA') {
+                                                        $("#valor1").prop('readonly', false);
+                                                    } else {
+                                                        $("#valor1").prop('readonly', true);
+                                                    }
+                                                <? } ?>
+                                                if (j[0].tipo == 'EXAME' || j[0].tipo == 'ESPECIALIDADE' || j[0].tipo == 'FISIOTERAPIA') {
+                                                    $("#medico1").prop('required', true);
+                                                } else {
+                                                    $("#medico1").prop('required', false);
+                                                }
+                                                $('#grupo1').find('option:contains("' + j[0].grupo + '")').prop('selected', true);
+
+                                                $.getJSON('<?= base_url() ?>autocomplete/listarsalaporgrupo', {grupo1: j[0].grupo, ajax: true}, function (i) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < i.length; c++) {
+                                                        if(j.length == 1){
+                                                            options += '<option value="' + i[c].exame_sala_id + '" selected>' + i[c].nome + '</option>';
+                                                        } else {
+                                                            options += '<option value="' + i[c].exame_sala_id + '">' + i[c].nome + '</option>';
+                                                        }                                                        
+                                                    }
+                                                    $('#sala1').html(options).show();
+                                                    $('.carregando').hide();
+                                                });                                                  
+                                                
+                                                
+                                                document.getElementById("valorunitario").value = options;
+                                                var valorTotal = options * (( $('#qtde1').val() ) ? $('#qtde1').val() : 1);
+                                                document.getElementById("valor1").value = valorTotal;
+                                                document.getElementById("qtde").value = qtde;
+                                                $('.carregando').hide();
+                                            });
+
+
+                                }
                                 
                                 
                                 $(function () {
@@ -953,6 +996,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 for (var c = 0; c < j.length; c++) {
                                                     if(j.length == 1){
                                                         options += '<option value="' + j[c].procedimento_convenio_id + '" selected>' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                        procedimentoSelected(j[c].procedimento_convenio_id);
                                                     } else {
                                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                                     }

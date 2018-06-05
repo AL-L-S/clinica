@@ -191,11 +191,29 @@ class Operador extends BaseController {
         $this->loadView('estoque/operador-lista', $data);
     }
 
+    function validateDate($date, $format = 'd-m-Y') {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
+    }
+
     function gravar() {
         $cpf = $this->operador_m->listarcpfcontador();
         $usuario = $this->operador_m->listarusuariocontador();
         $empresa_p = $this->guia->listarempresapermissoes();
-//        var_dump($_POST); die;
+//        var_dump($_POST);
+//        die;
+        if ($_POST['nascimento'] != '') {
+            $nascimento = str_replace('/', '-', $_POST['nascimento']);
+//            var_dump($nascimento); die;
+            $data_valida = $this->validateDate($nascimento);
+            if (!$data_valida) {
+                $data['mensagem'] = "Data de Nascimento: {$_POST['nascimento']} inválida";
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "seguranca/operador", $data);
+            }
+//            die;
+        }
+
         if ($_POST['operador_id'] == '') {
             if ($cpf > 0) {
                 $data['mensagem'] = 'Erro. CPF já cadastrado.';
@@ -574,8 +592,8 @@ class Operador extends BaseController {
     function gravaroperadorconvenioprocedimento() {
 //        echo "<pre>";
 //        var_dump($_POST["procedimento"]); die;
-        if ( count($_POST["procedimento"]) > 0 ){
-            foreach($_POST["procedimento"] as $procedimento_id => $value){
+        if (count($_POST["procedimento"]) > 0) {
+            foreach ($_POST["procedimento"] as $procedimento_id => $value) {
                 $this->operador_m->gravaroperadorconvenioprocedimento($procedimento_id);
             }
         }
@@ -595,7 +613,7 @@ class Operador extends BaseController {
     function excluiroperadorconvenioprocedimento($convenio_id, $operador_id, $empresa_id) {
 //        echo "<pre>";
 //        var_dump($_POST); die;
-        if(count($_POST['procedimento']) != 0){
+        if (count($_POST['procedimento']) != 0) {
             foreach ($_POST['procedimento'] as $procedimento_id => $value) {
                 $this->operador_m->excluiroperadorconvenioprocedimento($procedimento_id);
             }
@@ -619,7 +637,7 @@ class Operador extends BaseController {
     function gravaragendatelefonica() {
         $this->operador_m->gravaragendatelefonica();
         $data['mensagem'] = 'Operador cadastrado com sucesso.';
-        
+
 //            redirect(base_url()."seguranca/operador/index/$data","refresh");
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisaragendatelefonica", $data);

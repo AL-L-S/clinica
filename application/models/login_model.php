@@ -39,6 +39,7 @@ class login_model extends Model {
                            ep.relatorio_producao,
                            ep.relatorios_recepcao,
                            ep.laudo_sigiloso,
+                           ep.gerente_relatorio_financeiro,
                            ep.financeiro_cadastro,       
                            ep.caixa_personalizado,       
                            ep.botao_ativar_sala,
@@ -83,6 +84,7 @@ class login_model extends Model {
 
 
             $gerente_contasapagar = $retorno[0]->gerente_contasapagar;
+            $gerente_relatorio_financeiro = $retorno[0]->gerente_relatorio_financeiro;
             $orcamento_recepcao = $retorno[0]->orcamento_recepcao;
             $relatorio_ordem = $retorno[0]->relatorio_ordem;
             $relatorio_producao = $retorno[0]->relatorio_producao;
@@ -127,6 +129,7 @@ class login_model extends Model {
                 'relatorio_producao' => $relatorio_producao,
                 'relatorios_recepcao' => $relatorios_recepcao,
                 'financeiro_cadastro' => $financeiro_cadastro,
+                'gerente_relatorio_financeiro' => $gerente_relatorio_financeiro,
                 'relatoriorm' => $relatoriorm,
                 'imagem' => $imagem,
                 'consulta' => $consulta,

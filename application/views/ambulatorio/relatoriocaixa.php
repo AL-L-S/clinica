@@ -69,7 +69,7 @@
                         #grupo_chosen a{
                             width: 180px;
                         }
-                        
+
                     </style>
                     <dt>
                         <label>Procedimentos</label>
@@ -86,16 +86,25 @@
                                     <? } ?>
                         </select>
                     </dd>
-                    <?$empresa_id = $this->session->userdata('empresa_id');?>
+                    <?
+                    $empresa_id = $this->session->userdata('empresa_id');
+                    $perfil_id = $this->session->userdata('perfil_id');
+                    $gerente_relatorio_financeiro = $this->session->userdata('gerente_relatorio_financeiro');
+//                    var_dump($perfil_id); die;
+                    ?>
                     <dt>
                         <label>Empresa</label>
                     </dt>
                     <dd>
                         <select name="empresa" id="empresa" class="size2">
                             <? foreach ($empresa as $value) : ?>
-                                <option value="<?= $value->empresa_id; ?>" <?if($empresa_id == $value->empresa_id){?>selected<?}?>><?php echo $value->nome; ?></option>
+                                <? if (($gerente_relatorio_financeiro == 't' && $perfil_id == 18 && $empresa_id == $value->empresa_id) || $perfil_id != 18) { ?>
+                                    <option value="<?= $value->empresa_id; ?>" <? if ($empresa_id == $value->empresa_id) { ?>selected<? } ?>><?php echo $value->nome; ?></option>
+                                <? } ?>
                             <? endforeach; ?>
-                            <option value="0">TODOS</option>
+                            <? if (($gerente_relatorio_financeiro == 't' && $perfil_id == 18 && $empresa_id == $value->empresa_id) || $perfil_id != 18) { ?>
+                                <option value="0">TODOS</option>
+                            <? } ?>
                         </select>
                     </dd>
                     <dt>

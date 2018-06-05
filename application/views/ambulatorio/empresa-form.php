@@ -161,10 +161,16 @@
                             <input type="text" id="impressao_declaracao" class="texto01" name="impressao_declaracao" value="<?= @$obj->_impressao_declaracao; ?>" />
                         </dd>
                         <dt>
-                            <label>Endereço Externo Cadastro</label>
-                        </dt>
+                            <label title="Endereço do sistema de cadastro de pacientes">Endereço Externo Cadastro (http://192.168.25.35/cadastro)</label>
+                        </dt> 
                         <dd>
-                            <input type="text" id="endereco_externo" class="texto08" name="endereco_externo" value="<?= @$obj->_endereco_externo; ?>" />
+                            <input title="Endereço do sistema de cadastro de pacientes" type="text" id="endereco_externo" class="texto08" name="endereco_externo" value="<?= @$obj->_endereco_externo; ?>" />
+                        </dd>
+                        <dt>
+                            <label title="Endereço da pasta de upload do sistema. Padrão Ubuntu: /home/sisprod/projetos/clinica/upload    Padrão no CentOS: /var/www/html/NOME DA PASTA DA CLINICA/upload">Endereço Upload (Mouse em cima para mais inf.)</label>
+                        </dt> 
+                        <dd>
+                            <input type="text"title="Endereço da pasta de upload do sistema. Padrão Ubuntu: /home/sisprod/projetos/clinica/upload | Padrão no CentOS: /var/www/html/NOME DA PASTA DA CLINICA/upload" id="endereco_externo" class="texto08" name="endereco_upload" value="<?= @$obj->_endereco_upload; ?>" />
                         </dd>
                         <dt>
                             <label>Endereço Toten EX: (http://192.168.25.47:8099)</label>
@@ -725,6 +731,24 @@
                             </dt>
                             <dd>
                                 <input type="checkbox" id="orcamento_cadastro" name="orcamento_cadastro" <? if (@$obj->_orcamento_cadastro == 't') echo "checked"; ?>/> 
+                            </dd>
+                            <dt>
+                                <label title="Ativando essa opção o Gerente de Recepção irá ter acesso á alguns relatórios do financeiro e do faturamento">Gerente de Recepção Rel. Financeiro</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="gerente_recepcao_financeiro" name="gerente_relatorio_financeiro" <? if (@$obj->_gerente_relatorio_financeiro == 't') echo "checked"; ?>/> 
+                            </dd>
+                            <dt>
+                                <label title="Ativando essa opção o botão de Imprimir Imagens aparece no sistema de pacientes">Botão Imagem no Sistema Paciente</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="botao_imagem_paciente" name="botao_imagem_paciente" <? if (@$obj->_botao_imagem_paciente == 't') echo "checked"; ?>/> 
+                            </dd>
+                            <dt>
+                                <label title="Ativando essa opção o botão de arquivos irá aparecer no sistema de pacientes">Botão Arquivos no Sistema Paciente</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="botao_arquivos_paciente" name="botao_arquivos_paciente" <? if (@$obj->_botao_arquivos_paciente == 't') echo "checked"; ?>/> 
                             </dd>
                         </fieldset>
                     <? } ?>

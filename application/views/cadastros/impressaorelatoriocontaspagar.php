@@ -6,55 +6,58 @@
 <?
 $i = 0;
 foreach ($relatoriolaboratorio as $item) {
-    $i++; ?>
-    $(function () {
-        $("#dataLab<?= $i ?>").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
+    $i++;
+    ?>
+        $(function () {
+            $("#dataLab<?= $i ?>").datepicker({
+                autosize: true,
+                changeYear: true,
+                changeMonth: true,
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonImage: '<?= base_url() ?>img/form/date.png',
+                dateFormat: 'dd/mm/yy'
+            });
         });
-    });
     <?
 }
 
 $i = 0;
 foreach ($relatoriomedico as $item) {
-    $i++; ?>
+    $i++;
+    ?>
 
-    $(function () {
-        $("#dataMed<?= $i ?>").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
+        $(function () {
+            $("#dataMed<?= $i ?>").datepicker({
+                autosize: true,
+                changeYear: true,
+                changeMonth: true,
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonImage: '<?= base_url() ?>img/form/date.png',
+                dateFormat: 'dd/mm/yy'
+            });
         });
-    });
 
     <?
 }
 
 $i = 0;
 foreach ($relatoriopromotor as $item) {
-    $i++; ?>
+    $i++;
+    ?>
 
-    $(function () {
-        $("#dataPro<?= $i ?>").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
+        $(function () {
+            $("#dataPro<?= $i ?>").datepicker({
+                autosize: true,
+                changeYear: true,
+                changeMonth: true,
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonImage: '<?= base_url() ?>img/form/date.png',
+                dateFormat: 'dd/mm/yy'
+            });
         });
-    });
     <?
 }
 ?>
@@ -108,8 +111,10 @@ foreach ($relatoriopromotor as $item) {
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">Tipo</th>
                         <th class="tabela_header">Classe</th>
-                        <th class="tabela_header">Dt saida</th>
+                        <th class="tabela_header">Dt Vencimento</th>
+                        <th class="tabela_header">Parcela</th>
                         <th class="tabela_header">Valor</th>
+
 
                         <th class="tabela_header">Observacao</th>
                         <th class="tabela_header">Empresa</th>
@@ -127,6 +132,7 @@ foreach ($relatoriopromotor as $item) {
                             <td ><?= $item->tipo; ?></td>
                             <td ><?= $item->classe; ?></td>
                             <td ><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
+                            <td ><?= $item->parcela; ?></td>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
                             <td ><?= $item->observacao; ?></td>
                             <td ><?= $item->empresa; ?></td>
@@ -183,25 +189,24 @@ foreach ($relatoriopromotor as $item) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php 
+                                        <?php
                                         $i = 0;
-                                        foreach ($previsaoMedicos as $key2 => $medicos) : 
+                                        foreach ($previsaoMedicos as $key2 => $medicos) :
                                             ?>
-                                        
+
                                             <tr>
                                                 <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
                                             </tr>
                                             <?
-                                            
                                             foreach ($medicos as $key => $item) :
                                                 $i ++;
-                                                
+
 //                                            if ($item["valor"] != 0) {
                                                 ?>
                                                 <tr>
                                                     <td ><?= $item["nome"]; ?></td>
                                                     <td style="text-align: right">
-                                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "cadastros/contaspagar/detalhesprevisaomedica/".date("Y-m-d", strtotime($key2))."/".$key."/".$_POST['empresa']; ?>', '_blank', 'width=800,height=800');">
+                                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "cadastros/contaspagar/detalhesprevisaomedica/" . date("Y-m-d", strtotime($key2)) . "/" . $key . "/" . $_POST['empresa']; ?>', '_blank', 'width=800,height=800');">
                                                             <?= number_format($item["valor"], 2, ",", "."); ?>
                                                         </a>
                                                     </td>
@@ -307,20 +312,21 @@ foreach ($relatoriopromotor as $item) {
                                     <tbody>
                                         <?php
                                         $i = 0;
-                                        foreach ($previsaoPromotor as $key2 => $promotores) : ?>
+                                        foreach ($previsaoPromotor as $key2 => $promotores) :
+                                            ?>
                                             <tr>
                                                 <td colspan="10" style="background-color: #ccc; font-weight: bold; font-size: 13pt;">Data: <?= date("d/m/Y", strtotime($key2)); ?></td>
                                             </tr>
                                             <?
                                             foreach ($promotores as $key => $item) :
                                                 $i++;
-                                               
+
 //                                            if($item["valor"] != 0) {
                                                 ?>
                                                 <tr>
                                                     <td ><?= $item["nome"]; ?></td>
                                                     <td style="text-align: right">
-                                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "cadastros/contaspagar/detalhesprevisaopromotor/".date("Y-m-d", strtotime($key2))."/".$key."/".$_POST['empresa']; ?>', '_blank', 'width=800,height=800');">
+                                                        <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "cadastros/contaspagar/detalhesprevisaopromotor/" . date("Y-m-d", strtotime($key2)) . "/" . $key . "/" . $_POST['empresa']; ?>', '_blank', 'width=800,height=800');">
                                                             <?= number_format($item["valor"], 2, ",", "."); ?>
                                                         </a>
                                                     </td>
@@ -430,7 +436,6 @@ foreach ($relatoriopromotor as $item) {
                 </thead>
                 <tbody>
                     <?php
-                    
                     $i = 0;
                     foreach ($previsaoLaboratorio as $key2 => $laboratorios) :
                         ?>
@@ -445,7 +450,7 @@ foreach ($relatoriopromotor as $item) {
                             <tr>
                                 <td ><?= $item["nome"]; ?></td>
                                 <td style="text-align: right">
-                                    <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "cadastros/contaspagar/detalhesprevisaolaboratorio/".date("Y-m-d", strtotime($key2))."/".$key."/".$_POST['empresa']; ?>', '_blank', 'width=800,height=800');">
+                                    <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "cadastros/contaspagar/detalhesprevisaolaboratorio/" . date("Y-m-d", strtotime($key2)) . "/" . $key . "/" . $_POST['empresa']; ?>', '_blank', 'width=800,height=800');">
                                         <?= number_format($item["valor"], 2, ",", "."); ?>
                                     </a>
                                 </td>

@@ -170,7 +170,7 @@
                                         </font>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -194,7 +194,7 @@
                                         </font>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -217,7 +217,7 @@
                                         </font>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -240,7 +240,7 @@
                                         <?= $item->parcelas1; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -268,7 +268,7 @@
                                     </td>
 
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -295,7 +295,7 @@
                                         <?= $item->parcelas1; ?><br><?= $item->parcelas2; ?><br><?= $item->parcelas4; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -319,7 +319,7 @@
                                         <?= $item->parcelas1; ?><br><?= $item->parcelas4; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -463,7 +463,7 @@
                                         <br><?= $item->parcelas3; ?><br><?= $item->parcelas4; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -504,7 +504,7 @@
                                         <?= $item->parcelas1; ?><br><?= $item->parcelas2; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -526,7 +526,7 @@
                                         <?= $item->parcelas1; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -548,7 +548,7 @@
                                         <?= $item->parcelas1; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -765,7 +765,7 @@
                                         </font>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -789,7 +789,7 @@
                                         </font>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -812,7 +812,7 @@
                                         </font>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -835,7 +835,7 @@
                                         <?= $item->parcelas1; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -863,7 +863,7 @@
                                     </td>
 
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -890,7 +890,7 @@
                                         <?= $item->parcelas1; ?><br><?= $item->parcelas2; ?><br><?= $item->parcelas4; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -914,7 +914,7 @@
                                         <?= $item->parcelas1; ?><br><?= $item->parcelas4; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -1057,7 +1057,7 @@
                                         <br><?= $item->parcelas3; ?><br><?= $item->parcelas4; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -1098,7 +1098,7 @@
                                         <?= $item->parcelas1; ?><br><?= $item->parcelas2; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -1120,7 +1120,7 @@
                                         <?= $item->parcelas1; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
@@ -1142,7 +1142,7 @@
                                         <?= $item->parcelas1; ?>
                                     </td>
                                     <? if ($item->faturado == "f") { ?>
-                                        <td style="text-align: right"><font size="-2" color="red"><?= $item->quantidade; ?></td>
+                                        <td style="text-align: right"><a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');"><font size="-2" color="red"><?= $item->quantidade; ?></a></td>
                                     <? } else { ?>
                                         <td style="text-align: right"><font size="-2"><?= $item->quantidade; ?></td>
                                     <? } ?>
