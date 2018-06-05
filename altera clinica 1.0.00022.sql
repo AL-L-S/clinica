@@ -69,7 +69,7 @@ UPDATE ponto.tb_procedimento_convenio SET ativo = false WHERE procedimento_conve
         SELECT procedimento_convenio_id, convenio_id, procedimento_tuss_id, empresa_id, 
         ROW_NUMBER() OVER (PARTITION BY convenio_id, procedimento_tuss_id, empresa_id) AS row_number 
         FROM ponto.tb_procedimento_convenio
-        --WHERE excluido = 'f'
+        WHERE ativo = 't'
 	ORDER BY convenio_id, procedimento_tuss_id, empresa_id, procedimento_convenio_id
     ) 
     SELECT procedimento_convenio_id FROM t WHERE row_number > 1  
