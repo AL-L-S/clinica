@@ -231,7 +231,7 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data)) . " " . $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                                                                            width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                                                                                                                                            width=500,height=400');">=><?= $item->observacoes; ?></td>
         <!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
                                 <a href="<?= base_url() ?>ambulatorio/exame/anexarimagem/">
                                     Chamar

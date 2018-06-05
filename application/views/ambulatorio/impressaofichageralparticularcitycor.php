@@ -45,6 +45,10 @@ $agenda = $exame[0]->agenda;
 <td ><font size = -1><u><?= $empresa[0]->razao_social ?></u></font></td>
 </tr>
 <tr>
+    <td colspan="5"></td>
+    <td ><font size = -1>Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b></td>
+</tr>
+<tr>
     <td colspan="2" ><font size = -1><?= $exame[0]->convenio; ?>&nbsp;&nbsp; - &nbsp;&nbsp;<?= $exame[0]->guia_id ?></font></td>
     <td ><font size = -1>SEXO: <?= $sexopaciente ?></font></td>
     <td><font size = -2></font></td>

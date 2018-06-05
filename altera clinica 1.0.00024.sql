@@ -42,3 +42,8 @@ SELECT insereValor();
 
 
 ALTER TABLE ponto.tb_empresa ADD COLUMN endereco_upload text;
+
+--05/06/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN botao_imagem_paciente boolean DEFAULT true;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN botao_arquivos_paciente boolean DEFAULT true;

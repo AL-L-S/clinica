@@ -240,7 +240,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->situacaolaudo; ?></td>
                             <? } ?>
                             <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                                    width=500,height=230');">=><?= $item->observacoes; ?></td>
+                                                                                                                                                                                                    width=500,height=400');">=><?= $item->observacoes; ?></td>
                                 <? if ($item->situacaolaudo != '' && $item->situacaoexame != 'PENDENTE') { ?>
                                     <?
                                     if (($item->medico_parecer1 == $operador_id && $item->situacaolaudo == 'FINALIZADO') || ($item->situacaolaudo != 'FINALIZADO' && $item->situacaolaudo != '') || $operador_id == 1) {
