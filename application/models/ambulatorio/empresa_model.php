@@ -927,6 +927,7 @@ class empresa_model extends Model {
             $this->db->set('cnes', $_POST['txtCNES']);
             $this->db->set('email', $_POST['email']);
 
+
             if ($operador_id == 1) {
 
                 if ($_POST['impressao_tipo'] != "") {
@@ -994,7 +995,8 @@ class empresa_model extends Model {
             $this->db->set('logradouro', $_POST['endereco']);
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
-
+            
+            $this->db->set('endereco_upload', $_POST['endereco_upload']);
             if ($operador_id == 1) {
                 if (isset($_POST['sms'])) {
                     $this->db->set('servicosms', 't');
@@ -1934,6 +1936,7 @@ class empresa_model extends Model {
                                ep.apenas_procedimentos_multiplos,
                                ep.orcamento_cadastro,
                                ep.gerente_relatorio_financeiro,
+                               f.endereco_upload,
                                f.horario_seg_sex_inicio,
                                f.horario_seg_sex_fim,
                                f.horario_sab_inicio,
@@ -1960,6 +1963,7 @@ class empresa_model extends Model {
             $this->_laudo_sigiloso = $return[0]->laudo_sigiloso;
             $this->_campos_cadastro = $return[0]->campos_cadastro;
             $this->_orcamento_cadastro = $return[0]->orcamento_cadastro;
+            $this->_endereco_upload = $return[0]->endereco_upload;
             $this->_conjuge = $return[0]->conjuge;
             $this->_horario_seg_sex = $return[0]->horario_seg_sex;
             $this->_horario_sab = $return[0]->horario_sab;

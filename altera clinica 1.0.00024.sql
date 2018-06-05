@@ -39,3 +39,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+
+ALTER TABLE ponto.tb_empresa ADD COLUMN endereco_upload text;

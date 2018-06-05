@@ -161,10 +161,16 @@
                             <input type="text" id="impressao_declaracao" class="texto01" name="impressao_declaracao" value="<?= @$obj->_impressao_declaracao; ?>" />
                         </dd>
                         <dt>
-                            <label>Endereço Externo Cadastro</label>
-                        </dt>
+                            <label>Endereço Externo Cadastro (http://192.168.25.35/cadastro)</label>
+                        </dt> 
                         <dd>
                             <input type="text" id="endereco_externo" class="texto08" name="endereco_externo" value="<?= @$obj->_endereco_externo; ?>" />
+                        </dd>
+                        <dt>
+                            <label>Endereço Upload (/home/sisprod/projetos/clinica/upload)</label>
+                        </dt> 
+                        <dd>
+                            <input type="text" id="endereco_externo" class="texto08" name="endereco_upload" value="<?= @$obj->_endereco_upload; ?>" />
                         </dd>
                         <dt>
                             <label>Endereço Toten EX: (http://192.168.25.47:8099)</label>
