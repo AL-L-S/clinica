@@ -72,12 +72,13 @@ class procedimentoplano_model extends Model {
                             pc.procedimento_tuss_id,
                             pt.nome as procedimento,
                             pt.codigo,
-                            pt.grupo');
+                            pt.grupo,
+                            pc.valortotal');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_empresa e', 'e.empresa_id = pc.empresa_id', 'left');
-        $this->db->where("pc.ativo", 't');
+//        $this->db->where("pc.ativo", 't');
         if (@$args['nome'] != '') {
             $this->db->where('c.nome', $args['nome']);
         }
@@ -98,7 +99,13 @@ class procedimentoplano_model extends Model {
                             pc.procedimento_tuss_id,
                             pt.nome,
                             pt.codigo,
-                            pt.grupo");
+                            pt.grupo,
+                            pc.valortotal");
+        $this->db->orderby("c.nome,
+                            c.convenio_id,
+                            pt.nome,
+                            pc.procedimento_tuss_id,
+                            pc.valortotal DESC");
         return $this->db;
     }
 

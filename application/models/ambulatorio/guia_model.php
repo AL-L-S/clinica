@@ -5758,6 +5758,10 @@ class guia_model extends Model {
         if ($_POST['operador'] != '0' && $_POST['operador'] != '') {
             $sql .= " AND ae.operador_faturamento = " . $_POST['operador'];
         }
+        if ($_POST['forma_pagamento'] == "1") {
+            $sql .= " AND ((f.cartao = 't') OR (f2.cartao = 't') OR (f3.cartao = 't') OR (f4.cartao = 't'))";
+        }
+//        
 
         $this->db->select('o.operador_id, o.nome');
         $this->db->from('tb_operador o');
@@ -5769,6 +5773,10 @@ class guia_model extends Model {
                             LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id
                             LEFT JOIN ponto.tb_operador_grupo_medico ogm ON ae.medico_consulta_id = ogm.operador_id
                             LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id
+                            LEFT JOIN ponto.tb_forma_pagamento f ON f.forma_pagamento_id = ae.forma_pagamento
+                            LEFT JOIN ponto.tb_forma_pagamento f2 ON f2.forma_pagamento_id = ae.forma_pagamento2
+                            LEFT JOIN ponto.tb_forma_pagamento f3 ON f3.forma_pagamento_id = ae.forma_pagamento3
+                            LEFT JOIN ponto.tb_forma_pagamento f4 ON f4.forma_pagamento_id = ae.forma_pagamento4
                             WHERE ae.data >= '{$data_inicio}' AND ae.data <= '{$data_fim}'
                             AND ae.confirmado = 't' AND ae.operador_autorizacao > 0
                             AND c.dinheiro = 't'
@@ -6046,7 +6054,9 @@ class guia_model extends Model {
         if ($_POST['empresa'] != '0' && $_POST['empresa'] != '') {
             $this->db->where("ae.empresa_id", $_POST['empresa']);
         }
-
+        if ($_POST['forma_pagamento'] == "1") {
+            $this->db->where("((f.cartao = 't') OR (f2.cartao = 't') OR (f3.cartao = 't') OR (f4.cartao = 't'))");
+        }
         $this->db->where("ae.operador_faturamento", $operador_faturamento);
 
         // SEMPRE DEIXE guia_id EM PRIMEIRO! Do contrário o relatorio de caixa personalizado não irá funcionar.
@@ -6226,6 +6236,9 @@ class guia_model extends Model {
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
+        if ($_POST['forma_pagamento'] == "1") {
+            $this->db->where("((f.cartao = 't') OR (f2.cartao = 't') OR (f3.cartao = 't') OR (f4.cartao = 't'))");
+        }
         if ($_POST['grupo'] == "1") {
             $this->db->where('pt.grupo !=', 'RM');
         }

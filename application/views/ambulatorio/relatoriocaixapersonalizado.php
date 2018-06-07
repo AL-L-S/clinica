@@ -72,6 +72,15 @@
                                     <? } ?>
                         </select>
                     </dd>
+                    <dt>
+                        <label>Forma de Pagamento</label>
+                    </dt>
+                    <dd>
+                        <select name="forma_pagamento" id="forma_pagamento" class="size2" >
+                            <option value='0'>TODOS</option>
+                            <option value='1'>CARTÃO</option>
+                        </select>
+                    </dd>
                     <style>
                         #grupo_chosen a{
                             width: 180px;

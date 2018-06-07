@@ -122,6 +122,7 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                         <th class="tabela_header">Grupo</th>
                         <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">Código</th>
+                        <th class="tabela_header">Valor</th>
                         <th class="tabela_header" colspan="4"><center>Detalhes</center></th>
                     </tr>
                 </thead>
@@ -131,7 +132,8 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                 $total = $consulta->count_all_results();
                 $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
-
+                
+                
                 if ($total > 0) {
                     ?>
                     <tbody>
@@ -141,8 +143,22 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                         } else {
                             $lista = $this->procedimentoplano->listar2($_GET)->orderby('c.nome')->orderby('pt.grupo')->orderby('pt.nome')->get()->result();
                         }
+                        
                         $estilo_linha = "tabela_content01";
+                        $i = 0;
+                        
+                        $convenioAtual = '';
+                        $procedimentoAtual = '';
+                        
                         foreach ($lista as $item) {
+                            if($convenioAtual == $item->convenio_id && $procedimentoAtual == $item->procedimento_tuss_id){
+                                if ($i != count($lista) - 2 ) $i++;
+                                continue;
+                            }
+                            $convenioAtual = $item->convenio_id;
+                            $procedimentoAtual = $item->procedimento_tuss_id;
+                            
+                            
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
@@ -150,6 +166,18 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <?
+                                    if ($convenioAtual == $lista[$i+1]->convenio_id && $procedimentoAtual == $lista[$i+1]->procedimento_tuss_id && $i != count($lista) - 2){ 
+                                        $cor = 'red';
+                                    } else {
+                                        $cor = 'black';
+                                    }
+                                    ?>
+                                    <span style="font-weight: bolder; color: <?=$cor?>">
+                                        <?= number_format((float)$item->valortotal, 2, ',', ''); ?>
+                                    </span>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
                                     <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/listaprocedimentomultiempresa/<?= $item->procedimento_tuss_id ?>/<?=$item->convenio_id ?>">
                                         Detalhes
@@ -159,6 +187,7 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
 
                         </tbody>
                         <?php
+                        if ($i != count($lista) - 2 ) $i++;
                     }
                 }
                 ?>

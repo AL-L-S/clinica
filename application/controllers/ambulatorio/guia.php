@@ -4333,7 +4333,7 @@ class Guia extends BaseController {
         $data['formapagamento'] = $this->formapagamento->listarformacartao();
 
         $data['operadores'] = $this->guia->relatoriocaixacartaopersonalizadooperadores();
-        // Obs: A busca pelos procedimentos é feita na view. (Caso queira alterar a busca, altere as duas funções acima e a que está dentro da view)
+        // Obs: A busca pelos procedimentos é feita na view. (Caso queira alterar a busca, altere a funçao acima e a que está dentro da view)
 
         $this->load->View('ambulatorio/impressaorelatoriocaixacartaopersonalizado', $data);
     }
