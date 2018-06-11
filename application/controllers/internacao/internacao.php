@@ -181,6 +181,7 @@ class internacao extends BaseController {
 //        var_dump($data['impressao']); die;
         $this->loadView('internacao/manterfichaquestionario-lista', $args);
     }
+
     function pesquisarinternacaolista($args = array()) {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
 //        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
@@ -673,6 +674,39 @@ class internacao extends BaseController {
 
 
         $this->load->View('internacao/impressaorelatoriocensodiario', $data);
+    }
+
+    function relatoriointernacao() {
+        $data['unidade'] = $this->internacao_m->listaunidade();
+        $this->loadView('internacao/relatoriointernacao', $data);
+    }
+
+    function gerarelatoriointernacao() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $data['internacao'] = $this->internacao_m->relatoriointernacao();
+//        echo '<pre>';
+//        var_dump($data['internacao']);
+//        die;
+        if ($_POST['unidade'] != 0) {
+            $unidade = $this->internacao_m->pesquisarunidade($_POST['unidade']);
+            $data['unidade'] = $unidade[0]->nome;
+        } else {
+            $data['unidade'] = 'TODOS';
+        }
+
+        if ($_POST['enfermaria'] != 0) {
+            $enfermaria = $this->internacao_m->pesquisarenfermaria($_POST['enfermaria']);
+            $data['enfermaria'] = $enfermaria[0]->nome;
+        } else {
+            $data['enfermaria'] = 'TODOS';
+        }
+
+
+
+
+        $this->load->View('internacao/impressaorelatoriointernacao', $data);
     }
 
     function mostratransferirpaciente($paciente_id) {
