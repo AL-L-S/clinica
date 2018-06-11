@@ -105,6 +105,21 @@ class internacao extends BaseController {
         }
     }
 
+    function carregarinternacao($internacao_id, $paciente_id) {
+
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['internacao'] = $this->internacao_m->listarcarregarinternacao($internacao_id);
+//            var_dump($data['medico']); die;
+//            if ($data['paciente'][0]->cep == '' || $data['paciente'][0]->cns == '') {
+//                $data['mensagem'] = 'CEP ou CNS obrigatorio';
+//                $this->session->set_flashdata('message', $data['mensagem']);
+//                redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
+//            }
+        $data['paciente_id'] = $paciente_id;
+        $this->loadView('internacao/cadastrarinternacao', $data);
+    }
+
     function mantertipodependencia() {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
 //        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
@@ -331,6 +346,7 @@ class internacao extends BaseController {
 
         $data['paciente'] = $this->motivosaida->mostrarnovasaidapaciente($internacao_id);
         $data['motivosaida'] = $this->motivosaida->listamotivosaidapacientes($internacao_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
 //        echo "<pre>";
 //        var_dump($internacao_id, $data['paciente']); die;
         $this->loadView('internacao/mostrarnovasaidapaciente', $data);
@@ -481,7 +497,7 @@ class internacao extends BaseController {
             $data['mensagem'] = 'Erro ao gravar movimentacao';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "internacao/internacao/pacientesinternados/Todas");
+        redirect(base_url() . "internacao/internacao/pesquisarinternacaolista");
     }
 
     function gravarinternacaonutricao($paciente_id) {
@@ -685,26 +701,22 @@ class internacao extends BaseController {
 //        echo '<pre>';
 //        var_dump($_POST);
 //        die;
+        $data['data_inicio'] = $_POST['txtdata_inicio'];
+        $data['data_fim'] = $_POST['txtdata_fim'];
         $data['internacao'] = $this->internacao_m->relatoriointernacao();
 //        echo '<pre>';
 //        var_dump($data['internacao']);
 //        die;
-        if ($_POST['unidade'] != 0) {
-            $unidade = $this->internacao_m->pesquisarunidade($_POST['unidade']);
-            $data['unidade'] = $unidade[0]->nome;
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
         } else {
-            $data['unidade'] = 'TODOS';
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
+            } else {
+                $data['convenio'] = 'TODOS';
+            }
         }
-
-        if ($_POST['enfermaria'] != 0) {
-            $enfermaria = $this->internacao_m->pesquisarenfermaria($_POST['enfermaria']);
-            $data['enfermaria'] = $enfermaria[0]->nome;
-        } else {
-            $data['enfermaria'] = 'TODOS';
-        }
-
-
-
 
         $this->load->View('internacao/impressaorelatoriointernacao', $data);
     }

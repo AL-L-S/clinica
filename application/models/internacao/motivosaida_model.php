@@ -80,11 +80,17 @@ class motivosaida_model extends BaseModel {
                            i.data_internacao,
                            i.observacao_saida,
                            i.leito,
+                           i.data_saida,
+                           il.nome as leito_nome,
+                           o.nome as medico_internacao,
+                           o2.nome as medico_saida,
                            p.sexo,
                            p.nascimento');
         $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
+        $this->db->join('tb_operador o2', 'o2.operador_id = i.medico_saida', 'left');
         $this->db->join('tb_internacao_motivosaida m', 'm.internacao_motivosaida_id = i.motivo_saida', 'left');
         $this->db->where('i.internacao_id', $internacao_id);
 //        $this->db->where('p.paciente_id = i.paciente_id');
@@ -168,18 +174,26 @@ class motivosaida_model extends BaseModel {
             $this->db->set('hospital_transferencia', $_POST['hospital']);
             $this->db->set('observacao_saida', $_POST['observacao']);
             $this->db->set('data_atualizacao', $horario);
-            $this->db->set('data_saida', $horario);
+            $this->db->set('data_saida', date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['data_saida']))));
+            if ($_POST['medico_saida'] != '') {
+                $this->db->set('medico_saida', $_POST['medico_saida']);
+            }
+
             $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->where('paciente_id', $_POST['idpaciente']);
+            $this->db->where('internacao_id', $_POST['internacao_id']);
             $this->db->update('tb_internacao');
         } else {
             $this->db->set('ativo', 'f');
             $this->db->set('motivo_saida', $_POST['motivosaida']);
             $this->db->set('observacao_saida', $_POST['observacao']);
             $this->db->set('data_atualizacao', $horario);
-            $this->db->set('data_saida', $horario);
+            if ($_POST['medico_saida'] != '') {
+                $this->db->set('medico_saida', $_POST['medico_saida']);
+            }
+
+            $this->db->set('data_saida', date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['data_saida']))));
             $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->where('paciente_id', $_POST['idpaciente']);
+            $this->db->where('internacao_id', $_POST['internacao_id']);
             $this->db->update('tb_internacao');
         }
         //Tabela Ocupação alteração

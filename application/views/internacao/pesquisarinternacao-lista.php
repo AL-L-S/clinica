@@ -59,7 +59,7 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->leito; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y H:i:s", strtotime($item->data_internacao)); ?></td>
 
-                                
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 70px;"><div style="width: 70px;" class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/carregarinternacao/<?= $item->internacao_id ?>/<?= $item->paciente_id ?>">Editar</a></div></td>    
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 110px;"><div style="width: 110px;" class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostratransferirpaciente/<?= $item->paciente_id ?>">Transferir Leito</a></div></td>
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 70px;"><div style="width: 70px;" class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostrapermutapaciente/<?= $item->paciente_id ?>">Permuta</a></div></td>
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 70px;"><div style="width: 70px;" class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostrarnovasaidapaciente/<?= $item->internacao_id ?>">Saída</a></div></td>
@@ -91,7 +91,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="10">
+                        <th class="tabela_footer" colspan="12">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

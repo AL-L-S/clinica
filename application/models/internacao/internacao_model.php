@@ -26,7 +26,7 @@ class internacao_model extends BaseModel {
             $this->db->set('aih', $_POST['aih']);
             $this->db->set('prelaudo', $_POST['central']);
             $this->db->set('medico_id', $_POST['operadorID']);
-            $this->db->set('data_internacao', $_POST['data']);
+            $this->db->set('data_internacao', date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['data']))));
             $this->db->set('forma_de_entrada', $_POST['forma']);
             $this->db->set('estado', $_POST['estado']);
             $this->db->set('carater_internacao', $_POST['carater']);
@@ -1488,6 +1488,79 @@ class internacao_model extends BaseModel {
         }
 
         $this->db->orderby('iu.internacao_unidade_id, ie.internacao_enfermaria_id, il.ativo, il.nome, i.data_internacao desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatoriointernacao() {
+        $data = date("Y-m-d");
+        $this->db->select(' 
+                          il.nome as leito,
+                          il.condicao,
+                          il.ativo,
+                          ie.nome as enfermaria,
+                          ie.unidade_id,
+                          iu.nome as unidade,
+                          i.cid1solicitado as cid1,
+                          i.data_internacao,
+                          p.nome as paciente,
+                          p.sexo,
+                          p.nascimento,
+                          c.nome as convenio,
+                          pt.nome as procedimento,
+                          
+                          ');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_convenio c', 'p.convenio_id = c.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = i.procedimentosolicitado', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
+        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
+        $this->db->where('i.ativo = true');
+        $this->db->where("i.data_internacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00');
+        $this->db->where("i.data_internacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
+        if ($_POST['convenio'] != '') {
+            if ($_POST['convenio'] == '-1') {
+                $this->db->where('c.convenio_id', null);
+            } else {
+                $this->db->where('c.convenio_id', $_POST['convenio']);
+            }
+        }
+
+
+        $this->db->orderby('iu.internacao_unidade_id, ie.internacao_enfermaria_id, il.ativo, il.nome, i.data_internacao desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarcarregarinternacao($internacao_id) {
+        $data = date("Y-m-d");
+        $this->db->select(' 
+                          i.*,
+                          il.nome as leito,
+                          il.internacao_leito_id,
+                          p.nome as paciente,
+                          p.sexo,
+                          p.nascimento,
+                          cid.co_cid,
+                          cid.no_cid,
+                          cid2.co_cid as co_cid2,
+                          cid2.no_cid as no_cid2,
+                          pt.nome as procedimento,
+                          pt.procedimento_tuss_id,
+                          m.nome as cidade_responsavel,
+                          
+                          ');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_municipio m', 'i.municipio_responsavel_id = m.municipio_id', 'left');
+        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
+        $this->db->join('tb_cid cid2', 'cid2.co_cid = i.cid2solicitado', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = i.procedimentosolicitado', 'left');
+        $this->db->where("i.internacao_id ", $internacao_id);
+
         $return = $this->db->get();
         return $return->result();
     }
