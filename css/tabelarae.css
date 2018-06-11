@@ -1,0 +1,200 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+
+/*Tabela*/
+
+table#tabelaspec  {
+
+    border-spacing: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width:100%;
+
+}
+
+table#tabelaspec td {
+
+    padding: 0pt;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 9pt;
+    font-weight: normal;
+}
+
+table#tabelaspec .ti {
+    border-bottom: 0px;
+    padding: 0pt;
+    text-align: left;
+    font-size: 9px;
+    font-weight: normal;
+}
+table#tabelaspec .tabelapequena {
+      border-spacing: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width:50%;
+}
+table#tabelaspec .tic {
+    border-bottom: 0px;
+    border-top: 0px;
+    padding: 0pt;
+    text-align: left;
+    font-size: 9px;
+    font-weight: normal;
+}
+table#tabelaspec .tisublinhado {
+    border-bottom: 0px;
+    border-top: 0px;
+    padding: 0pt;
+    text-align: left;
+    font-size: 12px;
+    font-weight: normal;
+    text-decoration: underline;
+    text-align: center;
+}
+table#tabelaspec .tisemsublinhado {
+    border-bottom: 0px;
+    border-top: 0px;
+    padding: 0pt;
+    text-align: left;
+    font-size: 12px;
+    font-weight: normal;
+
+    text-align: center;
+}
+table#tabelaspec .tisemsublinhadogrande {
+    border-bottom: 0px;
+    border-top: 0px;
+    padding: 0pt;
+    text-align: left;
+    font-size: 17px;
+    font-weight: bold;
+
+    text-align: center;
+}
+table#tabelaspec .semborda {
+    border:0px;
+    padding: 0pt;
+    text-align: left;
+    font-size: 10px;
+    font-weight: normal;
+}
+table#tabelaspec .ticb {
+    border-bottom: 0px;
+    padding: 0pt;
+    font-size: 10px;
+    font-weight: normal;
+    text-align: center;
+}
+
+
+table#tabelaspec .tc {
+    border-top:0px ;
+    padding: 0px;
+    text-align: left;
+}
+table#tabelaspec .sembordaesquerda {
+    border-top:0px ;
+    border-left:0px ;
+    padding: 0px;
+    text-align: left;
+}
+table#tabelaspec .sembordaesquerdabaixo {
+    border-top:0px ;
+    border-left:0px ;
+    border-bottom: 0px ;
+    padding: 0px;
+    text-align: left;
+}
+
+table#tabelaspec .sembordadireita {
+    border-top:0px ;
+    border-right:0px ;
+    padding: 0px;
+    text-align: left;
+}
+table#tabelaspec .sembordadireitabaixo {
+    border-top:0px ;
+    border-right:0px ;
+    border-bottom:0px ;
+    padding: 0px;
+    text-align: left;
+}
+
+
+table#tabelaspec .sembordadireitaesquerda {
+    border-top:0px ;
+    border-right:0px ;
+    border-left:0px ;
+    padding: 0px;
+    text-align: left;
+}
+table#tabelaspec .tm {
+    border-top:0px ;
+    padding: 0px;
+    text-align: center;
+    font-weight:bold;
+}
+table#tabelaspec .tmtextoesquerdo {
+    border-top:0px ;
+    padding: 0px;
+    text-align: left;
+    font-weight:bold;
+}
+
+table#tabelaspec .ttl {
+    border-left:0px ;
+    padding: 0px;
+    text-align: center;
+    font-weight:bold;
+}
+table#tabelaspec .ttr {
+    border-right:0px ;
+    padding: 0px;
+    text-align: center;
+    font-weight:bold;
+}
+table#tabelaspec .tisemborda {
+    border:0px ;
+    padding: 0px;
+    text-align: center;
+    font-weight:bold;
+}
+table#tabelaspec .ttrl {
+
+
+    border-left:1px #606060 ;
+    border-right:1px #606060;
+    padding: 0px;
+    text-align: center;
+    font-weight:bold;
+}
+
+.bt_link_new{
+    background: url(images/bg_buttons.png);
+    width: 60px;
+    height: 15px;
+    border: 1px solid;
+    border-top-color: #eee;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+    border-left-color: #eee;
+    -moz-border-radius:4px;
+    margin-bottom: 4px;
+}
+
+.bt_link_new a {
+    display:block;
+    width:60px;
+    height:10px;
+    padding:5px 5px 5px 5px;
+    color: #900;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.bt_link_new a:hover {
+    color: #f00;
+}

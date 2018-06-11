@@ -1,0 +1,106 @@
+body{font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;font-size:13px;background-color:#dedede}
+#wall_container {
+text-align: left;
+width: 588px;
+min-height: 500px;
+}
+#updateboxarea {
+background-color: #ffffff;
+border: 1px solid #d6d7da;
+border-radius: 4px;
+-moz-border-radius: 4px;
+-webkit-border-radius: 4px;
+padding: 12px 12px 12px 12px;
+margin-bottom:10px;
+}
+#update {
+border: solid 1px #BDC7D8;
+height: 40px;
+width: 550px;
+font-size: 13px;
+padding: 5px;
+margin-top: 5px;
+}
+.floatRight {
+float: right;
+}
+.wallbutton {
+font-weight: bold;
+padding: 7px 9px;
+background-color: #5fcf80;
+color: #fff !important;
+font-size: 12px;
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+cursor: pointer;
+border-width: 1px 1px 3px !important;
+border-style: solid;
+border-color: #3ac162;
+}
+#loadStatus{display:none;color:#666666;margin-bottom:10px}
+
+.stbody
+{
+padding:5px 0px 5px 0px;overflow:auto;
+}
+.stimg
+{
+float:left;min-height:62px;width:62px;
+}
+.sttext
+{
+line-height:20px;
+margin-left:70px;
+min-height:50px;
+word-wrap:break-word;
+overflow:hidden;
+display:block;
+font-size:13px;
+width:516px;
+background-color:#ffffff;
+border:1px solid #d6d7da;
+border-radius:4px;
+-moz-border-radius:4px;
+-webkit-border-radius:4px;
+}
+.big_face
+{
+width:60px;height:60px;margin-bottom:5px;
+border-radius:4px;
+-moz-border-radius:4px;
+-webkit-border-radius:4px;
+border: solid 1px #d6d7da;
+}
+.sttext_content
+{
+margin:12px 12px 12px 12px;
+}
+.sttext_content a
+{
+color:#3b5998;
+text-decoration:none;
+}
+.sttext_content a:hover
+{
+text-decoration:underline;
+}
+.sttext_span{display:block}
+
+#recordContainer{padding:10px 0px 10px 0px;display:none;text-align:center}
+.startContainer{ background-color:#ffffff}
+.stopContainer{ background-color:#F23030;color:#ffffff}
+#recordButton{height:42px;cursor:pointer;float:left}
+#recordCircle{margin:0px auto;font-weight:bold;cursor:pointer;width:100px;height:100px;text-align:center;-moz-border-radius:50px;-webkit-border-radius:50px;border-radius:50px;}
+.startRecord{background-color:#F23030;color:#ffffff;}
+.stopRecord{background-color:#ffffff;color:#000000;}
+#recordText{padding-top:42px}#recordTime{padding-bottom:10px}
+
+.recordOff{opacity:0.4}.recordOn{opacity:1}
+#recordHelp{float:left;margin-top: 14px;color: #666666;}
+#controlButtons{height:45px}
+audio{display:none}
+.audioContainer{height:50px;width:250px;border:solid 1px #dedede;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;position:relative;}
+.audioProgress{height:50px;float:left;background-color:#f2f2f2;z-index:800}
+.audioControl{position: absolute;float:left;width:52px;height:48px;background-color:#ffffff;-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px;cursor:pointer;z-index:900;}
+.audioTime{position: absolute;width: 45px;height: 20px;margin-left:199px;float:right;text-align:right;padding-top: 15px;padding-right: 5px;font-family:arial;color:#666666;-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px}
+.audioBar{height: 3px;background-color: #cc0000;margin: 22px;position: absolute;width: 147px;margin-left: 53px;}
+.audioPlay{background:url('../images/play.png') no-repeat} .audioPause{background:url('../images/pause.png') no-repeat}

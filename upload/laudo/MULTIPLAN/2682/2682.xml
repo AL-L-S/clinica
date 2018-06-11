@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+                            <NAJA>
+                                <NJ_CodPaciente>2682</NJ_CodPaciente>
+                                <NJ_NomePaciente>DIONIZIA MARIA TEIXEIRA RIBEIRO</NJ_NomePaciente>
+                                <NJ_Laudo>77193</NJ_Laudo>
+                                <NJ_LocalLaudo>./upload/laudoMULTIPLAN/2682</NJ_LocalLaudo>
+                                <NJ_FormatoLaudo>RTF</NJ_FormatoLaudo>
+                                <NJ_NomeMedicoLaudante>PAULO HENRIQUE WALTER DE AGUIAR</NJ_NomeMedicoLaudante>
+                               <NJ_Detalhes><NJ_Exame>
+                            <NJ_Accessionnumber></NJ_Accessionnumber>                            
+                            <NJ_NomeExame></NJ_NomeExame>
+                       </NJ_Exame></NJ_Detalhes>
+                       </NAJA>

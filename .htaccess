@@ -1,0 +1,3 @@
+RewriteEngine on
+RewriteCond $1 !^(index\.php|img|upload|arquivos|css|js|images|favicon\.ico|robots\.txt)
+RewriteRule ^(.*)$ /clinicas/index.php/$1 [L]
