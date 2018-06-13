@@ -13,6 +13,7 @@ class internacao extends BaseController {
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/laudo_model', 'laudo_m');
         $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('internacao/internacao_model', 'internacao_m');
         $this->load->model('internacao/unidade_model', 'unidade_m');
         $this->load->model('internacao/motivosaida_model', 'motivosaida');
@@ -48,6 +49,11 @@ class internacao extends BaseController {
 
     public function pesquisarmotivosaida($args = array()) {
         $this->loadView('internacao/listarmotivosaida');
+    }
+
+    public function listarimpressoes($internacao_id) {
+        $data['internacao_id'] = $internacao_id;
+        $this->loadView('internacao/listarimpressoesinternacao', $data);
     }
 
     public function pesquisarsolicitacaointernacao($args = array()) {
@@ -125,6 +131,66 @@ class internacao extends BaseController {
 //        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
 //        var_dump($data['impressao']); die;
         $this->loadView('internacao/mantertipodependencia-lista');
+    }
+
+    function impressaomodelointernacao($internacao_id, $impressao_id) {
+//        var_dump($impressao_id);
+//        die;
+        $this->load->plugin('mpdf');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['internacao'] = $this->internacao_m->internacaoimpressaomodelo($internacao_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($data['internacao'][0]->medico_id);
+//        echo '<pre>';
+//        var_dump($data['empresapermissoes']); die;
+        $data['impressaointernacao'] = $this->internacao_m->listarmodeloimpressaointernacao($impressao_id);
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
+
+        $filename = "internacao.pdf";
+        if ($data['cabecalhomedico'][0]->cabecalho != '') { // Cabeçalho do Profissional
+            $cabecalho = $data['cabecalhomedico'][0]->cabecalho;
+        } else {
+            if (file_exists("upload/operadorLOGO/" . $data['internacao'][0]->medico_id . ".jpg")) { // Logo do Profissional
+                $cabecalho = '<img style="width: 100%; heigth: 35%;" src="upload/operadorLOGO/' . $data['internacao'][0]->medico_id . '.jpg"/>';
+            } else {
+                if ($data['impressaointernacao'][0]->cabecalho == 't') {
+                    $cabecalho = "$cabecalho_config";
+                } else {
+                    $cabecalho = '';
+                }
+            }
+        }
+
+
+        if (file_exists("upload/1ASSINATURAS/" . $data['internacao'][0]->medico_id . ".jpg")) {
+            $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['internacao'][0]->medico_id . ".jpg'>";
+            $data['assinatura'] = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['internacao'][0]->medico_id . ".jpg'>";
+        } else {
+            $assinatura = "";
+            $data['assinatura'] = "";
+        }
+
+        if ($data['cabecalhomedico'][0]->rodape != '') { // Rodapé do profissional
+            $rodape_config = $data['cabecalhomedico'][0]->rodape;
+            $rodape_config = str_replace("_assinatura_", $assinatura, $rodape_config);
+            $rodape = $rodape_config;
+        } else {
+            if ($data['impressaointernacao'][0]->rodape == 't') { // rodape da empresa
+                $rodape_config = str_replace("_assinatura_", $assinatura, $rodape_config);
+                $rodape = $rodape_config;
+            } else {
+                $rodape = "";
+            }
+        }
+        
+
+
+        $html = $this->load->view('internacao/impressaointernacaoconfiguravel', $data, true);
+//        var_dump($rodape);die;
+
+        pdf($html, $filename, $cabecalho, $rodape);
     }
 
     function configurartipodependencia($internacao_tipo_dependencia_id) {

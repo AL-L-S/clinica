@@ -164,6 +164,32 @@ class empresa_model extends Model {
         return $return->result();
     }
 
+    function listarconfiguracaoimpressaointernacao() {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_internacao_id,ei.nome as nome_internacao, ei.cabecalho,ei.ativo,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_internacao ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_id', $empresa_id);
+        $this->db->where('ei.ativo', 't');
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        return $this->db;
+    }
+
+    function listarconfiguracaoimpressaointernacaoform($empresa_impressao_cabecalho_id) {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_internacao_id, ei.nome as nome_internacao,ei.texto,ei.adicional_cabecalho, ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_internacao ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_impressao_internacao_id', $empresa_impressao_cabecalho_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarconfiguracaoimpressaoorcamento() {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
@@ -434,6 +460,23 @@ class empresa_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('empresa_impressao_laudo_id !=', $impressao_id);
         $this->db->update('tb_empresa_impressao_laudo');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+
+    function excluirconfiguracaointernacao($impressao_id) {
+//        var_dump($impressao_id); die;
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('empresa_impressao_internacao_id', $impressao_id);
+        $this->db->update('tb_empresa_impressao_internacao');
+
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return false;
@@ -739,6 +782,58 @@ class empresa_model extends Model {
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('empresa_impressao_laudo_id', $impressao_id);
                 $this->db->update('tb_empresa_impressao_laudo');
+            }
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            else
+//                $ambulatorio_guia_id = $this->db->insert_id();
+                return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravarconfiguracaoimpressaointernacao() {
+        try {
+//            var_dump($_POST['impressao_id']); die;
+            /* inicia o mapeamento no banco */
+            $empresa_id = $this->session->userdata('empresa_id');
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->select('ei.empresa_impressao_internacao_id,');
+            $this->db->from('tb_empresa_impressao_internacao ei');
+            $this->db->where('ei.empresa_impressao_internacao_id', $_POST['impressao_id']);
+            $teste = $this->db->get()->result();
+
+            if (count($teste) > 0) {
+                $impressao_id = $teste[0]->empresa_impressao_internacao_id;
+            }
+
+            if (count($teste) == 0) {
+                $this->db->set('nome', $_POST['nome']);
+                $this->db->set('cabecalho', $_POST['cabecalho']);
+                $this->db->set('rodape', $_POST['rodape']);
+                $this->db->set('texto', $_POST['texto']);
+                $this->db->set('adicional_cabecalho', $_POST['adicional_cabecalho']);
+                $this->db->set('empresa_id', $empresa_id);
+
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_empresa_impressao_internacao');
+            } else {
+                $this->db->set('adicional_cabecalho', $_POST['adicional_cabecalho']);
+                $this->db->set('nome', $_POST['nome']);
+                $this->db->set('cabecalho', $_POST['cabecalho']);
+                $this->db->set('rodape', $_POST['rodape']);
+                $this->db->set('texto', $_POST['texto']);
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('empresa_impressao_internacao_id', $impressao_id);
+                $this->db->update('tb_empresa_impressao_internacao');
             }
 
             $erro = $this->db->_error_message();

@@ -4,13 +4,33 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Listar Internações</a></h3>
         <div>
-
+            <?
+            $unidades = $this->unidade_m->listaunidadepacientes();
+            $enfermarias = $this->enfermaria_m->listaenfermariarelatorio();
+            $leitos = $this->leito_m->listaleitorelatorio();
+            $medicos = $this->operador_m->listarmedicos();
+            ?>
             <table>
                 <form method="get" action="<?= base_url() ?>internacao/internacao/pesquisarinternacaolista">
                     <thead>
                         <tr>
                             <th colspan="1" class="tabela_title">
                                 Nome
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                Unidade
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                Enfermaria
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                Leito
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                Médico Responsável
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                Situação
                             </th>
 
                         </tr>
@@ -21,6 +41,80 @@
                                 <!--<button type="submit" id="enviar">Pesquisar</button>-->
 
                             </th>
+                            <th colspan="1" class="tabela_title">
+                                <select name="unidade" id="unidade" class="size2" >
+                                    <option value=''>TODOS</option>
+                                    <?php
+                                    foreach ($unidades as $item) {
+                                        ?>
+                                        <option value="<?php echo $item->internacao_unidade_id; ?>" <?= (@$_GET['unidade'] == $item->internacao_unidade_id) ? 'selected' : '' ?>>
+
+                                            <?php echo $item->nome; ?>
+                                        </option>
+                                        <?php
+                                    }
+                                    ?> 
+                                </select>
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                <select name="enfermaria" id="enfermaria" class="size2" >
+                                    <option value=''>TODOS</option>
+                                    <?php
+                                    foreach ($enfermarias as $item) {
+                                        ?>
+                                        <option value="<?php echo $item->internacao_enfermaria_id; ?>" <?= (@$_GET['enfermaria'] == $item->internacao_enfermaria_id) ? 'selected' : '' ?>>
+
+                                            <?php echo $item->nome; ?>
+                                        </option>
+                                        <?php
+                                    }
+                                    ?> 
+                                </select>
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                <select name="leito" id="leito" class="size2" >
+                                    <option value=''>TODOS</option>
+                                    <?php
+                                    foreach ($leitos as $item) {
+                                        ?>
+                                        <option value="<?php echo $item->internacao_leito_id; ?>" <?= (@$_GET['leito'] == $item->internacao_leito_id) ? 'selected' : '' ?>>
+
+                                            <?php echo $item->nome; ?>
+                                        </option>
+                                        <?php
+                                    }
+                                    ?> 
+                                </select>
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                <select name="medico_responsavel" id="medico_responsavel" class="size2" >
+                                    <option value=''>TODOS</option>
+                                    <?php
+                                    foreach ($medicos as $item) {
+                                        ?>
+                                        <option value="<?php echo $item->operador_id; ?>" <?= (@$_GET['medico_responsavel'] == $item->operador_id) ? 'selected' : '' ?>>
+
+                                            <?php echo $item->nome; ?>
+                                        </option>
+                                        <?php
+                                    }
+                                    ?> 
+                                </select>
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                <select name="situacao" id="situacao" class="size2" >
+                                    <option value="t" <?= (@$_GET['situacao'] == 't') ? 'selected' : '' ?>>
+                                        INTERNADOS   
+
+                                    </option>
+                                    <option value="f" <?= (@$_GET['situacao'] == 'f') ? 'selected' : '' ?>>
+                                        SAÍDA
+
+                                    </option>
+
+                                </select>
+                            </th>
+
 
                             <th>
                                 <button type="submit" id="enviar">Pesquisar</button>
@@ -38,6 +132,8 @@
                     </tr>
                     </thead>
                 </form>
+            </table>
+            <table>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->internacao_m->listarinternacaolista($_GET);
@@ -67,8 +163,9 @@
                                 <td class="<?php echo $estilo_linha; ?>"  style="width: 120px;"><div style="width: 120px;" class="bt_link_new"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/novasolicitacaointernacao/<?= $item->internacao_id ?>/<?= $item->paciente_id ?>">Solicitar Cirurgia</a></div></td> 
                                 <!--<td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/evolucaointernacao/<?= $item->internacao_id ?>">Evolucao</a></div></td>--> 
                                 <td class="<?php echo $estilo_linha; ?>"style="width: 70px;"><div style="width: 70px;" class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/listarevolucaointernacao/<?= $item->internacao_id ?>"> Evolução</a></div></td>
-                                <td class="<?php echo $estilo_linha; ?>" style="width: 150px;"><div style="width: 150px;" class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/termoresponsabilidade/<?= $item->internacao_id ?>">Termo de Respon[...]</a></div></td>  
-                               
+                                <td class="<?php echo $estilo_linha; ?>"style="width: 90px;"><div style="width: 90px;" class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/listarimpressoes/<?= $item->internacao_id ?>"> Impressões</a></div></td>
+                                <!--<td class="<?php echo $estilo_linha; ?>" style="width: 150px;"><div style="width: 150px;" class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/termoresponsabilidade/<?= $item->internacao_id ?>">Termo de Respon[...]</a></div></td>-->  
+
                                 <?
                                 $perfil_id = $this->session->userdata('perfil_id');
                                 $operador_id = $this->session->userdata('operador_id');

@@ -301,7 +301,7 @@
 
                                 <div>
                                     <table>
-                                        <tr><td rowspan="10" >
+                                        <tr><td rowspan="11" >
                                                 <textarea id="laudo" name="laudo" rows="30" cols="80" style="width: 100%"><?= @$obj->_texto; ?></textarea></td>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
@@ -364,6 +364,12 @@
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/pesquisarsolicitacaosadt/<?= $paciente_id ?>/<?= @$obj->_convenio_id ?>/<?= @$obj->_medico_parecer1 ?>');" >
                                                         Solicitação SADT</a></div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="40px;"><div class="bt_link_new">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/cadastroaso/<?= $paciente_id ?>/<?= @$obj->_medico_parecer1 ?>');" >
+                                                        Cadastro ASO</a></div>
                                             </td>
                                         </tr>
 

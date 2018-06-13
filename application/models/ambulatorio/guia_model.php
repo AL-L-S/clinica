@@ -63,6 +63,67 @@ class guia_model extends Model {
         return 1;
     }
 
+    function impressaoaso($cadastro_aso_id) {
+        $this->db->select('ca.*, p.nome as paciente,
+                            p.nascimento,
+                            p.rg,
+                            o.nome as medico,
+                            o.conselho,
+                            o.telefone,
+                            o.celular,
+                             ');
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ca.medico_responsavel', 'left');
+        $this->db->where('cadastro_aso_id', $cadastro_aso_id);
+//        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gravarcadastroaso($paciente_id) {
+//        var_dump($_POST['valor']); die;
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $valores = json_encode($_POST);
+
+//        $valores_post = json_decode($valores);
+//         var_dump($valores_post); die;
+
+        $this->db->set('paciente_id', $paciente_id);
+        $this->db->set('impressao_aso', $valores);
+        $this->db->set('tipo', $_POST['tipo']);
+        $this->db->set('medico_responsavel', $_POST['medico_responsavel']);
+
+        if ($_POST['cadastro_aso_id'] > 0) {
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->where('cadastro_aso_id', $_POST['cadastro_aso_id']);
+            $this->db->update('tb_cadastro_aso');
+        } else {
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->insert('tb_cadastro_aso');
+        }
+
+        return true;
+    }
+
+    function excluircadastroaso($cadastro_aso_id) {
+//        var_dump($_POST['valor']); die;
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+
+        $this->db->set('ativo', 'f');
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->where('cadastro_aso_id', $cadastro_aso_id);
+        $this->db->update('tb_cadastro_aso');
+
+        return true;
+    }
+
     function listarempresasaladepermissao($empresa_id = null) {
         if ($empresa_id == null) {
             $empresa_id = $this->session->userdata('empresa_id');
@@ -656,6 +717,43 @@ class guia_model extends Model {
         $this->db->where("ce.empresa_id", $empresa_id);
         $this->db->where("ce.ativo", 'true');
         $this->db->orderby("c.nome");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
+    }
+
+    function listarcadastroaso() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->select('ca.cadastro_aso_id,
+                            ca.tipo,
+                            p.paciente_id,
+                            p.nome as paciente,
+                            ca.data_cadastro,');
+
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        $this->db->where("ca.ativo", 'true');
+        $this->db->where("ca.medico_responsavel", $operador_id);
+
+        return $this->db;
+    }
+
+    function carregarcadastroaso($cadastro_aso_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('ca.cadastro_aso_id,
+                            ca.tipo,
+                            ca.impressao_aso,
+                            ca.medico_responsavel,
+                            ca.data_cadastro,
+                            p.nome as paciente');
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        $this->db->where("ca.cadastro_aso_id", $cadastro_aso_id);
+        $this->db->orderby("ca.cadastro_aso_id");
         $query = $this->db->get();
         $return = $query->result();
 

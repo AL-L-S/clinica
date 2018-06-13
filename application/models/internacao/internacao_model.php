@@ -171,7 +171,7 @@ class internacao_model extends BaseModel {
 
     function listarfichaquestionarioform($internacao_ficha_questionario_id) {
 
-        $this->db->select('im.*, p.nome as paciente, p.nascimento, p.sexo, m.nome as cidade');
+        $this->db->select('im.*, p.nome as paciente,p.idade, p.nascimento, p.sexo, m.nome as cidade');
         $this->db->from('tb_internacao_ficha_questionario im');
         $this->db->join('tb_paciente p', 'p.paciente_id = im.paciente_id', 'left');
         $this->db->join('tb_municipio m', 'm.municipio_id = im.municipio_id', 'left');
@@ -729,6 +729,7 @@ class internacao_model extends BaseModel {
 
                 $this->db->set('nome', $_POST['nome_paciente']);
                 $this->db->set('sexo', $_POST['sexo']);
+                $this->db->set('idade', $_POST['idade']);
                 if ($_POST['municipio_id'] > 0) {
                     $this->db->set('municipio_id', $_POST['municipio_id']);
                 }
@@ -1388,6 +1389,7 @@ class internacao_model extends BaseModel {
         $data = date("Y-m-d");
         $this->db->select(' 
                           p.nome as paciente,
+                          p.idade,
                           ifq.nome as responsavel,
                           ifq.aceita_tratamento,
                           ifq.data_cadastro,
@@ -1456,6 +1458,7 @@ class internacao_model extends BaseModel {
                           p.nome as paciente,
                           p.sexo,
                           p.nascimento,
+                          p.idade,
                           pt.nome as procedimento,
                           
                           ');
@@ -1506,6 +1509,7 @@ class internacao_model extends BaseModel {
                           p.nome as paciente,
                           p.sexo,
                           p.nascimento,
+                          p.idade,
                           c.nome as convenio,
                           pt.nome as procedimento,
                           
@@ -2008,8 +2012,7 @@ class internacao_model extends BaseModel {
     function listarinternacaolista($args = array()) {
         $this->db->select('pt.nome as procedimento,
                            p.nome as paciente,
-                           cid.no_cid as nomecid,
-                           cid.co_cid as codcid,
+
                            i.data_internacao,
                            o.nome as medico,
                            il.nome as leito,
@@ -2019,16 +2022,97 @@ class internacao_model extends BaseModel {
                            i.estado');
         $this->db->from('tb_internacao i');
         $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'il.enfermaria_id = ie.internacao_enfermaria_id', 'left');
+        $this->db->join('tb_internacao_unidade iu', 'ie.unidade_id = iu.internacao_unidade_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
-        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
+//        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = i.procedimentosolicitado', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
-        $this->db->where('i.ativo', 't');
+
+        if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
+            $this->db->where('i.ativo', $args['situacao']);
+        } else {
+            $this->db->where('i.ativo', 't');
+        }
+
+        if (isset($args['unidade']) && strlen($args['unidade']) > 0) {
+            $this->db->where('iu.internacao_unidade_id', $args['unidade']);
+//                $this->db->orwhere('i.paciente_id', $args['nome']);
+        }
+        if (isset($args['enfermaria']) && strlen($args['enfermaria']) > 0) {
+            $this->db->where('ie.internacao_enfermaria_id', $args['enfermaria']);
+//                $this->db->orwhere('i.paciente_id', $args['nome']);
+        }
+
+        if (isset($args['leito']) && strlen($args['leito']) > 0) {
+            $this->db->where('il.internacao_leito_id', $args['leito']);
+//                $this->db->orwhere('i.paciente_id', $args['nome']);
+        }
+        if (isset($args['medico_responsavel']) && strlen($args['medico_responsavel']) > 0) {
+            $this->db->where('i.medico_id', $args['medico_responsavel']);
+//                $this->db->orwhere('i.paciente_id', $args['nome']);
+        }
+
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');
 //                $this->db->orwhere('i.paciente_id', $args['nome']);
         }
+
         return $this->db;
+    }
+
+    function internacaoimpressaomodelo($internacao_id) {
+        $this->db->select('pt.nome as procedimento,
+                           p.nome as paciente,
+                           p.sexo,
+                           p.nascimento,
+                           p.rg,
+                           p.cpf,
+                           c.nome as convenio,
+                           p.nome as paciente,
+                           cid.no_cid as nomecid,
+                           cid.co_cid as codcid,
+                           cid2.no_cid as nomecid2,
+                           cid2.co_cid as codcid2,
+                           i.data_internacao,
+                           o.nome as medico,
+                           o.conselho,
+                           m.nome as municipio,
+                           m.codigo_ibge,
+                           il.nome as leito_nome,
+                           ie.nome as enfermaria,
+                           iu.nome as unidade,
+                           i.*
+                           ');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'il.enfermaria_id = ie.internacao_enfermaria_id', 'left');
+        $this->db->join('tb_internacao_unidade iu', 'ie.unidade_id = iu.internacao_unidade_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');
+        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
+        $this->db->join('tb_cid cid2', 'cid2.co_cid = i.cid2solicitado', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = i.procedimentosolicitado', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
+        $this->db->where('i.internacao_id', $internacao_id);
+
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarmodeloimpressaointernacao($empresa_impressao_cabecalho_id) {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_internacao_id, ei.nome as nome_internacao,ei.texto,ei.adicional_cabecalho, ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_internacao ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_impressao_internacao_id', $empresa_impressao_cabecalho_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listarleitosinternacao($parametro) {

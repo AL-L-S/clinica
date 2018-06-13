@@ -263,7 +263,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id                                                  ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id                                                   ?>);
                     }
                 }
 
@@ -291,7 +291,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id                                                    ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id                                                     ?>);
                 }
 
 <? } ?>
@@ -433,8 +433,8 @@ function debug($object) {
                                             <? }
                                             ?>
 
-                                                                                                                                                                                                                                                                                                                                                                                                    <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
-                                                                                                                                                                                                                                                                                                                                                                                                    <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
+                                                                                                                                                                                                                                                                                                                                                                                                                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
 
                                             <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
                                                 <? if ($geral == 't') { ?>
@@ -526,7 +526,7 @@ function debug($object) {
                             <ul>
                                 <li><span class="folder">Rotinas</span>
 
-                                                                                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>-->
+                                                                                    <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>-->
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalasespera">Salas de Espera</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalaspreparo">Salas de Preparo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarexamerealizando">Salas de Atendimento</a></span></ul>
@@ -958,7 +958,7 @@ function debug($object) {
                             <ul>
                                 <li><span class="folder">Rotinas</span>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/manterfichaquestionario">Listar Pré-Cadastro</a></span></ul>
-                                    
+
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarsolicitacaointernacao">Listar Solicitações</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarinternacaolista">Listar Internações</a></span></ul>
                                     <!--<ul><span class="file"><a href="<?= base_url() ?>internacao/internacao">Listar Internacoes</a></span></ul>-->
@@ -1057,7 +1057,7 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Promotor</a></span></ul>
                                         <? } ?>
 
-                                                                                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>-->
+                                                                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>-->
                                     <? } ?>
                                     <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 13 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/sala">Manter Salas</a></span></ul>
@@ -1135,6 +1135,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarmotivosaida">Manter Motivo Saida</a></span></ul> 
                                         <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/mantermodelogrupo">Manter Modelo Grupo</a></span></ul> 
                                         <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/mantertipodependencia">Manter Tipo Depedência</a></span></ul> 
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarinternacaoconfig">Manter Impressões</a></span></ul>
                                     </li>
                                 <? } ?>
                                 <? if ($consulta == 't') { ?>
@@ -1198,8 +1199,9 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarlaudoconfig">Config.Laudo</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarorcamentoconfig">Config.Orçamento</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarreciboconfig">Config.Recibo</a></span></ul>
-                                            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarencaminhamentoconfig">Msg Encaminhamento</a></span></ul>-->
-                                                <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Config.Cabeçalho</a></span></ul>-->
+                                            
+                                           <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarencaminhamentoconfig">Msg Encaminhamento</a></span></ul>-->
+                                               <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Config.Cabeçalho</a></span></ul>-->
 
 
                                         <? } ?>
@@ -1445,7 +1447,7 @@ function debug($object) {
                 //atualiza status do operador
                 //                setInterval(function () {
                 //                    atualizastatus();
-                //                    verifica(0, 0,<? // echo $operador_id                                    ?>);
+                //                    verifica(0, 0,<? // echo $operador_id                                     ?>);
                 //                }, 10000);
 
                 buscamensagens();

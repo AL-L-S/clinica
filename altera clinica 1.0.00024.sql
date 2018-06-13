@@ -167,3 +167,44 @@ ALTER TABLE ponto.tb_convenio ADD COLUMN convenio_pasta text;
 UPDATE ponto.tb_convenio
    SET convenio_pasta=nome
  WHERE convenio_pasta is null;
+
+
+
+CREATE TABLE ponto.tb_cadastro_aso
+(
+  cadastro_aso_id serial,
+  paciente_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  tipo text,
+  impressao_aso text,
+  CONSTRAINT tb_cadastro_aso_pkey PRIMARY KEY (cadastro_aso_id)
+);
+
+
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN medico_responsavel integer;
+
+
+CREATE TABLE ponto.tb_empresa_impressao_internacao
+(
+  empresa_impressao_internacao_id serial NOT NULL,
+  texto text,
+  nome text,
+  cabecalho boolean DEFAULT false,
+  rodape boolean DEFAULT false,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  adicional_cabecalho text,
+  CONSTRAINT tb_empresa_impressao_internacao_pkey PRIMARY KEY (empresa_impressao_internacao_id)
+);
+
+
+ALTER TABLE ponto.tb_cid ADD COLUMN cid_primary serial not null;
+ALTER TABLE ponto.tb_cid ADD PRIMARY KEY (cid_primary);

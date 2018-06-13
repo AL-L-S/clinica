@@ -75,7 +75,7 @@
                     <td ><?= $item->leito; ?></td>
                     <td ><?= $item->paciente; ?></td>
                     <td ><?= $item->sexo; ?></td>
-                    <td ><?= $dateInterval->y; ?> Anos</td>
+                    <td ><?= ($item->nascimento != '')? $dateInterval->y : $item->idade; ?> Anos</td>
                     <td ><?= $item->procedimento; ?></td>
                     <td ><?= $item->cid1; ?></td>
                     <td ><?= $dateInterval2->days; ?> Dias</td>

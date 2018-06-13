@@ -1,63 +1,46 @@
-
+<?
+if (count(@$informacao_aso[0]->impressao_aso) > 0) {
+    $config = json_decode(@$informacao_aso[0]->impressao_aso);
+} else {
+    $config = '';
+}
+?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <h3>Novo Pré-Cadastro</h3>
+    <h3>Cadastro ASO</h3>
     <!--<div style="width: 100%">-->
-    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>internacao/internacao/gravarfichaquestionario" method="post">
+    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/guia/gravarcadastroaso/<?= @$paciente[0]->paciente_id ?>/<?=@$medico_id?>" method="post">
         <!--                <fieldset>
                             <legend>Nome</legend>
-                            <input type="text" id="nome" name="nome" value="<?= @$config[0]->nome ?>"/>
+                            <input type="text" id="nome" name="nome" value="<?= @$config->nome ?>"/>
                             
                 
                         </fieldset>-->
-        <fieldset>
-            <legend>Dados do Responsável</legend>
-            <div>
-                <label>Nome</label>                      
-                <input type="text" id="nome_responsavel" name="nome_responsavel"  class="texto09" value="<?= @$config[0]->nome ?>"/>
-                <input type="hidden" id="internacao_ficha_questionario_id" name="internacao_ficha_questionario_id" value="<?= @$internacao_ficha_questionario_id ?>"/>
-            </div>
 
-
-
-            <div>
-                <label>Grau Parentesco</label>
-                <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  value="<?= @$config[0]->grau_parentesco ?>"/>
-            </div>
-            <div>
-                <label>Ocupação</label>
-                <input type="text" name="ocupacao" id="ocupacao" class="texto04"  value="<?= @$config[0]->ocupacao_responsavel ?>"/>
-            </div>
-            <!--            <div>
-                            <label>Nome do Paciente</label>
-                            <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  />
-                        </div>-->
-
-
-        </fieldset>
         <fieldset>
             <legend>Dados do Paciente</legend>
             <div>
                 <label>Nome</label>                      
-                <input required="" type="text" id="txtNome" name="nome_paciente"  class="texto09" value="<?= @$config[0]->paciente ?>" />
-                <input type="hidden" id="txtPacienteId" name="txtPacienteId"  class="texto09" value="<?= @$config[0]->paciente_id ?>"/>
+                <input readonly="" type="text" id="txtNome" name="nome_paciente"  class="texto09" value="<?= $paciente[0]->nome ?>" />
+                <input type="hidden" id="txtPacienteId" name="txtPacienteId"  class="texto09" value="<?= @$paciente[0]->paciente_id ?>"/>
+                <input type="hidden" id="cadastro_aso_id" name="cadastro_aso_id"  class="texto09" value="<?= @$informacao_aso[0]->cadastro_aso_id ?>"/>
             </div>
             <div>
                 <label>Sexo</label>
-                <select name="sexo" id="txtSexo" class="size2" required="">
+                <select disabled="" name="sexo" id="txtSexo" class="size2" required="">
                     <option value="" <?
-                    if (@$config[0]->sexo == ""):echo 'selected';
+                    if (@$paciente[0]->sexo == ""):echo 'selected';
                     endif;
                     ?>>Selecione</option>
                     <option value="M" <?
-                    if (@$config[0]->sexo == "M"):echo 'selected';
+                    if (@$paciente[0]->sexo == "M"):echo 'selected';
                     endif;
                     ?>>Masculino</option>
                     <option value="F" <?
-                    if (@$config[0]->sexo == "F"):echo 'selected';
+                    if (@$paciente[0]->sexo == "F"):echo 'selected';
                     endif;
                     ?>>Feminino</option>
                     <option value="O" <?
-                    if (@$config[0]->sexo == "O"):echo 'selected';
+                    if (@$paciente[0]->sexo == "O"):echo 'selected';
                     endif;
                     ?>>Outro</option>
                 </select>
@@ -66,12 +49,12 @@
             <div>
                 <label>DT de nascimento</label>
 
-                <input type="text" name="nascimento" id="nascimento" alt="date" value="<?= (@$config[0]->nascimento != '') ? date("d/m/Y", strtotime(@$config[0]->nascimento)) : ''; ?>"  class="texto02" maxlength="10" value=""/>
+                <input readonly type="text" name="nascimento" id="nascimento" alt="date" value="<?= (@$paciente[0]->nascimento != '') ? date("d/m/Y", strtotime(@$paciente[0]->nascimento)) : ''; ?>"  class="texto02" maxlength="10" value="" required=""/>
             </div>
             <div>
                 <label>Idade</label>
 
-                <input type="text" onblur="calculoIdade()" name="idade"  id="idade" class="texto02"   maxlength="10" value="<?=@$config[0]->idade?>" required=""/>
+                <input readonly="" type="text" onblur="calculoIdade()" name="idade"  id="idade" class="texto02"   maxlength="10" value="<?php echo substr(@$paciente[0]->nascimento, 8, 2) . '/' . substr(@$paciente[0]->nascimento, 5, 2) . '/' . substr(@$paciente[0]->nascimento, 0, 4); ?>" required=""/>
             </div>
 
             <!--            <div>
@@ -82,167 +65,146 @@
 
         </fieldset>
         <fieldset>
-            <legend>Questionário</legend>
-            <? $dependencia = $this->internacao_m->listartipodependenciaquestionario(); ?>
+            <legend>Informações</legend>
+
             <div>
-                <label>Tipo de Dependência Química</label>                      
-                <select name="tipo_dependencia" id="tipo_dependencia" class="texto05" required="">
-                    <option value=''>Selecione</option>
-                    <?php
-                    foreach ($dependencia as $item) {
-                        ?>
-                        <option value="<?php echo $item->internacao_tipo_dependencia_id; ?>" 
-                        <?
-                        if (@$config[0]->tipo_dependencia == $item->internacao_tipo_dependencia_id):echo 'selected';
-                        endif;
-                        ?>>
-                                    <?php echo $item->nome; ?>
-                        </option>
-                        <?php
-                    }
-                    ?> 
-                </select>
-            </div>
-            <div>
-                <label>Idade de Inicio</label>                      
-                <input type="number" id="idade_inicio" name="idade_inicio"  class="texto02" value="<?= @$config[0]->idade_inicio ?>"/>
-            </div>
-            <div>
-                <label>O Paciente Tem ficado agressivo?</label>
-                <select id="paciente_agressivo" name="paciente_agressivo"  class="texto05" >
+                <label>Tipo</label>
+                <select id="paciente_agressivo" name="tipo"  class="size02" >
                     <option value="">
                         Selecione
                     </option>
-                    <option value="SIM" <?= (@$config[0]->paciente_agressivo == 'SIM') ? 'selected' : ''; ?>>
-                        Sim
+                    <option value="ADMISSIONAL" <?= (@$informacao_aso[0]->tipo == 'ADMISSIONAL') ? 'selected' : ''; ?>>
+                        ADMISSIONAL
                     </option>
-                    <option value="NAO" <?= (@$config[0]->paciente_agressivo == 'NAO') ? 'selected' : ''; ?>>
-                        Não
+                    <option value="PERÍODICO" <?= (@$informacao_aso[0]->tipo == 'PERÍODICO') ? 'selected' : ''; ?>>
+                        PERÍODICO
+                    </option>
+                    <option value="RETORNO AO TRABALHO" <?= (@$informacao_aso[0]->tipo == 'RETORNO AO TRABALHO') ? 'selected' : ''; ?>>
+                        RETORNO AO TRABALHO
+                    </option>
+                    <option value="MUDANÇA DE FUNÇÃO" <?= (@$informacao_aso[0]->tipo == 'MUDANÇA DE FUNÇÃO') ? 'selected' : ''; ?>>
+                        MUDANÇA DE FUNÇÃO
+                    </option>
+                    <option value="DEMISSIONAL" <?= (@$informacao_aso[0]->tipo == 'DEMISSIONAL') ? 'selected' : ''; ?>>
+                        DEMISSIONAL
                     </option>
                 </select>
 
             </div>
-            <div>
-                <label>Aceita o tratamento?</label>
-                <select id="aceita_tratamento" name="aceita_tratamento"  class="texto05" required="">
-                    <option value="">
-                        Selecione
-                    </option>
-                    <option value="SIM" <?= (@$config[0]->aceita_tratamento == 'SIM') ? 'selected' : ''; ?>>
-                        Sim  
-                    </option>     
-                    <option value="NAO" <?= (@$config[0]->aceita_tratamento == 'NAO') ? 'selected' : ''; ?>>
-                        Não
-                    </option>
-                </select>
 
+
+
+            <div>
+                <label>Empresa</label>
+                <input type="text" name="empresa" id="empresa" class="texto09" value="<?= @$config->empresa ?>" />
+            </div>
+
+            <div>
+                <label>Setor</label>
+                <input type="text" name="setor" id="setor" class="texto04" value="<?= @$config->setor ?>" />
             </div>
             <div>
-                <label>Tomou Conhecimento da Institução Como?</label>
-                <select name="indicacao" id="indicacao" class="size2">
-                    <option value=''>Selecione</option>
-                    <?php
-                    $indicacao = $this->paciente->listaindicacao($_GET);
-                    foreach ($indicacao as $item) {
-                        ?>
-                        <option value="<?php echo $item->paciente_indicacao_id; ?>" 
-                        <?
-                        if (@$config[0]->tomou_conhecimento == $item->paciente_indicacao_id):echo 'selected';
-                        endif;
-                        ?>>
-                                    <?php echo $item->nome; ?>
-                        </option>
-                        <?php
-                    }
-                    ?> 
-                </select>
+                <label>Função</label>
+                <input type="text" name="funcao" id="funcao" class="texto04" value="<?= @$config->funcao ?>" />
             </div>
             <div>
-                <label>Tem plano de saúde?</label>
-                <select id="plano_saude" name="plano_saude"  class="texto05" required>
-                    <option value="">
-                        Selecione
-                    </option>
-                    <option value="SIM" <?= (@$config[0]->plano_saude == 'SIM') ? 'selected' : ''; ?>>
-                        Sim
-                    </option>
-                    <option value="NAO" <?= (@$config[0]->plano_saude == 'NAO') ? 'selected' : ''; ?>>
-                        Não
-                    </option>
-                </select>
+                <label>Riscos Ocupacionais Específicos</label>
+                <input type="text" name="riscos_ocupacionais" id="riscos_ocupacionais" class="texto09" value="<?= @$config->riscos_ocupacionais ?>" />
             </div>
             <div>
-                <label>Se Sim, qual?</label>
-                <select  name="convenio" id="convenio" class="texto04" required="">
+                <label>Data De Realização</label>
+                <input type="text" name="data_realizacao" id="data_realizacao" class="texto04" value="<?= @$config->data_realizacao ?>" />
+            </div>
+
+            <!--            <div>
+                            <label>Nome do Paciente</label>
+                            <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  />
+                        </div>-->
+
+
+        </fieldset>
+        <fieldset>
+            <legend>Avaliação Clínica</legend>
+            <textarea name="avaliacao_clinica" style="height: 300px;" id="avaliacao_clinica"><?= @$config->avaliacao_clinica ?></textarea>
+            <div style="width: 100%;">
+                <hr/>
+                <button type="submit" name="btnEnviar">Enviar</button>
+                <button type="reset" name="btnLimpar">Limpar</button>
+            </div>
+
+        </fieldset>
+
+        <fieldset>
+            <legend>Aptidões</legend>
+            <div>
+
+                <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
+                <select name="questao_um" id="questao_um" class="texto04" required="" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
                     <option value="">Selecione</option>
-                    <?
-                    foreach ($convenio as $item) :
-                        ?>
-                        <option  value="<?= $item->convenio_id; ?>" <? if (@$config[0]->convenio_id == $item->convenio_id) echo 'selected'; ?>>
-                            <?= $item->nome; ?>
-                        </option>
-                    <? endforeach; ?>
+                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+
                 </select>
             </div>
             <div>
-                <label>Tratamentos Anteriores</label>
-                <input type="text" name="tratamento_anterior" id="tratamento_anterior" class="texto09" value="<?= @$config[0]->tratamento_anterior ?>" />
+
+                <label title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
+                       NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">NR35, NR 35.4.1.2.1</label>
+                <select name="questao_dois" id="questao_dois" class="texto04" required="" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
+                        NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
+                    <option value="">Selecione</option>
+                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                </select>
             </div>
             <div>
-                <label>Telefone Para Contato</label>
-                <input type="text" name="telefone_contato" id="telefone_contato" class="texto04"  value="<?= @$config[0]->telefone_contato ?>"/>
+
+                <label title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">NR 33 </label>
+                <select name="questao_tres" id="questao_tres" class="texto04" required="" title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">
+                    <option value="">Selecione</option>
+                    <option value="APTO" <?= (@$config->questao_tres == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="INAPTO" <?= (@$config->questao_tres == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="NÃO MAPEADO" <?= (@$config->questao_tres == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                </select>
             </div>
             <div>
-                <label>Município</label>
 
-
-                <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$config[0]->municipio_id ?>" readonly="true" />
-                <input required="" type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$config[0]->cidade ?>"  />
+                <label>APTIDÃO MÁQUINAS MÓVEIS </label>
+                <select name="questao_quatro" id="questao_quatro" class="texto04" required="">
+                    <option value="">Selecione</option>
+                    <option value="APTO" <?= (@$config->questao_quatro == 'APTO') ? 'selected' : '' ?>>APTO PARA OPERAR MÁQUINAS MÓVEIS</option>
+                    <option value="INAPTO" <?= (@$config->questao_quatro == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA OPERAR MÁQUINAS MÓVEIS</option>
+                    <option value="NÃO MAPEADO" <?= (@$config->questao_quatro == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                </select>
             </div>
-            <!--            <div>
-                            <label>Nome do Paciente</label>
-                            <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  />
-                        </div>-->
+            <div>
+
+                <label title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">NR 10 </label>
+                <select name="questao_cinco" id="questao_cinco" class="texto04" required="" title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">
+                    <option value="">Selecione</option>
+                    <option value="APTO" <?= (@$config->questao_cinco == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="INAPTO" <?= (@$config->questao_cinco == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="NÃO MAPEADO" <?= (@$config->questao_cinco == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+
+                </select>
+            </div>
+
 
 
         </fieldset>
         <fieldset>
-            <legend>Observações</legend>
-            <textarea name="observacao" style="height: 300px;" id="observacao"><?= @$config[0]->observacao ?></textarea>
+            <?if(@$informacao_aso[0]->medico_responsavel != ''){?>
+                 <input type="hidden" name="medico_responsavel" id="medico_responsavel" class="texto04" value="<?= @$informacao_aso[0]->medico_responsavel ?>" />
+            <?}else{?>
+                 <input type="hidden" name="medico_responsavel" id="medico_responsavel" class="texto04" value="<?=@$medico_id ?>" />
+            <?}?>
+             
             <div style="width: 100%;">
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
                 <button type="reset" name="btnLimpar">Limpar</button>
             </div>
-
-        </fieldset>
-
-        <fieldset>
-            <legend>Grupo</legend>
-            <div>
-<!--                <script>
-                    
-                </script>-->
-                <label>Modelo Grupo</label>
-                <select  name="modelo_grupo" id="modelo_grupo" class="texto04" required="">
-                    <option value="-1">Selecione</option>
-                    <?
-                    foreach ($modelo_grupo as $item) :
-                        ?>
-                        <option  value="<?= $item->internacao_modelo_grupo_id; ?>">
-                            <?= $item->nome; ?>
-                        </option>
-
-                    <? endforeach; ?>
-                </select>
-            </div>
-            <textarea style="height: 300px;" name="grupo" id="grupo"><?= @$config[0]->grupo ?></textarea>
-            <div style="width: 100%;">
-                <hr/>
-                <button type="submit" name="btnEnviar">Enviar</button>
-                <button type="reset" name="btnLimpar">Limpar</button>
-            </div>
-
         </fieldset>
 
     </form>
@@ -262,6 +224,18 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript">
+
+                    $(function () {
+                        $("#data_realizacao").datepicker({
+                            autosize: true,
+                            changeYear: true,
+                            changeMonth: true,
+                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                            dateFormat: 'dd/mm/yy'
+                        });
+                    });
 
                     $(function () {
                         $("#txtCidade").autocomplete({
@@ -364,7 +338,7 @@
                         });
                     });
 
-<? if (@$config[0]->paciente_id == NULL) { ?>
+<? if (@$config->paciente_id == NULL) { ?>
                         $(function () {
                             $("#txtNome").autocomplete({
                                 source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",

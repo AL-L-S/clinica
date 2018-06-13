@@ -59,6 +59,13 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/configurarimpressaolaudo-lista');
     }
 
+    function listarinternacaoconfig() {
+//        $data['guia_id'] = $this->guia->verificaodeclaracao();
+//        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaointernacao-lista');
+    }
+
     function listarorcamentoconfig() {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
 //        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
@@ -277,6 +284,13 @@ class Empresa extends BaseController {
         $this->loadView('ambulatorio/configurarimpressaolaudo-form', $data);
     }
 
+    function configurarinternacao($empresa_impressao_internacao_id) {
+        $data['empresa_impressao_internacao_id'] = $empresa_impressao_internacao_id;
+        $data['impressao'] = $this->empresa->listarconfiguracaoimpressaointernacaoform($empresa_impressao_internacao_id);
+//        var_dump($data['impressao']); die;
+        $this->loadView('ambulatorio/configurarimpressaointernacao-form', $data);
+    }
+
     function excluirlembrete($empresa_lembretes_id) {
         if ($this->empresa->excluirlembrete($empresa_lembretes_id)) {
             $mensagem = 'Sucesso ao excluir o Lembrete';
@@ -286,6 +300,17 @@ class Empresa extends BaseController {
 
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
+    }
+
+    function excluirconfiguracaointernacao($impressao_id) {
+        if ($this->empresa->excluirconfiguracaointernacao($impressao_id)) {
+            $mensagem = 'Impressão excluida com sucesso';
+        } else {
+            $mensagem = 'Erro ao excluir Impressão. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/listarinternacaoconfig");
     }
 
     function ativarconfiguracaolaudo($impressao_id) {
@@ -388,6 +413,18 @@ class Empresa extends BaseController {
         redirect(base_url() . "ambulatorio/empresa/listarlaudoconfig");
     }
 
+    function gravarimpressaointernacao() {
+        $impressao_id = $_POST['impressao_id'];
+        if ($this->empresa->gravarconfiguracaoimpressaointernacao($impressao_id)) {
+            $mensagem = 'Sucesso ao gravar modelo de impressão';
+        } else {
+            $mensagem = 'Erro ao gravar modelo de impressão. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/listarinternacaoconfig");
+    }
+
     function gravarimpressaoorcamento() {
 //        var_dump($_POST); die;
         $impressao_id = $_POST['impressao_id'];
@@ -422,14 +459,15 @@ class Empresa extends BaseController {
     }
 
     function carregartotensetor() {
-        
+
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
         $endereco = $data['empresa'][0]->endereco_toten;
         $setor_busca = file_get_contents("$endereco/webService/telaAtendimento/setores");
         $data['setores'] = json_decode($setor_busca);
         echo '<pre>';
-        var_dump($data['setores']); die;
+        var_dump($data['setores']);
+        die;
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/pesquisartotensetor-form', $data);
     }
