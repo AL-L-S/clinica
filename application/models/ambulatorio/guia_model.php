@@ -8284,6 +8284,7 @@ class guia_model extends Model {
         $this->db->join('tb_grupo_formapagamento gf', 'gf.grupo_id = pp.grupo_pagamento_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = gf.forma_pagamento_id', 'left');
         $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->where('gf.ativo', 't');
         $this->db->where('fp.ativo', 't');
         $this->db->where('pp.ativo', 't');
         if ($credito == 'f') {
@@ -12166,6 +12167,7 @@ ORDER BY ae.paciente_credito_id)";
                             producaomedicadinheiro,
                             impressao_declaracao,
                             impressao_orcamento,
+                            impressao_internacao,
                             data_contaspagar,
                             medico_laudodigitador,
                             impressao_laudo,

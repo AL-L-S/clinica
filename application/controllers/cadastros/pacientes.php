@@ -334,10 +334,11 @@ class pacientes extends BaseController {
         $this->loadView('cadastros/paciente-ficha', $data);
     }
 
-    function carregarinternacaoprecadastro($paciente_id) {
+    function carregarinternacaoprecadastro($paciente_id, $internacao_ficha_id) {
         $obj_paciente = new paciente_model($paciente_id);
         $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
         $data['obj'] = $obj_paciente;
+        $data['internacao_ficha_id'] = $internacao_ficha_id;
         $data['idade'] = 1;
         $this->loadView('cadastros/pacienteinternacaoprecadastro-ficha', $data);
     }
@@ -350,6 +351,16 @@ class pacientes extends BaseController {
     }
 
     function gravar() {
+
+        if ($_POST['nascimento'] != '') {
+            $nascimento = str_replace('/', '-', $_POST['nascimento']);
+//            var_dump($nascimento); die;
+            $data_valida = $this->utilitario->validateDate($nascimento);
+            if (!$data_valida) {
+                $_POST['nascimento'] = '';
+            }
+//            die;
+        }
 
         if (!is_dir("./upload/webcam")) {
             mkdir("./upload/webcam");
@@ -425,7 +436,18 @@ class pacientes extends BaseController {
         redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
     }
 
-    function gravarpacienteprecadastro() {
+    function gravarpacienteprecadastro($internacao_ficha_id) {
+
+        if ($_POST['nascimento'] != '') {
+            $nascimento = str_replace('/', '-', $_POST['nascimento']);
+//            var_dump($nascimento); die;
+            $data_valida = $this->utilitario->validateDate($nascimento);
+            if (!$data_valida) {
+                $_POST['nascimento'] = '';
+            }
+//            die;
+        }
+//         var_dump($_POST['nascimento']); die;
 
         if (!is_dir("./upload/webcam")) {
             mkdir("./upload/webcam");
@@ -439,8 +461,6 @@ class pacientes extends BaseController {
         }
 
         $contador = $this->paciente->contador();
-
-        $_POST['nascimento'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento'])));
 
         if ($_POST['cpf'] != "") {
             $contadorcpf = $this->paciente->contadorcpf();
@@ -463,7 +483,7 @@ class pacientes extends BaseController {
                 $result = file_put_contents("upload/webcam/pacientes/$paciente_id.jpg", $binary_data);
             }
             $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "internacao/internacao/novointernacao/$paciente_id", $data);
+            redirect(base_url() . "internacao/internacao/novointernacao/$paciente_id/$internacao_ficha_id", $data);
         } elseif ($contador > 0 && $_POST['paciente_id'] != "") {
 //Atualiza cadastro
             if ($paciente_id = $this->paciente->gravar()) {
@@ -498,10 +518,20 @@ class pacientes extends BaseController {
         }
 
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "internacao/internacao/novointernacao/$paciente_id");
+        redirect(base_url() . "internacao/internacao/novointernacao/$paciente_id/$internacao_ficha_id");
     }
 
     function gravarmedico() {
+        if ($_POST['nascimento'] != '') {
+            $nascimento = str_replace('/', '-', $_POST['nascimento']);
+//            var_dump($nascimento); die;
+            $data_valida = $this->utilitario->validateDate($nascimento);
+            if (!$data_valida) {
+                $_POST['nascimento'] = '';
+            }
+//            die;
+        }
+       
 
         if (!is_dir("./upload/webcam")) {
             mkdir("./upload/webcam");

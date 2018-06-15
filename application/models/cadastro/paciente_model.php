@@ -356,6 +356,8 @@ class paciente_model extends BaseModel {
             }
             if ($_POST['nascimento'] != '') {
                 $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
+            }else{
+//                $this->db->set('nascimento', null);
             }
 //            if ($_POST['data_emissao'] != '') {
 //                $this->db->set('data_emissao', $_POST['data_emissao']);

@@ -1053,7 +1053,12 @@ class Laudo extends BaseController {
             } else {
                 if ($data['impressaolaudo'][0]->rodape == 't') { // rodape da empresa
                     if ($data['empresa'][0]->rodape_config == 't') {
+//                        if($data['laudo']['0']->situacao == "FINALIZADO"){
                         $rodape_config = str_replace("_assinatura_", $assinatura, $rodape_config);
+//                        }else{
+//                            $rodape_config = str_replace("_assinatura_", '', $rodape_config);
+//                        }
+
                         $rodape = $rodape_config;
                     } else {
                         $rodape = "";
@@ -3462,7 +3467,7 @@ class Laudo extends BaseController {
 
             $convenio = $listarexame[0]->convenio;
             $pasta = $listarexame[0]->convenio_pasta;
-            if($pasta == ''){
+            if ($pasta == '') {
                 $pasta = $convenio;
             }
 
@@ -3496,7 +3501,7 @@ class Laudo extends BaseController {
                             $data2 = new DateTime($item->nascimento);
                             $intervalo = $data1->diff($data2);
                             $teste = $intervalo->y;
-                            if($pasta == 'UNIMED MAIS'){
+                            if ($pasta == 'UNIMED MAIS') {
                                 $pasta = 'UNIMED UBERLANDIA';
                             }
 

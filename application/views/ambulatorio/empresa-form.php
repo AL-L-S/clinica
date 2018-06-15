@@ -161,6 +161,12 @@
                             <input type="text" id="impressao_declaracao" class="texto01" name="impressao_declaracao" value="<?= @$obj->_impressao_declaracao; ?>" />
                         </dd>
                         <dt>
+                            <label>Impressão Internação</label>
+                        </dt>
+                        <dd>
+                            <input type="text" id="impressao_internacao" class="texto01" name="impressao_internacao" value="<?= @$obj->_impressao_internacao; ?>" />
+                        </dd>
+                        <dt>
                             <label title="Endereço do sistema de cadastro de pacientes">Endereço Externo Cadastro (http://192.168.25.35/cadastro)</label>
                         </dt> 
                         <dd>

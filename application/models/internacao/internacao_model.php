@@ -18,6 +18,24 @@ class internacao_model extends BaseModel {
         }
     }
 
+    function listarultimoprecadastro($paciente_id, $internacao_ficha_id) {
+
+
+        $this->db->select('idade_inicio, tipo_dependencia, grau_parentesco, ocupacao_responsavel, nome');
+        $this->db->from('tb_internacao_ficha_questionario ');
+        if ($internacao_ficha_id > 0) {
+            $this->db->where('internacao_ficha_questionario_id', $internacao_ficha_id);
+        } else {
+            $this->db->where('paciente_id',$paciente_id);
+        }
+        $this->db->orderby('data_cadastro desc');
+        $this->db->limit(1);
+
+        $return = $this->db->get()->result();
+
+        return $return;
+    }
+
     function gravar($paciente_id) {
 
         try {
@@ -47,9 +65,18 @@ class internacao_model extends BaseModel {
             $this->db->set('celular_responsavel', $_POST['celular_responsavel']);
             $this->db->set('telefone_responsavel', $_POST['telefone_responsavel']);
             $this->db->set('grau_parentesco', $_POST['grau_parentesco']);
+            $this->db->set('ocupacao_responsavel', $_POST['ocupacao_responsavel']);
 
             if ($_POST['municipio_responsavel_id'] != '') {
                 $this->db->set('municipio_responsavel_id', $_POST['municipio_responsavel_id']);
+            }
+//            echo '<pre>';
+//            var_dump($_POST); die;
+            if ($_POST['tipo_dependencia'] > 0) {
+                $this->db->set('tipo_dependencia', $_POST['tipo_dependencia']);
+            }
+            if ($_POST['idade_inicio'] > 0) {
+                $this->db->set('idade_inicio', $_POST['idade_inicio']);
             }
 
             $this->db->set('paciente_id', $paciente_id);
@@ -222,20 +249,41 @@ class internacao_model extends BaseModel {
                            i.data_saida,
                            i.forma_de_entrada,
                            i.estado,
+                           i.idade_inicio,
                            il.nome as leito,
                            m.nome as municio,
+                           mr.nome as municipio_responsavel,
                            m.codigo_ibge,
                            i.cid1solicitado,
                            pt.nome as procedimento,
                            i.procedimentosolicitado,
                            c.nome as convenio,
                            cbo.descricao as profissao,
+                           itd.nome as dependencia,
+                           i.nome_responsavel,
+                           i.cep_responsavel,
+                           i.logradouro_responsavel,
+                           i.numero_responsavel,
+                           i.complemento_responsavel,
+                           i.bairro_responsavel,
+                           i.municipio_responsavel_id,
+                           i.rg_responsavel,
+                           i.cpf_responsavel,
+                           i.email_responsavel,
+                           i.celular_responsavel,
+                           i.telefone_responsavel,
+                           i.grau_parentesco,
+                           i.idade_inicio,
+                           ocupacao_responsavel,
                            p.sexo,
+                           p.estado_civil_id,
                            p.nascimento');
         $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_tipo_dependencia itd', 'itd.internacao_tipo_dependencia_id = i.tipo_dependencia', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
         $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');
+        $this->db->join('tb_municipio mr', 'mr.municipio_id = i.municipio_responsavel_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
         $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = p.profissao', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'i.procedimentosolicitado = pt.procedimento_tuss_id', 'left');

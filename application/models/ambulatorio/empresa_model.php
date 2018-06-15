@@ -1074,6 +1074,11 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('impressao_declaracao', null);
                 }
+                if ($_POST['impressao_internacao'] != "") {
+                    $this->db->set('impressao_internacao', $_POST['impressao_internacao']);
+                } else {
+                    $this->db->set('impressao_internacao', null);
+                }
             }
 
             if ($_POST['txtCNPJ'] != '') {
@@ -1987,6 +1992,7 @@ class empresa_model extends Model {
                                login_paciente,
                                servicosms,
                                orcamento_config,
+                               impressao_internacao,
                                credito,
                                valor_recibo_guia,
                                impressao_orcamento,
@@ -2080,6 +2086,7 @@ class empresa_model extends Model {
             $this->_botao_arquivos_paciente = $return[0]->botao_arquivos_paciente;
             $this->_gerente_relatorio_financeiro = $return[0]->gerente_relatorio_financeiro;
             $this->_laudo_sigiloso = $return[0]->laudo_sigiloso;
+            $this->_impressao_internacao = $return[0]->impressao_internacao;
             $this->_campos_cadastro = $return[0]->campos_cadastro;
             $this->_orcamento_cadastro = $return[0]->orcamento_cadastro;
             $this->_endereco_upload = $return[0]->endereco_upload;

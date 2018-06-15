@@ -89,19 +89,17 @@ class internacao extends BaseController {
         $this->loadView('internacao/acoes-paciente', $data);
     }
 
-    function novointernacao($paciente_id) {
+    function novointernacao($paciente_id, $internacao_ficha_id = null) {
         $data['numero'] = $this->internacao_m->verificainternacao($paciente_id);
 //        var_dump($data['numero']);
 //        die;
-        if ($data['numero'] == 0) {
+        $data['internacao_ficha_id'] = $internacao_ficha_id;
+        if ($data['numero'] == 0 || true) {
+            $data['precadastro'] = $this->internacao_m->listarultimoprecadastro($paciente_id, $internacao_ficha_id);
             $data['paciente'] = $this->paciente->listardados($paciente_id);
             $data['medicos'] = $this->operador_m->listarmedicos();
-//            var_dump($data['medico']); die;
-//            if ($data['paciente'][0]->cep == '' || $data['paciente'][0]->cns == '') {
-//                $data['mensagem'] = 'CEP ou CNS obrigatorio';
-//                $this->session->set_flashdata('message', $data['mensagem']);
-//                redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
-//            }
+//            var_dump($data['precadastro']); die;
+
             $data['paciente_id'] = $paciente_id;
             $this->loadView('internacao/cadastrarinternacao', $data);
         } else {
@@ -111,8 +109,8 @@ class internacao extends BaseController {
         }
     }
 
-    function carregarinternacao($internacao_id, $paciente_id) {
-
+    function carregarinternacao($internacao_id, $paciente_id, $internacao_ficha_id = null) {
+        $data['internacao_ficha_id'] = $internacao_ficha_id;
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['internacao'] = $this->internacao_m->listarcarregarinternacao($internacao_id);
@@ -184,7 +182,7 @@ class internacao extends BaseController {
                 $rodape = "";
             }
         }
-        
+
 
 
         $html = $this->load->view('internacao/impressaointernacaoconfiguravel', $data, true);
@@ -314,15 +312,15 @@ class internacao extends BaseController {
         redirect(base_url() . "internacao/internacao/manterfichaquestionario");
     }
 
-    function confirmaraprovacaofichaquestionario($internacao_modelo_grupo_id, $paciente_id) {
+    function confirmaraprovacaofichaquestionario($internacao_ficha_id, $paciente_id) {
 
-        if ($this->internacao_m->confirmaraprovacaofichaquestionario($internacao_modelo_grupo_id)) {
+        if ($this->internacao_m->confirmaraprovacaofichaquestionario($internacao_ficha_id)) {
             $data['mensagem'] = 'Aprovada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao Aprovar';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "cadastros/pacientes/carregarinternacaoprecadastro/$paciente_id");
+        redirect(base_url() . "cadastros/pacientes/carregarinternacaoprecadastro/$paciente_id/$internacao_ficha_id");
     }
 
     function novointernacaonutricao($paciente_id) {
@@ -386,6 +384,7 @@ class internacao extends BaseController {
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
         @$rodape_config = $data['cabecalho'][0]->rodape;
+        @$impressao_empresa_id = $data['empresa'][0]->impressao_internacao;
 
         if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
             $cabecalho = "$cabecalho_config";
@@ -401,10 +400,17 @@ class internacao extends BaseController {
         $data['historicoexame'] = $this->laudo_m->listarexamehistorico($paciente_id);
 //        echo '<pre>';
 //        var_dump($data['historicoantigo']); die;
-        $html = $this->load->View('internacao/impressaotermoresponsabilidade', $data, true);
-        $filename = 'Termo de Responsabilidade';
-        $rodape = '';
-        $cabecalho_file = '';
+        if (@$impressao_empresa_id == 2) {
+            $html = $this->load->View('internacao/impressaotermoresponsabilidade2', $data, true);
+            $filename = 'Termo de Responsabilidade';
+            $rodape = @$rodape_config;
+            $cabecalho_file = $cabecalho;
+        } else {
+            $html = $this->load->View('internacao/impressaotermoresponsabilidade', $data, true);
+            $filename = 'Termo de Responsabilidade';
+            $rodape = '';
+            $cabecalho_file = '';
+        }
         pdf($html, $filename, $cabecalho_file, $rodape);
     }
 

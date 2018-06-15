@@ -7,10 +7,15 @@
                 <label>Nome</label>                      
                 <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
                 <input type="hidden" id="txtNome" name="internacao_id"  class="texto09" value="<?= @$internacao['0']->internacao_id; ?>" readonly/>
+                <input type="hidden" id="txtNome" name="internacao_ficha_id"  class="texto09" value="<?= $internacao_ficha_id; ?>" readonly/>
             </div>
             <div>
                 <label>Nascimento</label>
-                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
+                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php
+                if ($paciente['0']->nascimento != '') {
+                    echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4);
+                }
+                ?>" onblur="retornaIdade()" readonly/>
             </div>
             <div>
                 <label>Idade</label>
@@ -33,7 +38,7 @@
             <legend>Dados do Responsável</legend>
             <div>
                 <label>Nome</label>                      
-                <input type="text" id="txtNome" name="nome_responsavel"  class="texto09" value="<?= @$internacao[0]->nome_responsavel; ?>"/>
+                <input type="text" id="txtNome" name="nome_responsavel"  class="texto09" value="<?= (@$internacao[0]->nome_responsavel != '') ? @$internacao[0]->nome_responsavel : @$precadastro[0]->nome; ?>"/>
             </div>
             <div>
                 <label>CPF</label>
@@ -45,7 +50,11 @@
             </div>
             <div>
                 <label>Grau Parentesco</label>
-                <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  value="<?= @$internacao[0]->grau_parentesco; ?>"/>
+                <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  value="<?= (@$internacao[0]->grau_parentesco != '') ? @$internacao[0]->grau_parentesco : @$precadastro[0]->grau_parentesco; ?>"/>
+            </div>
+            <div>
+                <label>Ocupação</label>
+                <input type="text" name="ocupacao_responsavel" id="grau_parentesco" class="texto04"  value="<?= (@$internacao[0]->ocupacao_responsavel != '') ? @$internacao[0]->ocupacao_responsavel : @$precadastro[0]->ocupacao_responsavel; ?>"/>
             </div>
 
             <div>
@@ -102,6 +111,33 @@
 
         </fieldset>
         <fieldset>
+            <legend>Dependência</legend>
+            <? $dependencia = $this->internacao_m->listartipodependenciaquestionario(); ?>
+            <div>
+                <label>Tipo de Dependência Química</label>                      
+                <select name="tipo_dependencia" id="tipo_dependencia" class="texto05">
+                    <option value=''>Selecione</option>
+                    <?php
+                    foreach ($dependencia as $item) {
+                        ?>
+                        <option value="<?php echo $item->internacao_tipo_dependencia_id; ?>" 
+                                <? if (@$precadastro[0]->tipo_dependencia == $item->internacao_tipo_dependencia_id || $item->internacao_tipo_dependencia_id == @$internacao[0]->tipo_dependencia) {
+                                    echo 'selected';
+                                } ?>>
+                        <?php echo $item->nome; ?>           
+                        </option>
+                        <?php
+                    }
+                    ?> 
+                </select>
+            </div>
+            <div>
+                <label>Idade de Inicio</label>                      
+                <input type="number" id="idade_inicio" name="idade_inicio"  class="texto02" value="<?= (@$internacao[0]->idade_inicio != '') ? @$internacao[0]->idade_inicio : @$precadastro[0]->idade_inicio; ?>"/>
+            </div>
+        </fieldset>
+
+        <fieldset>
             <legend>Dados da internacao</legend>
             <div>
                 <label>Leito</label>
@@ -134,8 +170,8 @@
                             echo 'selected';
                         }
                         ?>><?= $item->nome ?></option>   
-                            <? }
-                            ?>
+<? }
+?>
 
 
 
@@ -147,28 +183,28 @@
             </div>
             <div>
                 <label>Data/hora ex.( 20/01/2010 14:30:21)</label>
-                <input type="text" required id="txtdata" class="texto08" name="data" alt="39/19/9999 29:59:59" value="<?= (@$internacao[0]->data_internacao != '')? date("d/m/Y H:i:s",strtotime(@$internacao[0]->data_internacao)): ''; ?>" />
+                <input type="text" required id="txtdata" class="texto08" name="data" alt="39/19/9999 29:59:59" value="<?= (@$internacao[0]->data_internacao != '') ? date("d/m/Y H:i:s", strtotime(@$internacao[0]->data_internacao)) : ''; ?>" />
             </div>
             <div>
                 <label>Forma de entrada</label>
                 <select name="forma" id="txtforma" class="texto08" selected="<?= @$internacao[0]->forma_de_entrada; ?>" required>
                     <option value="">Selecione</option>
                     <option value=Residencia <?
-                    if (@$internacao[0]->forma_de_entrada == 'Residencia'):echo 'selected';
-                    endif;
-                    ?>>Residencia</option>
+                            if (@$internacao[0]->forma_de_entrada == 'Residencia'):echo 'selected';
+                            endif;
+                            ?>>Residencia</option>
                     <option value=Transferido <?
-                    if (@$internacao[0]->forma_de_entrada == 'Transferido'):echo 'selected';
-                    endif;
-                    ?>>Transferido</option>
+                            if (@$internacao[0]->forma_de_entrada == 'Transferido'):echo 'selected';
+                            endif;
+                            ?>>Transferido</option>
                     <option value=Emergencia <?
-                    if (@$internacao[0]->forma_de_entrada == 'Emergencia'):echo 'selected';
-                    endif;
-                    ?>>Emergencia</option>
+                            if (@$internacao[0]->forma_de_entrada == 'Emergencia'):echo 'selected';
+                            endif;
+                            ?>>Emergencia</option>
                     <option value=Ambulatorio <?
-                    if (@$internacao[0]->forma_de_entrada == 'Ambulatorio'):echo 'selected';
-                    endif;
-                    ?>>Ambulatorio</option>
+                            if (@$internacao[0]->forma_de_entrada == 'Ambulatorio'):echo 'selected';
+                            endif;
+                            ?>>Ambulatorio</option>
                 </select>
             </div>
             <div>
@@ -176,17 +212,17 @@
                 <select name="estado" id="txtEstado" class="size04" selected="<?= @$internacao[0]->tipo; ?>" required>
                     <option value="">Selecione</option>
                     <option value=Bom <?
-                    if (@$internacao[0]->estado == 'Bom'):echo 'selected';
-                    endif;
-                    ?>>Bom</option>
+                            if (@$internacao[0]->estado == 'Bom'):echo 'selected';
+                            endif;
+                            ?>>Bom</option>
                     <option value=Regular <?
-                    if (@$internacao[0]->estado == 'Regular'):echo 'selected';
-                    endif;
-                    ?>>Regular</option>
+                            if (@$internacao[0]->estado == 'Regular'):echo 'selected';
+                            endif;
+                            ?>>Regular</option>
                     <option value=Grave <?
-                    if (@$internacao[0]->estado == 'Grave'):echo 'selected';
-                    endif;
-                    ?>>Grave</option>
+                            if (@$internacao[0]->estado == 'Grave'):echo 'selected';
+                            endif;
+                            ?>>Grave</option>
                 </select>
             </div>
             <div>
@@ -194,17 +230,17 @@
                 <select name="carater" id="txtcarater" class="size04" selected="<?= @$internacao[0]->carater; ?>" required>
                     <option value="">Selecione</option>
                     <option value=Eletiva <?
-                    if (@$internacao[0]->carater_internacao == 'Eletiva'):echo 'selected';
-                    endif;
-                    ?>>Eletiva</option>
+                            if (@$internacao[0]->carater_internacao == 'Eletiva'):echo 'selected';
+                            endif;
+                            ?>>Eletiva</option>
                     <option value=Normal <?
-                    if (@$internacao[0]->carater_internacao == 'Normal'):echo 'selected';
-                    endif;
-                    ?>>Normal</option>
+                            if (@$internacao[0]->carater_internacao == 'Normal'):echo 'selected';
+                            endif;
+                            ?>>Normal</option>
                     <option value=Emergencia <?
-                    if (@$internacao[0]->carater_internacao == 'Emergencia'):echo 'selected';
-                    endif;
-                    ?>>Emergencia</option>
+                            if (@$internacao[0]->carater_internacao == 'Emergencia'):echo 'selected';
+                            endif;
+                            ?>>Emergencia</option>
                 </select>
             </div>
             <div>

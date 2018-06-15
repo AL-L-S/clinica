@@ -60,7 +60,7 @@
                                     </td>
                                 </tr>
 
-                            </tbody>
+                    </tbody>
                             <?php
                         }
                     }

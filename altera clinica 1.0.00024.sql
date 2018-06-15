@@ -270,3 +270,29 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+DELETE FROM ponto.tb_cid WHERE cid_primary IN (
+    WITH t AS (
+        SELECT co_cid ,cid_primary,
+        ROW_NUMBER() OVER (PARTITION BY co_cid) AS row_number 
+        FROM ponto.tb_cid
+	ORDER BY co_cid
+    ) 
+    SELECT cid_primary FROM t WHERE row_number > 1  
+);
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000024');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000024', '1.0.000024');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();

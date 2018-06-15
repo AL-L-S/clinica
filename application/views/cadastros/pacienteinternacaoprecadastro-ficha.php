@@ -1,5 +1,5 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <form name="form_paciente" id="form_paciente" action="<?= base_url() ?>cadastros/pacientes/gravarpacienteprecadastro" method="post">
+    <form name="form_paciente" id="form_paciente" action="<?= base_url() ?>cadastros/pacientes/gravarpacienteprecadastro/<?=$internacao_ficha_id?>" method="post">
         <!--        Chamando o Script para a Webcam   -->
         <script src="<?= base_url() ?>js/webcam.js"></script>
         <fieldset>
@@ -17,6 +17,7 @@
                 <label>Nome*</label>                      
                 <input type ="hidden" name ="paciente_id"  value ="<?= @$obj->_paciente_id; ?>" id ="txtPacienteId">
                 <input type="text" id="txtNome" name="nome" class="texto10"  value="<?= @$obj->_nome; ?>" required="true" />
+                <input type="hidden" id="internacao_ficha_id" name="internacao_ficha_id" class="texto10"  value="<?= @$internacao_ficha_id; ?>" required="true" />
             </div>
             <div>
                 <label>Nascimento*</label>
