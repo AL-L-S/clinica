@@ -808,7 +808,7 @@ class Exame extends BaseController {
     }
 
     function faturamentoexame() {
-
+        
         $this->loadView('ambulatorio/faturamentoexame');
     }
 

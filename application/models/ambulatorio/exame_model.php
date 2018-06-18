@@ -5775,6 +5775,13 @@ class exame_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+            $this->db->where('pt.grupo !=', 'TOMOGRAFIA');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
         $this->db->orderby('g.ambulatorio_guia_id');
         $this->db->orderby('g.data_criacao');
         $this->db->orderby('p.nome');
