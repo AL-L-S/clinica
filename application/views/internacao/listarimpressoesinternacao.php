@@ -1,8 +1,29 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
-    <div style="width: 220px;" class="bt_link_new">
-        <a style="width: 220px;"  target="_blank" href="<?php echo base_url() ?>internacao/internacao/termoresponsabilidade/<?= $internacao_id ?>">Termo de Responsabilidade</a>
-    </div>
+    <?
+    $empresa_id = $this->session->userdata('empresa_id');
+    $data['empresa'] = $this->guia->listarempresa($empresa_id);
+    @$impressao_empresa_id = $data['empresa'][0]->impressao_internacao
+    ?>
+    <table>
+        <tr>
+            <td style="width: 240px;">
+                <div style="width: 220px;" class="bt_link_new">
+                    <a style="width: 220px;"  target="_blank" href="<?php echo base_url() ?>internacao/internacao/termoresponsabilidade/<?= $internacao_id ?>">Termo de Responsabilidade</a>
+                </div>  
+            </td>
+            <? if (@$impressao_empresa_id == 2) { ?>
+                <td>
+                    <div style="width: 110px;" class="bt_link_new">
+                        <a style="width: 110px;"  target="_blank" href="<?php echo base_url() ?>internacao/internacao/termosaida/<?= $internacao_id ?>">Termo de Saída</a>
+                    </div>  
+                </td>  
+            <? } ?>
+
+
+        </tr>
+    </table>
+
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Impressões Internação</a></h3>
         <div>
@@ -20,7 +41,7 @@
                         <th class="tabela_header">Nome</th>
                         <!--<th class="tabela_header">Raz&atilde;o social</th>-->
                         <th class="tabela_header" ><center>Detalhes</center></th>
-                    </tr>
+                </tr>
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
@@ -42,7 +63,7 @@
                                 <td  style="width: 120px;"   class="<?php echo $estilo_linha; ?>"><div class="bt_link">
                                         <a href="<?= base_url() ?>internacao/internacao/impressaomodelointernacao/<?= $internacao_id; ?>/<?= $item->empresa_impressao_internacao_id; ?>">Impressão</a></div>
                                 </td>
-                               
+
                                 <?
                                 $perfil_id = $this->session->userdata('perfil_id');
                                 $operador_id = $this->session->userdata('operador_id');

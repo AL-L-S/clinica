@@ -13363,6 +13363,7 @@ ORDER BY ae.paciente_credito_id)";
 //                $this->db->set('quantidade', '1');
                 if ($dinheiro == "t") {
                     if ($index == 1) {
+//                        var_dump($_POST['qtde1']);die;
                         $this->db->set('valor', $_POST['valor1']);
                         $this->db->set('valor_total', $_POST['valor1']);
                         $this->db->set('confirmado', 't');
@@ -13423,7 +13424,7 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->set('operador_autorizacao', $operador_id);
                 $this->db->insert('tb_agenda_exames');
-
+//                die;
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return -1;
@@ -13431,6 +13432,7 @@ ORDER BY ae.paciente_credito_id)";
                     $agenda_exames_id = $this->db->insert_id();
 
                     if ($fidelidade_endereco_ip != '' && $index == 1) {
+//                        var_dump('asdasd');die;
                         $numero_consultas = 1;
                         $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
 //                        $cpf = $this->verificatipoprocedimento($procedimento_tuss_id);
@@ -13468,10 +13470,10 @@ ORDER BY ae.paciente_credito_id)";
 
                     if ($fidelidade_liberado) {
                         $this->db->set('valor', 0);
-                        $this->db->set('valor_total', $valor);
+                        $this->db->set('valor_total', $_POST['valor1']);
                     } else {
                         $this->db->set('valor', $_POST['valor1']);
-                        $this->db->set('valor_total', $valor);
+                        $this->db->set('valor_total', $_POST['valor1']);
                     }
 
                     if ($fidelidade_liberado) {
@@ -13496,6 +13498,7 @@ ORDER BY ae.paciente_credito_id)";
                     $this->db->set('senha', md5($agenda_exames_id));
                     $this->db->where('agenda_exames_id', $agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
+                    die;
                 }
             }
         } catch (Exception $exc) {

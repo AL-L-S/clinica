@@ -1707,6 +1707,7 @@ class exametemp_model extends Model {
         $this->db->where("ae.agrupador_pacote_id IS NULL");
         $this->db->where("guia_id", $ambulatorio_guia_id);
         $this->db->where("pp.grupo_pagamento_id", $grupo_pagamento_id);
+        $this->db->where("pp.ativo", 't');
         $this->db->orderby("ae.data");
         $this->db->orderby("ae.inicio");
         $return = $this->db->get();
@@ -2085,6 +2086,7 @@ class exametemp_model extends Model {
         $this->db->select('procedimento_convenio_pagamento_id');
         $this->db->from('tb_procedimento_convenio_pagamento');
         $this->db->where("procedimento_convenio_id", $procedimento_convenio_id);
+        $this->db->where("ativo", 't');
         $return = $this->db->get();
         $retorno = $return->result();
 

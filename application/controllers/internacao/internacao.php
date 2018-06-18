@@ -414,6 +414,40 @@ class internacao extends BaseController {
         pdf($html, $filename, $cabecalho_file, $rodape);
     }
 
+    function termosaida($internacao_id) {
+        $this->load->plugin('mpdf');
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['motivosaida'] = $this->motivosaida->listamotivosaidapacientes($internacao_id);
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
+        @$impressao_empresa_id = $data['empresa'][0]->impressao_internacao;
+
+        if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
+            $cabecalho = "$cabecalho_config";
+        } else {
+            $cabecalho = "<table><tr><td><img width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr></table>";
+        }
+
+        $data['cabecalho_form'] = $cabecalho;
+
+        $data['paciente'] = $this->internacao_m->mostrartermoresponsabilidade($internacao_id);
+        $paciente_id = $data['paciente'][0]->paciente_id;
+        $data['historicoantigo'] = $this->laudo_m->listarlaudohistoricointernacao($paciente_id);
+        $data['historicoexame'] = $this->laudo_m->listarexamehistorico($paciente_id);
+//        echo '<pre>';
+//        var_dump($data['historicoantigo']); die;
+
+        $html = $this->load->View('internacao/impressaotermosaida', $data, true);
+        $filename = 'Termo de Saída';
+        $rodape = @$rodape_config;
+        $cabecalho_file = $cabecalho;
+
+        pdf($html, $filename, $cabecalho_file, $rodape);
+    }
+
     function mostrarnovasaidapaciente($internacao_id) {
 
         $data['paciente'] = $this->motivosaida->mostrarnovasaidapaciente($internacao_id);

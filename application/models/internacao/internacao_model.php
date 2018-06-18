@@ -270,11 +270,16 @@ class internacao_model extends BaseModel {
                            i.rg_responsavel,
                            i.cpf_responsavel,
                            i.email_responsavel,
+                           i.motivo_saida,
                            i.celular_responsavel,
                            i.telefone_responsavel,
                            i.grau_parentesco,
                            i.idade_inicio,
                            ocupacao_responsavel,
+                           cid.co_cid,
+                           cid.no_cid,
+                           cid2.co_cid as co_cid2,
+                           cid2.no_cid as no_cid2,
                            p.sexo,
                            p.estado_civil_id,
                            p.nascimento');
@@ -283,6 +288,8 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
         $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');
+        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
+        $this->db->join('tb_cid cid2', 'cid2.co_cid = i.cid2solicitado', 'left');
         $this->db->join('tb_municipio mr', 'mr.municipio_id = i.municipio_responsavel_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
         $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = p.profissao', 'left');

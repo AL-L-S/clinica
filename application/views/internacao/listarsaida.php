@@ -54,13 +54,7 @@
                                     </div>
 
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                    <div class="bt_link_new">
-                                        <a href="<?= base_url() ?>internacao/internacao/termoresponsabilidade/<?= $item->internacao_id ?>">
-                                            Termo de Respon[...]
-                                        </a>
-                                    </div>
-                                </td>
+                                 <td class="<?php echo $estilo_linha; ?>"style="width: 90px;"><div style="width: 90px;" class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/listarimpressoes/<?= $item->internacao_id ?>"> Impressões</a></div></td>
 
                             </tr>
                         </tbody>
