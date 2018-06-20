@@ -26,7 +26,7 @@ class internacao_model extends BaseModel {
         if ($internacao_ficha_id > 0) {
             $this->db->where('internacao_ficha_questionario_id', $internacao_ficha_id);
         } else {
-            $this->db->where('paciente_id',$paciente_id);
+            $this->db->where('paciente_id', $paciente_id);
         }
         $this->db->orderby('data_cadastro desc');
         $this->db->limit(1);
@@ -34,6 +34,45 @@ class internacao_model extends BaseModel {
         $return = $this->db->get()->result();
 
         return $return;
+    }
+
+    function excluirinternacao($internacao_id, $paciente_id, $leito_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('internacao_id', $internacao_id);
+        $this->db->set('leito_id', $leito_id);
+        $this->db->set('tipo', 'SAIDA');
+        $this->db->set('status', 'SAIDA');
+        $this->db->set('data', $horario);
+        $this->db->set('operador_movimentacao', $operador_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_internacao_leito_movimentacao');
+
+        //Tabela internação alteração
+
+        $this->db->set('excluido', 't');
+
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('internacao_id', $internacao_id);
+        $this->db->update('tb_internacao');
+
+        //Tabela Ocupação alteração
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('ocupado', 'f');
+        $this->db->where('paciente_id', $paciente_id);
+        $this->db->update('tb_internacao_ocupacao');
+
+        //Tabela internacao_leito
+
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->set('ativo', 't');
+        $this->db->where('internacao_leito_id', $leito_id);
+        $this->db->update('tb_internacao_leito');
     }
 
     function gravar($paciente_id) {
@@ -920,6 +959,26 @@ class internacao_model extends BaseModel {
 
 
             return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravareditarimpressao($impressao_id) {
+
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('texto', $_POST['texto']);
+            $this->db->set('impressao_id', $impressao_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_empresa_impressao_internacao_temp');
+            $impressao_temp_id = $this->db->insert_id();
+
+
+            return $impressao_temp_id;
         } catch (Exception $exc) {
             return false;
         }
@@ -2034,6 +2093,7 @@ class internacao_model extends BaseModel {
         $this->db->from('tb_internacao i');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id ');
         $this->db->where('i.ativo', 'f');
+        $this->db->where('i.excluido', 'f');
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');
@@ -2071,6 +2131,9 @@ class internacao_model extends BaseModel {
                            i.data_internacao,
                            o.nome as medico,
                            il.nome as leito,
+                           ie.nome as enfermaria,
+                           iu.nome as unidade,
+                           il.internacao_leito_id,
                            i.internacao_id,
                            i.paciente_id,
                            i.procedimentosolicitado,
@@ -2083,12 +2146,21 @@ class internacao_model extends BaseModel {
 //        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = i.procedimentosolicitado', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
-
+        $this->db->where('i.excluido', 'f');
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             $this->db->where('i.ativo', $args['situacao']);
         } else {
             $this->db->where('i.ativo', 't');
         }
+
+        if (isset($args['data_inicio']) && strlen($args['data_inicio']) > 0) {
+            $this->db->where("i.data_internacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $args['data_inicio']))) . ' 00:00:00');
+        }
+        if (isset($args['data_fim']) && strlen($args['data_fim']) > 0) {
+            $this->db->where("i.data_internacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $args['data_fim']))) . ' 23:59:59');
+        }
+
+
 
         if (isset($args['unidade']) && strlen($args['unidade']) > 0) {
             $this->db->where('iu.internacao_unidade_id', $args['unidade']);
@@ -2119,6 +2191,7 @@ class internacao_model extends BaseModel {
     function internacaoimpressaomodelo($internacao_id) {
         $this->db->select('pt.nome as procedimento,
                            p.nome as paciente,
+                           p.convenionumero,
                            p.sexo,
                            p.nascimento,
                            p.rg,
@@ -2168,6 +2241,18 @@ class internacao_model extends BaseModel {
 //        $this->db->where('data_criacao', $data);
         $return = $this->db->get();
         return $return->result();
+    }
+    function listarmodeloimpressaointernacaotemp($impressao_temp_id) {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.*');
+        $this->db->from('tb_empresa_impressao_internacao_temp ei');
+        $this->db->where('ei.empresa_impressao_internacao_temp_id', $impressao_temp_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get()->result();
+        
+        return $return[0]->texto;
     }
 
     function listarleitosinternacao($parametro) {

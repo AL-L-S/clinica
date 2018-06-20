@@ -31,16 +31,7 @@
                     <dd>
                         <select name="enfermaria" id="enfermaria" class="size2" >
                             <option value=''>TODOS</option>
-                            <?php
-                            foreach ($enfermaria as $item) {
-                                ?>
-                                <option value="<?php echo $item->internacao_enfermaria_id; ?>">
-
-                                    <?php echo $item->nome; ?>
-                                </option>
-                                <?php
-                            }
-                            ?> 
+                           
                         </select>
                     </dd>
 
@@ -56,6 +47,21 @@
                             <option value='Manutencao'>Manutenção</option>
                             <option value='Higienizacao'>Higienização</option>
                             <option value='Fechado'>Fechado</option>
+                            <!--<option value='Cirurgico'>Cirurgico</option>-->
+                        </select>
+                    </dd>
+
+
+                    <dt>
+                    <dt>
+                        <label>Gerar PDF</label>
+                    </dt>
+
+                    <dd>
+                        <select name="gerar_pdf" id="gerar_pdf" class="size2" >
+                            <option value='NAO'>NÃO</option>
+                            <option value='SIM'>SIM</option>
+
                             <!--<option value='Cirurgico'>Cirurgico</option>-->
                         </select>
                     </dd>
@@ -118,5 +124,34 @@
             }
         });
     });
+
+
+
+    $(function () {
+        $('#unidade').change(function () {
+//            alert('adsdasd');
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/enfermariaunidade', {id: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    console.log(j);
+
+                    for (var c = 0; c < j.length; c++) {
+
+                        options += '<option value="' + j[c].id + '">' + j[c].value + '</option>';
+
+                    }
+                    $('#enfermaria').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('.carregando').show();
+                options = '';
+                $('#enfermaria').html(options).show();
+            }
+        });
+    });
+
+
 
 </script>

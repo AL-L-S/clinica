@@ -80,7 +80,7 @@
 
                             <td  width="50px;">
 
-                                <select name="procedimento1" id="procedimento1" required class="size2 chosen-select" data-placeholder="Selecione" tabindex="1">
+                                <select name="procedimento1" id="procedimento1" required class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                                     <option value="">Selecione</option>
                                 </select>
                             </td>

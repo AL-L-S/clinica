@@ -3970,7 +3970,7 @@ class Exame extends BaseController {
                 }
             }
         } else {
-            if ($versao == '3.03.01' || $versao == '3.03.02') {
+            if ($versao == '3.03.01' || $versao == '3.03.02' || $versao == '3.03.03') {
                 if ($modelo == 'cpf') {
 
                     if (@$listarexame[0]->grupo != 'CONSULTA' && count($listarexame) > 0) {

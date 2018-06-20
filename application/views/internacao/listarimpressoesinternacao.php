@@ -61,7 +61,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome_internacao; ?></td>
                                 <td  style="width: 120px;"   class="<?php echo $estilo_linha; ?>"><div class="bt_link">
-                                        <a href="<?= base_url() ?>internacao/internacao/impressaomodelointernacao/<?= $internacao_id; ?>/<?= $item->empresa_impressao_internacao_id; ?>">Impressão</a></div>
+                                        <a href="<?= base_url() ?>internacao/internacao/editarmodelointernacaoimpressao/<?= $internacao_id; ?>/<?= $item->empresa_impressao_internacao_id; ?>">Impressão</a></div>
                                 </td>
 
                                 <?

@@ -3150,6 +3150,36 @@ class Autocomplete extends Controller {
         echo json_encode($var);
     }
 
+    function enfermariaunidade() {
+
+        if (isset($_GET['id'])) {
+            $result = $this->enfermaria_m->listaenfermariajson($_GET['id']);
+        } else {
+            $result = $this->enfermaria_m->listaenfermariajson();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->internacao_enfermaria_id . ' - ' .  $item->nome;
+            $retorno['id'] = $item->internacao_enfermaria_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
+    function leitoenfermaria() {
+
+        if (isset($_GET['id'])) {
+            $result = $this->enfermaria_m->listaleitojson($_GET['id']);
+        } else {
+            $result = $this->enfermaria_m->listaleitojson();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->internacao_leito_id . ' - ' . $item->nome;
+            $retorno['id'] = $item->internacao_leito_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+
     function enfermaria() {
 
         if (isset($_GET['term'])) {

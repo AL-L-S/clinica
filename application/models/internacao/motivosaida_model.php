@@ -211,7 +211,7 @@ class motivosaida_model extends BaseModel {
         $this->db->where('internacao_leito_id', $_POST['leito_id']);
         $this->db->update('tb_internacao_leito');
     }
-
+    
     function gravarmotivosaida() {
 
         try {

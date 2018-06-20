@@ -131,8 +131,41 @@ class internacao extends BaseController {
         $this->loadView('internacao/mantertipodependencia-lista');
     }
 
-    function impressaomodelointernacao($internacao_id, $impressao_id) {
+    function editarmodelointernacaoimpressao($internacao_id, $impressao_id) {
 //        var_dump($impressao_id);
+//        die;
+//        $this->load->plugin('mpdf');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['internacao'] = $this->internacao_m->internacaoimpressaomodelo($internacao_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['impressao_id'] = $impressao_id;
+        $data['internacao_id'] = $internacao_id;
+        $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($data['internacao'][0]->medico_id);
+//        echo '<pre>';
+//        var_dump($data['empresapermissoes']); die;
+        $data['impressaointernacao'] = $this->internacao_m->listarmodeloimpressaointernacao($impressao_id);
+
+        $data['html'] = $this->load->view('internacao/impressaointernacaoconfiguravel', $data, true);
+//        var_dump($data['html']); die;
+        $this->loadview('internacao/editarimpressaomodelointernacao-form', $data);
+    }
+
+    function gravareditarimpressao($impressao_id, $internacao_id) {
+        
+        $impressao_temp_id = $this->internacao_m->gravareditarimpressao($impressao_id);
+//        var_dump($impressao_temp_id); die;
+        if ($impressao_temp_id > 0) {
+//            $data['mensagem'] = 'Tipo gravado com sucesso';
+            redirect(base_url() . "internacao/internacao/impressaomodelointernacao/$impressao_temp_id/$impressao_id/$internacao_id");
+        } else {
+//            $data['mensagem'] = 'Erro ao gravar Tipo';
+            redirect(base_url() . "internacao/internacao/impressaomodelointernacao/$impressao_temp_id/$impressao_id/$internacao_id");
+        }
+    }
+
+    function impressaomodelointernacao($impressao_temp_id,$impressao_id, $internacao_id) {
+//        var_dump($impressao_temp_id);
 //        die;
         $this->load->plugin('mpdf');
         $empresa_id = $this->session->userdata('empresa_id');
@@ -185,8 +218,8 @@ class internacao extends BaseController {
 
 
 
-        $html = $this->load->view('internacao/impressaointernacaoconfiguravel', $data, true);
-//        var_dump($rodape);die;
+        $html = $this->internacao_m->listarmodeloimpressaointernacaotemp($impressao_temp_id);
+//        var_dump($html);die;
 
         pdf($html, $filename, $cabecalho, $rodape);
     }
@@ -660,6 +693,16 @@ class internacao extends BaseController {
         $this->prescricaonormalenteral($internacao_id);
     }
 
+    function excluirinternacao($internacao_motivosaida_id) {
+        $this->internacao_m->excluirinternacao($internacao_motivosaida_id);
+        $data['mensagem'] = 'Motivo de Saida excluido com sucesso.';
+
+
+//            redirect(base_url()."seguranca/operador/index/$data","refresh");
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/pesquisarinternacaolista", $data);
+    }
+
     function excluirmotivosaida($internacao_motivosaida_id) {
         $this->motivosaida->excluirmotivosaida($internacao_motivosaida_id);
         $data['mensagem'] = 'Motivo de Saida excluido com sucesso.';
@@ -794,8 +837,17 @@ class internacao extends BaseController {
 
 
 
+        if ($_POST['gerar_pdf'] == 'SIM') {
+            $html = $this->load->View('internacao/impressaorelatoriocensodiario', $data, true);
+            $this->load->plugin('mpdf');
 
-        $this->load->View('internacao/impressaorelatoriocensodiario', $data);
+            $cabecalhopdf = '';
+            $rodapepdf = '';
+            $nomepdf = "Relatorio Censo " . date("d/m/Y H:i:s") . ".pdf";
+            pdf($html, $nomepdf, $cabecalhopdf, $rodapepdf);
+        } else {
+            $this->load->View('internacao/impressaorelatoriocensodiario', $data);
+        }
     }
 
     function relatoriointernacao() {

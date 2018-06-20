@@ -85,6 +85,14 @@
                 </tr>
                 <tr class="tabela_content01">
                     <td>
+                        Carteirinha  ----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _carteira_ 
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
                         Sexo ----------->
                     </td>
                     <td style="text-align: left;">
@@ -151,6 +159,14 @@
                 </tr>
                 <tr class="tabela_content01">
                     <td>
+                        Assinatura do médico ----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _assinatura_
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
                         Leito ----------->
                     </td>
                     <td style="text-align: left;">
@@ -179,6 +195,14 @@
                     </td>
                     <td style="text-align: left;">
                         _data_internacao_
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
+                        Hora de Internação ----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _hora_internacao_
                     </td>
                 </tr>
                 <tr class="tabela_content01">

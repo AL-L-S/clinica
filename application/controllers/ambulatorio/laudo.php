@@ -641,6 +641,23 @@ class Laudo extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
+    function carregaranaminesehistoricogeral($paciente_id) {
+        $this->load->helper('directory');
+
+        $data['arquivos_paciente'] = directory_map("./upload/paciente/$paciente_id/");
+        //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
+        if ($data['arquivos_paciente'] != false) {
+            sort($data['arquivos_paciente']);
+        }
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['paciente_id'] = $paciente_id;
+        $data['historico'] = $this->laudo->listarconsultahistorico($paciente_id);
+        $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
+        $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
+
+        $this->load->View('ambulatorio/laudoconsultahistoricogeral-form', $data);
+    }
+
     function carregaranamineseantigo($paciente_id) {
 
         $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);

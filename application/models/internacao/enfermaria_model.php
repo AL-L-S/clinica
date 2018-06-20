@@ -129,6 +129,34 @@ class enfermaria_model extends BaseModel {
         return $return->result();
     }
 
+    function listaenfermariajson($parametro = null) {
+        $this->db->select('ie.internacao_enfermaria_id,
+                            ie.nome,
+                            iu.nome as unidade');
+        $this->db->from('tb_internacao_enfermaria ie');
+        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
+        $this->db->where('ie.ativo', 'true');
+        $this->db->where('ie.unidade_id ', $parametro);
+        $this->db->orderby('ie.internacao_enfermaria_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listaleitojson($parametro = null) {
+        $this->db->select('il.internacao_leito_id,
+                            
+                            il.nome');
+
+        $this->db->from('tb_internacao_leito il');
+//        $this->db->join('tb_internacao_enfermaria ie', 'il.enfermaria_id = ie.internacao_enfermaria_id ');
+//        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
+        $this->db->where('il.excluido', 'f');
+        $this->db->where('il.enfermaria_id ', $parametro);
+        $this->db->orderby('il.internacao_leito_id ');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function excluirenfermaria($enfermaria_id) {
         $this->db->set('ativo', 'f');
         $this->db->where('internacao_enfermaria_id', $enfermaria_id);

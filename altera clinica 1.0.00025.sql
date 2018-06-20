@@ -68,3 +68,21 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+
+ALTER TABLE ponto.tb_internacao ADD COLUMN excluido boolean DEFAULT false;
+
+
+
+CREATE TABLE ponto.tb_empresa_impressao_internacao_temp
+(
+  empresa_impressao_internacao_temp_id serial,
+  texto text,
+  impressao_id integer,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  adicional_cabecalho text,
+  CONSTRAINT tb_empresa_impressao_internacao_temp_pkey PRIMARY KEY (empresa_impressao_internacao_temp_id)
+);

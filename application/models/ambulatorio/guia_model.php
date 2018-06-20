@@ -13498,7 +13498,7 @@ ORDER BY ae.paciente_credito_id)";
                     $this->db->set('senha', md5($agenda_exames_id));
                     $this->db->where('agenda_exames_id', $agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
-                    die;
+//                    die;
                 }
             }
         } catch (Exception $exc) {
