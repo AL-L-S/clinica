@@ -98,6 +98,7 @@ class internacao extends BaseController {
             $data['precadastro'] = $this->internacao_m->listarultimoprecadastro($paciente_id, $internacao_ficha_id);
             $data['paciente'] = $this->paciente->listardados($paciente_id);
             $data['medicos'] = $this->operador_m->listarmedicos();
+            $data['convenio'] = $this->convenio->listardados();
 //            var_dump($data['precadastro']); die;
 
             $data['paciente_id'] = $paciente_id;
@@ -110,9 +111,11 @@ class internacao extends BaseController {
     }
 
     function carregarinternacao($internacao_id, $paciente_id, $internacao_ficha_id = null) {
+        
         $data['internacao_ficha_id'] = $internacao_ficha_id;
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['convenio'] = $this->convenio->listardados();
         $data['internacao'] = $this->internacao_m->listarcarregarinternacao($internacao_id);
 //            var_dump($data['medico']); die;
 //            if ($data['paciente'][0]->cep == '' || $data['paciente'][0]->cns == '') {
@@ -152,7 +155,7 @@ class internacao extends BaseController {
     }
 
     function gravareditarimpressao($impressao_id, $internacao_id) {
-        
+
         $impressao_temp_id = $this->internacao_m->gravareditarimpressao($impressao_id);
 //        var_dump($impressao_temp_id); die;
         if ($impressao_temp_id > 0) {
@@ -164,7 +167,7 @@ class internacao extends BaseController {
         }
     }
 
-    function impressaomodelointernacao($impressao_temp_id,$impressao_id, $internacao_id) {
+    function impressaomodelointernacao($impressao_temp_id, $impressao_id, $internacao_id) {
 //        var_dump($impressao_temp_id);
 //        die;
         $this->load->plugin('mpdf');
@@ -877,6 +880,35 @@ class internacao extends BaseController {
         }
 
         $this->load->View('internacao/impressaorelatoriointernacao', $data);
+    }
+
+    function relatoriointernacaofaturamento() {
+        $data['unidade'] = $this->internacao_m->listaunidade();
+        $this->loadView('internacao/relatoriointernacaofaturamento', $data);
+    }
+
+    function gerarelatoriointernacaofaturamento() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $data['data_inicio'] = $_POST['txtdata_inicio'];
+        $data['data_fim'] = $_POST['txtdata_fim'];
+        $data['internacao'] = $this->internacao_m->relatoriointernacaofaturamento();
+//        echo '<pre>';
+//        var_dump($data['internacao']);
+//        die;
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
+        } else {
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
+            } else {
+                $data['convenio'] = 'TODOS';
+            }
+        }
+
+        $this->load->View('internacao/impressaorelatoriointernacaofaturamento', $data);
     }
 
     function mostratransferirpaciente($paciente_id) {

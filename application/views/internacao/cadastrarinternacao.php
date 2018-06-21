@@ -121,10 +121,12 @@
                     foreach ($dependencia as $item) {
                         ?>
                         <option value="<?php echo $item->internacao_tipo_dependencia_id; ?>" 
-                                <? if (@$precadastro[0]->tipo_dependencia == $item->internacao_tipo_dependencia_id || $item->internacao_tipo_dependencia_id == @$internacao[0]->tipo_dependencia) {
-                                    echo 'selected';
-                                } ?>>
-                        <?php echo $item->nome; ?>           
+                        <?
+                        if (@$precadastro[0]->tipo_dependencia == $item->internacao_tipo_dependencia_id || $item->internacao_tipo_dependencia_id == @$internacao[0]->tipo_dependencia) {
+                            echo 'selected';
+                        }
+                        ?>>
+                                    <?php echo $item->nome; ?>           
                         </option>
                         <?php
                     }
@@ -170,8 +172,8 @@
                             echo 'selected';
                         }
                         ?>><?= $item->nome ?></option>   
-<? }
-?>
+                            <? }
+                            ?>
 
 
 
@@ -190,21 +192,21 @@
                 <select name="forma" id="txtforma" class="texto08" selected="<?= @$internacao[0]->forma_de_entrada; ?>" required>
                     <option value="">Selecione</option>
                     <option value=Residencia <?
-                            if (@$internacao[0]->forma_de_entrada == 'Residencia'):echo 'selected';
-                            endif;
-                            ?>>Residencia</option>
+                    if (@$internacao[0]->forma_de_entrada == 'Residencia'):echo 'selected';
+                    endif;
+                    ?>>Residencia</option>
                     <option value=Transferido <?
-                            if (@$internacao[0]->forma_de_entrada == 'Transferido'):echo 'selected';
-                            endif;
-                            ?>>Transferido</option>
+                    if (@$internacao[0]->forma_de_entrada == 'Transferido'):echo 'selected';
+                    endif;
+                    ?>>Transferido</option>
                     <option value=Emergencia <?
-                            if (@$internacao[0]->forma_de_entrada == 'Emergencia'):echo 'selected';
-                            endif;
-                            ?>>Emergencia</option>
+                    if (@$internacao[0]->forma_de_entrada == 'Emergencia'):echo 'selected';
+                    endif;
+                    ?>>Emergencia</option>
                     <option value=Ambulatorio <?
-                            if (@$internacao[0]->forma_de_entrada == 'Ambulatorio'):echo 'selected';
-                            endif;
-                            ?>>Ambulatorio</option>
+                    if (@$internacao[0]->forma_de_entrada == 'Ambulatorio'):echo 'selected';
+                    endif;
+                    ?>>Ambulatorio</option>
                 </select>
             </div>
             <div>
@@ -212,17 +214,17 @@
                 <select name="estado" id="txtEstado" class="size04" selected="<?= @$internacao[0]->tipo; ?>" required>
                     <option value="">Selecione</option>
                     <option value=Bom <?
-                            if (@$internacao[0]->estado == 'Bom'):echo 'selected';
-                            endif;
-                            ?>>Bom</option>
+                    if (@$internacao[0]->estado == 'Bom'):echo 'selected';
+                    endif;
+                    ?>>Bom</option>
                     <option value=Regular <?
-                            if (@$internacao[0]->estado == 'Regular'):echo 'selected';
-                            endif;
-                            ?>>Regular</option>
+                    if (@$internacao[0]->estado == 'Regular'):echo 'selected';
+                    endif;
+                    ?>>Regular</option>
                     <option value=Grave <?
-                            if (@$internacao[0]->estado == 'Grave'):echo 'selected';
-                            endif;
-                            ?>>Grave</option>
+                    if (@$internacao[0]->estado == 'Grave'):echo 'selected';
+                    endif;
+                    ?>>Grave</option>
                 </select>
             </div>
             <div>
@@ -230,23 +232,38 @@
                 <select name="carater" id="txtcarater" class="size04" selected="<?= @$internacao[0]->carater; ?>" required>
                     <option value="">Selecione</option>
                     <option value=Eletiva <?
-                            if (@$internacao[0]->carater_internacao == 'Eletiva'):echo 'selected';
-                            endif;
-                            ?>>Eletiva</option>
+                    if (@$internacao[0]->carater_internacao == 'Eletiva'):echo 'selected';
+                    endif;
+                    ?>>Eletiva</option>
                     <option value=Normal <?
-                            if (@$internacao[0]->carater_internacao == 'Normal'):echo 'selected';
-                            endif;
-                            ?>>Normal</option>
+                    if (@$internacao[0]->carater_internacao == 'Normal'):echo 'selected';
+                    endif;
+                    ?>>Normal</option>
                     <option value=Emergencia <?
-                            if (@$internacao[0]->carater_internacao == 'Emergencia'):echo 'selected';
-                            endif;
-                            ?>>Emergencia</option>
+                    if (@$internacao[0]->carater_internacao == 'Emergencia'):echo 'selected';
+                    endif;
+                    ?>>Emergencia</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Convênio</label>
+                <select  name="convenio1" id="convenio1" class="size2" required="" >
+                    <option value="">Selecione</option>
+                    <?
+                    foreach ($convenio as $item) :
+                        ?>
+                        <option value="<?= $item->convenio_id; ?>" <? if (@$internacao[0]->convenio_id == $item->convenio_id) echo 'selected'; ?>>
+                            <?= $item->nome; ?>
+                        </option>
+                    <? endforeach; ?>
                 </select>
             </div>
             <div>
                 <label>Procedimento</label>
-                <input type="hidden" id="txtprocedimentoID" class="texto_id" name="procedimentoID" value="<?= @$internacao[0]->procedimento_tuss_id; ?>" />
-                <input type="text"  required id="txtprocedimento" class="texto10" name="txtprocedimento" value="<?= @$internacao[0]->procedimento; ?>" />
+                <select name="procedimento1" id="procedimento1" class="size4" data-placeholder="Selecione" tabindex="1" required="">
+                    <option value="">Selecione</option>
+                </select>
             </div>
             <div>
                 <label>CID principal</label>
@@ -384,6 +401,62 @@
                             }
                         });
                     });
+
+<? if (@$internacao[0]->procedimento_convenio_id) { ?>
+                        var procedimento_atual = <?= @$internacao[0]->procedimento_convenio_id ?>;
+<? } else { ?>
+                        var procedimento_atual = 0;
+<? } ?>
+
+                    $(function () {
+                        $('#convenio1').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $(this).val()}, function (j) {
+                                    options = '<option value=""></option>';
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+
+
+                                    }
+//                                                    $('#procedimento1').html(options).show();
+
+                                    $('#procedimento1 option').remove();
+                                    $('#procedimento1').append(options);
+                                    $("#procedimento1").trigger("chosen:updated");
+                                    $('.carregando').hide();
+                                });
+
+                            } else {
+                                $('#procedimento1').html('<option value="">Selecione</option>');
+                            }
+                        });
+                    });
+
+
+
+                    if ($('#convenio1').val() > 0) {
+                        $('.carregando').show();
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $('#convenio1').val()}, function (j) {
+                            options = '<option value=""></option>';
+                            for (var c = 0; c < j.length; c++) {
+                                if (procedimento_atual == j[c].procedimento_convenio_id) {
+                                    options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                } else {
+                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                }
+
+                            }
+//                                                    $('#procedimento1').html(options).show();
+
+                            $('#procedimento1 option').remove();
+                            $('#procedimento1').append(options);
+                            $("#procedimento1").trigger("chosen:updated");
+                            $('.carregando').hide();
+                        });
+
+                    }
+
                     $(function () {
                         $("#txtleito").autocomplete({
                             source: "<?= base_url() ?>index.php?c=autocomplete&m=leito",

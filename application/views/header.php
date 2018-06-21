@@ -969,6 +969,7 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatorioprecadastro">Relatório Pré-Cadastro</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatoriocensodiario">Relatório Censo</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatoriointernacao">Relatório Internação</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatoriointernacaofaturamento">Relatório Internação Faturamento</a></span></ul>
                                 </li>
                             </ul>
                         </li>
