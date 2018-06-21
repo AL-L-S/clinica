@@ -151,4 +151,4 @@ FROM
  (SELECT pc.procedimento_convenio_id, valortotal
    FROM ponto.tb_procedimento_convenio pc
  ) as selecao
- WHERE i.procedimento_convenio_id = selecao.procedimento_convenio_id
+ WHERE i.procedimento_convenio_id = selecao.procedimento_convenio_id;
