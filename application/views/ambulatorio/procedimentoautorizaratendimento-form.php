@@ -258,9 +258,9 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                             <th class="tabela_header">Sala</th>
                             <th class="tabela_header">Medico</th>
                             <th class="tabela_header">Solicitante</th>
-                            
                             <th class="tabela_header">Autorização</th>
                             <th class="tabela_header" <? if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <? } ?>>Valor</th>
+                            <th class="tabela_header"><span >V.Ajuste</span></th>
                             <th class="tabela_header">Sessoes</th>
                             <th class="tabela_header">Pagamento</th>
                             <th class="tabela_header">Promotor</th>
@@ -338,11 +338,14 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <td class="<?php echo $estilo_linha; ?>" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
                                     <input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/>
                                     <input type="hidden" name="valorunitario[<?= $i; ?>]" id="valorunitario<?= $i; ?>" class="texto01" readonly=""/>
+                                </td>                                
+                                <td  class="<?php echo $estilo_linha; ?>" >
+                                    <input type="text" name="valorajuste[<?= $i; ?>]" id="valorAjuste<?= $i; ?>" class="texto01" readonly=""/>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1"  min="1" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
-                                        <option value="0">Selecione</option>
+                                    <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" onchange="buscaValorAjustePagamentoProcedimento(<?= $i; ?>)">
+                                        <option value="">Selecione</option>
                                         <? foreach ($forma_pagamento as $value) : ?>
                                             <option value="<?= $value->forma_pagamento_id; ?>"><?= $value->nome; ?></option>
                                         <? endforeach; ?>
@@ -509,8 +512,15 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                            $('.carregando').hide();
                          });
                          
-                         $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
-                             var options = '<option value="0">Selecione</option>';
+                        var proc = t[c].procedimento_convenio_id;
+                        $("#formapamento<?= $b ?>").prop('required', false);
+                                    
+                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
+                             
+                            $("#valorAjuste<?= $b ?>").css('display', 'none');
+
+                            verificaAjustePagamentoProcedimento(proc, <?= $b ?>);
+                             var options = '<option value="">Selecione</option>';
                              for (var c = 0; c < j.length; c++) {
                                  if (j[c].forma_pagamento_id != null) {
                                      options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
@@ -681,6 +691,9 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     $("#qtde<?= $b; ?>").prop('required', true);
                     $("#qtdeProc<?= $b; ?>").prop('required', true);
                     $("#procedimento<?= $b; ?>").prop('required', true);
+                    
+                    verificaAjustePagamentoProcedimento( $("#procedimento<?= $b; ?>").val(), <?= $b; ?>);
+                    
                     <? if ( $recomendacao_obrigatorio == 't' ){ ?>
                         $("#indicacao<?= $b; ?>").prop('required', true);
                     <? } ?>
@@ -751,6 +764,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     $("#qtdeProc<?= $b; ?>").prop('required', false);
                     $("#procedimento<?= $b; ?>").prop('required', false);
                     $("#medico<?=$b?>").prop('required', false);
+                    $("#formapamento<?= $b ?>").prop('required', false);
                     <? if ( $recomendacao_obrigatorio == 't' ){ ?>
                         $("#indicacao<?= $b; ?>").prop('required', false);
                     <? } ?>
@@ -852,10 +866,18 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 
             $('#procedimento<?= $b ?>').change(function () {
                 if ($(this).val()) {
-//                                    alert('sadasd');
+                     
+                    var procedimento = $(this).val();
+                    $("#formapamento<?= $b ?>").prop('required', false);
+                                    
                     $('.carregando').show();
                     $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                        var options = '<option value="0">Selecione</option>';
+                        
+                        $("#valorAjuste<?= $b ?>").css('display', 'none');
+
+                        verificaAjustePagamentoProcedimento(procedimento, <?= $b ?>);
+                        
+                        var options = '<option value="">Selecione</option>';
                         for (var c = 0; c < j.length; c++) {
                             if (j[c].forma_pagamento_id != null) {
                                 options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
@@ -866,7 +888,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     });
 
                 } else {
-                    $('#formapamento<?= $b ?>').html('<option value="0">Selecione</option>');
+                    $('#formapamento<?= $b ?>').html('<option value="">Selecione</option>');
                 }
             });
             
@@ -899,6 +921,31 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
     });
     
     
+
+                function verificaAjustePagamentoProcedimento(procedimentoConvenioId, id){
+                    <?if(@$empresapermissoes[0]->ajuste_pagamento_procedimento == 't'){?>
+                        $.getJSON('<?= base_url() ?>autocomplete/verificaAjustePagamentoProcedimento', {procedimento: procedimentoConvenioId, ajax: true}, function (p) {
+                            if (p.length != 0) {
+                                if ( $('#checkbox'+id).is(":checked") ) { 
+                                    $("#formapamento"+id).prop('required', true);
+                                    $("#valorAjuste"+id).css('display', 'block');
+                                }
+                            }
+                        });
+                    <?}?>
+                }
+
+                function buscaValorAjustePagamentoProcedimento(id){
+                    $.getJSON('<?= base_url() ?>autocomplete/buscaValorAjustePagamentoProcedimento', {procedimento: $('#procedimento'+id).val(), forma: $('#formapamento'+id).val(), ajax: true}, function (p) {
+                        if (p.length != 0) {
+                            $("#valorAjuste"+id).val(p[0].ajuste);
+                        }
+                        else{
+                            $("#valorAjuste"+id).val('');
+                        }
+                    });
+                }
+
 
 
     $(function () {

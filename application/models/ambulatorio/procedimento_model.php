@@ -520,6 +520,7 @@ class procedimento_model extends Model {
         $this->db->select('tuss_classificacao_id,
                             nome');
         $this->db->from('tb_tuss_classificacao');
+        $this->db->where('ativo', 'true');
         $return = $this->db->get();
         return $return->result();
     }

@@ -221,11 +221,11 @@ class Procedimentoplano extends BaseController {
     }
 
     function carregarprocedimentoplanoformapagamento($convenio_id) {
-
+        
         $data['convenio_id'] = $convenio_id;
 
-        $data["formapagamento_grupo"] = $this->formapagamento->listargrupos();
-        $data['formas'] = $this->procedimentoplano->listarformaspagamentoconvenio($convenio_id);
+        $data['forma_pagamento'] = $this->formapagamento->listarforma();
+        $data['formasAssociadas'] = $this->procedimentoplano->listarformaspagamentoconvenio($convenio_id);
 
         $this->loadView('ambulatorio/procedimentoplanoformapagamento', $data);
     }
@@ -249,8 +249,12 @@ class Procedimentoplano extends BaseController {
 
     function carregarprocedimentoformapagamento($procedimento_convenio_id) {
         $data["procedimento_convenio_id"] = $procedimento_convenio_id;
-        $data["formapagamento_grupo"] = $this->formapagamento->listargrupos();
-        $data["grupos_associados"] = $this->formapagamento->listargruposasssociados($procedimento_convenio_id);
+//        $data["formapagamento_grupo"] = $this->formapagamento->listargrupos();
+        
+        $data['forma_pagamento'] = $this->formapagamento->listarforma();
+        
+        $data['permissoes'] = $this->guia->listarempresapermissoes();
+        $data["formasAssociadas"] = $this->formapagamento->listarformasasssociados($procedimento_convenio_id);
         $this->loadView('ambulatorio/procedimentoformapagamento-form', $data);
     }
 
@@ -311,6 +315,7 @@ class Procedimentoplano extends BaseController {
         }
 
         $this->session->set_flashdata('message', $mensagem);
+//        var_dump($paciente_id); die;
         redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/$paciente_id/$orcamento_id");
     }
 
@@ -625,10 +630,29 @@ class Procedimentoplano extends BaseController {
     }
 
     function gravarformapagamentoplanoconvenio($convenio_id) {
-        $return = $this->procedimentoplano->gravarformapagamentoplanoconvenio();
+        $formasSelecionadas = array();
+        
+        foreach ($_POST['ativar'] as $key => $value) {
+            
+            $formapagamento_id = $key;
+            $ajuste = (float) str_replace(".", "", @$_POST['ajuste'][$key]);
+            $this->procedimentoplano->gravarformapagamentoplanoconvenio($formapagamento_id, $ajuste, $convenio_id);
+            
+            $formasSelecionadas[] = $key;
+        }
+        
+        if (count($formasSelecionadas) > 0 || count($_POST['ativar']) == 0){
+            $this->procedimentoplano->removeformapagamentoconvenio($formasSelecionadas, $convenio_id);
+        }
+        
         $mensagem = 'Sucesso ao gravar Forma de Pagamento.';
         $this->session->set_flashdata('message', $mensagem);
-        redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/$convenio_id");
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+        
+//        $return = $this->procedimentoplano->gravarformapagamentoplanoconvenio();
+//        $mensagem = 'Sucesso ao gravar Forma de Pagamento.';
+//        $this->session->set_flashdata('message', $mensagem);
+//        redirect(base_url() . "ambulatorio/procedimentoplano/carregarprocedimentoplanoformapagamento/$convenio_id");
     }
 
     function gravarprocedimentoconveniosessao($procedimento_convenio_id) {
@@ -644,14 +668,23 @@ class Procedimentoplano extends BaseController {
     }
 
     function gravarformapagamentoprocedimento() {
-        $return = $this->procedimentoplano->gravarformapagamentoprocedimento();
-        if ($return == 1) {
-            $mensagem = 'Sucesso ao gravar Forma de Pagamento.';
-        }if ($return == 0) {
-            $mensagem = 'Erro ao gravar Forma de Pagamento.';
-        }if ($return == 2) {
-            $mensagem = 'Erro: Forma de Pagamento já cadastrado.';
+        $formasSelecionadas = array();
+        $ajuste = (float) str_replace(".", "", @$_POST['ajuste']);
+        
+        foreach ($_POST['ativar'] as $key => $value) {
+            
+            $cartao = $_POST['cartao'][$key];
+            $formapagamento_id = $key;
+            $this->procedimentoplano->gravarformapagamentoprocedimento($formapagamento_id, $ajuste, $cartao);
+            
+            $formasSelecionadas[] = $key;
         }
+        
+        if (count($formasSelecionadas) > 0 || count($_POST['ativar']) == 0){
+            $this->procedimentoplano->removeformapagamentoprocedimento($formasSelecionadas);
+        }
+        
+        $mensagem = 'Sucesso ao gravar Forma de Pagamento.';
         $this->session->set_flashdata('message', $mensagem);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }

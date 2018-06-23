@@ -40,11 +40,11 @@
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
-                                <th class="tabela_header">F. de Pagamento</th>
                                 <th class="tabela_header">Dia</th>
                                 <th class="tabela_header">Turno</th>
                                 <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">V. Unit</th>
+                                <th class="tabela_header">F. de Pagamento</th>
                                 <th class="tabela_header">V. Ajuste</th>
                             </tr>
                         </thead>
@@ -81,16 +81,8 @@
 
                                 <td  width="50px;">
 
-                                    <select name="procedimento1" id="procedimento1" required class="size2 chosen-select" data-placeholder="Selecione" tabindex="1">
+                                    <select name="procedimento1" id="procedimento1" required class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                                         <option value="">Selecione</option>
-                                    </select>
-                                </td>
-                                <td  width="100px;">
-                                    <select name="formapamento" id="formapamento" class="size1" >
-                                        <option value="">Selecione</option>
-                                        <? foreach ($forma_pagamento as $item) : ?>
-                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                        <? endforeach; ?>
                                     </select>
                                 </td>
                                 <td>
@@ -116,6 +108,14 @@
 
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
                                 <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td  width="100px;">
+                                    <select name="formapamento" id="formapamento" class="size1" onchange="buscaValorAjustePagamentoProcedimento()">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($forma_pagamento as $item) : ?>
+                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
                                 <td  width="20px;"><input type="text" name="ajustevalor1" id="ajustevalor1" class="texto01" readonly=""/></td>
                             </tr>
                             <? if ($empresa[0]->impressao_orcamento == 1) { ?>
@@ -230,7 +230,7 @@
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total_ajustado; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>">
-                                            <a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirorcamentorecepcao/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
+                                            <a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirorcamentorecepcao/<?= $item->ambulatorio_orcamento_item_id ?>/0/<?= $item->orcamento_id ?>" class="delete">
                                             </a>
                                         </td>
                                     </tr>
@@ -487,6 +487,9 @@
                                                 $(function () {
                                                     $('#procedimento1').change(function () {
                                                         if ($(this).val()) {
+                                                            
+                                                            var procedimento = $(this).val();
+                                                            
                                                             $('.carregando').show();
                                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                                 options = "";
@@ -499,24 +502,40 @@
                                                                     }
 <? } ?>
                                                                 document.getElementById("valor1").value = options;
+                                                                
+                                                                <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento != "t") { ?>
+                                                                    if ($('#formapamento').val()) {
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $('#formapamento').val(), ajax: true}, function (j) {
+                                                                            var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
 
-                                                                if ($('#formapamento').val()) {
-                                                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $('#formapamento').val(), ajax: true}, function (j) {
-                                                                        var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
+                                                                            var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
 
-                                                                        var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
+                                                                            $("#ajustevalor1").val(valorajuste1.toFixed(2));
 
-                                                                        $("#ajustevalor1").val(valorajuste1.toFixed(2));
-
-                                                                        $('.carregando').hide();
-                                                                    });
-                                                                }
-//                                                else{
-//                                                    $("#ajustevalor1").val($("#valor1").val());
-//                                                }
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    }
+                                                                <? } ?>
 
                                                                 $('.carregando').hide();
                                                             });
+                                                            
+                                                            <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento == "t") { ?>
+                                                                $("#formapamento").prop('required', false);
+                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
+
+                                                                    verificaAjustePagamentoProcedimento(procedimento);
+                                                                    var options = '<option value="">Selecione</option>';
+                                                                    for (var c = 0; c < j.length; c++) {
+                                                                        if (j[c].forma_pagamento_id != null) {
+                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                        }
+                                                                    }
+                                                                    $('#formapamento').html(options).show();
+                                                                    $('.carregando').hide();
+
+                                                                });
+                                                            <? } ?>
                                                         } else {
                                                             $('#valor1').html('value=""');
                                                         }
@@ -525,14 +544,6 @@
 
 
                                                 if ($("#convenio1").val() != "-1") {
-//                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $("#convenio1").val()}, function (j) {
-//                                        options = '<option value=""></option>';
-//                                        for (var c = 0; c < j.length; c++) {
-//                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-//                                        }
-//                                        $('#procedimento1').html(options).show();
-//                                        $('.carregando').hide();
-//                                    });
                                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val()}, function (j) {
                                                         options = '<option value=""></option>';
                                                         for (var c = 0; c < j.length; c++) {
@@ -543,27 +554,49 @@
                                                     });
                                                 }
 
+                                                <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento != "t") { ?>
+                                                    $(function () {
+                                                        $('#formapamento').change(function () {
+                                                            if ($(this).val()) {
+                                                                $('.carregando').show();
+                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $(this).val(), ajax: true}, function (j) {
+                                                                    var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
 
-                                                $(function () {
-                                                    $('#formapamento').change(function () {
-                                                        if ($(this).val()) {
-                                                            $('.carregando').show();
-                                                            $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $(this).val(), ajax: true}, function (j) {
-                                                                var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
+                                                                    var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
 
-                                                                var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
-
-                                                                $("#ajustevalor1").val(valorajuste1.toFixed(2));
+                                                                    $("#ajustevalor1").val(valorajuste1.toFixed(2));
 
 
-                                                                $('.carregando').hide();
-                                                            });
-                                                        } else {
-                                                            $("#ajustevalor1").val('');
-                                                        }
+                                                                    $('.carregando').hide();
+                                                                });
+                                                            } else {
+                                                                $("#ajustevalor1").val('');
+                                                            }
+                                                        });
                                                     });
-                                                });
-
+                                                <? } ?>
+                                                
+                                                
+                                function verificaAjustePagamentoProcedimento(procedimentoConvenioId){
+                                    <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento == "t") { ?>
+                                        $.getJSON('<?= base_url() ?>autocomplete/verificaAjustePagamentoProcedimento', {procedimento: procedimentoConvenioId, ajax: true}, function (p) {
+                                            if (p.length != 0) {
+                                                $("#formapamento").prop('required', true);
+                                            }
+                                        });
+                                    <?}?>
+                                }
+                                
+                                function buscaValorAjustePagamentoProcedimento(){                                    
+                                    $.getJSON('<?= base_url() ?>autocomplete/buscaValorAjustePagamentoProcedimento', {procedimento: $('#procedimento1').val(), forma: $('#formapamento').val(), ajax: true}, function (p) {
+                                        if (p.length != 0) {
+                                            $("#ajustevalor1").val(p[0].ajuste);
+                                        }
+                                        else{
+                                            $("#ajustevalor1").val('');
+                                        }
+                                    });
+                                }
 
 
 </script>

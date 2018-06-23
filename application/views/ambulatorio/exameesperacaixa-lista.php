@@ -30,6 +30,9 @@
                 </tr>
                 </thead>
                 <?php
+                
+                $empresa_id = $this->session->userdata('empresa_id');
+                $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->exame->listarexamecaixaespera(0, $_GET);
                 $total = $consulta->count_all_results();
@@ -42,28 +45,32 @@
                         <?php
                         $perfil_id = $this->session->userdata('perfil_id');
                         $forma_pagamento = $this->guia->formadepagamento();
-                        $grupo_pagamento= $this->formapagamento->listargrupos();
-                        foreach ($grupo_pagamento as $grupo) {
-                            $lista = $this->exame->listarexamecaixaespera($grupo->financeiro_grupo_id, $_GET)->limit($limit, $pagina)->groupby('g.ambulatorio_guia_id, p.nome, ae.paciente_id, g.data_criacao')->orderby('g.data_criacao')->get()->result();
-                            $estilo_linha = "tabela_content01";
-                            foreach ($lista as $item) {
-                                ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                                $guia_id = $item->ambulatorio_guia_id;
-                                ?>
-                                <tr>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valortotal, 2, ',', '.') ?></td>
-                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_linkf">
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia_id . '/' . $grupo->financeiro_grupo_id; ?> ');">Faturar Guia
+                        $lista = $this->exame->listarexamecaixaespera($_GET)->limit($limit, $pagina)->groupby('g.ambulatorio_guia_id, p.nome, ae.paciente_id, g.data_criacao')->orderby('g.data_criacao')->get()->result();
+                        $estilo_linha = "tabela_content01";
+                        foreach ($lista as $item) {
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            $guia_id = $item->ambulatorio_guia_id;
+                            ?>
+                            <tr>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= number_format($item->valortotal, 2, ',', '.') ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                    <?  if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
+                                        <div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia_id; ?> ');">Faturar Guia</a>
+                                        </div>
+                                    <? } else { ?>
+                                        <div class="bt_linkf">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentospersonalizados/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos</a>
+                                        </div>
+                                    <? } ?>
+                                </td>
+                            </tr>
 
-                                            </a></div>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                            <?php
+                        </tbody>
+                        <?php
                         }
-                    }
+                    
                     ?>
                     <tfoot>
                         <tr>

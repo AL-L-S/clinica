@@ -986,7 +986,7 @@ class Laudo extends BaseController {
         //////////////////////////////////////////////////////////////////////////////////////////////////
         //LAUDO CONFIGURÁVEL
         if ($data['empresa'][0]->laudo_config == 't') {
-
+//            die('morreu');
             $filename = "laudo.pdf";
             if ($data['cabecalhomedico'][0]->cabecalho != '') { // Cabeçalho do Profissional
                 $cabecalho = $data['cabecalhomedico'][0]->cabecalho;
@@ -1039,8 +1039,8 @@ class Laudo extends BaseController {
 
 
             if (file_exists("upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg")) {
-                $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg'>";
-                $data['assinatura'] = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg'>";
+                $assinatura = "<img src='" . base_url() . "./upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg'>";
+                $data['assinatura'] = "<img src='" . base_url() . "./upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg'>";
             } else {
                 $assinatura = "";
                 $data['assinatura'] = "";

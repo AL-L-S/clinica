@@ -22,6 +22,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
     .custom-combobox-input {
         margin: 0;
         padding: 5px 10px;
+        width: 50px;
     }
     .custom-combobox a {
         display: inline-block;        
@@ -284,6 +285,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <th colspan="2" class="tabela_header">Solicitante</th>
                                 <th class="tabela_header">Autorizacão</th>
                                 <th id="valorth" class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>Valor</th>
+                                <th class="tabela_header" id="vAjuste" style="display: none;"><span >V.Ajuste</span></th>
                                 <th class="tabela_header">Sessões</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Promotor</th>
@@ -307,8 +309,8 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-                                <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
-                                <td  width="50px;">
+                                <td  ><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
+                                <td  >
                                     <select  name="grupo1" id="grupo1" class="size1" >
                                         <option value="">Selecione</option>
                                         <?
@@ -322,8 +324,8 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     </select>
                                 </td>
 
-                                <td width="50px;">
-                                    <select name="procedimento1" id="procedimento1" class="size4" data-placeholder="Selecione" tabindex="1">
+                                <td>
+                                    <select name="procedimento1" id="procedimento1" class="size2" data-placeholder="Selecione" tabindex="1">
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
@@ -349,17 +351,20 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 <? endforeach; ?>
                                     </select></td>
                                 
-                                <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
+                                <td ><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
-                                <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td id="valortd"  width="20px;" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                <td ><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
+                                <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
                                     <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
                                     <input type="hidden" name="valorunitario" id="valorunitario" class="texto01" readonly=""/>
                                 </td>
+                                <td id="vAjusteIn" style="display: none;"  >
+                                    <input type="text" name="valorAjuste" id="valorAjuste" class="texto01" readonly=""/>
+                                </td>
                                 <td  ><input type="text" name="qtde" id="qtde" class="texto01" readonly=""/></td>
-                                <td  width="50px;">
-                                    <select  name="formapamento" id="formapamento" class="size1" >
-                                        <option value="0">Selecione</option>
+                                <td >
+                                    <select  name="formapamento" id="formapamento" class="size1" onchange="buscaValorAjustePagamentoProcedimento()">
+                                        <option value="">Selecione</option>
                                         <? foreach ($forma_pagamento as $item) :
                                             if ($item->forma_pagamento_id == 1000)
                                                 continue;
@@ -368,11 +373,11 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 <? endforeach; ?>
                                     </select>
                                 </td>
-                                <td  width="50px;">
+                                <td >
                                     <select name="indicacao" id="indicacao" class="size1 ui-widget" <?= ($recomendacao_obrigatorio == 't')? 'required' : '';?>>
                                         <option value='' >Selecione</option>
                                         <?php
-                                        $indicacao = $this->paciente->listaindicacao($_GET);
+                                        $indicacao = $this->paciente->listaindicacaoranqueada($_GET);
                                         foreach ($indicacao as $item) {
                                             // Não dê enter na hora de mostrar o valor no option, se não ele não vai mostrar o texto do jeito certo ?>
                                             <option value="<?= $item->paciente_indicacao_id; ?>" <?= ($item->paciente_indicacao_id == $promotor_id)?'selected':'' ?>><?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
@@ -382,8 +387,8 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     </select>
                                 </td>
 
-                                <td  width="70px;"><input type="text" id="data" name="data" class="size1"/></td>
-                                <td width="70px;">
+                                <td ><input type="text" id="data" name="data" class="size1"/></td>
+                                <td >
                                     <select name="ordenador" id="ordenador" class="size1" >
                                         <option value='1' >Normal</option>
                                         <option value='2' >Prioridade</option>
@@ -462,13 +467,20 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
                                                 </a></div>
                                             <!--</td>-->
-            <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+            <? if ($item->faturado == "f" && $item->dinheiro == "t") { 
+                if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
                                                     <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
                                                     </a></div>
                                                 <?
+                } else { ?>
+                    
+                    <div class="bt_link">
+                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
+                    </div>
+                <? }
                                             } else {
                                                 $faturado++;
                                             }
@@ -499,7 +511,8 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         </th>
                 <? }
                 if ($botao_faturar_proc == 't') {
-                    ?>
+                    if(@$empresapermissoes[0]->listarempresapermissoes != 't'){
+                    ?>  
                                         <th colspan="2" align="center">    
                                             <div class="bt_linkf">
                                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
@@ -507,6 +520,16 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 </a></div></center>
                                         </th>
                     <?
+                    }
+                    else{ ?>
+                                        <th colspan="2" align="center">    
+                                            <div class="bt_linkf">
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentospersonalizados/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+
+                                                </a></div>
+                                        </th>
+                    <?    
+                    }
                 }
             }
         }
@@ -567,13 +590,19 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
                                                 </a></div>
                                             <!--</td>-->
-            <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+            <? if ($item->faturado == "f" && $item->dinheiro == "t") {
+                if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
                                                     <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
                                                     </a></div>
                                                 <?
+                } else {?>
+                                                <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
+                                                </div>
+           <?   }
                                             } else {
                                                 $faturado++;
                                             }
@@ -604,14 +633,24 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         </th>
                 <? }
                 if ($botao_faturar_proc == 't') {
+                    if ($empresapermissoes[0]->ajuste_pagamento_procedimento == 't') {
                     ?>
-                                        <th colspan="2" align="center">    
-                                            <div class="bt_linkf">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
-
-                                                </a></div></center>
-                                        </th>
+                        <th colspan="2" align="center">  
+                            <div class="bt_link">
+                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentospersonalizados/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos</a>
+                            </div>
+                        </th> 
                     <?
+                    }
+                    else { ?>
+                        <th colspan="2" align="center">    
+                            <div class="bt_linkf">
+                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+
+                                </a></div></center>
+                        </th>
+                        <?
+                    }
                 }
             }
         }
@@ -679,15 +718,25 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                             </a></div>
                                         <!--</td>-->
         <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-            <? if ($perfil_id != 11) { ?>
+            <? if ($perfil_id != 11) {
+                
+                if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
                                                         <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                 <div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
                                                     </a></div>
                                                 <!--</td>-->
-                                <? } ?>
-                            <? } ?>
+                                <? } 
+                                else{?>
+                                                <div class="bt_link_new">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+
+                                                    </a></div><?
+                                    
+                                }
+                        }
+                    } ?>
                                     </td>
                                 </tr>
                             </tbody>
@@ -808,7 +857,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 
                                 $(function () {
                                     $("#medico1").autocomplete({
-                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=medicosranqueado",
                                         minLength: 3,
                                         focus: function (event, ui) {
                                             $("#medico1").val(ui.item.label);
@@ -906,9 +955,27 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 document.getElementById("valor1").value = valorTotal;
                                                 document.getElementById("qtde").value = qtde;
                                                 $('.carregando').hide();
-                                            });
+                                            });                                
+                                            
+                                    var procedimento = procedimento_id;
+                                    $("#formapamento").prop('required', false);
 
+                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: procedimento_id, ajax: true}, function (j) {
 
+                                        $("#vAjuste").css('display', 'none');
+                                        $("#vAjusteIn").css('display', 'none');
+
+                                        verificaAjustePagamentoProcedimento(procedimento);
+                                        var options = '<option value="">Selecione</option>';
+                                        for (var c = 0; c < j.length; c++) {
+                                            if (j[c].forma_pagamento_id != null) {
+                                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                            }
+                                        }
+                                        $('#formapamento').html(options).show();
+                                        $('.carregando').hide();
+
+                                    });
                                 }
                                 
                                 
@@ -1161,8 +1228,17 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     $('#procedimento1').change(function () {
                                         if ($(this).val()) {
                                             $('.carregando').show();
+                                            
+                                            var procedimento = $(this).val();
+                                            $("#formapamento").prop('required', false);
+                                            
                                             $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                var options = '<option value="0">Selecione</option>';
+                                                
+                                                $("#vAjuste").css('display', 'none');
+                                                $("#vAjusteIn").css('display', 'none');
+                                                
+                                                verificaAjustePagamentoProcedimento(procedimento);
+                                                var options = '<option value="">Selecione</option>';
                                                 for (var c = 0; c < j.length; c++) {
                                                     if (j[c].forma_pagamento_id != null) {
                                                         options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
@@ -1170,6 +1246,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 }
                                                 $('#formapamento').html(options).show();
                                                 $('.carregando').hide();
+                                                
                                             });
                                             $.getJSON('<?= base_url() ?>autocomplete/listarmedicoprocedimentoconvenio', {procedimento: $(this).val(), ajax: true}, function (m) {
                                             options = '<option value=""></option>';
@@ -1228,6 +1305,29 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     }
                                 }
                                 calculoIdade();
-
+                                
+                                function verificaAjustePagamentoProcedimento(procedimentoConvenioId){
+                                    <?if(@$empresapermissoes[0]->ajuste_pagamento_procedimento == 't'){?>
+                                        $.getJSON('<?= base_url() ?>autocomplete/verificaAjustePagamentoProcedimento', {procedimento: procedimentoConvenioId, ajax: true}, function (p) {
+                                            if (p.length != 0) {
+                                                $("#formapamento").prop('required', true);
+                                                $("#vAjuste").css('display', 'block');
+                                                $("#vAjusteIn").css('display', 'block');
+//                                                console.log($('#formapamento'));
+                                            }
+                                        });
+                                    <?}?>
+                                }
+                                
+                                function buscaValorAjustePagamentoProcedimento(){                                    
+                                    $.getJSON('<?= base_url() ?>autocomplete/buscaValorAjustePagamentoProcedimento', {procedimento: $('#procedimento1').val(), forma: $('#formapamento').val(), ajax: true}, function (p) {
+                                        if (p.length != 0) {
+                                            $("#valorAjuste").val(p[0].ajuste);
+                                        }
+                                        else{
+                                            $("#valorAjuste").val('');
+                                        }
+                                    });
+                                }
 
 </script>

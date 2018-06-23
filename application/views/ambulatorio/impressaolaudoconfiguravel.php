@@ -7,7 +7,7 @@
 </style>
 
 <?
-if ($empresapermissoes[0]->desativar_personalizacao_impressao != 't') {
+if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
 
     if (file_exists("./upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".png")) {
         $caminho_background = base_url() . "upload/operadortimbrado/" . $laudo['0']->medico_parecer1 . ".png";
@@ -26,7 +26,7 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao != 't') {
 
         <?
         if (file_exists("./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg")) {
-            $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg'>";
+            $assinatura = "<img src='" . base_url() . "./upload/1ASSINATURAS/" . $laudo['0']->medico_parecer1 . ".jpg'>";
         } else {
             $assinatura = "";
         }

@@ -45,7 +45,16 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
             <? } ?>
         </tr>
     </table>
-
+    <style>
+        
+        #circulo{
+            display: inline-block;
+            width: 10pt;
+            height: 10pt;
+            border: 1pt solid black;
+            border-radius: 50%;
+        }
+    </style>
     <?
     $perfil_id = $this->session->userdata('perfil_id');
     ?>
@@ -65,6 +74,8 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                         <th class="tabela_title">Grupo</th>
                         <th class="tabela_title">Procedimento</th>
                         <th colspan="2" class="tabela_title">Codigo</th>
+                        <th class="tabela_title"></th>
+                        <th class="tabela_title">Legenda</th>
                     </tr>
                     <tr>
                         <th class="tabela_title">
@@ -109,6 +120,19 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                         <th class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
                         </th>
+                        <th>
+                        </th>
+                        <th>
+                            <div>
+                                <div id="circulo" style="background-color: black"></div> Normal
+                            </div>
+                            <div>
+                                <div id="circulo" style="background-color: red"></div> Valores Diferentes
+                            </div>
+                            <div>
+                                <div id="circulo" style="background-color: blue"></div> Ajuste
+                            </div>
+                        </th>
                     </tr>
                 </form>
                 </th>
@@ -128,8 +152,8 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->procedimentoplano->listar2($_GET);
-                $total = $consulta->count_all_results();
+                $consulta = $this->procedimentoplano->listar2($_GET)->get()->result();;
+                $total = count($consulta);
                 $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
                 
@@ -139,10 +163,12 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                     <tbody>
                         <?php
                         if ($limit != "todos") {
-                            $lista = $this->procedimentoplano->listar2($_GET)->orderby('c.nome')->orderby('pt.grupo')->orderby('pt.nome')->limit($limit, $pagina)->get()->result();
+                            $lista = $this->procedimentoplano->listar2($_GET)->limit($limit, $pagina)->get()->result();
                         } else {
-                            $lista = $this->procedimentoplano->listar2($_GET)->orderby('c.nome')->orderby('pt.grupo')->orderby('pt.nome')->get()->result();
+                            $lista = $this->procedimentoplano->listar2($_GET)->get()->result();
                         }
+//                        echo "<pre>";
+//                        var_dump($lista); die;
                         
                         $estilo_linha = "tabela_content01";
                         $i = 0;
@@ -173,9 +199,14 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                                     } else {
                                         $cor = 'black';
                                     }
+                                    $valor = $item->valortotal;
+                                    
+                                    if( $item->valor_ajuste != null){
+                                        $cor = 'blue';
+                                    }
                                     ?>
                                     <span style="font-weight: bolder; color: <?=$cor?>">
-                                        <?= number_format((float)$item->valortotal, 2, ',', ''); ?>
+                                        <?= number_format((float)$valor, 2, ',', ''); ?>
                                     </span>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="80px;"> 

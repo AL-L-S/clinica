@@ -983,7 +983,8 @@ class Convenio_model extends Model {
                             $this->db->query($sql);
                         }
                     }
-                } else {
+                } 
+                else {
                     if ($_POST['convenio'][$key] == '' && $_POST['convenio_associacao_id'][$key] != '') {
 
                         // Buscando os convenios secundarios associados a esse Convenio

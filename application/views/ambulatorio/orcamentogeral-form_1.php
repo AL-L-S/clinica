@@ -39,11 +39,11 @@
                             <th class="tabela_header">Convenio*</th>
                             <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento*</th>
-                            <th class="tabela_header">F. de Pagamento</th>
                             <th class="tabela_header">Dia</th>
                             <th class="tabela_header">Turno</th>
                             <th class="tabela_header">Qtde*</th>
                             <th class="tabela_header">V. Unit</th>
+                            <th class="tabela_header">F. de Pagamento</th>
                             <th class="tabela_header">V. Ajuste</th>
                         </tr>
                     </thead>
@@ -80,16 +80,8 @@
 
                             <td  width="50px;">
 
-                                <select name="procedimento1" id="procedimento1" required class="size2 chosen-select" data-placeholder="Selecione" tabindex="1">
+                                <select name="procedimento1" id="procedimento1" required class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
                                     <option value="">Selecione</option>
-                                </select>
-                            </td>
-                            <td  width="100px;">
-                                <select name="formapamento" id="formapamento" class="size1" >
-                                    <option value="">Selecione</option>
-                                    <? foreach ($forma_pagamento as $item) : ?>
-                                        <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                    <? endforeach; ?>
                                 </select>
                             </td>
                             <td>
@@ -115,6 +107,14 @@
                             
                             <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
                             <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                            <td  width="100px;">
+                                <select name="formapamento" id="formapamento" class="size1" onchange="buscaValorAjustePagamentoProcedimento()">
+                                    <option value="">Selecione</option>
+                                    <? foreach ($forma_pagamento as $item) : ?>
+                                        <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                    <? endforeach; ?>
+                                </select>
+                            </td>
                             <td  width="20px;"><input type="text" name="ajustevalor1" id="ajustevalor1" class="texto01" readonly=""/></td>
                         </tr>
                         <? if ($empresa[0]->impressao_orcamento == 1) { ?>
@@ -305,268 +305,300 @@
 //    $(".chosen-container").each(function() {
 ////       $(this).attr('style', 'width: 100%');
 //   })
-                                function mascaraTelefone(campo) {
+                                                function mascaraTelefone(campo) {
 
-                                    function trata(valor, isOnBlur) {
+                                                    function trata(valor, isOnBlur) {
 
-                                        valor = valor.replace(/\D/g, "");
-                                        valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+                                                        valor = valor.replace(/\D/g, "");
+                                                        valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-                                        if (isOnBlur) {
+                                                        if (isOnBlur) {
 
-                                            valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
-                                        } else {
+                                                            valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                                                        } else {
 
-                                            valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
-                                        }
-                                        return valor;
-                                    }
+                                                            valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                                                        }
+                                                        return valor;
+                                                    }
 
-                                    campo.onkeypress = function (evt) {
+                                                    campo.onkeypress = function (evt) {
 
-                                        var code = (window.event) ? window.event.keyCode : evt.which;
-                                        var valor = this.value
+                                                        var code = (window.event) ? window.event.keyCode : evt.which;
+                                                        var valor = this.value
 
-                                        if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
-                                            return false;
-                                        } else {
-                                            this.value = trata(valor, false);
-                                        }
-                                    }
+                                                        if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
+                                                            return false;
+                                                        } else {
+                                                            this.value = trata(valor, false);
+                                                        }
+                                                    }
 
-                                    campo.onblur = function () {
+                                                    campo.onblur = function () {
 
-                                        var valor = this.value;
-                                        if (valor.length < 13) {
-                                            this.value = ""
-                                        } else {
-                                            this.value = trata(this.value, true);
-                                        }
-                                    }
+                                                        var valor = this.value;
+                                                        if (valor.length < 13) {
+                                                            this.value = ""
+                                                        } else {
+                                                            this.value = trata(this.value, true);
+                                                        }
+                                                    }
 
-                                    campo.maxLength = 14;
-                                }
-
-
-                                jQuery("#txtTelefone")
-                                        .mask("(99) 9999-9999?9")
-                                        .focusout(function (event) {
-                                            var target, phone, element;
-                                            target = (event.currentTarget) ? event.currentTarget : event.srcElement;
-                                            phone = target.value.replace(/\D/g, '');
-                                            element = $(target);
-                                            element.unmask();
-                                            if (phone.length > 10) {
-                                                element.mask("(99) 99999-999?9");
-                                            } else {
-                                                element.mask("(99) 9999-9999?9");
-                                            }
-                                        });
-
-                                jQuery("#txtCelular")
-                                        .mask("(99) 9999-9999?9")
-                                        .focusout(function (event) {
-                                            var target, phone, element;
-                                            target = (event.currentTarget) ? event.currentTarget : event.srcElement;
-                                            phone = target.value.replace(/\D/g, '');
-                                            element = $(target);
-                                            element.unmask();
-                                            if (phone.length > 10) {
-                                                element.mask("(99) 99999-999?9");
-                                            } else {
-                                                element.mask("(99) 9999-9999?9");
-                                            }
-                                        });
-
-                                <? if (@$obj->_paciente_id == NULL) { ?>
-                                    $(function () {
-                                        $("#txtNome").autocomplete({
-                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-                                            minLength: 5,
-                                            focus: function (event, ui) {
-                                                $("#txtNome").val(ui.item.label);
-                                                return false;
-                                            },
-                                            select: function (event, ui) {
-                                                $("#txtNome").val(ui.item.value);
-                                                $("#txtNomeid").val(ui.item.id);
-                                                $("#txtTelefone").val(ui.item.itens);
-                                                $("#txtCelular").val(ui.item.celular);
-                                                $("#nascimento").val(ui.item.valor);
-                                                return false;
-                                            }
-                                        });
-                                    });
-                                <? } ?>
+                                                    campo.maxLength = 14;
+                                                }
 
 
+                                                jQuery("#txtTelefone")
+                                                        .mask("(99) 9999-9999?9")
+                                                        .focusout(function (event) {
+                                                            var target, phone, element;
+                                                            target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                                                            phone = target.value.replace(/\D/g, '');
+                                                            element = $(target);
+                                                            element.unmask();
+                                                            if (phone.length > 10) {
+                                                                element.mask("(99) 99999-999?9");
+                                                            } else {
+                                                                element.mask("(99) 9999-9999?9");
+                                                            }
+                                                        });
 
-                                $(function () {
-                                    $('#grupo1').change(function () {
-                                        $('.carregando').show();
-                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
-                                            options = '<option value=""></option>';
-                                            for (var c = 0; c < j.length; c++) {
-                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                            }
-                                            $('#procedimento1 option').remove();
-                                            $('#procedimento1').append(options);
-                                            $("#procedimento1").trigger("chosen:updated");
+                                                jQuery("#txtCelular")
+                                                        .mask("(99) 9999-9999?9")
+                                                        .focusout(function (event) {
+                                                            var target, phone, element;
+                                                            target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+                                                            phone = target.value.replace(/\D/g, '');
+                                                            element = $(target);
+                                                            element.unmask();
+                                                            if (phone.length > 10) {
+                                                                element.mask("(99) 99999-999?9");
+                                                            } else {
+                                                                element.mask("(99) 9999-9999?9");
+                                                            }
+                                                        });
+
+<? if (@$obj->_paciente_id == NULL) { ?>
+                                                    $(function () {
+                                                        $("#txtNome").autocomplete({
+                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
+                                                            minLength: 5,
+                                                            focus: function (event, ui) {
+                                                                $("#txtNome").val(ui.item.label);
+                                                                return false;
+                                                            },
+                                                            select: function (event, ui) {
+                                                                $("#txtNome").val(ui.item.value);
+                                                                $("#txtNomeid").val(ui.item.id);
+                                                                $("#txtTelefone").val(ui.item.itens);
+                                                                $("#txtCelular").val(ui.item.celular);
+                                                                $("#nascimento").val(ui.item.valor);
+                                                                return false;
+                                                            }
+                                                        });
+                                                    });
+<? } ?>
+
+
+
+                                                $(function () {
+                                                    $('#grupo1').change(function () {
+                                                        $('.carregando').show();
+                                                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                            options = '<option value=""></option>';
+                                                            for (var c = 0; c < j.length; c++) {
+                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                            }
+                                                            $('#procedimento1 option').remove();
+                                                            $('#procedimento1').append(options);
+                                                            $("#procedimento1").trigger("chosen:updated");
 
 //                                    $("#procedimento1").trigger("chosen:updated");
-                                            $('.carregando').hide();
-                                        });
-                                    });
-                                });
-
-                                if ($('#grupo1').val() != '') {
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
-                                        options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                        }
-//                                            $('#procedimento1').html(options).show();
-
-                                        $('#procedimento1 option').remove();
-                                        $('#procedimento1').append(options);
-                                        $("#procedimento1").trigger("chosen:updated");
-                                        $('.carregando').hide();
-                                    });
-                                }
-
-                                $(function () {
-                                    $("#medico1").autocomplete({
-                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
-                                        minLength: 3,
-                                        focus: function (event, ui) {
-                                            $("#medico1").val(ui.item.label);
-                                            return false;
-                                        },
-                                        select: function (event, ui) {
-                                            $("#medico1").val(ui.item.value);
-                                            $("#crm1").val(ui.item.id);
-                                            return false;
-                                        }
-                                    });
-                                });
-
-                                $(function () {
-                                    $('#convenio1').change(function () {
-                                        if ($(this).val()) {
-                                            $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioorcamento', {convenio1: $(this).val(), ajax: true}, function (j) {
-                                                options = '<option value=""></option>';
-                                                for (var c = 0; c < j.length; c++) {
-                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                                }
-                                                $('#procedimento1 option').remove();
-                                                $('#procedimento1').append(options);
-                                                $("#procedimento1").trigger("chosen:updated");
-                                                $('.carregando').hide();
-                                            });
-                                            if ($('#grupo1').val() != '') {
-                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
-                                                    options = '<option value=""></option>';
-                                                    for (var c = 0; c < j.length; c++) {
-                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                                    }
-//                                            $('#procedimento1').html(options).show();
-
-                                                    $('#procedimento1 option').remove();
-                                                    $('#procedimento1').append(options);
-                                                    $("#procedimento1").trigger("chosen:updated");
-                                                    $('.carregando').hide();
+                                                            $('.carregando').hide();
+                                                        });
+                                                    });
                                                 });
-                                            }
 
-                                        } else {
-                                            $('#procedimento1').html('<option value="">Selecione</option>');
-                                        }
-                                    });
-                                });
+                                                if ($('#grupo1').val() != '') {
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        for (var c = 0; c < j.length; c++) {
+                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                        }
+//                                            $('#procedimento1').html(options).show();
 
-
-                                $(function () {
-                                    $('#procedimento1').change(function () {
-                                        if ($(this).val()) {
-                                            $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
-                                                options = "";
-                                                options += j[0].valortotal;
-                                                <? if ($odontologia_alterar == 't') { ?>
-                                                    if (j[0].grupo == 'ODONTOLOGIA') {
-                                                        $("#valor1").prop('readonly', false);
-                                                    } else {
-                                                        $("#valor1").prop('readonly', true);
-                                                    }
-                                                <? } ?>
-                                                document.getElementById("valor1").value = options;
-                                                
-                                                if( $('#formapamento').val() ){
-                                                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $('#formapamento').val(), ajax: true}, function (j) {
-                                                        var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
-
-                                                        var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
-                                                        
-                                                        $("#ajustevalor1").val(valorajuste1.toFixed(2));
-
+                                                        $('#procedimento1 option').remove();
+                                                        $('#procedimento1').append(options);
+                                                        $("#procedimento1").trigger("chosen:updated");
                                                         $('.carregando').hide();
                                                     });
                                                 }
-//                                                else{
-//                                                    $("#ajustevalor1").val($("#valor1").val());
-//                                                }
+
+                                                $(function () {
+                                                    $("#medico1").autocomplete({
+                                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                                                        minLength: 3,
+                                                        focus: function (event, ui) {
+                                                            $("#medico1").val(ui.item.label);
+                                                            return false;
+                                                        },
+                                                        select: function (event, ui) {
+                                                            $("#medico1").val(ui.item.value);
+                                                            $("#crm1").val(ui.item.id);
+                                                            return false;
+                                                        }
+                                                    });
+                                                });
+
+                                                $(function () {
+                                                    $('#convenio1').change(function () {
+                                                        if ($(this).val()) {
+                                                            $('.carregando').show();
+                                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioorcamento', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                                                options = '<option value=""></option>';
+                                                                for (var c = 0; c < j.length; c++) {
+                                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                                }
+                                                                $('#procedimento1 option').remove();
+                                                                $('#procedimento1').append(options);
+                                                                $("#procedimento1").trigger("chosen:updated");
+                                                                $('.carregando').hide();
+                                                            });
+                                                            if ($('#grupo1').val() != '') {
+                                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoorcamento', {grupo1: $('#grupo1').val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                                    options = '<option value=""></option>';
+                                                                    for (var c = 0; c < j.length; c++) {
+                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                                    }
+//                                            $('#procedimento1').html(options).show();
+
+                                                                    $('#procedimento1 option').remove();
+                                                                    $('#procedimento1').append(options);
+                                                                    $("#procedimento1").trigger("chosen:updated");
+                                                                    $('.carregando').hide();
+                                                                });
+                                                            }
+
+                                                        } else {
+                                                            $('#procedimento1').html('<option value="">Selecione</option>');
+                                                        }
+                                                    });
+                                                });
+
+
+                                                $(function () {
+                                                    $('#procedimento1').change(function () {
+                                                        if ($(this).val()) {
+                                                            
+                                                            var procedimento = $(this).val();
+                                                            
+                                                            $('.carregando').show();
+                                                            $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                                options = "";
+                                                                options += j[0].valortotal;
+<? if ($odontologia_alterar == 't') { ?>
+                                                                    if (j[0].grupo == 'ODONTOLOGIA') {
+                                                                        $("#valor1").prop('readonly', false);
+                                                                    } else {
+                                                                        $("#valor1").prop('readonly', true);
+                                                                    }
+<? } ?>
+                                                                document.getElementById("valor1").value = options;
+                                                                
+                                                                <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento != "t") { ?>
+                                                                    if ($('#formapamento').val()) {
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $('#formapamento').val(), ajax: true}, function (j) {
+                                                                            var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
+
+                                                                            var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
+
+                                                                            $("#ajustevalor1").val(valorajuste1.toFixed(2));
+
+                                                                            $('.carregando').hide();
+                                                                        });
+                                                                    }
+                                                                <? } ?>
+
+                                                                $('.carregando').hide();
+                                                            });
+                                                            
+                                                            <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento == "t") { ?>
+                                                                $("#formapamento").prop('required', false);
+                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
+
+                                                                    verificaAjustePagamentoProcedimento(procedimento);
+                                                                    var options = '<option value="">Selecione</option>';
+                                                                    for (var c = 0; c < j.length; c++) {
+                                                                        if (j[c].forma_pagamento_id != null) {
+                                                                            options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                                                                        }
+                                                                    }
+                                                                    $('#formapamento').html(options).show();
+                                                                    $('.carregando').hide();
+
+                                                                });
+                                                            <? } ?>
+                                                        } else {
+                                                            $('#valor1').html('value=""');
+                                                        }
+                                                    });
+                                                });
+
+
+                                                if ($("#convenio1").val() != "-1") {
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        for (var c = 0; c < j.length; c++) {
+                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                        }
+//                                        $('#procedimento1').html(options).show();
+                                                        $('.carregando').hide();
+                                                    });
+                                                }
+
+                                                <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento != "t") { ?>
+                                                    $(function () {
+                                                        $('#formapamento').change(function () {
+                                                            if ($(this).val()) {
+                                                                $('.carregando').show();
+                                                                $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $(this).val(), ajax: true}, function (j) {
+                                                                    var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
+
+                                                                    var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
+
+                                                                    $("#ajustevalor1").val(valorajuste1.toFixed(2));
+
+
+                                                                    $('.carregando').hide();
+                                                                });
+                                                            } else {
+                                                                $("#ajustevalor1").val('');
+                                                            }
+                                                        });
+                                                    });
+                                                <? } ?>
                                                 
-                                                $('.carregando').hide();
-                                            });
-                                        } else {
-                                            $('#valor1').html('value=""');
-                                        }
-                                    });
-                                });
-
-
-                                if ($("#convenio1").val() != "-1") {
-//                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $("#convenio1").val()}, function (j) {
-//                                        options = '<option value=""></option>';
-//                                        for (var c = 0; c < j.length; c++) {
-//                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-//                                        }
-//                                        $('#procedimento1').html(options).show();
-//                                        $('.carregando').hide();
-//                                    });
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $('#convenio1').val()}, function (j) {
-                                        options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                        }
-//                                        $('#procedimento1').html(options).show();
-                                        $('.carregando').hide();
-                                    });
+                                                
+                                function verificaAjustePagamentoProcedimento(procedimentoConvenioId){
+                                    <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento == "t") { ?>
+                                        $.getJSON('<?= base_url() ?>autocomplete/verificaAjustePagamentoProcedimento', {procedimento: procedimentoConvenioId, ajax: true}, function (p) {
+                                            if (p.length != 0) {
+                                                $("#formapamento").prop('required', true);
+                                            }
+                                        });
+                                    <?}?>
                                 }
                                 
-
-                                 $(function () {
-                                    $('#formapamento').change(function () {
-                                        if ($(this).val()) {
-                                            $('.carregando').show();
-                                            $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $(this).val(), ajax: true}, function (j) {
-                                                var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
-
-                                                var valorajuste1 = parseFloat(($("#valor1").val() * ajuste) / 100) + parseFloat($("#valor1").val());
-
-                                                $("#ajustevalor1").val(valorajuste1.toFixed(2));
-
-                                                
-                                                $('.carregando').hide();
-                                            });
+                                function buscaValorAjustePagamentoProcedimento(){                                    
+                                    $.getJSON('<?= base_url() ?>autocomplete/buscaValorAjustePagamentoProcedimento', {procedimento: $('#procedimento1').val(), forma: $('#formapamento').val(), ajax: true}, function (p) {
+                                        if (p.length != 0) {
+                                            $("#ajustevalor1").val(p[0].ajuste);
                                         }
                                         else{
                                             $("#ajustevalor1").val('');
                                         }
                                     });
-                                });
-
+                                }
 
 
 </script>

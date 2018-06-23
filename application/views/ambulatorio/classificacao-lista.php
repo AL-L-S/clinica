@@ -20,7 +20,7 @@
                     </tr>
                     <tr>
                         <th class="tabela_header">Nome</th>
-                        <th class="tabela_header" colspan="2">Detalhes</th>
+                        <th class="tabela_header" colspan="2" style="text-align: center">Detalhes</th>
                     </tr>
                 </thead>
                 <?php
@@ -41,10 +41,18 @@
                      ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>ambulatorio/classificacao/carregarclassificacao/<?= $item->tuss_classificacao_id ?>">Editar</a></div>
-                            </td>
-                        </tr>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                    <div class="bt_link">
+                                        <a href="<?= base_url() ?>ambulatorio/classificacao/carregarclassificacao/<?= $item->tuss_classificacao_id ?>">Editar</a>
+                                    </div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                    <div class="bt_link">
+                                        <a href="<?= base_url() ?>ambulatorio/classificacao/excluir/<?= $item->tuss_classificacao_id ?>"
+                                           onclick="javascript: return confirm('Deseja realmente excluir essa classificação?');">Excluir</a>
+                                    </div>
+                                </td>
+                            </tr>
 
                         </tbody>
                         <?php

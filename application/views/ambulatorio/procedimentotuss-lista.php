@@ -37,7 +37,7 @@
                     <th class="tabela_header">Descri&ccedil;&atilde;o</th>
                     <th class="tabela_header">Codigo</th>
                     <th class="tabela_header">Texto</th>
-                    <th class="tabela_header" colspan="2">Detalhes</th>
+                    <th class="tabela_header" colspan="2" style="text-align: center">Detalhes</th>
                 </tr>
                 </thead>
                 <?php
@@ -67,7 +67,8 @@
                                     </div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/procedimento/excluirprocedimentotuss/<?= $item->tuss_id ?>">Excluir
+                                        <a href="<?= base_url() ?>ambulatorio/procedimento/excluirprocedimentotuss/<?= $item->tuss_id ?>"
+                                           onclick="javascript: return confirm('Deseja realmente excluir esse procedimento?');">Excluir
                                         </a>
                                     </div>
                                 </td>

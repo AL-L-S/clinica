@@ -19,6 +19,7 @@ class classificacao_model extends Model {
                             nome');
         $this->db->from('tb_tuss_classificacao');
         $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('ativo', 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('nome ilike', $args['nome'] . "%");
         }

@@ -46,6 +46,18 @@ class formapagamento_model extends Model {
         return $return->result();
     }
 
+    function listarformasasssociados($procedimento_convenio_id) {
+        $this->db->select('pcp.forma_pagamento_id, pcp.ajuste, f.cartao');
+        $this->db->from('tb_procedimento_convenio_forma_pagamento pcp');
+        $this->db->join('tb_forma_pagamento f', "f.forma_pagamento_id = pcp.forma_pagamento_id", 'left');
+        $this->db->where('procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->where('pcp.ativo', 't');
+        $this->db->orderby("f.cartao DESC");        
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listargrupo($args = array()) {
         $this->db->select('financeiro_grupo_id,
                             nome 
@@ -213,7 +225,7 @@ class formapagamento_model extends Model {
                             parcelas');
         $this->db->from('tb_forma_pagamento');
         $this->db->where('ativo', 'true');
-        $this->db->where('forma_pagamento_id', "$forma_pagamento_id");
+        $this->db->where('forma_pagamento_id', $forma_pagamento_id);
         $return = $this->db->get();
         return $return->result();
     }

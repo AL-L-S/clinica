@@ -750,6 +750,18 @@
                             <dd>
                                 <input type="checkbox" id="botao_arquivos_paciente" name="botao_arquivos_paciente" <? if (@$obj->_botao_arquivos_paciente == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ativando essa opção irá aparecer a opção de informar o ajuste no cadastro de pagamento (procedimento). Além disso, a tela de faturamento irá mudar">Ajuste no Pagamento (Procedimento)</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="ajuste_pagamento_procedimento" name="ajuste_pagamento_procedimento" <? if (@$obj->_ajuste_pagamento_procedimento == 't') echo "checked"; ?>/> 
+                            </dd>
+                            <dt>
+                                <label title="Ativando essa opção, a tela Preço Procedimento irá sumir e irá ficar somente a tela do orçamento.">Retirar Preço Procedimento</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="retirar_preco_procedimento" name="retirar_preco_procedimento" <? if (@$obj->_retirar_preco_procedimento == 't') echo "checked"; ?>/> 
+                            </dd>
                         </fieldset>
                     <? } ?>
                 </dl>    
@@ -790,23 +802,6 @@
                 $("#txtCidade").val(ui.item.value);
                 $("#txtCidadeID").val(ui.item.id);
                 return false;
-            }
-        });
-    });
-
-    $(document).ready(function () {
-        jQuery('#form_empresa').validate({
-            rules: {
-                txtNome: {
-                    required: true,
-                    minlength: 2
-                }
-            },
-            messages: {
-                txtNome: {
-                    required: "*",
-                    minlength: "!"
-                }
             }
         });
     });

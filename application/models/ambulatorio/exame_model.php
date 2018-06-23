@@ -1220,7 +1220,7 @@ class exame_model extends Model {
         return $this->db;
     }
 
-    function listarexamecaixaespera($grupo_pagamento_id, $args = array()) {
+    function listarexamecaixaespera($args = array()) {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('g.ambulatorio_guia_id,
                             sum(ae.valor * ae.quantidade) as valortotal,
@@ -1236,11 +1236,6 @@ class exame_model extends Model {
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        if ($grupo_pagamento_id != 0 && $grupo_pagamento_id != null) {
-            $this->db->join('tb_procedimento_convenio_pagamento cp', 'cp.procedimento_convenio_id = pc.procedimento_convenio_id', 'left');
-            $this->db->where("cp.grupo_pagamento_id", $grupo_pagamento_id);
-            $this->db->where("cp.ativo", 't');
-        }
         $this->db->where("c.dinheiro", 't');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');

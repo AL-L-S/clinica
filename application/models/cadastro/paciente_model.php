@@ -325,6 +325,24 @@ class paciente_model extends BaseModel {
         return $return;
     }
 
+    function listaindicacaoranqueada() {
+//        die('teste');
+        $this->db->select("paciente_indicacao_id, 
+                           nome, 
+                           registro,
+                           (
+                            SELECT COUNT(agenda_exames_id) FROM ponto.tb_agenda_exames ae
+                            WHERE pi.paciente_indicacao_id = ae.indicacao
+                            LIMIT 1000
+                           ) AS rank");
+        $this->db->from('tb_paciente_indicacao pi');
+        $this->db->where('ativo', 't');
+        $this->db->orderby("rank DESC");
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listaindicacao() {
 
         $this->db->select('paciente_indicacao_id, nome, registro');

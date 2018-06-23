@@ -41,7 +41,7 @@ class Classificacao extends BaseController {
     }
 
     function excluir($tuss_classificacao_id) {
-        if ($this->procedimento->excluir($tuss_classificacao_id)) {
+        if ($this->classificacao->excluir($tuss_classificacao_id)) {
             $mensagem = 'Sucesso ao excluir a Classificacao';
         } else {
             $mensagem = 'Erro ao excluir a classificacao. Opera&ccedil;&atilde;o cancelada.';

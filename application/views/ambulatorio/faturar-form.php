@@ -58,10 +58,10 @@ if (@$exame[0]->forma_pagamento4 == 1000) {
                                     endif;
                                     ?>><?= $item->nome; ?></option>
                                         <? endforeach; ?>
-                                <input type="text" name="ajuste1" id="ajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>                                                                           
-                                <input type="text" name="valorajuste1" id="valorajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/> 
-                                <input style="width: 60px;" type="number" name="parcela1" id="parcela1"  value="1" min="1" /> 
                             </select>
+                            <input type="text" name="ajuste1" id="ajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/>                                                                           
+                            <input type="text" name="valorajuste1" id="valorajuste1" size="1" value="<?= $valor; ?>" onblur="history.go(0)"/> 
+                            <input style="width: 60px;" type="number" name="parcela1" id="parcela1"  value="1" min="1" /> 
 
                         </dd>
                         <br/>

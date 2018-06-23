@@ -1478,6 +1478,18 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('percentual_multiplo', 'f');
                     }
+
+                    if (isset($_POST['ajuste_pagamento_procedimento'])) {
+                        $this->db->set('ajuste_pagamento_procedimento', 't');
+                    } else {
+                        $this->db->set('ajuste_pagamento_procedimento', 'f');
+                    }
+                    
+                    if (isset($_POST['retirar_preco_procedimento'])) {
+                        $this->db->set('retirar_preco_procedimento', 't');
+                    } else {
+                        $this->db->set('retirar_preco_procedimento', 'f');
+                    }
                 }
 
 
@@ -1823,6 +1835,18 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('percentual_multiplo', 'f');
                     }
+                    
+                    if (isset($_POST['ajuste_pagamento_procedimento'])) {
+                        $this->db->set('ajuste_pagamento_procedimento', 't');
+                    } else {
+                        $this->db->set('ajuste_pagamento_procedimento', 'f');
+                    }
+                    
+                    if (isset($_POST['retirar_preco_procedimento'])) {
+                        $this->db->set('retirar_preco_procedimento', 't');
+                    } else {
+                        $this->db->set('retirar_preco_procedimento', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -1964,6 +1988,8 @@ class empresa_model extends Model {
                                f.horario_sab_inicio,
                                f.horario_sab_fim,
                                ep.percentual_multiplo,
+                               ep.ajuste_pagamento_procedimento,
+                               ep.retirar_preco_procedimento,
                                ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -2096,6 +2122,8 @@ class empresa_model extends Model {
             $this->_horario_sab_inicio = $return[0]->horario_sab_inicio;
             $this->_horario_sab_fim = $return[0]->horario_sab_fim;
             $this->_percentual_multiplo = $return[0]->percentual_multiplo;
+            $this->_ajuste_pagamento_procedimento = $return[0]->ajuste_pagamento_procedimento;
+            $this->_retirar_preco_procedimento = $return[0]->retirar_preco_procedimento;
         } else {
             $this->_empresa_id = null;
         }

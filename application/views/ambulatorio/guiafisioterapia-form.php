@@ -275,6 +275,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">Autorizacao</th>
                                 <th id="valorth" class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
+                                <th class="tabela_header" id="vAjuste" style="display: none;"><span >V.Ajuste</span></th>
                                 <th class="tabela_header">Qtde</th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Promotor</th>
@@ -347,11 +348,16 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 </td>
 
                                 <td  ><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                    <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
+                                </td>
+                                <td id="vAjusteIn" style="display: none;"  >
+                                    <input type="text" name="valorAjuste" id="valorAjuste" class="texto01" readonly=""/>
+                                </td>
                                 <td  ><input type="text" name="qtde" id="qtde" class="texto01" readonly=""/></td>
                                 <td >
-                                    <select  name="formapamento" id="formapamento" class="size1" >
-                                        <option value="0">Selecione</option>
+                                    <select  name="formapamento" id="formapamento" class="size1" onchange="buscaValorAjustePagamentoProcedimento()">
+                                        <option value="">Selecione</option>
                                         <? foreach ($forma_pagamento as $item) :
                                             if ($item->forma_pagamento_id == 1000)
                                                 continue;
@@ -453,15 +459,19 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                     </a></div>
                                             </td>
                                             <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-
-                    <? if ($perfil_id != 11) { ?>
-                                                        <div class="bt_link">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=600');">Faturar
-
-                                                            </a></div>
-
+                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { 
+                                                    if ($perfil_id != 11) { 
+                                                        if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
+                                                            <div class="bt_link">
+                                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
+                                                            </div>
                                                         <?
+                                                        } else { ?>
+
+                                                            <div class="bt_link">
+                                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
+                                                            </div>
+                                                        <? }
                                                     } else {
                                                         $faturado++;
                                                     }
@@ -557,12 +567,18 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                         </a></div>
                                                 </td>
                                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                    <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-                                                        <div class="bt_link">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
-
-                                                            </a></div>
+                                                    <? if ($item->faturado == "f" && $item->dinheiro == "t") { 
+                                                        if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
+                                                            <div class="bt_link">
+                                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
+                                                            </div>
                                                         <?
+                                                        } else { ?>
+
+                                                            <div class="bt_link">
+                                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
+                                                            </div>
+                                                        <? }
                                                     } else {
                                                         $faturado++;
                                                     }
@@ -835,7 +851,16 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         $('#procedimento1').change(function () {
                                             if ($(this).val()) {
                                                 $('.carregando').show();
+                                            
+                                                var procedimento = $(this).val();
+                                                $("#formapamento").prop('required', false);
+
                                                 $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
+                                                    $("#vAjuste").css('display', 'none');
+                                                    $("#vAjusteIn").css('display', 'none');
+
+                                                    verificaAjustePagamentoProcedimento(procedimento);
+                                                    
                                                     var options = '<option value="0">Selecione</option>';
                                                     for (var c = 0; c < j.length; c++) {
                                                         if (j[c].forma_pagamento_id != null) {
@@ -876,6 +901,31 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         }
                                     }
                                     calculoIdade();
+                                    
+                                    
+                                    function verificaAjustePagamentoProcedimento(procedimentoConvenioId){
+                                        <?if(@$empresapermissoes[0]->ajuste_pagamento_procedimento == 't'){?>
+                                            $.getJSON('<?= base_url() ?>autocomplete/verificaAjustePagamentoProcedimento', {procedimento: procedimentoConvenioId, ajax: true}, function (p) {
+                                                if (p.length != 0) {
+                                                    $("#formapamento").prop('required', true);
+                                                    $("#vAjuste").css('display', 'block');
+                                                    $("#vAjusteIn").css('display', 'block');
+    //                                                console.log($('#formapamento'));
+                                                }
+                                            });
+                                        <?}?>
+                                    }
+
+                                    function buscaValorAjustePagamentoProcedimento(){                                    
+                                        $.getJSON('<?= base_url() ?>autocomplete/buscaValorAjustePagamentoProcedimento', {procedimento: $('#procedimento1').val(), forma: $('#formapamento').val(), ajax: true}, function (p) {
+                                            if (p.length != 0) {
+                                                $("#valorAjuste").val(p[0].ajuste);
+                                            }
+                                            else{
+                                                $("#valorAjuste").val('');
+                                            }
+                                        });
+                                    }
 
 
 

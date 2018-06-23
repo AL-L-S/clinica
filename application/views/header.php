@@ -34,6 +34,7 @@ $caixa_personalizado = $this->session->userdata('caixa_personalizado');
 $gerente_contasapagar = $this->session->userdata('gerente_contasapagar');
 $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
 $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+$retirar_preco_procedimento = $this->session->userdata('retirar_preco_procedimento');
 $gerente_relatorio_financeiro = $this->session->userdata('gerente_relatorio_financeiro');
 
 //var_dump($gerente_contasapagar); die;
@@ -456,10 +457,16 @@ function debug($object) {
                                             <? } ?>
                                             <ul><span class="file"><a target="_blank" href="<?= base_url() ?>ambulatorio/exame/relatoriousosala">Uso de Salas</a></span></ul>
 
-                                            <? if (($perfil_id != 11 && $perfil_id != 12 && $perfil_id != 5 && $perfil_id != 18 && $perfil_id != 6) || $orcamento_recepcao == 't') { ?>
-                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoplanoconsulta">Pre&ccedil;o procedimento</a></span></ul>
-                                            <? } ?>
-                                            <?
+                                            <? if (($perfil_id != 11 && $perfil_id != 12 && $perfil_id != 5 && $perfil_id != 18 && $perfil_id != 6) || $orcamento_recepcao == 't') {
+                                                if($retirar_preco_procedimento == "t") {?>
+                                                    <ul><span class="file"><a target="_blank" href="<?= base_url() ?>ambulatorio/procedimentoplano/orcamento/0">Orçamento</a></span></ul>
+                                            <?  }
+                                                else { ?>
+                                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoplanoconsulta">Pre&ccedil;o procedimento</a></span></ul>
+                                                <?
+                                                }
+                                            }
+                                            
                                             if ($perfil_id != 11 && $perfil_id != 2) {
                                                 if ($this->session->userdata('recomendacao_configuravel') != "t") {
                                                     ?>
@@ -1075,6 +1082,7 @@ function debug($object) {
                                         <? if ($perfil_id != 10) { ?> 
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/relatorioprocedimento">Relatorio Procedimentos</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/pesquisartuss">Manter Procedimentos TUSS</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificação</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/gerarelatorioprocedimentotuss">Relatorio Procedimentos TUSS</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoconvenio">Manter grupo convenio</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/convenio">Manter convenio</a></span></ul>
@@ -1095,12 +1103,11 @@ function debug($object) {
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">Manter Percentual M&eacute;dico</a></span></ul>-->
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/promotorpercentual">Manter Percentual Promotor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/laboratoriopercentual">Manter Percentual Lab. Terceirizado</a></span></ul>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/classificacao">Manter Classificação</a></span></ul>
                                             <? if ($subgrupo_procedimento != 't') { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao">Manter Grupo Classificação</a></span></ul>
                                             <? } else { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarsubgrupo">Manter Subgrupo</a></span></ul>
-                                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarassociacaosubgrupo">Manter Associação Subgrupo</a></span></ul>
+                                                <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarassociacaosubgrupo">Manter Associação Subgrupo</a></span></ul>-->
                                                 <?
                                             }
                                         }
@@ -1181,7 +1188,7 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/forma">Manter Conta</a></span></ul>
                                             <? if ($perfil_id != 10) { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento">Manter Forma de Pagamento</a></span></ul>
-                                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Forma de Pagamento Grupo</a></span></ul>
+                                                <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Forma de Pagamento Grupo</a></span></ul>-->
 
                                             <? } ?>
                                         <? } ?>

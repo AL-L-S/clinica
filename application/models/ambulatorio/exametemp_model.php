@@ -1486,6 +1486,7 @@ class exametemp_model extends Model {
                             ae.data_atualizacao,
                             ae.paciente_id,
                             ae.faturado,
+                            ae.procedimento_possui_ajuste_pagamento,
                             pc.convenio_id,
                             ae.medico_agenda as medico_agenda_id,
                             op.nome as medico_agenda,
@@ -1553,6 +1554,7 @@ class exametemp_model extends Model {
                             ae.medico_solicitante as medico_solicitante_id,
                             ae.ordenador,
                             ae.procedimento_tuss_id,
+                            ae.procedimento_possui_ajuste_pagamento,
                             pc.convenio_id,
                             op.nome as medico_agenda,
                             o.nome as medico_solicitante,
@@ -1659,7 +1661,7 @@ class exametemp_model extends Model {
 //        }
 //    }
 
-    function listarprocedimentocomformapagamento($ambulatorio_guia_id, $grupo_pagamento_id) {
+    function listarprocedimentocomformapagamento($ambulatorio_guia_id) {
 //        var_dump($grupo_pagamento_id);die;
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ae.agenda_exames_id,
@@ -1687,8 +1689,7 @@ class exametemp_model extends Model {
                             ae.ordenador,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
-                            pt.descricao_procedimento,
-                            pp.grupo_pagamento_id');
+                            pt.descricao_procedimento');
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -1697,16 +1698,17 @@ class exametemp_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->join('tb_procedimento_convenio_pagamento pp', 'pp.procedimento_convenio_id = pc.procedimento_convenio_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
-//        $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where('ae.ativo', 'false');
         $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where("ae.agrupador_pacote_id IS NULL");
         $this->db->where("guia_id", $ambulatorio_guia_id);
-        $this->db->where("pp.grupo_pagamento_id", $grupo_pagamento_id);
+        $this->db->where("pc.procedimento_convenio_id IN (
+            SELECT pcfp.procedimento_convenio_id FROM ponto.tb_procedimento_convenio_forma_pagamento pcfp
+            WHERE pcfp.ativo = 't'AND pc.procedimento_convenio_id = pcfp.procedimento_convenio_id
+        )");
         $this->db->orderby("ae.data");
         $this->db->orderby("ae.inicio");
         $return = $this->db->get();
@@ -1928,6 +1930,7 @@ class exametemp_model extends Model {
                             ae.data_atualizacao,
                             ae.paciente_id,
                             ae.faturado,
+                            ae.procedimento_possui_ajuste_pagamento,
                             pc.convenio_id,
                             ae.medico_agenda as medico_agenda_id,
                             op.nome as medico_agenda,
@@ -1997,6 +2000,7 @@ class exametemp_model extends Model {
                             pt.descricao_procedimento,
                             ae.ordenador,
                             ae.procedimento_tuss_id,
+                            ae.procedimento_possui_ajuste_pagamento,
                             pt.nome as procedimento,
                             apt.valor_diferenciado');
         $this->db->from('tb_agenda_exames ae');
@@ -2082,8 +2086,8 @@ class exametemp_model extends Model {
 
     function verificaprocedimentosemformapagamento($procedimento_convenio_id) {
 
-        $this->db->select('procedimento_convenio_pagamento_id');
-        $this->db->from('tb_procedimento_convenio_pagamento');
+        $this->db->select('procedimento_convenio_forma_pagamento_id');
+        $this->db->from('tb_procedimento_convenio_forma_pagamento');
         $this->db->where("procedimento_convenio_id", $procedimento_convenio_id);
         $return = $this->db->get();
         $retorno = $return->result();
@@ -6151,6 +6155,14 @@ class exametemp_model extends Model {
 
     function autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id) {
         try {
+            
+            $this->db->select('ep.ajuste_pagamento_procedimento as ajustepagamento');
+            $this->db->from('tb_empresa e');
+            $this->db->where('e.empresa_id', $this->session->userdata('empresa_id'));
+            $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+            $this->db->orderby('e.empresa_id');
+            $flags = $this->db->get()->result();
+            
             $i = 0;
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
@@ -6459,12 +6471,18 @@ class exametemp_model extends Model {
 //                        $this->db->set('valor_total', $valor);
                         $this->db->set('operador_faturamento', $operador_id);
                         $this->db->set('data_faturamento', $horario);
-                    } elseif ($formapagamento != 0 && $dinheiro == "t") {
-                        $this->db->set('faturado', 't');
-                        $this->db->set('forma_pagamento', $formapagamento);
-                        $this->db->set('valor1', $valor);
-                        $this->db->set('operador_faturamento', $operador_id);
-                        $this->db->set('data_faturamento', $horario);
+                    } elseif ($formapagamento != '' && $dinheiro == "t") {
+                        if ($flags[0]->ajustepagamento != 't'){
+                            $this->db->set('faturado', 't');
+                            $this->db->set('forma_pagamento', $formapagamento);
+                            $this->db->set('valor1', $valor);
+                            $this->db->set('operador_faturamento', $operador_id);
+                            $this->db->set('data_faturamento', $horario);
+                        } else {
+                            $this->db->set('procedimento_possui_ajuste_pagamento', 't');
+                            $this->db->set('forma_pagamento_ajuste', $formapagamento);
+                            $this->db->set('valor_forma_pagamento_ajuste', (float)$_POST['valorajuste'][$i]);
+                        }
                     }
 
                     $this->db->set('ativo', 'f');
@@ -6526,12 +6544,19 @@ class exametemp_model extends Model {
 //                        $this->db->set('valor_total', $valor);
                             $this->db->set('operador_faturamento', $operador_id);
                             $this->db->set('data_faturamento', $horario);
-                        } elseif ($formapagamento != 0 && $dinheiro == "t") {
-                            $this->db->set('faturado', 't');
-                            $this->db->set('forma_pagamento', $formapagamento);
-                            $this->db->set('valor1', $valor);
-                            $this->db->set('operador_faturamento', $operador_id);
-                            $this->db->set('data_faturamento', $horario);
+                        } elseif ($formapagamento != '' && $dinheiro == "t") {
+                            if ($flags[0]->ajustepagamento != 't'){
+                                $this->db->set('faturado', 't');
+                                $this->db->set('forma_pagamento', $formapagamento);
+                                $this->db->set('valor1', $valor);
+                                $this->db->set('operador_faturamento', $operador_id);
+                                $this->db->set('data_faturamento', $horario);
+                            } 
+                            else {
+                                $this->db->set('procedimento_possui_ajuste_pagamento', 't');
+                                $this->db->set('forma_pagamento_ajuste', $formapagamento);
+                                $this->db->set('valor_forma_pagamento_ajuste', (float)$_POST['valorajuste'][$i]);
+                            }
                         }
                         $this->db->set('ativo', 'f');
                         $this->db->set('data_cadastro', $horario);
@@ -7636,6 +7661,66 @@ class exametemp_model extends Model {
         $this->db->where('pc.procedimento_tuss_id', $parametro);
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function buscaValorAjustePagamentoProcedimento($procedimento, $formaPagamento) {
+        $this->db->select('ajuste');
+        $this->db->from('tb_procedimento_convenio_forma_pagamento cp');
+        $this->db->where('cp.procedimento_convenio_id', $procedimento);
+        $this->db->where('cp.forma_pagamento_id', $formaPagamento);
+        $this->db->where('cp.ativo', 't');
+        $this->db->where("cp.ajuste != 0");
+        $this->db->orderby("cp.ajuste DESC");
+        $return = $this->db->get()->result();
+        return $return;
+    }
+
+    function buscaValorAjustePagamentoFaturar($procedimento, $formaPagamento) {
+        $this->db->select('ajuste');
+        $this->db->from('tb_procedimento_convenio_forma_pagamento cp');
+        $this->db->where('cp.procedimento_convenio_id', $procedimento);
+        $this->db->where('cp.forma_pagamento_id', $formaPagamento);
+        $this->db->where('cp.ativo', 't');
+        $this->db->where("cp.ajuste != 0");
+        $this->db->orderby("cp.ajuste DESC");
+        $return = $this->db->get()->result();
+        return $return;
+    }
+
+    function verificaAjustePagamentoProcedimento($procedimento) {
+        $this->db->select('ajuste');
+        $this->db->from('tb_procedimento_convenio_forma_pagamento cp');
+        $this->db->where('cp.procedimento_convenio_id', $procedimento);
+        $this->db->where('cp.ativo', 't');
+        $this->db->where("cp.ajuste IS NOT NULL");
+        $this->db->where("cp.ajuste != 0");
+        $return = $this->db->get()->result();
+        return $return;
+    }
+
+    function listarautocompleteprocedimentoconvenioforma($parametro = null) {
+        $this->db->select('fp.nome,
+                           fp.forma_pagamento_id');
+        $this->db->from('tb_procedimento_convenio_forma_pagamento cp');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = cp.forma_pagamento_id', 'left');
+        $this->db->where('cp.procedimento_convenio_id', $parametro);
+        $this->db->where('fp.forma_pagamento_id !=', 1000);
+        $this->db->where('cp.ativo', 't');
+        $this->db->where('fp.ativo', 't');
+        $return = $this->db->get();
+        $result = $return->result();
+
+        if (empty($result)) {
+            $this->db->select('fp.nome,
+                           fp.forma_pagamento_id');
+            $this->db->from('tb_forma_pagamento fp');
+            $this->db->where('fp.forma_pagamento_id !=', 1000);
+            $return2 = $this->db->get();
+            $result2 = $return2->result();
+            return $result2;
+        } else {
+            return $result;
+        }
     }
 
     function listarautocompleteprocedimentosforma($parametro = null) {
