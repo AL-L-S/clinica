@@ -67,7 +67,8 @@
                         </tr>
                         <tr><td>Sexo: <?= @$obj->_sexo ?></td>
                             <td>Convenio:<?= @$obj->_convenio; ?></td>
-                            <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
+                          
+                            
 
                         </tr>
 

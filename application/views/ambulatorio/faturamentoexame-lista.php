@@ -54,6 +54,9 @@
                         <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="7">CONVENIO: <?= $convenios[0]->nome; ?></th>
                     </tr>
                 <? } ?>
+                <tr>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="7">ESPECIALIDADE: <?= ($_POST['grupo'] != '0') ? $_POST['grupo'] : 'TODOS'; ?></th>
+                </tr>
 
                 <tr>
                     <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="7">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
@@ -245,7 +248,7 @@
                     </th>
                     <? if ($financeiro == 't') { ?>
                         <td width="40px;" style="color:red;">Faturamento Fechado</td>
-                    <? } elseif ($faturado == 0 && $convenios != 0) { ?>
+                    <? } elseif ($faturado == 0 && $convenios != 0 && $_POST['grupo'] == '0') { ?>
                 <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/exame/fecharfinanceiro" method="post">
                     <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($valortotal, 2, ',', '.'); ?>" readonly/>
                     <input type="hidden" class="texto3" name="relacao" value="<?= $convenios[0]->credor_devedor_id; ?>"/>
@@ -258,8 +261,16 @@
                         <button type="submit" name="btnEnviar">Financeiro</button></center></th>
                 </form>
             <? } else { ?>
-                <th colspan="3" >PENDENTE DE FATURAMENTO
-                </th>
+                <? if ($_POST['grupo'] != '0') { ?>
+                    <th colspan="3" >RETIRE O FILTRO DE GRUPO
+                    </th>
+                <? } else { ?>
+                    <th colspan="3" >PENDENTE DE FATURAMENTO
+                    </th>
+                <? } ?>
+
+
+
             <? } ?>
             </tr>
             </tfoot>

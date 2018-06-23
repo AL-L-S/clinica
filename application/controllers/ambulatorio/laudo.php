@@ -641,6 +641,23 @@ class Laudo extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
+    function carregaranaminesehistoricogeral($paciente_id) {
+        $this->load->helper('directory');
+
+        $data['arquivos_paciente'] = directory_map("./upload/paciente/$paciente_id/");
+        //        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/consulta/$paciente_id/");
+        if ($data['arquivos_paciente'] != false) {
+            sort($data['arquivos_paciente']);
+        }
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['paciente_id'] = $paciente_id;
+        $data['historico'] = $this->laudo->listarconsultahistorico($paciente_id);
+        $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
+        $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
+
+        $this->load->View('ambulatorio/laudoconsultahistoricogeral-form', $data);
+    }
+
     function carregaranamineseantigo($paciente_id) {
 
         $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
@@ -1053,7 +1070,12 @@ class Laudo extends BaseController {
             } else {
                 if ($data['impressaolaudo'][0]->rodape == 't') { // rodape da empresa
                     if ($data['empresa'][0]->rodape_config == 't') {
+//                        if($data['laudo']['0']->situacao == "FINALIZADO"){
                         $rodape_config = str_replace("_assinatura_", $assinatura, $rodape_config);
+//                        }else{
+//                            $rodape_config = str_replace("_assinatura_", '', $rodape_config);
+//                        }
+
                         $rodape = $rodape_config;
                     } else {
                         $rodape = "";
@@ -3461,6 +3483,10 @@ class Laudo extends BaseController {
             $empresa = $this->exame->listarcnpj();
 
             $convenio = $listarexame[0]->convenio;
+            $pasta = $listarexame[0]->convenio_pasta;
+            if ($pasta == '') {
+                $pasta = $convenio;
+            }
 
             $origem = "./upload/laudo";
 
@@ -3468,9 +3494,9 @@ class Laudo extends BaseController {
                 mkdir($origem);
                 chmod($origem, 0777);
             }
-            if (!is_dir($origem . '/' . $convenio)) {
-                mkdir($origem . '/' . $convenio);
-                chmod($origem . '/' . $convenio, 0777);
+            if (!is_dir($origem . '/' . $pasta)) {
+                mkdir($origem . '/' . $pasta);
+                chmod($origem . '/' . $pasta, 0777);
             }
 
 
@@ -3492,18 +3518,18 @@ class Laudo extends BaseController {
                             $data2 = new DateTime($item->nascimento);
                             $intervalo = $data1->diff($data2);
                             $teste = $intervalo->y;
-                            if($convenio == 'UNIMED MAIS'){
-                                $convenio = 'UNIMED UBERLANDIA';
+                            if ($pasta == 'UNIMED MAIS') {
+                                $pasta = 'UNIMED UBERLANDIA';
                             }
 
                             $sl_cod_doc = $item->ambulatorio_laudo_id;
-                            if (!is_dir($origem . '/' . $convenio)) {
-                                mkdir($origem . '/' . $convenio);
-                                chmod($origem . '/' . $convenio, 0777);
+                            if (!is_dir($origem . '/' . $pasta)) {
+                                mkdir($origem . '/' . $pasta);
+                                chmod($origem . '/' . $pasta, 0777);
                             }
-//                            if (!is_dir($origem . '/' . $convenio . '/' . $sl_cod_doc)) {
-//                                mkdir($origem . '/' . $convenio . '/' . $sl_cod_doc);
-//                                chmod($origem . '/' . $convenio . '/' . $sl_cod_doc, 0777);
+//                            if (!is_dir($origem . '/' . $pasta . '/' . $sl_cod_doc)) {
+//                                mkdir($origem . '/' . $pasta . '/' . $sl_cod_doc);
+//                                chmod($origem . '/' . $pasta . '/' . $sl_cod_doc, 0777);
 //                            }
                             $texto = "";
 
@@ -3557,7 +3583,7 @@ class Laudo extends BaseController {
                             $rodape = "</SL_OPER>
                        <SL_TEXTO></SL_TEXTO>
                     </S_LINE>";
-                            $nome = "./upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
+                            $nome = "./upload/laudo/" . $pasta . "/" . $sl_cod_doc . ".xml";
                             $xml = $cabecalho . $corpo . $fim_numguia . $rodape;
                             $fp = fopen($nome, "w+");
                             fwrite($fp, $xml . "\n");
@@ -3592,7 +3618,7 @@ class Laudo extends BaseController {
                                 $rodape = "<table width='100%' style='vertical-align: bottom; font-family: serif; font-size: 8pt;'><tr><td width='30px'></td><td><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $item->medico_parecer1 . ".jpg'></td><td width='30px'></td><td><img align = 'left'  width='200px' height='100px' src='upload/1ASSINATURAS/" . $item->medico_parecer2 . ".jpg'></td></tr></tr><tr><td>&nbsp;</td></tr></table>";
                             }
 
-                            $nomepdf = "./upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".pdf";
+                            $nomepdf = "./upload/laudo/" . $pasta . "/" . $sl_cod_doc . ".pdf";
                             $cabecalhopdf = $cabecalho;
                             $rodapepdf = $rodape;
 //                            $cabecalhopdf = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $item->paciente . " <br>Emiss&atilde;o: </td></tr></table>";
@@ -3602,17 +3628,17 @@ class Laudo extends BaseController {
 
 //                        $zip = new ZipArchive;
 //                        $this->load->helper('directory');
-//                        $arquivo_pasta = directory_map("./upload/laudo/$convenio/");
+//                        $arquivo_pasta = directory_map("./upload/laudo/$pasta/");
 //                        $pasta = $item->paciente_id;
 //                        if ($arquivo_pasta != false) {
 //                            foreach ($arquivo_pasta as $value) {
-//                                $zip->open("./upload/laudo/$convenio/$sl_cod_doc.zip", ZipArchive::CREATE);
-//                                $zip->addFile("./upload/laudo/$convenio/$value", "$sl_cod_doc.xml");
-//                                $zip->addFile("./upload/laudo/$convenio/$value", "$sl_cod_doc.pdf");
+//                                $zip->open("./upload/laudo/$pasta/$sl_cod_doc.zip", ZipArchive::CREATE);
+//                                $zip->addFile("./upload/laudo/$pasta/$value", "$sl_cod_doc.xml");
+//                                $zip->addFile("./upload/laudo/$pasta/$value", "$sl_cod_doc.pdf");
 //                                $zip->close();
 //                            }
-//                            $arquivoxml = "./upload/laudo/$convenio/$sl_cod_doc.xml";
-//                            $arquivopdf = "./upload/laudo/$convenio/$sl_cod_doc.pdf";
+//                            $arquivoxml = "./upload/laudo/$pasta/$sl_cod_doc.xml";
+//                            $arquivopdf = "./upload/laudo/$pasta/$sl_cod_doc.pdf";
 //                            unlink($arquivoxml);
 //                            unlink($arquivopdf);
 //                        }
@@ -3624,15 +3650,15 @@ class Laudo extends BaseController {
                     foreach ($listarexame as $item) {
 
 //                    if ($_POST['apagar'] == 1) {
-//                        delete_files($origem . '/' . $convenio . '/' . $item->paciente_id);
+//                        delete_files($origem . '/' . $pasta . '/' . $item->paciente_id);
 //                    }
 
                         if ($item->paciente_id !== $paciente_dif) {
                             $sl_cod_doc = $item->ambulatorio_laudo_id;
                             $texto = "";
-                            if (!is_dir($origem . '/' . $convenio)) {
-                                mkdir($origem . '/' . $convenio);
-                                chmod($origem . '/' . $convenio, 0777);
+                            if (!is_dir($origem . '/' . $pasta)) {
+                                mkdir($origem . '/' . $pasta);
+                                chmod($origem . '/' . $pasta, 0777);
                             }
 
                             //NUMERO DA CARTEIRA
@@ -3677,13 +3703,13 @@ class Laudo extends BaseController {
                        <SL_TEXTO></SL_TEXTO>
                     </S_LINE>";
 
-                            $nome = "./upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".xml";
+                            $nome = "./upload/laudo/" . $pasta . "/" . $sl_cod_doc . ".xml";
                             $xml = $cabecalho . $corpo . $fim_numguia . $rodape;
                             $fp = fopen($nome, "w+");
                             fwrite($fp, $xml . "\n");
                             fclose($fp);
 
-                            $nomepdf = "./upload/laudo/" . $convenio . "/" . $sl_cod_doc . ".pdf";
+                            $nomepdf = "./upload/laudo/" . $pasta . "/" . $sl_cod_doc . ".pdf";
                             $cabecalhopdf = "<table><tr><td><img align = 'left'  width='1000px' height='300px' src='img/cabecalho.jpg'></td></tr><tr><td>Nome:" . $item->paciente . " <br>Emiss&atilde;o: </td></tr></table>";
                             $rodapepdf = "<img align = 'left'  width='1000px' height='300px' src='img/rodape.jpg'>";
                             salvapdf($texto, $nomepdf, $cabecalhopdf, $rodapepdf);
@@ -3691,17 +3717,17 @@ class Laudo extends BaseController {
 
                             $zip = new ZipArchive;
                             $this->load->helper('directory');
-                            $arquivo_pasta = directory_map("./upload/laudo/$convenio/");
+                            $arquivo_pasta = directory_map("./upload/laudo/$pasta/");
                             $pasta = $item->paciente_id;
                             if ($arquivo_pasta != false) {
                                 foreach ($arquivo_pasta as $value) {
-                                    $zip->open("./upload/laudo/$convenio/$sl_cod_doc.zip", ZipArchive::CREATE);
-                                    $zip->addFile("./upload/laudo/$convenio/$value", "$sl_cod_doc.xml");
-                                    $zip->addFile("./upload/laudo/$convenio/$value", "$sl_cod_doc.pdf");
+                                    $zip->open("./upload/laudo/$pasta/$sl_cod_doc.zip", ZipArchive::CREATE);
+                                    $zip->addFile("./upload/laudo/$pasta/$value", "$sl_cod_doc.xml");
+                                    $zip->addFile("./upload/laudo/$pasta/$value", "$sl_cod_doc.pdf");
                                     $zip->close();
                                 }
-                                $arquivoxml = "./upload/laudo/$convenio/$sl_cod_doc.xml";
-                                $arquivopdf = "./upload/laudo/$convenio/$sl_cod_doc.pdf";
+                                $arquivoxml = "./upload/laudo/$pasta/$sl_cod_doc.xml";
+                                $arquivopdf = "./upload/laudo/$pasta/$sl_cod_doc.pdf";
                                 unlink($arquivoxml);
                                 unlink($arquivopdf);
                             }
@@ -3712,9 +3738,9 @@ class Laudo extends BaseController {
                 }
             } else {
 
-                if (!is_dir($origem . '/' . $convenio . '/' . $listarexame[0]->paciente_id)) {
-                    mkdir($origem . '/' . $convenio . '/' . $listarexame[0]->paciente_id);
-                    chmod($origem . '/' . $convenio . '/' . $listarexame[0]->paciente_id, 0777);
+                if (!is_dir($origem . '/' . $pasta . '/' . $listarexame[0]->paciente_id)) {
+                    mkdir($origem . '/' . $pasta . '/' . $listarexame[0]->paciente_id);
+                    chmod($origem . '/' . $pasta . '/' . $listarexame[0]->paciente_id, 0777);
                 }
 
                 $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -3722,7 +3748,7 @@ class Laudo extends BaseController {
                                 <NJ_CodPaciente>" . $listarexame[0]->paciente_id . "</NJ_CodPaciente>
                                 <NJ_NomePaciente>" . $listarexame[0]->paciente . "</NJ_NomePaciente>
                                 <NJ_Laudo>" . $listarexame[0]->ambulatorio_laudo_id . "</NJ_Laudo>
-                                <NJ_LocalLaudo>./upload/laudo" . $convenio . "/" . $listarexame[0]->paciente_id . "</NJ_LocalLaudo>
+                                <NJ_LocalLaudo>./upload/laudo" . $pasta . "/" . $listarexame[0]->paciente_id . "</NJ_LocalLaudo>
                                 <NJ_FormatoLaudo>RTF</NJ_FormatoLaudo>
                                 <NJ_NomeMedicoLaudante>" . $listarexame[0]->medicosolicitante . "</NJ_NomeMedicoLaudante>
                                <NJ_Detalhes>";
@@ -3737,13 +3763,13 @@ class Laudo extends BaseController {
                 $rodape = "</NJ_Detalhes>
                        </NAJA>";
 
-                $nome = "./upload/laudo/" . $convenio . "/" . $listarexame[0]->paciente_id . "/" . $listarexame[0]->paciente_id . ".xml";
+                $nome = "./upload/laudo/" . $pasta . "/" . $listarexame[0]->paciente_id . "/" . $listarexame[0]->paciente_id . ".xml";
                 $xml = $cabecalho . $corpo . $rodape;
                 $fp = fopen($nome, "w+");
                 fwrite($fp, $xml . "\n");
                 fclose($fp);
 
-                $nome = "./upload/laudo/" . $convenio . "/" . $listarexame[0]->paciente_id . "/" . $listarexame[0]->paciente_id . ".rtf";
+                $nome = "./upload/laudo/" . $pasta . "/" . $listarexame[0]->paciente_id . "/" . $listarexame[0]->paciente_id . ".rtf";
                 $rtf = $texto;
                 $fp = fopen($nome, "w+");
                 fwrite($fp, $rtf . "\n");

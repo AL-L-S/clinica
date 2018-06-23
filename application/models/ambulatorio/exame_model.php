@@ -5770,6 +5770,13 @@ class exame_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+            $this->db->where('pt.grupo !=', 'TOMOGRAFIA');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
         $this->db->orderby('g.ambulatorio_guia_id');
         $this->db->orderby('g.data_criacao');
         $this->db->orderby('p.nome');
@@ -8313,23 +8320,13 @@ class exame_model extends Model {
             $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
             $this->db->update('tb_agenda_exames');
 
-            $this->db->set('data_cancelamento', $horario);
-            $this->db->set('operador_cancelamento', $operador_id);
-            $this->db->set('cancelada', 't');
-            $this->db->set('situacao', 'CANCELADO');
-            $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
-            $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
-            $this->db->where('exames_id', $_POST['txtexames_id']);
-            $this->db->update('tb_exames');
 
-            $this->db->set('data_cancelamento', $horario);
-            $this->db->set('operador_cancelamento', $operador_id);
-            $this->db->set('cancelada', 't');
-            $this->db->set('situacao', 'CANCELADO');
-            $this->db->set('ambulatorio_cancelamento_id', $_POST['txtmotivo']);
-            $this->db->set('observacao_cancelamento', $_POST['observacaocancelamento']);
+            $this->db->where('exames_id', $_POST['txtexames_id']);
+            $this->db->delete('tb_exames');
+
+
             $this->db->where('exame_id', $_POST['txtexames_id']);
-            $this->db->update('tb_ambulatorio_laudo');
+            $this->db->delete('tb_ambulatorio_laudo');
 
             $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
@@ -9055,12 +9052,8 @@ class exame_model extends Model {
             $this->db->update('tb_agenda_exames');
 
 
-            $this->db->set('data_cancelamento', $horario);
-            $this->db->set('operador_cancelamento', $operador_id);
-            $this->db->set('cancelada', 't');
-            $this->db->set('situacao', 'CANCELADO');
             $this->db->where('agenda_exames_id', $agenda_exames_id);
-            $this->db->update('tb_exames');
+            $this->db->delete('tb_exames');
 
             $this->db->set('agenda_exames_id', $agenda_exames_id);
             $this->db->set('paciente_id', $return[0]->paciente_id);

@@ -66,12 +66,12 @@
             <div>
                 <label>DT de nascimento</label>
 
-                <input type="text" name="nascimento" id="nascimento" alt="date" value="<?= (@$config[0]->nascimento != '') ? date("d/m/Y", strtotime(@$config[0]->nascimento)) : ''; ?>"  class="texto02" maxlength="10" value="" required=""/>
+                <input type="text" name="nascimento" id="nascimento" alt="date" value="<?= (@$config[0]->nascimento != '') ? date("d/m/Y", strtotime(@$config[0]->nascimento)) : ''; ?>"  class="texto02" maxlength="10" value=""/>
             </div>
             <div>
                 <label>Idade</label>
 
-                <input readonly="" type="text" onblur="calculoIdade()" name="idade"  id="idade" class="texto02"   maxlength="10" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" required=""/>
+                <input type="text" onblur="calculoIdade()" name="idade"  id="idade" class="texto02"   maxlength="10" value="<?=@$config[0]->idade?>" required=""/>
             </div>
 
             <!--            <div>

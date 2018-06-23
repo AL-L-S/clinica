@@ -2089,6 +2089,7 @@ class exametemp_model extends Model {
         $this->db->select('procedimento_convenio_forma_pagamento_id');
         $this->db->from('tb_procedimento_convenio_forma_pagamento');
         $this->db->where("procedimento_convenio_id", $procedimento_convenio_id);
+        $this->db->where("ativo", 't');
         $return = $this->db->get();
         $retorno = $return->result();
 

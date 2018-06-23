@@ -334,6 +334,15 @@ class pacientes extends BaseController {
         $this->loadView('cadastros/paciente-ficha', $data);
     }
 
+    function carregarinternacaoprecadastro($paciente_id, $internacao_ficha_id) {
+        $obj_paciente = new paciente_model($paciente_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+        $data['obj'] = $obj_paciente;
+        $data['internacao_ficha_id'] = $internacao_ficha_id;
+        $data['idade'] = 1;
+        $this->loadView('cadastros/pacienteinternacaoprecadastro-ficha', $data);
+    }
+
     function carregarmedico($paciente_id) {
         $obj_paciente = new paciente_model($paciente_id);
         $data['obj'] = $obj_paciente;
@@ -342,6 +351,16 @@ class pacientes extends BaseController {
     }
 
     function gravar() {
+
+        if ($_POST['nascimento'] != '') {
+            $nascimento = str_replace('/', '-', $_POST['nascimento']);
+//            var_dump($nascimento); die;
+            $data_valida = $this->utilitario->validateDate($nascimento);
+            if (!$data_valida) {
+                $_POST['nascimento'] = '';
+            }
+//            die;
+        }
 
         if (!is_dir("./upload/webcam")) {
             mkdir("./upload/webcam");
@@ -417,7 +436,102 @@ class pacientes extends BaseController {
         redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
     }
 
+    function gravarpacienteprecadastro($internacao_ficha_id) {
+
+        if ($_POST['nascimento'] != '') {
+            $nascimento = str_replace('/', '-', $_POST['nascimento']);
+//            var_dump($nascimento); die;
+            $data_valida = $this->utilitario->validateDate($nascimento);
+            if (!$data_valida) {
+                $_POST['nascimento'] = '';
+            }
+//            die;
+        }
+//         var_dump($_POST['nascimento']); die;
+
+        if (!is_dir("./upload/webcam")) {
+            mkdir("./upload/webcam");
+            $destino = "./upload/webcam";
+            chmod($destino, 0777);
+        }
+        if (!is_dir("./upload/webcam/pacientes")) {
+            mkdir("./upload/webcam/pacientes");
+            $destino = "./upload/webcam/pacientes";
+            chmod($destino, 0777);
+        }
+
+        $contador = $this->paciente->contador();
+
+        if ($_POST['cpf'] != "") {
+            $contadorcpf = $this->paciente->contadorcpf();
+        } else {
+            $contadorcpf = 0;
+        }
+
+        if ($contador == 0 && $contadorcpf == 0) {
+            if ($paciente_id = $this->paciente->gravar()) {
+                $data['mensagem'] = 'Paciente gravado com sucesso';
+            } else {
+                $data['mensagem'] = 'Erro ao gravar paciente';
+            }
+            //Em caso de paciente novo
+            // Encodando o raw da imagem em base64, transformando em jpg e salvando
+
+            if ($paciente_id != false && $_POST['mydata'] != '') {
+                $encoded_data = $_POST['mydata'];
+                $binary_data = base64_decode($encoded_data);
+                $result = file_put_contents("upload/webcam/pacientes/$paciente_id.jpg", $binary_data);
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "internacao/internacao/novointernacao/$paciente_id/$internacao_ficha_id", $data);
+        } elseif ($contador > 0 && $_POST['paciente_id'] != "") {
+//Atualiza cadastro
+            if ($paciente_id = $this->paciente->gravar()) {
+                $data['mensagem'] = 'Paciente gravado com sucesso';
+            } else {
+                $data['mensagem'] = 'Erro ao gravar paciente';
+            }
+        } elseif ($contador == 0 && $contadorcpf == 1 && $_POST['paciente_id'] != "") {
+
+            if ($paciente_id = $this->paciente->gravar()) {
+                $data['mensagem'] = 'Paciente gravado com sucesso';
+            } else {
+                $data['mensagem'] = 'Erro ao gravar paciente';
+            }
+        } elseif ($contador == 0 && $contadorcpf == 1 && $_POST['paciente_id'] == "") {
+
+            $data['mensagem'] = 'CPF do paciente já cadastrado';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "internacao/internacao/manterfichaquestionario", $data);
+        } else {
+            $data['mensagem'] = 'Paciente ja cadastrado';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "internacao/internacao/manterfichaquestionario", $data);
+        }
+        // Em caso de atualização de cadastro
+        // Encodando o raw da imagem em base64, transformando em jpg e salvando
+
+        if ($paciente_id != false && $_POST['mydata'] != '') {
+            $encoded_data = $_POST['mydata'];
+            $binary_data = base64_decode($encoded_data);
+            $result = file_put_contents("upload/webcam/pacientes/$paciente_id.jpg", $binary_data);
+        }
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/novointernacao/$paciente_id/$internacao_ficha_id");
+    }
+
     function gravarmedico() {
+        if ($_POST['nascimento'] != '') {
+            $nascimento = str_replace('/', '-', $_POST['nascimento']);
+//            var_dump($nascimento); die;
+            $data_valida = $this->utilitario->validateDate($nascimento);
+            if (!$data_valida) {
+                $_POST['nascimento'] = '';
+            }
+//            die;
+        }
+       
 
         if (!is_dir("./upload/webcam")) {
             mkdir("./upload/webcam");

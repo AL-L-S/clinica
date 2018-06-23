@@ -13,6 +13,7 @@ class internacao extends BaseController {
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/laudo_model', 'laudo_m');
         $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('internacao/internacao_model', 'internacao_m');
         $this->load->model('internacao/unidade_model', 'unidade_m');
         $this->load->model('internacao/motivosaida_model', 'motivosaida');
@@ -50,6 +51,11 @@ class internacao extends BaseController {
         $this->loadView('internacao/listarmotivosaida');
     }
 
+    public function listarimpressoes($internacao_id) {
+        $data['internacao_id'] = $internacao_id;
+        $this->loadView('internacao/listarimpressoesinternacao', $data);
+    }
+
     public function pesquisarsolicitacaointernacao($args = array()) {
         $this->loadView('internacao/listarsolicitacaointernacao');
     }
@@ -83,19 +89,18 @@ class internacao extends BaseController {
         $this->loadView('internacao/acoes-paciente', $data);
     }
 
-    function novointernacao($paciente_id) {
+    function novointernacao($paciente_id, $internacao_ficha_id = null) {
         $data['numero'] = $this->internacao_m->verificainternacao($paciente_id);
 //        var_dump($data['numero']);
 //        die;
-        if ($data['numero'] == 0) {
+        $data['internacao_ficha_id'] = $internacao_ficha_id;
+        if ($data['numero'] == 0 || true) {
+            $data['precadastro'] = $this->internacao_m->listarultimoprecadastro($paciente_id, $internacao_ficha_id);
             $data['paciente'] = $this->paciente->listardados($paciente_id);
             $data['medicos'] = $this->operador_m->listarmedicos();
-//            var_dump($data['medico']); die;
-//            if ($data['paciente'][0]->cep == '' || $data['paciente'][0]->cns == '') {
-//                $data['mensagem'] = 'CEP ou CNS obrigatorio';
-//                $this->session->set_flashdata('message', $data['mensagem']);
-//                redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
-//            }
+            $data['convenio'] = $this->convenio->listardados();
+//            var_dump($data['precadastro']); die;
+
             $data['paciente_id'] = $paciente_id;
             $this->loadView('internacao/cadastrarinternacao', $data);
         } else {
@@ -105,11 +110,121 @@ class internacao extends BaseController {
         }
     }
 
+    function carregarinternacao($internacao_id, $paciente_id, $internacao_ficha_id = null) {
+        
+        $data['internacao_ficha_id'] = $internacao_ficha_id;
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['convenio'] = $this->convenio->listardados();
+        $data['internacao'] = $this->internacao_m->listarcarregarinternacao($internacao_id);
+//            var_dump($data['medico']); die;
+//            if ($data['paciente'][0]->cep == '' || $data['paciente'][0]->cns == '') {
+//                $data['mensagem'] = 'CEP ou CNS obrigatorio';
+//                $this->session->set_flashdata('message', $data['mensagem']);
+//                redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id");
+//            }
+        $data['paciente_id'] = $paciente_id;
+        $this->loadView('internacao/cadastrarinternacao', $data);
+    }
+
     function mantertipodependencia() {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
 //        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
 //        var_dump($data['impressao']); die;
         $this->loadView('internacao/mantertipodependencia-lista');
+    }
+
+    function editarmodelointernacaoimpressao($internacao_id, $impressao_id) {
+//        var_dump($impressao_id);
+//        die;
+//        $this->load->plugin('mpdf');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['internacao'] = $this->internacao_m->internacaoimpressaomodelo($internacao_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['impressao_id'] = $impressao_id;
+        $data['internacao_id'] = $internacao_id;
+        $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($data['internacao'][0]->medico_id);
+//        echo '<pre>';
+//        var_dump($data['empresapermissoes']); die;
+        $data['impressaointernacao'] = $this->internacao_m->listarmodeloimpressaointernacao($impressao_id);
+
+        $data['html'] = $this->load->view('internacao/impressaointernacaoconfiguravel', $data, true);
+//        var_dump($data['html']); die;
+        $this->loadview('internacao/editarimpressaomodelointernacao-form', $data);
+    }
+
+    function gravareditarimpressao($impressao_id, $internacao_id) {
+
+        $impressao_temp_id = $this->internacao_m->gravareditarimpressao($impressao_id);
+//        var_dump($impressao_temp_id); die;
+        if ($impressao_temp_id > 0) {
+//            $data['mensagem'] = 'Tipo gravado com sucesso';
+            redirect(base_url() . "internacao/internacao/impressaomodelointernacao/$impressao_temp_id/$impressao_id/$internacao_id");
+        } else {
+//            $data['mensagem'] = 'Erro ao gravar Tipo';
+            redirect(base_url() . "internacao/internacao/impressaomodelointernacao/$impressao_temp_id/$impressao_id/$internacao_id");
+        }
+    }
+
+    function impressaomodelointernacao($impressao_temp_id, $impressao_id, $internacao_id) {
+//        var_dump($impressao_temp_id);
+//        die;
+        $this->load->plugin('mpdf');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['internacao'] = $this->internacao_m->internacaoimpressaomodelo($internacao_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($data['internacao'][0]->medico_id);
+//        echo '<pre>';
+//        var_dump($data['empresapermissoes']); die;
+        $data['impressaointernacao'] = $this->internacao_m->listarmodeloimpressaointernacao($impressao_id);
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
+
+        $filename = "internacao.pdf";
+        if ($data['cabecalhomedico'][0]->cabecalho != '') { // Cabeçalho do Profissional
+            $cabecalho = $data['cabecalhomedico'][0]->cabecalho;
+        } else {
+            if (file_exists("upload/operadorLOGO/" . $data['internacao'][0]->medico_id . ".jpg")) { // Logo do Profissional
+                $cabecalho = '<img style="width: 100%; heigth: 35%;" src="upload/operadorLOGO/' . $data['internacao'][0]->medico_id . '.jpg"/>';
+            } else {
+                if ($data['impressaointernacao'][0]->cabecalho == 't') {
+                    $cabecalho = "$cabecalho_config";
+                } else {
+                    $cabecalho = '';
+                }
+            }
+        }
+
+
+        if (file_exists("upload/1ASSINATURAS/" . $data['internacao'][0]->medico_id . ".jpg")) {
+            $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['internacao'][0]->medico_id . ".jpg'>";
+            $data['assinatura'] = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . $data['internacao'][0]->medico_id . ".jpg'>";
+        } else {
+            $assinatura = "";
+            $data['assinatura'] = "";
+        }
+
+        if ($data['cabecalhomedico'][0]->rodape != '') { // Rodapé do profissional
+            $rodape_config = $data['cabecalhomedico'][0]->rodape;
+            $rodape_config = str_replace("_assinatura_", $assinatura, $rodape_config);
+            $rodape = $rodape_config;
+        } else {
+            if ($data['impressaointernacao'][0]->rodape == 't') { // rodape da empresa
+                $rodape_config = str_replace("_assinatura_", $assinatura, $rodape_config);
+                $rodape = $rodape_config;
+            } else {
+                $rodape = "";
+            }
+        }
+
+
+
+        $html = $this->internacao_m->listarmodeloimpressaointernacaotemp($impressao_temp_id);
+//        var_dump($html);die;
+
+        pdf($html, $filename, $cabecalho, $rodape);
     }
 
     function configurartipodependencia($internacao_tipo_dependencia_id) {
@@ -181,6 +296,7 @@ class internacao extends BaseController {
 //        var_dump($data['impressao']); die;
         $this->loadView('internacao/manterfichaquestionario-lista', $args);
     }
+
     function pesquisarinternacaolista($args = array()) {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
 //        $data['impressao'] = $this->empresa->listarconfiguracaoimpressao();
@@ -232,15 +348,15 @@ class internacao extends BaseController {
         redirect(base_url() . "internacao/internacao/manterfichaquestionario");
     }
 
-    function confirmaraprovacaofichaquestionario($internacao_modelo_grupo_id, $paciente_id) {
+    function confirmaraprovacaofichaquestionario($internacao_ficha_id, $paciente_id) {
 
-        if ($this->internacao_m->confirmaraprovacaofichaquestionario($internacao_modelo_grupo_id)) {
+        if ($this->internacao_m->confirmaraprovacaofichaquestionario($internacao_ficha_id)) {
             $data['mensagem'] = 'Aprovada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao Aprovar';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "internacao/internacao/novointernacao/$paciente_id");
+        redirect(base_url() . "cadastros/pacientes/carregarinternacaoprecadastro/$paciente_id/$internacao_ficha_id");
     }
 
     function novointernacaonutricao($paciente_id) {
@@ -304,6 +420,7 @@ class internacao extends BaseController {
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
         @$rodape_config = $data['cabecalho'][0]->rodape;
+        @$impressao_empresa_id = $data['empresa'][0]->impressao_internacao;
 
         if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
             $cabecalho = "$cabecalho_config";
@@ -319,10 +436,51 @@ class internacao extends BaseController {
         $data['historicoexame'] = $this->laudo_m->listarexamehistorico($paciente_id);
 //        echo '<pre>';
 //        var_dump($data['historicoantigo']); die;
-        $html = $this->load->View('internacao/impressaotermoresponsabilidade', $data, true);
-        $filename = 'Termo de Responsabilidade';
-        $rodape = '';
-        $cabecalho_file = '';
+        if (@$impressao_empresa_id == 2) {
+            $html = $this->load->View('internacao/impressaotermoresponsabilidade2', $data, true);
+            $filename = 'Termo de Responsabilidade';
+            $rodape = @$rodape_config;
+            $cabecalho_file = $cabecalho;
+        } else {
+            $html = $this->load->View('internacao/impressaotermoresponsabilidade', $data, true);
+            $filename = 'Termo de Responsabilidade';
+            $rodape = '';
+            $cabecalho_file = '';
+        }
+        pdf($html, $filename, $cabecalho_file, $rodape);
+    }
+
+    function termosaida($internacao_id) {
+        $this->load->plugin('mpdf');
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['motivosaida'] = $this->motivosaida->listamotivosaidapacientes($internacao_id);
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
+        @$impressao_empresa_id = $data['empresa'][0]->impressao_internacao;
+
+        if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
+            $cabecalho = "$cabecalho_config";
+        } else {
+            $cabecalho = "<table><tr><td><img width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr></table>";
+        }
+
+        $data['cabecalho_form'] = $cabecalho;
+
+        $data['paciente'] = $this->internacao_m->mostrartermoresponsabilidade($internacao_id);
+        $paciente_id = $data['paciente'][0]->paciente_id;
+        $data['historicoantigo'] = $this->laudo_m->listarlaudohistoricointernacao($paciente_id);
+        $data['historicoexame'] = $this->laudo_m->listarexamehistorico($paciente_id);
+//        echo '<pre>';
+//        var_dump($data['historicoantigo']); die;
+
+        $html = $this->load->View('internacao/impressaotermosaida', $data, true);
+        $filename = 'Termo de Saída';
+        $rodape = @$rodape_config;
+        $cabecalho_file = $cabecalho;
+
         pdf($html, $filename, $cabecalho_file, $rodape);
     }
 
@@ -330,6 +488,7 @@ class internacao extends BaseController {
 
         $data['paciente'] = $this->motivosaida->mostrarnovasaidapaciente($internacao_id);
         $data['motivosaida'] = $this->motivosaida->listamotivosaidapacientes($internacao_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
 //        echo "<pre>";
 //        var_dump($internacao_id, $data['paciente']); die;
         $this->loadView('internacao/mostrarnovasaidapaciente', $data);
@@ -480,7 +639,7 @@ class internacao extends BaseController {
             $data['mensagem'] = 'Erro ao gravar movimentacao';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "internacao/internacao/pacientesinternados/Todas");
+        redirect(base_url() . "internacao/internacao/pesquisarinternacaolista");
     }
 
     function gravarinternacaonutricao($paciente_id) {
@@ -535,6 +694,16 @@ class internacao extends BaseController {
     function excluiritemprescicao($item_id, $internacao_id) {
         $this->internacao_m->excluiritemprescicao($item_id);
         $this->prescricaonormalenteral($internacao_id);
+    }
+
+    function excluirinternacao($internacao_motivosaida_id) {
+        $this->internacao_m->excluirinternacao($internacao_motivosaida_id);
+        $data['mensagem'] = 'Motivo de Saida excluido com sucesso.';
+
+
+//            redirect(base_url()."seguranca/operador/index/$data","refresh");
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/pesquisarinternacaolista", $data);
     }
 
     function excluirmotivosaida($internacao_motivosaida_id) {
@@ -671,8 +840,75 @@ class internacao extends BaseController {
 
 
 
+        if ($_POST['gerar_pdf'] == 'SIM') {
+            $html = $this->load->View('internacao/impressaorelatoriocensodiario', $data, true);
+            $this->load->plugin('mpdf');
 
-        $this->load->View('internacao/impressaorelatoriocensodiario', $data);
+            $cabecalhopdf = '';
+            $rodapepdf = '';
+            $nomepdf = "Relatorio Censo " . date("d/m/Y H:i:s") . ".pdf";
+            pdf($html, $nomepdf, $cabecalhopdf, $rodapepdf);
+        } else {
+            $this->load->View('internacao/impressaorelatoriocensodiario', $data);
+        }
+    }
+
+    function relatoriointernacao() {
+        $data['unidade'] = $this->internacao_m->listaunidade();
+        $this->loadView('internacao/relatoriointernacao', $data);
+    }
+
+    function gerarelatoriointernacao() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $data['data_inicio'] = $_POST['txtdata_inicio'];
+        $data['data_fim'] = $_POST['txtdata_fim'];
+        $data['internacao'] = $this->internacao_m->relatoriointernacao();
+//        echo '<pre>';
+//        var_dump($data['internacao']);
+//        die;
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
+        } else {
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
+            } else {
+                $data['convenio'] = 'TODOS';
+            }
+        }
+
+        $this->load->View('internacao/impressaorelatoriointernacao', $data);
+    }
+
+    function relatoriointernacaofaturamento() {
+        $data['unidade'] = $this->internacao_m->listaunidade();
+        $this->loadView('internacao/relatoriointernacaofaturamento', $data);
+    }
+
+    function gerarelatoriointernacaofaturamento() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $data['data_inicio'] = $_POST['txtdata_inicio'];
+        $data['data_fim'] = $_POST['txtdata_fim'];
+        $data['internacao'] = $this->internacao_m->relatoriointernacaofaturamento();
+//        echo '<pre>';
+//        var_dump($data['internacao']);
+//        die;
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
+        } else {
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
+            } else {
+                $data['convenio'] = 'TODOS';
+            }
+        }
+
+        $this->load->View('internacao/impressaorelatoriointernacaofaturamento', $data);
     }
 
     function mostratransferirpaciente($paciente_id) {

@@ -1553,6 +1553,7 @@ class Convenio_model extends Model {
             } else {
                 $this->db->set('dia_aquisicao', null);
             }
+            $this->db->set('convenio_pasta', $_POST['convenio_pasta']);
             $this->db->set('logradouro', $_POST['endereco']);
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
@@ -1786,6 +1787,7 @@ class Convenio_model extends Model {
                                 co.associacao_percentual,
                                 co.associacao_convenio_id,
                                 co.razao_social,
+                                co.convenio_pasta,
                                 co.guia_prestador_unico,
                                 c.nome as cidade_nome,
                                 c.municipio_id,
@@ -1809,6 +1811,7 @@ class Convenio_model extends Model {
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_celular = $return[0]->celular;
             $this->_telefone = $return[0]->telefone;
+            $this->_convenio_pasta = $return[0]->convenio_pasta;
             $this->_fidelidade_parceiro_id = $return[0]->fidelidade_parceiro_id;
             $this->_fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
             $this->_carteira_obrigatoria = $return[0]->carteira_obrigatoria;

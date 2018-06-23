@@ -60,12 +60,19 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
     $corpo = str_replace("_altura_", $laudo['0']->altura, $corpo);
     $corpo = str_replace("_cid1_", $laudo['0']->cid1, $corpo);
     $corpo = str_replace("_cid2_", $laudo['0']->cid2, $corpo);
+
+//    if($laudo['0']->situacao == "FINALIZADO"){
     $corpo = str_replace("_assinatura_", $assinatura, $corpo);
+//    }else{
+//        $corpo = str_replace("_assinatura_", '', $corpo);
+//    }
+
+
     echo $corpo;
 //    var_dump($corpo);
 //    die;
     ?>
     <? if ($empresapermissoes[0]->desativar_personalizacao_impressao != 't' && $timbrado) { ?>
-        </div>
+    </div>
 <? } ?>
 

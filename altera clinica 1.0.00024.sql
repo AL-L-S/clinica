@@ -162,108 +162,66 @@ SELECT insereValor();
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN botao_imagem_paciente boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN botao_arquivos_paciente boolean DEFAULT true;
 
--- Dia 09/06/2018
-CREATE TABLE ponto.tb_procedimento_convenio_forma_pagamento
+ALTER TABLE ponto.tb_convenio ADD COLUMN convenio_pasta text;
+
+UPDATE ponto.tb_convenio
+   SET convenio_pasta=nome
+ WHERE convenio_pasta is null;
+
+
+
+CREATE TABLE ponto.tb_cadastro_aso
 (
-  procedimento_convenio_forma_pagamento_id serial NOT NULL,
-  procedimento_convenio_id integer,
-  forma_pagamento_id integer,
-  ativo boolean DEFAULT true,
+  cadastro_aso_id serial,
+  paciente_id integer,
   data_cadastro timestamp without time zone,
   operador_cadastro integer,
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
-  CONSTRAINT tb_procedimento_convenio_forma_pagamento_pkey PRIMARY KEY (procedimento_convenio_forma_pagamento_id)
-);
-ALTER TABLE ponto.tb_procedimento_convenio_forma_pagamento ADD COLUMN ajuste numeric(10,2);
-
-CREATE TABLE ponto.tb_convenio_forma_pagamento
-(
-  convenio_forma_pagamento_id serial NOT NULL,
-  forma_pagamento_id integer,
-  convenio_id integer,
   ativo boolean DEFAULT true,
+  tipo text,
+  impressao_aso text,
+  CONSTRAINT tb_cadastro_aso_pkey PRIMARY KEY (cadastro_aso_id)
+);
+
+
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN medico_responsavel integer;
+
+
+CREATE TABLE ponto.tb_empresa_impressao_internacao
+(
+  empresa_impressao_internacao_id serial NOT NULL,
+  texto text,
+  nome text,
+  cabecalho boolean DEFAULT false,
+  rodape boolean DEFAULT false,
+  ativo boolean DEFAULT true,
+  empresa_id integer,
   data_cadastro timestamp without time zone,
   operador_cadastro integer,
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
-  CONSTRAINT tb_convenio_forma_pagamento_pkey PRIMARY KEY (convenio_forma_pagamento_id)
-);
-ALTER TABLE ponto.tb_convenio_forma_pagamento ADD COLUMN ajuste numeric(10,2);
-
--- Dia 11/06/2018
-CREATE TABLE ponto.tb_convenio_forma_pagamento
-(
-  convenio_forma_pagamento_id serial NOT NULL,
-  forma_pagamento_id integer,
-  convenio_id integer,
-  ajuste numeric(10,2),
-  ativo boolean DEFAULT true,
-  data_cadastro timestamp without time zone,
-  operador_cadastro integer,
-  data_atualizacao timestamp without time zone,
-  operador_atualizacao integer,
-  CONSTRAINT tb_convenio_forma_pagamento_pkey PRIMARY KEY (procedimento_convenio_forma_pagamento_id)
+  adicional_cabecalho text,
+  CONSTRAINT tb_empresa_impressao_internacao_pkey PRIMARY KEY (empresa_impressao_internacao_id)
 );
 
--- Dia 12/06/2018
-CREATE OR REPLACE FUNCTION insereValor()
-RETURNS text AS $$
-DECLARE
-    resultado integer;
-BEGIN
-    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2273');
-    IF resultado = 0 THEN 
-	INSERT INTO ponto.tb_procedimento_convenio_forma_pagamento(procedimento_convenio_id, forma_pagamento_id, ajuste)
-        SELECT pcp.procedimento_convenio_id, gf.forma_pagamento_id, 0
-        FROM ponto.tb_procedimento_convenio pc
-        INNER JOIN ponto.tb_procedimento_convenio_pagamento pcp ON pcp.procedimento_convenio_id = pc.procedimento_convenio_id
-        INNER JOIN ponto.tb_grupo_formapagamento gf ON gf.grupo_id = pcp.grupo_pagamento_id
-        WHERE pcp.ativo = 't' AND gf.ativo = 't';
-    END IF;
-    RETURN 'SUCESSO';
-END;
-$$ LANGUAGE plpgsql;
-SELECT insereValor();
+
+ALTER TABLE ponto.tb_cid ADD COLUMN cid_primary serial not null;
+ALTER TABLE ponto.tb_cid ADD PRIMARY KEY (cid_primary);
+
+
 
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
 DECLARE
     resultado integer;
 BEGIN
-    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2273');
-    IF resultado = 0 THEN 
-	INSERT INTO ponto.tb_convenio_forma_pagamento(convenio_id, forma_pagamento_id, ajuste)
-        SELECT c.convenio_id, gf.forma_pagamento_id, 0
-        FROM ponto.tb_convenio c
-        INNER JOIN ponto.tb_convenio_grupopagamento cgp ON cgp.convenio_id = c.convenio_id
-        INNER JOIN ponto.tb_grupo_formapagamento gf ON gf.grupo_id = cgp.grupo_pagamento_id
-        WHERE cgp.ativo = 't' AND gf.ativo = 't';
-    END IF;
-    RETURN 'SUCESSO';
-END;
-$$ LANGUAGE plpgsql;
-SELECT insereValor();
-
-ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN ajuste_pagamento_procedimento boolean DEFAULT false;
-ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN retirar_preco_procedimento boolean DEFAULT false;
-
--- Dia 14/06/2018
-ALTER TABLE ponto.tb_agenda_exames ADD COLUMN procedimento_possui_ajuste_pagamento boolean DEFAULT false;
-ALTER TABLE ponto.tb_agenda_exames ADD COLUMN forma_pagamento_ajuste integer;
-ALTER TABLE ponto.tb_agenda_exames ADD COLUMN valor_forma_pagamento_ajuste numeric(10,2);
-
-CREATE OR REPLACE FUNCTION insereValor()
-RETURNS text AS $$
-DECLARE
-    resultado integer;
-BEGIN
-    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2273');
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2286');
     IF resultado = 0 THEN 
 	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
         VALUES ('1.0.000024',
-            'Foi retirada a funcionalidade do grupo de pagamento. Agora os procedimentos poderão ser associados diretamente a uma forma de pagamento. Além disso, foi inserido uma opção de ajuste no pagamento. Ao lançar um novo procedimento, caso ele possua um ajuste associado a alguma de suas formas de pagamento, será obrigatorio escolher uma forma de pagamento. Caso a forma de pagamento selecionada possua ajuste, esse valor irá se sobrepôr ao valor original do procedimento.',
-            '2273',
+            'Nova opção para criar vários tipos de impressões na internação.',
+            '2286',
             'Melhoria'
             );
     END IF;
@@ -272,19 +230,67 @@ END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
+
+
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
 DECLARE
     resultado integer;
 BEGIN
-    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2346');
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2281');
     IF resultado = 0 THEN 
 	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
         VALUES ('1.0.000024',
-            'Apatir desta versao, a lista de promotores e solicitantes na tela de Novo Atendimento nao ira mais ordenar de forma alfabetica, mas sim de acordo com a frequencia de uso dos registros no sistema.',
-            '2346',
+            'A data de nascimento deixa de ser obrigatória no pré-cadastro da Internação.',
+            '2281',
             'Melhoria'
             );
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2325');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000024',
+            'Mais campos no pesquisar de listar internação',
+            '2325',
+            'Melhoria'
+            );
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+DELETE FROM ponto.tb_cid WHERE cid_primary IN (
+    WITH t AS (
+        SELECT co_cid ,cid_primary,
+        ROW_NUMBER() OVER (PARTITION BY co_cid) AS row_number 
+        FROM ponto.tb_cid
+	ORDER BY co_cid
+    ) 
+    SELECT cid_primary FROM t WHERE row_number > 1  
+);
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000024');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000024', '1.0.000024');
     END IF;
     RETURN 'SUCESSO';
 END;

@@ -68,8 +68,7 @@ class leito_model extends BaseModel {
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return false;
-                }
-                else
+                } else
                     $internacao_leito_id = $this->db->insert_id();
             }
             else { // update
@@ -85,6 +84,22 @@ class leito_model extends BaseModel {
         } catch (Exception $exc) {
             return false;
         }
+    }
+
+    function listaleitorelatorio() {
+        $this->db->select(' il.internacao_leito_id,
+                            il.nome,
+                            ie.nome as enfermaria,
+                            iu.nome as unidade,
+                            il.tipo');
+        $this->db->from('tb_internacao_leito il');
+        $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
+        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
+//        $this->db->where('il.ativo', 't');
+        $this->db->where('il.excluido', 'f');
+
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listaleito($args = array()) {
@@ -109,7 +124,7 @@ class leito_model extends BaseModel {
     }
 
     function listaleitoautocomplete($parametro = null) {
-        
+
         $sql = "select il.internacao_leito_id,
                             il.nome,
                             ie.nome as enfermaria,
@@ -123,8 +138,8 @@ class leito_model extends BaseModel {
         or ie.nome ilike '%$parametro%'
         or iu.nome ilike '%$parametro%')
         order by iu.nome, ie.nome, il.nome";
-        
-        
+
+
 //        $this->db->select(' il.internacao_leito_id,
 //                            il.nome,
 //                            ie.nome as enfermaria,
@@ -142,16 +157,15 @@ class leito_model extends BaseModel {
         $return = $this->db->query($sql);
         return $return->result();
     }
-    
-    
+
     function excluirleito($leito_id) {
         $this->db->set('excluido', 't');
         $this->db->where('internacao_leito_id', $leito_id);
         $this->db->update('tb_internacao_leito');
         $erro = $this->db->_error_message();
-                if (trim($erro) != "") { // erro de banco
-                    return false;
-                }
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        }
     }
 
 }

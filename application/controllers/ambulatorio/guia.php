@@ -185,6 +185,74 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/impressaoguiasolicitacaospsadt', $data);
     }
 
+    function carregarcadastroaso($paciente_id, $cadastro_aso_id, $medico_id) {
+        $data['informacao_aso'] = $this->guia->carregarcadastroaso($cadastro_aso_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['paciente_id'] = $paciente_id;
+        $data['medico_id'] = $medico_id;
+
+        $this->loadView('ambulatorio/cadastroaso-form', $data);
+    }
+
+    function cadastroaso($paciente_id, $medico_id) {
+        $data['paciente_id'] = $paciente_id;
+        $data['medico_id'] = $medico_id;
+
+        $this->loadView('ambulatorio/cadastroaso-lista', $data);
+    }
+
+    function gravarcadastroaso($paciente_id, $medico_id) {
+//        echo '<pre>';
+//        var_dump($_POST); die;
+        $ambulatorio_guia_id = $this->guia->gravarcadastroaso($paciente_id);
+        if (!$ambulatorio_guia_id) {
+            $data['mensagem'] = 'Erro ao gravar ASO.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar ASO.';
+        }
+        redirect(base_url() . "ambulatorio/guia/cadastroaso/$paciente_id/$medico_id");
+    }
+
+    function excluircadastroaso($cadastro_aso_id, $paciente_id, $medico_id) {
+//        echo '<pre>';
+//        var_dump($_POST); die;
+        $ambulatorio_guia_id = $this->guia->excluircadastroaso($cadastro_aso_id);
+        if (!$ambulatorio_guia_id) {
+            $data['mensagem'] = 'Erro ao gravar a Sala. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar a Sala.';
+        }
+        redirect(base_url() . "ambulatorio/guia/cadastroaso/$paciente_id/$medico_id");
+    }
+
+    function impressaoaso($cadastro_aso_id) {
+
+        $data['relatorio'] = $this->guia->impressaoaso($cadastro_aso_id);
+        $medico_id = $data['relatorio'][0]->medico_responsavel;
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($medico_id);
+
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        if ($data['cabecalhomedico'][0]->cabecalho != '') { // Cabeçalho do Profissional
+            $cabecalho = $data['cabecalhomedico'][0]->cabecalho;
+        } else {
+            if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
+                $data['cabecalho_imp'] = "$cabecalho_config";
+            } else {
+                $data['cabecalho_imp'] = "<table><tr><td><img width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr></table>";
+            }
+        }
+
+//        echo '<pre>';
+//        var_dump($data['relatorio']); die;
+
+
+        $this->load->View('ambulatorio/impressaoaso', $data);
+    }
+
     function impressaoguiaconsultaspsadtprocedimento($agenda_exames_id) {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
@@ -1180,7 +1248,7 @@ class Guia extends BaseController {
                     $this->session->set_flashdata('message', $data['mensagem']);
                 } else {
                     $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
-                    
+
                     if ($agrupador[0]->agrupador != 't') {
                         $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
                     } else {
@@ -1603,10 +1671,14 @@ class Guia extends BaseController {
         $data['x'] = 0;
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
-            if (empty($teste)) {
-                $data['x'] ++;
+//            var_dump($teste); die;
+            if (count($teste) > 0) {
+//                $data['x'] ++;
+            }else{
+                $data['x'] ++; 
             }
         }
+//        var_dump($data['exames']); die;
 
         $data['contador'] = $this->exametemp->contadorexamespaciente($ambulatorio_guia_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
@@ -1971,7 +2043,7 @@ class Guia extends BaseController {
             $data['exame'][0]->total = $data['exame1'][0]->total; // - $data['exame2'][0]->total;
         }
 //        echo '<pre>';
-//        var_dump($data['exame2']); die;
+//        var_dump($data['exame1'][0]->total); die;
 
         $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['guia_id'] = $guia_id;
@@ -2305,10 +2377,9 @@ class Guia extends BaseController {
                     $paciente_id = $paciente[0]->paciente_id;
                     $procedimento_tuss_id = $paciente[0]->procedimento_tuss_id;
                     $agenda_exames_id = $paciente[0]->agenda_exames_id;
-                    
+
                     $this->session->set_flashdata('message', $data['mensagem']);
                     redirect(base_url() . "ambulatorio/exame/examesalatodosfiladecaixa/$paciente_id/$procedimento_tuss_id/$guia_id/$agenda_exames_id", $data);
-                    
                 } else {
                     $this->session->set_flashdata('message', $data['mensagem']);
                     redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);

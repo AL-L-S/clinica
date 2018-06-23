@@ -15,22 +15,35 @@
                 </div>
 
                 <div>
-                    <label>ID Leito</label>
-                    <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->leito; ?>" readonly/>
+                    <label>Leito</label>
+                    <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->leito_nome; ?>" readonly/>
                 </div>
 
 
 
                 <div>
-                    <label>data da Internacao</label>                      
-                    <input type="text" id="data_internacao" name="data_internacao"  class="texto09" value="<?= date("d/m/Y H:i:s", strtotime($paciente[0]->data_internacao)); ?>" readonly/>
+                    <label>Data da Internacao</label>                      
+                    <input type="text" id="data_internacao" name="data_internacao"  class="texto09" value="<?= date("d/m/Y H:i:s", strtotime(@$paciente[0]->data_internacao)); ?>" readonly/>
                 </div>
 
                 <div>
-                    <label>data de Nascimento</label>                      
-                    <input type="text" id="data_nascimento" name="data_nascimento"  class="texto09" value="<?= date("d/m/Y", strtotime($paciente[0]->nascimento)); ?>" readonly/>
+                    <label>Médico Responsável Internação</label>                      
+                    <input type="text" id="data_internacao" name="medico_responsavel"  class="texto09" value="<?= @$paciente[0]->medico_internacao; ?>" readonly/>
+                </div>
+                <div>
+                    <label>Data Saída</label>                      
+                    <input type="text" id="data_internacao" name="data_internacao"  class="texto09" value="<?= date("d/m/Y H:i:s", strtotime(@$paciente[0]->data_saida)); ?>" readonly/>
                 </div>
 
+                <div>
+                    <label>Médico Responsável Saída</label>                      
+                    <input type="text" id="data_internacao" name="medico_responsavel"  class="texto09" value="<?= @$paciente[0]->medico_saida; ?>" readonly/>
+                </div>
+
+                <div>
+                    <label>Data de Nascimento</label>                      
+                    <input type="text" id="data_nascimento" name="data_nascimento"  class="texto09" value="<?= (@$paciente[0]->nascimento != '') ? date("d/m/Y", strtotime(@$paciente[0]->nascimento)) : ''; ?>" readonly/>
+                </div>
                 <div>
                     <label>Sexo</label>
                     <input type="text" id="sexo" name="sexo"  class="texto09" value="<?
@@ -52,19 +65,19 @@
             </fieldset>
 
             <fieldset>
-<? if ($paciente[0]->motivo_saida == '') { ?>
+                <? if ($paciente[0]->motivo_saida == '') { ?>
                     <div>
                         <label>Motivo de Saida</label>
                         <input type="text"  name="leito" id="leito" class="texto09" value="Transferencia - <?= $paciente[0]->hospital_transferencia ?>" readonly/>
                     </div>  
-<? } else {
-    ?>
+                <? } else {
+                    ?>
                     <div> 
                         <label>Motivo de Saida</label>
 
                         <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->motivosaida; ?>" readonly/>
                     </div> 
-<? } ?>
+                <? } ?>
 
 
                 <div>

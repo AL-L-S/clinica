@@ -13,7 +13,7 @@
     <!--<br>-->
     <? if (count($censodiario) > 0) { ?>
         <!--<hr/>-->
-        <table border='1' cellspacing=0 cellpadding=5>
+        <table border='1' cellspacing=0 cellpadding=5 style="border-collapse: collapse;font-size: 9pt">
 
             <tr>
                 <?
@@ -100,7 +100,7 @@
                         <td ><?= $item->leito; ?></td>
                         <td ><?= $item->paciente; ?></td>
                         <td ><?= $item->sexo; ?></td>
-                        <td ><?= $dateInterval->y; ?> Anos</td>
+                        <td ><?= ($item->nascimento != '')? $dateInterval->y : $item->idade; ?> Anos</td>
                         <td ><?= $item->procedimento; ?></td>
                         <td ><?= $item->cid1; ?></td>
                         <td ><?= $dateInterval2->days; ?> Dias</td>
@@ -136,7 +136,7 @@
         <br>
         <br>
         <h2>Unidades Total</h2>
-        <table border='1' cellspacing=0 cellpadding=5>
+        <table border='1' cellspacing=0 cellpadding=5 style="border-collapse: collapse;font-size: 9pt">
             <tr>
                 <th>
                     Unidade
@@ -163,7 +163,7 @@
         <br>
         <br>
         <br>
-        <table border='1' cellspacing=0 cellpadding=5>
+        <table border='1' cellspacing=0 cellpadding=5 style="border-collapse: collapse;font-size: 9pt">
             <tr>
                 <th>
                     Leitos Vagos Total

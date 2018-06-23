@@ -50,13 +50,14 @@ if (@$paciente[0] == '') {
                                 <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostratransferirpaciente/<?= $paciente[0]->paciente_id ?>">Transferir Leito</a></div></td>
                                 <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostrapermutapaciente/<?= $paciente[0]->paciente_id ?>">Permuta</a></div></td>
                                 <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostrarnovasaidapaciente/<?= $paciente[0]->internacao_id ?>">Saída</a></div></td>
+                                <td width="150px;"><div class="bt_link_new"><a target="_blank" href="<?= base_url() ?>ambulatorio/laudo/carregaranaminesehistoricogeral/<?= $paciente[0]->paciente_id ?>">Histórico </a></div></td>
                             </tr>
                             <tr>
                                 <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/prescricaopaciente/<?= $paciente[0]->internacao_id ?>">Prescrição</a></div></td> 
                                 <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/novasolicitacaointernacao/<?= $paciente[0]->internacao_id ?>/<?= $paciente[0]->paciente_id ?>">Solicitar Cirurgia</a></div></td> 
                                 <!--<td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/evolucaointernacao/<?= $paciente[0]->internacao_id ?>">Evolucao</a></div></td>--> 
                                 <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/listarevolucaointernacao/<?= $paciente[0]->internacao_id ?>"> Evolução</a></div></td>
-                                <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/termoresponsabilidade/<?= $paciente[0]->internacao_id ?>">Termo de Respon[...]</a></div></td>  
+                                <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/listarimpressoes/<?= $paciente[0]->internacao_id ?>">Impressões</a></div></td>  
                             </tr>    
                         </table>            
                     </div>

@@ -6,10 +6,16 @@
             <div>
                 <label>Nome</label>                      
                 <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
+                <input type="hidden" id="txtNome" name="internacao_id"  class="texto09" value="<?= @$internacao['0']->internacao_id; ?>" readonly/>
+                <input type="hidden" id="txtNome" name="internacao_ficha_id"  class="texto09" value="<?= $internacao_ficha_id; ?>" readonly/>
             </div>
             <div>
                 <label>Nascimento</label>
-                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
+                <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php
+                if ($paciente['0']->nascimento != '') {
+                    echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4);
+                }
+                ?>" onblur="retornaIdade()" readonly/>
             </div>
             <div>
                 <label>Idade</label>
@@ -32,37 +38,41 @@
             <legend>Dados do Responsável</legend>
             <div>
                 <label>Nome</label>                      
-                <input type="text" id="txtNome" name="nome_responsavel"  class="texto09" />
+                <input type="text" id="txtNome" name="nome_responsavel"  class="texto09" value="<?= (@$internacao[0]->nome_responsavel != '') ? @$internacao[0]->nome_responsavel : @$precadastro[0]->nome; ?>"/>
             </div>
             <div>
                 <label>CPF</label>
-                <input type="text" name="cpf_responsavel" alt="cpf" id="cpf_responsavel" class="texto03"/>
+                <input type="text" name="cpf_responsavel" alt="cpf" id="cpf_responsavel" class="texto03" value="<?= @$internacao[0]->cpf_responsavel; ?>"/>
             </div>
             <div>
                 <label>RG</label>
-                <input type="text" name="rg_responsavel" id="rg_responsavel" class="texto04"  />
+                <input type="text" name="rg_responsavel" id="rg_responsavel" class="texto04"  value="<?= @$internacao[0]->rg_responsavel; ?>"/>
             </div>
             <div>
                 <label>Grau Parentesco</label>
-                <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  />
+                <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  value="<?= (@$internacao[0]->grau_parentesco != '') ? @$internacao[0]->grau_parentesco : @$precadastro[0]->grau_parentesco; ?>"/>
+            </div>
+            <div>
+                <label>Ocupação</label>
+                <input type="text" name="ocupacao_responsavel" id="grau_parentesco" class="texto04"  value="<?= (@$internacao[0]->ocupacao_responsavel != '') ? @$internacao[0]->ocupacao_responsavel : @$precadastro[0]->ocupacao_responsavel; ?>"/>
             </div>
 
             <div>
                 <label>Endere&ccedil;o</label>
-                <input type="text" id="txtendereco" class="texto10" name="logradouro_responsavel"  />
+                <input type="text" id="txtendereco" class="texto10" name="logradouro_responsavel"  value="<?= @$internacao[0]->logradouro_responsavel; ?>"/>
             </div>
             <div>
                 <label>N&uacute;mero</label>
 
 
-                <input type="text" id="txtNumero" class="texto02" name="numero_responsavel" />
+                <input type="text" id="txtNumero" class="texto02" name="numero_responsavel" value="<?= @$internacao[0]->numero_responsavel; ?>"/>
             </div>
 
             <div>
                 <label>Bairro</label>
 
 
-                <input type="text" id="txtBairro" class="texto03" name="bairro_responsavel" />
+                <input type="text" id="txtBairro" class="texto03" name="bairro_responsavel" value="<?= @$internacao[0]->bairro_responsavel; ?>"/>
             </div>
 
 
@@ -70,15 +80,15 @@
                 <label>Município</label>
 
 
-                <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_responsavel_id"  readonly="true" />
-                <input type="text" id="txtCidade" class="texto04" name="cidade_responsavel" />
+                <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_responsavel_id"  readonly="true" value="<?= @$internacao[0]->municipio_responsavel_id; ?>"/>
+                <input type="text" id="txtCidade" class="texto04" name="cidade_responsavel" value="<?= @$internacao[0]->cidade_responsavel; ?>"/>
             </div>
             <div>
                 <label>CEP</label>
 
 
-                <input type="text" id="cep" class="texto02" name="cep_responsavel" />
-                <!--<input type="text" id="cep" class="texto02" name="cep"  value="<?= @$obj->_cep; ?>" />-->
+                <input type="text" id="cep" class="texto02" name="cep_responsavel" value="<?= @$internacao[0]->cep_responsavel; ?>"/>
+                <!--<input type="text" id="cep" class="texto02" name="cep"  value="<?= @$internacao[0]->cep; ?>" />-->
 
             </div>
 
@@ -87,49 +97,78 @@
                 <label>Telefone </label>
 
 
-                <input type="text" id="telefone_responsavel" class="texto02" name="telefone_responsavel"  />
+                <input type="text" id="telefone_responsavel" class="texto02" name="telefone_responsavel"  value="<?= @$internacao[0]->telefone_responsavel; ?>"/>
             </div>
             <div>
                 <label>Celular </label>
-                <input type="text" id="celular_responsavel" class="texto02" name="celular_responsavel" />
+                <input type="text" id="celular_responsavel" class="texto02" name="celular_responsavel" value="<?= @$internacao[0]->celular_responsavel; ?>"/>
             </div>
             <div>
                 <label>Email</label>
-                <input type="text" id="email_responsavel" class="texto05" name="email_responsavel"  />
+                <input type="text" id="email_responsavel" class="texto05" name="email_responsavel" value="<?= @$internacao[0]->email_responsavel; ?>" />
             </div>
 
 
         </fieldset>
         <fieldset>
+            <legend>Dependência</legend>
+            <? $dependencia = $this->internacao_m->listartipodependenciaquestionario(); ?>
+            <div>
+                <label>Tipo de Dependência Química</label>                      
+                <select name="tipo_dependencia" id="tipo_dependencia" class="texto05">
+                    <option value=''>Selecione</option>
+                    <?php
+                    foreach ($dependencia as $item) {
+                        ?>
+                        <option value="<?php echo $item->internacao_tipo_dependencia_id; ?>" 
+                        <?
+                        if (@$precadastro[0]->tipo_dependencia == $item->internacao_tipo_dependencia_id || $item->internacao_tipo_dependencia_id == @$internacao[0]->tipo_dependencia) {
+                            echo 'selected';
+                        }
+                        ?>>
+                                    <?php echo $item->nome; ?>           
+                        </option>
+                        <?php
+                    }
+                    ?> 
+                </select>
+            </div>
+            <div>
+                <label>Idade de Inicio</label>                      
+                <input type="number" id="idade_inicio" name="idade_inicio"  class="texto02" value="<?= (@$internacao[0]->idade_inicio != '') ? @$internacao[0]->idade_inicio : @$precadastro[0]->idade_inicio; ?>"/>
+            </div>
+        </fieldset>
+
+        <fieldset>
             <legend>Dados da internacao</legend>
             <div>
                 <label>Leito</label>
-                <input type="hidden" id="txtinternacao_id" name="internacao_id"  class="texto01" value="<?= @$obj->_internacao_id; ?>" readonly/>
-                <input type="hidden" id="txtleitoID" class="texto_id" name="leitoID" value="<?= @$obj->_leito; ?>" />
-                <input type="text" id="txtleito" class="texto08" name="txtleito" value="<?= @$obj->_leito_nome; ?>" required/>
+                <input type="hidden" id="txtinternacao_id" name="internacao_id"  class="texto01" value="<?= @$internacao[0]->internacao_id; ?>" readonly/>
+                <input type="hidden" id="txtleitoID" class="texto_id" name="leitoID" value="<?= @$internacao[0]->internacao_leito_id; ?>" />
+                <input type="text" id="txtleito" class="texto08" name="txtleito" value="<?= @$internacao[0]->leito; ?>" required/>
             </div>
             <br>
             <br>
 
             <div>
                 <label>Autorizacao Sisreg</label>
-                <input type="text" id="txtsisreg" class="texto06" name="sisreg" value="<?= @$obj->_codigo; ?>" />
+                <input type="text" id="txtsisreg" class="texto06" name="sisreg" value="<?= @$internacao[0]->codigo; ?>" />
             </div>
             <div>
                 <label>AIH</label>
-                <input type="text" id="txtaih" class="texto06" maxlength="9" name="aih" value="<?= @$obj->_aih; ?>" />
+                <input type="text" id="txtaih" class="texto06" maxlength="9" name="aih" value="<?= @$internacao[0]->aih; ?>" />
             </div>
             <div>
                 <label>Autorizacao central</label>
-                <input type="text" id="txtcentral" class="texto06" name="central" value="<?= @$obj->_prelaudo; ?>" />
+                <input type="text" id="txtcentral" class="texto06" name="central" value="<?= @$internacao[0]->prelaudo; ?>" />
             </div>
             <div>
                 <label>Medico</label>
-                <select name="operadorID" id="txtoperadorID" class="texto08" selected="<?= @$obj->_forma_de_entrada; ?>" required>
+                <select name="operadorID" id="txtoperadorID" class="texto08" selected="<?= @$internacao[0]->forma_de_entrada; ?>" required>
                     <option value="">Selecione</option>   
                     <? foreach ($medicos as $item) { ?>
                         <option value="<?= $item->operador_id ?>" <?
-                        if ($item->operador_id == @$obj->_operador) {
+                        if ($item->operador_id == @$internacao[0]->medico_id) {
                             echo 'selected';
                         }
                         ?>><?= $item->nome ?></option>   
@@ -141,89 +180,104 @@
 
                 </select>
 
-                <!--<input type="hidden" id="txtoperadorID" class="texto_id" name="operadorID" value="<?= @$obj->_operador; ?>" />-->
-                <!--<input type="text"  id="txtoperador" class="texto06" name="txtoperador" value="<?= @$obj->_operador_nome; ?>" required/>-->
+                <!--<input type="hidden" id="txtoperadorID" class="texto_id" name="operadorID" value="<?= @$internacao[0]->operador; ?>" />-->
+                <!--<input type="text"  id="txtoperador" class="texto06" name="txtoperador" value="<?= @$internacao[0]->operador_nome; ?>" required/>-->
             </div>
             <div>
                 <label>Data/hora ex.( 20/01/2010 14:30:21)</label>
-                <input type="text" required id="txtdata" class="texto08" name="data" alt="39/19/9999 29:59:59" value="<?= @$obj->_data_internacao; ?>" />
+                <input type="text" required id="txtdata" class="texto08" name="data" alt="39/19/9999 29:59:59" value="<?= (@$internacao[0]->data_internacao != '') ? date("d/m/Y H:i:s", strtotime(@$internacao[0]->data_internacao)) : ''; ?>" />
             </div>
             <div>
                 <label>Forma de entrada</label>
-                <select name="forma" id="txtforma" class="texto08" selected="<?= @$obj->_forma_de_entrada; ?>" required>
+                <select name="forma" id="txtforma" class="texto08" selected="<?= @$internacao[0]->forma_de_entrada; ?>" required>
                     <option value="">Selecione</option>
                     <option value=Residencia <?
-                    if (@$obj->_tipo == 'Residencia'):echo 'selected';
+                    if (@$internacao[0]->forma_de_entrada == 'Residencia'):echo 'selected';
                     endif;
                     ?>>Residencia</option>
                     <option value=Transferido <?
-                    if (@$obj->_tipo == 'Transferido'):echo 'selected';
+                    if (@$internacao[0]->forma_de_entrada == 'Transferido'):echo 'selected';
                     endif;
                     ?>>Transferido</option>
                     <option value=Emergencia <?
-                    if (@$obj->_tipo == 'Emergencia'):echo 'selected';
+                    if (@$internacao[0]->forma_de_entrada == 'Emergencia'):echo 'selected';
                     endif;
                     ?>>Emergencia</option>
                     <option value=Ambulatorio <?
-                    if (@$obj->_tipo == 'Ambulatorio'):echo 'selected';
+                    if (@$internacao[0]->forma_de_entrada == 'Ambulatorio'):echo 'selected';
                     endif;
                     ?>>Ambulatorio</option>
                 </select>
             </div>
             <div>
                 <label>Estado</label>
-                <select name="estado" id="txtEstado" class="size04" selected="<?= @$obj->_tipo; ?>" required>
+                <select name="estado" id="txtEstado" class="size04" selected="<?= @$internacao[0]->tipo; ?>" required>
                     <option value="">Selecione</option>
                     <option value=Bom <?
-                    if (@$obj->_tipo == 'Bom'):echo 'selected';
+                    if (@$internacao[0]->estado == 'Bom'):echo 'selected';
                     endif;
                     ?>>Bom</option>
                     <option value=Regular <?
-                    if (@$obj->_tipo == 'Regular'):echo 'selected';
+                    if (@$internacao[0]->estado == 'Regular'):echo 'selected';
                     endif;
                     ?>>Regular</option>
                     <option value=Grave <?
-                    if (@$obj->_tipo == 'Grave'):echo 'selected';
+                    if (@$internacao[0]->estado == 'Grave'):echo 'selected';
                     endif;
                     ?>>Grave</option>
                 </select>
             </div>
             <div>
                 <label>Carater</label>
-                <select name="carater" id="txtcarater" class="size04" selected="<?= @$obj->_carater; ?>" required>
+                <select name="carater" id="txtcarater" class="size04" selected="<?= @$internacao[0]->carater; ?>" required>
                     <option value="">Selecione</option>
                     <option value=Eletiva <?
-                    if (@$obj->_tipo == 'Eletiva'):echo 'selected';
+                    if (@$internacao[0]->carater_internacao == 'Eletiva'):echo 'selected';
                     endif;
                     ?>>Eletiva</option>
                     <option value=Normal <?
-                    if (@$obj->_tipo == 'Normal'):echo 'selected';
+                    if (@$internacao[0]->carater_internacao == 'Normal'):echo 'selected';
                     endif;
                     ?>>Normal</option>
                     <option value=Emergencia <?
-                    if (@$obj->_tipo == 'Emergencia'):echo 'selected';
+                    if (@$internacao[0]->carater_internacao == 'Emergencia'):echo 'selected';
                     endif;
                     ?>>Emergencia</option>
                 </select>
             </div>
+
+            <div>
+                <label>Convênio</label>
+                <select  name="convenio1" id="convenio1" class="size2" required="" >
+                    <option value="">Selecione</option>
+                    <?
+                    foreach ($convenio as $item) :
+                        ?>
+                        <option value="<?= $item->convenio_id; ?>" <? if (@$internacao[0]->convenio_id == $item->convenio_id) echo 'selected'; ?>>
+                            <?= $item->nome; ?>
+                        </option>
+                    <? endforeach; ?>
+                </select>
+            </div>
             <div>
                 <label>Procedimento</label>
-                <input type="hidden" id="txtprocedimentoID" class="texto_id" name="procedimentoID" value="<?= @$obj->_procedimento_id; ?>" />
-                <input type="text"  required id="txtprocedimento" class="texto10" name="txtprocedimento" value="<?= @$obj->_procedimento_nome; ?>" />
+                <select name="procedimento1" id="procedimento1" class="size4" data-placeholder="Selecione" tabindex="1" required="">
+                    <option value="">Selecione</option>
+                </select>
             </div>
             <div>
                 <label>CID principal</label>
-                <input type="hidden" id="txtcid1ID" class="texto_id" name="cid1ID" value="<?= @$obj->_cid1; ?>" />
-                <input type="text" id="txtcid1" class="texto10" name="txtcid1" value="<?= @$obj->_cid1_nome; ?>" required/>
+                <input type="hidden" id="txtcid1ID" class="texto_id" name="cid1ID" value="<?= @$internacao[0]->co_cid; ?>" />
+                <input type="text" id="txtcid1" class="texto10" name="txtcid1" value="<?= @$internacao[0]->no_cid; ?>" required/>
             </div>
             <div>
                 <label>CID secundario</label>
-                <input type="hidden" id="txtcid2ID" class="texto_id" name="cid2ID" value="<?= @$obj->_cid2; ?>" />
-                <input type="text" id="txtcid2" class="texto10" name="txtcid2" value="<?= @$obj->_cid2_nome; ?>" />
+                <input type="hidden" id="txtcid2ID" class="texto_id" name="cid2ID" value="<?= @$internacao[0]->co_cid2; ?>" />
+                <input type="text" id="txtcid2" class="texto10" name="txtcid2" value="<?= @$internacao[0]->no_cid2; ?>" />
             </div>
             <div>
                 <label>Justificativa</label>
-                <textarea cols="" rows="" name="observacao" id="txtobservacao" class="texto_area" value="<?= @$obj->_data_internacao; ?>"></textarea><br/>
+                <textarea cols="" rows="" name="observacao" id="txtobservacao" class="texto_area" value="<?= @$internacao[0]->data_internacao; ?>"></textarea><br/>
             </div>
         </fieldset>
         <button type="submit">Enviar</button>
@@ -347,6 +401,62 @@
                             }
                         });
                     });
+
+<? if (@$internacao[0]->procedimento_convenio_id) { ?>
+                        var procedimento_atual = <?= @$internacao[0]->procedimento_convenio_id ?>;
+<? } else { ?>
+                        var procedimento_atual = 0;
+<? } ?>
+
+                    $(function () {
+                        $('#convenio1').change(function () {
+                            if ($(this).val()) {
+                                $('.carregando').show();
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $(this).val()}, function (j) {
+                                    options = '<option value=""></option>';
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+
+
+                                    }
+//                                                    $('#procedimento1').html(options).show();
+
+                                    $('#procedimento1 option').remove();
+                                    $('#procedimento1').append(options);
+                                    $("#procedimento1").trigger("chosen:updated");
+                                    $('.carregando').hide();
+                                });
+
+                            } else {
+                                $('#procedimento1').html('<option value="">Selecione</option>');
+                            }
+                        });
+                    });
+
+
+
+                    if ($('#convenio1').val() > 0) {
+                        $('.carregando').show();
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniotodos', {convenio1: $('#convenio1').val()}, function (j) {
+                            options = '<option value=""></option>';
+                            for (var c = 0; c < j.length; c++) {
+                                if (procedimento_atual == j[c].procedimento_convenio_id) {
+                                    options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                } else {
+                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                }
+
+                            }
+//                                                    $('#procedimento1').html(options).show();
+
+                            $('#procedimento1 option').remove();
+                            $('#procedimento1').append(options);
+                            $("#procedimento1").trigger("chosen:updated");
+                            $('.carregando').hide();
+                        });
+
+                    }
+
                     $(function () {
                         $("#txtleito").autocomplete({
                             source: "<?= base_url() ?>index.php?c=autocomplete&m=leito",

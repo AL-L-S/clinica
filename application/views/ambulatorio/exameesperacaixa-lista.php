@@ -37,6 +37,13 @@
                 $consulta = $this->exame->listarexamecaixaespera(0, $_GET);
                 $total = $consulta->count_all_results();
                 $limit = 10;
+                $contador_tot = 0;
+                $grupo_pagamento = $this->formapagamento->listargrupos();
+                foreach ($grupo_pagamento as $grupo) {
+                    $lista_cont = $this->exame->listarexamecaixaespera($grupo->financeiro_grupo_id, $_GET)->groupby('g.ambulatorio_guia_id, p.nome, ae.paciente_id, g.data_criacao')->orderby('g.data_criacao')->get()->result();
+                    $contador_tot = $contador_tot + count($lista_cont);
+                }
+
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
                 if ($total > 0) {
@@ -75,13 +82,13 @@
                     <tfoot>
                         <tr>
                             <th class="tabela_footer" colspan="4">
-                                <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                                Total de registros: <?php echo $total; ?>
+                                <?php $this->utilitario->paginacao($url, $contador_tot, $pagina, $limit); ?>
+                                Total de registros: <?php echo $contador_tot; ?>
                             </th>
                         </tr>
                     </tfoot>
                 </table>
-            <? } 
+            <? }
             ?>
         </div>
     </div>

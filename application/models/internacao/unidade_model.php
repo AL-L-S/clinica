@@ -30,7 +30,7 @@ class unidade_model extends BaseModel {
             $this->db->where('internacao_unidade_id', $internacao_unidade_id);
             $query = $this->db->get();
             $return = $query->result();
-            $this->_internacao_unidade_id= $internacao_unidade_id;
+            $this->_internacao_unidade_id = $internacao_unidade_id;
             $this->_localizacao = $return[0]->localizacao;
             $this->_nome = $return[0]->nome;
         }
@@ -49,7 +49,7 @@ class unidade_model extends BaseModel {
         }
         return $this->db;
     }
-    
+
     function listasaida($args = array()) {
         $this->db->select(' internacao_motivosaida_id,
                             nome');
@@ -62,17 +62,18 @@ class unidade_model extends BaseModel {
         }
         return $this->db;
     }
-    
+
     function listaunidadepacientes() {
         $this->db->select('nome,
                 internacao_unidade_id');
         $this->db->from('tb_internacao_unidade');
         $this->db->where('ativo', 't');
+        $this->db->orderby('nome');
         $return = $this->db->get();
         return $return->result();
     }
-    
-    function listaleitounidade(){
+
+    function listaleitounidade() {
         $this->db->select('internacao_leito_id,
                            nome,
                            tipo,
@@ -85,8 +86,8 @@ class unidade_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
-    function listaenfermariaunidade($unidade){
+
+    function listaenfermariaunidade($unidade) {
 
         $this->db->select('nome,
                            internacao_enfermaria_id,
@@ -97,8 +98,8 @@ class unidade_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
-    
-    function mostrafichapaciente($leito_id){
+
+    function mostrafichapaciente($leito_id) {
 
         $this->db->select('p.nome as paciente,
                            i.internacao_id,
@@ -114,7 +115,7 @@ class unidade_model extends BaseModel {
         $this->db->where('i.leito', $leito_id);
         $this->db->where('il.ativo', 'f');
         $this->db->where('i.ativo', 't');
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -151,8 +152,7 @@ class unidade_model extends BaseModel {
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return false;
-                }
-                else
+                } else
                     $internacao_unidade_id = $this->db->insert_id();
             }
             else { // update
@@ -169,6 +169,7 @@ class unidade_model extends BaseModel {
             return false;
         }
     }
+
     function gravarmotivosaida() {
 
         try {
@@ -187,8 +188,7 @@ class unidade_model extends BaseModel {
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
                     return false;
-                }
-                else
+                } else
                     $internacao_motivosaida_id = $this->db->insert_id();
             }
             else { // update
@@ -205,15 +205,15 @@ class unidade_model extends BaseModel {
             return false;
         }
     }
-    
+
     function excluirunidade($unidade_id) {
         $this->db->set('ativo', 'f');
         $this->db->where('internacao_unidade_id', $unidade_id);
         $this->db->update('tb_internacao_unidade');
         $erro = $this->db->_error_message();
-                if (trim($erro) != "") { // erro de banco
-                    return false;
-                }
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        }
     }
 
 }

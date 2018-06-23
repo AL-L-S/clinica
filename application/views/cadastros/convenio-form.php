@@ -304,6 +304,16 @@
                
             </fieldset>
             <fieldset>
+                <legend>Pasta De Laudos</legend>
+                <div>
+                    <label>Nome da Pasta</label>
+                    <input type="text" name="convenio_pasta" class="texto06 bestupper" value="<?= @$obj->_convenio_pasta; ?>" />
+                </div>
+                
+                
+               
+            </fieldset>
+            <fieldset>
                 <legend>Observa&ccedil;&atilde;o</legend>
                 <div>
                     <textarea cols="" rows="" name="txtObservacao" class="texto_area"><?= @$obj->_observacao; ?></textarea>
