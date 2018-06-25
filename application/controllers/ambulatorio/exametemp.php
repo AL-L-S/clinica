@@ -434,25 +434,35 @@ class Exametemp extends BaseController {
 
     function gravarcredito() {
         $paciente_id = $_POST['txtpaciente_id'];
-
         $credito_id = $this->exametemp->gravarcredito();
-//        var_dump($credito_id); die;
         redirect(base_url() . "ambulatorio/exametemp/faturarcreditos/$credito_id/$paciente_id");
     }
 
     function faturarcreditos($credito_id, $paciente_id) {
         $data['forma_pagamento'] = $this->guia->formadepagamentofaturarcredito();
         $data['valor_credito'] = $this->exametemp->listarcreditofaturar($credito_id);
-
-//        echo '<pre>';
-//        var_dump($data['valor']); die;
-//        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
+        $permissoes = $this->guia->listarempresapermissoes();
         $data['paciente_id'] = $paciente_id;
-//        var_dump($paciente_id); die;
         $data['credito_id'] = $credito_id;
         $data['valor'] = 0.00;
+        
+        if($permissoes[0]->ajuste_pagamento_procedimento == 't') {
+            $this->load->View('ambulatorio/faturarcreditopersonalizado-form', $data);
+        }
+        else {
+            $this->load->View('ambulatorio/faturarcredito-form', $data);
+        }
+    }
 
-        $this->load->View('ambulatorio/faturarcredito-form', $data);
+    function gravarfaturarcreditopersonalizado() {
+        $this->guia->gravarfaturarcreditopersonalizado();
+//        var_dump($_POST['paciente_teste_id']);
+//        die;
+        $credito_id = $_POST['credito_id'];
+        $paciente_id = $_POST['paciente_teste_id'];
+//        $data['agenda_exames_id'] = $agenda_exames_id;
+//        $this->load->View('ambulatorio/faturar-form', $data);
+        redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
     }
 
     function gravarfaturarcredito() {

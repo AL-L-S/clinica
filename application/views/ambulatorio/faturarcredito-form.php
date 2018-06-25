@@ -20,12 +20,6 @@
                                 <!--<input type="hidden" name="financeiro_grupo_id" id="financeiro_grupo_id" class="texto01" value="<?= $financeiro_grupo_id; ?>"/>-->
                             </td>
                         </tr>
-
-<!--                        <tr>
-                            <td style="text-align: left">
-                                Desconto 
-                            </td>
-                        </tr>-->
                         <tr>
                             <td>
                                 <input type="hidden" name="desconto" id="desconto" size="7" value="<?= $valor; ?>" class="texto01"/>
@@ -274,8 +268,7 @@
 
                                     $(document).ready(function () {
 
-                                        function multiplica()
-                                        {
+                                        function multiplica() {
 
                                             total = 0;
                                             valor = parseFloat(document.form_faturar.valorcadastrado.value.replace(",", "."));

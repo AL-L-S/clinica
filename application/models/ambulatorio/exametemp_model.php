@@ -32,7 +32,7 @@ class exametemp_model extends Model {
 
     function listarcreditofaturar($credito_id) {
 
-        $this->db->select('pcr.valor');
+        $this->db->select('pcr.valor, pcr.forma_pagamento_ajuste, pcr.valor_forma_pagamento_ajuste as valor_ajuste');
         $this->db->from('tb_paciente_credito pcr');
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->where('pcr.empresa_id', $empresa_id);
@@ -2523,10 +2523,21 @@ class exametemp_model extends Model {
             $this->db->where('e.empresa_id', $empresa_id);
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
             $return = $this->db->get()->result();
-
+            
+            if(isset($_POST['valorAjuste']) && $_POST['valorAjuste'] != 0){
+                $valorAjuste = (float) $_POST['valorAjuste'];
+                $this->db->set('valor_forma_pagamento_ajuste', $valorAjuste);
+                $this->db->set('forma_pagamento_ajuste', $_POST['formapamento']);                
+            }
+            
             if ($return[0]->associa_credito_procedimento == 't') {
                 $this->db->set('ativo', 'f'); //So irá setar para true quando for faturado
-                $this->db->set('valor', $_POST['valor1']);
+                if(isset($valorAjuste)){
+                    $this->db->set('valor', $valorAjuste);
+                }
+                else {
+                    $this->db->set('valor', $_POST['valor1']);
+                }
                 $this->db->set('procedimento_convenio_id', $_POST['procedimento1']);
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->set('data', date("Y-m-d"));
@@ -2543,7 +2554,13 @@ class exametemp_model extends Model {
                 $paciente_credito_id = $this->db->insert_id();
             } else {
                 $this->db->set('ativo', 'f'); //So irá setar para true quando for faturado
-                $this->db->set('valor', (float) str_replace(',', '.', str_replace('.', '', $_POST['valor1'])));
+                
+                if(isset($valorAjuste)){
+                    $this->db->set('valor', $valorAjuste);
+                }
+                else {
+                    $this->db->set('valor', (float)str_replace(',', '.', str_replace('.', '', $_POST['valor1'])));
+                }
                 $this->db->set('data', date("Y-m-d"));
                 $this->db->set('paciente_id', $_POST['txtpaciente_id']);
 
