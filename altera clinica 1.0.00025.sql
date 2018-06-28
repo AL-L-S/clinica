@@ -287,3 +287,84 @@ SELECT insereValor();
 -- Dia 25/06/2018
 ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento_ajuste integer;
 ALTER TABLE ponto.tb_paciente_credito ADD COLUMN valor_forma_pagamento_ajuste numeric(10,2);
+
+--  Dia 28/06/2018
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2385');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000025',
+            'Com esta melhoria, em manter procedimento (ao ativar a flag de procedimentos multiempresa) mostrar uma legenda com as cores presentes no campo valor.',
+            '2385',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2386');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000025',
+            'Adicionada uma flag no cadastro de empresa para saber se elá irá usar a tela de preço procedimento ou apenas a tela de orçamento.',
+            '2386',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2387');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000025',
+            'O campo "Forma de Pagamento" passa a ser obrigatorio no orçamento e no momento de lançar algum procedimento (caso esteja marcado que á empresa vá usar ajuste no procedimento).',
+            '2387',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2421');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000025',
+            'Adicionada uma flag no cadastro de empresa para saber se elá irá usar a tela de preço procedimento ou apenas a tela de orçamento.',
+            '2421',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();

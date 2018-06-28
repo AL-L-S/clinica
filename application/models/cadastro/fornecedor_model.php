@@ -134,9 +134,16 @@ class fornecedor_model extends Model {
             $cpf = str_replace("-", "", str_replace(".", "", $_POST['txtCPF']));
             $cnpj =  str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ'])));
             
+//            var_dump($cnpj, $cpf);
+            
             $this->db->select('financeiro_credor_devedor_id');
             $this->db->from('tb_financeiro_credor_devedor fcd');
-            $this->db->where("(fcd.cpf = '{$cpf}' OR fcd.cnpj = '{$cnpj}')");
+            if($cpf != ''){
+                $this->db->where("fcd.cpf", $cpf);
+            }
+            if($cnpj != ''){
+                $this->db->where("fcd.cnpj", $cnpj);
+            }
             $this->db->where("fcd.ativo", 't');
             $return = $this->db->get()->result();
             
@@ -145,9 +152,9 @@ class fornecedor_model extends Model {
             $financeiro_credor_devedor_id = $_POST['txtcadastrosfornecedorid'];
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
             $this->db->set('cep', $_POST['txttipo_id']);
-            $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['txtCPF'])));
-            if ($_POST['txtCNPJ'] != '') {
-                $this->db->set('cnpj', str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ'])));
+            $this->db->set('cpf', $cpf);
+            if ($cnpj != '') {
+                $this->db->set('cnpj', $cnpj);
             }
             $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['telefone']))));
             $this->db->set('celular', str_replace("(", "", str_replace(")", "", str_replace("-", "", $_POST['celular']))));
@@ -166,7 +173,8 @@ class fornecedor_model extends Model {
 
             
             if ($_POST['txtcadastrosfornecedorid'] == "") {// insert
-                
+//                echo "<pre>";
+//                var_dump($return); die;
                 if(count($return) > 0){
                     return -1;
                 }
