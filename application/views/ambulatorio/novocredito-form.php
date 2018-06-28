@@ -24,13 +24,10 @@
 
                     <div>
                         <label>Nascimento</label>
-
-
                         <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" readonly/>
                     </div>
 
                     <div>
-
                         <label>Idade</label>
                         <input type="text" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= $paciente['0']->idade; ?>" readonly />
 
@@ -39,7 +36,8 @@
 
                 <fieldset>
                     <table>
-                        <? if (@$permissoes[0]->associa_credito_procedimento == 't') { ?>
+                        <? 
+                        if (@$permissoes[0]->associa_credito_procedimento == 't') { ?>
                             <tr>
                                 <td>Convenio</td>
                                 <td>
@@ -53,7 +51,6 @@
                             </tr>
 
                             <tr>
-
                                 <td>Procedimento</td>
                                 <td>
                                     <select name="procedimento1" id="procedimento1" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
@@ -76,21 +73,28 @@
                                 <td>Valor Unitario</td>
                                 <td><input type="text" name="valor1" id="valor1" class="texto02" alt="decimal" required/></td>
                             </tr>                            
-<? } ?>
-                    <!--<tr>
-                    
-                    <td>Forma de Pagamento</td>
-                    <td>
-                        <select name="forma_pagamento" id="forma_pagamento" class="size2" required>
-                            <option value="">Selecione</option>
-                        <? // foreach ($forma_pagamento as $item) : //Não vai mostrar forma de pagamento credito.
-//                                    if ($item->forma_pagamento_id == 1000 ) continue; 
+                        <?    
+                        } 
+                        
+                        if(@$permissoes[0]->ajuste_pagamento_procedimento == 't'){ 
                         ?>
-                                <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-<? // endforeach;  ?>
-                        </select>
-                    </td>-->
-                        </tr>
+                            <tr class="ajustePagamento">
+                                <td>Forma de Pagamento</td>
+                                <td>
+                                    <select name="formapamento" id="formapamento" class="size2" onchange="buscaValorAjustePagamentoProcedimento()">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($forma_pagamento as $item) :
+                                            if ($item->forma_pagamento_id == 1000) continue; ?>
+                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="ajustePagamento">
+                                <td>Valor Ajuste</td>
+                                <td><input type="text" name="valorAjuste" id="valorAjuste" class="texto02" readonly=""/></td>
+                            </tr>  
+                        <? } ?>
                     </table>
 
                     <hr/>
@@ -170,35 +174,58 @@
             }
         });
     });
+    <? 
+    if(@$permissoes[0]->ajuste_pagamento_procedimento == 't'){ 
+        ?>
+        $(function () {
+            $('#procedimento1').change(function () {
+                if ($(this).val()) {
+                    $('.carregando').show();
 
+                    var procedimento = $(this).val();
+                    $("#formapamento").prop('required', false);
+                    $("#valorAjuste").val('');
 
-//    $(document).ready(function(){
-//        jQuery('#form_guia').validate( {
-//            rules: {
-//                medico1: {
-//                    required: true,
-//                    minlength: 3
-//                },
-//                crm: {
-//                    required: true
-//                },
-//                sala1: {
-//                    required: true
-//                }
-//            },
-//            messages: {
-//                medico1: {
-//                    required: "*",
-//                    minlength: "!"
-//                },
-//                crm: {
-//                    required: "*"
-//                },
-//                sala1: {
-//                    required: "*"
-//                }
-//            }
-//        });
-//    });
+                    $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
+
+                        verificaAjustePagamentoProcedimento(procedimento);
+                        var options = '<option value="">Selecione</option>';
+                        for (var c = 0; c < j.length; c++) {
+                            if (j[c].forma_pagamento_id != null) {
+                                options += '<option value="' + j[c].forma_pagamento_id + '">' + j[c].nome + '</option>';
+                            }
+                        }
+                        $('#formapamento').html(options).show();
+                        $('.carregando').hide();
+
+                    });
+                }
+            });
+        });
+        <? 
+    } 
+    ?>
+
+    
+    function verificaAjustePagamentoProcedimento(procedimentoConvenioId){
+        <? if(@$permissoes[0]->ajuste_pagamento_procedimento == 't'){ ?>
+            $.getJSON('<?= base_url() ?>autocomplete/verificaAjustePagamentoProcedimento', {procedimento: procedimentoConvenioId, ajax: true}, function (p) {
+                if (p.length != 0) {
+                    $("#formapamento").prop('required', true);
+                }
+            });
+        <? } ?>
+    }
+
+    function buscaValorAjustePagamentoProcedimento(){                                    
+        $.getJSON('<?= base_url() ?>autocomplete/buscaValorAjustePagamentoProcedimento', {procedimento: $('#procedimento1').val(), forma: $('#formapamento').val(), ajax: true}, function (p) {
+            if (p.length != 0) {
+                $("#valorAjuste").val(p[0].ajuste);
+            }
+            else{
+                $("#valorAjuste").val('');
+            }
+        });
+    }
 
 </script>

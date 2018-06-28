@@ -9245,6 +9245,52 @@ class guia_model extends Model {
         }
     }
 
+    function gravarfaturarcreditopersonalizado() {
+        try {
+            
+            $desconto = $_POST['desconto'];
+            $valor1 = $_POST['valor1'];
+            $valor2 = $_POST['valor2'];
+            $valor3 = $_POST['valor3'];
+            $valor4 = $_POST['valor4'];
+
+            if ($_POST['formapamento1'] != '') {
+                $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                $this->db->set('valor1', (float)str_replace(",", ".", $valor1));
+                $this->db->set('parcelas1', 1);
+                $this->db->set('desconto_ajuste1', 0);
+            }
+            if ($_POST['formapamento2'] != '') {
+                $this->db->set('forma_pagamento2', $_POST['formapamento2']);
+                $this->db->set('valor2', (float)str_replace(",", ".", $valor2));
+                $this->db->set('parcelas2', 1);
+                $this->db->set('desconto_ajuste2', 0);
+            }
+            if ($_POST['formapamento3'] != '') {
+                $this->db->set('forma_pagamento3', $_POST['formapamento3']);
+                $this->db->set('valor3', (float)str_replace(",", ".", $valor3));
+                $this->db->set('parcelas3', 1);
+                $this->db->set('desconto_ajuste3', 0);
+            }
+            if ($_POST['formapamento4'] != '') {
+                $this->db->set('forma_pagamento4', $_POST['formapamento4']);
+                $this->db->set('valor4', (float)str_replace(",", ".", $valor4));
+                $this->db->set('parcelas4', 1);
+                $this->db->set('desconto_ajuste4', 0);
+            }
+            
+            $this->db->set('ativo', 't');
+            $this->db->set('faturado', 't');
+            $this->db->where('paciente_credito_id', $_POST['credito_id']);
+            $this->db->update('tb_paciente_credito');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravaralterardata($agenda_exames_id) {
         try {
             /* inicia o mapeamento no banco */

@@ -284,5 +284,8 @@ END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
+-- Dia 25/06/2018
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento_ajuste integer;
+ALTER TABLE ponto.tb_paciente_credito ADD COLUMN valor_forma_pagamento_ajuste numeric(10,2);
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN botao_laudo_paciente boolean DEFAULT true;
