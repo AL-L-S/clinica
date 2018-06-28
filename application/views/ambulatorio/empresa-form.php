@@ -757,6 +757,12 @@
                                 <input type="checkbox" id="botao_arquivos_paciente" name="botao_arquivos_paciente" <? if (@$obj->_botao_arquivos_paciente == 't') echo "checked"; ?>/> 
                             </dd>
                             <dt>
+                                <label title="Ativando essa opção o botão de laudo irá aparecer no sistema de pacientes">Botão Laudo no Sistema Paciente</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="botao_laudo_paciente" name="botao_laudo_paciente" <? if (@$obj->_botao_laudo_paciente == 't') echo "checked"; ?>/> 
+                            </dd>
+                            <dt>
                                 <label title="Ativando essa opção irá aparecer a opção de informar o ajuste no cadastro de pagamento (procedimento). Além disso, a tela de faturamento irá mudar">Ajuste no Pagamento (Procedimento)</label>
                             </dt>
                             <dd>

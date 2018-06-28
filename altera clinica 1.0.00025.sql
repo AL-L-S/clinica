@@ -288,6 +288,7 @@ SELECT insereValor();
 ALTER TABLE ponto.tb_paciente_credito ADD COLUMN forma_pagamento_ajuste integer;
 ALTER TABLE ponto.tb_paciente_credito ADD COLUMN valor_forma_pagamento_ajuste numeric(10,2);
 
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN botao_laudo_paciente boolean DEFAULT true;
 --  Dia 28/06/2018
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
