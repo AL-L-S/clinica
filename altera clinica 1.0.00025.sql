@@ -283,3 +283,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN botao_laudo_paciente boolean DEFAULT true;

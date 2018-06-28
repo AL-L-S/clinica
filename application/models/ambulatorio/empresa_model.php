@@ -1341,6 +1341,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('botao_arquivos_paciente', 'f');
                     }
+                    if (isset($_POST['botao_laudo_paciente'])) {
+                        $this->db->set('botao_laudo_paciente', 't');
+                    } else {
+                        $this->db->set('botao_laudo_paciente', 'f');
+                    }
                     if (isset($_POST['cpf_obrigatorio'])) {
                         $this->db->set('cpf_obrigatorio', 't');
                     } else {
@@ -1584,7 +1589,7 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('ajuste_pagamento_procedimento', 'f');
                     }
-                    
+
                     if (isset($_POST['retirar_preco_procedimento'])) {
                         $this->db->set('retirar_preco_procedimento', 't');
                     } else {
@@ -1646,6 +1651,11 @@ class empresa_model extends Model {
                         $this->db->set('botao_arquivos_paciente', 't');
                     } else {
                         $this->db->set('botao_arquivos_paciente', 'f');
+                    }
+                    if (isset($_POST['botao_laudo_paciente'])) {
+                        $this->db->set('botao_laudo_paciente', 't');
+                    } else {
+                        $this->db->set('botao_laudo_paciente', 'f');
                     }
                     if (isset($_POST['gerente_relatorio_financeiro'])) {
                         $this->db->set('gerente_relatorio_financeiro', 't');
@@ -1935,13 +1945,13 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('percentual_multiplo', 'f');
                     }
-                    
+
                     if (isset($_POST['ajuste_pagamento_procedimento'])) {
                         $this->db->set('ajuste_pagamento_procedimento', 't');
                     } else {
                         $this->db->set('ajuste_pagamento_procedimento', 'f');
                     }
-                    
+
                     if (isset($_POST['retirar_preco_procedimento'])) {
                         $this->db->set('retirar_preco_procedimento', 't');
                     } else {
@@ -2089,6 +2099,7 @@ class empresa_model extends Model {
                                f.horario_sab_inicio,
                                f.horario_sab_fim,
                                ep.percentual_multiplo,
+                               ep.botao_laudo_paciente,
                                ep.ajuste_pagamento_procedimento,
                                ep.retirar_preco_procedimento,
                                ');
@@ -2105,6 +2116,7 @@ class empresa_model extends Model {
             $this->_celular = $return[0]->celular;
             $this->_farmacia = $return[0]->farmacia;
             $this->_telefone = $return[0]->telefone;
+            $this->_botao_laudo_paciente = $return[0]->botao_laudo_paciente;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
             $this->_subgrupo = $return[0]->subgrupo;
