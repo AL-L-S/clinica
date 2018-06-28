@@ -102,7 +102,7 @@
 <!--                        <select name="procedimentos" id="procedimentos" class="size1" >
                             <option value='0' >TODOS</option>
                         <? foreach ($procedimentos as $value) : ?>
-                                        <option value="<?= $value->procedimento_tuss_id; ?>" ><?php echo $value->nome; ?></option>
+                                                <option value="<?= $value->procedimento_tuss_id; ?>" ><?php echo $value->nome; ?></option>
                         <? endforeach; ?>
 
                         </select>-->
@@ -115,7 +115,7 @@
 
                     </dd>
                     <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento'); ?>
-                    <? if($subgrupo_procedimento == 't') { ?>
+                    <? if ($subgrupo_procedimento == 't') { ?>
                         <dt>
                             <label>Subgrupo</label>
                         </dt>
@@ -195,6 +195,11 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Paciente</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="nome" class="texto06"/>
+                    </dd>
                     <dt>
                         <label>Medico</label>
                     </dt>
@@ -202,7 +207,7 @@
                                             <select name="medico" id="medico" class="size2">
                                                 <option value="0">TODOS</option>
                     <? foreach ($medicos as $value) : ?>
-                                                            <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
+                                                                    <option value="<?= $value->operador_id; ?>" ><?php echo $value->nome; ?></option>
                     <? endforeach; ?>
                     
                                             </select>
@@ -216,9 +221,9 @@
 
                         </select>
                     </dd>
-<!--                    <div id="testandoobr">
-
-                    </div>-->
+                    <!--                    <div id="testandoobr">
+                    
+                                        </div>-->
                     <!--<br>-->
 
                     <dt>
@@ -286,7 +291,7 @@
 //            $("#horario_fim").prop('required', false);
 
         }
-        
+
     });
     $("#div-filtro-hora").hide();
 
