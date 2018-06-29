@@ -16,6 +16,7 @@
                     </dt>
                     <dd>
                         <input type="text" name="valor" alt="decimal" class="texto04"/>
+                        <input type="hidden" id="parametros" name="parametros" value="<?= @$parametros; ?>" />
                     </dd>
                     <dt>
                         <label>Data*</label>

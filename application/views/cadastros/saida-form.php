@@ -17,6 +17,7 @@
                     <dd>
                         <input type="text" name="valor"  id="valor" alt="decimal" class="texto04" value="<?= @$obj->_valor; ?>"/>
                         <input type="hidden" id="saida_id" class="texto_id" name="saida_id" value="<?= @$obj->_saida_id; ?>" />
+                        <input type="hidden" id="parametros" name="parametros" value="<?= @$parametros; ?>" />
                     </dd>
                     <dt>
                         <label>Data*</label>

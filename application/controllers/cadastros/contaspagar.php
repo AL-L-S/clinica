@@ -38,7 +38,7 @@ class Contaspagar extends BaseController {
         $this->loadView('cadastros/contaspagar-lista', $args);
     }
 
-    function carregar($financeiro_contaspagar_id, $empresa_id = null) {
+    function carregar($financeiro_contaspagar_id, $empresa_id = null, $parametros = null) {
         $obj_contaspagar = new contaspagar_model($financeiro_contaspagar_id);
         $data['obj'] = $obj_contaspagar;
         $data['conta'] = $this->forma->listarformaempresa();
@@ -46,6 +46,7 @@ class Contaspagar extends BaseController {
         $data['classe'] = $this->classe->listarclasse();
         $data['empresas'] = $this->exame->listarempresas();
         $data['empresa_id'] = $empresa_id;
+        $data['parametros'] = $parametros;
         $this->loadView('cadastros/contaspagar-form', $data);
     }
 
@@ -422,7 +423,8 @@ class Contaspagar extends BaseController {
             $data['mensagem'] = 'Sucesso ao gravar a Contas a pagar.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+        
+        redirect(base_url() . "cadastros/contaspagar/pesquisar?".@$_POST['parametros']);
     }
 
     function confirmar($financeiro_contaspagar_id) {

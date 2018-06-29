@@ -16,6 +16,7 @@
                     </dt>
                     <dd>
                         <input type="hidden" id="financeiro_contaspagar_id" class="texto_id" name="financeiro_contaspagar_id" value="<?= @$obj->_financeiro_contaspagar_id; ?>" />
+                        <input type="hidden" id="parametros" name="parametros" value="<?= @$parametros; ?>" />
                         <input type="text" name="valor" id="valor" alt="decimal" class="texto04" value="<?= @$obj->_valor; ?>"/>
                     </dd>
                     <dt>

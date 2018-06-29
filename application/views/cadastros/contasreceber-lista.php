@@ -5,10 +5,15 @@ if (@$_GET['txtempresa'] != '') {
 } else {
     $empresa_form_id = $empresa_id;
 }
+if (count($_GET) > 0) {
+    $url = "txtempresa=".@$_GET['txtempresa']."&conta=".@$_GET['conta']."&datainicio=".@$_GET['datainicio']
+            ."&datafim=".@$_GET['datafim']."&nome=".@$_GET['nome']."&nome_classe=".@$_GET['nome_classe']
+            ."&empresa=".@$_GET['empresa']."&obs=".@$_GET['obs'];
+}
 ?>
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
-        <a target="_blank" href="<?php echo base_url() ?>cadastros/contasreceber/carregar/0/<?=@$empresa_form_id ?>">
+        <a href="<?php echo base_url() ?>cadastros/contasreceber/carregar/0/<?=@$empresa_form_id ?>/<?=@$url?>">
             Nova Conta
         </a>
     </div>
@@ -218,7 +223,7 @@ if (@$_GET['txtempresa'] != '') {
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="7">
+                        <th class="tabela_footer" colspan="9">
 <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?> 
                         </th>

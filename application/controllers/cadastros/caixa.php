@@ -57,21 +57,23 @@ class Caixa extends BaseController {
         $this->loadView('cadastros/saida-form', $data);
     }
 
-    function novaentrada($empresa_id = null) {
+    function novaentrada($empresa_id = null, $parametros = null) {
         $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
         $data['conta'] = $this->forma->listarformaempresa();
         $data['empresas'] = $this->exame->listarempresas();
         $data['empresa_id'] = $empresa_id;
+        $data['parametros'] = $parametros;
         $this->loadView('cadastros/entrada-form', $data);
     }
 
-    function novasaida($empresa_id = null) {
+    function novasaida($empresa_id = null, $parametros = null) {
         $data['tipo'] = $this->tipo->listartipo();
         $data['classe'] = $this->classe->listarclasse();
         $data['conta'] = $this->forma->listarformaempresa();
         $data['empresas'] = $this->exame->listarempresas();
         $data['empresa_id'] = $empresa_id;
+        $data['parametros'] = $parametros;
         $this->loadView('cadastros/saida-form', $data);
     }
 
@@ -155,7 +157,7 @@ class Caixa extends BaseController {
         } else {
             $data['mensagem'] = 'Sucesso ao gravar a entrada.';
         }
-        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+        redirect(base_url() . "cadastros/caixa/pesquisar?".@$_POST['parametros']);
     }
 
     function gravarsaida() {
@@ -165,7 +167,8 @@ class Caixa extends BaseController {
         } else {
             $data['mensagem'] = 'Sucesso ao gravar a Saida.';
         }
-        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+        
+        redirect(base_url() . "cadastros/caixa/pesquisar2?".@$_POST['parametros']);
     }
 
     function gravartransferencia() {

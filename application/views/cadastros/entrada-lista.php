@@ -5,11 +5,17 @@ if (@$_GET['txtempresa'] != '') {
 } else {
     $empresa_form_id = $empresa_id;
 }
+if (count($_GET) > 0) {
+    $url = "txtempresa=".@$_GET['txtempresa']."&conta=".@$_GET['conta']."&datainicio=".@$_GET['datainicio']
+            ."&datafim=".@$_GET['datafim']."&nome=".@$_GET['nome']."&nome_classe=".@$_GET['nome_classe']
+            ."&empresa=".@$_GET['empresa']."&obs=".@$_GET['obs'];
+}
+
 ?>
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
-        <a target="_blank" href="<?php echo base_url() ?>cadastros/caixa/novaentrada/<?= @$empresa_form_id ?>">
+        <a target="_blank" href="<?php echo base_url() ?>cadastros/caixa/novaentrada/<?= @$empresa_form_id ?>/<?=@$url?>">
             Nova entrada
         </a>
     </div>
