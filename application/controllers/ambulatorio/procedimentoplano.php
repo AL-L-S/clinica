@@ -454,6 +454,10 @@ class Procedimentoplano extends BaseController {
     }
     
     function percentualmedicomultiplo($convenio_id = null, $medico_id = null) {
+//        ini_set('display_errors',1);
+//        ini_set('display_startup_erros',1);
+//        error_reporting(E_ALL);
+        
         $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
         $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();

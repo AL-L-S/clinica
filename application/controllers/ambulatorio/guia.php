@@ -1756,6 +1756,7 @@ class Guia extends BaseController {
     function novoatendimento($paciente_id, $ambulatorio_guia_id = null) {
         $data['paciente_id'] = $paciente_id;
         $data['convenio'] = $this->convenio->listardados();
+//        var_dump($data['convenio']); die;
         $data['salas'] = $this->guia->listarsalas();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['forma_pagamento'] = $this->guia->formadepagamento();

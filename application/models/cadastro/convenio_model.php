@@ -75,6 +75,10 @@ class Convenio_model extends Model {
         }
 
         $this->db->orderby("c.nome");
+        $this->db->groupby("c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id");
         $query = $this->db->get();
         $return = $query->result();
 

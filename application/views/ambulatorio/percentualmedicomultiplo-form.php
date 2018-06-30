@@ -93,7 +93,11 @@
                                 <td class="tabela_title">Limpar?</td>
                             </tr>
                             <? 
+                            ini_set('display_errors',1);
+                            ini_set('display_startup_erros',1);
+                            error_reporting(E_ALL);
                             $i = 0;
+//                            var_dump($procedimento); die;
                             foreach($procedimento as $item){ ?>
                                 <tr class="linhaTabela">
                                     <td class="<?= $item->convenio_id ?>"><?= $item->convenio ?></td>
