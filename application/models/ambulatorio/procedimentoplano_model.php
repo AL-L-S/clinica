@@ -4344,7 +4344,7 @@ class procedimentoplano_model extends Model {
     function gravarpercentualmedicomultiplo() {
         try {
             $grupo = "TODOS";
-            $convenio = $_POST['covenio'];
+            $convenio = $_POST['convenio_id'];
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             

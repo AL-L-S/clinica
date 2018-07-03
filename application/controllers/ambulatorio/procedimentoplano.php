@@ -454,11 +454,10 @@ class Procedimentoplano extends BaseController {
     }
     
     function percentualmedicomultiplo($convenio_id = null, $medico_id = null) {
-//        ini_set('display_errors',1);
-//        ini_set('display_startup_erros',1);
-//        error_reporting(E_ALL);
-        
-        $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+        $data['procedimento'] = array();
+        if ($convenio_id != null && $convenio_id != ''){
+            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+        }
         $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
@@ -469,7 +468,10 @@ class Procedimentoplano extends BaseController {
     }
     
     function percentualpromotormultiplo($convenio_id = null, $promotor_id = null) {
-        $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+        $data['procedimento'] = array();
+        if ($convenio_id != null && $convenio_id != ''){
+            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+        }
         $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
@@ -481,7 +483,10 @@ class Procedimentoplano extends BaseController {
     
     
     function percentuallaboratoriomultiplo($convenio_id = null, $laboratorio_id = null) {
-        $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+        $data['procedimento'] = array();
+        if ($convenio_id != null && $convenio_id != ''){
+            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+        }
         $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['laboratorios'] = $this->laboratorio->listarlaboratorios();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();

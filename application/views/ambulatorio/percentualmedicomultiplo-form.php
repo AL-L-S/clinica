@@ -20,20 +20,25 @@
                             <? endforeach; ?>
                         </select>
                     </dd>
+                    <dt>
+                        <label>Convênio</label>
+                    </dt>
+                    <dd>
+                        <select name="convenio_id" id="convenio_id" class="size2">
+                            <option value="">Selecione</option>
+                            <? foreach ($convenio as $value) : ?>
+                                <option value="<?= $value->convenio_id; ?>" <? if (@$convenio_id == $value->convenio_id) echo'selected';?>>
+                                    <?php echo $value->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
                     
                     <br>
                     
                     <div class="divTabela">
                         <table id="procedimentos">
                             <tr id="trBase">
-                                <td>
-                                    <select name="convenioText" id="convenioText" class="size1">
-                                        <option value="">Selecione</option>
-                                        <? foreach ($convenio as $value) : ?>
-                                        <option value="<?= $value->convenio_id; ?>"><?php echo $value->nome; ?></option>
-                                        <? endforeach; ?>
-                                    </select>
-                                </td>
                                 <td>
                                     <select id="grupoText" class="size1">
                                         <option value="">Selecione</option>
@@ -81,7 +86,6 @@
                                 </td>
                             </tr>
                             <tr id="trBase">
-                                <td class="tabela_title">Convenio</td>
                                 <td class="tabela_title">Grupo</td>
                                 <td class="tabela_title">Procedimento</td>
                                 <td class="tabela_title"></td>
@@ -93,14 +97,10 @@
                                 <td class="tabela_title">Limpar?</td>
                             </tr>
                             <? 
-                            ini_set('display_errors',1);
-                            ini_set('display_startup_erros',1);
-                            error_reporting(E_ALL);
                             $i = 0;
 //                            var_dump($procedimento); die;
                             foreach($procedimento as $item){ ?>
                                 <tr class="linhaTabela">
-                                    <td class="<?= $item->convenio_id ?>"><?= $item->convenio ?></td>
                                     <td class="<?= $item->grupo ?>"><?= $item->grupo ?></td>
                                     <td colspan="2" class="<?= $item->procedimento_tuss_id ?>">
                                         <input type="hidden" name="procedimento_convenio_id[<?= $i ?>]" value="<?= $item->procedimento_convenio_id ?>"/>
@@ -186,6 +186,12 @@
         }); 
     });
     
+    $(function () {
+        $('#convenio_id').change(function () {
+            window.open('<?= base_url() ?>ambulatorio/procedimentoplano/percentualmedicomultiplo/' + $(this).val(), '_self');
+        }); 
+    });
+    
     function aplicandoValores(){
         
         var tr = document.getElementById('procedimentos').getElementsByTagName("tr"),
@@ -212,7 +218,6 @@
     
     function filtrarTabela() {
         var procedimento = document.getElementById("procedimentoText").value;
-        var convenio = document.getElementById("convenioText").value;
         var grupo = document.getElementById("grupoText").value;
         
         var tr = document.getElementById('procedimentos').getElementsByTagName("tr")
@@ -222,20 +227,11 @@
                 
                 var td = tr[i].getElementsByTagName("td");
                 
-                var visivelConv = true, visivelGrupo = true;
-                
-                // Filtro do convenio
-                if (convenio == td[0].getAttribute("class") || convenio == '') {
-                    tr[i].style.display = "";
-                } 
-                else {
-                    visivelConv = false;
-                    tr[i].style.display = "none";
-                }
+                var visivelGrupo = true;
                 
                 // Filtro do grupo
-                if (grupo == td[1].getAttribute("class") || grupo == '') {
-                    if (visivelConv) tr[i].style.display = "";
+                if (grupo == td[0].getAttribute("class") || grupo == '') {
+                    tr[i].style.display = "";
                 } 
                 else { 
                     visivelGrupo = false;
@@ -244,7 +240,7 @@
                 
                 // Filtro do procedimento
                 if (procedimento == td[2].getAttribute("class") || procedimento == '') {
-                    if (visivelConv && visivelGrupo) tr[i].style.display = "";
+                    if (visivelGrupo) tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";
                 }
