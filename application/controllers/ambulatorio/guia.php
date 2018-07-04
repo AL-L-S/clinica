@@ -3447,7 +3447,62 @@ class Guia extends BaseController {
         $data['relatorio'] = $this->guia->relatorionotafiscal($_POST['guia']);
         $this->load->View('ambulatorio/impressaorelatorionotafiscal', $data);
     }
-
+    
+    function gerarXmlLoteRPS(){
+        $relatorio = $this->guia->listarnotasfiscais();
+        
+        $lotes = array();
+        $j = 0; // A cada vez que i chega a 50, essa variavel incrementa
+        $i = 0; 
+        
+        foreach ($relatorio as $item){
+            $indentificacaoRPS = array(
+                "Numero" => '', // Fica a cargo do sistema STG
+                "Serie" => '', // Fica a cargo do sistema STG
+                "Tipo" => '1' // 1 - RPS | 2 - NF conjugada | 3 - Cupom
+            );
+            
+            $sevico = array(
+                
+            );
+            
+            $rps[]["InfRps"] = array(
+                "IdentificacaoRps" => $indentificacaoRPS,
+                "DataEmissao" => date("Y-m-d")."T".date("h:i:s"),
+                "NaturezaOperacao" => '01', // 01 - Tributação no municipio | 02 - Tributação fora do municipio | 03 - Isenção | 04 - Imune
+                "RegimeEspecialTributacao" => '', // 1 - Microempresa municipal | 2 - Estimativa | 3 – Sociedade de profissionais | 4 – Cooperativa | 5 - MEI | 6 - ME EPP
+                "OptanteSimplesNacional" => '', // 1 - SIM | 2 - NAO
+                "IncentivadorCultural" => '2', // 1 - SIM | 2 - NAO
+                "Status" => '', // 1 - Gerar nota normal | 2 - Gerar uma nota cancelada
+                "RpsSubstituido" => array(), // Só preencha caso deseje gerar uma nota já cancelada (campos iguais ao IndentificacaoRps)
+                "Servico" => '',
+                "Prestador" => '',
+                "Tomador" => '',
+                "IntermediarioServico" => '',
+                "ConstrucaoCivil" => ''
+            );
+            
+            $lotes[$j] = array(
+                "NumeroLote" => $j, // Fica a cargo do sistema STG
+                "Cnpj" => '', // CNPJ da empresa (apenas numeros)
+                "InscricaoMunicipal" => '',
+                "QuantidadeRps" => $i,
+                "ListaRps" => $rps
+            );
+            $i++;
+            if($i < 50){
+                continue;
+            }
+            else{
+                $j++;
+                $i = 0;
+            }
+        }
+        
+        echo "<pre>";
+        var_dump($lotes); die;
+    }
+    
     function gerarelatoriovalormedio() {
         $data['txtdatainicio'] = str_replace("/", "-", $_POST['txtdata_inicio']);
         $data['txtdatafim'] = str_replace("/", "-", $_POST['txtdata_fim']);

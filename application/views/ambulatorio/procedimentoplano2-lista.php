@@ -152,23 +152,20 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->procedimentoplano->listar2($_GET)->get()->result();;
-                $total = count($consulta);
                 $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+                if ($limit != "todos") {
+                    $lista = $this->procedimentoplano->listar2($_GET)->limit($limit, $pagina)->get()->result();
+                } else {
+                    $lista = $this->procedimentoplano->listar2($_GET)->get()->result();
+                }
+                $total = count($lista);
                 
                 
                 if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
-                        if ($limit != "todos") {
-                            $lista = $this->procedimentoplano->listar2($_GET)->limit($limit, $pagina)->get()->result();
-                        } else {
-                            $lista = $this->procedimentoplano->listar2($_GET)->get()->result();
-                        }
-//                        echo "<pre>";
-//                        var_dump($lista); die;
                         
                         $estilo_linha = "tabela_content01";
                         $i = 0;

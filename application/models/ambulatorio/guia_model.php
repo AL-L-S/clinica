@@ -3051,8 +3051,52 @@ class guia_model extends Model {
         if ($guia == "NAO") {
             $this->db->where('g.nota_fiscal', 't');
         }
+        if($_POST['empresa'] != '0'){
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where('ae.data >=', $inicio);
+        $this->db->where('ae.data <=', $fim);
+        $this->db->groupby('g.ambulatorio_guia_id');
+        $this->db->groupby('p.celular');
+        $this->db->groupby('p.telefone');
+        $this->db->groupby('p.nome');
+        $this->db->groupby('p.paciente_id');
+        $this->db->groupby('p.cpf');
+        $this->db->groupby('p.rg');
+        $this->db->orderby('data_criacao');
+        $this->db->orderby('p.nome');
 
-        $this->db->where('ae.empresa_id', '1');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarnotasfiscais() {
+        $inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_GET['txtdata_inicio'])));
+        $fim = date("Y-m-d", strtotime(str_replace('/', '-', $_GET['txtdata_fim'])));
+
+        $this->db->select('distinct(g.ambulatorio_guia_id ),
+                            data_criacao,
+                            g.valor_guia,
+                            g.checado,
+                            g.numero_nota_fiscal,
+                            sum(ae.valor_total) as total,
+                            p.nome as paciente,
+                            p.paciente_id,
+                            p.celular,
+                            p.cpf,
+                            p.rg,
+                            p.telefone
+                            ');
+        $this->db->from('tb_ambulatorio_guia g');
+        $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = g.paciente_id', 'left');
+
+        if ($_GET['guia'] == "NAO") {
+            $this->db->where('g.nota_fiscal', 't');
+        }
+        if($_GET['empresa'] != '0'){
+            $this->db->where('ae.empresa_id', $_GET['empresa']);
+        }
         $this->db->where('ae.data >=', $inicio);
         $this->db->where('ae.data <=', $fim);
         $this->db->groupby('g.ambulatorio_guia_id');

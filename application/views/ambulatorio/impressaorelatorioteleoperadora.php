@@ -36,11 +36,17 @@
         <tbody>
             <?php
             $paciente = "";
+            $total = array();
             if (count($relatorio) > 0) {
                 foreach ($relatorio as $item) {
                     $dataFuturo = date("Y-m-d H:i:s");
                     $dataAtual = $item->data_atualizacao;
 
+                    $total[$item->operador_id] = array(
+                        "nome" => $item->secretaria,
+                        "qtde" => (@$total[$item->operador_id]["qtde"] + 1)
+                    );
+                            
                     if ($item->celular != "") {
                         $telefone = $item->celular;
                     } elseif ($item->telefone != "") {
@@ -123,11 +129,31 @@
 
                 </tbody>
                 <?php
-            }
+            }?>
+                
+            </table>
+            <br>
+                
+            <table>
+                <thead>
+                    <tr>
+                        <th class="tabela_header" >Responsável</th>
+                        <th class="tabela_header" >Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <? foreach($total as $value) { ?>
+                        <tr>
+                            <td><?=$value["nome"]?></td>
+                            <td style="text-align: right"><?=$value["qtde"]?></td>
+                        </tr>
+                    <? } ?>
+                </tbody>
+            </table>
+            <?
         }
-        ?>
+    ?>
 
-    </table>
 
 </div> <!-- Final da DIV content -->
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />

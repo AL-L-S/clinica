@@ -3447,6 +3447,7 @@ class exame_model extends Model {
                             tc.descricao as tipoconsulta,
                             p.nome as paciente,
                             op.nome as secretaria,
+                            op.operador_id,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
                             al.situacao as situacaolaudo');

@@ -1,6 +1,29 @@
+<style>
+    .botaoGerarLoteRPS{
+        border: 1pt solid #ddd;
+        border-radius: 5pt;
+        padding: 5pt;
+        width: 80pt;
+        text-align: center;
+        right: 10pt;
+        display: block;
+        font-weight: normal;
+    }
+    .botaoGerarLoteRPS a {
+        text-decoration: none;
+        color: black;
+    }
+    .botaoGerarLoteRPS:hover{
+        font-weight: bold;
+        border: 1pt solid #333;
+        background-color: #ccc; 
+        
+    }
+    
+</style>
 <div class="content"> <!-- Inicio da DIV content -->
     <? $tipoempresa = ""; ?>
-    <table>
+    <table width="100%">
         <thead>
 
             <? if (count($empresa) > 0) { ?>
@@ -27,20 +50,31 @@
                     none;border-right:none;' colspan="4">&nbsp;</th>
             </tr>
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">EMPRESA: <?= $tipoempresa ?></th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="3">EMPRESA: <?= $tipoempresa ?></th>
+                <th rowspan="2">
+                    <div class="botaoGerarLoteRPS">
+                        <?
+                        $parametros = "txtdata_inicio=".$_POST['txtdata_inicio']."&txtdata_fim=".$_POST['txtdata_fim'];
+                        $parametros .= "&empresa=".$_POST['empresa']."&guia=".$_POST['guia'];
+                        ?>
+                        <a target="_blank" href="<?= base_url() ?>ambulatorio/guia/gerarXmlLoteRPS?<?=$parametros?>">Gerar RPS</a>
+                    </div>
+                </th>
             </tr>
 
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="3">PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></th>
             </tr>
 
         </thead>
     </table>
-
+    
     <? if (count($relatorio) > 0) {
-        ?>
+        ?>    
 
-        <table border="1">
+        <hr>
+        
+        <table border="1" width="100%">
             <thead>
                 <tr>
                     <td class="tabela_teste">Guia</td>
@@ -55,7 +89,6 @@
                     <!--<td class="tabela_teste">Checado</td>-->
                 </tr>
             </thead>
-            <hr>
             <tbody>
                 <?php
                 $i = 0;
@@ -75,10 +108,8 @@
                         <td><?= utf8_decode($item->ambulatorio_guia_id); ?></td>
                         <td>
                             <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listardadospacienterelatorionota/$item->paciente_id"; ?> ', '_blank', 'width=1200,height=700');">
-                                    <?= utf8_decode($item->paciente); ?>
-                                </a>
-                            <!--<a href="#"></a></td>-->
-                        
+                                <?= utf8_decode($item->paciente); ?>
+                            </a>
                         <td>
                             <?
                             if ($item->cpf != '') {
