@@ -3452,6 +3452,8 @@ class Guia extends BaseController {
         $relatorio = $this->guia->listarnotasfiscais();
         
         $lotes = array();
+        $rps = array();
+        
         $j = 0; // A cada vez que i chega a 50, essa variavel incrementa
         $i = 0; 
         
@@ -3474,8 +3476,8 @@ class Guia extends BaseController {
                 "OptanteSimplesNacional" => '', // 1 - SIM | 2 - NAO
                 "IncentivadorCultural" => '2', // 1 - SIM | 2 - NAO
                 "Status" => '', // 1 - Gerar nota normal | 2 - Gerar uma nota cancelada
-                "RpsSubstituido" => array(), // Só preencha caso deseje gerar uma nota já cancelada (campos iguais ao IndentificacaoRps)
-                "Servico" => '',
+                "RpsSubstituido" => array(), // Só preencha caso deseje gerar uma nota já cancelada (campos iguais ao IndentificacaoRps, porem com dados da nota cancelada)
+                "Servico" => $sevico,
                 "Prestador" => '',
                 "Tomador" => '',
                 "IntermediarioServico" => '',
@@ -3496,6 +3498,7 @@ class Guia extends BaseController {
             else{
                 $j++;
                 $i = 0;
+                $rps = array();
             }
         }
         

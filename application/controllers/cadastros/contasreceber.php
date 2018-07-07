@@ -60,6 +60,17 @@ class Contasreceber extends BaseController {
 
     function excluir($financeiro_contasreceber_id) {
         $valida = $this->contasreceber->excluir($financeiro_contasreceber_id);
+	// Apaga os arquivos
+        if (is_dir("./upload/contasareceber")) {
+            $this->load->helper('directory');
+            $arquivo_pasta = directory_map("./upload/contasareceber/$financeiro_contasreceber_id");
+            if ($arquivo_pasta != false) {
+                foreach ($arquivo_pasta as $value) {
+                    unlink("./upload/contasareceber/$financeiro_contasreceber_id/$value");
+                }
+                rmdir("./upload/contasareceber/$financeiro_contasreceber_id");
+            }
+        }        
         if ($valida == 0) {
             $data['mensagem'] = 'Sucesso ao excluir a Contasreceber';
         } else {
@@ -430,12 +441,14 @@ class Contasreceber extends BaseController {
             $data = array('upload_data' => $this->upload->data());
         }
         $data['financeiro_contasreceber_id'] = $financeiro_contasreceber_id;
-        $this->anexarimagemcontasareceber($financeiro_contasreceber_id);
+        redirect(base_url() . "cadastros/contasreceber/anexarimagemcontasareceber/$financeiro_contasreceber_id");
+//        $this->anexarimagemcontasareceber($financeiro_contasreceber_id);
     }
 
     function ecluirimagemcontasreceber($financeiro_contasreceber_id, $value) {
         unlink("./upload/contasareceber/$financeiro_contasreceber_id/$value");
-        $this->anexarimagemcontasareceber($financeiro_contasreceber_id);
+        redirect(base_url() . "cadastros/contasreceber/anexarimagemcontasareceber/$financeiro_contasreceber_id");
+//        $this->anexarimagemcontasareceber($financeiro_contasreceber_id);
     }
 
 }

@@ -3100,9 +3100,9 @@ class Autocomplete extends Controller {
 
     function pacienteunificar() {
         if (isset($_GET['term'])) {
-            $result = $this->exame->listarautocompletepaciente($_GET['term']);
+            $result = $this->exame->listarautocompletepacienteunificar($_GET['term']);
         } else {
-            $result = $this->exame->listarautocompletepaciente();
+            $result = $this->exame->listarautocompletepacienteunificar();
         }
         foreach ($result as $item) {
             $retorno['value'] = $item->paciente_id . " - " . $item->nome;

@@ -52,13 +52,15 @@
             <tr>
                 <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="3">EMPRESA: <?= $tipoempresa ?></th>
                 <th rowspan="2">
-                    <div class="botaoGerarLoteRPS">
-                        <?
-                        $parametros = "txtdata_inicio=".$_POST['txtdata_inicio']."&txtdata_fim=".$_POST['txtdata_fim'];
-                        $parametros .= "&empresa=".$_POST['empresa']."&guia=".$_POST['guia'];
-                        ?>
-                        <a target="_blank" href="<?= base_url() ?>ambulatorio/guia/gerarXmlLoteRPS?<?=$parametros?>">Gerar RPS</a>
-                    </div>
+                    <? if (count($relatorio) > 0) { ?>    
+                        <div class="botaoGerarLoteRPS">
+                            <?
+                            $parametros = "txtdata_inicio=".$_POST['txtdata_inicio']."&txtdata_fim=".$_POST['txtdata_fim'];
+                            $parametros .= "&empresa=".$_POST['empresa']."&guia=".$_POST['guia'];
+                            ?>
+                            <a target="_blank" href="<?= base_url() ?>ambulatorio/guia/gerarXmlLoteRPS?<?=$parametros?>">Gerar RPS</a>
+                        </div>
+                    <? } ?>
                 </th>
             </tr>
 
@@ -82,6 +84,7 @@
                     <td class="tabela_teste">CPF</td>
                     <td class="tabela_teste">RG</td>
                     <td class="tabela_teste">Telefone</td>
+                    <td class="tabela_teste">Tipo</td>
                     <td class="tabela_teste">Numero da Nota</td>
                     <td class="tabela_teste">Valor da Nota</td>
                     <td class="tabela_teste">Valor da Guia</td>
@@ -134,6 +137,13 @@
                             ?>
                         </td>
                         <td><?= utf8_decode($item->telefone); ?></td>
+                        <td><?
+                            if($item->nota_fiscal == 't'){
+                                echo "Nota";
+                            }else{
+                                echo "Recibo";
+                            }
+                        ?></td>
                         <td><?= $item->numero_nota_fiscal; ?></td>
                         <? $cor = ((float)$item->valor_guia < (float)$item->total)?'green':'blue';?>
                         <td style="text-align: right">

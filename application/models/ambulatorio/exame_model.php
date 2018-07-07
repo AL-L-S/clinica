@@ -65,6 +65,28 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function listarautocompletepacienteunificar($parametro = null) {
+        $this->db->select('paciente_id,
+                            nome,
+                            telefone,
+                            celular,
+                            nome_mae,
+                            nascimento,
+                            cpf,
+                            logradouro,
+                            numero');
+        $this->db->from('tb_paciente');
+        $this->db->where('ativo', 'true');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', "%" . $parametro . "%");
+        }
+        if($_GET['paciente_atual'] != ''){
+            $this->db->where('paciente_id !=', $_GET['paciente_atual']);
+        }
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarautocompletepacientecpf($parametro = null) {
         $this->db->select('paciente_id,
                             nome,
@@ -850,6 +872,8 @@ class exame_model extends Model {
     }
 
     function listarexamespendentes($args = array()) {
+        
+        $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('e.exames_id,
                             e.paciente_id,
                             p.nome as paciente,
@@ -869,6 +893,7 @@ class exame_model extends Model {
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = e.sala_id', 'left');
         $this->db->where('e.situacao', 'PENDENTE');
         $this->db->where('e.cancelada', 'false');
+        $this->db->where('ae.empresa_id', $empresa_id);
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('e.sala_id', $args['sala']);
         }
@@ -2008,6 +2033,9 @@ class exame_model extends Model {
     }
 
     function listarexamemultifuncaogeral2($args = array()) {
+//        echo "<pre>";
+//        var_dump($args);die;
+        
         $data = date("Y-m-d");
         $contador = count($args);
 
@@ -7763,7 +7791,8 @@ class exame_model extends Model {
 //            $this->db->update('tb_exame_sala');
 
             $this->db->select('e.procedimento_tuss_id,
-                                e.agenda_exames_id');
+                                e.agenda_exames_id,
+                                pt.grupo');
             $this->db->from('tb_agenda_exames e');
             $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = e.procedimento_tuss_id', 'left');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -7774,7 +7803,9 @@ class exame_model extends Model {
             $this->db->where("e.realizada", 'f');
             $query = $this->db->get();
             $return = $query->result();
-            $this->db->trans_start();
+//            echo "<pre>";
+//            var_dump($return); die;
+//            $this->db->trans_start();
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);

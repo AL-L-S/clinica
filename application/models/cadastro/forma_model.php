@@ -44,11 +44,9 @@ class forma_model extends Model {
     }
     
     function listarformaempresa($empresa_id = null) {
-        if($empresa_id == null){
+        if($empresa_id == null /*|| $empresa_id == '0'*/){
             $empresa_id = $this->session->userdata('empresa_id');
         }
-//        echo $empresa_id;
-//        die;
         $this->db->select('forma_entradas_saida_id,
                             agencia,
                             conta,

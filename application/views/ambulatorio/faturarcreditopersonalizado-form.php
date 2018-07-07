@@ -13,13 +13,13 @@
                             <?
                             if(@$valor_credito[0]->forma_pagamento_ajuste != ''){
                                 @$forma = $valor_credito[0]->forma_pagamento_ajuste;
-                                $valor1 = $valor_credito[0]->valor_ajuste;
+                                $valor1 = (float)@$valor_credito[0]->valor_ajuste;
                                 $valor = $valor_credito[0]->valor_ajuste;
                                 $min = "min='".$valor1."'"." step='0.01'";
                             }
                             else {
                                 @$forma = $valor_credito[0]->forma_pagamento;
-                                $valor1 = $valor_credito[0]->valor1;
+                                $valor1 = (float)@$valor_credito[0]->valor1;
                                 $valor = $valor_credito[0]->valor;
                                 $min = "";
                             }

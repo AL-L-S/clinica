@@ -772,7 +772,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
             });
 
             $("#medico<?= $b ?>").autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicos",
+                source: "<?= base_url() ?>index.php?c=autocomplete&m=medicosranqueado",
                 minLength: 3,
                 focus: function (event, ui) {
                     $("#medico<?= $b ?>").val(ui.item.label);

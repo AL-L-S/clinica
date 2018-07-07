@@ -263,6 +263,17 @@ class Contaspagar extends BaseController {
 
     function excluir($financeiro_contaspagar_id) {
         $valida = $this->contaspagar->excluir($financeiro_contaspagar_id);
+        // Apaga os arquivos
+        if (is_dir("./upload/contasapagar")) {
+            $this->load->helper('directory');
+            $arquivo_pasta = directory_map("./upload/contasapagar/$financeiro_contaspagar_id");
+            if ($arquivo_pasta != false) {
+                foreach ($arquivo_pasta as $value) {
+                    unlink("./upload/contasapagar/$financeiro_contaspagar_id/$value");
+                }
+                rmdir("./upload/contasapagar/$financeiro_contaspagar_id");
+            }
+        }
         if ($valida == 0) {
             $data['mensagem'] = 'Sucesso ao excluir a Contaspagar';
         } else {
@@ -517,12 +528,12 @@ class Contaspagar extends BaseController {
             $data = array('upload_data' => $this->upload->data());
         }
         $data['financeiro_contaspagar_id'] = $financeiro_contaspagar_id;
-        $this->anexarimagemcontasapagar($financeiro_contaspagar_id);
+        redirect(base_url() . "cadastros/contaspagar/anexarimagemcontasapagar/$financeiro_contaspagar_id");
     }
 
     function ecluirimagemcontaspagar($financeiro_contaspagar_id, $value) {
         unlink("./upload/contasapagar/$financeiro_contaspagar_id/$value");
-        $this->anexarimagemcontasapagar($financeiro_contaspagar_id);
+        redirect(base_url() . "cadastros/contaspagar/anexarimagemcontasapagar/$financeiro_contaspagar_id");
     }
 
 }

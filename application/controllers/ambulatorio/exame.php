@@ -347,7 +347,7 @@ class Exame extends BaseController {
 
             foreach ($dias as $value) { // Esses valores irão aparecer na linha "ALL DAY"
                 $i++;
-                $value['color'] = '#62C462'; // Definindo uma cor
+                $value['color'] = '#e74c3c'; // Definindo uma cor
                 $value['className'] = 'titulo'; // Definindo um estilo CSS
                 $value['allDay'] = 'true'; // Informando que essas informações é para aparecer na linha "ALL DAY"
                 $value['id'] = $i;

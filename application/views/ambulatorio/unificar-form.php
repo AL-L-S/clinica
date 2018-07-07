@@ -72,7 +72,7 @@
 
         $(function () {
             $("#txtpaciente").autocomplete({
-                source: "<?= base_url() ?>index.php?c=autocomplete&m=pacienteunificar",
+                source: "<?= base_url() ?>autocomplete/pacienteunificar?term="+$("#txtpaciente").val()+"&paciente_atual=<?=@$paciente['0']->paciente_id?>",
                 minLength: 3,
                 focus: function (event, ui) {
                     $("#txtpaciente").val(ui.item.label);

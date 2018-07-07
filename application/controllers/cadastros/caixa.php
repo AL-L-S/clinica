@@ -213,11 +213,33 @@ class Caixa extends BaseController {
 
     function excluirentrada($entrada) {
         $this->caixa->excluirentrada($entrada);
+        // Apaga os arquivos
+        if (is_dir("./upload/entrada")) {
+            $this->load->helper('directory');
+            $arquivo_pasta = directory_map("./upload/entrada/$entrada");
+            if ($arquivo_pasta != false) {
+                foreach ($arquivo_pasta as $value) {
+                    unlink("./upload/entrada/$entrada/$value");
+                }
+                rmdir("./upload/entrada/$entrada");
+            }
+        }
         redirect(base_url() . "cadastros/caixa");
     }
 
     function excluirsaida($saida) {
         $this->caixa->excluirsaida($saida);
+        // Apaga os arquivos
+        if (is_dir("./upload/saida")) {
+            $this->load->helper('directory');
+            $arquivo_pasta = directory_map("./upload/saida/$saida");
+            if ($arquivo_pasta != false) {
+                foreach ($arquivo_pasta as $value) {
+                    unlink("./upload/saida/$saida/$value");
+                }
+                rmdir("./upload/saida/$saida");
+            }
+        }
         redirect(base_url() . "cadastros/caixa/pesquisar2");
     }
 
@@ -1140,7 +1162,7 @@ class Caixa extends BaseController {
             $data = array('upload_data' => $this->upload->data());
         }
         $data['entradas_id'] = $entradas_id;
-        $this->anexarimagementrada($entradas_id);
+        redirect(base_url() . "cadastros/caixa/anexarimagementrada/$entradas_id/");
     }
 
     function anexarimagemsaida($saidas_id) {
@@ -1191,18 +1213,19 @@ class Caixa extends BaseController {
             $data = array('upload_data' => $this->upload->data());
         }
         $data['saidas_id'] = $saidas_id;
-        $this->anexarimagemsaida($saidas_id);
+        redirect(base_url() . "cadastros/caixa/anexarimagemsaida/$saidas_id");
+//        $this->anexarimagemsaida($saidas_id);
     }
 
     function ecluirimagementrada($entradas_id, $value) {
         unlink("./upload/entrada/$entradas_id/$value");
-        $this->anexarimagementrada($entradas_id);
+        redirect(base_url() . "cadastros/caixa/anexarimagementrada/$entradas_id");
     }
 
     function ecluirimagemsaida($saidas_id, $value) {
 
         unlink("./upload/saida/$saidas_id/$value");
-        $this->anexarimagemsaida($saidas_id);
+        redirect(base_url() . "cadastros/caixa/anexarimagemsaida/$saidas_id");
     }
 
 }

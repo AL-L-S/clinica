@@ -149,7 +149,7 @@
                         if ($i == 1 || $item->convenio == $convenio) {
                             $valortotal = $valortotal + $item->valor_total;
                             $valor = $valor + $item->valor_total;
-                            $qtde++;
+                            $qtde += $item->quantidade;
                             $qtdetotal = $qtdetotal + $item->quantidade;
 
                             if ($i == 1) {
@@ -231,7 +231,7 @@
                             $contadorpaciente = 0;
                             $valortotal = $valortotal + $item->valor_total;
                             $valor = $valor + $item->valor_total;
-                            $qtde++;
+                            $qtde += $item->quantidade;
 
                             $qtdetotal = $qtdetotal + $item->quantidade;
                             ?>
@@ -308,7 +308,7 @@
                         <? if ($_POST['aparecervalor'] == '1') { ?>
                             <td width="140px;" align="Right" ><b>TOTAL GERAL</b></td>
                         <? } ?>
-                        <td width="200px;" align="Right" ><b>Nr. Pacienets: <?= $contadorpacientetotal; ?></b></td>
+                        <td width="200px;" align="Right" ><b>Nr. Pacientes: <?= $contadorpacientetotal; ?></b></td>
                         <td width="200px;" align="Right" ><b>Nr. Procedimentos: <?= $qtdetotal; ?></b></td>
                         <td width="140px;" align="Right" ><b>Nr. Mat/Med: <?= $medicamento; ?></b></td>
                         <? if ($_POST['aparecervalor'] == '1') { ?>

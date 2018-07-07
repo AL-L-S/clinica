@@ -32,6 +32,8 @@ class contasreceber_model extends Model {
             $this->db->where('tes.tipo_entradas_saida_id', $args['nome']);
             $return = $this->db->get()->result();
         }
+        
+        $empresa_id = $this->session->userdata('empresa_id');
 
         $this->db->select("fc.financeiro_contasreceber_id,
                             fc.valor,
@@ -55,11 +57,12 @@ class contasreceber_model extends Model {
         }
         
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
-            $this->db->where('fc.empresa_id', $args['txtempresa']);
+            if ($args['txtempresa'] != '0'){
+                $this->db->where('fc.empresa_id', $args['txtempresa']);
+            }
         }
         else{
-            $empresa_id = $this->session->userdata('empresa_id');
-            $this->db->where('fc.empresa_id', $empresa_id);
+            $this->db->where("fc.empresa_id", $empresa_id);
         }
         
         if (isset($args['nome']) && strlen($args['nome']) > 0) {

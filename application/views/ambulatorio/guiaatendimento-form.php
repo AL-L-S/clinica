@@ -149,6 +149,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
         });
 
         $("#indicacao").combobox();
+        $("#medico1").combobox();
     });
 </script>
 <div class="content ficha_ceatox">
@@ -277,13 +278,13 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 
                                 
                                 <th class="tabela_header">Convenio*</th>
-                                <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th width="70px;" class="tabela_header">Sala*</th>
                                 <th class="tabela_header">Medico*</th>
                                 <th colspan="2" class="tabela_header">Solicitante</th>
                                 <th class="tabela_header">Autorizacão</th>
+                                <th class="tabela_header">Qtde*</th>
                                 <th id="valorth" class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>Valor</th>
                                 <th class="tabela_header" id="vAjuste" style="display: none;"><span >V.Ajuste</span></th>
                                 <th class="tabela_header">Sessões</th>
@@ -309,7 +310,6 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-                                <td  ><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
                                 <td  >
                                     <select  name="grupo1" id="grupo1" class="size1" >
                                         <option value="">Selecione</option>
@@ -351,9 +351,10 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 <? endforeach; ?>
                                     </select></td>
                                 
-                                <td ><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"/></td>
+                                <td ><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size2 ui-widget"/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
                                 <td ><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
+                                <td  ><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
                                 <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
                                     <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
                                     <input type="hidden" name="valorunitario" id="valorunitario" class="texto01" readonly=""/>
@@ -379,7 +380,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <?php
                                         $indicacao = $this->paciente->listaindicacaoranqueada($_GET);
                                         foreach ($indicacao as $item) {
-                                            // Não dê enter na hora de mostrar o valor no option, se não ele não vai mostrar o texto do jeito certo ?>
+                                            // Não dê enter na hora de mostrar o valor no option, se não ele não vai mostrar o texto do jeito errado ?>
                                             <option value="<?= $item->paciente_indicacao_id; ?>" <?= ($item->paciente_indicacao_id == $promotor_id)?'selected':'' ?>><?php echo $item->nome . ( ($item->registro != '' ) ? " - " . $item->registro : '' ); ?></option>
                                             <?php
                                         }

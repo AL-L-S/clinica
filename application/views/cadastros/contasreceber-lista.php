@@ -47,7 +47,7 @@ if (count($_GET) > 0) {
                     <tr>
                         <th class="tabela_title">
                             <select name="txtempresa" id="txtempresa" class="size1" onchange="atualizaRestultados(this.value)">
-                                <option value="">TODOS</option>
+                                <option value="0">TODOS</option>
                                 <? foreach ($empresas as $value) : ?>
                                     <option value="<?= $value->empresa_id; ?>" <?
                                     if (@$_GET['txtempresa'] == $value->empresa_id || ($empresa_id == $value->empresa_id && @$_GET['txtempresa'] == '')):echo 'selected';

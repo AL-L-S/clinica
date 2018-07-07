@@ -46,8 +46,11 @@ class caixa_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
-            $this->db->where('e.empresa_id', $args['txtempresa']);
-        }else{
+            if ($args['txtempresa'] != '0'){
+                $this->db->where('e.empresa_id', $args['txtempresa']);
+            }
+        }
+        else{
             $this->db->where("e.empresa_id", $empresa_id);
         }
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
@@ -114,9 +117,12 @@ class caixa_model extends Model {
             $this->db->where('s.nome', $args['empresa']);
         }
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
-            $this->db->where('s.empresa_id', $args['txtempresa']);
-        }else{
-            $this->db->where('s.empresa_id', $empresa_id);
+            if ($args['txtempresa'] != '0'){
+                $this->db->where('s.empresa_id', $args['txtempresa']);
+            }
+        }
+        else{
+            $this->db->where("s.empresa_id", $empresa_id);
         }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('tipo', $tipo);
@@ -1438,7 +1444,13 @@ class caixa_model extends Model {
         $this->db->from('tb_saldo');
         $this->db->where('ativo', 'true');
         $this->db->where('conta', $forma_entradas_saida_id);
-        $this->db->where('empresa_id', $empresa_id);
+        if ((isset($_GET['txtempresa']) && strlen($_GET['txtempresa']) > 0) || $_GET['txtempresa'] != '0') {
+            $this->db->where('empresa_id', $_GET['txtempresa']);
+        }
+        else{
+            $this->db->where("empresa_id", $empresa_id);
+        }
+//        $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();
     }

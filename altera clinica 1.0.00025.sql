@@ -389,3 +389,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+-- Setando empresa id para procedimentos sem empresa
+UPDATE ponto.tb_procedimento_convenio
+    SET empresa_id = (SELECT empresa_id FROM ponto.tb_empresa ORDER BY empresa_id LIMIT 1)
+WHERE empresa_id is null AND ativo = 't';

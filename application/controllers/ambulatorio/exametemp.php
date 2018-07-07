@@ -156,8 +156,10 @@ class Exametemp extends BaseController {
     }
 
     function gravarunificar() {
+        $this->load->helper('directory');
+        
         $pacientetemp_id = $_POST['paciente_id'];
-
+        
         if ($_POST['paciente_id'] == $_POST['pacienteid']) {
             $data['mensagem'] = 'Erro ao unificar. Você está tentando unificar ';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -173,6 +175,22 @@ class Exametemp extends BaseController {
             if ($verifica == "-1") {
                 $data['mensagem'] = 'Erro ao unificar Paciente. Opera&ccedil;&atilde;o cancelada.';
             } else {
+                // Unificando arquivos
+                $arquivos = directory_map("./upload/paciente/".$_POST['pacienteid']."/");
+                if (count($arquivos) > 0) {
+                    
+                    if (!is_dir("./upload/paciente/".$_POST['paciente_id'])) {
+                        mkdir("./upload/paciente/".$_POST['paciente_id']);
+                        $destino = "./upload/paciente/".$_POST['paciente_id'];
+                        chmod($destino, 0777);
+                    }
+                    foreach($arquivos as $arq){
+                        $file = "./upload/paciente/".$_POST['pacienteid']."/".$arq;
+                        $newfile = "./upload/paciente/".$_POST['paciente_id']."/".$arq;
+                        rename($file, $newfile);
+                    }
+                }
+                
                 $data['mensagem'] = 'Sucesso ao unificar Paciente.';
             }
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -445,7 +463,6 @@ class Exametemp extends BaseController {
         $data['paciente_id'] = $paciente_id;
         $data['credito_id'] = $credito_id;
         $data['valor'] = 0.00;
-        
         if($permissoes[0]->ajuste_pagamento_procedimento == 't') {
             $this->load->View('ambulatorio/faturarcreditopersonalizado-form', $data);
         }

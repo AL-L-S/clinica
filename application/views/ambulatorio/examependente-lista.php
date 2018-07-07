@@ -46,16 +46,16 @@
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->exame->listarexamespendentes($_GET);
-                $total = $consulta->count_all_results();
                 $limit = 10;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+                $lista = $this->exame->listarexamespendentes($_GET)->limit($limit, $pagina)->get()->result();
+                $total = count($lista);
 
                 if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->exame->listarexamespendentes($_GET)->limit($limit, $pagina)->get()->result();
+                        
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";

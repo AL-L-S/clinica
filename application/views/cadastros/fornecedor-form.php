@@ -7,20 +7,20 @@
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                    <label>Raz&atilde;o social</label>
+                    <label>Raz&atilde;o social*</label>
                     </dt>
                     <dd>
                         <input type="hidden" name="txtcadastrosfornecedorid" class="texto10" value="<?= @$obj->_financeiro_credor_devedor_id; ?>" />
                         <input type="text" name="txtrazaosocial" class="texto10" value="<?= @$obj->_razao_social; ?>" />
                     </dd>
                     <dt>
-                    <label>CNPJ</label>
+                    <label>CNPJ*</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtCNPJ" maxlength="14" alt="cnpj" class="texto03" value="<?= @$obj->_cnpj; ?>" />
                     </dd>
                     <dt>
-                    <label>CPF</label>
+                    <label>CPF*</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtCPF" maxlength="11" alt="cpf" class="texto03" value="<?= @$obj->_cpf; ?>" />
@@ -39,7 +39,7 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Endere&ccedil;o</label>
+                    <label>Endere&ccedil;o*</label>
                     </dt>
                     <dd>
                         <input type="text" id="txtendereco" class="texto10" name="endereco" value="<?= @$obj->_logradouro; ?>" />

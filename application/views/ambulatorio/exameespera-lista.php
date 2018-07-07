@@ -82,18 +82,16 @@
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->exame->listarexameagendaconfirmada($_GET);
-                $total = $consulta->count_all_results();
-
                 $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
-
+//                $consulta = $this->exame->listarexameagendaconfirmada($_GET);
+                $lista = $this->exame->listarexameagendaconfirmada2($_GET, @$ordem_chegada)->limit($limit, $pagina)->get()->result();
+                $total = count($lista);
                 if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
                         $perfil_id = $this->session->userdata('perfil_id');
-                        $lista = $this->exame->listarexameagendaconfirmada2($_GET, @$ordem_chegada)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
 //                        echo '<pre>';
 //                        var_dump($lista); die;

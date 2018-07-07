@@ -154,6 +154,8 @@
                 $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada)->limit($limit, $pagina)->get()->result();
                 $total = count($lista);
 
+//                echo "<pre>";
+//                var_dump($lista); die;
                 if ($total > 0) {
                     ?>
                     <tbody>

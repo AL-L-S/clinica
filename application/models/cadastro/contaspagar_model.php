@@ -33,6 +33,8 @@ class contaspagar_model extends Model {
             $return = $this->db->get()->result();
         }
         
+        $empresa_id = $this->session->userdata('empresa_id');
+        
         $this->db->select('fc.financeiro_contaspagar_id,
                             fc.valor,
                             fc.credor,
@@ -54,14 +56,16 @@ class contaspagar_model extends Model {
         if (isset($args['empresa']) && strlen($args['empresa']) > 0) {
             $this->db->where('fc.credor', $args['empresa']);
         }
+        
         if (isset($args['txtempresa']) && strlen($args['txtempresa']) > 0) {
-            $this->db->where('fc.empresa_id', $args['txtempresa']);
+            if ($args['txtempresa'] != '0'){
+                $this->db->where('fc.empresa_id', $args['txtempresa']);
+            }
         }
-        else{
-//            echo 'something';
-            $empresa_id = $this->session->userdata('empresa_id');
-            $this->db->where('fc.empresa_id', $empresa_id);
+        else {
+            $this->db->where("fc.empresa_id", $empresa_id);
         }
+        
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('tipo', $return[0]->descricao);
         }

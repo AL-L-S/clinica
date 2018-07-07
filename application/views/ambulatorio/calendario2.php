@@ -31,7 +31,7 @@
 </head>
 <!--<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="pt-BR" >-->
 <?
-if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-31') {
+if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-31') {
     $_GET['data'] = date("Y-m-d");
 }
 ?>
@@ -114,7 +114,7 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                             ?>
                             <li class="<?= $estilo_linha ?>">
                                 <a href="<?= base_url() ?>ambulatorio/exame/examesala/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>/<?= $item->agenda_exames_id; ?>" target="_blank">
-                                    <span style="color: black"><?= $item->inicio; ?></span> -  <span> <?= $item->paciente ?></span> - <span style="color: #5659C9"><?= $item->procedimento ?></span> - <span style="color: black"><?= $teste ?></span> - 
+                                    <span style="color: black"><?= $item->inicio; ?></span> - <span> <?= $item->paciente ?></span> - <span style="color: #5659C9"><?= $item->procedimento ?></span> - <span style="color: black"><?= $teste ?></span> - 
                                 </a>
                             </li>
 
@@ -369,7 +369,11 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
 
                                     <th colspan="2" class="tabela_title">
                                         <input type="text" name="nome" class="texto08 bestupper" value="<?php echo @$_GET['nome']; ?>" />
-                                        <input type="hidden" name="data" id="data" class="texto04 bestupper" value="<?php echo date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))); ?>" />
+                                        <? if(@$_GET['data'] != '') { ?>
+                                            <input type="hidden" name="data" id="data" class="texto04 bestupper" value="<?php echo date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))); ?>" />
+                                        <? } else { ?>
+                                            <input type="hidden" name="data" id="data" class="texto04 bestupper" value="" />
+                                        <? } ?>
                                     </th>
                                 </tr>
 
@@ -432,10 +436,11 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                 </thead>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->exame->listarexamemultifuncaogeral($_GET);
-                $total = $consulta->count_all_results();
-                $limit = 100;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+                $limit = 100;
+                $lista = $this->exame->listarexamemultifuncaogeral2($_GET)->limit($limit, $pagina)->get()->result();
+//                $consulta = $this->exame->listarexamemultifuncaogeral($_GET);
+                $total = count($lista);
 
                 $l = $this->exame->listarestatisticapaciente($_GET);
                 $p = $this->exame->listarestatisticasempaciente($_GET);
@@ -446,7 +451,6 @@ if (date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) == '1969-12-
                         <?php
 //                        var_dump($item->situacaoexame);
 //                        die;
-                        $lista = $this->exame->listarexamemultifuncaogeral2($_GET)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             $dataFuturo = date("Y-m-d H:i:s");
@@ -1007,6 +1011,20 @@ if (@$_GET['sala'] != '') {
             });
         });
     });
+    
+    <? if(@$_GET['tipoagenda'] != '') { ?>
+        $.getJSON('<?= base_url() ?>autocomplete/listarmedicotipoagenda', {tipoagenda: $('#tipoagenda').val(), ajax: true}, function (j) {
+            options = '<option value=""></option>';
+            
+            for (var c = 0; c < j.length; c++) {
+                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+            }
+//                console.log(options);
+            $('#medico').html(options).show();
+            $('.carregando').hide();
+
+        });
+    <? } ?>
 
     $(function () {
         $('#grupo').change(function () {

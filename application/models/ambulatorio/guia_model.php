@@ -3039,6 +3039,7 @@ class guia_model extends Model {
                             sum(ae.valor_total) as total,
                             p.nome as paciente,
                             p.paciente_id,
+                            g.nota_fiscal,
                             p.celular,
                             p.cpf,
                             p.rg,

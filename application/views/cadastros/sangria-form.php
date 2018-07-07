@@ -16,7 +16,8 @@
                     <label>Caixa</label>
                     </dt>
                     <dd>
-                        <select name="caixa" id="caixa" class="size4">
+                        <select name="caixa" id="caixa" class="size4" required="">
+                            <option value="">Selecione</option>
                             <? foreach ($operadorcaixa as $value) : ?>
                                 <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
@@ -26,7 +27,8 @@
                     <label>Operador</label>
                     </dt>
                     <dd>
-                        <select name="operador" id="operador" class="size4">
+                        <select name="operador" id="operador" class="size4" required="">
+                            <option value="">Selecione</option>
                             <? foreach ($operador as $value) : ?>
                                 <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
@@ -36,7 +38,7 @@
                     <label>Senha do Operador</label>
                     </dt>
                     <dd>
-                        <input type="password" name="senha" id="senha" class="texto04"/>
+                        <input type="password" name="senha" id="senha" class="texto04" required=""/>
                     </dd>
                     <dt>
                     <label>Observa&ccedil;&atilde;o</label>

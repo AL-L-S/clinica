@@ -392,7 +392,7 @@ if (@$_GET['sala'] != '') {
                 url: '<?= base_url() ?>centrocirurgico/centrocirurgico/listarhorarioscalendariocirurgico',
                 type: 'POST',
                 data: {
-                    medico: $('#medico').val();
+                    medico: $('#medico').val(),
                 },
                 error: function (e) {
                     console.log(e);
@@ -491,12 +491,7 @@ if (@$_GET['sala'] != '') {
 
     $(function () {
         $('#grupo').change(function () {
-
-//            if ($(this).val()) {
-
-//                alert($(this).val());
             $('.carregando').show();
-//                                                        alert('teste_parada');
             $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $(this).val(), ajax: true}, function (j) {
                 options = '<option value=""></option>';
 //                    alert(j);
