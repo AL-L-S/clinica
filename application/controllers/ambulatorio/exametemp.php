@@ -459,10 +459,10 @@ class Exametemp extends BaseController {
     function faturarcreditos($credito_id, $paciente_id) {
         $data['forma_pagamento'] = $this->guia->formadepagamentofaturarcredito();
         $data['valor_credito'] = $this->exametemp->listarcreditofaturar($credito_id);
-        $permissoes = $this->guia->listarempresapermissoes();
         $data['paciente_id'] = $paciente_id;
         $data['credito_id'] = $credito_id;
         $data['valor'] = 0.00;
+        $permissoes = $this->guia->listarempresapermissoes();
         if($permissoes[0]->ajuste_pagamento_procedimento == 't') {
             $this->load->View('ambulatorio/faturarcreditopersonalizado-form', $data);
         }

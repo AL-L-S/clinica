@@ -1802,15 +1802,25 @@ class Guia extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
+    function gravartransformaorcamentocreditopersonalizado() {
+        $this->guia->gravartransformaorcamentocreditopersonalizado();
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
     function transformaorcamentocredito($orcamento_id) {
         $data['forma_pagamento'] = $this->guia->formadepagamentofaturarcredito();
         $procedimentos = $this->exametemp->listarprocedimentosorcamentocredito($orcamento_id);
         $data['valor'] = (float) @$procedimentos[0]->valortotal;
         $data['paciente_id'] = @$procedimentos[0]->paciente_id;
         $data['orcamento_id'] = $orcamento_id;
-//        echo "<pre>";
-//        var_dump($data); die;
-        $this->load->View('ambulatorio/transformaorcamentocredito-form', $data);
+        $permissoes = $this->guia->listarempresapermissoes();
+        if($permissoes[0]->ajuste_pagamento_procedimento == 't') {
+            $this->load->View('ambulatorio/transformaorcamentocreditopersonalizado-form', $data);
+        }
+        else {
+            $this->load->View('ambulatorio/transformaorcamentocredito-form', $data);
+        }
+        
     }
 
     function faturar($agenda_exames_id, $procedimento_convenio_id) {

@@ -53,9 +53,6 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         .appendTo(this.wrapper)
                         .val(value)
                         .attr("title", "")
-                        <? if ($recomendacao_obrigatorio == 't'){ ?>
-                        .attr("required", "")
-                        <? } ?>
                         .addClass("custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left input-recomendacao-combobox")
                         .autocomplete({
                             delay: 0,
@@ -252,18 +249,18 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                         <tr>
                             <th class="tabela_header">Hora</th>
                             <th class="tabela_header">Convenio</th>
-                            <th class="tabela_header">QTDE</th>
                             <th class="tabela_header">Grupo</th>
                             <th class="tabela_header">Procedimento</th>
+                            <th class="tabela_header">QTDE</th>
+                            <th class="tabela_header">Sessoes</th>
                             <th class="tabela_header">Sala</th>
                             <th class="tabela_header">Medico</th>
                             <th class="tabela_header">Solicitante</th>
-                            <th class="tabela_header">Autorização</th>
+                            <th class="tabela_header">Promotor</th>
+                            <th class="tabela_header">Pagamento</th>
                             <th class="tabela_header" <? if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <? } ?>>Valor</th>
                             <th class="tabela_header"><span >V.Ajuste</span></th>
-                            <th class="tabela_header">Sessoes</th>
-                            <th class="tabela_header">Pagamento</th>
-                            <th class="tabela_header">Promotor</th>
+                            <th class="tabela_header">Autorização</th>
                             <th class="tabela_header">ordenador</th>
                             <th class="tabela_header">Confir.</th>
                             <th class="tabela_header">Descricao</th>
@@ -289,7 +286,6 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtdeProc[<?= $i; ?>]" id="qtdeProc<?= $i; ?>"  value="1"  min="1" class="texto01"/></td>
                                 <td class="<?php echo $estilo_linha; ?>" >
                                     <select  name="grupo1" id="grupo<?= $i; ?>" class="size1" >
                                         <option value="">Selecione</option>
@@ -304,7 +300,8 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <option value="">-- Escolha um procedimento --</option>
                                     </select>
                                 </td>
-                                
+                                <td class="<?php echo $estilo_linha; ?>"><input type="number" name="qtdeProc[<?= $i; ?>]" id="qtdeProc<?= $i; ?>"  value="1"  min="1" class="texto01"/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1"  min="1" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="sala[<?= $i; ?>]" id="sala<?= $i; ?>" class="size1"  >
                                         <option value="">Selecione</option>
@@ -326,32 +323,11 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     </select>
                                 </td>
 
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1"/>
-                                    <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/></td>
-                                
-                                 <? // var_dump($item->grupo); die;?>
-                                
-                                
-                                
-
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
-                                <td class="<?php echo $estilo_linha; ?>" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
-                                    <input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/>
-                                    <input type="hidden" name="valorunitario[<?= $i; ?>]" id="valorunitario<?= $i; ?>" class="texto01" readonly=""/>
-                                </td>                                
-                                <td  class="<?php echo $estilo_linha; ?>" >
-                                    <input type="text" name="valorajuste[<?= $i; ?>]" id="valorAjuste<?= $i; ?>" class="texto01" readonly=""/>
-                                </td>
-                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="qtde[<?= $i; ?>]" id="qtde<?= $i; ?>"  value="1"  min="1" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
-                                    <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" onchange="buscaValorAjustePagamentoProcedimento(<?= $i; ?>)">
-                                        <option value="">Selecione</option>
-                                        <? foreach ($forma_pagamento as $value) : ?>
-                                            <option value="<?= $value->forma_pagamento_id; ?>"><?= $value->nome; ?></option>
-                                        <? endforeach; ?>
-                                    </select>
-                                </td>
-                                <td class="<?php echo $estilo_linha; ?>">
+                                    <input type="text" name="medico[<?= $i; ?>]" id="medico<?= $i; ?>" class="size1"/>
+                                    <input type="hidden" name="crm[<?= $i; ?>]" id="crm<?= $i; ?>" class="texto01"/>
+                                </td>        
+                                <td class="<?php echo $estilo_linha; ?>" class="indicacao_<?= $i; ?>">
                                     <select name="indicacao[<?= $i; ?>]" id="indicacao<?= $i; ?>" class="size1 ui-widget" >
                                         <option value='' >Selecione</option>
                                         <?php
@@ -364,6 +340,22 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         ?> 
                                     </select>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" onchange="buscaValorAjustePagamentoProcedimento(<?= $i; ?>)">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($forma_pagamento as $value) : ?>
+                                            <option value="<?= $value->forma_pagamento_id; ?>"><?= $value->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                    <input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/>
+                                    <input type="hidden" name="valorunitario[<?= $i; ?>]" id="valorunitario<?= $i; ?>" class="texto01" readonly=""/>
+                                </td>                                
+                                <td  class="<?php echo $estilo_linha; ?>" >
+                                    <input type="text" name="valorajuste[<?= $i; ?>]" id="valorAjuste<?= $i; ?>" class="texto01" readonly=""/>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="70px;">
                                     <select name="ordenador" id="ordenador" class="size1" >
                                         <option value='1' >Normal</option>
@@ -510,13 +502,14 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                               document.getElementById("qtde<?= $b ?>").value = qtde;  
 //                          <? } ?>
                            $('.carregando').hide();
-                         });
+                        });
                          
                         var proc = t[c].procedimento_convenio_id;
+                        
                         $("#formapamento<?= $b ?>").prop('required', false);
                                     
                         $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento<?= $b ?>', {procedimento<?= $b ?>: t[c].procedimento_convenio_id, ajax: true}, function (j) {
-                             
+                            
                             $("#valorAjuste<?= $b ?>").css('display', 'none');
 
                             verificaAjustePagamentoProcedimento(proc, <?= $b ?>);
@@ -695,8 +688,10 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     verificaAjustePagamentoProcedimento( $("#procedimento<?= $b; ?>").val(), <?= $b; ?>);
                     
                     <? if ( $recomendacao_obrigatorio == 't' ){ ?>
-                        $("#indicacao<?= $b; ?>").prop('required', true);
+                        var td = $("#indicacao<?= $b; ?>").parent();
+                        td.find("input").prop('required', true)
                     <? } ?>
+                        
                      if ($("#procedimento<?= $b; ?>").val() != '') {
                          
                         $.getJSON('<?= base_url() ?>autocomplete/procedimentovalorfisioterapia<?= $it ?>', {procedimento<?= $b ?>: $("#procedimento<?= $b; ?>").val(), ajax: true}, function (a) {
@@ -766,7 +761,8 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     $("#medico<?=$b?>").prop('required', false);
                     $("#formapamento<?= $b ?>").prop('required', false);
                     <? if ( $recomendacao_obrigatorio == 't' ){ ?>
-                        $("#indicacao<?= $b; ?>").prop('required', false);
+                        var td = $("#indicacao<?= $b; ?>").parent();
+                        td.find("input").prop('required', false)
                     <? } ?>
                 }
             });
@@ -926,6 +922,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                     <?if(@$empresapermissoes[0]->ajuste_pagamento_procedimento == 't'){?>
                         $.getJSON('<?= base_url() ?>autocomplete/verificaAjustePagamentoProcedimento', {procedimento: procedimentoConvenioId, ajax: true}, function (p) {
                             if (p.length != 0) {
+//                            alert('teste');
                                 if ( $('#checkbox'+id).is(":checked") ) { 
                                     $("#formapamento"+id).prop('required', true);
                                     $("#valorAjuste"+id).css('display', 'block');

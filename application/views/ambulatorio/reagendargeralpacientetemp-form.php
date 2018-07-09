@@ -52,7 +52,9 @@
                 <select name="exame" id="exame" class="size4" required>
                     <option value="" >Selecione</option>
                     <? foreach ($medico as $item) : ?>
-                        <option value="<?= $item->operador_id; ?>"><?= $item->nome; ?></option>
+                        <option value="<?= $item->operador_id; ?>" <?if($item->operador_id == $medico_consulta_id)echo "selected";?>>
+                            <?= $item->nome; ?>
+                        </option>
                     <? endforeach; ?>
                 </select>
             </div>
@@ -249,15 +251,34 @@
     $(function () {
         $('#exame').change(function () {
             if ($(this).val()) {
-                $('#horarios').hide();
-                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatoriogeral', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
+//                $('#horarios').hide();
+//                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatoriogeral', {exame: $('#exame').val(), teste: $("#data_ficha").val()}, function (j) {
                     var options = '<option value=""></option>';
                     for (var i = 0; i < j.length; i++) {
                         options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '</option>';
                     }
                     $('#horarios').html(options).show();
-                    $('.carregando').hide();
+//                    $('.carregando').hide();
+                });
+            } else {
+                $('#horarios').html('<option value="">-- Escolha um hora --</option>');
+            }
+        });
+    });
+
+    $(function () {
+        $('#data_ficha').change(function () {
+            if ($(this).val()) {
+//                $('#horarios').hide();
+//                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatoriogeral', {exame: $('#exame').val(), teste: $("#data_ficha").val()}, function (j) {
+                    var options = '<option value=""></option>';
+                    for (var i = 0; i < j.length; i++) {
+                        options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '</option>';
+                    }
+                    $('#horarios').html(options).show();
+//                    $('.carregando').hide();
                 });
             } else {
                 $('#horarios').html('<option value="">-- Escolha um hora --</option>');

@@ -149,7 +149,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
         });
 
         $("#indicacao").combobox();
-        $("#medico1").combobox();
+//        $("#medico1").combobox();
     });
 </script>
 <div class="content ficha_ceatox">
@@ -280,16 +280,16 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
+                                <th class="tabela_header">Qtde*</th>
+                                <th class="tabela_header">Sessões</th>
                                 <th width="70px;" class="tabela_header">Sala*</th>
                                 <th class="tabela_header">Medico*</th>
-                                <th colspan="2" class="tabela_header">Solicitante</th>
-                                <th class="tabela_header">Autorizacão</th>
-                                <th class="tabela_header">Qtde*</th>
+                                <th colspan="" class="tabela_header">Solicitante</th>
+                                <th class="tabela_header">Promotor</th>
+                                <th class="tabela_header">Pagamento</th>
                                 <th id="valorth" class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>Valor</th>
                                 <th class="tabela_header" id="vAjuste" style="display: none;"><span >V.Ajuste</span></th>
-                                <th class="tabela_header">Sessões</th>
-                                <th class="tabela_header">Pagamento</th>
-                                <th class="tabela_header">Promotor</th>
+                                <th class="tabela_header">Autorizacão</th>
                                 <th class="tabela_header">Entrega</th>
                                 <th class="tabela_header">Ordenador</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
@@ -329,6 +329,8 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
+                                <td  ><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
+                                <td  ><input type="text" name="qtde" id="qtde" class="texto01" readonly=""/></td>
                                 <td > 
                                     <select  name="sala1" id="sala1" class="size1" required="" >
                                         <option value="">Selecione</option>
@@ -351,29 +353,12 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                 <? endforeach; ?>
                                     </select></td>
                                 
-                                <td ><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size2 ui-widget"/></td>
-                                <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
-                                <td ><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td  ><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
-                                <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
-                                    <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
-                                    <input type="hidden" name="valorunitario" id="valorunitario" class="texto01" readonly=""/>
-                                </td>
-                                <td id="vAjusteIn" style="display: none;"  >
-                                    <input type="text" name="valorAjuste" id="valorAjuste" class="texto01" readonly=""/>
-                                </td>
-                                <td  ><input type="text" name="qtde" id="qtde" class="texto01" readonly=""/></td>
                                 <td >
-                                    <select  name="formapamento" id="formapamento" class="size1" onchange="buscaValorAjustePagamentoProcedimento()">
-                                        <option value="">Selecione</option>
-                                        <? foreach ($forma_pagamento as $item) :
-                                            if ($item->forma_pagamento_id == 1000)
-                                                continue;
-                                            ?>
-                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-<? endforeach; ?>
-                                    </select>
+                                    <input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size2"/>
+                                    <input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/>
                                 </td>
+                                
+                                
                                 <td >
                                     <select name="indicacao" id="indicacao" class="size1 ui-widget" <?= ($recomendacao_obrigatorio == 't')? 'required' : '';?>>
                                         <option value='' >Selecione</option>
@@ -387,7 +372,26 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         ?> 
                                     </select>
                                 </td>
-
+                                <td >
+                                    <select  name="formapamento" id="formapamento" class="size1" onchange="buscaValorAjustePagamentoProcedimento()">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($forma_pagamento as $item) :
+                                            if ($item->forma_pagamento_id == 1000)
+                                                continue;
+                                            ?>
+                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+<? endforeach; ?>
+                                    </select>
+                                </td>
+                                <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                    <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
+                                    <input type="hidden" name="valorunitario" id="valorunitario" class="texto01" readonly=""/>
+                                </td>
+                                <td id="vAjusteIn" style="display: none;"  >
+                                    <input type="text" name="valorAjuste" id="valorAjuste" class="texto01" readonly=""/>
+                                </td>
+                                
+                                <td ><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
                                 <td ><input type="text" id="data" name="data" class="size1"/></td>
                                 <td >
                                     <select name="ordenador" id="ordenador" class="size1" >
