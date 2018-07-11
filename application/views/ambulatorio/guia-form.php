@@ -248,7 +248,7 @@
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">Autorizacao</th>
                                 <th class="tabela_header">Guia Convênio</th>
-                                <th class="tabela_header" id="valorth" <? if (@$empresapermissoes[0]->valor_autorizar == 'f') { ?>style="display: none;" <? } ?>>V. Unit</th>
+                                <th class="tabela_header" id="valorth">V. Unit</th>
                                 <th class="tabela_header" id="vAjuste" style="display: none;"><span >V.Ajuste</span></th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Promotor</th>
@@ -319,7 +319,7 @@
 
                                 <td  width="50px;"><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
                                 <td  width="50px;"><input type="text" name="guiaconvenio" id="guiaconvenio" class="size1"/></td>
-                                <td id="valortd" width="20px;" <? if (@$empresapermissoes[0]->valor_autorizar == 'f') { ?>style="display: none;" <? } ?>>
+                                <td id="valortd" width="20px;">
                                     <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
                                 </td>
                                 <td id="vAjusteIn" style="display: none;"  >
@@ -839,6 +839,7 @@
                                                             });
                                                         });
 
+                                    <?if ($empresapermissoes[0]->valor_autorizar == 'f') { ?>
                                                         $(function () {
                                                             $('#convenio1').change(function () {
                                                                 if ($(this).val()) {
@@ -847,11 +848,13 @@
                                                                         options = '<option value=""></option>';
                                                                         <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
                                                                         if (j[0].dinheiro == 't') {
-                                                                            $("#valorth").show();
-                                                                            $("#valortd").show();
+//                                                                            $("#valorth").show();
+//                                                                            $("#valortd").show();
+                                                                            $("#valor1").attr("type", "text");
                                                                         } else {
-                                                                            $("#valorth").hide();
-                                                                            $("#valortd").hide();
+                                                                            $("#valor1").attr("type", "hidden");
+//                                                                            $("#valorth").hide();
+//                                                                            $("#valortd").hide();
                                                                         }
                                                                         <?}?>
                                                                         if (j[0].carteira_obrigatoria == 't') {
@@ -872,11 +875,13 @@
                                                                 options = '<option value=""></option>';
                                                                 <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
                                                                 if (j[0].dinheiro == 't') {
-                                                                    $("#valorth").show();
-                                                                    $("#valortd").show();
+//                                                                    $("#valorth").show();
+//                                                                    $("#valortd").show();
+                                                                    $("#valor1").attr("type", "text");
                                                                 } else {
-                                                                    $("#valorth").hide();
-                                                                    $("#valortd").hide();
+                                                                    $("#valor1").attr("type", "hidden");
+//                                                                    $("#valorth").hide();
+//                                                                    $("#valortd").hide();
                                                                 }
                                                                  <?}?>
                                                                 if (j[0].carteira_obrigatoria == 't') {
@@ -887,7 +892,7 @@
 
                                                             });
                                                         }
-
+                                    <?}?>
                                                         $(function () {
                                                             $('#grupo1').change(function () {
 //                                                if ($(this).val()) {

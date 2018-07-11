@@ -3,6 +3,8 @@ $empresa_id = $this->session->userdata('empresa_id');
 if (@$_GET['txtempresa'] != '') {
     $empresa_form_id = @$_GET['txtempresa'];
 } else {
+    
+    @$_GET['txtempresa'] = $empresa_id;
     $empresa_form_id = $empresa_id;
 }
 if (count($_GET) > 0) {

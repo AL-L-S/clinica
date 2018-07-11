@@ -274,7 +274,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">Autorizacao</th>
-                                <th id="valorth" class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
+                                <th id="valorth" class="tabela_header">V. Unit</th>
                                 <th class="tabela_header" id="vAjuste" style="display: none;"><span >V.Ajuste</span></th>
                                 <th class="tabela_header">Qtde</th>
                                 <th class="tabela_header">Pagamento</th>
@@ -348,7 +348,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 </td>
 
                                 <td  ><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                <td id="valortd">
                                     <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
                                 </td>
                                 <td id="vAjusteIn" style="display: none;"  >
@@ -730,6 +730,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                         });
                                     });
                                     
+                                    <?if ($empresapermissoes[0]->valor_autorizar == 'f') { ?>
                                     $(function () {
                                                             $('#convenio1').change(function () {
                                                                 if ($(this).val()) {
@@ -737,11 +738,13 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                                     $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
                                                                         options = '<option value=""></option>';
                                                                         if (j[0].dinheiro == 't') {
-                                                                            $("#valorth").show();
-                                                                            $("#valortd").show();
+//                                                                            $("#valorth").show();
+//                                                                            $("#valortd").show();
+                                                                            $("#valor1").attr("type", "text");
                                                                         } else {
-                                                                            $("#valorth").hide();
-                                                                            $("#valortd").hide();
+                                                                            $("#valor1").attr("type", "hidden");
+//                                                                            $("#valorth").hide();
+//                                                                            $("#valortd").hide();
                                                                         }
                                                                         if (j[0].carteira_obrigatoria == 't') {
                                                                             $("#autorizacao").prop('required', true);
@@ -760,11 +763,13 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                             $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $('#convenio1').val()}, function (j) {
                                                                 options = '<option value=""></option>';
                                                                 if (j[0].dinheiro == 't') {
-                                                                    $("#valorth").show();
-                                                                    $("#valortd").show();
+//                                                                    $("#valorth").show();
+//                                                                    $("#valortd").show();
+                                                                    $("#valor1").attr("type", "text");
                                                                 } else {
-                                                                    $("#valorth").hide();
-                                                                    $("#valortd").hide();
+                                                                    $("#valor1").attr("type", "hidden");
+//                                                                    $("#valorth").hide();
+//                                                                    $("#valortd").hide();
                                                                 }
                                                                 if (j[0].carteira_obrigatoria == 't') {
                                                                     $("#autorizacao").prop('required', true);
@@ -774,6 +779,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
 
                                                             });
                                                         }
+                                    <?}?>
 
                                     $(function () {
                                         $('#convenio1').change(function () {

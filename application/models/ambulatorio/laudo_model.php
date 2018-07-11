@@ -2922,6 +2922,7 @@ class laudo_model extends Model {
             } else {
                 $this->db->set('situacao', 'DIGITANDO');
             }
+//            var_dump($_POST['situacao']); die;
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);

@@ -1444,8 +1444,8 @@ class caixa_model extends Model {
         $this->db->from('tb_saldo');
         $this->db->where('ativo', 'true');
         $this->db->where('conta', $forma_entradas_saida_id);
-        if ((isset($_GET['txtempresa']) && strlen($_GET['txtempresa']) > 0) || $_GET['txtempresa'] != '0') {
-            $this->db->where('empresa_id', $_GET['txtempresa']);
+        if ((isset($_GET['txtempresa']) && strlen($_GET['txtempresa']) > 0) || @$_GET['txtempresa'] != '0') {
+            $this->db->where('empresa_id', @$_GET['txtempresa']);
         }
         else{
             $this->db->where("empresa_id", $empresa_id);

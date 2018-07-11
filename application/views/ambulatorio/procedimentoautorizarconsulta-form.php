@@ -243,7 +243,7 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                             <th class="tabela_header">Convenio</th>
                             <th class="tabela_header">Procedimento</th>
                             <th class="tabela_header">autorizacao</th>
-                            <th class="tabela_header"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
+                            <th class="tabela_header" >V. Unit</th>
                             <th class="tabela_header">Pagamento</th>
                             <th class="tabela_header">Promotor</th>
                             <th class="tabela_header">ordenador</th>
@@ -299,7 +299,7 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                 </td>
 
                                 <td class="<?php echo $estilo_linha; ?>"><input type="text" name="autorizacao[<?= $i; ?>]" id="autorizacao" class="size1"/></td>
-                                <td <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>  class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
+                                <td class="<?php echo $estilo_linha; ?>"><input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/></td>
                                 <td class="<?php echo $estilo_linha; ?>">
                                     <select  name="formapamento[<?= $i; ?>]" id="formapamento<?= $i; ?>" class="size1" >
                                         <option value="0">Selecione</option>
@@ -495,10 +495,12 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                                              options = '<option value=""></option>';
                                                                              <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
                                                                               if (j[0].dinheiro == 't') {
-                                                                                 $("#valor<?= $b; ?>").show();
+//                                                                                 $("#valor<?= $b; ?>").show();
                                                     //                           $("#valortd<?= $b; ?>").show();
+                                                                                  $("#valor<?= $b; ?>").attr("type", "text");
                                                                               } else {
-                                                                                 $("#valor<?= $b; ?>").hide();
+                                                                                  $("#valor<?= $b; ?>").attr("type", "hidden");
+//                                                                                 $("#valor<?= $b; ?>").hide();
                                                     //                       $("#valortd<?= $b; ?>").hide();
                                                                               }
                                                                               <?}?>
@@ -519,10 +521,12 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                                      options = '<option value=""></option>';
                                                                      <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
                                                                              if (j[0].dinheiro == 't') {
-                                                                                 $("#valor<?= $b; ?>").show();
+//                                                                                 $("#valor<?= $b; ?>").show();
                                                     //                             $("#valortd<?= $b; ?>").show();
-                                                                             } else {
-                                                                                 $("#valor<?= $b; ?>").hide();
+                                                                                  $("#valor<?= $b; ?>").attr("type", "text");
+                                                                              } else {
+                                                                                  $("#valor<?= $b; ?>").attr("type", "hidden");
+//                                                                                 $("#valor<?= $b; ?>").hide();
                                                     //                             $("#valortd<?= $b; ?>").hide();
                                                                              }
                                                                      <?}?>

@@ -196,6 +196,8 @@ class guia_model extends Model {
                             ep.apenas_procedimentos_multiplos,
                             ep.percentual_multiplo,
                             ep.ajuste_pagamento_procedimento,
+                            ep.valor_autorizar,
+                            
                             ');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
@@ -1697,8 +1699,9 @@ class guia_model extends Model {
         if ($return_convenio[0]->procedimento2 != '') {
             $procedimento2 = $return_convenio[0]->procedimento2;
         }
+        
         foreach ($return as $value) {
-
+            
             $this->db->select('ae.agenda_exames_id,
                                ae.valor_total,
                                pc.*
@@ -1716,8 +1719,7 @@ class guia_model extends Model {
 //            $this->db->groupby('ae.agenda_exames_id');
             $this->db->orderby('ae.valor_total desc');
             $return2 = $this->db->get()->result();
-//            var_dump($return2);
-//            die;
+            
             $b = 0;
 
 
@@ -1729,7 +1731,7 @@ class guia_model extends Model {
                     } else {
                         $valor_total = ($value2->qtdech * $value2->valorch) + ($value2->qtdefilme * $value2->valorfilme) + ($value2->qtdeporte * $value2->valorporte) + (($value2->qtdeuco * $value2->valoruco) * ($procedimento2 / 100));
                     }
-//                die;
+//                    die;
                 } else {
 
                     if ($b == 0) {

@@ -583,7 +583,7 @@
                                 <input type="checkbox" id="financeiro_cadastro" name="financeiro_cadastro" <? if (@$obj->_financeiro_cadastro == 't') echo "checked"; ?>/> 
                             </dd>
                             <dt>
-                                <label title="Ativando essa flag, o valor aparece ao autorizar procedimentos aparece">Valor aparece ao autorizar procedimentos</label>
+                                <label title="Ativando essa flag, o valor aparece ao autorizar procedimentos.">Valor aparece ao autorizar procedimentos</label>
                             </dt>
                             <dd>
                                 <input type="checkbox" id="valor_autorizar" name="valor_autorizar" <? if (@$obj->_valor_autorizar == 't') echo "checked"; ?>/> 

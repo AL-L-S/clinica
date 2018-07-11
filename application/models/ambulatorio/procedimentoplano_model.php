@@ -2864,9 +2864,13 @@ class procedimentoplano_model extends Model {
                 }
             } 
             else {
+                
+//                echo "<pre>";
+//                var_dump($_POST); die;
+                
                 foreach ($_POST['valortotal'] as $key => $value) {
-
                     if ($_POST['valortotal'][$key] != "") {// insert
+//                        die('teste');
                         $this->db->select('procedimento_convenio_id');
                         $this->db->from('tb_procedimento_convenio pc');
                         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');

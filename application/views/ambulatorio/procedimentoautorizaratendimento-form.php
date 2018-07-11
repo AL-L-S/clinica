@@ -258,7 +258,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                             <th class="tabela_header">Solicitante</th>
                             <th class="tabela_header">Promotor</th>
                             <th class="tabela_header">Pagamento</th>
-                            <th class="tabela_header" <? if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <? } ?>>Valor</th>
+                            <th class="tabela_header">Valor</th>
                             <th class="tabela_header"><span >V.Ajuste</span></th>
                             <th class="tabela_header">Autorização</th>
                             <th class="tabela_header">ordenador</th>
@@ -348,7 +348,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <? endforeach; ?>
                                     </select>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                <td class="<?php echo $estilo_linha; ?>">
                                     <input type="text" name="valor[<?= $i; ?>]" id="valor<?= $i; ?>" class="texto01" readonly=""/>
                                     <input type="hidden" name="valorunitario[<?= $i; ?>]" id="valorunitario<?= $i; ?>" class="texto01" readonly=""/>
                                 </td>                                
@@ -570,10 +570,12 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                          options = '<option value=""></option>';
                          <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
                           if (j[0].dinheiro == 't') {
-                             $("#valor<?= $b; ?>").show();
+//                             $("#valor<?= $b; ?>").show();
 //                           $("#valortd<?= $b; ?>").show();
+                              $("#valor<?= $b; ?>").attr("type", "text");
                           } else {
-                             $("#valor<?= $b; ?>").hide();
+                              $("#valor<?= $b; ?>").attr("type", "hidden");
+//                             $("#valor<?= $b; ?>").hide();
 //                       $("#valortd<?= $b; ?>").hide();
                           }
                           <?}?>
@@ -594,10 +596,12 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                  options = '<option value=""></option>';
                  <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
                          if (j[0].dinheiro == 't') {
-                             $("#valor<?= $b; ?>").show();
+//                             $("#valor<?= $b; ?>").show();
 //                             $("#valortd<?= $b; ?>").show();
-                         } else {
-                             $("#valor<?= $b; ?>").hide();
+                              $("#valor<?= $b; ?>").attr("type", "text");
+                          } else {
+                              $("#valor<?= $b; ?>").attr("type", "hidden");
+//                             $("#valor<?= $b; ?>").hide();
 //                             $("#valortd<?= $b; ?>").hide();
                          }
                  <?}?>

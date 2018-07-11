@@ -49,7 +49,7 @@
                 </dl>    
 
                 <hr/>
-                <button type="submit" name="btnEnviar">Enviar</button>
+                <button type="button" name="btnEnviar" onclick="enviarFormulario(this)">Enviar</button>
                 <button type="reset" name="btnLimpar">Limpar</button>
                 <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
             </form>
@@ -66,7 +66,23 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js" ></script>
-<script type="text/javascript">   
+<script type="text/javascript">  
+    function enviarFormulario(submitButton){ // Isso foi feito devido ao Chamado: #2464.
+        if($("#convenio").val() == ""){
+            $("#convenio").focus();
+            alert("Informe um convenio.")
+        }
+        else{
+            $(submitButton).attr('onclick',null);
+            $("table td#tdValorTotal input").each(function(index, element){
+                if( $(element).val() == '' ){
+                    $(element).closest('tr').remove();
+                }
+            });
+            $("form").submit();
+        }
+        
+    }
     
     var totResultados = <?= count($procedimento) ?>;  
     
@@ -105,7 +121,7 @@
         tabelaPadrao += '<td class="valor"><input type="text" name="qtdefilme[<?= $i ?>]"  id="qtdefilme<?= $i ?>" class="texto01" value="0"/></td><td class="valor"><input type="text" name="valorfilme[<?= $i ?>]"  id="valorfilme<?= $i ?>" class="texto01" value="0"/></td>';
         tabelaPadrao += '<td class="valor"><input type="text" name="qtdeporte[<?= $i ?>]"  id="qtdeporte<?= $i ?>" class="texto01" value="0"/></td><td class="valor"><input type="text" name="valorporte[<?= $i ?>]"  id="valorporte<?= $i ?>" class="texto01" value="0"/></td>';
         tabelaPadrao += '<td class="valor"><input type="text" name="qtdeuco[<?= $i ?>]"  id="qtdeuco<?= $i ?>" class="texto01" value="0"/></td><td class="valor"><input type="text" name="valoruco[<?= $i ?>]"  id="valoruco<?= $i ?>" class="texto01" value="0"/>';
-        tabelaPadrao += '</td><td class="valor"><input type="text" name="valortotal[<?= $i ?>]"  id="valortotal<?= $i ?>" class="texto01"/></td></tr>';
+        tabelaPadrao += '</td><td class="valor" id="tdValorTotal"><input type="text" name="valortotal[<?= $i ?>]"  id="valortotal<?= $i ?>" class="texto01"/></td></tr>';
         
         <? $i++;
     } ?>

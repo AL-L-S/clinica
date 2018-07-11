@@ -537,7 +537,6 @@ class Laudo extends BaseController {
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['procedimento_tuss_id'] = $procedimento_tuss_id;
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-        var_dump($agenda_exames_id); die;
         $this->load->View('ambulatorio/laudoconsulta-form', $data);
     }
 
@@ -3969,6 +3968,7 @@ class Laudo extends BaseController {
                 $messagem = 1;
             }
         } else {
+//            die('rmekrl');
             $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id);
         }
         $data['exame_id'] = $exame_id;

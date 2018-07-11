@@ -275,7 +275,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">Autorizacao</th>
-                                <th id="valorth" class="tabela_header"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>V. Unit</th>
+                                <th id="valorth" class="tabela_header">V. Unit</th>
                                 <th class="tabela_header" id="vAjuste" style="display: none;"><span >V.Ajuste</span></th>
                                 <th class="tabela_header">Pagamento</th>
                                 <th class="tabela_header">Promotor</th>
@@ -329,7 +329,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                 </td>
 
                                 <td  ><input type="text" name="autorizacao1" id="autorizacao" class="size1"/></td>
-                                <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                <td id="valortd">
                                     <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
                                 </td>
                                 <td id="vAjusteIn" style="display: none;"  >
@@ -783,19 +783,22 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                             });
                                         });
                                         
-                                        
+                                                <?if ($empresapermissoes[0]->valor_autorizar == 'f') { ?>
                                                         $(function () {
                                                             $('#convenio1').change(function () {
                                                                 if ($(this).val()) {
                                                                     $('.carregando').show();
-                                                                    $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
+                                                                    $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $('#convenio1').val()}, function (j) {
                                                                         options = '<option value=""></option>';
                                                                         if (j[0].dinheiro == 't') {
-                                                                            $("#valorth").show();
-                                                                            $("#valortd").show();
+//                                                                            $("#valorth").show();
+//                                                                            $("#valortd").show();
+                                                                            
+                                                                            $("#valor1").attr("type", "text");
                                                                         } else {
-                                                                            $("#valorth").hide();
-                                                                            $("#valortd").hide();
+                                                                            $("#valor1").attr("type", "hidden");
+//                                                                            $("#valorth").hide();
+//                                                                            $("#valortd").hide();
                                                                         }
                                                                         if (j[0].carteira_obrigatoria == 't') {
                                                                             $("#autorizacao").prop('required', true);
@@ -814,11 +817,9 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                             $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $('#convenio1').val()}, function (j) {
                                                                 options = '<option value=""></option>';
                                                                 if (j[0].dinheiro == 't') {
-                                                                    $("#valorth").show();
-                                                                    $("#valortd").show();
+                                                                    $("#valor1").attr("type", "text");
                                                                 } else {
-                                                                    $("#valorth").hide();
-                                                                    $("#valortd").hide();
+                                                                    $("#valor1").attr("type", "hidden");
                                                                 }
                                                                 if (j[0].carteira_obrigatoria == 't') {
                                                                     $("#autorizacao").prop('required', true);
@@ -827,8 +828,9 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                                 }
 
                                                             });
+                                                            
                                                         }
-                                        
+                                                <?}?>
                                         
 
                                         $(function () {
@@ -863,6 +865,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                         document.getElementById("valor1").value = options;
                                                         $('.carregando').hide();
                                                     });
+                                                    
                                                     $.getJSON('<?= base_url() ?>autocomplete/validaretornoprocedimento', {procedimento_id: $(this).val(), paciente_id: <?= $paciente_id; ?>, ajax: true}, function (r) {
 //                                                        console.log(r);
 //                                                        if(r.qtdeConsultas == 0 && r.grupo == "RETORNO"){

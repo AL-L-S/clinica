@@ -287,7 +287,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 <th colspan="" class="tabela_header">Solicitante</th>
                                 <th class="tabela_header">Promotor</th>
                                 <th class="tabela_header">Pagamento</th>
-                                <th id="valorth" class="tabela_header" <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>Valor</th>
+                                <th id="valorth" class="tabela_header">Valor</th>
                                 <th class="tabela_header" id="vAjuste" style="display: none;"><span >V.Ajuste</span></th>
                                 <th class="tabela_header">Autorizacão</th>
                                 <th class="tabela_header">Entrega</th>
@@ -383,7 +383,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 <? endforeach; ?>
                                     </select>
                                 </td>
-                                <td id="valortd"  <?if(@$empresapermissoes[0]->valor_autorizar == 'f'){?>style="display: none;" <?}?>>
+                                <td id="valortd">
                                     <input type="text" name="valor1" id="valor1" class="texto01" readonly=""/>
                                     <input type="hidden" name="valorunitario" id="valorunitario" class="texto01" readonly=""/>
                                 </td>
@@ -983,19 +983,21 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     });
                                 }
                                 
-                                
-                                $(function () {
+                                <?if ($empresapermissoes[0]->valor_autorizar == 'f') { ?>
+                                                        $(function () {
                                                             $('#convenio1').change(function () {
                                                                 if ($(this).val()) {
                                                                     $('.carregando').show();
                                                                     $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
                                                                         options = '<option value=""></option>';
                                                                         if (j[0].dinheiro == 't') {
-                                                                            $("#valorth").show();
-                                                                            $("#valortd").show();
+//                                                                            $("#valorth").show();
+//                                                                            $("#valortd").show();
+                                                                            $("#valor1").attr("type", "text");
                                                                         } else {
-                                                                            $("#valorth").hide();
-                                                                            $("#valortd").hide();
+                                                                            $("#valor1").attr("type", "hidden");
+//                                                                            $("#valorth").hide();
+//                                                                            $("#valortd").hide();
                                                                         }
                                                                         if (j[0].carteira_obrigatoria == 't') {
                                                                             $("#autorizacao").prop('required', true);
@@ -1014,11 +1016,13 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                                             $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $('#convenio1').val()}, function (j) {
                                                                 options = '<option value=""></option>';
                                                                 if (j[0].dinheiro == 't') {
-                                                                    $("#valorth").show();
-                                                                    $("#valortd").show();
+//                                                                            $("#valorth").show();
+//                                                                            $("#valortd").show();
+                                                                    $("#valor1").attr("type", "text");
                                                                 } else {
-                                                                    $("#valorth").hide();
-                                                                    $("#valortd").hide();
+                                                                    $("#valor1").attr("type", "hidden");
+//                                                                            $("#valorth").hide();
+//                                                                            $("#valortd").hide();
                                                                 }
                                                                 if (j[0].carteira_obrigatoria == 't') {
                                                                     $("#autorizacao").prop('required', true);
@@ -1028,6 +1032,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 
                                                             });
                                                         }
+                                                        <?}?>
                                 
                                 $(function () {
                                     $('#convenio1').change(function () {
