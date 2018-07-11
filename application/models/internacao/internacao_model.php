@@ -1595,6 +1595,7 @@ class internacao_model extends BaseModel {
         $this->db->where('il.excluido', 'f');
         $this->db->where('ie.ativo', 't');
         $this->db->where('iu.ativo', 't');
+        $this->db->where('i.excluido', 'f');
         $this->db->where('(i.ativo = true OR i.ativo is null)');
 
         if ($_POST['unidade'] != '') {

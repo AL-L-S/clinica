@@ -77,8 +77,6 @@
 
                     </tr>
                 <? }
-                ?>    
-                <?
                 if ($item->ativo == 'f') {
                     $ocupado++;
                     $unidade_ocupado[$item->unidade] ++;

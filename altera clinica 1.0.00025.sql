@@ -394,3 +394,19 @@ SELECT insereValor();
 UPDATE ponto.tb_procedimento_convenio
     SET empresa_id = (SELECT empresa_id FROM ponto.tb_empresa ORDER BY empresa_id LIMIT 1)
 WHERE empresa_id is null AND ativo = 't';
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000025');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000025', '1.0.000025');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
