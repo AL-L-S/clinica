@@ -14,6 +14,7 @@
         11 => 'Novembro',
         12 => 'Dezembro'
     );
+    $periodo = array($periodo_inicio, $periodo_fim);
 ?>
 <div class="content"> <!-- Inicio da DIV content -->
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
@@ -23,7 +24,7 @@
     <? } else { ?>
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
-    <h4>PERIODO: <?= $periodo ?></h4>
+    <h4>PERIODO: <?= $periodo_inicio ?> a <?= $periodo_fim ?></h4>
     <? if ($revisor == 0) { ?>
         <h4>Revisor: TODOS</h4>
     <? } else { ?>
@@ -42,13 +43,15 @@
             <thead>
                 <tr>
                     <td rowspan="2"><center>PROCEDIMENTOS</center></td>
-                    <td><center>MES</center></td>
+                    <td><center>PERIODO</center></td>
                     <? foreach ($medicos as $value) {?>
                         <td><center>MEDICO</center></td>
                     <? } ?>
                 </tr>
                 <tr>
-                    <td><center><?= $meses[(int)substr($periodo, 0, 2)] ?></center></td>
+                    <td>
+                        <center><?= $periodo[0] ?> a <?= $periodo[1] ?></center>
+                    </td>
                     <? 
                     foreach ($medicos as $value) {
                         $col[$value->medico_parecer1] = 0; ?>

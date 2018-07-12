@@ -568,10 +568,12 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                                                             //                                                                alert('asdas');
                                                                                             $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
                                                                                             //                                                            $('#valor1').val('0.00');
+                                                                                            $("#submitButton").attr('disabled', 'disabled');
                                                                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                                                                                 options = "";
                                                                                                 options += j[0].valortotal;
                                                                                                 document.getElementById("valor<?= $b; ?>").value = options;
+                                                                                                $("#submitButton").removeAttr('disabled');
                                                                                                 $('.carregando').hide();
                                                                                             });
                                                                                         } else {
@@ -580,10 +582,12 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                                                     } else {
                                                                                         alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
                                                                                         $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+                                                                                        $("#submitButton").attr('disabled', 'disabled');
                                                                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                                                                             options = "";
                                                                                             options += j[0].valortotal;
                                                                                             document.getElementById("valor<?= $b; ?>").value = options;
+                                                                                            $("#submitButton").removeAttr('disabled');
                                                                                             $('.carregando').hide();
                                                                                         });
                                                                                     }

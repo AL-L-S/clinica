@@ -652,11 +652,13 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     if (confirm("Esse paciente já executou esse procedimento num período de " + r.diasRetorno + " dia(s) e tem direito a um retorno. Deseja atribuí-lo?")) {
     //                                  alert('asdas');
                                           $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+                                          $("#submitButton").attr('disabled', 'disabled'); 
                                           //                                                            $('#valor1').val('0.00');
                                           $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                               options = "";
                                               options += j[0].valortotal;
                                               document.getElementById("valor<?= $b; ?>").value = options;
+                                              $("#submitButton").removeAttr('disabled');
                                               $('.carregando').hide();
                                           });
                                       } 
@@ -665,11 +667,13 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                   }    
                                 } else {
                                     alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
-                                    $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);    
+                                    $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);
+                                    $("#submitButton").attr('disabled', 'disabled');    
                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                         options = "";
                                         options += j[0].valortotal;
                                         document.getElementById("valor<?= $b; ?>").value = options;
+                                        $("#submitButton").removeAttr('disabled');
                                         $('.carregando').hide();
                                     });
                                 }
@@ -743,11 +747,14 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                      }    
                                    }else{
                                    alert("Este paciente tem direito a um retorno associado ao procedimento escolhido");
-                                   $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);    
+                                   $("#procedimento<?= $b; ?>").val(r.procedimento_retorno);  
+                                   
+                                   $("#submitButton").attr('disabled', 'disabled'); 
                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: r.procedimento_retorno, ajax: true}, function (j) {
                                              options = "";
                                              options += j[0].valortotal;
                                              document.getElementById("valor<?= $b; ?>").value = options;
+                                             $("#submitButton").removeAttr('disabled');
                                              $('.carregando').hide();
                                          });
                                    }

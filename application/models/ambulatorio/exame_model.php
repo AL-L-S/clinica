@@ -3475,6 +3475,10 @@ class exame_model extends Model {
                             tc.descricao as tipoconsulta,
                             p.nome as paciente,
                             op.nome as secretaria,
+                            op2.nome as operadoragenda,
+                            op2.operador_id as operadoragendaid,
+                            opa.operador_id as operadorautorizacaoid,
+                            opa.nome as operadorautorizacao,
                             op.operador_id,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento,
@@ -3487,13 +3491,19 @@ class exame_model extends Model {
         $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador op2', 'op2.operador_id = ae.operador_cadastro', 'left');
+        $this->db->join('tb_operador opa', 'opa.operador_id = ae.operador_autorizacao', 'left');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        
+        if($_POST['horarios_livres'] == 'NAO'){
+            $this->db->where('ae.paciente_id IS NOT NULL');
         }
         $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
@@ -3501,8 +3511,9 @@ class exame_model extends Model {
             $this->db->where('ae.operador_atualizacao', $_POST['medicos']);
         }
 
-        $return = $this->db->get();
-        return $return->result();
+        $return = $this->db->get()->result();
+//        die('more');
+        return $return;
     }
 
     function testarautorizarorcamento($ambulatorio_orcamento_id) {
@@ -9026,7 +9037,6 @@ class exame_model extends Model {
             $this->db->where("ae.agenda_exames_id", $agenda_exames_id);
             $query = $this->db->get();
             $return = $query->result();
-
             $this->db->set('procedimento_convenio_id', $return[0]->procedimento_tuss_id);
             $this->db->set('paciente_id', $return[0]->paciente_id);
             $this->db->set('data', date("Y-m-d"));
@@ -9053,6 +9063,7 @@ class exame_model extends Model {
             }
 
             $this->db->set('valor', $return[0]->valor);
+            $this->db->set('faturado', 't');
 
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -9062,7 +9073,10 @@ class exame_model extends Model {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('empresa_id', $empresa_id);
             $this->db->insert('tb_paciente_credito');
-
+            
+            echo "<pre>";
+            var_dump($return); die;
+            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('paciente_id', null);

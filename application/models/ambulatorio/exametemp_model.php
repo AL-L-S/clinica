@@ -2654,6 +2654,9 @@ class exametemp_model extends Model {
         if ($result[0]->data_financeiro != '') {
             $this->db->set('data_financeiro', $result[0]->data_financeiro);
         }
+        if (isset($_GET['justificativa'])) {
+            $this->db->set('justificativa', @$_GET['justificativa']);
+        }
         $this->db->set('financeiro_fechado', $result[0]->financeiro_fechado);
         $this->db->set('data', $result[0]->data);
         $this->db->set('valor', $result[0]->valor);

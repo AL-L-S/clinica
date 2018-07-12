@@ -4091,7 +4091,8 @@ class Guia extends BaseController {
             $data['revisor'] = 0;
         }
 
-        $data['periodo'] = $_POST['periodo'];
+        $data['periodo_inicio'] = $_POST['periodo_inicio'];
+        $data['periodo_fim'] = $_POST['periodo_fim'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['empresamunicipio'] = $this->guia->listarempresamunicipio($_POST['empresa']);
         $data['medicos'] = $this->guia->relatoriomedicoatendimentomensal();
@@ -4436,6 +4437,8 @@ class Guia extends BaseController {
         $data['grupo'] = $_POST['grupo'];
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->guia->relatoriocaixa();
+//        echo "<pre>";
+//        var_dump($data['relatorio']); die;
         $data['creditos'] = $this->guia->relatoriocaixacreditoslancados();
         $data['relatoriohomecare'] = $this->guia->relatoriocaixahomecare();
         $data['caixa'] = $this->caixa->listarsangriacaixa();

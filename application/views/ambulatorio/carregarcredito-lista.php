@@ -79,7 +79,7 @@ $perfil_id = $this->session->userdata('perfil_id');
                                 </td>
                                 <?if($perfil_id == 1){?>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                        <a onclick="javascript: return confirm('Deseja realmente estornar esse crédito?')"href="<?= base_url() ?>ambulatorio/exametemp/excluircredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>">Estornar</a></div>
+                                        <a onclick="confirmarEstorno()" href="#">Estornar</a></div>
                                 </td>    
                                 <?}?>
                                 
@@ -137,7 +137,17 @@ $perfil_id = $this->session->userdata('perfil_id');
     $(function () {
         $("#accordion").accordion();
     });
-
+    function confirmarEstorno(){
+//         href="<?= base_url() ?>ambulatorio/exametemp/excluircredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>"
+        var resposta = prompt("Informe o motivo do estorno.");
+        if(resposta == null || resposta == ""){
+            return false;
+        }
+        else {
+            window.open('<?= base_url() ?>ambulatorio/exametemp/excluircredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>?justificativa='+resposta, '_self');
+//            alert(resposta);
+        }
+    }
 </script>
 <style>
     #spantotal{

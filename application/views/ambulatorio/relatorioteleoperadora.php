@@ -38,6 +38,15 @@
                             <option value="0">TODOS</option>
                         </select>
                     </dd>
+                    <dt>
+                        <label>Mostrar Horarios Livres?</label>
+                    </dt>
+                    <dd>
+                        <select name="horarios_livres" id="horarios_livres" class="size2">
+                            <option value="SIM">SIM</option>
+                            <option value="NAO">NÃO</option>
+                        </select>
+                    </dd>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>

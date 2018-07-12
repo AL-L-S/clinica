@@ -222,7 +222,7 @@
     $(function () {
         $("#txtNome").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-            minLength: 3,
+            minLength: 10, // Todas as telas de agendamento eu coloquei esse comentario. Quando for alterar esse valor, basta ir em "Localizar em Projetos" e pesquisar por ele.
             focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);
                 return false;

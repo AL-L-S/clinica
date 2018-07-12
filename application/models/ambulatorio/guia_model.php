@@ -4436,11 +4436,19 @@ class guia_model extends Model {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
-        $periodo = explode("/", $_POST['periodo']);
+        $periodo = explode("/", $_POST["periodo_inicio"]);
         $mes = $periodo[0];
         $ano = $periodo[1];
+        $data_inicio = $ano.'-'.$mes.'-'.'01';
+        
+        $periodo = explode("/", $_POST["periodo_fim"]);
+        $mes = $periodo[0];
+        $ano = $periodo[1];
+        $data_fim = $ano.'-'.$mes.'-'.'01';
 
-        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
+//        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
+        $this->db->where("al.data >= '$data_inicio'");
+        $this->db->where("al.data <= '$data_fim'");
 
         $this->db->groupby('pt.nome, pt.procedimento_tuss_id');
 
@@ -4490,11 +4498,19 @@ class guia_model extends Model {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
-        $periodo = explode("/", $_POST['periodo']);
+        $periodo = explode("/", $_POST["periodo_inicio"]);
         $mes = $periodo[0];
         $ano = $periodo[1];
+        $data_inicio = $ano.'-'.$mes.'-'.'01';
+        
+        $periodo = explode("/", $_POST["periodo_fim"]);
+        $mes = $periodo[0];
+        $ano = $periodo[1];
+        $data_fim = $ano.'-'.$mes.'-'.'01';
 
-        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
+//        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
+        $this->db->where("al.data >= '$data_inicio'");
+        $this->db->where("al.data <= '$data_fim'");
 
         $this->db->groupby('al.medico_parecer1, op.nome, pt.nome, pt.procedimento_tuss_id');
 
@@ -4535,12 +4551,23 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-
-        $periodo = explode("/", $_POST['periodo']);
+        
+//        echo "<pre>";
+//        var_dump($_POST["periodo_inicio"]); die;
+        
+        $periodo = explode("/", $_POST["periodo_inicio"]);
         $mes = $periodo[0];
         $ano = $periodo[1];
+        $data_inicio = $ano.'-'.$mes.'-'.'01';
+        
+        $periodo = explode("/", $_POST["periodo_fim"]);
+        $mes = $periodo[0];
+        $ano = $periodo[1];
+        $data_fim = $ano.'-'.$mes.'-'.'01';
 
-        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
+//        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
+        $this->db->where("al.data >= '$data_inicio'");
+        $this->db->where("al.data <= '$data_fim'");
 
         $this->db->groupby('op.nome, al.medico_parecer1');
 
@@ -5603,6 +5630,7 @@ class guia_model extends Model {
                            per.data as data_credito,
                            p.nome as paciente,
                            per.valor,
+                           per.justificativa,
                            e.nome as empresa,
                            pt.nome as procedimento,
                            per.financeiro_fechado,
@@ -12670,13 +12698,16 @@ ORDER BY ae.paciente_credito_id)";
     }
 
     function listarempresas() {
-
+        $operador_id = $this->session->userdata('operador_id');
         $this->db->select('empresa_id,
-            razao_social,
-            producaomedicadinheiro,
-            nome');
+                            razao_social,
+                            producaomedicadinheiro,
+                            nome');
         $this->db->from('tb_empresa');
         $this->db->where("ativo", 't');
+        $this->db->where("empresa_id IN (
+            SELECT empresa_id FROM ponto.tb_operador_empresas WHERE ativo = 't' AND operador_id = $operador_id
+        )");
         $this->db->orderby('empresa_id');
         $return = $this->db->get();
         return $return->result();

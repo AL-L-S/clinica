@@ -22,7 +22,9 @@
             <tr>
                 <th class="tabela_header" >Status</th>
                 <th class="tabela_header" width="250px;">Nome</th>
-                <th class="tabela_header" width="70px;">Resp.</th>
+                <th class="tabela_header" >Resp.</th>
+                <th class="tabela_header" >Resp. Agendamento</th>
+                <th class="tabela_header" >Resp. Autorizacao</th>
                 <th class="tabela_header" width="70px;">Data</th>
                 <th class="tabela_header" width="50px;">Dia</th>
                 <th class="tabela_header" width="70px;">Agenda</th>
@@ -42,9 +44,14 @@
                     $dataFuturo = date("Y-m-d H:i:s");
                     $dataAtual = $item->data_atualizacao;
 
-                    $total[$item->operador_id] = array(
-                        "nome" => $item->secretaria,
-                        "qtde" => (@$total[$item->operador_id]["qtde"] + 1)
+                    $totalAgenda[$item->operadoragendaid] = array(
+                        "nome" => $item->operadoragenda,
+                        "qtde" => (@$totalAgenda[$item->operadoragendaid]["qtde"] + 1)
+                    );
+
+                    $totalAutori[$item->operadorautorizacaoid] = array(
+                        "nome" => $item->operadorautorizacao,
+                        "qtde" => (@$totalAutori[$item->operadorautorizacaoid]["qtde"] + 1)
                     );
                             
                     if ($item->celular != "") {
@@ -107,6 +114,8 @@
                         <td ><b><?= $situacao; ?></b></td>
                         <td <b><?= $item->paciente; ?></b></td>
                         <td ><?= substr($item->secretaria, 0, 9); ?></td>
+                        <td ><?= substr($item->operadoragenda, 0, 9); ?></td>
+                        <td ><?= substr($item->operadorautorizacao, 0, 9); ?></td>
                         <td><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                         <td ><?= substr($dia, 0, 3); ?></td>
                         <td ><?= $item->inicio; ?></td>
@@ -133,22 +142,49 @@
                 
             </table>
             <br>
-                
-            <table>
-                <thead>
-                    <tr>
-                        <th class="tabela_header" >Responsável</th>
-                        <th class="tabela_header" >Quantidade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <? foreach($total as $value) { ?>
-                        <tr>
-                            <td><?=$value["nome"]?></td>
-                            <td style="text-align: right"><?=$value["qtde"]?></td>
-                        </tr>
-                    <? } ?>
-                </tbody>
+            <table cellpadding="20">
+                <tr>
+                    <td style="vertical-align: top; text-align: center">
+                        <h4>Agendamentos</h4>
+                        <table border="1" cellpadding="5" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="tabela_header" >Responsável</th>
+                                    <th class="tabela_header" >Quantidade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <? foreach($totalAgenda as $value) { 
+                                    if($value["nome"] == '')continue;?>
+                                    <tr>
+                                        <td><?=$value["nome"]?></td>
+                                        <td style="text-align: right"><?=$value["qtde"]?></td>
+                                    </tr>
+                                <? } ?>
+                            </tbody>
+                        </table>
+                    </td>
+                    <td style="vertical-align: top; text-align: center" >
+                        <h4>Autorização</h4>
+                        <table border="1" cellpadding="5" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th class="tabela_header" >Responsável</th>
+                                    <th class="tabela_header" >Quantidade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <? foreach($totalAutori as $value) { 
+                                    if($value["nome"] == '')continue;?>
+                                    <tr>
+                                        <td><?=$value["nome"]?></td>
+                                        <td style="text-align: right"><?=$value["qtde"]?></td>
+                                    </tr>
+                                <? } ?>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
             </table>
             <?
         }

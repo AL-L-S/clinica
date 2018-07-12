@@ -526,9 +526,10 @@ class empresa_model extends Model {
     function gravarlembrete($empresa_lembretes_id) {
 
         $this->db->select('operador_id, nome');
-        $this->db->from('tb_operador');
+        $this->db->from('tb_operador o');
 //        $this->db->where('consulta', 'true');
-//        $this->db->where('ativo', 'true');
+        $this->db->where('o.ativo', 't');
+        $this->db->where('o.usuario IS NOT NULL');
         $return = $this->db->get()->result();
 
         $horario = date("Y-m-d H:i:s");

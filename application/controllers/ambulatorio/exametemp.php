@@ -472,25 +472,30 @@ class Exametemp extends BaseController {
     }
 
     function gravarfaturarcreditopersonalizado() {
-        $this->guia->gravarfaturarcreditopersonalizado();
-//        var_dump($_POST['paciente_teste_id']);
-//        die;
         $credito_id = $_POST['credito_id'];
         $paciente_id = $_POST['paciente_teste_id'];
-//        $data['agenda_exames_id'] = $agenda_exames_id;
-//        $this->load->View('ambulatorio/faturar-form', $data);
-        redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
+        
+        if((float)$_POST['valortotal'] == 0){
+            $this->guia->gravarfaturarcreditopersonalizado();
+            redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
+        }
+        else {            
+            redirect(base_url() . "ambulatorio/exametemp/faturarcreditos/$credito_id/$paciente_id");
+        }
     }
 
     function gravarfaturarcredito() {
-        $this->guia->gravarfaturamentocredito();
-//        var_dump($_POST['paciente_teste_id']);
-//        die;
         $credito_id = $_POST['credito_id'];
         $paciente_id = $_POST['paciente_teste_id'];
+        if((float)$_POST['valortotal'] == 0){
+            $this->guia->gravarfaturamentocredito();
+            redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
+        }
+        else {            
+            redirect(base_url() . "ambulatorio/exametemp/faturarcreditos/$credito_id/$paciente_id");
+        }
 //        $data['agenda_exames_id'] = $agenda_exames_id;
 //        $this->load->View('ambulatorio/faturar-form', $data);
-        redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
     }
 
     function excluircredito($credito_id, $paciente_id) {

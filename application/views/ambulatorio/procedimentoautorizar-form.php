@@ -842,10 +842,12 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                         $('#procedimento1').change(function () {
                                                             if ($(this).val()) {
                                                                 $('.carregando').show();
+                                                                $("#submitButton").attr('disabled', 'disabled');
                                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                                     options = "";
                                                                     options += j[0].valortotal;
-                                                                    document.getElementById("valor1").value = options
+                                                                    document.getElementById("valor1").value = options;
+                                                                    $("#submitButton").removeAttr('disabled');
                                                                     $('.carregando').hide();
                                                                 });
                                                             } else {
@@ -876,10 +878,12 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                         $('#procedimento2').change(function () {
                                                             if ($(this).val()) {
                                                                 $('.carregando').show();
+                                                                $("#submitButton").attr('disabled', 'disabled');
                                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor2', {procedimento2: $(this).val(), ajax: true}, function (j) {
                                                                     options = "";
                                                                     options += j[0].valortotal;
-                                                                    document.getElementById("valor2").value = options
+                                                                    document.getElementById("valor2").value = options;
+                                                                    $("#submitButton").removeAttr('disabled');
                                                                     $('.carregando').hide();
                                                                 });
                                                             } else {
@@ -910,10 +914,12 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                         $('#procedimento3').change(function () {
                                                             if ($(this).val()) {
                                                                 $('.carregando').show();
+                                                                $("#submitButton").attr('disabled', 'disabled');
                                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor3', {procedimento3: $(this).val(), ajax: true}, function (j) {
                                                                     options = "";
                                                                     options += j[0].valortotal;
-                                                                    document.getElementById("valor3").value = options
+                                                                    document.getElementById("valor3").value = options;
+                                                                    $("#submitButton").removeAttr('disabled');
                                                                     $('.carregando').hide();
                                                                 });
                                                             } else {
@@ -944,10 +950,12 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                         $('#procedimento4').change(function () {
                                                             if ($(this).val()) {
                                                                 $('.carregando').show();
+                                                                $("#submitButton").attr('disabled', 'disabled');
                                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor4', {procedimento4: $(this).val(), ajax: true}, function (j) {
                                                                     options = "";
                                                                     options += j[0].valortotal;
-                                                                    document.getElementById("valor4").value = options
+                                                                    document.getElementById("valor4").value = options;
+                                                                    $("#submitButton").removeAttr('disabled');
                                                                     $('.carregando').hide();
                                                                 });
                                                             } else {

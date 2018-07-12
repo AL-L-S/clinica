@@ -833,13 +833,14 @@ class Operador_model extends BaseModel {
     }
 
     function listaroperadoreslembrete() {
-        $this->db->select('o.operador_id,
+        $this->db->select('    o.operador_id,
                                o.usuario,
                                o.nome,
                                o.perfil_id,
                                p.nome as perfil');
         $this->db->from('tb_operador o');
         $this->db->where('o.ativo', 't');
+        $this->db->where('o.usuario IS NOT NULL');
         $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id', 'left');
         $this->db->orderby('o.nome');
         $return = $this->db->get();

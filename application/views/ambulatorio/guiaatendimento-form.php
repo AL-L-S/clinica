@@ -1155,12 +1155,14 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     $('#procedimento1').change(function () {
                                         if ($(this).val()) {
                                             $('.carregando').show();
+                                            $("#submitButton").attr('disabled', 'disabled');
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                 options = "";
                                                 options += j[0].valortotal;
                                                 document.getElementById("valorunitario").value = options;
                                                 var valorTotal = options * (( $('#qtde1').val() ) ? $('#qtde1').val() : 1);
                                                 document.getElementById("valor1").value = valorTotal;
+                                                $("#submitButton").removeAttr('disabled');
                                                 $('.carregando').hide();
                                             });
                                             

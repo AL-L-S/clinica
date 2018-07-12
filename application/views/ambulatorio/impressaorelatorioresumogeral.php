@@ -62,6 +62,8 @@
             </tr>
             <?
             $vlrCreditosLancados = 0;
+//            echo "<pre>";
+//            var_dump($creditos); die;
             foreach ($creditos as $item) {
                 $vlrCreditosLancados += $item->valor;
 
@@ -83,6 +85,7 @@
                         @$numerocredito[$value->nome] ++;
                     }
                 }
+                
                 ?>
                 <tr>
                     <td><?= $item->paciente ?></td>

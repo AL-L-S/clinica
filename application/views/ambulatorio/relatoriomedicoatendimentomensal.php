@@ -20,7 +20,14 @@
                         <label>Data inicio</label>
                     </dt>
                     <dd>
-                        <input type="text" name="periodo" id="periodo" alt="date" required=""/>
+                        <input type="text" name="periodo_inicio" id="periodo_inicio" alt="date" required=""/>
+                    </dd>
+                        
+                    <dt>
+                        <label>Data Fim</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="periodo_fim" id="periodo_fim" alt="date" required=""/>
                     </dd>
                         
                     <dt>
@@ -101,7 +108,7 @@
     });
 
     $(function () {
-        $("#periodo").datepicker({
+        $("#periodo_inicio").datepicker({
             autosize: true,
             changeMonth: true,
             changeYear: true,
@@ -118,7 +125,35 @@
     });
     
     $(function () {
-        $("#periodo").focus(function () {
+        $("#periodo_inicio").focus(function () {
+            $(".ui-datepicker-calendar").hide();
+            $("#ui-datepicker-div").position({
+                my: "center top",
+                at: "center bottom",
+                of: $(this)
+            });
+        });
+    });
+
+    $(function () {
+        $("#periodo_fim").datepicker({
+            autosize: true,
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'mm/yy',
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).val($.datepicker.formatDate('mm/yy', new Date(year, month, 1)));
+            }
+        });
+    });
+    
+    $(function () {
+        $("#periodo_fim").focus(function () {
             $(".ui-datepicker-calendar").hide();
             $("#ui-datepicker-div").position({
                 my: "center top",

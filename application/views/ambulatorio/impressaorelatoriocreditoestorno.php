@@ -41,13 +41,16 @@
                     border-bottom:none;mso-border-top-alt:none;border-left:
                     none;border-right:none;' colspan="6">&nbsp;</th>
             </tr>
+    </table>
+    <table cellpadding="5" cellspacing="10">
             <tr>
-                <th style='text-align: left;' width="320px;"><font size="-1">Paciente</th>
-                <th style='text-align: left;'width="320px;"><font size="-1">Data do Crédito</th>
-                <th style='text-align: left;'width="320px;"><font size="-1">Data do Estorno</th>
-                <th style='text-align: left;'width="320px;"><font size="-1">Operador Responsável</th>
-                <th style='text-align: left;'width="320px;"><font size="-1">Empresa</th>
-                <th style='text-align: right;'width="320px;"><font size="-1">Valor Crédito</th>
+                <th style='text-align: left;' width="320px"><font size="-1">Paciente</th>
+                <th style='text-align: left;'><font size="-1">Justificativa</th>
+                <th style='text-align: left;'><font size="-1">Data do Crédito</th>
+                <th style='text-align: left;'><font size="-1">Data do Estorno</th>
+                <th style='text-align: left;'><font size="-1">Operador Responsável</th>
+                <th style='text-align: left;'><font size="-1">Empresa</th>
+                <th style='text-align: right;'><font size="-1">Valor Crédito</th>
             </tr> 
             <?
             $i = 0;
@@ -58,6 +61,7 @@
                     ?>
                     <tr>
                         <td ><font size="-1"><?= $item->paciente ?></td>
+                        <td ><font size="-1"><?= $item->justificativa ?></td>
                         <td style='text-align: left;'><font size="-1"><?= date("d/m/Y", strtotime($item->data_credito)) ?></td>
                         <td style='text-align: left;'><font size="-1"><?= date("d/m/Y", strtotime($item->data_estorno)) ?></td>
                         <td ><font size="-1"><?= $item->operador_estorno ?></td>

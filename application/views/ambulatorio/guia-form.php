@@ -919,10 +919,12 @@
                                                             $('#procedimento1').change(function () {
                                                                 if ($(this).val()) {
                                                                     $('.carregando').show();
+                                                                    $("#submitButton").attr('disabled', 'disabled');
                                                                     $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                                         options = "";
                                                                         options += j[0].valortotal;
-                                                                        document.getElementById("valor1").value = options
+                                                                        document.getElementById("valor1").value = options;
+                                                                        $("#submitButton").removeAttr('disabled');
                                                                         $('.carregando').hide();
                                                                     });
                                                                 } else {
