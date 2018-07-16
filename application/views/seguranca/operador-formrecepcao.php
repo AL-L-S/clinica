@@ -1,5 +1,5 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <h3 class="singular"><a href="#">Cadastro de Operador</a></h3>
+    <h3 class="singular"><a href="#">Cadastro de Medico Solicitante</a></h3>
     <div>
         <form name="form_operador" id="form_operador" action="<?= base_url() ?>seguranca/operador/gravarrecepcao" method="post">
             <fieldset>

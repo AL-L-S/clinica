@@ -87,7 +87,6 @@
         ?>
                 </tbody>
     </table>
-    <h4>Total de exames marcados <?= $contador; ?></h4>
 
 </div> <!-- Final da DIV content -->
 <link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
