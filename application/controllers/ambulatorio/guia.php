@@ -2954,8 +2954,11 @@ class Guia extends BaseController {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
         }
 
-        $data['contador'] = $this->guia->relatoriogeralconveniocontador();
         $data['relatorio'] = $this->guia->relatoriogeralconvenio();
+        $data['contador'] = count($data['relatorio']);
+        
+//        echo "<pre>";
+//        var_dump($data['listarconvenio']); die;
 
         $this->load->View('ambulatorio/impressaorelatoriogeralconvenio', $data);
     }
