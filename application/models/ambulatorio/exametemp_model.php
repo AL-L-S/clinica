@@ -2138,6 +2138,7 @@ class exametemp_model extends Model {
                             oi.valor_total,
                             oi.orcamento_id,
                             oi.paciente_id,
+                            oi.data_preferencia,
                             oi.dia_semana_preferencia,
                             oi.turno_prefencia,
                             ao.autorizado,

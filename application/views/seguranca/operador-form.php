@@ -61,11 +61,11 @@
                     <?php
                     if (@$obj->_consulta == "t") {
                         ?>
-                        <input type="checkbox" name="txtconsulta" checked ="true"/>Realiza consulta / exame
+                        <input type="checkbox" name="txtconsulta" checked ="true"/>Realiza Consulta / Exame
                         <?php
                     } else {
                         ?>
-                        <input type="checkbox" name="txtconsulta"  />Realiza consulta / exame
+                        <input type="checkbox" name="txtconsulta"  />Realiza Consulta / Exame
                         <?php
                     }
                     

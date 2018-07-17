@@ -195,6 +195,8 @@ class Procedimentoplano extends BaseController {
 
     function listaprocedimentomultiempresa($procedimento_tuss_id, $convenio_id) {
         $data['procedimentos'] = $this->procedimentoplano->listaprocedimentomultiempresa($procedimento_tuss_id, $convenio_id);
+//        echo "<pre>";
+//        var_dump($data['procedimentos']); die;
         $this->loadView('ambulatorio/listaprocedimentomultiempresa-form', $data);
     }
 
@@ -456,7 +458,9 @@ class Procedimentoplano extends BaseController {
     function percentualmedicomultiplo($convenio_id = null, $medico_id = null) {
         $data['procedimento'] = array();
         if ($convenio_id != null && $convenio_id != ''){
-            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual($convenio_id);
+//            echo "<pre>";
+//            var_dump($data['procedimento']); die;
         }
         $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
@@ -470,7 +474,7 @@ class Procedimentoplano extends BaseController {
     function percentualpromotormultiplo($convenio_id = null, $promotor_id = null) {
         $data['procedimento'] = array();
         if ($convenio_id != null && $convenio_id != ''){
-            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual($convenio_id);
         }
         $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
@@ -485,7 +489,7 @@ class Procedimentoplano extends BaseController {
     function percentuallaboratoriomultiplo($convenio_id = null, $laboratorio_id = null) {
         $data['procedimento'] = array();
         if ($convenio_id != null && $convenio_id != ''){
-            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual();
+            $data['procedimento'] = $this->procedimentoplano->listarconvenioprocedimentopercentual($convenio_id);
         }
         $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['laboratorios'] = $this->laboratorio->listarlaboratorios();

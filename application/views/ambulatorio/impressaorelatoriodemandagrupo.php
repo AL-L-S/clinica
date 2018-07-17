@@ -19,7 +19,37 @@
         <?
         foreach ($relatorio as $value){
             $gp = str_replace(" ", "", (($value->grupo == '')?'void':$value->grupo));
-            $diaSemana = (($value->dia_semana_preferencia!='')?$value->dia_semana_preferencia:'indiferente');
+            if ($value->data_preferencia != ''){
+                switch (date('N', strtotime($value->data_preferencia))){
+                    case 1:
+                        $diaSemana = 'segunda';
+                        break;
+                    case 2:
+                        $diaSemana = 'terca';
+                        break;
+                    case 3:
+                        $diaSemana = 'quarta';
+                        break;
+                    case 4:
+                        $diaSemana = 'quinta';
+                        break;
+                    case 5:
+                        $diaSemana = 'sexta';
+                        break;
+                    case 6:
+                        $diaSemana = 'sabado';
+                        break;
+                    case 7:
+                        $diaSemana = 'domingo';
+                        break;
+                    default :
+                        $diaSemana = 'indiferente';
+                        break;
+                }                
+            }
+            else {
+                $diaSemana = 'indiferente';
+            }
             @$grupos[$gp][$diaSemana]++;
             @$grupos[$gp]['total']++;
         } 

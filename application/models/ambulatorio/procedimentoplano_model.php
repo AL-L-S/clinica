@@ -134,7 +134,9 @@ class procedimentoplano_model extends Model {
                             pt.grupo,
                             e.nome as empresa,
                             pc.ativo,
-                            c.associado');
+                            c.associado,
+                            pc.data_cadastro,
+                            pc.operador_cadastro');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -202,9 +204,7 @@ class procedimentoplano_model extends Model {
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("c.associado", 'false');
         $this->db->where("pc.ativo", 't');
-        if ($convenio_id != null) {
-            $this->db->where("c.convenio_id", $convenio_id);
-        }
+        $this->db->where("pc.convenio_id", $convenio_id);
         $empresa_id = $this->session->userdata('empresa_id');
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
         if ($procedimento_multiempresa == 't') {

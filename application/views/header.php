@@ -33,6 +33,7 @@ $financeiro_cadastro = $this->session->userdata('financeiro_cadastro');
 $caixa_personalizado = $this->session->userdata('caixa_personalizado');
 $gerente_contasapagar = $this->session->userdata('gerente_contasapagar');
 $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
+$relatorios_clinica_med = $this->session->userdata('relatorios_clinica_med');
 $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
 $retirar_preco_procedimento = $this->session->userdata('retirar_preco_procedimento');
 $gerente_relatorio_financeiro = $this->session->userdata('gerente_relatorio_financeiro');
@@ -489,9 +490,11 @@ function debug($object) {
         <!--                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendaconsultas">Relatorio agenda Consulta</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendafaltou">Relatorio agenda faltas</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendaexame">Relatorio agenda Exames</a></span></ul>-->
-                                        <? if (($perfil_id != 11 && $perfil_id != 12 && $perfil_id != 5 && $perfil_id != 18 && $perfil_id != 6) || $relatorio_ordem == 't') { ?>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoordem">Relatorio ordem atendimento</a></span></ul>
-                                        <? } ?>
+                                        <? if (($perfil_id != 11 && $perfil_id != 12 && $perfil_id != 5 && $perfil_id != 18 && $perfil_id != 6) || $relatorio_ordem == 't') { 
+                                            if ($relatorios_clinica_med != 't'){ ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoordem">Relatorio ordem atendimento</a></span></ul>
+                                        <?  } 
+                                        }?>
 
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioconvenioquantidade">Convenio exames/consultas</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioaniversariante">Relatorio Aniversariantes</a></span></ul>
@@ -501,7 +504,9 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriorevisao">Relatorio Revisão</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioteleoperadora">Relatorio Teleoperadora</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioorcamentos">Relatorio Orçamentos</a></span></ul>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacienteduplicado">Relatorio Pacientes Duplicados</a></span></ul>
+                                        <?if ($relatorios_clinica_med != 't'){ ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacienteduplicado">Relatorio Pacientes Duplicados</a></span></ul>
+                                        <?}?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacientecpfvalido">Relatorio Paciente CPF Válido</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriosituacaoatendimento">Relatorio Situação de Atendimento</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriodemandagrupo">Relatorio de Demanda Grupo</a></span></ul>
@@ -509,9 +514,11 @@ function debug($object) {
                                         <?
                                     }
                                     if ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 15) {
+                                        if ($relatorios_clinica_med != 't'){ 
                                         ?>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogruporm">Relatorio Rm</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogruporm">Relatorio Rm</a></span></ul>
                                         <?
+                                        }
                                     }
                                     if (($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 15 ) && $relatorios_recepcao == 't') {
                                         ?>
@@ -519,9 +526,11 @@ function debug($object) {
                                         <?
                                     }
                                     if (($perfil_id != 9 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 13) && $relatorios_recepcao == 't') {
+                                        if ($relatorios_clinica_med != 't'){ 
                                         ?>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioatendenteconvenio">Relatorio Atendente Convenio</a></span></ul>
-                                    <? } ?>    
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioatendenteconvenio">Relatorio Atendente Convenio</a></span></ul>
+                                    <?  } 
+                                    }?>    
     <!--                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exametemp">Pacientes temporarios</a></span></ul>
     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/localizapaciente">Loacalizar pacientes</a></span></ul>-->
                                 </li>
@@ -1108,7 +1117,7 @@ function debug($object) {
                                             <? if ($subgrupo_procedimento != 't') { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao">Manter Grupo Classificação</a></span></ul>
                                             <? } else { ?>
-                                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarsubgrupo">Manter Subgrupo</a></span></ul>
+                                                <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarsubgrupo">Manter Subgrupo</a></span></ul>-->
                                                 <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarassociacaosubgrupo">Manter Associação Subgrupo</a></span></ul>-->
                                                 <?
                                             }

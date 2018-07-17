@@ -169,20 +169,6 @@ CREATE TABLE ponto.tb_procedimento_convenio_forma_pagamento
 );
 ALTER TABLE ponto.tb_procedimento_convenio_forma_pagamento ADD COLUMN ajuste numeric(10,2);
 
-CREATE TABLE ponto.tb_convenio_forma_pagamento
-(
-  convenio_forma_pagamento_id serial NOT NULL,
-  forma_pagamento_id integer,
-  convenio_id integer,
-  ativo boolean DEFAULT true,
-  data_cadastro timestamp without time zone,
-  operador_cadastro integer,
-  data_atualizacao timestamp without time zone,
-  operador_atualizacao integer,
-  CONSTRAINT tb_convenio_forma_pagamento_pkey PRIMARY KEY (convenio_forma_pagamento_id)
-);
-ALTER TABLE ponto.tb_convenio_forma_pagamento ADD COLUMN ajuste numeric(10,2);
-
 -- Dia 11/06/2018
 CREATE TABLE ponto.tb_convenio_forma_pagamento
 (

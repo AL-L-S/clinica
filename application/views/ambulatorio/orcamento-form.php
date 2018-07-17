@@ -13,7 +13,7 @@
         $empresa = $this->guia->listarempresapermissoes(); 
         $odontologia_alterar = $empresa[0]->odontologia_valor_alterar;
         ?>
-        <h3 class="singular"><a href="#">Or&ccedil;amento exames</a></h3>
+        <h3 class="singular"><a href="#">Orçamento exames</a></h3>
         <div>
             <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarorcamento" method="post">
                 <fieldset>
@@ -81,7 +81,7 @@
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">Forma de Pagamento</th>
-                                <th class="tabela_header">Dia</th>
+                                <th class="tabela_header">Data Preferência</th>
                                 <th class="tabela_header">Turno</th>
                                 <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">V. Unit</th>
@@ -138,16 +138,7 @@
                                 </td>
                                 
                                 <td>
-                                    <select name="dia_preferencia" id="dia_preferencia" class="size1" >
-                                        <option value="">Selecione</option>
-                                        <option value="segunda" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "segunda") echo 'selected';?>>Segunda-Feira</option>
-                                        <option value="terca" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "terca") echo 'selected';?>>Terça-Feira</option>
-                                        <option value="quarta" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "quarta") echo 'selected';?>>Quarta-Feira</option>
-                                        <option value="quinta" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "quinta") echo 'selected';?>>Quinta-Feira</option>
-                                        <option value="sexta" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "sexta") echo 'selected';?>>Sexta-Feira</option>
-                                        <option value="sabado" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "sabado") echo 'selected';?>>Sábado</option>
-                                        <option value="domingo" <?if(@$exames[count($exames)-1]->dia_semana_preferencia == "domingo") echo 'selected';?>>Domingo</option>
-                                    </select>
+                                    <input type="text" name="txtdata" id="txtdata" alt="date" class="size1"/>
                                 </td>
                                 <td>
                                     <select name="turno_preferencia" id="turno_preferencia" class="size1" >
@@ -221,33 +212,6 @@
                                     $turno = "Não informado";
                                     break;
                             }
-                            
-                            switch ($item->dia_semana_preferencia){
-                                case 'segunda':
-                                    $dia = "Segunda-Feira";
-                                    break;
-                                case 'terca':
-                                    $dia = "Terça-Feira";
-                                    break;
-                                case 'quarta':
-                                    $dia = "Quarta-Feira";
-                                    break;
-                                case 'quinta':
-                                    $dia = "Quinta-Feira";
-                                    break;
-                                case 'sexta':
-                                    $dia = "Sexta-Feira";
-                                    break;
-                                case 'sabado':
-                                    $dia = "Sábado";
-                                    break;
-                                case 'domingo':
-                                    $dia = "Domingo";
-                                    break;
-                                default:
-                                    $dia = "Não informado";
-                                    break;
-                            }
                             ?>
                             <tbody>
                                 <tr>
@@ -258,7 +222,9 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <p style="font-size: 8pt;">
-                                            <span style="font-weight: bold">Dia:</span> <?= $dia ?><br>
+                                            <? if ($item->data_preferencia != "") { ?>
+                                                <span style="font-weight: bold">Data:</span> <?= date("d/m/Y", strtotime($item->data_preferencia)) ?><br>
+                                            <? } ?>
                                             <span style="font-weight: bold">Turno:</span> <?= $turno ?>
                                         </p>
                                     </td>
@@ -276,7 +242,7 @@
                     ?>
                         <tfoot>
                             <tr>
-                                <th class="tabela_footer" colspan="" style="vertical-align: top;">
+                                <th class="tabela_footer" colspan="2" style="vertical-align: top;">
                                     Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
                                 </th>
                                 <th class="tabela_footer" colspan="2" style="vertical-align: top;">
@@ -334,6 +300,18 @@
     #procedimento1_chosen a { width: 100%; }
 </style>
 <script type="text/javascript">
+    
+    $(function () {
+        $("#txtdata").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
                                 if ($('#convenio1').val() != '-1') {
                                     if($('#grupo1').val() == ''){
                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $('#convenio1').val(), ajax: true}, function (j) {

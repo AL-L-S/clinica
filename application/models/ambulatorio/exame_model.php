@@ -3065,17 +3065,7 @@ class exame_model extends Model {
                             pt.grupo,
                             aoi.dia_semana_preferencia,
                             aoi.turno_prefencia,
-                            CASE dia_semana_preferencia
-                                WHEN 'segunda' THEN 1
-                                WHEN 'terca' THEN 2
-                                WHEN 'quarta' THEN 3
-                                WHEN 'quinta' THEN 4
-                                WHEN 'sexta' THEN 5
-                                WHEN 'segunda' THEN 6
-                                WHEN 'sabado' THEN 7
-                                WHEN 'domingo' THEN 8
-                                ELSE 9
-                            END AS num_dia_preferencia,
+                            data_preferencia,
                             CASE turno_prefencia
                                 WHEN 'manha' THEN 1
                                 WHEN 'tarde' THEN 2
@@ -3099,7 +3089,7 @@ class exame_model extends Model {
         }
         $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        $this->db->orderby('11');
+        $this->db->orderby('aoi.data_preferencia');
         $this->db->orderby('ao.ambulatorio_orcamento_id');
         $this->db->orderby('ao.data_criacao');
         $this->db->orderby('pt.grupo');

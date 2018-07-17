@@ -44,6 +44,7 @@ class login_model extends Model {
                            ep.caixa_personalizado,       
                            ep.botao_ativar_sala,
                            ep.retirar_preco_procedimento,
+                           ep.relatorios_clinica_med,
                            ep.subgrupo_procedimento');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
@@ -95,6 +96,7 @@ class login_model extends Model {
             $caixa_personalizado = $retorno[0]->caixa_personalizado;
             $subgrupo_procedimento = $retorno[0]->subgrupo_procedimento;
             $retirar_preco_procedimento = $retorno[0]->retirar_preco_procedimento;
+            $relatorios_clinica_med = $retorno[0]->relatorios_clinica_med;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -164,6 +166,7 @@ class login_model extends Model {
                 'logo_clinica' => $logo_clinica,
                 'subgrupo_procedimento' => $subgrupo_procedimento,
                 'retirar_preco_procedimento' => $retirar_preco_procedimento,
+                'relatorios_clinica_med' => $relatorios_clinica_med,
                 'empresa' => $empresanome
             );
             $this->session->set_userdata($p);

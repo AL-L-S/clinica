@@ -14173,10 +14173,11 @@ ORDER BY ae.paciente_credito_id)";
             if ($_POST['formapamento'] != '') {
                 $this->db->set('forma_pagamento', $_POST['formapamento']);
             }
-
-            $this->db->set('dia_semana_preferencia', $_POST['dia_preferencia']);
+            
+            if($_POST['txtdata'] != ''){
+                $this->db->set('data_preferencia', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdata']))));
+            }
             $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
-
 
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('data', $data);
@@ -14249,7 +14250,11 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('valor_ajustado', $_POST['ajustevalor1']);
             }
 
-            $this->db->set('dia_semana_preferencia', $_POST['dia_preferencia']);
+//            $this->db->set('dia_semana_preferencia', $_POST['dia_preferencia']);
+            
+            if($_POST['txtdata'] != ''){
+                $this->db->set('data_preferencia', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdata']))));
+            }
             $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
 
             $this->db->set('valor', $_POST['valor1']);
