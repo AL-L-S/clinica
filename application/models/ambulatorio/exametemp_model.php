@@ -6775,6 +6775,28 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarhorariosdisponiveisorcamento($parametro, $empresa_id) {
+        $horario = date("Y-m-d");
+        // O "false" no parametro so SELECT serve para dizer ao CodeIgniter não pôr aspas.
+        $this->db->select("a.data,
+                          to_char(a.data, 'DD/MM/YYYY') as data_formatada", false);
+        $this->db->from('tb_agenda_exames a');
+        $this->db->where('a.ativo', 'true');
+        $this->db->where('a.bloqueado', 'false');
+        $this->db->where('a.data >=', $horario);
+        $this->db->where('a.empresa_id', $empresa_id);
+        $this->db->where("a.medico_consulta_id IN (
+            SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
+            WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
+            AND cop.empresa_id = $empresa_id
+        )");
+        $this->db->orderby('a.data');
+        $this->db->groupby('a.data');
+        $this->db->limit(250);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarhorariosgeral($parametro = null, $teste = null) {
         $empresa_id = $this->session->userdata('empresa_id');
 
