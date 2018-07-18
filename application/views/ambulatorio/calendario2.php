@@ -418,13 +418,13 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                         <table>
                             <thead>
                                 <tr>
+                                    <th class="tabela_header" width="70px;">Empresa</th>
                                     <th class="tabela_header" >Status</th>
+                                    <th class="tabela_header" width="70px;">Agenda</th> 
                                     <th class="tabela_header" width="250px;">Nome</th>
                                     <!--<th class="tabela_header" width="70px;">Resp.</th>-->
                                     <!--<th class="tabela_header" width="70px;">Data</th>-->
-                                    <!--<th class="tabela_header" width="50px;">Dia</th>-->
-                                    <th class="tabela_header" width="70px;">Agenda</th>
-                                    <th class="tabela_header" width="70px;">Empresa</th>
+                                    <!--<th class="tabela_header" width="50px;">Dia</th>-->                                                                        
                                     <th class="tabela_header" width="70px;">    </th>
                                     <th class="tabela_header" width="150px;">Telefone</th>
                                     <th class="tabela_header" width="150px;">Convenio</th>
@@ -448,6 +448,8 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                 if ($total > 0) {
                     ?>
                     <tbody>
+                        
+                        
                         <?php
 //                        var_dump($item->situacaoexame);
 //                        die;
@@ -524,65 +526,85 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                 case"Saturday": $dia = "Sabado";
                                     break;
                             }
+                            $cor = '';
+                            if ($verifica == 1){
+                                $cor = '';
+                            }
+                            if ($verifica == 2) {
+                                $cor = 'green';
+                            }
+                            if ($verifica == 3){
+                                $cor = 'red';
+                            }
+                            if ($verifica == 4){
+                                $cor = 'blue';
+                            }
+                            if ($verifica == 5){
+                                $cor = 'gray';
+                            }
                             ?>
                             <tr>
+                                <td class="<?php echo $estilo_linha; ?>">
+                            <div style="font-size: 8pt; margin-left: 2pt"><?= $item->empresa; ?></div>
+                                </td>
                                 <?
                                 if ($verifica == 1) {
                                     if ($item->ocupado == 't') {
                                         ?>
                                         <td class="<?php echo $estilo_linha; ?>"><b><strike><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></strike></b></td>
-                                        <td class="<?php echo $estilo_linha; ?>"><b><strike><?= $item->paciente; ?></strike></b></td>
+                                        
                                     <? } else {
                                         ?>
                                         <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></b></td>
-                                        <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
+                                      
                                         <?
                                     }
                                 }
-
-                                if ($verifica == 2) {
-                                    ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="green"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="green"><b><?= $item->paciente; ?></b></td>
+                                
+                                if ($verifica == 2) {?>
+                                        
+                                    <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
+                                    
                                     <?
                                 }
+                                
 
                                 if ($verifica == 3) {
                                     ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="red"><b><?= $item->paciente; ?></b></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
+                                   
                                     <?
                                 }
 
                                 if ($verifica == 4) {
                                     ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $item->paciente; ?></b></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
+                                    
                                     <?
                                 }
 
                                 if ($verifica == 5) {
                                     ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="gray"><b><?= $item->paciente; ?></b></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
+                                    
                                     <?
-                                }
+                                } 
 
                                 // NOME
                                 if ($verifica == 6) {
                                     if ($item->ocupado == 't') {
                                         ?>
                                         <td class="<?php echo $estilo_linha; ?>"><b><strike><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></strike></b></td>
-                                        <td class="<?php echo $estilo_linha; ?>"><b><strike><?= $item->paciente; ?></strike></b></td>
+                                        
                                     <? } else {
                                         ?>
                                         <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></b></td>
-                                        <td class="<?php echo $estilo_linha; ?>"><b><?= $item->paciente; ?></b></td>
+                                        
                                         <?
                                     }
                                 }
                                 ?>
-
+                                
                                 <!-- RESPONSAVEL -->
                                 <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
 
@@ -591,16 +613,15 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                                                         <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>-->
                                                                 <!--<td class="<?php echo $estilo_linha; ?>"><strike><?= substr($dia, 0, 3); ?></strike></td>-->
                                     <td class="<?php echo $estilo_linha; ?>"><strike><?= $item->inicio; ?></strike></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><?= $item->paciente; ?></b></td>
                         <? } else { ?>
                                     <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>-->
                                     <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($dia, 0, 3); ?></td>-->
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><?= $item->paciente; ?></b></td>
                         <? } ?>
                         <!-- EMPRESA -->
-                        <td class="<?php echo $estilo_linha; ?>">
-                            <div style="font-size: 8pt; margin-left: 2pt"><?= $item->empresa; ?></div>
-                        </td>
-                        
+                                               
                         
                         <td class="<?php echo $estilo_linha; ?>"><?
                             if ($item->encaixe == 't') {
@@ -636,7 +657,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                         } else {
                             $cor = "black";
                         }
-
+                        
                         $title = $item->medicoagenda;
                         $corMedico = $cor;
                         if ($item->confirmacao_medico != '') {
