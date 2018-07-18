@@ -775,10 +775,16 @@
                                 <input type="checkbox" id="retirar_preco_procedimento" name="retirar_preco_procedimento" <? if (@$obj->_retirar_preco_procedimento == 't') echo "checked"; ?>/> 
                             </dd>
                             <dt>
-                                <label title="Ativando essa opção, irá aparecer apenas os relatórios usados na clinica MED.">Apenas relatórios clinica MED</label>
+                                <label title="Ativando essa opção, irá aparecer apenas os relatórios usados na clinica MED.">Padrão clinica MED</label>
                             </dt>
                             <dd>
                                 <input type="checkbox" id="relatorios_clinica_med" name="relatorios_clinica_med" <? if (@$obj->_relatorios_clinica_med == 't') echo "checked"; ?>/> 
+                            </dd>
+                            <dt>
+                                <label title="Ativando essa opção o botão de Ficha-Convenio irá aparecer na tabela de consultas marcadas">Botão Ficha-Convenio</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="botao_ficha_convenio" name="botao_ficha_convenio" <? if (@$obj->_botao_ficha_convenio == 't') echo "checked"; ?>/> 
                             </dd>
                         </fieldset>
                     <? } ?>

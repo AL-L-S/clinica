@@ -82,27 +82,32 @@ class paciente_model extends BaseModel {
         if ($args) {
             if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
                 $this->db->where('paciente_id', $args['prontuario']);
-//                $this->db->where('ativo', 'true');
-            } elseif (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('ativo', 'true');
+            } 
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('tb_paciente.nome ilike', '%' . $args['nome'] . '%');
-//                $this->db->where('ativo', 'true');
-                $this->db->orwhere('tb_paciente.nome_mae ilike', '%' . $args['nome'] . '%');
-                $this->db->where('ativo', 'true');
-                $this->db->orwhere('tb_paciente.celular ilike', '%' . $args['nome'] . '%');
-                $this->db->where('ativo', 'true');
-                $this->db->orwhere('tb_paciente.telefone ilike', '%' . $args['nome'] . '%');
-                $this->db->where('ativo', 'true');
-                $this->db->orwhere('tb_paciente.cpf ilike', '%' . $args['nome'] . '%');
-                $this->db->where('ativo', 'true');
-            } elseif (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
+                $this->db->where('ativo', 'true');               
+                               
+            } 
+            if (isset($args['nascimento']) && strlen($args['nascimento']) > 0) {
                 $this->db->where('tb_paciente.nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $args['nascimento']))));
                 $this->db->where('ativo', 'true');
             }
+            
+            if (isset ($args['cpf']) && strlen($args['cpf']) > 0) {
+                $this->db->where('tb_paciente.cpf ilike', '%' . $args ['cpf'] . '%');
+                $this->db->where('ativo', 'true');
+            }
+            
+            if (isset ($args ['telefone']) && strlen($args ['telefone']) > 0) {
+                $this->db->where("(tb_paciente.celular ilike '%" . $args['telefone'] . "%' OR tb_paciente.telefone ilike '%".$args['telefone']. "%')");
+                $this->db->where('ativo', 'true');
+            }    
+        
         }
 
         return $this->db;
     }
-
     function listardadospacienterelatorionota($paciente_id) {
         $this->db->select('tp.tipo_logradouro_id as codigo_logradouro,co.nome as nome_convenio, co.convenio_id as convenio,tp.descricao,p.*,c.estado, c.nome as cidade_desc,c.municipio_id as cidade_cod');
         $this->db->from('tb_paciente p');
