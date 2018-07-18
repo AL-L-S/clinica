@@ -1618,6 +1618,8 @@ class Guia extends BaseController {
         $data['responsavel'] = $this->exametemp->listaresponsavelorcamento($paciente_id);
         $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
 //        var_dump($data['responsavel']);die;
+        $data['orcamentos'] = $this->procedimento->listarorcamentosrecepcaotodos($ambulatorio_orcamento_id, $paciente_id);
+        $data['orcamentoslista'] = $this->procedimento->listarorcamentosrecepcaoprincipal($ambulatorio_orcamento_id, $paciente_id);
         $data['exames'] = $this->exametemp->listarorcamentos($paciente_id);
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
         $this->loadView('ambulatorio/orcamento-form', $data);

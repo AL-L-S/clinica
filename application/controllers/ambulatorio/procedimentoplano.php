@@ -327,15 +327,18 @@ class Procedimentoplano extends BaseController {
         $data['obj'] = $obj_paciente;
         $empresa_id = $this->session->userdata('empresa_id');
         $permissoes = $this->guia->listarempresapermissoes($empresa_id);
+        $data['empresa'] = $this->guia->listarempresas();
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['grupos'] = $this->procedimento->listargrupos();
         $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
+        $data['orcamentos'] = $this->procedimento->listarorcamentosrecepcaotodos($ambulatorio_orcamento, $paciente_id);
+        $data['orcamentoslista'] = $this->procedimento->listarorcamentosrecepcaoprincipal($ambulatorio_orcamento, $paciente_id);
         $data['exames'] = $this->procedimento->listarorcamentosrecepcao($ambulatorio_orcamento);
         $data['responsavel'] = $this->procedimento->listaresponsavelorcamento($ambulatorio_orcamento);
         $data['orcamento_id'] = $ambulatorio_orcamento;
 //        echo "<pre>";
-//        var_dump($data['exames']); die;
+//        var_dump($data['orcamentos']); die;
         if (@$permissoes[0]->orcamento_cadastro == 't') {
             $this->loadView('ambulatorio/orcamentogeral-form_1', $data);
         } else {

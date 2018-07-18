@@ -138,7 +138,9 @@
                                 </td>
                                 
                                 <td>
-                                    <input type="text" name="txtdata" id="txtdata" alt="date" class="size1"/>
+                                    <select name="txtdata" id="txtdata" class="size1" >
+                                        <option value="">Selecione</option>
+                                    </select>
                                 </td>
                                 <td>
                                     <select name="turno_preferencia" id="turno_preferencia" class="size1" >
@@ -167,6 +169,7 @@
                 </fieldset>
             </form>
             <fieldset>
+                <legend>Orçamento Atual</legend>
                 <?
                 $total = 0;
                 $totalCartao = 0;
@@ -184,9 +187,10 @@
                                 <th class="tabela_header">Procedimento</th>
                                 <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header" width="80">Descrição</th>
-                                <th class="tabela_header">Preferência</th>
                                 <th class="tabela_header">V. Total</th>
                                 <th class="tabela_header">V. Ajuste</th>
+                                <th class="tabela_header">Data</th>
+                                <th class="tabela_header">Turno</th>
                                 <th class="tabela_header"></th>
                             </tr>
                         </thead>
@@ -220,16 +224,14 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->forma_pagamento; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <p style="font-size: 8pt;">
-                                            <? if ($item->data_preferencia != "") { ?>
-                                                <span style="font-weight: bold">Data:</span> <?= date("d/m/Y", strtotime($item->data_preferencia)) ?><br>
-                                            <? } ?>
-                                            <span style="font-weight: bold">Turno:</span> <?= $turno ?>
-                                        </p>
-                                    </td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total_ajustado; ?></td>
+                                    
+                                    <td class="<?php echo $estilo_linha; ?>">
+                                        <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia)); 
+                                           else echo "Não informado";?>
+                                    </td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $turno ?></td>
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <a href="<?= base_url() ?>ambulatorio/guia/excluirorcamento/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
                                         </a>
@@ -277,11 +279,135 @@
                             </tr>
                         </tfoot>
                     </table> 
+                    </fieldset>
                     <?
+                    
+                    foreach($orcamentos as $value){
+                        
+                        $total = 0;
+                        $totalCartao = 0;
+                        $orcamento = 0;
+                        $autorizado = false;
+                    
+                        if($value->qtdeproc == 0) continue;?>
+            
+                        <fieldset>
+                            <table id="table_agente_toxico">
+                                <thead>
+                                    <tr>
+                                        <th colspan="10"><span style="font-size: 12pt; font-weight: bold;">Operador Responsável: <?= @$value->responsavel ?></span></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="tabela_header">Empresa</th>
+                                        <th class="tabela_header">Convenio</th>
+                                        <th class="tabela_header">Grupo</th>
+                                        <th class="tabela_header">Procedimento</th>
+                                        <th class="tabela_header">Forma de Pagamento</th>
+                                        <th class="tabela_header">Descrição</th>
+                                        <th class="tabela_header">V. Total</th>
+                                        <th class="tabela_header">V. Ajuste</th>
+                                        <th class="tabela_header">Data</th>
+                                        <th class="tabela_header">Turno</th>
+                                        <th class="tabela_header"></th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                            <?
+
+                            $estilo_linha = "tabela_content01";
+                            foreach($orcamentoslista as $item){
+                                if ($item->orcamento_id == $value->ambulatorio_orcamento_id) {
+
+                                    ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                                    $total = $total + $item->valor_total;
+                                    $totalCartao = $totalCartao + $item->valor_total_ajustado;
+
+                                    $orcamento = $item->orcamento_id;
+                                    
+                                    if ($item->autorizado == 't'){
+                                        $autorizado = true;
+                                    }
+
+                                    switch ($item->turno_prefencia) {
+                                        case 'manha':
+                                            $turno = "Manhã";
+                                            break;
+                                        case 'tarde':
+                                            $turno = "Tarde";
+                                            break;
+                                        case 'noite':
+                                            $turno = "Noite";
+                                            break;
+                                        default:
+                                            $turno = "Não informado";
+                                            break;
+                                    } ?>
+                                        <tr>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->empresa; ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->forma_pagamento; ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total; ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total_ajustado; ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>">
+                                                <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia)); 
+                                                   else echo "Não informado";?>
+                                            </td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= $turno ?></td>
+                                        </tr>
+                                <?
+                                }
+                            }
+                            ?>
+                                        
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th class="tabela_footer" colspan="2" style="vertical-align: top;">
+                                        Valor Total: <?php echo number_format($total, 2, ',', '.'); ?>
+                                    </th>
+                                    <th class="tabela_footer" colspan="" style="vertical-align: top;">
+                                        Valor Total Ajustado: <?php echo number_format($totalCartao, 2, ',', '.'); ?>
+                                    </th>
+                                    <th colspan="3" align="center">
+                                        <center>
+                                            <div class="bt_linkf">
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/impressaoorcamentorecepcao/" . $value->ambulatorio_orcamento_id; ?> ', '_blank', 'width=600,height=600');">Imprimir Or&ccedil;amento</a>
+                                            </div>
+                                        </center>
+                                        <center>
+                                            <div class="bt_linkf">
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/procedimentoplano/orcamentorecepcaofila/" . $value->ambulatorio_orcamento_id; ?> ', '_blank', 'width=600,height=600');">Fila de Impressão</a>
+                                            </div>
+                                        </center>
+                                    </th>
+                                    <th colspan="3" align="center">
+                                        <? if (!$autorizado) { ?>
+                                                <center>
+                                                    <div class="bt_linkf">
+                                                        <a href="<?= base_url() . "ambulatorio/exame/gravarautorizarorcamento/" . $value->ambulatorio_orcamento_id; ?>" target='_blank'>Autorizar Orçamento</a>
+                                                    </div>
+                                                </center>
+                                        <? } ?>
+                                        <center>
+                                            <div class="bt_linkf">
+                                                <a href="<?= base_url() . "ambulatorio/guia/transformaorcamentocredito/" . $value->ambulatorio_orcamento_id; ?>" target='_blank'>Transformar em Crédito</a>
+                                            </div>
+                                        </center>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                            </table> 
+                        </fieldset>
+                        <?
+                    }
                 }
             ?>
 
-            </fieldset>
 
         </div> 
     </div> 
@@ -301,17 +427,44 @@
 </style>
 <script type="text/javascript">
     
-    $(function () {
-        $("#txtdata").datepicker({
-            autosize: true,
-            changeYear: true,
-            changeMonth: true,
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            buttonImage: '<?= base_url() ?>img/form/date.png',
-            dateFormat: 'dd/mm/yy'
+        $(function () {
+        $('#procedimento1').change(function () {
+            if ($(this).val()) {
+                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+                    var options = '<option value="">Selecione</option>';
+                    for (var c = 0; c < j.length; c++) {
+                        if (j[c].data != null) {
+                            options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
+                        }
+                    }
+                    $('#txtdata').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#txtdata').html('<option value="">Selecione</option>');
+            }
         });
     });
+    
+    $(function () {
+        $('#empresa1').change(function () {
+            if ($(this).val()) {
+                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $('#procedimento1').val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+                    var options = '<option value="">Selecione</option>';
+                    for (var c = 0; c < j.length; c++) {
+                        if (j[c].data != null) {
+                            options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
+                        }
+                    }
+                    $('#txtdata').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#txtdata').html('<option value="">Selecione</option>');
+            }
+        });
+    });
+
                                 if ($('#convenio1').val() != '-1') {
                                     if($('#grupo1').val() == ''){
                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $('#convenio1').val(), ajax: true}, function (j) {

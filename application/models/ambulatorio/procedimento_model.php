@@ -62,6 +62,46 @@ class procedimento_model extends Model {
         return $return->result();
     }
 
+    function listarorcamentosrecepcaoprincipal($orcamento_id = null,$paciente_id) {
+//        var_dump($paciente_id);die;
+        $horario = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('oi.ambulatorio_orcamento_item_id,
+                            oi.data,
+                            oi.orcamento_id,
+                            oi.valor_total,
+                            oi.dia_semana_preferencia,
+                            oi.data_preferencia,
+                            oi.turno_prefencia,
+                            (oi.valor_ajustado * oi.quantidade) as valor_total_ajustado,
+                            ao.paciente_id,
+                            ao.autorizado,
+                            pc.convenio_id,
+                            c.nome as convenio,
+                            pt.codigo,
+                            pt.descricao_procedimento,
+                            pt.grupo,
+                            pt.nome as procedimento,
+                            fp.nome as forma_pagamento,
+                            e.nome as empresa');
+        $this->db->from('tb_ambulatorio_orcamento_item oi');
+        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = oi.orcamento_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = oi.forma_pagamento', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = oi.empresa_id', 'left');
+//        $this->db->where('oi.empresa_id', $empresa_id);
+        if($orcamento_id != null){
+            $this->db->where("oi.orcamento_id !=", $orcamento_id);
+        }
+        $this->db->where("ao.paciente_id", $paciente_id);
+        $this->db->where("oi.ativo", 't');
+        $this->db->orderby("oi.data_cadastro");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarorcamentosrecepcao($orcamento_id) {
 //        var_dump($paciente_id);die;
         $horario = date("Y-m-d");
@@ -82,17 +122,38 @@ class procedimento_model extends Model {
                             pt.descricao_procedimento,
                             pt.grupo,
                             pt.nome as procedimento,
-                            fp.nome as forma_pagamento');
+                            fp.nome as forma_pagamento,
+                            e.nome as empresa');
         $this->db->from('tb_ambulatorio_orcamento_item oi');
         $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = oi.orcamento_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = oi.forma_pagamento', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = oi.empresa_id', 'left');
 //        $this->db->where('oi.empresa_id', $empresa_id);
         $this->db->where("oi.orcamento_id", $orcamento_id);
+//        $this->db->where("ao.paciente_id", $paciente_id);
         $this->db->where("oi.ativo", 't');
         $this->db->orderby("oi.data_cadastro");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarorcamentosrecepcaotodos($orcamento_id = null, $paciente_id) {
+//        var_dump($paciente_id);die;
+//        $horario = date("Y-m-d");
+//        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select("ao.ambulatorio_orcamento_id, o.nome as responsavel, 
+                           (SELECT COUNT(*) FROM ponto.tb_ambulatorio_orcamento_item aoi
+                           WHERE aoi.orcamento_id = ao.ambulatorio_orcamento_id AND ativo = 't') AS qtdeproc");
+        $this->db->from('tb_ambulatorio_orcamento ao');
+        $this->db->join('tb_operador o', 'o.operador_id = ao.operador_cadastro', 'left');
+        $this->db->where("ao.paciente_id", $paciente_id);
+        if($orcamento_id != null){
+            $this->db->where("ao.ambulatorio_orcamento_id !=", $orcamento_id);
+        }
+        $this->db->where("ao.ativo", 't');
         $return = $this->db->get();
         return $return->result();
     }

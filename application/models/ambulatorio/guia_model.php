@@ -13178,8 +13178,8 @@ ORDER BY ae.paciente_credito_id)";
         $horario = date("Y-m-d H:i:s");
         $data = date("Y-m-d");
         $operador_id = $this->session->userdata('operador_id');
-        $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->set('empresa_id', $empresa_id);
+//        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->set('empresa_id', $_POST['empresa1']);
         $this->db->set('data_criacao', $data);
 //        if ($paciente_id == null) {
 //            $this->db->set('cadastro', 'f');
@@ -14163,8 +14163,8 @@ ORDER BY ae.paciente_credito_id)";
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);
             $this->db->set('quantidade', $_POST['qtde1']);
-            $empresa_id = $this->session->userdata('empresa_id');
-            $this->db->set('empresa_id', $empresa_id);
+//            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('empresa_id', $_POST['empresa1']);
             if (isset($_POST['observacao'])) {
                 $this->db->set('observacao', $_POST['observacao']);
             }

@@ -652,6 +652,14 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function horariosdisponiveisorcamento() {
+        $result = array();
+        if(isset($_GET['procedimento1']) && isset($_GET['empresa1'])){
+            $result = $this->exametemp->listarhorariosdisponiveisorcamento($_GET['procedimento1'], $_GET['empresa1']);
+        }
+        echo json_encode($result);
+    }
+
     function listarprocedimentointernacaoautocomplete() {
         if (isset($_GET['term'])) {
             $result = $this->procedimento->listarprocedimentoautocomplete($_GET['term']);
