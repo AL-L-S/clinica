@@ -432,7 +432,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     <th class="tabela_header">Sala</th>
                                     <th class="tabela_header">Valor</th>
                                     <th class="tabela_header">Convenio</th>
-                                    <th class="tabela_header">Exame</th>
+                                    <th class="tabela_header">Procedimento</th>
                                     <th class="tabela_header" colspan="2">Descricao</th>
                                     <th colspan="4" class="tabela_header">&nbsp;</th>
                                 </tr>
@@ -466,11 +466,14 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                             <div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha</a>
                                             </div>
-                                        </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <div class="bt_link_new">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
+<!--                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+ <? if ($empresapermissoes[0]->botao_ficha_convenio = 't'){ ?>
+                                            <div class="bt_link ">
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-Convenio
                                                 </a></div>
+                     <?   }   ?>    
+                        
                                             <!--</td>-->
             <? if ($item->faturado == "f" && $item->dinheiro == "t") { 
                 if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
@@ -555,7 +558,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                     <th class="tabela_header">Sala</th>
                                     <th class="tabela_header">Valor</th>
                                     <th class="tabela_header">Convenio</th>
-                                    <th class="tabela_header">Exame</th>
+                                    <th class="tabela_header">Procedimento</th>
                                     <th class="tabela_header" colspan="2">Descricao</th>
                                     <th colspan="4" class="tabela_header">&nbsp;</th>
                                 </tr>
@@ -582,26 +585,29 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                             <? if(@$item->valor_diferenciado != 't') { ?>
-                                                <div class="bt_link">
+                                            <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+
+                                                    </a></div>    
+                                            <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar</a>
                                                 </div>
                                             <? } ?>
                                             <div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha</a>
                                             </div>
-                                        </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <div class="bt_link_new">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
+<!--                                        </td>
+                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                             <? if ($empresapermissoes[0]->botao_ficha_convenio == 't'){ ?>
+                                            <div class="bt_link ">
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-Convenio
                                                 </a></div>
+                     <?   }   ?>  
                                             <!--</td>-->
             <? if ($item->faturado == "f" && $item->dinheiro == "t") {
                 if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
                                                     <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
-                                                <div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
-
-                                                    </a></div>
+                                               
                                                 <?
                 } else {?>
                                                 <div class="bt_link">

@@ -1602,6 +1602,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('relatorios_clinica_med', 'f');
                     }
+                    if (isset($_POST['botao_ficha_convenio'])) {
+                        $this->db->set('botao_ficha_convenio', 't');
+                    } else {
+                        $this->db->set('botao_ficha_convenio', 'f');
+                    }
                 }
 
 
@@ -1970,6 +1975,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('relatorios_clinica_med', 'f');
                     }
+                     if (isset($_POST['botao_ficha_convenio'])) {
+                        $this->db->set('botao_ficha_convenio', 't');
+                    } else {
+                        $this->db->set('botao_ficha_convenio', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -2116,6 +2126,7 @@ class empresa_model extends Model {
                                ep.ajuste_pagamento_procedimento,
                                ep.retirar_preco_procedimento,
                                ep.relatorios_clinica_med,
+                               ep.botao_ficha_convenio
                                ');
             $this->db->from('tb_empresa f');
             $this->db->join('tb_municipio c', 'c.municipio_id = f.municipio_id', 'left');
@@ -2253,6 +2264,7 @@ class empresa_model extends Model {
             $this->_ajuste_pagamento_procedimento = $return[0]->ajuste_pagamento_procedimento;
             $this->_retirar_preco_procedimento = $return[0]->retirar_preco_procedimento;
             $this->_relatorios_clinica_med = $return[0]->relatorios_clinica_med;
+            $this->_botao_ficha_convenio = $return[0]->botao_ficha_convenio;
         } else {
             $this->_empresa_id = null;
         }

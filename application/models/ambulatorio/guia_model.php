@@ -197,6 +197,7 @@ class guia_model extends Model {
                             ep.percentual_multiplo,
                             ep.ajuste_pagamento_procedimento,
                             ep.valor_autorizar,
+                            ep.botao_ficha_convenio
                             
                             ');
         $this->db->from('tb_empresa e');

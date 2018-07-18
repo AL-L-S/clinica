@@ -50,23 +50,31 @@
             <table >
                 <thead>
                     <tr>
-                        <th class="tabela_title" ></th>
+                        
+                        <th class="tabela_title" >Nome</th>
+                        <th class="tabela_title" >CPF</th>
+                        <th class="tabela_title" >Nascimento</th>
+                        <th class="tabela_title" >Telefone</th>                        
                         <th class="tabela_title" >Prontuario</th>
-                        <th class="tabela_title" colspan="3">Nome / Nome da Mae / Telefone / CPF</th>
-                        <th class="tabela_title" colspan="2">Dt. Nascimento</th>
-                        <th class="tabela_title" ></th>
+                        <th class="tabela_title" colspan ="3" ></th>
                     </tr>
                     <tr>
                 <form method="get" action="<?php echo base_url() ?>cadastros/pacientes/pesquisar">
-                    <th class="tabela_title" colspan=""></th>
+                    
                     <th class="tabela_title" colspan="">
-                        <input type="text" name="prontuario" class="texto03" value="<?php echo @$_GET['prontuario']; ?>" />
+                        <input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />
                     </th>
-                    <th class="tabela_title" colspan="3">
-                        <input type="text" name="nome" class="texto08" value="<?php echo @$_GET['nome']; ?>" />
+                    <th class="tabela_title" colspan="">
+                        <input type="text" name="cpf" class="texto02" value="<?php echo @$_GET['cpf']; ?>" />
                     </th>
-                    <th class="tabela_title" colspan="2">
-                        <input type="text" name="nascimento" class="texto03" alt="date" value="<?php echo @$_GET['nascimento']; ?>" />
+                    <th class="tabela_title" colspan="">
+                        <input type="text" name="nascimento" class="texto02" alt="date" value="<?php echo @$_GET['nascimento']; ?>" />
+                    </th>
+                    <th class="tabela_title" colspan="">
+                        <input type="text" name="telefone" class="texto02" value="<?php echo @$_GET['telefone']; ?>" />
+                    </th>
+                    <th class="tabela_title" colspan="">
+                        <input type="text" name="prontuario" class="texto01" value="<?php echo @$_GET['prontuario']; ?>" />
                     </th>
                     <th class="tabela_title" colspan="">
                         <button type="submit" name="enviar">Pesquisar</button>
@@ -75,22 +83,17 @@
 
 
 
-
-
                 </form>
                 </th>
                 </tr>
-                </thead>
-            </table>
             
-            <table >
-                <thead>
                     <tr>
-                        <th class="tabela_header">Prontuario</th>
+                        
                         <th class="tabela_header">Nome</th>
-                        <th class="tabela_header">Nome da Mãe</th>
+                        <th class="tabela_header">CPF</th>
                         <th class="tabela_header" width="100px;">Nascimento</th>
                         <th class="tabela_header" width="100px;">Telefone</th>
+                        <th class="tabela_header">Prontuario</th>
                         <th class="tabela_header" colspan="4"  width="70px;"><center>A&ccedil;&otilde;es</center></th>
 
                 </tr>
@@ -120,11 +123,12 @@
                             }
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->paciente_id; ?></td>
+                                
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome_mae; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->cpf; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?php echo substr($item->nascimento, 8, 2) . '/' . substr($item->nascimento, 5, 2) . '/' . substr($item->nascimento, 0, 4); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;"><?php echo $telefone; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->paciente_id; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;" ><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>">
                                             <b>Editar</b>
@@ -135,22 +139,11 @@
                                             <b>Op&ccedil;&otilde;es</b>
                                         </a></div>
                                 </td>
-                                <? if($imagem == 't'){ ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="50px;" >
-                                            <div class="bt_link">
-                                                <a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacientetemp/<?= $item->paciente_id ?>">
-                                                    <b>Exames</b>
-                                                </a></div>
-                                    </td>
-                                <? } 
-                                if($imagem == 't'){ ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="50px;" >
-                                            <div class="bt_link">
-                                                <a href="<?= base_url() ?>ambulatorio/exametemp/carregarpacienteconsultatemp/<?= $item->paciente_id ?>">
-                                                    <b>Consultas</b>
-                                                </a></div>
-                                    </td>
-                                <? } ?>
+                               <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
+                                        <a href="<?= base_url() ?>ambulatorio/guia/orcamento/<?= $item->paciente_id ?>">
+                                            <b>Or&ccedil;amento</b>
+                                        </a></div>
+                                </td>
         <!--                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>cadastros/pacientes/procedimentoautorizar/<?= $item->paciente_id ?>">
                                             <b>Autorizar</b>
