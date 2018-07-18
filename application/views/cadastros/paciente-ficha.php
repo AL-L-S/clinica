@@ -113,15 +113,11 @@
             <legend>Documentos</legend>
             <div>
                 <label>CPF</label>
-
-
-                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" />
+                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" onblur="validaCPF()"/>
             </div>
             <div id="cpf_responsavel_label">
                 <label>CPF Responsável</label>
-
-
-                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf_responsavel" id ="cpf_responsavel" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf_responsavel; ?>"/>
+                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf_responsavel" id ="cpf_responsavel" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf_responsavel; ?>" onblur="validaCPF()"/>
             </div>
             <div>
                 <label>RG</label>
@@ -531,6 +527,23 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script>
+        function validaCPF(){
+            <? if(in_array('cpf', $campos_obrigatorios)) {?>
+            var cpf = $("#txtCpf").val();
+            var cpf_r = $("#cpf_responsavel").val();
+            if(cpf != "" || cpf_r != ''){
+                $("#cpf_responsavel").prop('required', false);
+                $("#txtCpf").prop('required', false);
+            }
+            else{
+                $("#cpf_responsavel").prop('required', true);
+                $("#txtCpf").prop('required', true);
+            }
+            <?} else {?>
+                $("#cpf_responsavel").prop('required', false);
+                $("#txtCpf").prop('required', false);
+            <? } ?>
+        }
         function mascaraTelefone(campo) {
 
             function trata(valor, isOnBlur) {
@@ -844,18 +857,18 @@
             if (dtAtual < aniversario) {
                 idade--;
             }
-            if (idade <= 10) {
-                $("#cpf_responsavel_label").show();
-                $("#cpf_responsavel").prop('required', true);
-            } else {
-                $("#cpf_responsavel_label").hide();
-                $("#cpf_responsavel").prop('required', false);
-            }
+//            if (idade <= 10) {
+//                $("#cpf_responsavel_label").show();
+//                $("#cpf_responsavel").prop('required', true);
+//            } else {
+//                $("#cpf_responsavel_label").hide();
+//                $("#cpf_responsavel").prop('required', false);
+//            }
 
             document.getElementById("idade2").value = idade + " ano(s)";
         } else {
-            $("#cpf_responsavel_label").hide();
-            $("#cpf_responsavel").prop('required', false);
+//            $("#cpf_responsavel_label").hide();
+//            $("#cpf_responsavel").prop('required', false);
         }
     }
     calculoIdade();

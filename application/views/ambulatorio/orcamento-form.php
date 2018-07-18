@@ -138,9 +138,14 @@
                                 </td>
                                 
                                 <td>
-                                    <select name="txtdata" id="txtdata" class="size1" >
-                                        <option value="">Selecione</option>
-                                    </select>
+                                    <div class="input-data">
+                                        <input type="text" name="txtdata" id="txtdata" alt="date" class="size1"/>
+                                    </div>
+                                    <div class="select-data">
+                                        <select name="txtdata" id="txtdata" class="size1" >
+                                            <option value="">Selecione</option>
+                                        </select>
+                                    </div>
                                 </td>
                                 <td>
                                     <select name="turno_preferencia" id="turno_preferencia" class="size1" >
@@ -426,21 +431,49 @@
     #procedimento1_chosen a { width: 100%; }
 </style>
 <script type="text/javascript">
+
+    $(function () {
+        $("input#txtdata").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
     
-        $(function () {
+    $(".select-data").show();
+    $(".input-data").hide();
+    
+    $(function () {
         $('#procedimento1').change(function () {
             if ($(this).val()) {
                 $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
-                    var options = '<option value="">Selecione</option>';
-                    for (var c = 0; c < j.length; c++) {
-                        if (j[c].data != null) {
-                            options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
+                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (t) {
+                        
+                        if(t[0].grupo == 'LABORATORIAL'){
+                            var options = '<option value="">Selecione</option>';
+                            for (var c = 0; c < j.length; c++) {
+                                if (j[c].data != null) {
+                                    options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
+                                }
+                            }
+                            $('#txtdata').html(options).show();
+                            $('.carregando').hide();
                         }
-                    }
-                    $('#txtdata').html(options).show();
-                    $('.carregando').hide();
+                    });
                 });
             } else {
+                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (t) {
+                        
+                        if(t[0].grupo == 'LABORATORIAL'){
+                            $('#txtdata').html('<option value="">Selecione</option>');
+                        }
+                    });
+                });
                 $('#txtdata').html('<option value="">Selecione</option>');
             }
         });
@@ -449,17 +482,30 @@
     $(function () {
         $('#empresa1').change(function () {
             if ($(this).val()) {
-                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $('#procedimento1').val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
-                    var options = '<option value="">Selecione</option>';
-                    for (var c = 0; c < j.length; c++) {
-                        if (j[c].data != null) {
-                            options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
+                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (t) {
+                        
+                        if(t[0].grupo == 'LABORATORIAL'){
+                            var options = '<option value="">Selecione</option>';
+                            for (var c = 0; c < j.length; c++) {
+                                if (j[c].data != null) {
+                                    options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
+                                }
+                            }
+                            $('#txtdata').html(options).show();
+                            $('.carregando').hide();
                         }
-                    }
-                    $('#txtdata').html(options).show();
-                    $('.carregando').hide();
+                    });
                 });
             } else {
+                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (t) {
+                        
+                        if(t[0].grupo == 'LABORATORIAL'){
+                            $('#txtdata').html('<option value="">Selecione</option>');
+                        }
+                    });
+                });
                 $('#txtdata').html('<option value="">Selecione</option>');
             }
         });
@@ -594,6 +640,15 @@
                                             $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                 options = "";
                                                 options += j[0].valortotal;
+                                                if(j[0].grupo == 'LABORATORIAL'){
+                                                    $(".select-data").hide();
+                                                    $(".input-data").show();
+                                                }
+                                                else{
+                                                    $(".select-data").show();
+                                                    $(".input-data").hide();
+                                                }
+                                                
                                                 <? if($odontologia_alterar == 't'){?>
                                                     if(j[0].grupo == 'ODONTOLOGIA'){
                                                         $("#valor1").prop('readonly', false);

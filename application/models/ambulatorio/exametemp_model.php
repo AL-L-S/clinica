@@ -6776,25 +6776,38 @@ class exametemp_model extends Model {
     }
 
     function listarhorariosdisponiveisorcamento($parametro, $empresa_id) {
-        $horario = date("Y-m-d");
-        // O "false" no parametro so SELECT serve para dizer ao CodeIgniter não pôr aspas.
-        $this->db->select("a.data,
-                          to_char(a.data, 'DD/MM/YYYY') as data_formatada", false);
-        $this->db->from('tb_agenda_exames a');
-        $this->db->where('a.ativo', 'true');
-        $this->db->where('a.bloqueado', 'false');
-        $this->db->where('a.data >=', $horario);
-        $this->db->where('a.empresa_id', $empresa_id);
-        $this->db->where("a.medico_consulta_id IN (
-            SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
-            WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
-            AND cop.empresa_id = $empresa_id
-        )");
-        $this->db->orderby('a.data');
-        $this->db->groupby('a.data');
-        $this->db->limit(250);
-        $return = $this->db->get();
-        return $return->result();
+        $this->db->select("pt.grupo");
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->where('pc.procedimento_convenio_id', $parametro);
+        $this->db->where('pt.grupo', 'LABORATORIAL');
+        $retorno = $this->db->get()->result();
+        
+        if(count($retorno) == 0){
+        
+            $horario = date("Y-m-d");
+            // O "false" no parametro so SELECT serve para dizer ao CodeIgniter não pôr aspas.
+            $this->db->select("a.data,
+                              to_char(a.data, 'DD/MM/YYYY') as data_formatada", false);
+            $this->db->from('tb_agenda_exames a');
+            $this->db->where('a.ativo', 'true');
+            $this->db->where('a.bloqueado', 'false');
+            $this->db->where('a.data >=', $horario);
+            $this->db->where('a.empresa_id', $empresa_id);
+            $this->db->where("a.medico_consulta_id IN (
+                SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
+                WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
+                AND cop.empresa_id = $empresa_id
+            )");
+            $this->db->orderby('a.data');
+            $this->db->groupby('a.data');
+    //        $this->db->limit(250);
+            $return = $this->db->get()->result();
+            return $return;
+        }
+        else {
+            return false;
+        }
     }
 
     function listarhorariosgeral($parametro = null, $teste = null) {
