@@ -180,7 +180,8 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
+   
     function listarobservacaolaudo($laudo_id) {
         $this->db->select('observacao_laudo');
         $this->db->from('tb_ambulatorio_laudo');

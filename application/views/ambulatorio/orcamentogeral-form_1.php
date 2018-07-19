@@ -46,6 +46,7 @@
                             <th class="tabela_header">V. Unit</th>
                             <th class="tabela_header">F. de Pagamento</th>
                             <th class="tabela_header">V. Ajuste</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -112,7 +113,7 @@
                                 </select>
                             </td>
                             
-                            <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
+                            <td  width="20px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
                             <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
                             <td  width="100px;">
                                 <select name="formapamento" id="formapamento" class="size1" onchange="buscaValorAjustePagamentoProcedimento()">
@@ -123,6 +124,7 @@
                                 </select>
                             </td>
                             <td  width="20px;"><input type="text" name="ajustevalor1" id="ajustevalor1" class="texto01" readonly=""/></td>
+                           
                         </tr>
                         <? if ($empresa[0]->impressao_orcamento == 1) { ?>
                             <tr>
@@ -167,7 +169,7 @@
                                 <th class="tabela_header">V. Total</th>
                                 <th class="tabela_header">V. Ajuste</th>
                                 <th class="tabela_header">Data</th>
-                                <th class="tabela_header">Turno</th>
+                                <th class="tabela_header">Turno</th>                              
                                 <th class="tabela_header"></th>
                             </tr>
                         </thead>
@@ -212,6 +214,7 @@
                                            else echo "Não informado";?>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $turno ?></td>
+                                    
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirorcamentorecepcao/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
                                         </a>
