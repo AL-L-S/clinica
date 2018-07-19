@@ -3433,6 +3433,9 @@ class exame_model extends Model {
         if ($_POST['empresa'] > 0) {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
+        if ($_POST['cpf'] == 'SIM'){
+            $this->db->where("p.cpf !=", '');
+        }
 
         $this->db->orderby('ae.data');
         $return = $this->db->get();

@@ -2887,7 +2887,9 @@ class guia_model extends Model {
 
 //        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("p.ativo", 't');
+        if ($_POST['cpf'] == 'SIM'){
         $this->db->where("p.cpf !=", '');
+        }
         $return = $this->db->get();
         return $return->result();
     }
