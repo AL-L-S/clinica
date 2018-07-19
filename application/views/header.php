@@ -526,9 +526,9 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioorcamentos">Relatorio Orçamentos</a></span></ul>
                                         <?if ($relatorios_clinica_med != 't'){ ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacienteduplicado">Relatorio Pacientes Duplicados</a></span></ul>
-                                        <?}?>
+                                        
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacientecpfvalido">Relatorio Paciente CPF Válido</a></span></ul>
-                                        <? if ($relatorios_clinica_med != 't'){ ?>
+                                        
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriosituacaoatendimento">Relatorio Situação de Atendimento</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriodemandagrupo">Relatorio de Demanda Grupo</a></span></ul>
 

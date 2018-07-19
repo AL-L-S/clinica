@@ -69,6 +69,16 @@
                         </select>
                     </dd>
                     <dt>
+                    <label>CPF Válido</label>
+                    </dt>
+                    <dd>
+                        <select name="cpf" id="cpf" class="size1" >
+                            <option value='NAO' >Não</option>
+                            <option value='SIM'>Sim</option>
+
+                        </select>
+                    </dd>
+                    <dt>
                     <label>Empresa</label>
                     </dt>
                     <dd>
@@ -79,6 +89,7 @@
                             <option value="0">TODOS</option>
                         </select>
                     </dd>
+                    
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>
