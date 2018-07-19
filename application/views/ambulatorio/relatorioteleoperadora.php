@@ -44,7 +44,7 @@
                     <dd>
                         <select name="horarios_livres" id="horarios_livres" class="size2">
                             <option value="SIM">SIM</option>
-                            <option value="NAO">NÃO</option>
+                            <option value="NAO" selected="">NÃO</option>
                         </select>
                     </dd>
                 </dl>

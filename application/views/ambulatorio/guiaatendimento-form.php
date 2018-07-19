@@ -483,7 +483,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 
                                                     </a></div>
                                                 <?
-                } else { ?>
+                } else {?>
                     
                     <div class="bt_link">
                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
@@ -584,40 +584,39 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <? if(@$item->valor_diferenciado != 't') { ?>
-                                            <div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
-
-                                                    </a></div>    
-                                            <div class="bt_link">
-                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar</a>
-                                                </div>
-                                            <? } ?>
                                             <div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha</a>
                                             </div>
 <!--                                        </td>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                              <? if ($empresapermissoes[0]->botao_ficha_convenio == 't'){ ?>
-                                            <div class="bt_link ">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-Convenio
-                                                </a></div>
-                     <?   }   ?>  
+                                                <div class="bt_link ">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-Convenio</a></div>
+                                             <?   }   ?>  
                                             <!--</td>-->
             <? if ($item->faturado == "f" && $item->dinheiro == "t") {
-                if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
-                                                    <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
-                                               
-                                                <?
-                } else {?>
+                    if(@$item->valor_diferenciado != 't') { 
+                        if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?> 
+                                            <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+
+                                                    </a></div>                  
+                        <? } else { ?>
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
                                                 </div>
-           <?   }
-                                            } else {
-                                                $faturado++;
-                                            }
-                                            ?>
+                        <?  } ?>
+                                             
+                                            <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar</a>
+                                                </div>
+                                    <?
+                            } else {
+                                $faturado++;
+                            }
+                            ?>
+                                            
+                        <? }   ?>  
                                         </td>
                                     </tr>
                                 </tbody>
