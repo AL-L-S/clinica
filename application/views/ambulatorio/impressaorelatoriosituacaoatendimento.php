@@ -9,10 +9,39 @@
     <h4>SITUAÇÃO: <?= ($_POST['situacao'] == '')?"TODOS":$_POST['situacao']; ?></h4>
     <h4>PERÍODO INICIAL: <?= $txtdata_inicio; ?></h4>
     <h4>PERÍODO FINAL: <?= $txtdata_fim; ?></h4>
+     <style>
+        
+        #circulo{
+            display: inline-block;
+            width: 10pt;
+            height: 10pt;
+            border: 1pt solid black;
+            border-radius: 50%;
+        }
+    </style>
+    <table cellpadding="5" cellspacing="0" style = "position: absolute; right: 100px; top: 100px ">
+    <thead>
+    
+                <th class="tabela_header">Situação do Atendimento</th>
+    
+    
+    </thead>
+    <tbody>
+         <td>
+                            <div>
+                                <div id="circulo" style="background-color: black"></div> Normal
+                            </div>
+                            <div>
+                                <div id="circulo" style="background-color: red"></div> Entrega do Exame Atrasado
+                            </div>
+         </td> 
+    </tbody>
+    </table>
 
     <hr>
     <? if (count($relatorio) > 0) {
         ?>
+      
         <table border="1" cellpadding="5" cellspacing="0">
             <thead>
                 <tr>

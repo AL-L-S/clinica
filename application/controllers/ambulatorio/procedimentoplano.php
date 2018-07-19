@@ -1003,6 +1003,8 @@ class Procedimentoplano extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
+    
+   
 
     function gravaragrupador() {
 
