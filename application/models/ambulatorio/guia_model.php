@@ -4439,15 +4439,16 @@ class guia_model extends Model {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
-        $periodo = explode("/", $_POST["periodo_inicio"]);
-        $mes = $periodo[0];
-        $ano = $periodo[1];
-        $data_inicio = $ano.'-'.$mes.'-'.'01';
+                
+//        $periodo = explode("/", $_POST["periodo_inicio"]);
+//        $mes = $periodo[0];
+//        $ano = $periodo[1];
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_inicio"])));
         
-        $periodo = explode("/", $_POST["periodo_fim"]);
-        $mes = $periodo[0];
-        $ano = $periodo[1];
-        $data_fim = $ano.'-'.$mes.'-'.'01';
+//        $periodo = explode("/", $_POST["periodo_fim"]);
+//        $mes = $periodo[0];
+//        $ano = $periodo[1];
+        $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_fim"])));
 
 //        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
         $this->db->where("al.data >= '$data_inicio'");
@@ -4500,17 +4501,16 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-
-        $periodo = explode("/", $_POST["periodo_inicio"]);
-        $mes = $periodo[0];
-        $ano = $periodo[1];
-        $data_inicio = $ano.'-'.$mes.'-'.'01';
+//        $periodo = explode("/", $_POST["periodo_inicio"]);
+//        $mes = $periodo[0];
+//        $ano = $periodo[1];
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_inicio"])));
         
-        $periodo = explode("/", $_POST["periodo_fim"]);
-        $mes = $periodo[0];
-        $ano = $periodo[1];
-        $data_fim = $ano.'-'.$mes.'-'.'01';
-
+//        $periodo = explode("/", $_POST["periodo_fim"]);
+//        $mes = $periodo[0];
+//        $ano = $periodo[1];
+        $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_fim"])));
+        
 //        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
         $this->db->where("al.data >= '$data_inicio'");
         $this->db->where("al.data <= '$data_fim'");
@@ -4558,15 +4558,15 @@ class guia_model extends Model {
 //        echo "<pre>";
 //        var_dump($_POST["periodo_inicio"]); die;
         
-        $periodo = explode("/", $_POST["periodo_inicio"]);
-        $mes = $periodo[0];
-        $ano = $periodo[1];
-        $data_inicio = $ano.'-'.$mes.'-'.'01';
+//        $periodo = explode("/", $_POST["periodo_inicio"]);
+//        $mes = $periodo[0];
+//        $ano = $periodo[1];
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_inicio"])));
         
-        $periodo = explode("/", $_POST["periodo_fim"]);
-        $mes = $periodo[0];
-        $ano = $periodo[1];
-        $data_fim = $ano.'-'.$mes.'-'.'01';
+//        $periodo = explode("/", $_POST["periodo_fim"]);
+//        $mes = $periodo[0];
+//        $ano = $periodo[1];
+        $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_fim"])));
 
 //        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
         $this->db->where("al.data >= '$data_inicio'");

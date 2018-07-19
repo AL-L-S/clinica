@@ -110,58 +110,48 @@
     $(function () {
         $("#periodo_inicio").datepicker({
             autosize: true,
-            changeMonth: true,
             changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'mm/yy',
+            changeMonth: true,
             monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
             buttonImage: '<?= base_url() ?>img/form/date.png',
-            onClose: function(dateText, inst) {
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).val($.datepicker.formatDate('mm/yy', new Date(year, month, 1)));
-            }
+            dateFormat: 'dd/mm/yy'
         });
     });
     
-    $(function () {
-        $("#periodo_inicio").focus(function () {
-            $(".ui-datepicker-calendar").hide();
-            $("#ui-datepicker-div").position({
-                my: "center top",
-                at: "center bottom",
-                of: $(this)
-            });
-        });
-    });
+//    $(function () {
+//        $("#periodo_inicio").focus(function () {
+//            $(".ui-datepicker-calendar").hide();
+//            $("#ui-datepicker-div").position({
+//                my: "center top",
+//                at: "center bottom",
+//                of: $(this)
+//            });
+//        });
+//    });
 
     $(function () {
         $("#periodo_fim").datepicker({
             autosize: true,
-            changeMonth: true,
             changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'mm/yy',
+            changeMonth: true,
             monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
             buttonImage: '<?= base_url() ?>img/form/date.png',
-            onClose: function(dateText, inst) {
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).val($.datepicker.formatDate('mm/yy', new Date(year, month, 1)));
-            }
+            dateFormat: 'dd/mm/yy'
         });
     });
     
-    $(function () {
-        $("#periodo_fim").focus(function () {
-            $(".ui-datepicker-calendar").hide();
-            $("#ui-datepicker-div").position({
-                my: "center top",
-                at: "center bottom",
-                of: $(this)
-            });
-        });
-    });
+//    $(function () {
+//        $("#periodo_fim").focus(function () {
+//            $(".ui-datepicker-calendar").hide();
+//            $("#ui-datepicker-div").position({
+//                my: "center top",
+//                at: "center bottom",
+//                of: $(this)
+//            });
+//        });
+//    });
     
     $(function () {
         $("#accordion").accordion();
