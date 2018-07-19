@@ -47,8 +47,21 @@
 
                         <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
                     </div>
-
+                    
                     <div>
+                        <label>CPF</label>
+                        <input type="text" name="cpf" id="cpf" class="texto02" value="<?= @$paciente['0']->cpf ?>" readonly/>
+                    </div>
+                    <div>
+                        <?
+                        $telefone = $paciente['0']->celular;
+                        if($paciente['0']->telefone != '') $telefone = $paciente['0']->telefone;
+                        ?>
+                        <label>Telefone</label>
+                        <input type="text" name="cpf" id="cpf" class="texto02" value="<?= @$telefone ?>" readonly/>
+                    </div>
+
+<!--                    <div>
                         <label>Idade</label>
                         <? 
                         if($paciente['0']->nascimento != '') { 
@@ -69,7 +82,7 @@
 
 
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto08" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
-                    </div>
+                    </div>-->
                 </fieldset>
 
                 <fieldset>
@@ -77,6 +90,7 @@
                         <thead>
 
                             <tr>
+                                <th class="tabela_header">Empresa*</th>
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
@@ -91,7 +105,14 @@
                         </thead>
                         <tbody>
                             <tr>
-
+                                <td  width="50px;">
+                                    <select  name="empresa1" id="empresa1" class="size1" required="">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($empresasLista as $item) : ?>
+                                            <option value="<?= $item->empresa_id; ?>"><?= $item->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
                                 <td  width="50px;">
                                     <? //echo "<pre>"; var_dump($exames[count($exames) - 1]);die;?>
                                     <select  name="convenio1" id="convenio1" class="size1" >
@@ -128,7 +149,7 @@
                                 </td>
                                 
                                 <td width="100px;">
-
+                                    
                                     <select name="formapamento" id="formapamento" class="size1" >
                                         <option value="">Selecione</option>
                                         <? foreach ($forma_pagamento as $item) : ?>
@@ -449,65 +470,37 @@
     
     $(function () {
         $('#procedimento1').change(function () {
-            if ($(this).val()) {
-                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
-                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (t) {
-                        
-                        if(t[0].grupo == 'LABORATORIAL'){
-                            var options = '<option value="">Selecione</option>';
-                            for (var c = 0; c < j.length; c++) {
-                                if (j[c].data != null) {
-                                    options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
-                                }
-                            }
-                            $('#txtdata').html(options).show();
-                            $('.carregando').hide();
+            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+                if(j.length > 0){
+                    var options = '<option value="">Selecione</option>';
+                    for (var c = 0; c < j.length; c++) {
+                        if (j[c].data != null) {
+                            options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
                         }
-                    });
-                });
-            } else {
-                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
-                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (t) {
-                        
-                        if(t[0].grupo == 'LABORATORIAL'){
-                            $('#txtdata').html('<option value="">Selecione</option>');
-                        }
-                    });
-                });
-                $('#txtdata').html('<option value="">Selecione</option>');
-            }
+                    }
+                    $('select#txtdata').html(options).show();
+                    $('.carregando').hide();
+                    
+                }
+            });
         });
     });
     
     $(function () {
         $('#empresa1').change(function () {
-            if ($(this).val()) {
-                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
-                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (t) {
-                        
-                        if(t[0].grupo == 'LABORATORIAL'){
-                            var options = '<option value="">Selecione</option>';
-                            for (var c = 0; c < j.length; c++) {
-                                if (j[c].data != null) {
-                                    options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
-                                }
-                            }
-                            $('#txtdata').html(options).show();
-                            $('.carregando').hide();
+            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+                if(j.length > 0){
+                    var options = '<option value="">Selecione</option>';
+                    for (var c = 0; c < j.length; c++) {
+                        if (j[c].data != null) {
+                            options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
                         }
-                    });
-                });
-            } else {
-                $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
-                    $.getJSON('<?= base_url() ?>autocomplete/procedimentovalor', {procedimento1: $("#procedimento1").val(), ajax: true}, function (t) {
-                        
-                        if(t[0].grupo == 'LABORATORIAL'){
-                            $('#txtdata').html('<option value="">Selecione</option>');
-                        }
-                    });
-                });
-                $('#txtdata').html('<option value="">Selecione</option>');
-            }
+                    }
+                    $('select#txtdata').html(options).show();
+                    $('.carregando').hide();
+                    
+                }
+            });
         });
     });
 
