@@ -41,11 +41,22 @@ class procedimento_model extends Model {
         $this->db->where("pt.ativo", 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('pt.nome ilike', "%" . $args['nome'] . "%");
-            $this->db->orwhere('pt.grupo ilike', "%" . $args['nome'] . "%");
-            $this->db->where("pt.ativo", 't');
-            $this->db->orwhere('pt.codigo ilike', "%" . $args['nome'] . "%");
-            $this->db->where("pt.ativo", 't');
+        
         }
+        if (isset($args['grupo']) && strlen($args['grupo']) > 0) {
+                        
+            $this->db->where('pt.grupo ilike', "%" . $args['grupo'] . "%");
+        
+        }
+        if (isset($args['codigo']) && strlen($args['codigo']) > 0) {
+            
+            $this->db->where('pt.codigo ilike', "%" . $args['codigo'] . "%"); 
+        }  
+//            $this->db->orwhere('pt.grupo ilike', "%" . $args['nome'] . "%");
+//            $this->db->where("pt.ativo", 't');
+//            $this->db->orwhere('pt.codigo ilike', "%" . $args['nome'] . "%");
+//            $this->db->where("pt.ativo", 't');
+        
 
         return $this->db;
     }

@@ -44,22 +44,58 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento</a></h3>
         <div>
+             <?$grupo = $this->procedimento->listargrupos(); 
+              ?>
             <table>
                 <thead>
-                    <tr>
+                     <tr>
                         <th colspan="5" class="tabela_title">
-                            <form method="get" action="<?= base_url() ?>ambulatorio/procedimento/pesquisar">
-                                <input type="text" name="nome" class="texto10 bestupper" value="<?php echo @$_GET['nome']; ?>" />
-                                <button type="submit" id="enviar">Pesquisar</button>
-                            </form>
+                    </tr>
+                <form method="get" action="<?= base_url() ?>ambulatorio/procedimento/pesquisar">
+                    <tr>
+                        <th class="tabela_title">Nome</th>
+                        <th class="tabela_title">Grupo</th>   
+                        <th class="tabela_title"></th>  
+                        <th colspan="2" class="tabela_title">Codigo</th>
+                       
+                    </tr>
+                    <tr>
+                        <th class="tabela_title">
+                            <input type="text" name="nome" class="texto07" value="<?php echo @$_GET['nome']; ?>" />
                         </th>
+                        
+                        <th class="tabela_title">
+                            <select name="grupo" id="grupo" class="size2">
+                                <option value="">Selecione</option>
+                                <? foreach ($grupo as $value) : ?>
+                                    <option value="<?= $value->nome; ?>"
+                                        <? if (@$_GET['grupo'] == $value->nome) echo 'selected'?>>
+                                    <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+
+                            </select>
+                        </th>
+                        <th class="tabela_title">
+                            
+                        </th>
+                        <th class="tabela_title">
+                            <input type="text" name="codigo" class="texto04" value="<?php echo @$_GET['codigo']; ?>" />
+                        </th>
+                        
+                        <th class="tabela_title">
+                            <button type="submit" id="enviar">Pesquisar</button>
+                        </th>
+                        
                     </tr>
                     <tr>
                         <th class="tabela_header" width="50%">Nome</th>
                         <th class="tabela_header" width="10%">Grupo</th>
                         <th class="tabela_header" width=""></th>
-                        <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
-                        if($subgrupo_procedimento == 't') { ?>
+                        <? 
+                        $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
+                        if($subgrupo_procedimento == 't') { 
+                            ?>
                             <th class="tabela_header" width="10%">Subgrupo</th>
                         <? } ?>
                         <th class="tabela_header" width="10%">Codigo</th>
@@ -95,7 +131,7 @@
                                 if($subgrupo_procedimento == 't') { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->subgrupo; ?></td>
                                 <? } ?>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?> "><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
 
                                 <? if($item->agrupador != 't') { ?>

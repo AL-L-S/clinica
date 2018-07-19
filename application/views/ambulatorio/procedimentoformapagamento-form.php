@@ -15,7 +15,7 @@
                     <? if(@$permissoes[0]->ajuste_pagamento_procedimento == 't'){ ?>
                         <dl class="dl_cadastro_teto dt">
                         <dt>
-                            <label>Ajuste</label>
+                            <label>Ajuste Cartão R$:</label>
                         </dt>
                         <dd>
                             <input type="text" alt="decimal" class="texto02" name="ajuste" id="ajuste" value="<?=@$formasAssociadas[0]->ajuste?>"/>
@@ -26,8 +26,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <td colspan="2" class="tabela_header">Forma de Pagamento</td>
-                                <td colspan="1" class="tabela_header">Ativar?</td>
+                                <td colspan="2" class="tabela_header">Forma de Pagamento Exclusivo</td>
+                                <td colspan="1" class="tabela_header">Selecione</td>
                             </tr>
                         </thead>
                         <?

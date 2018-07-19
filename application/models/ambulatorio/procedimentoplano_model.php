@@ -115,6 +115,7 @@ class procedimentoplano_model extends Model {
                             pc.valortotal");
         $this->db->orderby("c.nome,
                             c.convenio_id,
+                            pt.grupo,
                             pt.nome,
                             pc.procedimento_tuss_id,
                             pc.valortotal DESC");

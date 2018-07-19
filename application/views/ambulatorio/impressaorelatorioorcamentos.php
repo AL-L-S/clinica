@@ -69,9 +69,9 @@
                         <td><b><?= $item->empresa_nome; ?></b></td>
                         <td><b><?
                                 if ($item->autorizado == 't') {
-                                    echo "<span style='color: green; font-size: 12pt'>Autorizado</span>";
+                                    echo "<span style='color: green; font-size: 12pt'>Realizado</span>";
                                 } else {
-                                    echo "<span style='font-size: 9pt'>Não Autorizado</span>";
+                                    echo "<span style='color: red; font-size: 12pt'>Pendente</span>";
                                 }
                                 ?></b></td>
                         <td align="center">
