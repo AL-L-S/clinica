@@ -1,3 +1,4 @@
+<?$relatorios_clinica_med = $this->session->userdata('relatorios_clinica_med');?>
 <meta charset="UTF-8">
 <div class="content"> <!-- Inicio da DIV content -->
     <? if (count($empresa) > 0) { ?>
@@ -6,16 +7,31 @@
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
     <h4>Relatorio Orcamentos</h4>
+ <? if ($relatorios_clinica_med != 't'){ ?>
     <h4>TIPO DE BUSCA: <?
-        if ($_POST['tipo_orcamento'] == '0') {
+        if (isset($_POST['tipo_orcamento'])) {
+            if ($_POST['tipo_orcamento'] == '0') {
             echo "PRÉ-CADASTROS";
-        } elseif ($_POST['tipo_orcamento'] == '1') {
+            } elseif ($_POST['tipo_orcamento'] == '1') {
             echo "CLIENTES";
-        } else {
+            } else {
             echo "TODOS";
+            }
         }
-        ?>
-    </h4>    
+    }    ?>
+    </h4>   
+    <h4>STATUS: <?
+      if ($_POST['status'] == '0'){
+          echo "REALIZADO";
+      } elseif ($_POST['status'] == '1'){
+         echo "PENDENTE";
+      } else {
+         echo "TODOS"; 
+      } 
+        
+        
+    ?>
+    </h4>
     <h4>GRUPO: <?= ($grupo != '') ? $grupo : "TODOS" ?></h4>
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> até <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
 
@@ -25,11 +41,12 @@
             <tr>
                 <th class="tabela_header" >Paciente</th>
                 <th class="tabela_header" width="150px;">Telefone</th>
+                <th class="tabela_header" width="150px;">CPF</th>
                 <th class="tabela_header" width="150px;">Data</th>
                 <th class="tabela_header" width="150px;">Valor (R$)</th>
                 <th class="tabela_header" width="150px;">Valor Cartão(R$)</th>
                 <th class="tabela_header" width="300px;">Empresa</th>
-                <th class="tabela_header" width="110px;">Detalhes</th>
+                <th class="tabela_header" width="110px;">Status</th>
                 <th class="tabela_header">Ação</th>
             </tr>
         </thead>
@@ -55,6 +72,7 @@
                                 }
                                 ?></b></td>
                         <td><?= $telefone ?></td>
+                        <td><?= $item->cpf; ?></b></td>
                         <td><?= date("d/m/Y", strtotime($item->data_criacao)) ?></td>
                         <td style="text-align: right">
                             <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}"; ?>/', '_blank', 'width=800,height=800');">
@@ -69,9 +87,9 @@
                         <td><b><?= $item->empresa_nome; ?></b></td>
                         <td><b><?
                                 if ($item->autorizado == 't') {
-                                    echo "<span style='color: green; font-size: 12pt'>Autorizado</span>";
+                                    echo "<span style='color: green; font-size: 12pt'>Realizado</span>";
                                 } else {
-                                    echo "<span style='font-size: 9pt'>Não Autorizado</span>";
+                                    echo "<span style='color: red; font-size: 12pt'>Pendente</span>";
                                 }
                                 ?></b></td>
                         <td align="center">

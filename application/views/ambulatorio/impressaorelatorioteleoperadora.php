@@ -5,7 +5,7 @@
     <? } else { ?>
         <h4>TODAS AS CLINICAS</h4>
     <? } ?>
-    <h4>Relatorio Agendamento Teleoperadora</h4>
+    <h4>Relatorio Agendamento Operadora</h4>
     <h4>PERIODO: <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_inicio) ) ); ?> ate <?= str_replace("-","/",date("d-m-Y", strtotime($txtdata_fim) ) ); ?></h4>
     <h4>Teleoperadora: <? 
     if(count($medico) > 0 && $medico != null){

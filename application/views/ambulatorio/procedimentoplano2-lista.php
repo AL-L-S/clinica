@@ -185,11 +185,11 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>                               
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>">
+                                <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->convenio; ?></td>                               
+                                <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->grupo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->procedimento; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->codigo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"width="10px;">
                                     <?
                                     if ($convenioAtual == $lista[$i+1]->convenio_id && $procedimentoAtual == $lista[$i+1]->procedimento_tuss_id && $i != count($lista) - 2){ 
                                         $cor = 'red';
