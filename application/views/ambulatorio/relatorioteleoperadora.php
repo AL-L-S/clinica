@@ -1,11 +1,11 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar relatorio teleoperadora</a></h3>
+        <h3><a href="#">Gerar Relatorio Operadora</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>ambulatorio/exame/gerarelatorioteleoperadora">
                 <dl>
                     <dt>
-                        <label>Teleoperadora</label>
+                        <label>Operadora</label>
                     </dt>
                     <dd>
                         <select name="medicos" id="medicos" class="size2">

@@ -2964,8 +2964,9 @@ class exame_model extends Model {
                             p.nome as paciente,
                             p.celular,
                             p.telefone,
+                            p.cpf,
                             ao.data_criacao,
-                            ao.autorizado,
+                            ao.autorizado,                            
                             e.nome as empresa_nome,
                             (
                                 SELECT SUM(valor_total)
@@ -2992,30 +2993,47 @@ class exame_model extends Model {
                 INNER JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id
                 WHERE aoi.ativo = 't'
                 AND pt.grupo = '{$_POST['grupo']}'
+                
             )");
         }
-        if ($_POST['tipo_orcamento'] == "0") {
+        if (isset($_POST['tipo_orcamento'])) {
+            if ($_POST['tipo_orcamento'] == "0") {
             $this->db->where("p.paciente_id NOT IN (
                 SELECT DISTINCT(paciente_id)
                 FROM ponto.tb_ambulatorio_guia ag
-                WHERE ag.paciente_id IS NOT NULL                
+                WHERE ag.paciente_id IS NOT NULL 
+                
             )");
-        }
-        if ($_POST['tipo_orcamento'] == "1") {
+            }
+            if ($_POST['tipo_orcamento'] == "1") {
             $this->db->where("p.paciente_id IN (
                 SELECT DISTINCT(paciente_id)
                 FROM ponto.tb_ambulatorio_guia ag
                 WHERE ag.paciente_id IS NOT NULL                
             )");
+            }
+        }
+        if ($_POST['status'] == "0") {           
+            $this->db->where('ao.autorizado', 't');
+        }
+        if ($_POST['status'] == "1") {
+            $this->db->where('ao.autorizado', 'f');
         }
 
         $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
-        $this->db->orderby('ao.data_criacao');
+        
+             if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
+             $this->db->where("(p.nome ilike '%".$_POST['nome']."%' OR p.cpf ilike '%".$_POST['nome']."%')");
+             }
+                              
+        $this->db->orderby('ao.data_criacao');        
         $this->db->orderby('p.nome');
         $return = $this->db->get();
         return $return->result();
     }
+                                
+           
 
     function buscadadosgraficorelatoriodemandagrupo() {
         // $this->db->select("column1, column2, ...", false) # O false serve para avisar o CI não pôr aspas

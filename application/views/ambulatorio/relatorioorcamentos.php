@@ -1,9 +1,16 @@
+<?$relatorios_clinica_med = $this->session->userdata('relatorios_clinica_med');?>
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
         <h3><a href="#">Gerar relatorio orçamentos</a></h3>
         <div>
             <form method="post" action="<?= base_url() ?>ambulatorio/exame/gerarelatorioorcamentos">
                 <dl>
+                    <dt>
+                        <label> Nome/CPF</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />
+                    </dd>
                     <dt>
                         <label>Data inicio</label>
                     </dt>
@@ -28,6 +35,16 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Status</label>
+                    </dt>
+                    <dd>
+                        <select name="status" id="status" class="size2">
+                            <option value="">TODOS</option>
+                            <option value="0">REALIZADO</option>
+                            <option value="1">PENDENTE</option>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Empresa</label>
                     </dt>
                     <dd>
@@ -38,8 +55,9 @@
                             <option value="0">TODOS</option>
                         </select>
                     </dd>
+                    <? if ($relatorios_clinica_med != 't'){ ?>
                     <dt>
-                        <label>Buscar por?</label>
+                        <label>Buscar por</label>
                     </dt>
                     <dd>
                         <select name="tipo_orcamento" id="tipo_orcamento" class="size2">
@@ -48,6 +66,7 @@
                             <option value="1">CLIENTES</option>
                         </select>
                     </dd>
+                    <? } ?>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>
