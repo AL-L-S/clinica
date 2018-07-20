@@ -79,7 +79,7 @@ $perfil_id = $this->session->userdata('perfil_id');
                                 </td>
                                 <?if($perfil_id == 1){?>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                        <a onclick="confirmarEstorno()" href="#">Estornar</a></div>
+                                        <a onclick="confirmarEstorno(<?= $item->paciente_credito_id ?>,<?= $paciente_id ?>)" href="#">Estornar</a></div>
                                 </td>    
                                 <?}?>
                                 
@@ -137,14 +137,14 @@ $perfil_id = $this->session->userdata('perfil_id');
     $(function () {
         $("#accordion").accordion();
     });
-    function confirmarEstorno(){
-//         href="<?= base_url() ?>ambulatorio/exametemp/excluircredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>"
+    function confirmarEstorno(credito_id, paciente_id){
+//        alert('<?= base_url() ?>ambulatorio/exametemp/excluircredito/'+credito_id+'/'+paciente_id+'?justificativa=');
         var resposta = prompt("Informe o motivo do estorno.");
         if(resposta == null || resposta == ""){
             return false;
         }
         else {
-            window.open('<?= base_url() ?>ambulatorio/exametemp/excluircredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>?justificativa='+resposta, '_self');
+            window.open('<?= base_url() ?>ambulatorio/exametemp/excluircredito/'+credito_id+'/'+paciente_id+'?justificativa='+resposta, '_self');
 //            alert(resposta);
         }
     }
