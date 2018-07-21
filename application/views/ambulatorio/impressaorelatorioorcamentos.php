@@ -45,9 +45,10 @@
                 <th class="tabela_header" width="150px;">Data</th>
                 <th class="tabela_header" width="150px;">Valor (R$)</th>
                 <th class="tabela_header" width="150px;">Valor Cartão(R$)</th>
-                <th class="tabela_header" width="300px;">Empresa</th>
+                <th class="tabela_header" width="180px;">Empresa</th>
                 <th class="tabela_header" width="110px;">Status</th>
                 <th class="tabela_header">Ação</th>
+                <th class="tabela_header" width="300px;">Observações</th>
             </tr>
         </thead>
         <tbody>
@@ -106,7 +107,12 @@
 
 
                         </td>
-                    </tr>
+                        <td style="text-align: left">
+                          <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterardescricao/<?= $item->ambulatorio_orcamento_id ?>','_blank', 'toolbar=no,Location=no,menubar=no,\
+                             width=500,height=400');">=> <?= $item->observacao; ?></td>
+                            </a> 
+                        </td>    
+                  </tr>
 
                 </tbody>
                 <?php

@@ -1,16 +1,16 @@
 <body bgcolor="#C0C0C0">
 <meta charset="UTF-8">
 <div class="content"> <!-- Inicio da DIV content -->
-        <h3 class="singular">Adicionar Descrição</h3>
+        <h3 class="singular">Adicionar Observação</h3>
         <div>
-            <form name="form_descricaoprocedimento" id="form_descricaoprocedimento" action="<?= base_url() ?>ambulatorio/procedimentoplano/descricaogravar/<?= $ambulatorio_orcamento_item_id; ?>" method="post">
+            <form name="form_obsorcamentoprocedimento" id="form_obsorcamentoprocedimento" action="<?= base_url() ?>ambulatorio/exame/descricaogravar/<?= $ambulatorio_orcamento_id; ?>" method="post">
                 <fieldset>                 
                                 
                 <dl class="dl_desconto_lista">
                     <dt>
-                    <label>Descrição</label>
+                    <label>Observação Orçamento</label>
                     </dt>
-                        <textarea type="text" name="txtdescricao" cols="55" class="texto12"><?= $descricao[0]->descricao; ?></textarea>
+                        <textarea type="text" name="txtdescricao" cols="55" class="texto12"><?= @$observacaoorcamento[0]->observacaoorcamento; ?></textarea>
 
                      
                 </dl>    

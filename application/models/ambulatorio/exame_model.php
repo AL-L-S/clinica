@@ -181,6 +181,13 @@ class exame_model extends Model {
         return $return->result();
     }
     
+     function listardescricoes($ambulatorio_orcamento_id) {
+        $this->db->select('observacao');
+        $this->db->from('tb_ambulatorio_orcamento ao');        
+        $this->db->where('ambulatorio_orcamento_id', $ambulatorio_orcamento_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
    
     function listarobservacaolaudo($laudo_id) {
         $this->db->select('observacao_laudo');
@@ -2961,6 +2968,7 @@ class exame_model extends Model {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select(" ao.ambulatorio_orcamento_id,
+                            ao.observacao,    
                             p.nome as paciente,
                             p.celular,
                             p.telefone,
@@ -7957,6 +7965,19 @@ class exame_model extends Model {
             $this->db->set('operador_observacoes', $operador_id);
             $this->db->where('agenda_exames_id', $agenda_exame_id);
             $this->db->update('tb_agenda_exames');
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    
+    function observacaoorcamento($ambulatorio_orcamento_id) {
+        try {
+            
+            $this->db->set('observacao', utf8_encode($_POST['txtdescricao']));         
+            $this->db->where('ambulatorio_orcamento_id', $ambulatorio_orcamento_id);
+            $this->db->update('tb_ambulatorio_orcamento');
             return 0;
         } catch (Exception $exc) {
             return -1;

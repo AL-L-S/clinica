@@ -1704,7 +1704,13 @@ class Exame extends BaseController {
         $data['observacao'] = $this->exame->listarobservacoes($agenda_exame_id);
         $this->load->View('ambulatorio/alterarobservacao-form', $data);
     }
-
+    
+     function alterardescricao($ambulatorio_orcamento_id) {
+        $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
+        $data['observacao'] = $this->exame->listardescricoes($ambulatorio_orcamento_id);
+        $this->load->View('ambulatorio/alterardescricao-form', $data);
+    }
+    
     function alterarobservacaofaturar($agenda_exame_id) {
         $data['agenda_exame_id'] = $agenda_exame_id;
         $data['observacao'] = $this->exame->listarobservacoesfaturar($agenda_exame_id);
@@ -1728,6 +1734,12 @@ class Exame extends BaseController {
 //        var_dump($agenda_exame_id); die;
         $verificar = $this->exame->observacao($agenda_exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+     function descricaogravar($ambulatorio_orcamento_id) {
+
+        $this->exame->observacaoorcamento($ambulatorio_orcamento_id);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");         
     }
 
     function observacaofaturargravar($agenda_exame_id) {
