@@ -35,7 +35,10 @@
 
         if (count($relatorio) > 0) {
             foreach ($relatorio as $item) {
-
+                
+                if($this->utilitario->validaCPF($item->cpf) || $_POST['cpf'] == 'NAO'){
+                   
+                
                 if ($item->celular != "") {
                     $telefone = $item->celular;
                 } elseif ($item->telefone != "") {
@@ -65,9 +68,11 @@
                         break;
                 }
                 ?>
-                <tr>
 
-                    <td><?= $item->cpf; ?></td>
+                           
+                    
+                <tr>
+                    <td><?= $item->cpf?></td>        
                     <td><?= $item->paciente; ?></td>
                     <td><?= $item->grupo; ?></td>
                     <td><?= $item->convenio; ?></td>
@@ -84,9 +89,11 @@
                     </td>
                     <td><?=$item->empresa; ?></td>
                 </tr>
-
+            
             </tbody>
             <?php
+            }
+            
         }
     }
     ?>

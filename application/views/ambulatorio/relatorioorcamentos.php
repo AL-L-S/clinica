@@ -6,7 +6,7 @@
             <form method="post" action="<?= base_url() ?>ambulatorio/exame/gerarelatorioorcamentos">
                 <dl>
                     <dt>
-                        <label> Nome/CPF</label>
+                        <label> Nome / CPF</label>
                     </dt>
                     <dd>
                         <input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />
