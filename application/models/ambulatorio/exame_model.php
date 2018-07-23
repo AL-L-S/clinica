@@ -2801,17 +2801,24 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
-        $this->db->orderby('ae.data');
-        $this->db->orderby('ae.inicio');
         if ($_GET['data_inicio'] == '') {
             $this->db->where('ae.data >=', $_GET['data_inicio']);
         }
         if ($_GET['data_fim'] == '') {
             $this->db->where('ae.data <=', $_GET['data_fim']);
         }
+        
+        $paciente = str_replace("_", " ", $_GET['paciente']);
+        if ($paciente != '') {
+            $this->db->where("(p.nome ilike '%{$paciente}%' OR p.cpf ilike '%{$paciente}%')");
+        }
+        
         $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('c.convenio_id', $_GET['convenio_id']);
+        $this->db->orderby('ae.data');
+        $this->db->orderby('ae.inicio');
+        $this->db->orderby('p.nome');
         return $this->db->get()->result();
     }
 

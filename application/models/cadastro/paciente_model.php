@@ -297,6 +297,7 @@ class paciente_model extends BaseModel {
             $this->_convenionumero = $return[0]->convenionumero;
             $this->_data_emissao = $return[0]->data_emissao;
             $this->_indicacao = $return[0]->indicacao;
+            $this->_cpf_responsavel_flag = $return[0]->cpf_responsavel_flag;
             $this->_leito = $return[0]->leito;
         }
     }
@@ -374,8 +375,11 @@ class paciente_model extends BaseModel {
             if ($_POST['cpf'] != '') {
                 $this->db->set('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
             }
-            if ($_POST['cpf_responsavel'] != '') {
-                $this->db->set('cpf_responsavel', str_replace("-", "", str_replace(".", "", $_POST['cpf_responsavel'])));
+            if (isset($_POST['cpf_responsavel'])) {
+                $this->db->set('cpf_responsavel_flag', 't');
+            }
+            else{
+                $this->db->set('cpf_responsavel_flag', 'f');
             }
             if ($_POST['nascimento'] != '') {
                 $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));

@@ -113,12 +113,13 @@
             <legend>Documentos</legend>
             <div>
                 <label>CPF</label>
-                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf; ?>" onblur="validaCPF()"/>
+                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto03" value="<?= @$obj->_cpf; ?>" onblur="validaCPF()"/>
+                <input type="checkbox" name="cpf_responsavel" id ="cpf_responsavel" <? if(@$obj->_cpf_responsavel_flag == 't') echo "checked";?>> CPF do resposável
             </div>
-            <div id="cpf_responsavel_label">
+<!--            <div id="cpf_responsavel_label">
                 <label>CPF Responsável</label>
                 <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf_responsavel" id ="cpf_responsavel" maxlength="11" alt="cpf" class="texto02" value="<?= @$obj->_cpf_responsavel; ?>" onblur="validaCPF()"/>
-            </div>
+            </div>-->
             <div>
                 <label>RG</label>
 
