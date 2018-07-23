@@ -156,6 +156,8 @@
                     <tbody>
                         <?php
                         $lista = $this->exame->listarmultifuncao2fisioterapia($_GET, @$ordem_chegada)->limit($limit, $pagina)->get()->result();
+//                        echo "<pre>";
+//                        var_dump($lista); die;
                         $estilo_linha = "tabela_content01";
                         $operador_id = $this->session->userdata('operador_id');
                         foreach ($lista as $item) {

@@ -13512,7 +13512,8 @@ ORDER BY ae.paciente_credito_id)";
         $valor = $informacoes['valor'];
         $agenda_exames_id = $informacoes['agenda_exames_id'];
         $numero_consultas = $informacoes['numero_consultas'];
-//        var_dump($informacoes); die;
+//        echo "<pre>";
+//        var_dump("http://{$endereco}/autocomplete/autorizaratendimentoweb?paciente_id=$paciente_id&procedimento=$procedimento&parceiro_id=$parceiro_id&cpf=$cpf&grupo=$grupo&agenda_exames_id=$agenda_exames_id&numero_consultas=$numero_consultas&valor=$valor"); die;
         $return = file_get_contents("http://{$endereco}/autocomplete/autorizaratendimentoweb?paciente_id=$paciente_id&procedimento=$procedimento&parceiro_id=$parceiro_id&cpf=$cpf&grupo=$grupo&agenda_exames_id=$agenda_exames_id&numero_consultas=$numero_consultas&valor=$valor");
         $resposta = json_decode($return);
 //        var_dump($return);
@@ -14420,9 +14421,11 @@ ORDER BY ae.paciente_credito_id)";
 //                        die;
                     if ($fidelidade == 'true') {
                         $fidelidade_liberado = true;
-                    } elseif ($fidelidade == 'false') {
+                    } 
+                    elseif ($fidelidade == 'false') {
                         $fidelidade_liberado = false;
-                    } else {
+                    } 
+                    else {
                         $fidelidade_liberado = false;
                     }
                 } else {

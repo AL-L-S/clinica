@@ -2741,6 +2741,73 @@ class exame_model extends Model {
         return $this->db;
     }
 
+    function gerarelatorioconsultasagendadas() {
+        $data = date("Y-m-d");
+//        $contador = count($_GET);
+//        var_dump($_GET); die;
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data,
+                            ae.inicio,
+                            ae.fim,
+                            ae.ativo,
+                            ae.situacao,
+                            ae.guia_id,
+                            ae.realizada,
+                            ae.confirmado,
+                            ae.data_atualizacao,
+                            ae.operador_atualizacao,
+                            ae.paciente_id,
+                            ae.telefonema,
+                            ae.observacoes,
+                            ae.encaixe,
+                            ae.chegada,
+                            em.nome as empresa,
+                            ae.procedimento_tuss_id,
+                            p.celular,
+                            ae.bloqueado,
+                            p.telefone,
+                            c.nome as convenio,
+                            co.nome as convenio_paciente,
+                            o.nome as medicoagenda,
+                            an.nome as sala,
+                            e.situacao as situacaoexame,
+                            tc.descricao as tipoconsulta,
+                            p.nome as paciente,
+                            op.nome as secretaria,
+                            ae.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            al.situacao as situacaolaudo,
+                            tel.nome as telefonema_operador');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_convenio co', 'co.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_exame_sala an', 'an.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id= ae.agenda_exames_id', 'left');
+        $this->db->join('tb_empresa em', 'em.empresa_id= ae.empresa_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_ambulatorio_tipo_consulta tc', 'tc.ambulatorio_tipo_consulta_id = ae.tipo_consulta_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_atualizacao', 'left');
+        $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
+        $this->db->orderby('ae.data');
+        $this->db->orderby('ae.inicio');
+        if ($_GET['data_inicio'] == '') {
+            $this->db->where('ae.data >=', $_GET['data_inicio']);
+        }
+        if ($_GET['data_fim'] == '') {
+            $this->db->where('ae.data <=', $_GET['data_fim']);
+        }
+        $this->db->where('ae.realizada', 'false');
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('c.convenio_id', $_GET['convenio_id']);
+        return $this->db->get()->result();
+    }
+
     function listaragendamentoweb() {
         $data = date("Y-m-d");
 //        $contador = count($_GET);
@@ -5525,7 +5592,7 @@ class exame_model extends Model {
                             ae.medico_consulta_id,
                             al.medico_parecer1,
                             al.ambulatorio_laudo_id,
-                            al.exame_id,
+                            e.exames_id as exame_id,
                             al.procedimento_tuss_id,
                             e.situacao as situacaoexame,
                             p.paciente_id,
@@ -9265,6 +9332,8 @@ class exame_model extends Model {
                 $this->db->update('tb_exame_sala');
             }
 
+//            echo "<pre>";
+//            var_dump($exames_id); die;
             $this->db->set('situacao', 'PENDENTE');
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');

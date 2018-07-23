@@ -1704,7 +1704,12 @@ class Guia extends BaseController {
 
         if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
             $data['exames_pacote'] = $this->exametemp->listarpacoteexamespaciente($ambulatorio_guia_id);
+            $data['exames_lista'] = $this->exametemp->listarexamespacienteatendimento($ambulatorio_guia_id);
+            $data['exames_particular'] = $this->exametemp->listarexamespacienteatendimentoparticular($ambulatorio_guia_id);
+            $data['exames_pacote'] = $this->exametemp->listarpacoteexamespaciente($ambulatorio_guia_id);
         } else {
+            $data['exames'] = array();
+            $data['exames_lista'] = array();
             $data['exames_pacote'] = array();
         }
 

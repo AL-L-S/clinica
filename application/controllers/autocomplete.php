@@ -436,6 +436,13 @@ class Autocomplete extends Controller {
         echo json_encode($consultas);
     }
 
+    function gerarelatorioconsultasagendadas() {
+        header('Access-Control-Allow-Origin: *');
+
+        $result = $this->exame->gerarelatorioconsultasagendadas();
+        echo json_encode($result);
+    }
+
     function listarexameagendamentoweb() {
         header('Access-Control-Allow-Origin: *');
 
