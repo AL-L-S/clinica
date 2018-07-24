@@ -13380,6 +13380,16 @@ ORDER BY ae.paciente_credito_id)";
                     $informacoes['valor'] = $_POST['valor1'];
 
                     $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+                    if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
+                        $this->db->where('agenda_exames_id', $agenda_exames_id);
+                        $this->db->delete('tb_agenda_exames');
+
+                        return array(
+                            "cod" => -1,
+                            "message" => $fidelidade
+                        );
+                    }
+//                    $fidelidade = 'false';
 //                        var_dump($fidelidade);
 //                        die;
                     if ($fidelidade == 'true') {
@@ -14082,8 +14092,11 @@ ORDER BY ae.paciente_credito_id)";
                         $this->db->where("p.paciente_id", $_POST['txtpaciente_id']);
                         $dados_paciente = $this->db->get()->result();
 
-
-
+//                        $this->db->select('tipo');
+//                        $this->db->from('tb_agenda_exames ae');
+//                        $this->db->where("agenda_exames_id", $agenda_exames_id);
+//                        $exame = $this->db->get()->result();
+                        
 
                         $informacoes['paciente_id'] = $_POST['txtpaciente_id'];
                         $informacoes['procedimento'] = $_POST['procedimento1'];
@@ -14093,10 +14106,19 @@ ORDER BY ae.paciente_credito_id)";
                         $informacoes['agenda_exames_id'] = $agenda_exames_id;
                         $informacoes['numero_consultas'] = $numero_consultas;
                         $informacoes['valor'] = $_POST['valor1'];
-
+                        
+                        
                         $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
-//                        var_dump($fidelidade);
-//                        die;
+                        if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
+                            $this->db->where('agenda_exames_id', $agenda_exames_id);
+                            $this->db->delete('tb_agenda_exames');
+                            
+                            return array(
+                                "cod" => -1,
+                                "message" => $fidelidade
+                            );
+                        }
+                        
                         if ($fidelidade == 'true') {
                             $fidelidade_liberado = true;
                         } elseif ($fidelidade == 'false') {
@@ -14403,9 +14425,11 @@ ORDER BY ae.paciente_credito_id)";
                     $this->db->from('tb_paciente p');
                     $this->db->where("p.paciente_id", $_POST['txtpaciente_id']);
                     $dados_paciente = $this->db->get()->result();
-
-
-
+                    
+//                    $this->db->select('tipo');
+//                    $this->db->from('tb_agenda_exames ae');
+//                    $this->db->where("agenda_exames_id", $agenda_exames_id);
+//                    $exame = $this->db->get()->result();
 
                     $informacoes['paciente_id'] = $_POST['txtpaciente_id'];
                     $informacoes['procedimento'] = $_POST['procedimento1'];
@@ -14415,10 +14439,18 @@ ORDER BY ae.paciente_credito_id)";
                     $informacoes['agenda_exames_id'] = $agenda_exames_id;
                     $informacoes['numero_consultas'] = $numero_consultas;
                     $informacoes['valor'] = $_POST['valor1'];
-
+                    
                     $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
-//                        var_dump($fidelidade);
-//                        die;
+                    if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
+                        $this->db->where('agenda_exames_id', $agenda_exames_id);
+                        $this->db->delete('tb_agenda_exames');
+
+                        return array(
+                            "cod" => -1,
+                            "message" => $fidelidade
+                        );
+                    }
+                    
                     if ($fidelidade == 'true') {
                         $fidelidade_liberado = true;
                     } 
@@ -14775,6 +14807,15 @@ ORDER BY ae.paciente_credito_id)";
                         $informacoes['valor'] = $_POST['valor1'];
 
                         $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+                        if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
+                            $this->db->where('agenda_exames_id', $agenda_exames_id);
+                            $this->db->delete('tb_agenda_exames');
+                            
+                            return array(
+                                "cod" => -1,
+                                "message" => $fidelidade
+                            );
+                        }
 //                        var_dump($fidelidade);
 //                        die;
                         if ($fidelidade == 'true') {

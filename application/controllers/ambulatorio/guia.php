@@ -1139,9 +1139,19 @@ class Guia extends BaseController {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 }
                 $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
-                ;
                 if ($agrupador[0]->agrupador != 't') {
-                    $this->guia->gravarexames($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
+                    $retorno = $this->guia->gravarexames($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
+                    if(@$retorno["cod"] == -1){
+                        if ($retorno['message'] == 'pending'){
+                            $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
+                        }
+                        else{
+                            $messagem = "O paciente não existe no sistema de fidelidade.";
+                        }
+                        $this->session->set_flashdata('message', $messagem); 
+                        redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$ambulatorio_guia");                          
+                    }
+
                 } else {
                     // Cria um agrupador para o pacote
                     $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
@@ -1250,7 +1260,17 @@ class Guia extends BaseController {
                     $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
 
                     if ($agrupador[0]->agrupador != 't') {
-                        $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
+                        $retorno = $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
+                        if(@$retorno["cod"] == -1){
+                            if ($retorno['message'] == 'pending'){
+                                $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
+                            }
+                            else{
+                                $messagem = "O paciente não existe no sistema de fidelidade.";
+                            }
+                            $this->session->set_flashdata('message', $messagem);   
+                            redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
+                        }
                     } else {
                         // Cria um agrupador para o pacote
                         $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
@@ -1353,9 +1373,20 @@ class Guia extends BaseController {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 }
                 $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
-                ;
+                
                 if ($agrupador[0]->agrupador != 't') {
-                    $this->guia->gravarconsulta($ambulatorio_guia, $percentual, $percentual_laboratorio);
+                    $retorno = $this->guia->gravarconsulta($ambulatorio_guia, $percentual, $percentual_laboratorio);
+                    if(@$retorno["cod"] == -1){
+                        if ($retorno['message'] == 'pending'){
+                            $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
+                        }
+                        else{
+                            $messagem = "O paciente não existe no sistema de fidelidade.";
+                        }
+                        $this->session->set_flashdata('message', $messagem);                            
+                        redirect(base_url() . "ambulatorio/guia/novoconsulta/$paciente_id/$ambulatorio_guia");
+                    }
+
                 } else {
                     // Cria um agrupador para o pacote
                     $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
@@ -1451,7 +1482,17 @@ class Guia extends BaseController {
                         $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                     }
                     $medico_id = $_POST['crm1'];
-                    $this->guia->gravarfisioterapia($ambulatorio_guia, $percentual, $medico_id, $percentual_laboratorio);
+                    $retorno = $this->guia->gravarfisioterapia($ambulatorio_guia, $percentual, $medico_id, $percentual_laboratorio);
+                    if(@$retorno["cod"] == -1){
+                        if ($retorno['message'] == 'pending'){
+                            $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
+                        }
+                        else{
+                            $messagem = "O paciente não existe no sistema de fidelidade.";
+                        }
+                        $this->session->set_flashdata('message', $messagem); 
+                        redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia");
+                    }
                 }
                 //        $this->gerardicom($ambulatorio_guia);
                 //            $this->session->set_flashdata('message', $data['mensagem']);

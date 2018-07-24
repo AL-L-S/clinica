@@ -169,13 +169,25 @@ class pacientes extends BaseController {
             $ambulatorio_guia_id = $this->guia->gravarguia($paciente_id);
         }
         $teste = $this->exametemp->autorizarpacientetemp($paciente_id, $ambulatorio_guia_id);
-        if ($teste == 0) {
-            $data['mensagem'] = 'Paciente gravado com sucesso';
+        if(@$teste["cod"] == -1){
+            if (@$teste['message'] == 'pending'){
+                $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
+            }
+            else{
+                $messagem = "O paciente não existe no sistema de fidelidade.";
+            }
+            $this->session->set_flashdata('message', $messagem); 
+            redirect(base_url() . "cadastros/pacientes/procedimentoautorizarconsulta/$paciente_id");
+            
         } else {
-            $data['mensagem'] = 'Erro ao gravar paciente';
+            if ($teste == 0) {
+                $data['mensagem'] = 'Paciente gravado com sucesso';
+            } else {
+                $data['mensagem'] = 'Erro ao gravar paciente';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
         }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
     }
 
     function autorizarambulatoriotempconsulta($paciente_id) {
@@ -185,14 +197,26 @@ class pacientes extends BaseController {
             $ambulatorio_guia_id = $this->guia->gravarguia($paciente_id);
         }
         $teste = $this->exametemp->autorizarpacientetempconsulta($paciente_id, $ambulatorio_guia_id);
-        if ($teste == 0) {
-//            $this->gerardicom($ambulatorio_guia_id);
-            $data['mensagem'] = 'Paciente gravado com sucesso';
+        if(@$teste["cod"] == -1){
+            if (@$teste['message'] == 'pending'){
+                $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
+            }
+            else{
+                $messagem = "O paciente não existe no sistema de fidelidade.";
+            }
+            $this->session->set_flashdata('message', $messagem); 
+            redirect(base_url() . "cadastros/pacientes/procedimentoautorizarconsulta/$paciente_id");
+            
         } else {
-            $data['mensagem'] = 'Erro ao gravar paciente';
+            if ($teste == 0) {
+    //            $this->gerardicom($ambulatorio_guia_id);
+                $data['mensagem'] = 'Paciente gravado com sucesso';
+            } else {
+                $data['mensagem'] = 'Erro ao gravar paciente';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
         }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
     }
 
     function autorizarambulatoriotempfisioterapia($paciente_id) {
@@ -203,14 +227,26 @@ class pacientes extends BaseController {
             $ambulatorio_guia_id = $this->guia->gravarguia($paciente_id);
         }
         $teste = $this->exametemp->autorizarpacientetempfisioterapia($paciente_id, $ambulatorio_guia_id);
-        if ($teste == 0) {
-//            $this->gerardicom($ambulatorio_guia_id);
-            $data['mensagem'] = 'Paciente gravado com sucesso';
+        if(@$teste["cod"] == -1){
+            if (@$teste['message'] == 'pending'){
+                $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
+            }
+            else{
+                $messagem = "O paciente não existe no sistema de fidelidade.";
+            }
+            $this->session->set_flashdata('message', $messagem); 
+            redirect(base_url() . "cadastros/pacientes/procedimentoautorizarfisioterapia/$paciente_id");
+            
         } else {
-            $data['mensagem'] = 'Erro ao gravar paciente';
+            if ($teste == 0) {
+    //            $this->gerardicom($ambulatorio_guia_id);
+                $data['mensagem'] = 'Paciente gravado com sucesso';
+            } else {
+                $data['mensagem'] = 'Erro ao gravar paciente';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
         }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
     }
 
     function autorizarambulatoriotempgeral($paciente_id) {
@@ -222,16 +258,27 @@ class pacientes extends BaseController {
         }
 
         $teste = $this->exametemp->autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id);
-
-        if ($teste == 0) {
-//            $this->gerardicom($ambulatorio_guia_id);
-            $data['mensagem'] = 'Paciente gravado com sucesso';
-        } elseif ($teste == -1) {
-            $data['mensagem'] = 'Erro ao gravar paciente';
-        } elseif ($teste == 2) {
-            $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
-            $this->session->set_flashdata('message', $data['mensagem']);
+        if(@$teste["cod"] == -1){
+            if (@$teste['message'] == 'pending'){
+                $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
+            }
+            else{
+                $messagem = "O paciente não existe no sistema de fidelidade.";
+            }
+            $this->session->set_flashdata('message', $messagem); 
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
+            
+        } else {
+            if ($teste == 0) {
+    //            $this->gerardicom($ambulatorio_guia_id);
+                $data['mensagem'] = 'Paciente gravado com sucesso';
+            } elseif ($teste == -1) {
+                $data['mensagem'] = 'Erro ao gravar paciente';
+            } elseif ($teste == 2) {
+                $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
+            }
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");

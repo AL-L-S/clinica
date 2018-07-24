@@ -4866,7 +4866,10 @@ class exametemp_model extends Model {
                         $this->db->where("p.paciente_id", $paciente_id);
                         $dados_paciente = $this->db->get()->result();
 
-
+//                        $this->db->select('tipo');
+//                        $this->db->from('tb_agenda_exames ae');
+//                        $this->db->where("agenda_exames_id", $agenda_exames_id);
+//                        $exame = $this->db->get()->result();
 
 
                         $informacoes['paciente_id'] = $paciente_id;
@@ -4877,10 +4880,18 @@ class exametemp_model extends Model {
                         $informacoes['agenda_exames_id'] = $agenda_exames_id;
                         $informacoes['numero_consultas'] = $numero_consultas;
                         $informacoes['valor'] = $valor;
-
+//                        if ($exame[0]->tipo == 'CONSULTA'){
                         $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
-//                        var_dump($fidelidade);
-//                        die;
+                        if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
+                            $this->db->where('agenda_exames_id', $agenda_exames_id);
+                            $this->db->delete('tb_agenda_exames');
+                            
+                            return array(
+                                "cod" => -1,
+                                "message" => $fidelidade
+                            );
+                        }
+                        
                         if ($fidelidade == 'true') {
                             $fidelidade_liberado = true;
                         } elseif ($fidelidade == 'false') {
@@ -5194,8 +5205,16 @@ class exametemp_model extends Model {
                         $informacoes['valor'] = $valor;
 
                         $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
-//                        var_dump($fidelidade);
-//                        die;
+                        if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
+                            $this->db->where('agenda_exames_id', $agenda_exames_id);
+                            $this->db->delete('tb_agenda_exames');
+                            
+                            return array(
+                                "cod" => -1,
+                                "message" => $fidelidade
+                            );
+                        }
+                        
                         if ($fidelidade == 'true') {
                             $fidelidade_liberado = true;
                         } elseif ($fidelidade == 'false') {
@@ -5762,6 +5781,15 @@ class exametemp_model extends Model {
                         $informacoes['valor'] = $valor;
 
                         $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+                        if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
+                            $this->db->where('agenda_exames_id', $agenda_exames_id);
+                            $this->db->delete('tb_agenda_exames');
+                            
+                            return array(
+                                "cod" => -1,
+                                "message" => $fidelidade
+                            );
+                        }
 //                        var_dump($fidelidade);
 //                        die;
                         if ($fidelidade == 'true') {
@@ -6323,8 +6351,23 @@ class exametemp_model extends Model {
                         $informacoes['agenda_exames_id'] = $agenda_exames_id;
                         $informacoes['numero_consultas'] = $numero_consultas;
                         $informacoes['valor'] = $valor;
+                        
+//                        $this->db->select('tipo');
+//                        $this->db->from('tb_agenda_exames ae');
+//                        $this->db->where("agenda_exames_id", $agenda_exames_id);
+//                        $exame = $this->db->get()->result();
 
                         $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
+                        if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
+                            $this->db->where('agenda_exames_id', $agenda_exames_id);
+                            $this->db->delete('tb_agenda_exames');
+                            
+                            return array(
+                                "cod" => -1,
+                                "message" => $fidelidade
+                            );
+                        }
+                        
 //                        var_dump($fidelidade);
 //                        die;
                         if ($fidelidade == 'true') {
