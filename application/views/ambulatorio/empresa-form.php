@@ -216,7 +216,7 @@
                                     <option value="sexo" <?= (in_array('sexo', $campos_obrigatorios)) ? 'selected' : ''; ?>>Sexo</option>
                                     <option value="cpf" <?= (in_array('cpf', $campos_obrigatorios)) ? 'selected' : ''; ?>>CPF</option>
                                     <option value="rg" <?= (in_array('rg', $campos_obrigatorios)) ? 'selected' : ''; ?>>RG</option>
-                                    <option value="logradouro" <?= (in_array('logradouro', $campos_obrigatorios)) ? 'selected' : ''; ?>>T. logradouro</option>
+                                    <!--<option value="logradouro" <?= (in_array('logradouro', $campos_obrigatorios)) ? 'selected' : ''; ?>>T. logradouro</option>-->
                                     <option value="endereco" <?= (in_array('endereco', $campos_obrigatorios)) ? 'selected' : ''; ?>>Endereço</option>
                                     <option value="numero" <?= (in_array('numero', $campos_obrigatorios)) ? 'selected' : ''; ?>>Número</option>
                                     <option value="complemento" <?= (in_array('complemento', $campos_obrigatorios)) ? 'selected' : ''; ?>>Complemento</option>

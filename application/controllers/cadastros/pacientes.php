@@ -425,51 +425,62 @@ class pacientes extends BaseController {
         $_POST['nascimento'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento'])));
 
         if ($_POST['cpf'] != "") {
+            if($this->utilitario->validaCPF($_POST['cpf'])){
             $contadorcpf = $this->paciente->contadorcpf();
+            }
+            else {
+            $data['mensagem'] = 'Erro ao gravar paciente';    
+            }
         } else {
             $contadorcpf = 0;
         }
+        if($this->utilitario->validaCPF($_POST['cpf'])||$contadorcpf == 0){
+            if ($contador == 0 && $contadorcpf == 0) {
+                if ($paciente_id = $this->paciente->gravar()) {
+                    $data['mensagem'] = 'Paciente gravado com sucesso';
+                } else {
+                    $data['mensagem'] = 'Erro ao gravar paciente';
+                }
+                //Em caso de paciente novo
+                // Encodando o raw da imagem em base64, transformando em jpg e salvando
 
-        if ($contador == 0 && $contadorcpf == 0) {
-            if ($paciente_id = $this->paciente->gravar()) {
-                $data['mensagem'] = 'Paciente gravado com sucesso';
+                if ($paciente_id != false && $_POST['mydata'] != '') {
+                    $encoded_data = $_POST['mydata'];
+                    $binary_data = base64_decode($encoded_data);
+                    $result = file_put_contents("upload/webcam/pacientes/$paciente_id.jpg", $binary_data);
+                }
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id", $data);
+            } elseif ($contador > 0 && $_POST['paciente_id'] != "") {
+    //Atualiza cadastro
+                if ($paciente_id = $this->paciente->gravar()) {
+                    $data['mensagem'] = 'Paciente gravado com sucesso';
+                } else {
+                    $data['mensagem'] = 'Erro ao gravar paciente';
+                }
+            } elseif ($contador == 0 && $contadorcpf == 1 && $_POST['paciente_id'] != "") {
+
+                if ($paciente_id = $this->paciente->gravar()) {
+                    $data['mensagem'] = 'Paciente gravado com sucesso';
+                } else {
+                    $data['mensagem'] = 'Erro ao gravar paciente';
+                }
+            } elseif ($contador == 0 && $contadorcpf == 1 && $_POST['paciente_id'] == "") {
+
+                $data['mensagem'] = 'CPF do paciente já cadastrado';
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "cadastros/pacientes", $data);
             } else {
-                $data['mensagem'] = 'Erro ao gravar paciente';
+                $data['mensagem'] = 'Paciente ja cadastrado';
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "cadastros/pacientes", $data);
             }
-            //Em caso de paciente novo
-            // Encodando o raw da imagem em base64, transformando em jpg e salvando
-
-            if ($paciente_id != false && $_POST['mydata'] != '') {
-                $encoded_data = $_POST['mydata'];
-                $binary_data = base64_decode($encoded_data);
-                $result = file_put_contents("upload/webcam/pacientes/$paciente_id.jpg", $binary_data);
-            }
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id", $data);
-        } elseif ($contador > 0 && $_POST['paciente_id'] != "") {
-//Atualiza cadastro
-            if ($paciente_id = $this->paciente->gravar()) {
-                $data['mensagem'] = 'Paciente gravado com sucesso';
-            } else {
-                $data['mensagem'] = 'Erro ao gravar paciente';
-            }
-        } elseif ($contador == 0 && $contadorcpf == 1 && $_POST['paciente_id'] != "") {
-
-            if ($paciente_id = $this->paciente->gravar()) {
-                $data['mensagem'] = 'Paciente gravado com sucesso';
-            } else {
-                $data['mensagem'] = 'Erro ao gravar paciente';
-            }
-        } elseif ($contador == 0 && $contadorcpf == 1 && $_POST['paciente_id'] == "") {
-
-            $data['mensagem'] = 'CPF do paciente já cadastrado';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "cadastros/pacientes", $data);
-        } else {
-            $data['mensagem'] = 'Paciente ja cadastrado';
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "cadastros/pacientes", $data);
         }
+        else {
+                $data['mensagem'] = 'CPF inválido';
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "cadastros/pacientes", $data);
+            }
         // Em caso de atualização de cadastro
         // Encodando o raw da imagem em base64, transformando em jpg e salvando
 

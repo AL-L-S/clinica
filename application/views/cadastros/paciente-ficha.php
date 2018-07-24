@@ -113,7 +113,7 @@
             <legend>Documentos</legend>
             <div>
                 <label>CPF</label>
-                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto03" value="<?= @$obj->_cpf; ?>" onblur="validaCPF()"/>
+                <input type="text" <?= (in_array('cpf', $campos_obrigatorios)) ? 'required' : '' ?> name="cpf" id ="txtCpf" maxlength="11" alt="cpf" class="texto03" value="<?= @$obj->_cpf; ?>"/>
                 <input type="checkbox" name="cpf_responsavel" id ="cpf_responsavel" <? if(@$obj->_cpf_responsavel_flag == 't') echo "checked";?>> CPF do resposável
             </div>
 <!--            <div id="cpf_responsavel_label">
@@ -156,7 +156,7 @@
             <legend>Domicilio</legend>
 
             <div>
-                <label>T. logradouro</label>
+               <!-- <label>T. logradouro</label>
 
 
                 <select name="tipo_logradouro" id="txtTipoLogradouro" class="size2" <?= (in_array('logradouro', $campos_obrigatorios)) ? 'required' : '' ?>>
@@ -173,7 +173,7 @@
                                   <?php
                               }
                               ?> 
-                </select>
+                </select>-->
 
                 <? if ($this->session->userdata('recomendacao_configuravel') != "t") { ?>
                     <label>Indicacao</label>
@@ -528,23 +528,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script>
-        function validaCPF(){
-            <? if(in_array('cpf', $campos_obrigatorios)) {?>
-            var cpf = $("#txtCpf").val();
-            var cpf_r = $("#cpf_responsavel").val();
-            if(cpf != "" || cpf_r != ''){
-                $("#cpf_responsavel").prop('required', false);
-                $("#txtCpf").prop('required', false);
-            }
-            else{
-                $("#cpf_responsavel").prop('required', true);
-                $("#txtCpf").prop('required', true);
-            }
-            <?} else {?>
-                $("#cpf_responsavel").prop('required', false);
-                $("#txtCpf").prop('required', false);
-            <? } ?>
-        }
+
         function mascaraTelefone(campo) {
 
             function trata(valor, isOnBlur) {
