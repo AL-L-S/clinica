@@ -7677,7 +7677,7 @@ class guia_model extends Model {
         return $return->result();
     }
 
-    function listarexamesrelatorioorcamento($orcamento) {
+    function listarexamesrelatorioorcamento($orcamento, $data) {
 
         $this->db->select('oi.ambulatorio_orcamento_item_id,
                             oi.data,
@@ -7709,6 +7709,7 @@ class guia_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = oi.operador_cadastro', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = oi.forma_pagamento', 'left');
         $this->db->where("oi.orcamento_id", $orcamento);
+        $this->db->where("oi.data_preferencia", $data);
         $this->db->where("oi.ativo", 't');
         $this->db->orderby('oi.ambulatorio_orcamento_item_id');
         $return = $this->db->get();

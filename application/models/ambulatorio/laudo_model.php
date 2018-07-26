@@ -933,21 +933,31 @@ class laudo_model extends Model {
         $this->db->where('ativo', 't');
         $paineis = $this->db->get()->result();
 
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('endereco_toten');
+        $this->db->from('tb_empresa');
+        $this->db->where('empresa_id', $empresa_id);
+        $dados = $this->db->get()->result();
 
-        $config['hostname'] = "localhost";
-        $config['username'] = "postgres";
-        $config['password'] = "123456";
-        $config['database'] = "painelWeb";
-        $config['dbdriver'] = "postgre";
-        $config['dbprefix'] = "public.";
-        $config['pconnect'] = FALSE;
-        $config['db_debug'] = TRUE;
-        $config['active_r'] = TRUE;
-        $config['cachedir'] = "";
-        $config['char_set'] = "utf8";
-        $config['dbcollat'] = "utf8_general_ci";
-        $DB1 = $this->load->database($config, TRUE);
-
+        if($dados[0]->endereco_toten != ''){
+            
+        }
+        else {
+            $config['hostname'] = "localhost";
+            $config['username'] = "postgres";
+            $config['password'] = "123456";
+            $config['database'] = "painelWeb";
+            $config['dbdriver'] = "postgre";
+            $config['dbprefix'] = "public.";
+            $config['pconnect'] = FALSE;
+            $config['db_debug'] = TRUE;
+            $config['active_r'] = TRUE;
+            $config['cachedir'] = "";
+            $config['char_set'] = "utf8";
+            $config['dbcollat'] = "utf8_general_ci";
+            $DB1 = $this->load->database($config, TRUE);
+        }
+        
         foreach ($paineis as $value) {
             $salas = $value->nome_chamada;
             $data = date("Y-m-d H:i:s");

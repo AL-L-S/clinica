@@ -4290,9 +4290,9 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/procedimentoguianota-form', $data);
     }
 
-    function listarprocedimentosorcamento($ambulatorio_orcamento_id, $empresa_id) {
+    function listarprocedimentosorcamento($ambulatorio_orcamento_id, $empresa_id, $dataSelecionada) {
         $data['emissao'] = date("d-m-Y");
-        $data['exames'] = $this->guia->listarexamesrelatorioorcamento($ambulatorio_orcamento_id);
+        $data['exames'] = $this->guia->listarexamesrelatorioorcamento($ambulatorio_orcamento_id, $dataSelecionada);
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
         $data['impressaoorcamento'] = $this->guia->listarconfiguracaoimpressaoorcamento($empresa_id);

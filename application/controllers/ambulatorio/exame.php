@@ -468,12 +468,12 @@ class Exame extends BaseController {
         $this->load->View('ambulatorio/impressaorelatorioteleoperadora', $data);
     }
 
-    function gravarautorizarorcamento($ambulatorio_orcamento_id) {
-        $teste = $this->exame->testarautorizarorcamento($ambulatorio_orcamento_id);
+    function gravarautorizarorcamentorelatorio($ambulatorio_orcamento_id, $dataSelecionada) {
+        $teste = $this->exame->testarautorizarorcamentorelatorio($ambulatorio_orcamento_id, $dataSelecionada);
 //        var_dump($teste);
 //        die;
         if ($teste[0]->autorizado == 'f') {
-            $paciente_id = $this->exame->gravarautorizacaoorcamento($ambulatorio_orcamento_id);
+            $paciente_id = $this->exame->gravarautorizacaoorcamentorelatorio($ambulatorio_orcamento_id, $dataSelecionada);
             if ($paciente_id == '-1') {
                 $mensagem = 'Erro ao autorizar o Orçamento. Opera&ccedil;&atilde;o cancelada.';
                 $this->session->set_flashdata('message', $mensagem);
