@@ -1302,6 +1302,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('campos_cadastro', '');
                     }
+                    if (count($_POST['opc_telatendimento']) > 0) {
+                        $this->db->set('campos_atendimentomed', json_encode($_POST['opc_telatendimento']));
+                    } else {
+                        $this->db->set('campos_atendimentomed', '');
+                    }
                     if (isset($_POST['valor_autorizar'])) {
                         $this->db->set('valor_autorizar', 't');
                     } else {
@@ -1643,6 +1648,11 @@ class empresa_model extends Model {
                         $this->db->set('campos_cadastro', json_encode($_POST['campos_obrigatorio']));
                     } else {
                         $this->db->set('campos_cadastro', '');
+                    }
+                     if (count($_POST['opc_telatendimento']) > 0) {
+                        $this->db->set('campos_atendimentomed', json_encode($_POST['opc_telatendimento']));
+                    } else {
+                        $this->db->set('campos_atendimentomed', '');
                     }
                     if (isset($_POST['profissional_completo'])) {
                         $this->db->set('profissional_completo', 't');
@@ -2110,6 +2120,7 @@ class empresa_model extends Model {
                                ep.senha_finalizar_laudo,
                                ep.retirar_flag_solicitante,
                                ep.campos_cadastro,
+                               ep.campos_atendimentomed,
                                ep.cadastrar_painel_sala,
                                ep.apenas_procedimentos_multiplos,
                                ep.orcamento_cadastro,
@@ -2151,6 +2162,7 @@ class empresa_model extends Model {
             $this->_laudo_sigiloso = $return[0]->laudo_sigiloso;
             $this->_impressao_internacao = $return[0]->impressao_internacao;
             $this->_campos_cadastro = $return[0]->campos_cadastro;
+            $this->_campos_atendimentomed = $return[0]->campos_atendimentomed;
             $this->_orcamento_cadastro = $return[0]->orcamento_cadastro;
             $this->_endereco_upload = $return[0]->endereco_upload;
             $this->_conjuge = $return[0]->conjuge;

@@ -506,6 +506,7 @@ class Laudo extends BaseController {
 
 //        $empresa_id = $this->session->userdata('empresa_id');
         $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
+//        var_dump($data['empresapermissao']); die;
         $data['listarades'] = $this->laudo->listarades();
         $data['listaradcl'] = $this->laudo->listaradcl();
         $data['listarodes'] = $this->laudo->listarodes();

@@ -45,7 +45,15 @@
     } else {
         $altura = @$laudo_peso[0]->altura;
     }
-
+    
+            
+            if (@$empresapermissao[0]->campos_atendimentomed != '') {
+                $opc_telatendimento = json_decode(@$empresapermissao[0]->campos_atendimentomed);
+            } else {
+                $opc_telatendimento = array();
+            }
+            
+            
 
     $laudo_sigiloso = $this->session->userdata('laudo_sigiloso');
     $operador_id = $this->session->userdata('operador_id');
@@ -112,6 +120,7 @@
                     <tr>
                         <td >
                             <?//=date("Y-m-d",strtotime(@$obj->_data_senha))?>
+                             <? if(in_array('chamar', $opc_telatendimento)){ ?>
                             <? if (@$obj->_data_senha == date("Y-m-d")) { ?>
 
                                 <div class="bt_link_new">
@@ -119,18 +128,23 @@
                                 </div>
 
 
-                            <? } else { ?>
+                            <? }
+                             }else { ?>
+                             <? if(in_array('chamar', $opc_telatendimento)){ ?>
                                 <div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
                                         Chamar</a>
                                 </div>
-                            <? } ?>
+                            <? } 
+                            }?>
                         </td>
 
                         <td>
+                             <? if(in_array('editar', $opc_telatendimento)){ ?>
                             <div class="bt_link_new">
-                                <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregarmedico/<?= $paciente_id ?>');" >
+                                <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $paciente_id ?>');" >
                                     Editar</a></div>
+                             <? } ?>
                         </td>
 
                         <? if (@$obj->_status != 'FINALIZADO') { ?>
@@ -144,16 +158,19 @@
                         <? } ?>
 
                         <td>
+                             <? if(in_array('encaminhar', $opc_telatendimento)){ ?>
                             <div class="bt_link_new">
                                 <a href="<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>" >
                                     Encaminhar
                                 </a>
                             </div>
+                             <? } ?>
                         </td>
                         <td>
+                             <? if(in_array('histconsulta', $opc_telatendimento)){ ?>
                             <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
                             <!--                                        impressaolaudo -->
-
+                            <? } ?>
                         </td>
 
 
@@ -303,74 +320,100 @@
                                     <table>
                                         <tr><td rowspan="11" >
                                                 <textarea id="laudo" name="laudo" rows="30" cols="80" style="width: 100%"><?= @$obj->_texto; ?></textarea></td>
+                                            <? if(in_array('receituario', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
+                                                    
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
-                                                        Receituario</a></div>
+                                                        Receituario</a>
+                                                    </div>
                                             </td>
-                                            <td rowspan="5" ><center>
-                                            <font color="#FF0000" size="6" face="Arial Black"><span id="clock1"></span><script>setTimeout('getSecs()', 1000);</script></font></center>
+                                            
+                                            <?}?>
+                                            
+                                            <td rowspan="5" >
+                                            
                                         </td>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('historicoimprimir', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaohistoricoescolhermedico/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                         Imprimir Histórico</a></div>
                                             </td>
+                                            <?}?>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('receituarioesp', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituarioespecial/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                         R. especial</a></div>
                                             </td>
+                                            <?}?>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('solicitar_exames', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarexames/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');" >
                                                         S. exames</a></div>
                                                 <!--                                        impressaolaudo -->
                                             </td>
+                                            <?}?>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('atestado', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaratestado/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                         Atestado</a></div>
                                             </td>
+                                            <?}?>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('declaracao', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/escolherdeclaracao/<?= $paciente_id ?>/<?= @$obj->_guia_id; ?>/<?= $agenda_exames_id ?>');" >
                                                         Declaração</a></div>
                                             </td>
+                                            <?}?>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('arquivos', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $ambulatorio_laudo_id ?>');" >
                                                         Arquivos</a></div>
                                             </td>
+                                            <?}?>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('aih', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/imprimirmodeloaih/<?= $ambulatorio_laudo_id ?>');" >
                                                         AIH</a></div>
                                             </td>
+                                            <?}?>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('consultar_procedimento', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoplanoconsultalaudo);" >
                                                         Consultar Proc...</a></div>
                                             </td>
+                                            <?}?>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('sadt', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/pesquisarsolicitacaosadt/<?= $paciente_id ?>/<?= @$obj->_convenio_id ?>/<?= @$obj->_medico_parecer1 ?>');" >
                                                         Solicitação SADT</a></div>
                                             </td>
+                                            <?}?>
                                         </tr>
                                         <tr>
+                                            <? if(in_array('cadastro_aso', $opc_telatendimento)){ ?>
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/cadastroaso/<?= $paciente_id ?>/<?= @$obj->_medico_parecer1 ?>');" >
                                                         Cadastro ASO</a></div>
                                             </td>
+                                            <?}?>
                                         </tr>
 
                                         <? if ($adendo) { ?>
@@ -386,13 +429,19 @@
                                         ?>
 
 
-                                        <tr>
+                                      
+                                    </table>
+                                    <table>
+                                            
                                             <td width="40px;"><div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');" >
                                                         Imprimir</a></div>
                                             </td>
-                                        </tr>
-                                    </table>
+                                            
+                                            <td>
+                                            <center><font color="#FF0000" size="6" face="Arial Black"><span id="clock1"></span><script>setTimeout('getSecs()', 1000);</script></font></center>
+                                            </td>
+                                    </table>    
                                 </div>
                                 <div>
                                     <label>M&eacute;dico respons&aacutevel</label>
