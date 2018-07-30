@@ -208,6 +208,103 @@ class Operador_model extends BaseModel {
         }
     }
 
+    function gravareplicaroperadorconvenio() {
+        try {
+            $operador_id_origem = (int) $_POST['txtoperador_id'];
+            $operador_id_destino = (int) $_POST['operador_destino'];
+            
+            $this->db->select('empresa_id');
+            $this->db->from('tb_empresa');
+            if($_POST['empresa_id'] != ''){
+                $this->db->where('empresa_id', $_POST['empresa_id']);
+            }
+            else {
+                $this->db->where("empresa_id IN (
+                    SELECT empresa_id FROM ponto.tb_ambulatorio_empresa_operador
+                    WHERE ativo = 't' AND operador_id = $operador_id_origem
+                )");                
+            }
+            $return = $this->db->get()->result();
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_cadastro_id = $this->session->userdata('operador_id');
+            
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_cadastro_id);
+            $this->db->where('operador_id', $operador_id_destino);
+            $this->db->update('tb_ambulatorio_empresa_operador');
+            
+            foreach($return as $item){
+                
+                $this->db->set('operador_id', $operador_id_destino);
+                $this->db->set('empresa_id', $item->empresa_id);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_cadastro_id);
+                $this->db->insert('tb_ambulatorio_empresa_operador');
+            
+                $this->db->select('convenio_id');
+                $this->db->from('tb_ambulatorio_convenio_operador');
+                $this->db->where('ativo', 't');
+                $this->db->where('operador_id', $operador_id_origem);
+                $this->db->where('empresa_id', $item->empresa_id);
+                $return2 = $this->db->get()->result();
+
+                foreach ($return2 as $conv) {
+
+                    $convenio_id = (int) $conv->convenio_id;
+
+                    $this->db->set('ativo', 'f');
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_cadastro_id);
+                    $this->db->where('operador_id', $operador_id_destino);
+                    $this->db->where('convenio_id', $convenio_id);
+                    $this->db->where('empresa_id', $item->empresa_id);
+                    $this->db->update('tb_ambulatorio_convenio_operador');
+
+                    $this->db->set('operador_id', $operador_id_destino);
+                    $this->db->set('convenio_id', $convenio_id);
+                    $this->db->set('empresa_id', $item->empresa_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_cadastro_id);
+                    $this->db->insert('tb_ambulatorio_convenio_operador');
+
+                    $this->db->set('ativo', 'f');
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_cadastro_id);
+                    $this->db->where('operador', $operador_id_destino);
+                    $this->db->where('convenio_id', $convenio_id);
+                    $this->db->where('empresa_id', $item->empresa_id);
+                    $this->db->update('tb_convenio_operador_procedimento');
+
+                    $this->db->select('cop.procedimento_convenio_id');
+                    $this->db->from('tb_convenio_operador_procedimento cop');
+                    $this->db->where('cop.ativo', 't');
+                    $this->db->where('cop.operador', $operador_id_origem);
+                    $this->db->where('cop.convenio_id', $convenio_id);
+                    $this->db->where('cop.empresa_id', $item->empresa_id);
+                    $return3 = $this->db->get()->result();
+
+                    foreach ($return3 as $value) {                    
+                        $this->db->set('operador', $operador_id_destino);
+                        $this->db->set('convenio_id', $convenio_id);
+                        $this->db->set('empresa_id', $item->empresa_id);
+                        $this->db->set('procedimento_convenio_id', $value->procedimento_convenio_id);
+                        $this->db->set('data_cadastro', $horario);
+                        $this->db->set('operador_cadastro', $operador_cadastro_id);
+                        $this->db->insert('tb_convenio_operador_procedimento');
+                    }
+
+
+
+                }
+            }
+            
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravaprocedimentosoperadorescompleto($operador_id) {
         try {
             $horario = date("Y-m-d H:i:s");

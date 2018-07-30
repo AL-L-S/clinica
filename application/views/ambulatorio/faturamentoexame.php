@@ -71,6 +71,17 @@
                         <input type="text" name="nome" class="texto06"/>
                     </dd>
                     <dt>
+                        <label>Tipo</label>
+                    </dt>
+                    <dd>
+                        <select name="tipo" id="tipo" class="size2" required="">
+                            <option value="">SELECIONE</option>
+                            <option value="AMBULATORIAL">AMBULATORIAL</option>
+                            <option value="CIRURGICO">INTERNAÇÃO</option>
+
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Empresa</label>
                     </dt>
                     <dd>

@@ -36,7 +36,7 @@
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> até <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
 
     <hr>
-    <table border="1" cellpadding="5">
+    <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
                 <th class="tabela_header" >Paciente</th>
@@ -54,8 +54,8 @@
         <tbody>
             <?php
             if (count($relatorio) > 0) {
+                $data = $relatorio[0]->data_preferencia;
                 foreach ($relatorio as $item) {
-
                     if ($item->celular != "") {
                         $telefone = $item->celular;
                     } elseif ($item->telefone != "") {
@@ -64,24 +64,23 @@
                         $telefone = "";
                     }
                     ?>
+            
                     <tr>
                         <td><b><?
-                                if ($item->paciente != '') {
-                                    echo $item->paciente;
-                                } else {
-                                    echo 'NÃO INFORMADO';
-                                }
-                                ?></b></td>
+                                if ($item->paciente != '') echo $item->paciente;
+                                else echo 'NÃO INFORMADO';
+                                ?></b>
+                        </td>
                         <td><?= $telefone ?></td>
                         <td><?= $item->cpf; ?></b></td>
-                        <td><?= date("d/m/Y", strtotime($item->data_criacao)) ?></td>
+                        <td><?= date("d/m/Y", strtotime($item->data_preferencia)) ?></td>
                         <td style="text-align: right">
-                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}"; ?>/', '_blank', 'width=800,height=800');">
+                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}/".date("Y-m-d", strtotime($item->data_preferencia))?>', '_blank', 'width=800,height=800');">
                                 <?= number_format($item->valor, 2, ',', "") ?>
                             </a>
                         </td>
                         <td style="text-align: right">
-                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}"; ?>/', '_blank', 'width=800,height=800');">
+                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}/".date("Y-m-d", strtotime($item->data_preferencia))?>', '_blank', 'width=800,height=800');">
                                 <?= number_format($item->valorcartao, 2, ',', "") ?>
                             </a>
                         </td>
@@ -99,7 +98,7 @@
 
                             <? if ($item->autorizado == 'f') { ?>
                                 <? if ($item->paciente != '') { ?>
-                                    <a href="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a>
+                                    <a href="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamentorelatorio/<?= $item->ambulatorio_orcamento_id."/".date("Y-m-d", strtotime($item->data_preferencia))?>" target="_blank">Autorizar</a>
                                 <? } else { ?>
                                     <a  href="<?= base_url() ?>ambulatorio/exame/autorizarorcamentonaocadastro/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a>
                                 <? } ?>
@@ -108,7 +107,7 @@
 
                         </td>
                         <td style="text-align: left">
-                          <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterardescricao/<?= $item->ambulatorio_orcamento_id ?>','_blank', 'toolbar=no,Location=no,menubar=no,\
+                          <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterardescricao/<?= $item->ambulatorio_orcamento_id ?>/<?= date("Y-m-d", strtotime($item->data_preferencia)) ?>','_blank', 'toolbar=no,Location=no,menubar=no,\
                              width=500,height=400');">=> <?= $item->observacao; ?></td>
                             </a> 
                         </td>    

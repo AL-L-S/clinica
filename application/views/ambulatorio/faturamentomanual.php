@@ -81,7 +81,7 @@
                         <select name="tipo" id="tipo" class="size2" required="">
                             <option value="">SELECIONE</option>
                             <option value="AMBULATORIAL">AMBULATORIAL</option>
-                            <option value="CIRURGICO">CIRURGICO</option>
+                            <option value="CIRURGICO">INTERNAÇÃO</option>
 
                         </select>
                     </dd>

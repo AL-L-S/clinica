@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+                            <NAJA>
+                                <NJ_CodPaciente>47994</NJ_CodPaciente>
+                                <NJ_NomePaciente>HAROLDO PAULA VIANA JUNIOR</NJ_NomePaciente>
+                                <NJ_Laudo>509015</NJ_Laudo>
+                                <NJ_LocalLaudo>./upload/laudoCAFAZ/47994</NJ_LocalLaudo>
+                                <NJ_FormatoLaudo>RTF</NJ_FormatoLaudo>
+                                <NJ_NomeMedicoLaudante>RAISSA GUIMARAES EUFRASIO</NJ_NomeMedicoLaudante>
+                               <NJ_Detalhes><NJ_Exame>
+                            <NJ_Accessionnumber></NJ_Accessionnumber>                            
+                            <NJ_NomeExame></NJ_NomeExame>
+                       </NJ_Exame></NJ_Detalhes>
+                       </NAJA>

@@ -59,127 +59,208 @@
                         border-bottom:none;mso-border-top-alt:none;border-left:
                         none;border-right:none;' colspan="10">&nbsp;</th>
                 </tr>
-
-            <thead>
-                <tr>
-                    <th width="60px;">Guia</th>
-                    <th width="130px;">Procedimento</th>
-                    <th width="90px;"><div style="margin-left:8pt;">Convenio</div></th>
-                    <th width="60px;">Codigo</th>
-                    <th width="110px;">Nome</th>
-                    <th width="60px;">Data</th>
-                    <th width="180px;">Obs.</th>
-                    <th width="60px;">Valor Fatur.</th>
-
-                    <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
-            </tr>
-            <tr>
-                <th style='width:10pt;border:solid windowtext 1.0pt;
-                    border-bottom:none;mso-border-top-alt:none;border-left:
-                    none;border-right:none;' colspan="10">&nbsp;</th>
-            </tr>
-            </thead>
-            <?php
-            $financeiro = 'f';
-            $valortotal = 0;
-            $faturado = 0;
-            $pendente = 0;
-            $guia = "";
-            $total = count($listar);
+            </table>
+        <?
+        $financeiro = 'f';
+        $valortotal = 0;
+        $faturado = 0;
+        $pendente = 0;
+        $guia = "";
+        $total = count($listar);
 //                $consulta = $this->exame->listarguiafaturamento($_GET);
 //                $total = $consulta->count_all_results();
-            if (count($listar) > 0) {
-                ?>
+                   
+        if (count($listar) > 0) {
+                    ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="60px;">Guia</th>
+                        <th width="130px;">Procedimento</th>
+                        <th width="90px;"><div style="margin-left:8pt;">Convenio</div></th>
+                        <th width="60px;">Codigo</th>
+                        <th width="110px;">Nome</th>
+                        <th width="60px;">Data</th>
+                        <th width="180px;">Obs.</th>
+                        <th width="60px;">Valor Fatur.</th>
+
+                        <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
+                    </tr>
+                    <tr>
+                        <th style='width:10pt;border:solid windowtext 1.0pt;
+                            border-bottom:none;mso-border-top-alt:none;border-left:
+                            none;border-right:none;' colspan="10">&nbsp;</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    <?php foreach ($listar as $item) { ?>
+                        <?php foreach ($listar as $item) { ?>
+                            <tr>
+                                <td ><?= $item->ambulatorio_guia_id; ?></td>
+                                <td ><a style="cursor: pointer; color: blue;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"><?= substr($item->procedimento, 0, 16) . " ". $item->numero_sessao; ?></a></td>
+                                <td ><div style="margin-left:8pt;"><?= $item->nome; ?></div></td>
+                                <td ><?= $item->codigo; ?></td>
+                                 <? if ($item->faturado == "t") { ?>
+                                    <td>
+                                        <font color="green"><? echo $item->paciente;?>
+
+                                    </td>
+                                    <?
+                                } else {
+                                    ?>
+                                    <td>
+                                        <font color="c60000"><? echo $item->paciente;?>
+
+                                    </td>
+                                <? } ?>
+                                <td ><?= substr($item->data_criacao, 8, 2) . "/" . substr($item->data_criacao, 5, 2) . "/" . substr($item->data_criacao, 0, 4); ?></td>
+
+                                <td >
+                                    <div class="observacao">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/alterarobservacaofaturaramentomanual/" . $item->ambulatorio_guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,\n\width=500,height=230');">
+                                            =><?= $item->observacoes; ?>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td ><?= number_format(@$item->valor, 2, ",", "."); ?></td>
+                                <?
+                                if ($item->faturado != "t") {?>
+                                    <td width="40px;"></td>
+                                <? } else { ?>
+                                    <td>Faturado&nbsp;</td>
+                                <? }
+
+                                if($tipo == "CIRURGICO"){
+                                    if ($item->equipe == "t") {?>
+                                    <td width="110px;">
+                                        <div class="bt_link" style="width: 100pt">
+                                            <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturaramentomanualguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
+                                                Faturar guia
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <? } 
+                                    else {?>
+                                    <td width="110px;">
+                                        <div class="bt_link" style="width: 100pt">
+                                            <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>centrocirurgico/centrocirurgico/cadastrarequipeguiacirurgica/<?= $item->ambulatorio_guia_id ?>');" >
+                                                Montar Equipe
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <?}
+                                }
+                                else { ?>
+                                    <td width="110px;">
+                                        <div class="bt_link" style="width: 100pt">
+                                            <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturaramentomanualguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
+                                                Faturar guia
+                                            </a>
+                                        </div>
+                                    </td>
+                                <?
+                                }
+                                ?>
+                            </tr>
+
+                        </tbody>
+                        <?php
+                        $valortotal += (float) @$item->valor;
+                    }
+                
+                ?>
+            </table>
+        <? } 
+        
+        if (count($listarinternacao) > 0) { 
+            ?>
+            <table>
+                <thead>
+                    <tr>
+                        <!--<th width="60px;">Numero de Internação</th>-->
+                        <th>Procedimento</th>
+                        <th><div style="margin-left:8pt;">Convenio</div></th>
+                        <th>Codigo</th>
+                        <th>Nome</th>
+                        <th>Data</th>
+                        <th>Dias</th>
+                        <!--<th width="180px;">Obs.</th>-->
+                        <th>Valor Fatur.</th>
+
+                        <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
+                    </tr>
+                    <tr>
+                        <th style='width:10pt;border:solid windowtext 1.0pt;
+                            border-bottom:none;mso-border-top-alt:none;border-left:
+                            none;border-right:none;' colspan="10">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($listarinternacao as $item) { ?>
                         <tr>
-                            <td ><?= $item->ambulatorio_guia_id; ?></td>
-                            <td ><a style="cursor: pointer; color: blue;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturamentodetalhes/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"><?= substr($item->procedimento, 0, 16) . " ". $item->numero_sessao; ?></a></td>
-                            <td ><div style="margin-left:8pt;"><?= $item->nome; ?></div></td>
+                            <!--<td ><?= $item->internacao_id; ?></td>-->
+                            <td ><a style="cursor: pointer; color: blue;"><?= substr($item->procedimento, 0, 16); ?></a></td>
+                            <td ><div style="margin-left:8pt;"><?= $item->convenio; ?></div></td>
                             <td ><?= $item->codigo; ?></td>
                              <? if ($item->faturado == "t") { ?>
                                 <td>
                                     <font color="green"><? echo $item->paciente;?>
-                                    
+
                                 </td>
                                 <?
                             } else {
                                 ?>
                                 <td>
                                     <font color="c60000"><? echo $item->paciente;?>
-                                  
+
                                 </td>
                             <? } ?>
-                            <td ><?= substr($item->data_criacao, 8, 2) . "/" . substr($item->data_criacao, 5, 2) . "/" . substr($item->data_criacao, 0, 4); ?></td>
+                            <td ><?= substr($item->data_internacao, 8, 2) . "/" . substr($item->data_internacao, 5, 2) . "/" . substr($item->data_internacao, 0, 4); ?></td>
+                            <td ><?= $item->qtde; ?></td>
 
-                            <td >
+<!--                                <td >
                                 <div class="observacao">
                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/alterarobservacaofaturaramentomanual/" . $item->ambulatorio_guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,\n\width=500,height=230');">
                                         =><?= $item->observacoes; ?>
                                     </a>
                                 </div>
-                            </td>
-                            <td ><?= number_format(@$item->valor, 2, ",", "."); ?></td>
+                            </td>-->
+                            <td ><?= number_format(@$item->valor_total, 2, ",", "."); ?></td>
                             <?
                             if ($item->faturado != "t") {?>
                                 <td width="40px;"></td>
                             <? } else { ?>
                                 <td>Faturado&nbsp;</td>
-                            <? }
-                            
-                            if($tipo == "CIRURGICO"){
-                                if ($item->equipe == "t") {?>
-                                <td width="110px;">
-                                    <div class="bt_link" style="width: 100pt">
-                                        <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturaramentomanualguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
-                                            Faturar guia
+                            <? } ?>
+                            <td>
+                                <? if ($item->faturado != "t") { ?>
+                                    <div class="bt_link_new">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/faturaramentomanualinternacao/" . $item->internacao_id; ?> ');">Faturar
                                         </a>
                                     </div>
-                                </td>
-                                <? } 
-                                else {?>
-                                <td width="110px;">
-                                    <div class="bt_link" style="width: 100pt">
-                                        <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>centrocirurgico/centrocirurgico/cadastrarequipeguiacirurgica/<?= $item->ambulatorio_guia_id ?>');" >
-                                            Montar Equipe
-                                        </a>
-                                    </div>
-                                </td>
-                                <?}
-                            }
-                            else { ?>
-                                <td width="110px;">
-                                    <div class="bt_link" style="width: 100pt">
-                                        <a style="width: 100pt" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/faturaramentomanualguia/<?= $item->ambulatorio_guia_id ?>/<?= $item->paciente_id ?>');" >
-                                            Faturar guia
-                                        </a>
-                                    </div>
-                                </td>
-                            <?
-                            }
-                            ?>
+                                <? } ?>
+                            </td>
                         </tr>
 
                     </tbody>
                     <?php
-                    $valortotal += (float) @$item->valor;
-                }
-            }
-            ?>
+                    $valortotal += (float) @$item->valor_total;
+                }?>
+            </table>
+        <? } ?>
+            <table>
+                <tfoot>
+                    <tr>
+                        <th colspan="2" >
+                            Registros: <?php echo $total; ?>
+                        </th>
+                        <th colspan="3" >
+                            Valor Total: <?php echo number_format($valortotal, 2, ',', '.'); ?>
+                        </th>
+                        <th colspan="3" >PENDENTE DE FATURAMENTO</th>
+                    </tr>
+                </tfoot>
 
-            <tfoot>
-                <tr>
-                    <th colspan="2" >
-                        Registros: <?php echo $total; ?>
-                    </th>
-                    <th colspan="3" >
-                        Valor Total: <?php echo number_format($valortotal, 2, ',', '.'); ?>
-                    </th>
-                    <th colspan="3" >PENDENTE DE FATURAMENTO</th>
-                </tr>
-            </tfoot>
-
-        </table>
+            </table>
         <br>
         <table border="1">
             <tr>

@@ -292,7 +292,7 @@
                                             </td>
 
 
-                                            <? if (($item->faturado == "f" || $perfil_id == 1 || $perfil_id == 13) && ($item->dinheiro == "t")) { ?>
+                                            <? if (($item->faturado == "f" || $perfil_id == 1 || $perfil_id == 13 || $perfil_id == 5 || $perfil_id == 18) && ($item->dinheiro == "t")) { ?>
                                                 <? if ($perfil_id != 12) { ?>
                                                     <? if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't'  || $item->procedimento_possui_ajuste_pagamento == 'f') { ?>
                                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
@@ -308,7 +308,8 @@
                                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                 </td>
                                             <? } ?>
-                                        <? } else { ?>
+                                        <? } 
+                                        else { ?>
                                             <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                 <a href="#" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaconvenioexame/$guia_id/$item->agenda_exames_id"; ?> ', '_blank', 'width=800,height=250');">N. Guia
 
