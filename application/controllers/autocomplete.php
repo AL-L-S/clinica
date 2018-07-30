@@ -2542,6 +2542,18 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+      function repetirreceituario() {
+
+        if (isset($_GET['receita'])) {
+            
+            $result = $this->laudo->listarautocompleterepetirreceituario($_GET['receita']);
+        } else {
+            $result = $this->laudo->listarautocompleterepetirreceituario();
+            
+        }
+        echo json_encode($result);
+    }
 
     function modelosatestado() {
 
