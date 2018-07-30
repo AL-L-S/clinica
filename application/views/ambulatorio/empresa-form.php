@@ -190,6 +190,7 @@
                         <dd>
                             <input type="text" id="numero_empresa_painel" name="numero_empresa_painel" class="texto05" value="<?= @$obj->_numero_empresa_painel; ?>" />
                         </dd>
+                        <br>
                         <div>
                             <dt>
                                 <label title="Definir os campos que serao obrigatorios no cadastro de paciente.">Campos Obrigatorios</label>
@@ -244,11 +245,50 @@
                         </div>
                         <br>
                         <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
+                          <div>
+                            <dt>
+                                <label title="Definir os campos visíveis na tela de atendimento médico">Tela de Atendimento Médico</label>
+                            </dt>
+                            <dd>
+                                <?
+                                if (@$obj->_campos_atendimentomed != '') {
+                                    $opc_telatendimento = json_decode(@$obj->_campos_atendimentomed);
+                                } else {
+                                    $opc_telatendimento = array();
+                                }
+                               
+                                ?>
+                                <select name="opc_telatendimento[]" style="width: 47%;" class="chosen-select" data-placeholder="Selecione os campos..." multiple>
+                                    <option value="cirurgias" <?= (in_array('cirurgias', $opc_telatendimento)) ? 'selected' : ''; ?>>Cirurgias</option>
+                                    <option value="lab" <?= (in_array('lab', $opc_telatendimento)) ? 'selected' : ''; ?>>Exames Laboratoriais</option>
+                                    <option value="eco" <?= (in_array('eco', $opc_telatendimento)) ? 'selected' : ''; ?>>Ecocardiograma</option>
+                                    <option value="ecostress" <?= (in_array('ecostress', $opc_telatendimento)) ? 'selected' : ''; ?>>Eco Stress</option>
+                                    <option value="cate" <?= (in_array('cate', $opc_telatendimento)) ? 'selected' : ''; ?>>Cateterismo Cardiaco</option>
+                                    <option value="holter" <?= (in_array('holter', $opc_telatendimento)) ? 'selected' : ''; ?>>Holter 24h</option>
+                                    <option value="cintil" <?= (in_array('cintil', $opc_telatendimento)) ? 'selected' : ''; ?>>Cintilografia</option>
+                                    <option value="mapa" <?= (in_array('mapa', $opc_telatendimento)) ? 'selected' : ''; ?>>Mapa</option>
+                                    <option value="te" <?= (in_array('te', $opc_telatendimento)) ? 'selected' : ''; ?>>Teste Ergométrico</option>
+                                    <option value="receituario" <?= (in_array('receituario', $opc_telatendimento)) ? 'selected' : ''; ?>>Receituário</option>
+                                    <option value="historicoimprimir" <?= (in_array('historicoimprimir', $opc_telatendimento)) ? 'selected' : ''; ?>>Imprimir Histórico</option>
+                                    <option value="receituarioesp" <?= (in_array('receituarioesp', $opc_telatendimento)) ? 'selected' : ''; ?>>Receituário Especial</option>
+                                    <option value="solicitar_exames" <?= (in_array('solicitar_exames', $opc_telatendimento)) ? 'selected' : ''; ?>>Solicitar Exames</option>
+                                    <option value="atestado" <?= (in_array('atestado', $opc_telatendimento)) ? 'selected' : ''; ?>>Atestado</option>
+                                    <option value="declaracao" <?= (in_array('declaracao', $opc_telatendimento)) ? 'selected' : ''; ?>>Declaração</option>
+                                    <option value="arquivos" <?= (in_array('arquivos', $opc_telatendimento)) ? 'selected' : ''; ?>>Arquivos</option>
+                                    <option value="aih" <?= (in_array('aih', $opc_telatendimento)) ? 'selected' : ''; ?>>Laudo AIH</option>
+                                    <option value="consultar_procedimento" <?= (in_array('consultar_procedimento', $opc_telatendimento)) ? 'selected' : ''; ?>>Consultar Procedimento</option>
+                                    <option value="sadt" <?= (in_array('sadt', $opc_telatendimento)) ? 'selected' : ''; ?>>Solicitação SADT</option>
+                                    <option value="cadastro_aso" <?= (in_array('cadastro_aso', $opc_telatendimento)) ? 'selected' : ''; ?>>Cadastro ASO</option>
+                                    <option value="chamar" <?= (in_array('chamar', $opc_telatendimento)) ? 'selected' : ''; ?>>Chamar</option>
+                                    <option value="editar" <?= (in_array('editar', $opc_telatendimento)) ? 'selected' : ''; ?>>Editar</option>
+                                    <option value="pendente" <?= (in_array('pendente', $opc_telatendimento)) ? 'selected' : ''; ?>>Pendente</option>
+                                    <option value="encaminhar" <?= (in_array('encaminhar', $opc_telatendimento)) ? 'selected' : ''; ?>>Encaminhar</option>
+                                    <option value="histconsulta" <?= (in_array('histconsulta', $opc_telatendimento)) ? 'selected' : ''; ?>>Histórico Consulta</option>
+                                    <option value="histantigo" <?= (in_array('histantigo', $opc_telatendimento)) ? 'selected' : ''; ?>>Histórico Antigo</option>
+                                    
+                                </select>
+                            </dd>
+                        </div>
                         <br>
                         <br>
                         <fieldset>

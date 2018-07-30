@@ -23,6 +23,7 @@ ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN observacao TEXT;
 -- Dia 27/07/2018
 ALTER TABLE ponto.tb_toten_senha ADD COLUMN chamada boolean DEFAULT false;
 ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN idfila_painel TEXT;
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_atendimentomed text;
 
 -- Dia 30/07/2018
 ALTER TABLE ponto.tb_internacao ADD COLUMN faturado boolean DEFAULT false;

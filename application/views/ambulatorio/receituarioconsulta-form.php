@@ -80,10 +80,11 @@
                             <input type="hidden" id="medico" name="medico" value="<?= $operador_id ?>"/>
                         </div>
                         <div>
-                            
+
                             <textarea id="laudo" name="laudo" rows="25" cols="80" style="width: 80%">
-                                <? if (@$empresapermissao[0] ->carregar_modelo_receituario == 't') {
-                                    if (count($modelo) > 0){
+                                <?
+                                if (@$empresapermissao[0]->carregar_modelo_receituario == 't') {
+                                    if (count($modelo) > 0) {
                                         if (file_exists("upload/1ASSINATURAS/" . @$laudo['0']->medico_parecer1 . ".jpg")) {
                                             $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . @$laudo['0']->medico_parecer1 . ".jpg'>";
                                         } else {
@@ -111,7 +112,8 @@
                                         $corpo = str_replace("_assinatura_", $assinatura, $corpo);
                                         echo $corpo;
                                     }
-                                } ?>
+                                }
+                                ?>
                             </textarea>
                         </div>
                         <table>
@@ -146,8 +148,9 @@
                     <thead>
                         <tr>
                             <th class="tabela_header">Data</th>
+                            <!--<th class="tabela_header">Procedimento</th>-->
                             <th class="tabela_header">Descri&ccedil;&atilde;o</th>
-                            <th colspan="2" class="tabela_header">&nbsp;</th>
+                            <th colspan="3" class="tabela_header">&nbsp;</th>
                         </tr>
                     </thead>
                     <?
@@ -158,6 +161,7 @@
                         <tbody>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_cadastro)); ?></td>
+                           <!--     <td class="<?php echo $estilo_linha; ?>"><?= $exame_id; ?></td> -->
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceita/<?= $item->ambulatorio_receituario_id; ?>');">Imprimir
@@ -165,6 +169,10 @@
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_receituario_id; ?>');">Editar
+                                        </a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a onclick="repetir(<?=$item->ambulatorio_receituario_id;?>)">Repetir
                                         </a></div>
                                 </td>
 
@@ -286,7 +294,7 @@
                                                     options += j[0].texto;
                                                     //                                                document.getElementById("laudo").value = options
 
-                                                    $('#laudo').val(options)
+                                                    $('#laudo').val(options);
                                                     var ed = tinyMCE.get('laudo');
                                                     ed.setContent($('#laudo').val());
 
@@ -300,6 +308,7 @@
                                             }
                                         });
                                     });
+
 
                                     $(function () {
                                         $('#linha').change(function () {
@@ -387,8 +396,24 @@
                                             }
                                         });
                                     });
-                                    //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-                                    $('.jqte-test').jqte();
+
+                                    function repetir(receita_id) {
+
+                                        $.getJSON('<?= base_url() ?>autocomplete/repetirreceituario', {receita: receita_id, ajax: true}, function (j) {
+                                            options = "";
+
+                                            options += j[0].texto;
+
+                                            $('#laudo').val(options);
+                                            var ed = tinyMCE.get('laudo');
+                                            ed.setContent($('#laudo').val());
+
+                                                
+                                        }
+                                       ) 
+                                    }
+
+                                    //$('.jqte-test').jqte();
 
 
 

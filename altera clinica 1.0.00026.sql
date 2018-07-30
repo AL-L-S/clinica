@@ -36,3 +36,9 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+-- Dia 24/07/2018
+ALTER TABLE ponto.tb_ambulatorio_orcamento ADD COLUMN observacao character varying(8000);
+
+-- Dia 27/07/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN campos_atendimentomed text;

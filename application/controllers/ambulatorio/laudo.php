@@ -506,6 +506,7 @@ class Laudo extends BaseController {
 
 //        $empresa_id = $this->session->userdata('empresa_id');
         $data['empresapermissao'] = $this->guia->listarempresasaladepermissao($empresa_id);
+//        var_dump($data['empresapermissao']); die;
         $data['listarades'] = $this->laudo->listarades();
         $data['listaradcl'] = $this->laudo->listaradcl();
         $data['listarodes'] = $this->laudo->listarodes();
@@ -680,13 +681,13 @@ class Laudo extends BaseController {
     }
 
     function carregarreceituario($ambulatorio_laudo_id) {
-        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);       
         $data['obj'] = $obj_laudo;
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $data['lista'] = $this->exametemp->listarautocompletemodelosreceita();
         $data['modelo'] = $this->exametemp->listarmodelosreceitaautomatico();
         $data['empresapermissao'] = $this->guia->listarempresapermissoes();
-        $data['receita'] = $this->laudo->listarreceita($ambulatorio_laudo_id);
+        $data['receita'] = $this->laudo->listarreceita($obj_laudo->_paciente_id);
         $data['operadores'] = $this->operador_m->listarmedicos();
 
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
@@ -841,6 +842,15 @@ class Laudo extends BaseController {
 
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->load->View('ambulatorio/editarreceituarioconsulta-form', $data);
+    }
+    
+      function repetircarregarreceituario($ambulatorio_laudo_id, $ambulatorio_receituario_id) {
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+        $data['receita'] = $this->laudo->listarrepetirreceita($ambulatorio_receituario_id);
+        $data['operadores'] = $this->operador_m->listarmedicos();
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->load->View('ambulatorio/repetireceituarioconsulta-form', $data);
     }
 
     function editarcarregaratestado($ambulatorio_laudo_id, $ambulatorio_receituario_id) {
@@ -4296,6 +4306,15 @@ class Laudo extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
+    
+     function repetirreceituario($ambulatorio_laudo_id) {
+
+        $this->laudo->repetirreceituario($ambulatorio_laudo_id);
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
 
     function editaratestado($ambulatorio_laudo_id) {
 
