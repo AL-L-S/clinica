@@ -86,7 +86,7 @@
                                     <th class="tabela_header">Autorizacao</th>
                                     <th class="tabela_header">V. Unit</th>
                                     <th class="tabela_header">Empresa</th>
-                                    <th class="tabela_header">Laudo</th>
+                                    <!--<th class="tabela_header">Laudo</th>-->
                                     <th class="tabela_header">Observa&ccedil;&otilde;es</th>
                                 </tr>
                             </thead>
@@ -147,7 +147,7 @@
                                     <? endforeach; ?>
                                 </select><!--
                                 -->                                </td>
-                            <td  width="10px;"><input type="checkbox" name="laudo" /></td>
+                            <!--<td  width="10px;"><input type="checkbox" name="laudo" /></td>-->
                             <td  width="70px;"><input type="text" name="observacao" id="observacao" class="texto04"/></td>
                             </tr>
 

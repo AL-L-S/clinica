@@ -152,8 +152,9 @@
                         </td>
                         <td>
                             <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
-                            <!--                                        impressaolaudo -->
-
+                        </td>
+                        <td>
+                            <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregaranamineseantigo/<?= $paciente_id ?>">Hist. Antigo</a></div>
                         </td>
 
 

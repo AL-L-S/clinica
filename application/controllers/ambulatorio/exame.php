@@ -28,6 +28,7 @@ class Exame extends BaseController {
         $this->load->model('ambulatorio/motivocancelamento_model', 'motivocancelamento');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico_m');
+        $this->load->model('internacao/internacao_model', 'internacao_m');
         $this->load->model('ambulatorio/agenda_model', 'agenda');
         $this->load->model('ponto/Competencia_model', 'competencia');
         $this->load->model('cadastro/convenio_model', 'convenio');
@@ -82,7 +83,6 @@ class Exame extends BaseController {
             $setor_busca = file_get_contents("$endereco/webService/telaAtendimento/setores");
             $data['setores'] = json_decode($setor_busca);
 
-//        var_dump($data['setores']); die;
             $setor_string = '';
             foreach ($data['setores'] as $item) {
                 if ($setor_string == '') {
@@ -94,6 +94,7 @@ class Exame extends BaseController {
             $data['setor_string'] = $setor_string;
 
 
+//            var_dump($data['setores']); die;
             $senhas_busca = file_get_contents("$endereco/webService/fialaDeespera/$setor_string");
             $data['senhas'] = json_decode($senhas_busca);
 //        var_dump($data['senhas']); die;    
@@ -916,17 +917,50 @@ class Exame extends BaseController {
             $data['convenios'] = 0;
         }
 
+        $data['listarinternacao'] = array();
         if ($_POST['tipo'] == 'AMBULATORIAL') {
             $data['listar'] = $this->exame->listarguiafaturamentomanual();
         } else {
             $data['listar'] = $this->exame->listarguiafaturamentomanualcirurgico();
+            $data['listarinternacao'] = $this->internacao_m->listarguiafaturamentomanualinternacao(); 
         }
 
 //        echo "<pre>";
-//        var_dump($data['listar']);
+//        var_dump($data['listarinternacao']);
 //        die;
 
         $this->loadView('ambulatorio/faturamentomanual-lista', $data);
+    }
+
+    function faturaramentomanualinternacao($internacao_id) {
+
+//        die('morre');
+        $data['internacao'] = $this->exame->listarfaturamentomanualinternacao($internacao_id);
+        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data["valor"] = (float) $data['internacao'][0]->valor_total;
+        $data['internacao_id'] = $internacao_id;
+        $this->load->View('ambulatorio/faturaramentomanualinternacao-form', $data);
+    }
+    
+    
+    function gravarfaturaramentomanualinternacao() {
+        
+        $_POST['valor1'] = (float) str_replace(',', '.', $_POST['valor1']);
+        $_POST['valor2'] = (float) str_replace(',', '.', $_POST['valor2']);
+        $_POST['valor3'] = (float) str_replace(',', '.', $_POST['valor3']);
+        $_POST['valor4'] = (float) str_replace(',', '.', $_POST['valor4']);
+        $resulta = $_POST['valortotal'];
+        if ($resulta == "0.00") {
+            $ambulatorio_guia_id = $this->exame->gravarfaturaramentomanualinternacao();
+            if ($ambulatorio_guia_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao gravar faturamento.';
+            }
+        }
+        
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }
 
     function faturamentoexamelista() {
@@ -939,7 +973,13 @@ class Exame extends BaseController {
         } else {
             $data['convenios'] = 0;
         }
-        $data['listar'] = $this->exame->listarguiafaturamento();
+        $data['listarinternacao'] = array();
+        $data['listar'] = array();
+        if ($_POST['tipo'] == 'AMBULATORIAL') {
+            $data['listar'] = $this->exame->listarguiafaturamento();
+        } else {
+            $data['listarinternacao'] = $this->internacao_m->listarguiafaturamentomanualinternacao(); 
+        }
 //        echo '<pre>';
 //        var_dump($data['listar']); die;
         $this->loadView('ambulatorio/faturamentoexame-lista', $data);
@@ -1705,8 +1745,9 @@ class Exame extends BaseController {
         $this->load->View('ambulatorio/alterarobservacao-form', $data);
     }
     
-     function alterardescricao($ambulatorio_orcamento_id) {
+     function alterardescricao($ambulatorio_orcamento_id, $dataSelecionada) {
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
+        $data['dataselecionada'] = $dataSelecionada;
         $data['observacao'] = $this->exame->listardescricoes($ambulatorio_orcamento_id);
         $this->load->View('ambulatorio/alterardescricao-form', $data);
     }
@@ -1736,9 +1777,9 @@ class Exame extends BaseController {
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
     
-     function descricaogravar($ambulatorio_orcamento_id) {
+     function descricaogravar($ambulatorio_orcamento_id, $dataSelecionada) {
 
-        $this->exame->observacaoorcamento($ambulatorio_orcamento_id);
+        $this->exame->observacaoorcamento($ambulatorio_orcamento_id, $dataSelecionada);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");         
     }
 

@@ -2250,6 +2250,49 @@ class internacao_model extends BaseModel {
         return $this->db;
     }
 
+    function listarguiafaturamentomanualinternacao($args = array()) {
+        $this->db->select('pt.nome as procedimento,
+                           pt.codigo,
+                           pt.qtde,
+                           p.nome as paciente,
+                           c.nome as convenio,
+                           i.valor_total,
+                           i.faturado,
+                           i.data_internacao,
+                           o.nome as medico,
+                           il.nome as leito,
+                           ie.nome as enfermaria,
+                           iu.nome as unidade,
+                           il.internacao_leito_id,
+                           i.internacao_id,
+                           i.paciente_id,
+                           i.procedimentosolicitado,
+                           i.estado');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'il.enfermaria_id = ie.internacao_enfermaria_id', 'left');
+        $this->db->join('tb_internacao_unidade iu', 'ie.unidade_id = iu.internacao_unidade_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+//        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = i.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
+
+        $this->db->where("i.data_internacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("i.data_internacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        $this->db->where('i.excluido', 'false');
+
+        if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
+            $this->db->where('p.nome ilike', "%" . $_POST['nome'] . "%");
+        }
+        if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
+            $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        return $this->db->get()->result();
+    }
+
     function internacaoimpressaomodelo($internacao_id) {
         $this->db->select('pt.nome as procedimento,
                            p.nome as paciente,

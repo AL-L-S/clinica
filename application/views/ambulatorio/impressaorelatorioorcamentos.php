@@ -55,7 +55,6 @@
             <?php
             if (count($relatorio) > 0) {
                 $data = $relatorio[0]->data_preferencia;
-                $p = 0;
                 foreach ($relatorio as $item) {
                     if ($item->celular != "") {
                         $telefone = $item->celular;
@@ -63,14 +62,6 @@
                         $telefone = $item->telefone;
                     } else {
                         $telefone = "";
-                    }
-                    if($data != $item->data_preferencia || $p == 0){
-                        $data = $item->data_preferencia;
-                        $p = 1; ?>
-                        <tr>
-                            <td colspan="17"> Data: <?=date("d/m/Y", strtotime($data))?></td>
-                        </tr>
-                        <?
                     }
                     ?>
             
@@ -116,7 +107,7 @@
 
                         </td>
                         <td style="text-align: left">
-                          <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterardescricao/<?= $item->ambulatorio_orcamento_id ?>','_blank', 'toolbar=no,Location=no,menubar=no,\
+                          <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterardescricao/<?= $item->ambulatorio_orcamento_id ?>/<?= date("Y-m-d", strtotime($item->data_preferencia)) ?>','_blank', 'toolbar=no,Location=no,menubar=no,\
                              width=500,height=400');">=> <?= $item->observacao; ?></td>
                             </a> 
                         </td>    

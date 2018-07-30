@@ -130,7 +130,6 @@ class Empresa extends BaseController {
 
         array_map('unlink', glob("./upload/logomarca/$empresa_id/*.*"));
 
-
         $config['upload_path'] = "./upload/logomarca/$empresa_id/";
         $config['allowed_types'] = 'gif|jpg|JPG|png|jpeg|JPEG|pdf|doc|docx|xls|xlsx|ppt|zip|rar|bmp|BMP';
         $config['max_size'] = '0';
@@ -149,7 +148,7 @@ class Empresa extends BaseController {
         $arquivo = "./upload/logomarca/$empresa_id/$nome";
         $str = explode(".", $nome);
         $ext = $str[count($str) - 1];
-        $arquivoNome = "./upload/logomarca/$empresa_id/logomarca.{$ext}";
+        $arquivoNome = "./upload/logomarca/$empresa_id/logomarca";
         rename($arquivo, $arquivoNome);
 
         redirect(base_url() . "ambulatorio/empresa/configurarlogomarca/$empresa_id");
@@ -167,9 +166,12 @@ class Empresa extends BaseController {
             $destino = "./upload/logomarca/$empresa_id";
             chmod($destino, 0777);
         }
-
+        
+//        echo "<pre>";
+//        var_dump(glob("./upload/logomarca/$empresa_id/*.*")); die;
+//        
         array_map('unlink', glob("./upload/logomarca/$empresa_id/*.*"));
-
+        unlink("./upload/logomarca/$empresa_id/logomarca");
         redirect(base_url() . "ambulatorio/empresa/configurarlogomarca/$empresa_id");
     }
 

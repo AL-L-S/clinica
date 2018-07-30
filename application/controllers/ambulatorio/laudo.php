@@ -501,7 +501,7 @@ class Laudo extends BaseController {
 
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
-        $endereco = $data['empresa'][0]->endereco_toten;
+        @$endereco = $data['empresa'][0]->endereco_toten;
         $data['endereco'] = $endereco;
 
 //        $empresa_id = $this->session->userdata('empresa_id');
@@ -4325,6 +4325,7 @@ class Laudo extends BaseController {
                 $messagem = 1;
             }
         } else {
+//            die;
             $this->laudo->gravarlaudodigitando($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id);
         }
         $data['exame_id'] = $exame_id;

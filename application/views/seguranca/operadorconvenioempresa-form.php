@@ -4,6 +4,9 @@
         <a href="<?= base_url() . "seguranca/operador/vinculaoperadorconveniotodos/" . $operador[0]->operador_id ?>" target="_blank" 
            onclick="javascript: return confirm('Essa ação irá vincular todas as empresas, convenios e procedimentos a este operador. Essa ação pode demorar um pouco.\nDeseja realmente continuar?');">Vincular Tudo</a>
     </div>
+    <div class="bt_linkf">
+        <a href="<?= base_url() . "seguranca/operador/replicaroperadorconvenio/" . $operador[0]->operador_id ?>" target="_blank">Replicar Operador</a>
+    </div>
     <form name="form_menuitens" id="form_menuitens" action="<?= base_url() ?>seguranca/operador/gravaroperadorconvenioempresa" method="post">
         <fieldset>
             <legend>Operador</legend>
@@ -51,9 +54,9 @@
                 <tbody>
                     <tr>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
-                        <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                            <div class="bt_link">
-                                <a target="_blank" href="<?= base_url() ?>seguranca/operador/copiaroperadorconvenioempresa/<?= $item->empresa_id; ?>/<?= $operador[0]->operador_id; ?>">Replicar</a>
+                        <td class="<?php echo $estilo_linha; ?>" width="250px;">
+                            <div class="bt_link" style="width: 150pt; ">
+                                <a target="_blank" href="<?= base_url() ?>seguranca/operador/copiaroperadorconvenioempresa/<?= $item->empresa_id; ?>/<?= $operador[0]->operador_id; ?>">Replicar Empresa</a>
                             </div>
                         </td>
                         <td class="<?php echo $estilo_linha; ?>" width="100px;">

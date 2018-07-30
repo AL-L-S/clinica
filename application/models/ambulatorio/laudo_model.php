@@ -906,11 +906,14 @@ class laudo_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ag.ambulatorio_laudo_id,
                             o.nome as medico,
+                            ag.medico_parecer1,
                             o.ocupacao_painel,
                             an.exame_sala_id,
                             cbo.descricao,
                             p.nome as paciente,
-                            e.numero_empresa_painel');
+                            p.cpf,
+                            e.numero_empresa_painel,
+                            ag.idfila_painel');
         $this->db->from('tb_ambulatorio_laudo ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
@@ -940,7 +943,34 @@ class laudo_model extends Model {
         $dados = $this->db->get()->result();
 
         if($dados[0]->endereco_toten != ''){
+            if($return[0]->idfila_painel == ''){
+                $this->db->select('id');
+                $this->db->from('tb_toten_senha');
+                $this->db->where('chamada', 'f');
+                $paineis = $this->db->get()->result();
+                $idfila = $paineis[0]->id;
+            }
+            else {
+                $idfila = $return[0]->idfila_painel;                
+            }
             
+            $endereco = $dados[0]->endereco_toten."/webService/telaAtendimento/enviarFicha/";
+            $endereco .= "{$idfila}/{$return[0]->paciente}/null/{$return[0]->medico_parecer1}/{$return[0]->medico}/{$return[0]->exame_sala_id}/true";
+
+            $ch  = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $endereco);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, array());
+            $result = curl_exec($ch);
+            curl_close($ch);
+            
+            $endereco = $dados[0]->endereco_toten."/webService/telaChamado/proximo/{$return[0]->medico_parecer1}";
+            $ch  = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $endereco);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, array());
+            $result = curl_exec($ch);
+            curl_close($ch);
         }
         else {
             $config['hostname'] = "localhost";
@@ -956,31 +986,33 @@ class laudo_model extends Model {
             $config['char_set'] = "utf8";
             $config['dbcollat'] = "utf8_general_ci";
             $DB1 = $this->load->database($config, TRUE);
+            
+            foreach ($paineis as $value) {
+                $salas = $value->nome_chamada;
+                $data = date("Y-m-d H:i:s");
+                if ($return[0]->ocupacao_painel == 't') {
+                    $medico = $return[0]->descricao;
+                } else {
+                    $medico = '';
+                }
+    //            var_dump($medico); die;
+                if ($value->painel_id != '') {
+                    $painel_id = $return[0]->numero_empresa_painel . $value->painel_id;
+                } else {
+                    $painel_id = $return[0]->numero_empresa_painel . 1;
+                }
+
+                $paciente = $return[0]->paciente;
+                $superior = 'Paciente: ' . $paciente;
+                $inferior = $salas . ' ' . $medico;
+                $sql = "INSERT INTO chamado(
+                    data, linha_inferior, linha_superior, setor_id)
+            VALUES ('$data', '$inferior', '$superior', $painel_id);";
+                $DB1->query($sql);
+            }
+        
         }
         
-        foreach ($paineis as $value) {
-            $salas = $value->nome_chamada;
-            $data = date("Y-m-d H:i:s");
-            if ($return[0]->ocupacao_painel == 't') {
-                $medico = $return[0]->descricao;
-            } else {
-                $medico = '';
-            }
-//            var_dump($medico); die;
-            if ($value->painel_id != '') {
-                $painel_id = $return[0]->numero_empresa_painel . $value->painel_id;
-            } else {
-                $painel_id = $return[0]->numero_empresa_painel . 1;
-            }
-
-            $paciente = $return[0]->paciente;
-            $superior = 'Paciente: ' . $paciente;
-            $inferior = $salas . ' ' . $medico;
-            $sql = "INSERT INTO chamado(
-                data, linha_inferior, linha_superior, setor_id)
-        VALUES ('$data', '$inferior', '$superior', $painel_id);";
-            $DB1->query($sql);
-        }
     }
 
     function chamadaconsulta($ambulatorio_laudo_id) {
@@ -2453,8 +2485,6 @@ class laudo_model extends Model {
     function gravarlaudo($ambulatorio_laudo_id, $exame_id, $sala_id, $procedimento_tuss_id) {
         try {
             /* inicia o mapeamento no banco */
-
-
             $this->db->set('ativo', 't');
             $this->db->where('exame_sala_id', $sala_id);
             $this->db->update('tb_exame_sala');

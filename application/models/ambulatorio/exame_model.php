@@ -1485,20 +1485,20 @@ class exame_model extends Model {
             $this->db->insert('tb_exames');
             $exames_id = $this->db->insert_id();
 
-            if ($_POST['laudo'] == "on") {
-                $this->db->set('empresa_id', $_POST['txtempresa']);
-                $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
-                $this->db->set('medico_parecer1', $_POST['medicoagenda']);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
-                $this->db->set('exame_id', $exames_id);
-                $this->db->set('guia_id', $ambulatorio_guia);
-                $this->db->set('tipo', $_POST['tipo']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
+//            if ($_POST['laudo'] == "on") {
+            $this->db->set('empresa_id', $_POST['txtempresa']);
+            $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
+            $this->db->set('medico_parecer1', $_POST['medicoagenda']);
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+            $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
+            $this->db->set('exame_id', $exames_id);
+            $this->db->set('guia_id', $ambulatorio_guia);
+            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
 
-                $this->db->insert('tb_ambulatorio_laudo');
-            }
+            $this->db->insert('tb_ambulatorio_laudo');
+//            }
             return 0;
         } catch (Exception $exc) {
             return -1;
@@ -3050,6 +3050,7 @@ class exame_model extends Model {
                             ao.data_criacao,
                             aoi.data_preferencia,
                             aoi.autorizado,                           
+                            aoi.observacao,                           
                             e.nome as empresa_nome,
                             (
                                 SELECT SUM(valor_total)
@@ -3115,15 +3116,15 @@ class exame_model extends Model {
                               
         $this->db->orderby('ao.data_criacao');        
         $this->db->orderby('p.nome');
-        $this->db->groupby("ao.ambulatorio_orcamento_id,
-                            ao.observacao,    
+        $this->db->groupby("ao.ambulatorio_orcamento_id,    
                             p.nome,
                             p.celular,
                             p.telefone,
                             p.cpf,
                             ao.data_criacao,
                             aoi.data_preferencia,
-                            aoi.autorizado,                           
+                            aoi.autorizado,                              
+                            aoi.observacao,                        
                             e.nome,
                             (
                                 SELECT SUM(valor_total)
@@ -6046,7 +6047,63 @@ class exame_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarfaturamentomanualinternacao($internacao_id) {
+        $this->db->select('i.valor_total');
+        $this->db->from('tb_internacao i');
+        $this->db->where('i.internacao_id', $internacao_id);
+        return $this->db->get()->result();
+    }
+    
+    function gravarfaturaramentomanualinternacao() {
+        try {
+            $desconto = $_POST['desconto'];
+            $valor1 = $_POST['valor1'];
+            $valor2 = $_POST['valor2'];
+            $valor3 = $_POST['valor3'];
+            $valor4 = $_POST['valor4'];
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            /* inicia o mapeamento no banco */
+            if ($_POST['formapamento1'] != '') {
+                $this->db->set('forma_pagamento1', $_POST['formapamento1']);
+                $this->db->set('valor1', (float) str_replace(",", ".", $valor1));
+//                $this->db->set('parcelas1', 1);
+//                $this->db->set('desconto_ajuste1', 0);
+            }
+            if ($_POST['formapamento2'] != '') {
+                $this->db->set('forma_pagamento2', $_POST['formapamento2']);
+                $this->db->set('valor2', (float) str_replace(",", ".", $valor2));
+//                $this->db->set('parcelas2', 1);
+//                $this->db->set('desconto_ajuste2', 0);
+            }
+            if ($_POST['formapamento3'] != '') {
+                $this->db->set('forma_pagamento3', $_POST['formapamento3']);
+                $this->db->set('valor3', (float) str_replace(",", ".", $valor3));
+//                $this->db->set('parcelas3', 1);
+//                $this->db->set('desconto_ajuste3', 0);
+            }
+            if ($_POST['formapamento4'] != '') {
+                $this->db->set('forma_pagamento4', $_POST['formapamento4']);
+                $this->db->set('valor4', (float) str_replace(",", ".", $valor4));
+//                $this->db->set('parcelas4', 1);
+//                $this->db->set('desconto_ajuste4', 0);
+            }
+            $this->db->set('desconto', $desconto);
+            $this->db->set('valor_total', $_POST['novovalortotal']);
+            $this->db->set('data_faturamento', $horario);
+            $this->db->set('operador_faturamento', $operador_id);
+            $this->db->set('faturado', 't');
+            $this->db->where('internacao_id', $_POST['internacao_id']);
+            $this->db->update('tb_internacao');
 
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
     function listarguiafaturamentomanualcirurgico() {
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -8172,12 +8229,13 @@ class exame_model extends Model {
     }
     
     
-    function observacaoorcamento($ambulatorio_orcamento_id) {
+    function observacaoorcamento($ambulatorio_orcamento_id, $dataSelecionada) {
         try {
             
             $this->db->set('observacao', utf8_encode($_POST['txtdescricao']));         
-            $this->db->where('ambulatorio_orcamento_id', $ambulatorio_orcamento_id);
-            $this->db->update('tb_ambulatorio_orcamento');
+            $this->db->where('orcamento_id', $ambulatorio_orcamento_id);
+            $this->db->where('data_preferencia', $dataSelecionada);
+            $this->db->update('tb_ambulatorio_orcamento_item');
             return 0;
         } catch (Exception $exc) {
             return -1;

@@ -78,7 +78,7 @@
                         
                         if(@$permissoes[0]->ajuste_pagamento_procedimento == 't'){ 
                         ?>
-                            <tr class="ajustePagamento">
+<!--                            <tr class="ajustePagamento">
                                 <td>Forma de Pagamento</td>
                                 <td>
                                     <select name="formapamento" id="formapamento" class="size2" onchange="buscaValorAjustePagamentoProcedimento()">
@@ -93,7 +93,7 @@
                             <tr class="ajustePagamento">
                                 <td>Valor Ajuste</td>
                                 <td><input type="text" name="valorAjuste" id="valorAjuste" class="texto02" readonly=""/></td>
-                            </tr>  
+                            </tr>  -->
                         <? } ?>
                     </table>
 

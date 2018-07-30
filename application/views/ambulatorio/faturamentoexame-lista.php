@@ -66,42 +66,40 @@
                         border-bottom:none;mso-border-top-alt:none;border-left:
                         none;border-right:none;' colspan="9">&nbsp;</th>
                 </tr>
-
-            <thead>
-                <tr>
-                    <th width="60px;">Guia</th>
-                    <th width="90px;">Autoriza&ccedil;&atilde;o</th>
-                    <th width="130px;">Procedimento</th>
-                    <th width="90px;"><div style="margin-left:8pt;">Convenio</div></th>
-                    <th width="60px;">Codigo</th>
-                    <th width="90px;">Medico</th>
-                    <th width="130px;">Data Atendi</th>
-                    <th width="130px;">Data Fatura</th>
-                    <th width="110px;">Nome</th>
-                    <th width="180px;">Obs.</th>
-                    <th width="60px;">Valor Fatur.</th>
-
-                    <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
-            </tr>
-            <tr>
-                <th style='width:10pt;border:solid windowtext 1.0pt;
-                    border-bottom:none;mso-border-top-alt:none;border-left:
-                    none;border-right:none;' colspan="9">&nbsp;</th>
-            </tr>
             </thead>
-            <?php
-            $financeiro = 'f';
-            $valortotal = 0;
-            $valortotal_faturado = 0;
-            $valortotal_naofaturado = 0;
-            $faturado = 0;
-            $pendente = 0;
-            $guia = "";
-            $total = count($listar);
-//                $consulta = $this->exame->listarguiafaturamento($_GET);
-//                $total = $consulta->count_all_results();
-            if (count($listar) > 0) {
-                ?>
+        </table>
+        <? 
+        
+        $financeiro = 'f';
+        $valortotal = 0;
+        $faturado = 0;
+        $pendente = 0;
+        $guia = "";
+        $total = count($listar);
+        if (count($listar) > 0) {?>
+            <table>
+                <thead>
+                    <tr>
+                        <th width="60px;">Guia</th>
+                        <th width="90px;">Autoriza&ccedil;&atilde;o</th>
+                        <th width="130px;">Procedimento</th>
+                        <th width="90px;"><div style="margin-left:8pt;">Convenio</div></th>
+                        <th width="60px;">Codigo</th>
+                        <th width="90px;">Medico</th>
+                        <th width="130px;">Data Atendi</th>
+                        <th width="130px;">Data Fatura</th>
+                        <th width="110px;">Nome</th>
+                        <th width="180px;">Obs.</th>
+                        <th width="60px;">Valor Fatur.</th>
+
+                        <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
+                    </tr>
+                    <tr>
+                        <th style='width:10pt;border:solid windowtext 1.0pt;
+                            border-bottom:none;mso-border-top-alt:none;border-left:
+                            none;border-right:none;' colspan="9">&nbsp;</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <?php
                     foreach ($listar as $item) {
@@ -229,53 +227,130 @@
                     </tbody>
                     <?php
                 }
-            }
             ?>
 
-            <tfoot>
-                <tr>
-                    <th colspan="2" >
-                        Registros: <?php echo $total; ?>
-                    </th>
-                    <th colspan="2" >
-                        Valor Total: <?php echo number_format($valortotal, 2, ',', '.'); ?>
-                    </th>
-                    <th colspan="3" >
-                        Valor Total Faturado: <?php echo number_format($valortotal_faturado, 2, ',', '.'); ?>
-                    </th>
-                    <th colspan="4" >
-                        Valor Total Não Faturado: <?php echo number_format($valortotal_naofaturado, 2, ',', '.'); ?>
-                    </th>
-                    <? if ($financeiro == 't') { ?>
-                        <td width="40px;" style="color:red;">Faturamento Fechado</td>
-                    <? } elseif ($faturado == 0 && $convenios != 0 && $_POST['grupo'] == '0') { ?>
-                <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/exame/fecharfinanceiro" method="post">
-                    <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($valortotal, 2, ',', '.'); ?>" readonly/>
-                    <input type="hidden" class="texto3" name="relacao" value="<?= $convenios[0]->credor_devedor_id; ?>"/>
-                    <input type="hidden" class="texto3" name="conta" value="<?= $convenios[0]->conta_id; ?>"/>
-                    <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
-                    <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
-                    <input type="hidden" class="texto3" name="convenio" value="<?= $convenio; ?>"/>
-                    <input type="hidden" class="texto3" name="empresa" value="<?= $_POST['empresa']; ?>"/>
-                    <th colspan="3" align="center"><center>
-                        <button type="submit" name="btnEnviar">Financeiro</button></center></th>
-                </form>
-            <? } else { ?>
-                <? if ($_POST['grupo'] != '0') { ?>
-                    <th colspan="3" >RETIRE O FILTRO DE GRUPO
-                    </th>
+                <tfoot>
+                    <tr>
+                        <th colspan="2" >
+                            Registros: <?php echo $total; ?>
+                        </th>
+                        <th colspan="2" >
+                            Valor Total: <?php echo number_format($valortotal, 2, ',', '.'); ?>
+                        </th>
+                        <th colspan="3" >
+                            Valor Total Faturado: <?php echo number_format($valortotal_faturado, 2, ',', '.'); ?>
+                        </th>
+                        <th colspan="4" >
+                            Valor Total Não Faturado: <?php echo number_format($valortotal_naofaturado, 2, ',', '.'); ?>
+                        </th>
+                        <? if ($financeiro == 't') { ?>
+                            <td width="40px;" style="color:red;">Faturamento Fechado</td>
+                        <? } elseif ($faturado == 0 && $convenios != 0 && $_POST['grupo'] == '0') { ?>
+                    <form name="form_caixa" id="form_caixa" action="<?= base_url() ?>ambulatorio/exame/fecharfinanceiro" method="post">
+                        <input type="hidden" class="texto3" name="dinheiro" value="<?= number_format($valortotal, 2, ',', '.'); ?>" readonly/>
+                        <input type="hidden" class="texto3" name="relacao" value="<?= $convenios[0]->credor_devedor_id; ?>"/>
+                        <input type="hidden" class="texto3" name="conta" value="<?= $convenios[0]->conta_id; ?>"/>
+                        <input type="hidden" class="texto3" name="data1" value="<?= $txtdata_inicio; ?>"/>
+                        <input type="hidden" class="texto3" name="data2" value="<?= $txtdata_fim; ?>"/>
+                        <input type="hidden" class="texto3" name="convenio" value="<?= $convenio; ?>"/>
+                        <input type="hidden" class="texto3" name="empresa" value="<?= $_POST['empresa']; ?>"/>
+                        <th colspan="3" align="center"><center>
+                            <button type="submit" name="btnEnviar">Financeiro</button></center></th>
+                    </form>
                 <? } else { ?>
-                    <th colspan="3" >PENDENTE DE FATURAMENTO
-                    </th>
+                    <? if ($_POST['grupo'] != '0') { ?>
+                        <th colspan="3" >RETIRE O FILTRO DE GRUPO
+                        </th>
+                    <? } else { ?>
+                        <th colspan="3" >PENDENTE DE FATURAMENTO
+                        </th>
+                    <? } ?>
+
+
+
                 <? } ?>
+                </tr>
+                </tfoot>
 
+            </table>
+        <? } 
+        
+        if (count($listarinternacao) > 0) { 
+            ?>
+            <table>
+                <thead>
+                    <tr>
+                        <!--<th width="60px;">Numero de Internação</th>-->
+                        <th>Procedimento</th>
+                        <th><div style="margin-left:8pt;">Convenio</div></th>
+                        <th>Codigo</th>
+                        <th>Nome</th>
+                        <th>Data</th>
+                        <th>Dias</th>
+                        <!--<th width="180px;">Obs.</th>-->
+                        <th>Valor Fatur.</th>
 
+                        <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
+                    </tr>
+                    <tr>
+                        <th style='width:10pt;border:solid windowtext 1.0pt;
+                            border-bottom:none;mso-border-top-alt:none;border-left:
+                            none;border-right:none;' colspan="10">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($listarinternacao as $item) { ?>
+                        <tr>
+                            <!--<td ><?= $item->internacao_id; ?></td>-->
+                            <td ><a style="cursor: pointer; color: blue;"><?= substr($item->procedimento, 0, 16); ?></a></td>
+                            <td ><div style="margin-left:8pt;"><?= $item->convenio; ?></div></td>
+                            <td ><?= $item->codigo; ?></td>
+                             <? if ($item->faturado == "t") { ?>
+                                <td>
+                                    <font color="green"><? echo $item->paciente;?>
 
-            <? } ?>
-            </tr>
-            </tfoot>
+                                </td>
+                                <?
+                            } else {
+                                ?>
+                                <td>
+                                    <font color="c60000"><? echo $item->paciente;?>
 
-        </table>
+                                </td>
+                            <? } ?>
+                            <td ><?= substr($item->data_internacao, 8, 2) . "/" . substr($item->data_internacao, 5, 2) . "/" . substr($item->data_internacao, 0, 4); ?></td>
+                            <td ><?= $item->qtde; ?></td>
+
+<!--                                <td >
+                                <div class="observacao">
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/alterarobservacaofaturaramentomanual/" . $item->ambulatorio_guia_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,\n\width=500,height=230');">
+                                        =><?= $item->observacoes; ?>
+                                    </a>
+                                </div>
+                            </td>-->
+                            <td ><?= number_format(@$item->valor_total, 2, ",", "."); ?></td>
+                            <?
+                            if ($item->faturado != "t") {?>
+                                <td width="40px;"></td>
+                            <? } else { ?>
+                                <td>Faturado&nbsp;</td>
+                            <? } ?>
+                            <td>
+                                <? if ($item->faturado != "t") { ?>
+                                    <div class="bt_link_new">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/faturaramentomanualinternacao/" . $item->internacao_id; ?> ');">Faturar
+                                        </a>
+                                    </div>
+                                <? } ?>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <?php
+                    $valortotal += (float) @$item->valor_total;
+                }?>
+            </table>
+        <? } ?>
         <br>
         <table border="1">
             <tr>

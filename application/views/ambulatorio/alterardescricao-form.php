@@ -3,9 +3,8 @@
 <div class="content"> <!-- Inicio da DIV content -->
         <h3 class="singular">Adicionar Observação</h3>
         <div>
-            <form name="form_obsorcamentoprocedimento" id="form_obsorcamentoprocedimento" action="<?= base_url() ?>ambulatorio/exame/descricaogravar/<?= $ambulatorio_orcamento_id; ?>" method="post">
-                <fieldset>                 
-                                
+            <form name="form_obsorcamentoprocedimento" id="form_obsorcamentoprocedimento" action="<?= base_url() ?>ambulatorio/exame/descricaogravar/<?= $ambulatorio_orcamento_id; ?>/<?= $dataselecionada; ?>" method="post">
+                <fieldset>                
                 <dl class="dl_desconto_lista">
                     <dt>
                     <label>Observação Orçamento</label>
