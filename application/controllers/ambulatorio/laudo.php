@@ -540,6 +540,19 @@ class Laudo extends BaseController {
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->load->View('ambulatorio/laudoconsulta-form', $data);
     }
+    
+        function preencherformulario($ambulatorio_laudo_id) {
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);       
+        $data['obj'] = $obj_laudo;
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+        $data['lista'] = $this->exametemp->listarautocompletemodelosreceita();
+        $data['modelo'] = $this->exametemp->listarmodelosreceitaautomatico();
+        $data['empresapermissao'] = $this->guia->listarempresapermissoes();       
+        $data['operadores'] = $this->operador_m->listarmedicos();
+
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->load->View('ambulatorio/formulario_ficha', $data);
+    }
 
     function impressaoreceitaoculos($ambulatorio_laudo_id) {
         $this->load->plugin('mpdf');

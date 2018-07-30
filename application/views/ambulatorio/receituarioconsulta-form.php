@@ -12,8 +12,10 @@
     if (count($receita) == 0) {
         $receituario_id = 0;
         $texto = "";
-        $medico = "";
+        $medico = ""; 
+        $procedimento;
     } else {
+        $procedimento = $receita[0]->procedimento;
         $texto = $receita[0]->texto;
         $receituario_id = $receita[0]->ambulatorio_receituario_id;
         $medico = $receita[0]->medico_parecer1;
@@ -149,6 +151,7 @@
                         <tr>
                             <th class="tabela_header">Data</th>
                             <!--<th class="tabela_header">Procedimento</th>-->
+                            <th class="tabela_header">Médico</th>
                             <th class="tabela_header">Descri&ccedil;&atilde;o</th>
                             <th colspan="3" class="tabela_header">&nbsp;</th>
                         </tr>
@@ -161,16 +164,19 @@
                         <tbody>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_cadastro)); ?></td>
-                           <!--     <td class="<?php echo $estilo_linha; ?>"><?= $exame_id; ?></td> -->
+                               <!-- <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td> -->
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceita/<?= $item->ambulatorio_receituario_id; ?>');">Imprimir
                                         </a></div>
                                 </td>
+                               
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_receituario_id; ?>');">Editar
                                         </a></div>
                                 </td>
+                             
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="repetir(<?=$item->ambulatorio_receituario_id;?>)">Repetir
                                         </a></div>
@@ -412,6 +418,8 @@
                                         }
                                        ) 
                                     }
+                                    
+                                    
 
                                     //$('.jqte-test').jqte();
 

@@ -285,7 +285,7 @@
                                     <option value="encaminhar" <?= (in_array('encaminhar', $opc_telatendimento)) ? 'selected' : ''; ?>>Encaminhar</option>
                                     <option value="histconsulta" <?= (in_array('histconsulta', $opc_telatendimento)) ? 'selected' : ''; ?>>Histórico Consulta</option>
                                     <option value="histantigo" <?= (in_array('histantigo', $opc_telatendimento)) ? 'selected' : ''; ?>>Histórico Antigo</option>
-                                    
+                                    <option value="preencherform" <?= (in_array('preencherform', $opc_telatendimento)) ? 'selected' : ''; ?>>Preencher Formulário</option>
                                 </select>
                             </dd>
                         </div>

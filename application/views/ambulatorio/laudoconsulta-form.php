@@ -97,13 +97,21 @@
                             <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
 
 <!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
-                        </tr>
-                        <tr>
+                      
                             <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                         </tr>
                         <tr>
                             <td colspan="2"></td>
                         </tr>
+                          </tr>
+                         <td>
+                            <? if(in_array('preencherform', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherformulario/<?= $ambulatorio_laudo_id ?>');" >
+                                   Formulário</a></div>
+                             <? } ?>
+                        </td>
+                        <tr>
                     </table>
 
 
