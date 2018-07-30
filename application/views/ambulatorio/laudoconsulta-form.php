@@ -177,6 +177,7 @@
                         <td>
                              <? if(in_array('histconsulta', $opc_telatendimento)){ ?>
                             <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
+                             <?}?>
                         </td>
                         <td>
                             <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregaranamineseantigo/<?= $paciente_id ?>">Hist. Antigo</a></div>
