@@ -169,16 +169,14 @@ class pacientes extends BaseController {
             $ambulatorio_guia_id = $this->guia->gravarguia($paciente_id);
         }
         $teste = $this->exametemp->autorizarpacientetemp($paciente_id, $ambulatorio_guia_id);
-        if(@$teste["cod"] == -1){
-            if (@$teste['message'] == 'pending'){
+        if (@$teste["cod"] == -1) {
+            if (@$teste['message'] == 'pending') {
                 $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
-            }
-            else{
+            } else {
                 $messagem = "O paciente não existe no sistema de fidelidade.";
             }
-            $this->session->set_flashdata('message', $messagem); 
+            $this->session->set_flashdata('message', $messagem);
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizarconsulta/$paciente_id");
-            
         } else {
             if ($teste == 0) {
                 $data['mensagem'] = 'Paciente gravado com sucesso';
@@ -197,19 +195,17 @@ class pacientes extends BaseController {
             $ambulatorio_guia_id = $this->guia->gravarguia($paciente_id);
         }
         $teste = $this->exametemp->autorizarpacientetempconsulta($paciente_id, $ambulatorio_guia_id);
-        if(@$teste["cod"] == -1){
-            if (@$teste['message'] == 'pending'){
+        if (@$teste["cod"] == -1) {
+            if (@$teste['message'] == 'pending') {
                 $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
-            }
-            else{
+            } else {
                 $messagem = "O paciente não existe no sistema de fidelidade.";
             }
-            $this->session->set_flashdata('message', $messagem); 
+            $this->session->set_flashdata('message', $messagem);
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizarconsulta/$paciente_id");
-            
         } else {
             if ($teste == 0) {
-    //            $this->gerardicom($ambulatorio_guia_id);
+                //            $this->gerardicom($ambulatorio_guia_id);
                 $data['mensagem'] = 'Paciente gravado com sucesso';
             } else {
                 $data['mensagem'] = 'Erro ao gravar paciente';
@@ -227,19 +223,17 @@ class pacientes extends BaseController {
             $ambulatorio_guia_id = $this->guia->gravarguia($paciente_id);
         }
         $teste = $this->exametemp->autorizarpacientetempfisioterapia($paciente_id, $ambulatorio_guia_id);
-        if(@$teste["cod"] == -1){
-            if (@$teste['message'] == 'pending'){
+        if (@$teste["cod"] == -1) {
+            if (@$teste['message'] == 'pending') {
                 $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
-            }
-            else{
+            } else {
                 $messagem = "O paciente não existe no sistema de fidelidade.";
             }
-            $this->session->set_flashdata('message', $messagem); 
+            $this->session->set_flashdata('message', $messagem);
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizarfisioterapia/$paciente_id");
-            
         } else {
             if ($teste == 0) {
-    //            $this->gerardicom($ambulatorio_guia_id);
+                //            $this->gerardicom($ambulatorio_guia_id);
                 $data['mensagem'] = 'Paciente gravado com sucesso';
             } else {
                 $data['mensagem'] = 'Erro ao gravar paciente';
@@ -258,19 +252,17 @@ class pacientes extends BaseController {
         }
 
         $teste = $this->exametemp->autorizarpacientetempgeral($paciente_id, $ambulatorio_guia_id);
-        if(@$teste["cod"] == -1){
-            if (@$teste['message'] == 'pending'){
+        if (@$teste["cod"] == -1) {
+            if (@$teste['message'] == 'pending') {
                 $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
-            }
-            else{
+            } else {
                 $messagem = "O paciente não existe no sistema de fidelidade.";
             }
-            $this->session->set_flashdata('message', $messagem); 
+            $this->session->set_flashdata('message', $messagem);
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
-            
         } else {
             if ($teste == 0) {
-    //            $this->gerardicom($ambulatorio_guia_id);
+                //            $this->gerardicom($ambulatorio_guia_id);
                 $data['mensagem'] = 'Paciente gravado com sucesso';
             } elseif ($teste == -1) {
                 $data['mensagem'] = 'Erro ao gravar paciente';
@@ -425,16 +417,18 @@ class pacientes extends BaseController {
         $_POST['nascimento'] = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento'])));
 
         if ($_POST['cpf'] != "") {
-            if($this->utilitario->validaCPF($_POST['cpf'])){
-            $contadorcpf = $this->paciente->contadorcpf();
-            }
-            else {
-            $data['mensagem'] = 'Erro ao gravar paciente';    
+            if ($this->utilitario->validaCPF($_POST['cpf'])) {
+                $contadorcpf = $this->paciente->contadorcpf();
+            } else {
+                $data['mensagem'] = 'Erro ao gravar paciente. CPF inválido';
+                $this->session->set_flashdata('message', $data['mensagem']);
+                redirect(base_url() . "cadastros/pacientes", $data);
             }
         } else {
             $contadorcpf = 0;
         }
-        if($this->utilitario->validaCPF($_POST['cpf'])||$contadorcpf == 0){
+        
+        if ($this->utilitario->validaCPF($_POST['cpf']) || $contadorcpf == 0) {
             if ($contador == 0 && $contadorcpf == 0) {
                 if ($paciente_id = $this->paciente->gravar()) {
                     $data['mensagem'] = 'Paciente gravado com sucesso';
@@ -452,7 +446,7 @@ class pacientes extends BaseController {
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "emergencia/filaacolhimento/novo/$paciente_id", $data);
             } elseif ($contador > 0 && $_POST['paciente_id'] != "") {
-    //Atualiza cadastro
+                //Atualiza cadastro
                 if ($paciente_id = $this->paciente->gravar()) {
                     $data['mensagem'] = 'Paciente gravado com sucesso';
                 } else {
@@ -475,12 +469,11 @@ class pacientes extends BaseController {
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "cadastros/pacientes", $data);
             }
+        } else {
+            $data['mensagem'] = 'CPF inválido';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "cadastros/pacientes", $data);
         }
-        else {
-                $data['mensagem'] = 'CPF inválido';
-                $this->session->set_flashdata('message', $data['mensagem']);
-                redirect(base_url() . "cadastros/pacientes", $data);
-            }
         // Em caso de atualização de cadastro
         // Encodando o raw da imagem em base64, transformando em jpg e salvando
 
@@ -589,7 +582,7 @@ class pacientes extends BaseController {
             }
 //            die;
         }
-       
+
 
         if (!is_dir("./upload/webcam")) {
             mkdir("./upload/webcam");

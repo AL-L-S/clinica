@@ -419,6 +419,22 @@
                                        ) 
                                     }
                                     
+                                             function editar(receita_id) {
+
+                                        $.getJSON('<?= base_url() ?>autocomplete/editarreceituario', {receita: receita_id, ajax: true}, function (j) {
+                                            options = "";
+
+                                            options += j[0].texto;
+
+                                            $('#laudo').val(options);
+                                            var ed = tinyMCE.get('laudo');
+                                            ed.setContent($('#laudo').val());
+
+                                                
+                                        }
+                                       ) 
+                                    }
+                                    
                                     
 
                                     //$('.jqte-test').jqte();
