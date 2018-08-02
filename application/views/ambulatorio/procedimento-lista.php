@@ -65,7 +65,7 @@
                         </th>
                         
                         <th class="tabela_title">
-                            <select name="grupo" id="grupo" class="size2">
+                            <select name="grupo" id="grupo" class="size1">
                                 <option value="">Selecione</option>
                                 <? foreach ($grupo as $value) : ?>
                                     <option value="<?= $value->nome; ?>"
@@ -80,7 +80,7 @@
                             
                         </th>
                         <th class="tabela_title">
-                            <input type="text" name="codigo" class="texto04" value="<?php echo @$_GET['codigo']; ?>" />
+                            <input type="text" name="codigo" class="texto02" value="<?php echo @$_GET['codigo']; ?>" />
                         </th>
                         
                         <th class="tabela_title">

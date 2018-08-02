@@ -46,7 +46,7 @@
                     Cid1
                 </th>
                 <th class="tabela_header">
-                    Dias de Faturamento
+                    Qtde de Faturamento
                 </th>
                 <th class="tabela_header">
                     Valor Diária

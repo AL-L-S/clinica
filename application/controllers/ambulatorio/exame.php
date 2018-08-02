@@ -809,7 +809,7 @@ class Exame extends BaseController {
     }
 
     function faturamentoexame() {
-        
+
         $this->loadView('ambulatorio/faturamentoexame');
     }
 
@@ -883,6 +883,17 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/exame/faturamentoexame", $data);
     }
 
+    function fecharfinanceirointernacao() {
+        $financeiro = $this->exame->fecharfinanceirointernacao();
+        if ($financeiro == "-1") {
+            $data['mensagem'] = 'Erro ao fechar financeiro. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao fechar financeiro.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/exame/faturamentoexame", $data);
+    }
+
     function autorizarsessao($agenda_exames_id, $paciente_id, $guia_id) {
 //        var_dump($agenda_exames_id); die;
         $home_care = $this->exame->procedimentohomecare($agenda_exames_id);
@@ -922,7 +933,7 @@ class Exame extends BaseController {
             $data['listar'] = $this->exame->listarguiafaturamentomanual();
         } else {
             $data['listar'] = $this->exame->listarguiafaturamentomanualcirurgico();
-            $data['listarinternacao'] = $this->internacao_m->listarguiafaturamentomanualinternacao(); 
+            $data['listarinternacao'] = $this->internacao_m->listarguiafaturamentomanualinternacaoconvenio();
         }
 
 //        echo "<pre>";
@@ -932,19 +943,30 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/faturamentomanual-lista', $data);
     }
 
-    function faturaramentomanualinternacao($internacao_id) {
+    function faturaramentomanualinternacao($internacao_procedimentos_id, $internacao_id) {
 
 //        die('morre');
-        $data['internacao'] = $this->exame->listarfaturamentomanualinternacao($internacao_id);
+        $data['internacao'] = $this->exame->listarfaturamentomanualinternacao2($internacao_procedimentos_id);
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data["valor"] = (float) $data['internacao'][0]->valor_total;
         $data['internacao_id'] = $internacao_id;
+        $data['internacao_procedimentos_id'] = $internacao_procedimentos_id;
         $this->load->View('ambulatorio/faturaramentomanualinternacao-form', $data);
     }
-    
-    
+
+    function faturaramentomanualinternacaoconvenio($internacao_procedimentos_id, $internacao_id) {
+
+//        die('morre');
+        $data['internacao'] = $this->exame->listarfaturamentomanualinternacao2($internacao_procedimentos_id);
+        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data["valor"] = (float) $data['internacao'][0]->valor_total;
+        $data['internacao_id'] = $internacao_id;
+        $data['internacao_procedimentos_id'] = $internacao_procedimentos_id;
+        $this->load->View('ambulatorio/faturamentomanualinternacaoconvenio-form', $data);
+    }
+
     function gravarfaturaramentomanualinternacao() {
-        
+
         $_POST['valor1'] = (float) str_replace(',', '.', $_POST['valor1']);
         $_POST['valor2'] = (float) str_replace(',', '.', $_POST['valor2']);
         $_POST['valor3'] = (float) str_replace(',', '.', $_POST['valor3']);
@@ -958,7 +980,36 @@ class Exame extends BaseController {
                 $data['mensagem'] = 'Sucesso ao gravar faturamento.';
             }
         }
-        
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+    }
+
+    function gravarfaturaramentointernacaoconvenio($internacao_procedimentos_id, $internacao_id) {
+
+
+
+        $ambulatorio_guia_id = $this->exame->gravarfaturaramentointernacaoconvenio($internacao_procedimentos_id);
+        if ($ambulatorio_guia_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar faturamento.';
+        }
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+    }
+
+    function gravarfaturaramentointernacaoconveniotodos($internacao_id) {
+
+
+        $ambulatorio_guia_id = $this->exame->gravarfaturaramentointernacaoconveniotodos($internacao_id);
+        if ($ambulatorio_guia_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar faturamento. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar faturamento.';
+        }
+
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }
@@ -978,10 +1029,10 @@ class Exame extends BaseController {
         if ($_POST['tipo'] == 'AMBULATORIAL') {
             $data['listar'] = $this->exame->listarguiafaturamento();
         } else {
-            $data['listarinternacao'] = $this->internacao_m->listarguiafaturamentomanualinternacao(); 
+            $data['listarinternacao'] = $this->internacao_m->listarguiafaturamentomanualinternacaoconvenio();
         }
 //        echo '<pre>';
-//        var_dump($data['listar']); die;
+//        var_dump($data['listarinternacao']); die;
         $this->loadView('ambulatorio/faturamentoexame-lista', $data);
     }
 
@@ -1023,6 +1074,35 @@ class Exame extends BaseController {
         $data['exames'] = $this->exame->listarexamesguia($guia_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/guiafaturamento-form', $data);
+    }
+
+    function procedimentosinternacao($internacao_id, $paciente_id) {
+        $data['internacao_id'] = $internacao_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['convenios'] = $this->convenio->listarconvenionaodinheiro();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['empresa'] = $this->login->listar();
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['internacao'] = $this->internacao_m->listardadosinternacao($internacao_id);
+//        var_dump($data['internacao'] ); die;
+        $data['procedimentos'] = $this->exame->listarprocedimentosinternacao($internacao_id);
+//        var_dump($data['procedimentos']); die;
+        $this->loadView('ambulatorio/procedimentosinternacao-form', $data);
+    }
+
+    function gravarprocedimentosinternacao() {
+
+        $internacao_id = $_POST['txtinternacao_id'];
+        $paciente_id = $_POST['txtpaciente_id'];
+        $this->exame->gravarprocedimentosinternacao();
+        redirect(base_url() . "ambulatorio/exame/procedimentosinternacao/$internacao_id/$paciente_id");
+    }
+
+    function excluirprocedimentointernacao($internacao_procedimentos_id, $internacao_id, $paciente_id) {
+
+        $this->exame->excluirprocedimentointernacao($internacao_procedimentos_id);
+        $mensagem = 'Procedimento excluído com sucesso';
+        redirect(base_url() . "ambulatorio/exame/procedimentosinternacao/$internacao_id/$paciente_id");
     }
 
     function faturarguiamatmed($guia_id, $paciente_id) {
@@ -1744,14 +1824,14 @@ class Exame extends BaseController {
         $data['observacao'] = $this->exame->listarobservacoes($agenda_exame_id);
         $this->load->View('ambulatorio/alterarobservacao-form', $data);
     }
-    
-     function alterardescricao($ambulatorio_orcamento_id, $dataSelecionada) {
+
+    function alterardescricao($ambulatorio_orcamento_id, $dataSelecionada) {
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
         $data['dataselecionada'] = $dataSelecionada;
         $data['observacao'] = $this->exame->listardescricoes($ambulatorio_orcamento_id);
         $this->load->View('ambulatorio/alterardescricao-form', $data);
     }
-    
+
     function alterarobservacaofaturar($agenda_exame_id) {
         $data['agenda_exame_id'] = $agenda_exame_id;
         $data['observacao'] = $this->exame->listarobservacoesfaturar($agenda_exame_id);
@@ -1776,11 +1856,11 @@ class Exame extends BaseController {
         $verificar = $this->exame->observacao($agenda_exame_id);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
-    
-     function descricaogravar($ambulatorio_orcamento_id, $dataSelecionada) {
+
+    function descricaogravar($ambulatorio_orcamento_id, $dataSelecionada) {
 
         $this->exame->observacaoorcamento($ambulatorio_orcamento_id, $dataSelecionada);
-        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");         
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function observacaofaturargravar($agenda_exame_id) {

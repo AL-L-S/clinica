@@ -40,16 +40,12 @@
                             ?>>Outros</option>
                         </select>
                     </div>
-
                     <div>
                         <label>Nascimento</label>
-
-
                         <input type="text" name="nascimento" id="txtNascimento" class="texto02" alt="date" value="<?php echo substr($paciente['0']->nascimento, 8, 2) . '/' . substr($paciente['0']->nascimento, 5, 2) . '/' . substr($paciente['0']->nascimento, 0, 4); ?>" onblur="retornaIdade()" readonly/>
                     </div>
 
                     <div>
-
                         <label>Idade</label>
                         <input type="text" name="idade" id="txtIdade" class="texto01" alt="numeromask" value="<?= $paciente['0']->idade; ?>" readonly />
 

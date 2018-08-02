@@ -19,6 +19,12 @@
                     Convênio
                 </th>
                 <th class="tabela_header">
+                    Unidade
+                </th>
+                <th class="tabela_header">
+                    Enfermaria
+                </th>
+                <th class="tabela_header">
                     Leito
                 </th>
 
@@ -72,6 +78,8 @@
                     ?>
                 <tr>
                     <td ><?= ($item->convenio != '') ? $item->convenio : '<b>Não Tem</b>'; ?></td>
+                    <td ><?= $item->unidade; ?></td>
+                    <td ><?= $item->enfermaria; ?></td>
                     <td ><?= $item->leito; ?></td>
                     <td ><?= $item->paciente; ?></td>
                     <td ><?= $item->sexo; ?></td>
