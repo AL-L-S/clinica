@@ -171,16 +171,20 @@
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceita/<?= $item->ambulatorio_receituario_id; ?>');">Imprimir
                                         </a></div>
                                 </td>
-                               
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_receituario_id; ?>');">Editar
-                                        </a></div>
-                                </td>
-                             
+                            
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="repetir(<?=$item->ambulatorio_receituario_id;?>)">Repetir
                                         </a></div>
                                 </td>
+                                 <? 
+                                if (@$obj->_status != 'FINALIZADO'){ 
+                                    if(@$obj->_medico_parecer1 == $item->operador_id){ ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_receituario_id; ?>');">Editar
+                                        </a></div>
+                                    </td>
+                                 <? }
+                                }?>
 
                             </tr>
 

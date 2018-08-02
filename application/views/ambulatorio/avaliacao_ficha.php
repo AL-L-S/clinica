@@ -540,8 +540,10 @@
                         <tr>
                             <td id="tdresultado" style="width:250;"><div id="divresultado">
 
-                                </div><br><br></td>
-                            <td style="width:250;"><br><br></td>
+                                </div><br></td>
+                            <td id="tdresult" style="width:250;"><div id="divresult">
+
+                                </div><br></td>
                         </tr>
 
                     </table><br><br><br>
@@ -895,6 +897,7 @@
             } else {
                 $('#divc1tb2').remove();
                 $('#tdc1tb2').append('<div id="divc1tb2">0</div>');
+                $('#inputc1tb2').val('0');
             }
         });
         $('#c2tb2').change(function () {
@@ -907,6 +910,7 @@
             } else {
                 $('#divc2tb2').remove();
                 $('#tdc2tb2').append('<div id="divc2tb2">0</div>');
+                $('#inputc2tb2').val('0');
             }
         });
         $('#c3tb2').change(function () {
@@ -918,6 +922,7 @@
             } else {
                 $('#divc3tb2').remove();
                 $('#tdc3tb2').append('<div id="divc3tb2">0</div>');
+                $('#inputc3tb2').val('0');
             }
         });
         $('#c4tb2').change(function () {
@@ -929,6 +934,7 @@
             } else {
                 $('#divc4tb2').remove();
                 $('#tdc4tb2').append('<div id="divc4tb2">0</div>');
+                $('#inputc4tb2').val('0');
             }
         });
         $('#c5tb2').change(function () {
@@ -940,6 +946,7 @@
             } else {
                 $('#divc5tb2').remove();
                 $('#tdc5tb2').append('<div id="divc5tb2">0</div>');
+                $('#inputc5tb2').val('0');
             }
         });
         $('#c6tb2').change(function () {
@@ -951,6 +958,7 @@
             } else {
                 $('#divc6tb2').remove();
                 $('#tdc6tb2').append('<div id="divc6tb2">0</div>');
+                $('#inputc6tb2').val('0');
             }
         });
         $('#c7tb2').change(function () {
@@ -962,6 +970,7 @@
             } else {
                 $('#divc7tb2').remove();
                 $('#tdc7tb2').append('<div id="divc7tb2">0</div>');
+                $('#inputc7tb2').val('0');
             }
         });
         $('#c8tb2').change(function () {
@@ -973,6 +982,7 @@
             } else {
                 $('#divc8tb2').remove();
                 $('#tdc8tb2').append('<div id="divc8tb2">0</div>');
+                $('#inputc8tb2').val('0');
             }
         });
         $('#c9tb2').change(function () {
@@ -984,6 +994,7 @@
             } else {
                 $('#divc9tb2').remove();
                 $('#tdc9tb2').append('<div id="divc9tb2">0</div>');
+                $('#inputc9tb2').val('0');
             }
         });
         $('#c10tb2').change(function () {
@@ -995,6 +1006,7 @@
             } else {
                 $('#divc10tb2').remove();
                 $('#tdc10tb2').append('<div id="divc10tb2">0</div>');
+                $('#inputc10tb2').val('0');
             }
         });
         $('#c11tb2').change(function () {
@@ -1007,6 +1019,7 @@
             } else {
                 $('#divc11tb2').remove();
                 $('#tdc11tb2').append('<div id="divc11tb2">0</div>');
+                $('#inputc11tb2').val('0');
             }
         });
         $('#c12tb2').change(function () {
@@ -1018,33 +1031,46 @@
             } else {
                 $('#divc12tb2').remove();
                 $('#tdc12tb2').append('<div id="divc12tb2">0</div>');
+                $('#inputc12tb2').val('0');
             }
         });
-
+        
+        
+        
         function calcula() {
-            var n1 = parseInt($('#inputc1tb2').val(), 10);
-            var n2 = parseInt($('#inputc2tb2').val(), 10);
-            var n3 = parseInt($('#inputc3tb2').val(), 10);
-            var n4 = parseInt($('#inputc4tb2').val(), 10);
-            var n5 = parseInt($('#inputc5tb2').val(), 10);
-            var n6 = parseInt($('#inputc6tb2').val(), 10);
-            var n7 = parseInt($('#inputc7tb2').val(), 10);
-            var n8 = parseInt($('#inputc8tb2').val(), 10);
-            var n9 = parseInt($('#inputc9tb2').val(), 10);
-            var n10 = parseInt($('#inputc10tb2').val(), 10);
-            var n11 = parseInt($('#inputc11tb2').val(), 10);
-            var n12 = parseInt($('#inputc12tb2').val(), 10);
+            var n1 = parseInt($('#inputc1tb2').val()) || 0;
+            var n2 = parseInt($('#inputc2tb2').val()) || 0;
+            var n3 = parseInt($('#inputc3tb2').val()) || 0;
+            var n4 = parseInt($('#inputc4tb2').val()) || 0;
+            var n5 = parseInt($('#inputc5tb2').val()) || 0;
+            var n6 = parseInt($('#inputc6tb2').val()) || 0;
+            var n7 = parseInt($('#inputc7tb2').val()) || 0;
+            var n8 = parseInt($('#inputc8tb2').val()) || 0;
+            var n9 = parseInt($('#inputc9tb2').val()) || 0;
+            var n10 = parseInt($('#inputc10tb2').val()) || 0;
+            var n11 = parseInt($('#inputc11tb2').val()) || 0;
+            var n12 = parseInt($('#inputc12tb2').val()) || 0;
             console.log(n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12);
 
             resultado = n1 + n2 + n3 + n4 + n5 + n6 + n7 + n8 + n9 + n10 + n11 + n12;
 
             $('#divresultado').remove();
             $('#tdresultado').append('<div id="divresultado">' + resultado + '</div>');
+            
+            if($('#divresultado').text()>=20){
+                $('#divresult').remove();
+                $('#tdresult').append('<div id="divresult"> ALTO RISCO </div>'); 
+            }
+            else{
+                $('#divresult').remove();
+                $('#tdresult').append('<div id="divresult"> AVALIAR </div>');   
+            }
         }
 
 
 
         $('.change_tb2').change(function () {
+//            alert('asdsa');
             calcula();
         });
     </script>

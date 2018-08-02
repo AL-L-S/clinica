@@ -1270,6 +1270,7 @@ class laudo_model extends Model {
                             ag.medico_parecer1,
                             al.cabecalho,
                             o.nome as medico,
+                            o.operador_id,
                             pt.nome as procedimento
                             ');
         $this->db->from('tb_ambulatorio_receituario ag');
