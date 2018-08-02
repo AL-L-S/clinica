@@ -44,6 +44,23 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto_revisor TYPE TEXT;
 ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto TYPE TEXT;
 
 -- Dia 31/07/2018
+
+CREATE TABLE ponto.tb_laudo_form
+(
+  obesidade character varying(3)[],
+  diabetes character varying(3)[],
+  sedentarismo character varying(3)[],
+  hipertensao character varying(3)[],
+  dac character varying(3)[],
+  tabagismo character varying(3)[],
+  dislipidemia character varying(3)[],
+  diabetespe character varying(3)[],
+  haspe character varying(3)[],
+  dacpe character varying(3)[],
+  ircpe character varying(3)[],
+  sopros character varying(3)[],
+  questoes text
+);
 CREATE TABLE ponto.tb_internacao_procedimentos
 (
   internacao_procedimentos_id SERIAL NOT NULL,

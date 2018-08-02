@@ -12839,6 +12839,19 @@ ORDER BY ae.paciente_credito_id)";
         $return = $this->db->get();
         return $return->result();
     }
+    
+        function listarconfiguracaoimpressaoformulario() {
+        $data = date("Y-m-d");
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ei.empresa_impressao_cabecalho_id,ei.cabecalho,ei.rodape, e.nome as empresa');
+        $this->db->from('tb_empresa_impressao_cabecalho ei');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
+        $this->db->where('ei.empresa_id', $empresa_id);
+//        $this->db->where('paciente_id', $paciente_id);
+//        $this->db->where('data_criacao', $data);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarconfiguracaoimpressaolaudo() {
         $data = date("Y-m-d");

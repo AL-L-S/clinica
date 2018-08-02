@@ -1270,6 +1270,7 @@ class laudo_model extends Model {
                             ag.medico_parecer1,
                             al.cabecalho,
                             o.nome as medico,
+                            o.operador_id,
                             pt.nome as procedimento
                             ');
         $this->db->from('tb_ambulatorio_receituario ag');
@@ -1277,7 +1278,7 @@ class laudo_model extends Model {
         $this->db->join('tb_paciente p', 'p.paciente_id = al.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ag.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
         $this->db->where('al.paciente_id', $paciente_id); 
         $this->db->where('ag.tipo', 'NORMAL');
         $this->db->orderby('ag.data_cadastro DESC');
@@ -1288,7 +1289,7 @@ class laudo_model extends Model {
 
     function listareditarreceita($ambulatorio_laudo_id) {
 
-        $this->db->select(' ag.ambulatorio_receituario_id ,
+          $this->db->select(' ag.ambulatorio_receituario_id ,
                             ag.texto,
                             ag.medico_parecer1');
         $this->db->from('tb_ambulatorio_receituario ag');
@@ -1324,6 +1325,7 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
 
     function listareditaratestado($ambulatorio_laudo_id) {
 
@@ -2171,6 +2173,62 @@ class laudo_model extends Model {
     }
 
     function listaratestadoimpressao($ambulatorio_laudo_id) {
+
+        $this->db->select('ag.ambulatorio_laudo_id,
+                            ag.paciente_id,
+                            ag.data_cadastro,
+                            ag.exame_id,
+                            ag.peso,
+                            ag.altura,
+                            ag.situacao,
+                            ae.agenda_exames_nome_id,
+                            ar.texto,
+                            ar.data,
+                            ar.imprimir_cid,
+                            ar.cid1,
+                            ar.cid2,
+                            p.nascimento,
+                            ag.situacao_revisor,
+                            o.nome as medico,
+                            o.conselho,
+                            ag.assinatura,
+                            ag.rodape,
+                            ag.guia_id,
+                            ag.cabecalho,
+                            ag.medico_parecer1,
+                            ag.medico_parecer2,
+                            me.nome as solicitante,
+                            op.nome as medicorevisor,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            ae.agenda_exames_id,
+                            ag.imagens,
+                            c.nome as convenio,
+                            pc.convenio_id,
+                            p.nome as paciente,
+                            p.nascimento,
+                            p.cpf,
+                            p.sexo,
+                            ar.assinatura,
+                            ar.carimbo,
+                            o.carimbo as medico_carimbo');
+        $this->db->from('tb_ambulatorio_atestado ar');
+        $this->db->join('tb_ambulatorio_laudo ag', 'ag.ambulatorio_laudo_id = ar.laudo_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
+        $this->db->join('tb_exames e', 'e.exames_id = ag.exame_id ', 'left');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_operador me', 'me.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("ar.ambulatorio_atestado_id", $ambulatorio_laudo_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+     function listarformimpressao($ambulatorio_laudo_id) {
 
         $this->db->select('ag.ambulatorio_laudo_id,
                             ag.paciente_id,
@@ -3753,25 +3811,81 @@ class laudo_model extends Model {
     
         function gravarformulario() {
         try {
-            /* inicia o mapeamento no banco */
-            $horario = date("Y-m-d H:i:s");
-            $operador_id = $this->session->userdata('operador_id');
-            $this->db->set('texto', $_POST['laudo']);
-            if ($_POST['carimbo'] == "on") {
-                $this->db->set('carimbo', 't');
+//            /* inicia o mapeamento no banco */
+//            $horario = date("Y-m-d H:i:s");
+//            $operador_id = $this->session->userdata('operador_id');
+//            $this->db->set('texto', $_POST['laudo']);
+//            if ($_POST['carimbo'] == "on") {
+//                $this->db->set('carimbo', 't');
+//            }
+//            if ($_POST['assinatura'] == "on") {
+//                $this->db->set('assinatura', 't');
+//            }
+//
+//            $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
+//            $this->db->set('medico_parecer1', $_POST['medico']);
+//            $this->db->set('data_cadastro', $horario);
+//            $this->db->set('operador_cadastro', $_POST['medico']);
+//            $this->db->set('tipo', 'NORMAL');
+            
+            $perguntas_form = array(
+                "pergunta1" => $_POST["pergunta1"],
+                "pergunta2" => $_POST["pergunta2"],
+                "pergunta3" => $_POST["pergunta3"],
+                "pergunta4" => $_POST["pergunta4"],
+                "pergunta5" => $_POST["pergunta5"],
+                "pergunta6" => $_POST["pergunta6"],
+                "pergunta7" => $_POST["pergunta7"],
+                "pergunta8" => $_POST["pergunta8"],
+                "pergunta9" => $_POST["pergunta9"],
+                "pergunta10" => $_POST["pergunta10"],
+                "pergunta11" => $_POST["pergunta11"]
+                           );            
+                       
+            if (count($perguntas_form) > 0) {
+                $this->db->set('questoes', json_encode($perguntas_form));
+            } else {
+                $this->db->set('questoes', '');
             }
-            if ($_POST['assinatura'] == "on") {
-                $this->db->set('assinatura', 't');
-            }
-//            $this->db->set('paciente_id', $_POST['paciente_id']);
-//            $this->db->set('procedimento_tuss_id', $_POST['procedimento_tuss_id']);
-            $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
-            $this->db->set('medico_parecer1', $_POST['medico']);
-            $this->db->set('data_cadastro', $horario);
-            $this->db->set('operador_cadastro', $_POST['medico']);
-            $this->db->set('tipo', 'NORMAL');
 
-            $this->db->insert('tb_ambulatorio_receituario');
+            if ($_POST['obesidade'] != '') {
+                $this->db->set('obesidade', $_POST['obesidade']);
+            } 
+            if ($_POST['diabetes'] != '') {
+                $this->db->set('diabetes', $_POST['diabetes']);
+            }
+            if ($_POST['sedentarismo'] != '') {
+                $this->db->set('sedentarismo', $_POST['sedentarismo']);
+            } 
+            if ($_POST['hipertensao'] != '') {
+                $this->db->set('hipertensao', $_POST['hipertensao']);
+            }
+            if ($_POST['dac'] != '') {
+                $this->db->set('dac', $_POST['dac']);
+            }
+            if ($_POST['tabagismo'] != '') {
+                $this->db->set('tabagismo', $_POST['tabagismo']);
+            }
+            if ($_POST['dislipidemia'] != '') {
+                $this->db->set('dislipidemia', $_POST['dislipidemia']);
+            }
+            if ($_POST['diabetespe'] != '') {
+                $this->db->set('diabetespe', $_POST['diabetespe']);
+            }
+            if ($_POST['haspe'] != '') {
+                $this->db->set('haspe', $_POST['haspe']);
+            }
+            if ($_POST['dacpe'] != '') {
+                $this->db->set('dacpe', $_POST['dacpe']);
+            }  
+            if ($_POST['ircpe'] != '') {
+                $this->db->set('ircpe', $_POST['ircpe']);
+            }
+            if ($_POST['sopros'] != '') {
+                $this->db->set('sopros', $_POST['sopros']);
+            }   
+
+            $this->db->insert('tb_laudo_form');
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
@@ -3779,6 +3893,87 @@ class laudo_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
+          
+    }
+    function gravaravaliacao() {
+        try {
+            
+            $criterios_tb1 = array(
+                
+                "c1tb1" => $_POST["c1tb1"],
+                "c2tb1" => $_POST["c2tb1"],
+                "c3tb1" => $_POST["c3tb1"],
+                "c4tb1" => $_POST["c4tb1"],
+                "c5tb1" => $_POST["c5tb1"],
+                "c6tb1" => $_POST["c6tb1"]
+                
+                           );   
+            $criterios_tb2 = array(
+                
+                "c1tb2" => $_POST["c1tb2"],
+                "c2tb2" => $_POST["c2tb2"],
+                "c3tb2" => $_POST["c3tb2"],
+                "c4tb2" => $_POST["c4tb2"],
+                "c5tb2" => $_POST["c5tb2"],
+                "c6tb2" => $_POST["c6tb2"],
+                "c7tb2" => $_POST["c7tb2"],
+                "c8tb2" => $_POST["c8tb2"],
+                "c9tb2" => $_POST["c9tb2"],
+                "c10tb2" => $_POST["c10tb2"],
+                "c11tb2" => $_POST["c11tb2"],
+                "c12tb2" => $_POST["c12tb2"]
+                
+                           );
+            $criterios_tb3 = array(
+                
+                "c1tb3" => $_POST["c1tb3"],
+                "c2tb3" => $_POST["c2tb3"],
+                "c3tb3" => $_POST["c3tb3"],
+                "c4tb3" => $_POST["c4tb3"],
+                "c5tb3" => $_POST["c5tb3"],
+                "c6tb3" => $_POST["c6tb3"],
+                "c7tb3" => $_POST["c7tb3"],
+                "c8tb3" => $_POST["c8tb3"]
+                
+                           );  
+            $criterios_tb4 = array(
+                
+                "riscoalto" => $_POST["riscoalto"],
+                "riscomedio" => $_POST["riscomedio"],
+                "riscobaixo" => $_POST["riscobaixo"]
+                                
+                           );
+                       
+            if (count($criterios_tb1) > 0) {
+                $this->db->set('avaliacao_tabela1', json_encode($criterios_tb1));
+            } else {
+                $this->db->set('avaliacao_tabela1', '');
+            }
+            if (count($criterios_tb2) > 0) {
+                $this->db->set('avaliacao_tabela2', json_encode($criterios_tb2));
+            } else {
+                $this->db->set('avaliacao_tabela2', '');
+            }
+            if (count($criterios_tb3) > 0) {
+                $this->db->set('avaliacao_tabela3', json_encode($criterios_tb3));
+            } else {
+                $this->db->set('avaliacao_tabela3', '');
+            }
+            if (count($criterios_tb4) > 0) {
+                $this->db->set('avaliacao_tabela4', json_encode($criterios_tb3));
+            } else {
+                $this->db->set('avaliacao_tabela4', '');
+            }
+            
+            $this->db->insert('tb_laudo_avaliacao');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+          
     }
 
     function gravaratestado() {

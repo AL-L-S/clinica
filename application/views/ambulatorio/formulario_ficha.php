@@ -53,7 +53,7 @@
     ?>
 
     <div >
-        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarformulario/<?= $ambulatorio_laudo_id ?>" method="post"></form>
+        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarformulario/<?= $ambulatorio_laudo_id ?>" method="post">
             <div >
                 <input type="hidden" name="guia_id" id="guia_id" class="texto01"  value="<?= @$obj->_guia_id; ?>"/>
                 <fieldset>
@@ -76,7 +76,14 @@
                             <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
+                            <td>
+                          
+                            <button type="button" name="btnAvaliacao"onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencheravaliacao/<?= $ambulatorio_laudo_id ?>');" >
+                            
+                               Avaliação
+                            
+                            </button> 
+                        </td>
                         </tr>
                       
                     </table>
@@ -278,14 +285,14 @@
                     <tr>
                         <td>OBESIDADE</td>
                         <td>
-                              <select name="pergunta21" id="pergunta21" class="size1">
+                              <select name="obesidade" id="obesidade" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta21 == 'NAO'):echo 'selected';
+                                        if (@$obj->_obesidade == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta21 == 'SIM'):echo 'selected';
+                                        if (@$obj->_obesidade == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -294,14 +301,14 @@
                     <tr>
                         <td>SEDENTARISMO</td>
                         <td>
-                             <select name="pergunta22" id="pergunta22" class="size1">
+                             <select name="sedentarismo" id="sedentarismo" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta22 == 'NAO'):echo 'selected';
+                                        if (@$obj->_sedentarismo == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta22 == 'SIM'):echo 'selected';
+                                        if (@$obj->_sedentarismo == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -310,14 +317,14 @@
                     <tr>
                         <td>DIABETES</td>
                         <td>
-                             <select name="pergunta23" id="pergunta23" class="size1">
+                             <select name="diabetes" id="diabetes" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta23 == 'NAO'):echo 'selected';
+                                        if (@$obj->_diabetes == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta23 == 'SIM'):echo 'selected';
+                                        if (@$obj->_diabetes == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -326,14 +333,14 @@
                     <tr>
                         <td>HIPERTENSÃO ARTERIAL</td>
                         <td>
-                             <select name="pergunta24" id="pergunta24" class="size1">
+                             <select name="hipertensao" id="hipertensao" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta24 == 'NAO'):echo 'selected';
+                                        if (@$obj->_hipertensao == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta24 == 'SIM'):echo 'selected';
+                                        if (@$obj->_hipertensao == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -342,14 +349,14 @@
                     <tr> 
                         <td>DAC PRECOCE NA FAMÍLIA</td>
                         <td>
-                             <select name="pergunta25" id="pergunta25" class="size1">
+                             <select name="dac" id="dac" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta25 == 'NAO'):echo 'selected';
+                                        if (@$obj->_dac == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta25 == 'SIM'):echo 'selected';
+                                        if (@$obj->_dac == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -358,14 +365,14 @@
                     <tr>    
                         <td>TABAGISMO</td>
                         <td>
-                             <select name="pergunta26" id="pergunta26" class="size1">
+                             <select name="tabagismo" id="tabagismo" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta26 == 'NAO'):echo 'selected';
+                                        if (@$obj->_tabagismo == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta26 == 'SIM'):echo 'selected';
+                                        if (@$obj->_tabagismo == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -374,14 +381,14 @@
                     <tr>    
                         <td>DISLIPIDEMIA</td>
                         <td>
-                             <select name="pergunta27" id="pergunta27" class="size1">
+                             <select name="dislipidemia" id="dislipidemia" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta27 == 'NAO'):echo 'selected';
+                                        if (@$obj->_dislipidemia == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta27 == 'SIM'):echo 'selected';
+                                        if (@$obj->_dislipidemia == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -394,14 +401,14 @@
                     <tr>
                         <td>DIABETES</td>
                         <td>
-                              <select name="pergunta31" id="pergunta31" class="size1">
+                              <select name="diabetespe" id="diabetespe" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta31 == 'NAO'):echo 'selected';
+                                        if (@$obj->_diabetespe == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta31 == 'SIM'):echo 'selected';
+                                        if (@$obj->_diabetespe == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -410,14 +417,14 @@
                     <tr>
                         <td>HAS</td>
                         <td>
-                             <select name="pergunta32" id="pergunta32" class="size1">
+                             <select name="haspe" id="haspe" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta32 == 'NAO'):echo 'selected';
+                                        if (@$obj->_haspe == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta32 == 'SIM'):echo 'selected';
+                                        if (@$obj->_haspe == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -426,14 +433,14 @@
                     <tr>
                         <td>DAC PRECOCE FAMILIAR</td>
                         <td>
-                             <select name="pergunta33" id="pergunta33" class="size1">
+                             <select name="dacpe" id="dacpe" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta33 == 'NAO'):echo 'selected';
+                                        if (@$obj->_dacpe == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta33 == 'SIM'):echo 'selected';
+                                        if (@$obj->_dacpe == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -442,14 +449,14 @@
                     <tr>
                         <td>IRC</td>
                         <td>
-                             <select name="pergunta34" id="pergunta34" class="size1">
+                             <select name="ircpe" id="ircpe" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta34 == 'NAO'):echo 'selected';
+                                        if (@$obj->_ircpe == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta34 == 'SIM'):echo 'selected';
+                                        if (@$obj->_ircpe == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
@@ -458,22 +465,40 @@
                     <tr> 
                         <td>SOPROS</td>
                         <td>
-                             <select name="pergunta35" id="pergunta35" class="size1">
+                             <select name="sopros" id="sopros" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='NAO'<?
-                                        if (@$obj->_pergunta35 == 'NAO'):echo 'selected';
+                                        if (@$obj->_sopros == 'NAO'):echo 'selected';
                                         endif;
                                         ?> >NÃO</option>
                                         <option value='SIM' <?
-                                        if (@$obj->_pergunta35 == 'SIM'):echo 'selected';
+                                        if (@$obj->_sopros == 'SIM'):echo 'selected';
                                         endif;
                                         ?> >SIM</option>
                                     </select><font>
                         </td>
                     </tr>    
                     </table>
+                       <?
+                                if (@$obj->_questoes != '') {
+                                    $perguntas_form = json_decode(@$obj->_questoes);
+                                } else {
+                                    $perguntas_form = array();
+                                }
+                               
+                                ?>
+                   
+                     <table align="center">
+                        <td><button type="submit" name="btnEnviar">Salvar</button></td>
+                        <td width="40px;"><button type="button" name="btnImprimir" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoformulario/<?= $ambulatorio_laudo_id ?>');">
+                                                    
+                                                        Imprimir
+                            </button>
+                         </td>
+                     </table>
                 </fieldset>
             
             </div>
+</form>
     </div>
 </div>
