@@ -435,8 +435,7 @@ class pacientes extends BaseController {
                 } else {
                     $data['mensagem'] = 'Erro ao gravar paciente';
                 }
-                //Em caso de paciente novo
-                // Encodando o raw da imagem em base64, transformando em jpg e salvando
+            
 
                 if ($paciente_id != false && $_POST['mydata'] != '') {
                     $encoded_data = $_POST['mydata'];
