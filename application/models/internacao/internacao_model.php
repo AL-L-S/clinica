@@ -76,6 +76,7 @@ class internacao_model extends BaseModel {
     }
 
     function gravar($paciente_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
 
         try {
             $this->db->select('valortotal');
@@ -114,6 +115,7 @@ class internacao_model extends BaseModel {
             $this->db->set('telefone_responsavel', $_POST['telefone_responsavel']);
             $this->db->set('grau_parentesco', $_POST['grau_parentesco']);
             $this->db->set('ocupacao_responsavel', $_POST['ocupacao_responsavel']);
+            $this->db->set('empresa_id', $empresa_id);
 
             if ($_POST['municipio_responsavel_id'] != '') {
                 $this->db->set('municipio_responsavel_id', $_POST['municipio_responsavel_id']);
@@ -136,6 +138,8 @@ class internacao_model extends BaseModel {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_internacao');
+
+                $internacao_id = $this->db->insert_id();
 
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") { // erro de banco
@@ -161,14 +165,63 @@ class internacao_model extends BaseModel {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_internacao_leito_movimentacao');
-            }
-            else { // update
+
+
+
+
+                $this->db->set('procedimento_convenio_id', $_POST['procedimento1']);
+                if (count($return) > 0) {
+                    $this->db->set('valor_total', @$return[0]->valortotal);
+                    $this->db->set('valor1', @$return[0]->valortotal);
+                }
+
+                $this->db->set('quantidade', 1);
+                $this->db->set('empresa_id', $empresa_id);
+
+                $this->db->set('ativo', 't');
+                if ($_POST['operadorID'] != "") {
+                    $this->db->set('medico_id', $_POST['operadorID']);
+                }
+                $this->db->set('faturado', 'f');
+                $this->db->set('internacao_id', $internacao_id);
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+//            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_internacao_procedimentos');
+            } else { // update
                 $internacao_id = $_POST['internacao_id'];
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('internacao_id', $internacao_id);
                 $this->db->update('tb_internacao');
             }
+
+
+            return $internacao_id;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+    function gravarretornarinternacao($internacao_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        try {
+
+//            var_dump($return); die;
+
+            $this->db->set('ativo', 't');
+            $this->db->set('leito', $_POST['leitoID']);
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            // $this->db->set('paciente_id',$_POST['txtPacienteId'] );
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('internacao_id', $internacao_id);
+            $this->db->update('tb_internacao');
+
 
 
             return $internacao_id;
@@ -1189,6 +1242,25 @@ class internacao_model extends BaseModel {
         return $return->result();
     }
 
+    function listardadosinternacao($internacao_id) {
+        $this->db->select('i.internacao_id,
+                           i.solicitante, 
+                           i.leito as sala, 
+                           i.paciente_id, 
+                           p.nascimento,
+                           c.nome as convenio,
+                           pc.convenio_id');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_paciente p', "i.paciente_id = p.paciente_id", 'left');
+        $this->db->join('tb_procedimento_convenio pc', "pc.procedimento_convenio_id = i.procedimento_convenio_id", 'left');
+        $this->db->join('tb_convenio c', "c.convenio_id = pc.convenio_id", 'left');
+        $this->db->where("i.internacao_id = $internacao_id");
+//        $this->db->where("i.ativo", 't');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarevolucoes($internacao_id) {
         $this->db->select('p.nome, 
                            ie.internacao_evolucao_id, 
@@ -1642,13 +1714,19 @@ class internacao_model extends BaseModel {
         $this->db->from('tb_internacao i');
         $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
-        $this->db->join('tb_convenio c', 'p.convenio_id = c.convenio_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = i.procedimento_convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
         $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->where('i.ativo = true');
-        $this->db->where("i.data_internacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00');
+        $this->db->where('i.excluido = false');
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00';
+
+        $this->db->where("(i.data_internacao >= '$data_inicio' OR cast(i.data_internacao AS date) + 
+        cast((Select sum(quantidade) from ponto.tb_internacao_procedimentos
+         where internacao_id = i.internacao_id and ativo = true) as integer) >= '$data_inicio')");
+//        $this->db->where("i.data_internacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) );
         $this->db->where("i.data_internacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
         if ($_POST['convenio'] != '') {
             if ($_POST['convenio'] == '-1') {
@@ -1719,6 +1797,8 @@ class internacao_model extends BaseModel {
                           p.nome as paciente,
                           p.sexo,
                           p.nascimento,
+                          ie.nome as enfermaria,
+                          iu.nome as unidade,
                           cid.co_cid,
                           cid.no_cid,
                           cid2.co_cid as co_cid2,
@@ -1732,6 +1812,8 @@ class internacao_model extends BaseModel {
                           ');
         $this->db->from('tb_internacao i');
         $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
+        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
         $this->db->join('tb_municipio m', 'i.municipio_responsavel_id = m.municipio_id', 'left');
         $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
@@ -2152,17 +2234,87 @@ class internacao_model extends BaseModel {
                             i.data_internacao,
                             i.data_saida');
         $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'il.enfermaria_id = ie.internacao_enfermaria_id', 'left');
+        $this->db->join('tb_internacao_unidade iu', 'ie.unidade_id = iu.internacao_unidade_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id ');
         $this->db->where('i.ativo', 'f');
         $this->db->where('i.excluido', 'f');
         if ($args) {
+//            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+//                $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');
+////                $this->db->orwhere('i.paciente_id', $args['nome']);
+//                $this->db->orwhere('p.nome', $args['nome']);
+//            }
+
+            if (isset($args['data_inicio']) && strlen($args['data_inicio']) > 0) {
+                $this->db->where("i.data_internacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $args['data_inicio']))) . ' 00:00:00');
+            }
+            if (isset($args['data_fim']) && strlen($args['data_fim']) > 0) {
+                $this->db->where("i.data_internacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $args['data_fim']))) . ' 23:59:59');
+            }
+            if (isset($args['unidade']) && strlen($args['unidade']) > 0) {
+                $this->db->where('iu.internacao_unidade_id', $args['unidade']);
+//                $this->db->orwhere('i.paciente_id', $args['nome']);
+            }
+            if (isset($args['enfermaria']) && strlen($args['enfermaria']) > 0) {
+                $this->db->where('ie.internacao_enfermaria_id', $args['enfermaria']);
+//                $this->db->orwhere('i.paciente_id', $args['nome']);
+            }
+
+            if (isset($args['leito']) && strlen($args['leito']) > 0) {
+                $this->db->where('il.internacao_leito_id', $args['leito']);
+//                $this->db->orwhere('i.paciente_id', $args['nome']);
+            }
+            if (isset($args['medico_responsavel']) && strlen($args['medico_responsavel']) > 0) {
+                $this->db->where('i.medico_id', $args['medico_responsavel']);
+//                $this->db->orwhere('i.paciente_id', $args['nome']);
+            }
+
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('p.nome ilike', $args['nome'] . "%", 'left');
 //                $this->db->orwhere('i.paciente_id', $args['nome']);
-                $this->db->orwhere('p.nome', $args['nome']);
             }
         }
         return $this->db;
+    }
+
+    function retornarinternacaopaciente($internacao_id) {
+
+        $this->db->select('i.internacao_id,
+                           p.nome as paciente,
+                           m.nome as motivosaida,
+                           i.motivo_saida,
+                           i.hospital_transferencia,
+                           m.internacao_motivosaida_id,
+                           p.paciente_id,
+                           i.data_internacao,
+                           i.observacao_saida,
+                           i.leito,
+                           il.ativo as leito_ativo,
+                           i.data_saida,
+                           il.nome as leito_nome,
+                           iu.nome as unidade,
+                           ie.nome as enfermaria,
+                           o.nome as medico_internacao,
+                           o2.nome as medico_saida,
+                           p.sexo,
+                           p.nascimento');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'il.enfermaria_id = ie.internacao_enfermaria_id', 'left');
+        $this->db->join('tb_internacao_unidade iu', 'ie.unidade_id = iu.internacao_unidade_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
+        $this->db->join('tb_operador o2', 'o2.operador_id = i.medico_saida', 'left');
+        $this->db->join('tb_internacao_motivosaida m', 'm.internacao_motivosaida_id = i.motivo_saida', 'left');
+        $this->db->where('i.internacao_id', $internacao_id);
+//        $this->db->where('p.paciente_id = i.paciente_id');
+//        $this->db->where('o.operador_id = i.medico_id');
+        // $this->db->where('m.internacao_motivosaida_id = i.motivo_saida ');
+
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listarinternacao($parametro) {
@@ -2283,6 +2435,7 @@ class internacao_model extends BaseModel {
         $this->db->where("i.data_internacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
 
         $this->db->where('i.excluido', 'false');
+//        $this->db->where('c.dinheiro', 'false');
 
         if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $_POST['nome'] . "%");
@@ -2290,6 +2443,86 @@ class internacao_model extends BaseModel {
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
         }
+        return $this->db->get()->result();
+    }
+
+    function listarguiafaturamentomanualinternacaoconvenio($args = array()) {
+        $this->db->select('pt.nome as procedimento,
+                           pt.codigo,
+                           pt.qtde,
+                           p.nome as paciente,
+                           c.nome as convenio,
+                           i.valor_total,
+                           i.faturado,
+                           i.data_internacao,
+                           o.nome as medico,
+                           
+                           (Select sum(ip.valor_total) as valor_total_sum
+                           from ponto.tb_internacao_procedimentos ip
+                           where ip.internacao_id = i.internacao_id
+                           and ip.ativo = true) as valor_total_sum, 
+                           
+                           (Select count(ip.valor_total) as contador_sum
+                           from ponto.tb_internacao_procedimentos ip
+                           where ip.internacao_id = i.internacao_id
+                           and ip.ativo = true) as contador_sum, 
+                           
+                           (Select count(ip.valor_total)
+                           from ponto.tb_internacao_procedimentos ip
+                           where ip.internacao_id = i.internacao_id
+                           and ip.ativo = true and faturado = true) as contador_faturado_sum, 
+                           
+                           (Select sum(ip.valor_total)
+                           from ponto.tb_internacao_procedimentos ip
+                           where ip.internacao_id = i.internacao_id
+                           and ip.ativo = true and faturado = false) as valor_naofaturado_sum, 
+                           
+                           (Select sum(ip.valor_total)
+                           from ponto.tb_internacao_procedimentos ip
+                           where ip.internacao_id = i.internacao_id
+                           and ip.ativo = true and faturado = true) as valor_faturado_sum, 
+                           
+                           (Select count(ip.valor_total)
+                           from ponto.tb_internacao_procedimentos ip
+                           where ip.internacao_id = i.internacao_id
+                           and ip.ativo = true and financeiro = true) as contador_financeiro, 
+                           il.nome as leito,
+                           ie.nome as enfermaria,
+                           iu.nome as unidade,
+                           il.internacao_leito_id,
+                           i.internacao_id,
+                           i.paciente_id,
+                           i.procedimentosolicitado,
+                           i.estado');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'il.enfermaria_id = ie.internacao_enfermaria_id', 'left');
+        $this->db->join('tb_internacao_unidade iu', 'ie.unidade_id = iu.internacao_unidade_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+//        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = i.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
+
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+
+        $this->db->where("(i.data_internacao >= '$data_inicio' OR cast(i.data_internacao AS date) + 
+cast((Select sum(quantidade) from ponto.tb_internacao_procedimentos
+ where internacao_id = i.internacao_id and ativo = true) as integer) >= '$data_inicio')");
+
+        $this->db->where("i.data_internacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        $this->db->where('i.excluido', 'false');
+        $this->db->where('c.dinheiro', 'false');
+
+        if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
+            $this->db->where('p.nome ilike', "%" . $_POST['nome'] . "%");
+        }
+        if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
+            $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        $this->db->orderby('i.data_internacao');
         return $this->db->get()->result();
     }
 

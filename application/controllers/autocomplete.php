@@ -1496,6 +1496,16 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoconveniointernacao() {
+
+        if (isset($_GET['convenio1'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentoconveniointernacao($_GET['convenio1']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentoconveniointernacao();
+        }
+        echo json_encode($result);
+    }
+
     function procedimentoconveniofaturarmatmed() {
 
         if (isset($_GET['convenio1'])) {

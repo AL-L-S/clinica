@@ -145,10 +145,10 @@
                 <label>Leito</label>
                 <input type="hidden" id="txtinternacao_id" name="internacao_id"  class="texto01" value="<?= @$internacao[0]->internacao_id; ?>" readonly/>
                 <input type="hidden" id="txtleitoID" class="texto_id" name="leitoID" value="<?= @$internacao[0]->internacao_leito_id; ?>" />
-                <input type="text" id="txtleito" class="texto08" name="txtleito" value="<?= @$internacao[0]->leito; ?>" required/>
+                <input type="text" id="txtleito" class="texto10" name="txtleito" value="<?= @$internacao[0]->leito . ' - ' . @$internacao[0]->enfermaria . ' - ' . @$internacao[0]->unidade; ?>" required/>
             </div>
-            <br>
-            <br>
+            <!--<br>-->
+            <!--<br>-->
 
             <div>
                 <label>Autorizacao Sisreg</label>

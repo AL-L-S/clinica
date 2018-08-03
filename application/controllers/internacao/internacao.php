@@ -111,7 +111,7 @@ class internacao extends BaseController {
     }
 
     function carregarinternacao($internacao_id, $paciente_id, $internacao_ficha_id = null) {
-        
+
         $data['internacao_ficha_id'] = $internacao_ficha_id;
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -499,6 +499,12 @@ class internacao extends BaseController {
         $this->loadView('internacao/mostrarsaidapaciente', $data);
     }
 
+    function retornarinternacao($internacao_id) {
+        $data['internacao_id'] = $internacao_id;
+        $data['paciente'] = $this->internacao_m->retornarinternacaopaciente($internacao_id);
+        $this->loadView('internacao/retornarinternacao', $data);
+    }
+
     function novounidade() {
 
         $this->loadView('internacao/cadastrarunidade');
@@ -640,6 +646,22 @@ class internacao extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "internacao/internacao/pesquisarinternacaolista");
+    }
+
+    function gravarretornarinternacao($internacao_id) {
+        if ($_POST['leitoID'] > 0) {
+            if ($this->internacao_m->gravarretornarinternacao($internacao_id)) {
+                $data['mensagem'] = 'Internacao gravada com sucesso';
+            } else {
+                $data['mensagem'] = 'Erro ao gravar internação';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "internacao/internacao/pesquisarinternacaolista");
+        } else {
+            $data['mensagem'] = 'Leito inválido';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "internacao/internacao/retornarinternacao/$internacao_id");
+        }
     }
 
     function gravarinternacaonutricao($paciente_id) {

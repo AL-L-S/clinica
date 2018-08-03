@@ -77,3 +77,78 @@ CREATE TABLE ponto.tb_laudo_avaliacao
   guia_id integer,
   laudo_avaliacao_id serial primary key  
 );
+CREATE TABLE ponto.tb_internacao_procedimentos
+(
+  internacao_procedimentos_id SERIAL NOT NULL,
+  internacao_id integer,
+  procedimento_convenio_id integer,
+  empresa_id integer,
+  medico_id integer,
+  quantidade integer,
+  valor_total numeric(10,2) DEFAULT 0,
+  forma_pagamento1 integer,
+  valor1 numeric(10,2) DEFAULT 0,
+  forma_pagamento2 integer,
+  valor2 numeric(10,2) DEFAULT 0,
+  forma_pagamento3 integer,
+  valor3 numeric(10,2) DEFAULT 0,
+  forma_pagamento4 integer,
+  valor4 numeric(10,2) DEFAULT 0,
+  operador_faturamento integer,
+  data_faturamento timestamp without time zone,
+  desconto numeric(10,2) DEFAULT 0,
+  faturado boolean NOT NULL DEFAULT false,
+  autorizacao character varying(50),
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  ativo boolean DEFAULT true,
+  CONSTRAINT tb_internacao_procedimentos_pkey PRIMARY KEY (internacao_procedimentos_id)
+);
+
+
+ALTER TABLE ponto.tb_internacao_procedimentos ADD COLUMN financeiro boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_internacao_procedimentos ADD COLUMN operador_financeiro integer;
+ALTER TABLE ponto.tb_internacao_procedimentos ADD COLUMN data_financeiro timestamp without time zone;
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2338');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Na lista de saídas é possível re-internar o paciente e foram adicionados mais filtros na busca',
+            '2338',
+            'Melhoria'
+            );
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2581');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Criado o faturamento de internações em Faturamento->Rotinas->Faturar e Faturamento->Rotinas->Faturamento Manual',
+            '2581',
+            'Melhoria'
+            );
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
