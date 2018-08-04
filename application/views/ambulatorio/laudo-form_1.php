@@ -75,6 +75,17 @@ if (count($pacs) > 0) {
         $adendo = false;
     }
 //    var_dump($laudo_sigiloso); die;
+//    $estado_civil = @$obj->_estado_civil_id;
+    if (@$obj->_estado_civil == ''):$estado_civil = 'Solteiro';
+    endif;
+    if (@$obj->_estado_civil == 2):$estado_civil = 'Casado';
+    endif;
+    if (@$obj->_estado_civil == 3):$estado_civil = 'Divorciado';
+    endif;
+    if (@$obj->_estado_civil == 4):$estado_civil = 'Viuvo';
+    endif;
+    if (@$obj->_estado_civil == 5):$estado_civil = 'Outros';
+    endif;
     ?>
 
     <div>
@@ -82,16 +93,24 @@ if (count($pacs) > 0) {
             <div >
                 <fieldset>
                     <legend>Dados</legend>
-                    <table> 
-                        <tr>
-                            <td width="400px;">Paciente:<?= @$obj->_nome ?></td>
-                            <td width="400px;">Exame: <?= @$obj->_procedimento ?></td>
+                    <table > 
+                        <tr >
+                            <td colspan="3" width="400px;">Paciente:<?= @$obj->_nome ?></td>
+                            <td colspan="3" width="400px;">Exame: <?= @$obj->_procedimento ?></td>
                             <td>Solicitante: <?= @$obj->_solicitante ?></td>
-                            <td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg"  height="120" width="100" /></td>
+                            <td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>
                         </tr>
-                        <tr><td>Idade: <?= $teste ?></td>
-                            <td>Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
+                        <tr><td colspan="3">Idade: <?= $teste ?></td>
+                            <td colspan="3">Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
                             <td>Sala:<?= @$obj->_sala ?></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Sexo: <?= @$obj->_sexo ?></td>
+                            <td colspan="2">Ocupação: <?= @$obj->_profissao_cbo ?> </td>
+                            <td >Estado Civíl: <?= @$estado_civil ?> </td>
+                            <td>Convenio:<?= @$obj->_convenio; ?></td>
+                            <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
+
                         </tr>
                         <tr>
                             <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
@@ -275,8 +294,8 @@ if (count($pacs) > 0) {
                                         <input type="text" id="linha2" class="texto02" name="linha2"/>
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
-                                        <?php // foreach ($linha as $item) {   ?>
-                                                                                                                        <option value="<?php // echo $item->nome;             ?>" ><?php // echo $item->nome;             ?></option>
+                                        <?php // foreach ($linha as $item) {    ?>
+                                                                                                                        <option value="<?php // echo $item->nome;                 ?>" ><?php // echo $item->nome;                 ?></option>
                                         <?php // }  ?>
                                         </select>-->
 

@@ -5,6 +5,18 @@
     $medicos = $this->operador_m->listarmedicos();
     $especialidade = $this->exame->listarespecialidade();
     ?>
+    <table>
+        <tr>
+            
+            <td>  
+                <div class="bt_link_new">
+                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/agenda/medicoagenda');">
+                        Bloquear Agenda
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Laudo</a></h3>
         <div>
@@ -139,7 +151,7 @@
         <!--                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->medicorevisor; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->situacao_revisor; ?></td>-->
                                 <?
-                                if (($item->medico_parecer1 == $operador_id && $item->situacao == 'FINALIZADO') || $item->situacao != 'FINALIZADO' || $operador_id == 1  || $perfil_id == 1) {
+                                if (($item->medico_parecer1 == $operador_id && $item->situacao == 'FINALIZADO') || $item->situacao != 'FINALIZADO' || $operador_id == 1 || $perfil_id == 1) {
                                     if ($item->grupo == 'ECOCARDIOGRAMA' && false) {
                                         ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
@@ -206,7 +218,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
 //alert('teste_parada');
- if ($('#especialidade').val() != '') {
+        if ($('#especialidade').val() != '') {
             $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
                 var options = '<option value=""></option>';
                 var slt = '';

@@ -1003,7 +1003,7 @@ class empresa_model extends Model {
 
     function gravar() {
         try {
-//            var_dump(); die;
+//            var_dump('d'); die;
             // Ativando/Desativando o Crédito
             if (isset($_POST['credito'])) {
                 $this->db->set('ativo', 't');
@@ -1322,6 +1322,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('producao_alternativo', 'f');
                     }
+                    if (isset($_POST['gerente_cancelar'])) {
+                        $this->db->set('gerente_cancelar', 't');
+                    } else {
+                        $this->db->set('gerente_cancelar', 'f');
+                    }
                     if (isset($_POST['valor_laboratorio'])) {
                         $this->db->set('valor_laboratorio', 't');
                     } else {
@@ -1619,6 +1624,96 @@ class empresa_model extends Model {
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_empresa_permissoes');
+
+                $this->db->select('*');
+                $this->db->from('tb_empresa_permissoes');
+                $this->db->where('ativo', 't');
+                $this->db->orderby('empresa_id desc');
+                $return_perm = $this->db->get()->result_array();
+//                echo '<pre>';
+//                var_dump($return_perm);
+//                die;
+                if (count($return_perm) > 0) {
+
+                    foreach ($return_perm[1] as $key_select => $value_select) {
+                        if ($key_select != 'empresa_permissoes_id' && $key_select != 'empresa_id') {
+                            $this->db->set("$key_select", $value_select);
+                        }
+                    }
+                }
+                $this->db->where('empresa_id', $empresa_id);
+                $this->db->update('tb_empresa_permissoes');
+
+                $this->db->select('internacao,
+                                    chat,
+                                    impressao_declaracao,
+                                    impressao_recibo,
+                                    email,
+                                    impressao_laudo,
+                                    centrocirurgico,
+                                    relatoriorm,
+                                    servicosms,
+                                    servicoemail,
+                                    email_mensagem_confirmacao,
+                                    email_mensagem_agradecimento,
+                                    imagem,
+                                    consulta,
+                                    especialidade,
+                                    geral,
+                                    faturamento,
+                                    estoque,
+                                    financeiro,
+                                    marketing,
+                                    laboratorio,
+                                    ponto,
+                                    calendario,
+                                    email_mensagem_falta,
+                                    botao_faturar_guia,
+                                    botao_faturar_procedimento,
+                                    chamar_consulta,
+                                    procedimento_multiempresa,
+                                    data_contaspagar,
+                                    medico_laudodigitador,
+                                    cabecalho_config,
+                                    rodape_config,
+                                    laudo_config,
+                                    recibo_config,
+                                    ficha_config,
+                                    odontologia,
+                                    producao_medica_saida,
+
+                                    impressao_orcamento,
+                                    mostrar_logo_clinica,
+                                    declaracao_config,
+                                    atestado_config,
+                                    horario_sab,
+                                    horario_seg_sex,
+                                    farmacia,
+                                    numero_empresa_painel,
+                                    endereco_toten,
+                                    horario_seg_sex_inicio,
+                                    horario_seg_sex_fim,
+                                    horario_sab_inicio,
+                                    horario_sab_fim,
+                                    endereco_upload,
+                                    impressao_internacao');
+                $this->db->from('tb_empresa');
+                $this->db->where('ativo', 't');
+                $this->db->where('empresa_id !=', $empresa_id);
+                $this->db->orderby('empresa_id desc');
+                $return_emp = $this->db->get()->result_array();
+
+                if (count($return_emp) > 0) {
+
+                    foreach ($return_emp[0] as $key_select => $value_select) {
+                        if ($key_select != 'empresa_id') {
+                            $this->db->set("$key_select", $value_select);
+                        }
+                    }
+                }
+
+                $this->db->where('empresa_id', $empresa_id);
+                $this->db->update('tb_empresa');
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") // erro de banco
                     return -1;
@@ -1649,7 +1744,12 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('campos_cadastro', '');
                     }
-                     if (count($_POST['opc_telatendimento']) > 0) {
+                    if (isset($_POST['gerente_cancelar'])) {
+                        $this->db->set('gerente_cancelar', 't');
+                    } else {
+                        $this->db->set('gerente_cancelar', 'f');
+                    }
+                    if (count($_POST['opc_telatendimento']) > 0) {
                         $this->db->set('campos_atendimentomed', json_encode($_POST['opc_telatendimento']));
                     } else {
                         $this->db->set('campos_atendimentomed', '');
@@ -1985,7 +2085,7 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('relatorios_clinica_med', 'f');
                     }
-                     if (isset($_POST['botao_ficha_convenio'])) {
+                    if (isset($_POST['botao_ficha_convenio'])) {
                         $this->db->set('botao_ficha_convenio', 't');
                     } else {
                         $this->db->set('botao_ficha_convenio', 'f');
@@ -2124,6 +2224,7 @@ class empresa_model extends Model {
                                ep.cadastrar_painel_sala,
                                ep.apenas_procedimentos_multiplos,
                                ep.orcamento_cadastro,
+                               ep.gerente_cancelar,
                                ep.gerente_relatorio_financeiro,
                                ep.botao_arquivos_paciente,
                                ep.botao_imagem_paciente,
@@ -2160,6 +2261,7 @@ class empresa_model extends Model {
             $this->_botao_arquivos_paciente = $return[0]->botao_arquivos_paciente;
             $this->_gerente_relatorio_financeiro = $return[0]->gerente_relatorio_financeiro;
             $this->_laudo_sigiloso = $return[0]->laudo_sigiloso;
+            $this->_gerente_cancelar = $return[0]->gerente_cancelar;
             $this->_impressao_internacao = $return[0]->impressao_internacao;
             $this->_campos_cadastro = $return[0]->campos_cadastro;
             $this->_campos_atendimentomed = $return[0]->campos_atendimentomed;

@@ -4550,6 +4550,8 @@ class laudo_model extends Model {
                             p.numero,
                             p.bairro,
                             p.senha,
+                            p.estado_civil_id,
+                            cbo.descricao as profissao_cbo,
                             ag.toten_fila_id,
                             ag.toten_senha_id,
                             ag.data_senha,
@@ -4566,6 +4568,7 @@ class laudo_model extends Model {
                             p.nome as paciente');
             $this->db->from('tb_ambulatorio_laudo ag');
             $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+            $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = p.profissao', 'left');
             $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = p.indicacao', 'left');
             $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');
             $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
@@ -4590,6 +4593,8 @@ class laudo_model extends Model {
             $this->_atendimento = $return[0]->atendimento;
             $this->_paciente_id = $return[0]->paciente_id;
             $this->_cpf = $return[0]->cpf;
+            $this->_profissao_cbo = $return[0]->profissao_cbo;
+            $this->_estado_civil_id = $return[0]->estado_civil_id;
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;
             $this->_id_chamada = $return[0]->id_chamada;

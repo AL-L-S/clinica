@@ -263,7 +263,7 @@
                                     <select  name="sala1" id="sala1" class="size1" required="">
                                         <option value="">Selecione</option>
                                         <? foreach ($salas as $item) : ?>
-                                            <option value="<?= $item->exame_sala_id; ?>"<? if ($sala == $item->nome || count($salas) == 1) echo 'selected';?>>
+                                            <option value="<?= $item->exame_sala_id; ?>"<? if ($sala == $item->nome || count($salas) == 1) echo 'selected'; ?>>
                                                 <?= $item->nome; ?>
                                             </option>
                                         <? endforeach; ?>
@@ -334,11 +334,11 @@
                                                 continue;
                                             ?>
                                             <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-<? endforeach; ?>
+                                        <? endforeach; ?>
                                     </select>
                                 </td>
                                 <td  width="50px;">
-<? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); ?>
+                                    <? $recomendacao_obrigatorio = $this->session->userdata('recomendacao_obrigatorio'); ?>
                                     <select name="indicacao" id="indicacao" class="size1 ui-widget" <?= $recomendacao_obrigatorio == 't' ? 'required' : '' ?>>
                                         <option value='' >Selecione</option>
                                         <?php
@@ -353,7 +353,7 @@
                                 </td>
 
                                 <td  width="70px;"><input type="text" id="data" name="data" class="size1"/></td>
-<? // var_dump($ordenador1); die;   ?>
+                                <? // var_dump($ordenador1); die;   ?>
                                 <td  width="70px;">
                                     <select name="ordenador" id="ordenador" class="size1" >
                                         <option value='1' >Normal</option>
@@ -421,9 +421,11 @@
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>"  width="50px;" >
-                                            <div class="bt_link">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar</a>
-                                            </div>
+                                            <? if (@$empresapermissoes->gerente_cancelar == 't' || $perfil_id == 1) { ?>
+                                                <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar</a>
+                                                </div>
+                                            <? } ?>
                                             <div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha</a>
                                             </div>
@@ -436,20 +438,22 @@
                                             if ($item->faturado == "f" && $item->dinheiro == "t") {
                                                 $faturado++;
                                                 if ($perfil_id != 11) {
-                                                    if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
+                                                    if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') {
+                                                        ?>
                                                         <div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
                                                         </div>
-                                                    <?
-                                                    } else { ?>
+                                                    <? } else {
+                                                        ?>
 
                                                         <div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
                                                         </div>
-                                                    <? } 
-
-                                                } 
-                                            } ?>
+                                                        <?
+                                                    }
+                                                }
+                                            }
+                                            ?>
 
                                         </td>
                                     </tr>
@@ -484,8 +488,7 @@
                         </table> 
                         <br/>
                         <?
-
-                }//buscar exames com forma de pagamento pre-definida (fim)
+                    }//buscar exames com forma de pagamento pre-definida (fim)
                     if ($x > 0) {
                         ?>
                         <table id="table_agente_toxico" border="0">
@@ -525,10 +528,14 @@
                                                 <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarpreparoconvenio/" . $item->convenio_id; ?> ', '_blank', 'width=900,height=400');"><?= $item->convenio; ?></a></td>
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
-                                                <td class="<?php echo $estilo_linha; ?>" width="50px;" ><div class="bt_link">
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');"><b>Cancelar</b>
+                                                <td class="<?php echo $estilo_linha; ?>" width="50px;" >
+                                                    <? if (@$empresapermissoes->gerente_cancelar == 't' || $perfil_id == 1) { ?>
+                                                        <div class="bt_link">
+                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');"><b>Cancelar</b>
 
-                                                        </a></div>
+                                                            </a>
+                                                        </div>
+                                                    <? } ?>
                                                     <div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');"><b>Ficha</b>
                                                         </a></div>
@@ -537,20 +544,22 @@
                                                     <div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');"><b>Ficha-convenio</b>
                                                         </a></div>
-                                                <? if ($item->faturado == "f" && $item->dinheiro == "t") { 
-                                                        if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') { ?>
+                                                    <?
+                                                    if ($item->faturado == "f" && $item->dinheiro == "t") {
+                                                        if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') {
+                                                            ?>
                                                             <div class="bt_link">
                                                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
                                                             </div>
-                                                        <?
-                                                        } else { ?>
+                                                        <? } else {
+                                                            ?>
 
                                                             <div class="bt_link">
                                                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
                                                             </div>
-                                                        <? }  
-                                                    } 
-                                                    else {
+                                                            <?
+                                                        }
+                                                    } else {
                                                         $faturado++;
                                                     }
                                                     ?>
@@ -583,7 +592,7 @@
                                             </a></div>
                                     </center>
                                     </th>
-                                <?
+                                    <?
                                 }
                                 if ($botao_faturar_proc == 't') {
                                     ?>
@@ -595,23 +604,23 @@
                                             </a></div>
                                     </center>
                                     </th>
-            <?
-            }
-        }
-        ?>
+                                    <?
+                                }
+                            }
+                            ?>
 
                             </tr>
                             </tfoot>
                         </table> 
                         <br/>
-        <?
-    }
-}
-?>
+                        <?
+                    }
+                }
+                ?>
 
             </fieldset>
 
-<? if (count(@$exames_pacote) > 0) { ?>
+            <? if (count(@$exames_pacote) > 0) { ?>
                 <fieldset>
                     <legend>Pacotes Lançados</legend>
                     <table id="table_agente_toxico" border="0">
@@ -647,14 +656,16 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                     <!--<td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>-->
                                     <td class="<?php echo $estilo_linha; ?>" colspan="2">
-        <?= $item->pacote_nome; ?><?= (@$item->valor_diferenciado == 't') ? " **" : ""; ?>
+                                        <?= $item->pacote_nome; ?><?= (@$item->valor_diferenciado == 't') ? " **" : ""; ?>
                                     </td>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                        <div class="bt_link_new">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/atendimentocancelamentopacote/<?= $guia ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>');">Cancelar Pacote
+                                        <? if (@$empresapermissoes->gerente_cancelar == 't' || $perfil_id == 1) { ?>
+                                            <div class="bt_link_new">
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/atendimentocancelamentopacote/<?= $guia ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>');">Cancelar Pacote
 
-                                            </a>
-                                        </div>
+                                                </a>
+                                            </div>
+                                        <? } ?>
                                         <div class="bt_link_new">
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                             </a></div>
@@ -663,22 +674,22 @@
                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaofichaconvenio/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha-convenio
                                             </a></div>
                                         <!--</td>-->
-        <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
-            <? if ($perfil_id != 11) { ?>
-                                                                <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                        <? if ($item->faturado == "f" && $item->dinheiro == "t") { ?>
+                                            <? if ($perfil_id != 11) { ?>
+                                                                                                <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                 <div class="bt_link_new">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
                                                     </a></div>
                                                 <!--</td>-->
-                                <? } ?>
-                            <? } ?>
+                                            <? } ?>
+                                        <? } ?>
                                     </td>
                                 </tr>
                             </tbody>
-        <?
-    }
-    ?>
+                            <?
+                        }
+                        ?>
                         <tfoot>
                             <tr>
                                 <th class="tabela_footer" colspan="4">
@@ -686,35 +697,35 @@
                                 </th>
                                 <th class="tabela_footer" colspan="5">** = Valor diferenciado</th>
                                 <!--    <? if ($perfil_id != 11) { ?>
-                                    
-        <?
-        if ($perfil_id == 1 || $faturado == 0) {
-            if ($botao_faturar_guia == 't') {
-                ?>
-                                                                                        <th colspan="2" align="center"><center><div class="bt_linkf">
-                                                                                        <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
-                                            
-                                                                                        </a></div></center></th>
-            <?
-            }
-            if ($botao_faturar_proc == 't') {
-                ?>
-                                                                                <th colspan="2" align="center">    
-                                                                                    <div class="bt_linkf">
-                                                                                        <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
-                                            
-                                                                                        </a></div></center>
-                                                                                </th>
-                <?
-            }
-        }
-    }
-    ?>-->
+                                                    
+                                    <?
+                                    if ($perfil_id == 1 || $faturado == 0) {
+                                        if ($botao_faturar_guia == 't') {
+                                            ?>
+                                                                                                                                        <th colspan="2" align="center"><center><div class="bt_linkf">
+                                                                                                                                        <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
+                                                                                            
+                                                                                                                                        </a></div></center></th>
+                                            <?
+                                        }
+                                        if ($botao_faturar_proc == 't') {
+                                            ?>
+                                                                                                                                <th colspan="2" align="center">    
+                                                                                                                                    <div class="bt_linkf">
+                                                                                                                                        <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+                                                                                            
+                                                                                                                                        </a></div></center>
+                                                                                                                                </th>
+                                            <?
+                                        }
+                                    }
+                                }
+                                ?>-->
                             </tr>
                         </tfoot>
                     </table> 
                 </fieldset>
-<? } ?>
+            <? } ?>
 
         </div> 
     </div> 
@@ -839,60 +850,60 @@
                                                             });
                                                         });
 
-                                    <?if ($empresapermissoes[0]->valor_autorizar == 'f') { ?>
-                                                        $(function () {
-                                                            $('#convenio1').change(function () {
-                                                                if ($(this).val()) {
-                                                                    $('.carregando').show();
-                                                                    $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
-                                                                        options = '<option value=""></option>';
-                                                                        <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
+<? if ($empresapermissoes[0]->valor_autorizar == 'f') { ?>
+                                                            $(function () {
+                                                                $('#convenio1').change(function () {
+                                                                    if ($(this).val()) {
+                                                                        $('.carregando').show();
+                                                                        $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $(this).val()}, function (j) {
+                                                                            options = '<option value=""></option>';
+    <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
+                                                                                if (j[0].dinheiro == 't') {
+                                                                                    //                                                                            $("#valorth").show();
+                                                                                    //                                                                            $("#valortd").show();
+                                                                                    $("#valor1").attr("type", "text");
+                                                                                } else {
+                                                                                    $("#valor1").attr("type", "hidden");
+                                                                                    //                                                                            $("#valorth").hide();
+                                                                                    //                                                                            $("#valortd").hide();
+                                                                                }
+    <? } ?>
+                                                                            if (j[0].carteira_obrigatoria == 't') {
+                                                                                $("#autorizacao").prop('required', true);
+                                                                            } else {
+                                                                                $("#autorizacao").prop('required', false);
+                                                                            }
+
+                                                                        });
+                                                                    }
+                                                                });
+                                                            });
+
+
+                                                            if ($('#convenio1').val()) {
+                                                                $('.carregando').show();
+                                                                $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $('#convenio1').val()}, function (j) {
+                                                                    options = '<option value=""></option>';
+    <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
                                                                         if (j[0].dinheiro == 't') {
-//                                                                            $("#valorth").show();
-//                                                                            $("#valortd").show();
+                                                                            //                                                                    $("#valorth").show();
+                                                                            //                                                                    $("#valortd").show();
                                                                             $("#valor1").attr("type", "text");
                                                                         } else {
                                                                             $("#valor1").attr("type", "hidden");
-//                                                                            $("#valorth").hide();
-//                                                                            $("#valortd").hide();
+                                                                            //                                                                    $("#valorth").hide();
+                                                                            //                                                                    $("#valortd").hide();
                                                                         }
-                                                                        <?}?>
-                                                                        if (j[0].carteira_obrigatoria == 't') {
-                                                                            $("#autorizacao").prop('required', true);
-                                                                        } else {
-                                                                            $("#autorizacao").prop('required', false);
-                                                                        }
+    <? } ?>
+                                                                    if (j[0].carteira_obrigatoria == 't') {
+                                                                        $("#autorizacao").prop('required', true);
+                                                                    } else {
+                                                                        $("#autorizacao").prop('required', false);
+                                                                    }
 
-                                                                    });
-                                                                }
-                                                            });
-                                                        });
-
-                                                        
-                                                        if ($('#convenio1').val()) {
-                                                            $('.carregando').show();
-                                                            $.getJSON('<?= base_url() ?>autocomplete/conveniocarteira', {convenio1: $('#convenio1').val()}, function (j) {
-                                                                options = '<option value=""></option>';
-                                                                <? if (@$empresapermissoes[0]->valor_convenio_nao == 't') { ?>
-                                                                if (j[0].dinheiro == 't') {
-//                                                                    $("#valorth").show();
-//                                                                    $("#valortd").show();
-                                                                    $("#valor1").attr("type", "text");
-                                                                } else {
-                                                                    $("#valor1").attr("type", "hidden");
-//                                                                    $("#valorth").hide();
-//                                                                    $("#valortd").hide();
-                                                                }
-                                                                 <?}?>
-                                                                if (j[0].carteira_obrigatoria == 't') {
-                                                                    $("#autorizacao").prop('required', true);
-                                                                } else {
-                                                                    $("#autorizacao").prop('required', false);
-                                                                }
-
-                                                            });
-                                                        }
-                                    <?}?>
+                                                                });
+                                                            }
+<? } ?>
                                                         $(function () {
                                                             $('#grupo1').change(function () {
 //                                                if ($(this).val()) {
@@ -936,10 +947,10 @@
                                                             $('#procedimento1').change(function () {
                                                                 if ($(this).val()) {
                                                                     $('.carregando').show();
-                                                                    
+
                                                                     var procedimento = $(this).val();
                                                                     $("#formapamento").prop('required', false);
-                                                                    
+
                                                                     $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
                                                                         $("#vAjuste").css('display', 'none');
                                                                         $("#vAjusteIn").css('display', 'none');
@@ -987,27 +998,26 @@
                                                         }
 
                                                         calculoIdade();
-                                                        
-                                                        
-                                                        function verificaAjustePagamentoProcedimento(procedimentoConvenioId){
-                                                            <?if(@$empresapermissoes[0]->ajuste_pagamento_procedimento == 't'){?>
+
+
+                                                        function verificaAjustePagamentoProcedimento(procedimentoConvenioId) {
+<? if (@$empresapermissoes[0]->ajuste_pagamento_procedimento == 't') { ?>
                                                                 $.getJSON('<?= base_url() ?>autocomplete/verificaAjustePagamentoProcedimento', {procedimento: procedimentoConvenioId, ajax: true}, function (p) {
                                                                     if (p.length != 0) {
                                                                         $("#formapamento").prop('required', true);
                                                                         $("#vAjuste").css('display', 'block');
                                                                         $("#vAjusteIn").css('display', 'block');
-                        //                                                console.log($('#formapamento'));
+                                                                        //                                                console.log($('#formapamento'));
                                                                     }
                                                                 });
-                                                            <?}?>
+<? } ?>
                                                         }
 
-                                                        function buscaValorAjustePagamentoProcedimento(){                                    
+                                                        function buscaValorAjustePagamentoProcedimento() {
                                                             $.getJSON('<?= base_url() ?>autocomplete/buscaValorAjustePagamentoProcedimento', {procedimento: $('#procedimento1').val(), forma: $('#formapamento').val(), ajax: true}, function (p) {
                                                                 if (p.length != 0) {
                                                                     $("#valorAjuste").val(p[0].ajuste);
-                                                                }
-                                                                else{
+                                                                } else {
                                                                     $("#valorAjuste").val('');
                                                                 }
                                                             });

@@ -6,7 +6,7 @@
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                    <label>A&ccedil;&atilde;o</label>
+                        <label>A&ccedil;&atilde;o</label>
                     </dt>
                     <dd>
                         <select name="txtacao" size="1" class="texto03" id="teste"  >
@@ -16,18 +16,28 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Medico</label>
+                        <label>Medico</label>
                     </dt>
                     <dd>
+                        <?
+                        $operador_id = $this->session->userdata('operador_id');
+                        $perfil_id = $this->session->userdata('perfil_id');
+                        ?>
                         <select name="medico" id="medico" class="size2">
                             <option value=""></option>
-                            <? foreach ($medicos as $value) : ?>
-                                <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
-                            <? endforeach; ?>
+                            <?
+                            foreach ($medicos as $value) {
+                                if (($value->operador_id == $operador_id && $perfil_id == 4) || $perfil_id != 4) {
+                                    ?>
+                                    <option value="<?= $value->operador_id; ?>"><?php echo $value->nome; ?></option>
+                                    <?
+                                }
+                            }
+                            ?>
                         </select>
                     </dd>
                     <dt>
-                    <label>Salas</label>
+                        <label>Salas</label>
                     </dt>
                     <dd>
                         <select name="sala" id="sala" class="size2">
@@ -38,31 +48,31 @@
                         </select>
                     </dd>
                     <dt>
-                    <label>Data inicio</label>
+                        <label>Data inicio</label>
                     </dt>
                     <dd>
                         <input type="text"  id="datainicio" name="datainicio" class="size1"/>
                     </dd>
                     <dt>
-                    <label>Data fim</label>
+                        <label>Data fim</label>
                     </dt>
                     <dd>
                         <input type="text"  id="datafim" name="datafim" class="size1"/>
                     </dd>
                     <dt>
-                    <label>Hora inicio</label>
+                        <label>Hora inicio</label>
                     </dt>
                     <dd>
                         <input type="text" alt="time" id="horainicio" name="horainicio" class="size1"/>
                     </dd>
                     <dt>
-                    <label>Hora fim</label>
+                        <label>Hora fim</label>
                     </dt>
                     <dd>
                         <input type="text" alt="time" id="horafim" name="horafim" class="size1"/>
                     </dd>
                     <dt>
-                    <label>Observacao</label>
+                        <label>Observacao</label>
                     </dt>
                     <dd>
                         <textarea type="text" name="txtobservacao" cols="55" class="texto12"></textarea>
@@ -94,7 +104,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-    $(function() {
+    $(function () {
         $("#datainicio").datepicker({
             autosize: true,
             changeYear: true,
@@ -105,7 +115,7 @@
             dateFormat: 'dd/mm/yy'
         });
     });
-    $(function() {
+    $(function () {
         $("#datafim").datepicker({
             autosize: true,
             changeYear: true,
@@ -117,11 +127,11 @@
         });
     });
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         jQuery('#form_medicoagenda').validate({
             rules: {
                 medico: {

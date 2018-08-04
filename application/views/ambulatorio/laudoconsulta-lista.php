@@ -5,6 +5,18 @@
     $medicos = $this->operador_m->listarmedicos();
     $especialidade = $this->exame->listarespecialidade();
     ?>
+    <table>
+        <tr>
+
+            <td>  
+                <div class="bt_link_new">
+                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/agenda/medicoagendaconsulta');">
+                        Bloquear Agenda
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Consultas</a></h3>
         <div>
