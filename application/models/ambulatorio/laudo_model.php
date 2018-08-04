@@ -942,37 +942,35 @@ class laudo_model extends Model {
         $this->db->where('empresa_id', $empresa_id);
         $dados = $this->db->get()->result();
 
-        if($dados[0]->endereco_toten != ''){
-            if($return[0]->idfila_painel == ''){
+        if ($dados[0]->endereco_toten != '') {
+            if ($return[0]->idfila_painel == '') {
                 $this->db->select('id');
                 $this->db->from('tb_toten_senha');
                 $this->db->where('chamada', 'f');
                 $paineis = $this->db->get()->result();
                 $idfila = $paineis[0]->id;
+            } else {
+                $idfila = $return[0]->idfila_painel;
             }
-            else {
-                $idfila = $return[0]->idfila_painel;                
-            }
-            
-            $endereco = $dados[0]->endereco_toten."/webService/telaAtendimento/enviarFicha/";
+
+            $endereco = $dados[0]->endereco_toten . "/webService/telaAtendimento/enviarFicha/";
             $endereco .= "{$idfila}/{$return[0]->paciente}/null/{$return[0]->medico_parecer1}/{$return[0]->medico}/{$return[0]->exame_sala_id}/true";
 
-            $ch  = curl_init();
+            $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $endereco);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, array());
             $result = curl_exec($ch);
             curl_close($ch);
-            
-            $endereco = $dados[0]->endereco_toten."/webService/telaChamado/proximo/{$return[0]->medico_parecer1}";
-            $ch  = curl_init();
+
+            $endereco = $dados[0]->endereco_toten . "/webService/telaChamado/proximo/{$return[0]->medico_parecer1}";
+            $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $endereco);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, array());
             $result = curl_exec($ch);
             curl_close($ch);
-        }
-        else {
+        } else {
             $config['hostname'] = "localhost";
             $config['username'] = "postgres";
             $config['password'] = "123456";
@@ -986,7 +984,7 @@ class laudo_model extends Model {
             $config['char_set'] = "utf8";
             $config['dbcollat'] = "utf8_general_ci";
             $DB1 = $this->load->database($config, TRUE);
-            
+
             foreach ($paineis as $value) {
                 $salas = $value->nome_chamada;
                 $data = date("Y-m-d H:i:s");
@@ -995,7 +993,7 @@ class laudo_model extends Model {
                 } else {
                     $medico = '';
                 }
-    //            var_dump($medico); die;
+                //            var_dump($medico); die;
                 if ($value->painel_id != '') {
                     $painel_id = $return[0]->numero_empresa_painel . $value->painel_id;
                 } else {
@@ -1010,9 +1008,7 @@ class laudo_model extends Model {
             VALUES ('$data', '$inferior', '$superior', $painel_id);";
                 $DB1->query($sql);
             }
-        
         }
-        
     }
 
     function chamadaconsulta($ambulatorio_laudo_id) {
@@ -1274,12 +1270,12 @@ class laudo_model extends Model {
                             pt.nome as procedimento
                             ');
         $this->db->from('tb_ambulatorio_receituario ag');
-        $this->db->join('tb_ambulatorio_laudo al', 'al.ambulatorio_laudo_id = ag.laudo_id', 'left');       
+        $this->db->join('tb_ambulatorio_laudo al', 'al.ambulatorio_laudo_id = ag.laudo_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = al.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ag.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
-        $this->db->where('al.paciente_id', $paciente_id); 
+        $this->db->where('al.paciente_id', $paciente_id);
         $this->db->where('ag.tipo', 'NORMAL');
         $this->db->orderby('ag.data_cadastro DESC');
 
@@ -1289,7 +1285,7 @@ class laudo_model extends Model {
 
     function listareditarreceita($ambulatorio_laudo_id) {
 
-          $this->db->select(' ag.ambulatorio_receituario_id ,
+        $this->db->select(' ag.ambulatorio_receituario_id ,
                             ag.texto,
                             ag.medico_parecer1');
         $this->db->from('tb_ambulatorio_receituario ag');
@@ -1298,8 +1294,8 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-       function listarrepetirreceita($ambulatorio_laudo_id) {
+
+    function listarrepetirreceita($ambulatorio_laudo_id) {
 
         $this->db->select(' ag.ambulatorio_receituario_id ,
                             ag.data_cadastro,
@@ -1325,7 +1321,6 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
 
     function listareditaratestado($ambulatorio_laudo_id) {
 
@@ -2066,7 +2061,7 @@ class laudo_model extends Model {
         $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("ag.paciente_id", $paciente_id);
-        
+
         $this->db->orderby("ag.ambulatorio_laudo_id desc");
         $return = $this->db->get();
         return $return->result();
@@ -2227,8 +2222,8 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-     function listarformimpressao($ambulatorio_laudo_id) {
+
+    function listarformimpressao($ambulatorio_laudo_id) {
 
         $this->db->select('ag.ambulatorio_laudo_id,
                             ag.paciente_id,
@@ -2430,9 +2425,9 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-     
-       function listarautocompleterepetirreceituario($ambulatorio_laudo_id) {
-         $this->db->select(' ag.ambulatorio_receituario_id ,
+
+    function listarautocompleterepetirreceituario($ambulatorio_laudo_id) {
+        $this->db->select(' ag.ambulatorio_receituario_id ,
                             ag.data_cadastro,
                             ag.texto,
                             ag.medico_parecer1');
@@ -2442,8 +2437,8 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
-     function listarautocompleteeditarreceituario($ambulatorio_laudo_id) {
+
+    function listarautocompleteeditarreceituario($ambulatorio_laudo_id) {
         $this->db->select(' ag.ambulatorio_receituario_id ,
                             ag.texto,
                             ag.medico_parecer1');
@@ -2453,8 +2448,6 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
-
 
     function listarlaudos($parametro, $ambulatorio_laudo_id) {
 
@@ -3808,26 +3801,36 @@ class laudo_model extends Model {
             return -1;
         }
     }
+
+    function preencherformulario($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_form lf');
+        $this->db->where('lf.guia_id', $guia_id);
+        $this->db->where('lf.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
     
-        function gravarformulario() {
+    function preencheravaliacao($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_avaliacao la');
+        $this->db->where('la.guia_id', $guia_id);
+        $this->db->where('la.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+
+    function gravarformulario() {
         try {
-//            /* inicia o mapeamento no banco */
-//            $horario = date("Y-m-d H:i:s");
-//            $operador_id = $this->session->userdata('operador_id');
-//            $this->db->set('texto', $_POST['laudo']);
-//            if ($_POST['carimbo'] == "on") {
-//                $this->db->set('carimbo', 't');
-//            }
-//            if ($_POST['assinatura'] == "on") {
-//                $this->db->set('assinatura', 't');
-//            }
-//
-//            $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
-//            $this->db->set('medico_parecer1', $_POST['medico']);
-//            $this->db->set('data_cadastro', $horario);
-//            $this->db->set('operador_cadastro', $_POST['medico']);
-//            $this->db->set('tipo', 'NORMAL');
-            
+            $paciente_id = $this->session->userdata('paciente_id');
+            //         $this->db->set('paciente_id', $_POST['paciente_id']);
+            $guia_id = $this->session->userdata('guia_id');
+            //         $this->db->set('guia_id', $_POST['guia_id']);
+
             $perguntas_form = array(
                 "pergunta1" => $_POST["pergunta1"],
                 "pergunta2" => $_POST["pergunta2"],
@@ -3840,52 +3843,111 @@ class laudo_model extends Model {
                 "pergunta9" => $_POST["pergunta9"],
                 "pergunta10" => $_POST["pergunta10"],
                 "pergunta11" => $_POST["pergunta11"]
-                           );            
-                       
-            if (count($perguntas_form) > 0) {
-                $this->db->set('questoes', json_encode($perguntas_form));
+            );
+
+
+            $this->db->select('lf.guia_id, lf.paciente_id');
+            $this->db->from('tb_laudo_form lf');
+            $this->db->where('lf.guia_id', $_POST['guia_id']);
+            $this->db->where('lf.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+            if (count($result) > 0) {
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+
+                if (count($perguntas_form) > 0) {
+                    $this->db->set('questoes', json_encode($perguntas_form));
+                } else {
+                    $this->db->set('questoes', '');
+                }
+
+                if ($_POST['obesidade'] != '') {
+                    $this->db->set('obesidade', $_POST['obesidade']);
+                }
+                if ($_POST['diabetes'] != '') {
+                    $this->db->set('diabetes', $_POST['diabetes']);
+                }
+                if ($_POST['sedentarismo'] != '') {
+                    $this->db->set('sedentarismo', $_POST['sedentarismo']);
+                }
+                if ($_POST['hipertensao'] != '') {
+                    $this->db->set('hipertensao', $_POST['hipertensao']);
+                }
+                if ($_POST['dac'] != '') {
+                    $this->db->set('dac', $_POST['dac']);
+                }
+                if ($_POST['tabagismo'] != '') {
+                    $this->db->set('tabagismo', $_POST['tabagismo']);
+                }
+                if ($_POST['dislipidemia'] != '') {
+                    $this->db->set('dislipidemia', $_POST['dislipidemia']);
+                }
+                if ($_POST['diabetespe'] != '') {
+                    $this->db->set('diabetespe', $_POST['diabetespe']);
+                }
+                if ($_POST['haspe'] != '') {
+                    $this->db->set('haspe', $_POST['haspe']);
+                }
+                if ($_POST['dacpe'] != '') {
+                    $this->db->set('dacpe', $_POST['dacpe']);
+                }
+                if ($_POST['ircpe'] != '') {
+                    $this->db->set('ircpe', $_POST['ircpe']);
+                }
+                if ($_POST['sopros'] != '') {
+                    $this->db->set('sopros', $_POST['sopros']);
+                }
+
+                $this->db->update('tb_laudo_form');
             } else {
-                $this->db->set('questoes', '');
-            }
+                if (count($perguntas_form) > 0) {
+                    $this->db->set('questoes', json_encode($perguntas_form));
+                } else {
+                    $this->db->set('questoes', '');
+                }
 
-            if ($_POST['obesidade'] != '') {
-                $this->db->set('obesidade', $_POST['obesidade']);
-            } 
-            if ($_POST['diabetes'] != '') {
-                $this->db->set('diabetes', $_POST['diabetes']);
+                if ($_POST['obesidade'] != '') {
+                    $this->db->set('obesidade', $_POST['obesidade']);
+                }
+                if ($_POST['diabetes'] != '') {
+                    $this->db->set('diabetes', $_POST['diabetes']);
+                }
+                if ($_POST['sedentarismo'] != '') {
+                    $this->db->set('sedentarismo', $_POST['sedentarismo']);
+                }
+                if ($_POST['hipertensao'] != '') {
+                    $this->db->set('hipertensao', $_POST['hipertensao']);
+                }
+                if ($_POST['dac'] != '') {
+                    $this->db->set('dac', $_POST['dac']);
+                }
+                if ($_POST['tabagismo'] != '') {
+                    $this->db->set('tabagismo', $_POST['tabagismo']);
+                }
+                if ($_POST['dislipidemia'] != '') {
+                    $this->db->set('dislipidemia', $_POST['dislipidemia']);
+                }
+                if ($_POST['diabetespe'] != '') {
+                    $this->db->set('diabetespe', $_POST['diabetespe']);
+                }
+                if ($_POST['haspe'] != '') {
+                    $this->db->set('haspe', $_POST['haspe']);
+                }
+                if ($_POST['dacpe'] != '') {
+                    $this->db->set('dacpe', $_POST['dacpe']);
+                }
+                if ($_POST['ircpe'] != '') {
+                    $this->db->set('ircpe', $_POST['ircpe']);
+                }
+                if ($_POST['sopros'] != '') {
+                    $this->db->set('sopros', $_POST['sopros']);
+                }
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_form');
             }
-            if ($_POST['sedentarismo'] != '') {
-                $this->db->set('sedentarismo', $_POST['sedentarismo']);
-            } 
-            if ($_POST['hipertensao'] != '') {
-                $this->db->set('hipertensao', $_POST['hipertensao']);
-            }
-            if ($_POST['dac'] != '') {
-                $this->db->set('dac', $_POST['dac']);
-            }
-            if ($_POST['tabagismo'] != '') {
-                $this->db->set('tabagismo', $_POST['tabagismo']);
-            }
-            if ($_POST['dislipidemia'] != '') {
-                $this->db->set('dislipidemia', $_POST['dislipidemia']);
-            }
-            if ($_POST['diabetespe'] != '') {
-                $this->db->set('diabetespe', $_POST['diabetespe']);
-            }
-            if ($_POST['haspe'] != '') {
-                $this->db->set('haspe', $_POST['haspe']);
-            }
-            if ($_POST['dacpe'] != '') {
-                $this->db->set('dacpe', $_POST['dacpe']);
-            }  
-            if ($_POST['ircpe'] != '') {
-                $this->db->set('ircpe', $_POST['ircpe']);
-            }
-            if ($_POST['sopros'] != '') {
-                $this->db->set('sopros', $_POST['sopros']);
-            }   
-
-            $this->db->insert('tb_laudo_form');
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
@@ -3893,23 +3955,23 @@ class laudo_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
-          
     }
+
     function gravaravaliacao() {
         try {
-            
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+            //       $this->db->set('paciente_id', $_POST['paciente_id']);
+
             $criterios_tb1 = array(
-                
                 "c1tb1" => $_POST["c1tb1"],
                 "c2tb1" => $_POST["c2tb1"],
                 "c3tb1" => $_POST["c3tb1"],
                 "c4tb1" => $_POST["c4tb1"],
                 "c5tb1" => $_POST["c5tb1"],
                 "c6tb1" => $_POST["c6tb1"]
-                
-                           );   
+            );
             $criterios_tb2 = array(
-                
                 "c1tb2" => $_POST["c1tb2"],
                 "c2tb2" => $_POST["c2tb2"],
                 "c3tb2" => $_POST["c3tb2"],
@@ -3922,10 +3984,8 @@ class laudo_model extends Model {
                 "c10tb2" => $_POST["c10tb2"],
                 "c11tb2" => $_POST["c11tb2"],
                 "c12tb2" => $_POST["c12tb2"]
-                
-                           );
+            );
             $criterios_tb3 = array(
-                
                 "c1tb3" => $_POST["c1tb3"],
                 "c2tb3" => $_POST["c2tb3"],
                 "c3tb3" => $_POST["c3tb3"],
@@ -3934,38 +3994,72 @@ class laudo_model extends Model {
                 "c6tb3" => $_POST["c6tb3"],
                 "c7tb3" => $_POST["c7tb3"],
                 "c8tb3" => $_POST["c8tb3"]
-                
-                           );  
+            );
             $criterios_tb4 = array(
-                
                 "riscoalto" => $_POST["riscoalto"],
                 "riscomedio" => $_POST["riscomedio"],
                 "riscobaixo" => $_POST["riscobaixo"]
-                                
-                           );
-                       
-            if (count($criterios_tb1) > 0) {
-                $this->db->set('avaliacao_tabela1', json_encode($criterios_tb1));
+            );
+            $this->db->select('la.guia_id, la.paciente_id');
+            $this->db->from('tb_laudo_avaliacao la');
+            $this->db->where('la.guia_id', $_POST['guia_id']);
+            $this->db->where('la.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+            if (count($result) > 0) {
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+
+                if (count($criterios_tb1) > 0) {
+                    $this->db->set('avaliacao_tabela1', json_encode($criterios_tb1));
+                } else {
+                    $this->db->set('avaliacao_tabela1', '');
+                }
+                if (count($criterios_tb2) > 0) {
+                    $this->db->set('avaliacao_tabela2', json_encode($criterios_tb2));
+                } else {
+                    $this->db->set('avaliacao_tabela2', '');
+                }
+                if (count($criterios_tb3) > 0) {
+                    $this->db->set('avaliacao_tabela3', json_encode($criterios_tb3));
+                } else {
+                    $this->db->set('avaliacao_tabela3', '');
+                }
+                if (count($criterios_tb4) > 0) {
+                    $this->db->set('avaliacao_tabela4', json_encode($criterios_tb4));
+                } else {
+                    $this->db->set('avaliacao_tabela4', '');
+                }
+
+                $this->db->update('tb_laudo_avaliacao');
             } else {
-                $this->db->set('avaliacao_tabela1', '');
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+
+                if (count($criterios_tb1) > 0) {
+                    $this->db->set('avaliacao_tabela1', json_encode($criterios_tb1));
+                } else {
+                    $this->db->set('avaliacao_tabela1', '');
+                }
+                if (count($criterios_tb2) > 0) {
+                    $this->db->set('avaliacao_tabela2', json_encode($criterios_tb2));
+                } else {
+                    $this->db->set('avaliacao_tabela2', '');
+                }
+                if (count($criterios_tb3) > 0) {
+                    $this->db->set('avaliacao_tabela3', json_encode($criterios_tb3));
+                } else {
+                    $this->db->set('avaliacao_tabela3', '');
+                }
+                if (count($criterios_tb4) > 0) {
+                    $this->db->set('avaliacao_tabela4', json_encode($criterios_tb3));
+                } else {
+                    $this->db->set('avaliacao_tabela4', '');
+                }
+
+                $this->db->insert('tb_laudo_avaliacao');
             }
-            if (count($criterios_tb2) > 0) {
-                $this->db->set('avaliacao_tabela2', json_encode($criterios_tb2));
-            } else {
-                $this->db->set('avaliacao_tabela2', '');
-            }
-            if (count($criterios_tb3) > 0) {
-                $this->db->set('avaliacao_tabela3', json_encode($criterios_tb3));
-            } else {
-                $this->db->set('avaliacao_tabela3', '');
-            }
-            if (count($criterios_tb4) > 0) {
-                $this->db->set('avaliacao_tabela4', json_encode($criterios_tb3));
-            } else {
-                $this->db->set('avaliacao_tabela4', '');
-            }
-            
-            $this->db->insert('tb_laudo_avaliacao');
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
@@ -3973,7 +4067,6 @@ class laudo_model extends Model {
         } catch (Exception $exc) {
             return -1;
         }
-          
     }
 
     function gravaratestado() {
@@ -3990,8 +4083,7 @@ class laudo_model extends Model {
             if ($_POST['assinatura'] == "on") {
                 $this->db->set('assinatura', 't');
             }
-//            $this->db->set('paciente_id', $_POST['paciente_id']);
-//            $this->db->set('procedimento_tuss_id', $_POST['procedimento_tuss_id']);
+
             $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
             $this->db->set('medico_parecer1', $_POST['medico']);
             $this->db->set('data_cadastro', $horario);
@@ -4118,14 +4210,14 @@ class laudo_model extends Model {
             return -1;
         }
     }
-    
+
     function repetirreceituario() {
         try {
-            
+
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('texto', $_POST['laudo']);
-         
+
             $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
             $this->db->set('medico_parecer1', $_POST['medico']);
             $this->db->set('data_atualizacao', $horario);

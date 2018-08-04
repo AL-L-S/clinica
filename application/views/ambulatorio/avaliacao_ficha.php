@@ -20,6 +20,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
 <div >
 
     <?
@@ -47,11 +48,17 @@
         $opc_telatendimento = array();
     }
     ?>
+      <?php
+    $this->load->library('utilitario');
+    Utilitario::pmf_mensagem($this->session->flashdata('message'));
+
+    ?>
 
     <div >
         <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravaravaliacao/<?= $ambulatorio_laudo_id ?>" method="post">
             <div >
                 <input type="hidden" name="guia_id" id="guia_id" class="texto01"  value="<?= @$obj->_guia_id; ?>"/>
+                <input type="hidden" name="paciente_id" id="paciente_id" class="texto01"  value="<?= @$obj->_paciente_id; ?>"/>
                 <fieldset>
                     <h1 align = "center">AVALIAÇÃO DE RISCO CIRÚRGICO CARDIOVASCULAR</h1>
                 </fieldset>
@@ -76,6 +83,9 @@
                     </table>
                 </fieldset>
                 <fieldset>
+                    <? 
+                    $tabela1 = json_decode(@$avaliacao[0]->avaliacao_tabela1);
+                    ?>
                     <h2 align = "center">TABELA 1: ALGORITMO DE LEE</h2>
                     <table width = "900" border = "1" align = "center">
                         <tr>
@@ -91,11 +101,11 @@
                                 <select name="c1tb1" id="c1tb1" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c1tb1 == 'NAO'):echo 'selected';
+                                    if (@$tabela1->c1tb1 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c1tb1 == 'SIM'):echo 'selected';
+                                    if (@$tabela1->c1tb1 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select><font>
@@ -104,11 +114,11 @@
                                 <select name="c2tb1" id="c2tb1" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c2tb1 == 'NAO'):echo 'selected';
+                                    if (@$tabela1->c2tb1 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c2tb1 == 'SIM'):echo 'selected';
+                                    if (@$tabela1->c2tb1 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select><font>
@@ -117,11 +127,11 @@
                                 <select name="c3tb1" id="c3tb1" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c3tb1 == 'NAO'):echo 'selected';
+                                    if (@$tabela1->c3tb1 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c3tb1 == 'SIM'):echo 'selected';
+                                    if (@$tabela1->c3tb1 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select><font>
@@ -130,11 +140,11 @@
                                 <select name="c4tb1" id="c4tb1" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c4tb1 == 'NAO'):echo 'selected';
+                                    if (@$tabela1->c4tb1 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c4tb1 == 'SIM'):echo 'selected';
+                                    if (@$tabela1->c4tb1 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select><font>
@@ -143,11 +153,11 @@
                                 <select name="c5tb1" id="c5tb1" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c5tb1 == 'NAO'):echo 'selected';
+                                    if (@$tabela1->c5tb1 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c5tb1 == 'SIM'):echo 'selected';
+                                    if (@$tabela1->c5tb1 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select><font>
@@ -156,11 +166,11 @@
                                 <select name="c6tb1" id="c6tb1" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c6tb1 == 'NAO'):echo 'selected';
+                                    if (@$tabela1->c6tb1 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c6tb1 == 'SIM'):echo 'selected';
+                                    if (@$tabela1->c6tb1 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select><font>
@@ -211,8 +221,11 @@
                     </table>
                     <br><br><br>
 
-                    <? $somaavaliacao = 0; ?>
-
+                    <? 
+                    $tabela2 = json_decode(@$avaliacao[0]->avaliacao_tabela2);
+                    ?>
+                    <div>
+                        
                     <h2 align = "center">TABELA 2: CRITÉRIOS DO AMERICAN COLLEGE OF PYISICIANS (ACP)</h2>
                     <table width = "900" border = "1" align = "center">
                         <tr>
@@ -229,11 +242,11 @@
                                 <select name="c1tb2" id="c1tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c1tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c1tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c1tb2 == 'SIM') {
+                                    if (@$tabela2->c1tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -254,11 +267,11 @@
                                 <select name="c2tb2" id="c2tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c2tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c2tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c2tb2 == 'SIM') {
+                                    if (@$tabela2->c2tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -279,11 +292,11 @@
                                 <select name="c3tb2" id="c3tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c3tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c3tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c3tb2 == 'SIM') {
+                                    if (@$tabela2->c3tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -304,14 +317,14 @@
                                 <select name="c4tb2" id="c4tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c4tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c4tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                            if (@$obj->_c4tb2 == 'SIM') {
-                                                echo 'selected';
-                                            }
-                                            ?> >SIM</option>
+                                    if (@$tabela2->c4tb2 == 'SIM') {
+                                    echo 'selected';
+                                    }
+                                 ?> >SIM</option>
                                 </select>
                             </td>
                             <td id="tdc4tb2">
@@ -329,11 +342,11 @@
                                 <select name="c5tb2" id="c5tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c5tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c5tb2 == 'NAO'):echo 'selected';
                                     endif;
                                             ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c5tb2 == 'SIM') {
+                                    if (@$tabela2->c5tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -354,11 +367,11 @@
                                 <select name="c6tb2" id="c6tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c6tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c6tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c6tb2 == 'SIM') {
+                                    if (@$tabela2->c6tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -379,11 +392,11 @@
                                 <select name="c7tb2" id="c7tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c7tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c7tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c7tb2 == 'SIM') {
+                                    if (@$tabela2->c7tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -404,11 +417,11 @@
                                 <select name="c8tb2" id="c8tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                            if (@$obj->_c8tb2 == 'NAO'):echo 'selected';
+                                            if (@$tabela2->c8tb2 == 'NAO'):echo 'selected';
                                             endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                            if (@$obj->_c8tb2 == 'SIM') {
+                                            if (@$tabela2->c8tb2 == 'SIM') {
                                                 echo 'selected';
                                             }
                                     ?> >SIM</option>
@@ -429,11 +442,11 @@
                                 <select name="c9tb2" id="c9tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c9tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c9tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c9tb2 == 'SIM') {
+                                    if (@$tabela2->c9tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -454,11 +467,11 @@
                                 <select name="c10tb2" id="c10tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c10tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c10tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c10tb2 == 'SIM') {
+                                    if (@$tabela2->c10tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -479,11 +492,11 @@
                                 <select name="c11tb2" id="c11tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c11tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c11tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c11tb2 == 'SIM') {
+                                    if (@$tabela2->c11tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -504,11 +517,11 @@
                                 <select name="c12tb2" id="c12tb2" class="size2 change_tb2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c12tb2 == 'NAO'):echo 'selected';
+                                    if (@$tabela2->c12tb2 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c12tb2 == 'SIM') {
+                                    if (@$tabela2->c12tb2 == 'SIM') {
                                         echo 'selected';
                                     }
                                     ?> >SIM</option>
@@ -522,8 +535,11 @@
                             </td>
                         </tr>    
                     </table>
+                    </div>
                     <br><br><br>
-                    <table align="center" border="1" width = "500">
+                    <div>
+                        
+                    <table position="relative" float ="left" align="center" border="1" width = "500">
                         <h3 align = "center">VARIÁVEIS</h3>
 
                         <tr>
@@ -535,6 +551,9 @@
                             <td style="width:250;">AVALIAR TABELA 3</td>
                         </tr>
                     </table>
+                    </div>
+                    <div>
+                        
                     <table align="center" border="1" width = "500">
                         <h3 align = "center">RESULTADO</h3>                            
                         <tr>
@@ -547,9 +566,13 @@
                         </tr>
 
                     </table><br><br><br>
+                    </div>
 
-                    <h2 align = "center">TABELA 3: VARIÁVEIS DE RISCO</h2>
+                    <? 
+                    $tabela3 = json_decode(@$avaliacao[0]->avaliacao_tabela3);
+                    ?>
                     <table width = "900" border = "1" align = "center">
+                    <h2 align = "center">TABELA 3: VARIÁVEIS DE RISCO</h2>
                         <tr>
                             <td>
                                 > 70 ANOS  
@@ -558,11 +581,11 @@
                                 <select name="c1tb3" id="c1tb3" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c1tb3 == 'NAO'):echo 'selected';
+                                    if (@$tabela3->c1tb3 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c1tb3 == 'SIM'):echo 'selected';
+                                    if (@$tabela3->c1tb3 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select>
@@ -576,11 +599,11 @@
                                 <select name="c2tb3" id="c2tb3" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c2tb3 == 'NAO'):echo 'selected';
+                                    if (@$tabela3->c2tb3 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c2tb3 == 'SIM'):echo 'selected';
+                                    if (@$tabela3->c2tb3 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select>
@@ -594,11 +617,11 @@
                                 <select name="c3tb3" id="c3tb3" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c3tb3 == 'NAO'):echo 'selected';
+                                    if (@$tabela3->c3tb3 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c3tb3 == 'SIM'):echo 'selected';
+                                    if (@$tabela3->c3tb3 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select>
@@ -612,11 +635,11 @@
                                 <select name="c4tb3" id="c4tb3" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c4tb3 == 'NAO'):echo 'selected';
+                                    if (@$tabela3->c4tb3 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c4tb3 == 'SIM'):echo 'selected';
+                                    if (@$tabela3->c4tb3 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select>
@@ -630,11 +653,11 @@
                                 <select name="c5tb3" id="c5tb3" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c5tb3 == 'NAO'):echo 'selected';
+                                    if (@$tabela3->c5tb3 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c5tb3 == 'SIM'):echo 'selected';
+                                    if (@$tabela3->c5tb3 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select>
@@ -648,11 +671,11 @@
                                 <select name="c6tb3" id="c6tb3" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c6tb3 == 'NAO'):echo 'selected';
+                                    if (@$tabela3->c6tb3 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c6tb3 == 'SIM'):echo 'selected';
+                                    if (@$tabela3->c6tb3 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select>
@@ -666,11 +689,11 @@
                                 <select name="c7tb3" id="c7tb3" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c7tb3 == 'NAO'):echo 'selected';
+                                    if (@$tabela3->c7tb3 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c7tb3 == 'SIM'):echo 'selected';
+                                    if (@$tabela3->c7tb3 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select>
@@ -684,11 +707,11 @@
                                 <select name="c8tb3" id="c8tb3" class="size2">
                                     <option value=''>SELECIONE</option>
                                     <option value='NAO'<?
-                                    if (@$obj->_c8tb3 == 'NAO'):echo 'selected';
+                                    if (@$tabela3->c8tb3 == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                     <option value='SIM' <?
-                                    if (@$obj->_c8tb3 == 'SIM'):echo 'selected';
+                                    if (@$tabela3->c8tb3 == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                 </select>
@@ -699,6 +722,9 @@
                     </table>
                     <br><br><br>
 
+                    <? 
+                    $tabela4 = json_decode(@$avaliacao[0]->avaliacao_tabela4);
+                    ?>
 
                     <h2 align = "center">TABELA 4: RISCO CARDÍACO PARA PROCEDIMENTOS NÃO CARDÍACOS</h2>
                     <table align = "center">
@@ -735,11 +761,11 @@
                                                 <th><select name="riscoalto" id="riscoalto" class="size2">
                                                         <option value=''>SELECIONE</option>
                                                         <option value='NAO'<?
-                                    if (@$obj->_riscoalto == 'NAO'):echo 'selected';
+                                    if (@$tabela4->riscoalto == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                                         <option value='SIM' <?
-                                    if (@$obj->_riscoalto == 'SIM'):echo 'selected';
+                                    if (@$tabela4->riscoalto == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                                     </select></th>
@@ -787,11 +813,11 @@
                                                 <th><select name="riscomedio" id="riscomedio" class="size2">
                                                         <option value=''>SELECIONE</option>
                                                         <option value='NAO'<?
-                                    if (@$obj->_riscomedio == 'NAO'):echo 'selected';
+                                    if (@$tabela4->riscomedio == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                                         <option value='SIM' <?
-                                    if (@$obj->_riscomedio == 'SIM'):echo 'selected';
+                                    if (@$tabela4->riscomedio == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                                     </select></th>
@@ -840,11 +866,11 @@
                                                 <th><select name="riscobaixo" id="riscobaixo" class="size2">
                                                         <option value=''>SELECIONE</option>
                                                         <option value='NAO'<?
-                                    if (@$obj->_riscobaixo == 'NAO'):echo 'selected';
+                                    if (@$tabela4->riscobaixo == 'NAO'):echo 'selected';
                                     endif;
                                     ?> >NÃO</option>
                                                         <option value='SIM' <?
-                                    if (@$obj->_riscobaixo == 'SIM'):echo 'selected';
+                                    if (@$tabela4->riscobaixo == 'SIM'):echo 'selected';
                                     endif;
                                     ?> >SIM</option>
                                                     </select></th>
@@ -855,7 +881,7 @@
                         </tr>    
 
                     </table><br><br><br>
-
+                                      
                     <table align="center" border="1" width = "500">
                         <h3 align = "center">CONCLUSÕES</h3>
 

@@ -47,19 +47,35 @@ ALTER TABLE ponto.tb_ambulatorio_laudo ALTER COLUMN texto TYPE TEXT;
 
 CREATE TABLE ponto.tb_laudo_form
 (
-  obesidade character varying(3)[],
-  diabetes character varying(3)[],
-  sedentarismo character varying(3)[],
-  hipertensao character varying(3)[],
-  dac character varying(3)[],
-  tabagismo character varying(3)[],
-  dislipidemia character varying(3)[],
-  diabetespe character varying(3)[],
-  haspe character varying(3)[],
-  dacpe character varying(3)[],
-  ircpe character varying(3)[],
-  sopros character varying(3)[],
-  questoes text
+  obesidade character varying(3),
+  diabetes character varying(3),
+  sedentarismo character varying(3),
+  hipertensao character varying(3),
+  dac character varying(3),
+  tabagismo character varying(3),
+  dislipidemia character varying(3),
+  diabetespe character varying(3),
+  haspe character varying(3),
+  dacpe character varying(3),
+  ircpe character varying(3),
+  sopros character varying(3),
+  questoes text,
+  paciente_id integer,
+  guia_id integer,
+  laudo_form_id serial primary key
+  );
+
+-- Dia 03/08/2018
+
+CREATE TABLE ponto.tb_laudo_avaliacao
+(
+  avaliacao_tabela1 text,
+  avaliacao_tabela2 text,
+  avaliacao_tabela3 text,
+  avaliacao_tabela4 text,
+  paciente_id integer,
+  guia_id integer,
+  laudo_avaliacao_id serial primary key  
 );
 CREATE TABLE ponto.tb_internacao_procedimentos
 (
