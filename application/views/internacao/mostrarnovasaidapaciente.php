@@ -14,6 +14,7 @@
                     <input type="text"  name="leito" id="leito" class="texto09" value="<?= @$paciente[0]->leito; ?>" readonly/>
                     <input type="hidden"  name="leito_id" id="leito" class="texto09" value="<?= @$paciente[0]->leito_id; ?>" readonly/>
                     <input type="hidden"  name="internacao_id" id="leito" class="texto09" value="<?= @$paciente[0]->internacao_id; ?>" readonly/>
+                    <input type="hidden"  name="ativo_internacao" id="ativo_internacao" class="texto09" value="<?= @$paciente[0]->ativo; ?>" readonly/>
                 </div>
 
 
@@ -56,7 +57,7 @@
                     <select name="medico_saida" id="medico_saida" class="size2" selected="<?= @$internacao[0]->forma_de_entrada; ?>" required>
                         <option value="">Selecione</option>   
                         <? foreach ($medicos as $item) { ?>
-                            <option value="<?= $item->operador_id ?>" ><?= $item->nome ?></option>   
+                            <option <?=(@$paciente[0]->medico_saida == $item->operador_id)? 'selected': '';?> value="<?= $item->operador_id ?>" ><?= $item->nome ?></option>   
                         <? }
                         ?>
                     </select>
@@ -64,14 +65,14 @@
                 </div>
                 <div>
                     <label>Data/hora ex.( 20/01/2010 14:30:21)</label>
-                    <input type="text" required id="txtdata" class="texto04" name="data_saida" alt="39/19/9999 29:59:59"  required/>
+                    <input type="text" required id="txtdata" class="texto04" name="data_saida" alt="39/19/9999 29:59:59" value="<?=(@$paciente[0]->data_saida != '')?date('d/m/Y H:i:s',strtotime(@$paciente[0]->data_saida)): '';?>" required/>
                 </div>
                 <div>
                     <label>Motivo de Saida</label>
                     <select name="motivosaida" required="">
                         <option value="">Selecione</option>
                         <? foreach (@$motivosaida as $item) { ?>
-                            <option onclick="document.getElementById('hospital').style.display = 'none', document.getElementById('labelhospital').style.display = 'none';" value="<?= $item->internacao_motivosaida_id ?>"><? echo $item->nome ?> </option>
+                        <option <?=(@$paciente[0]->motivo_saida == $item->internacao_motivosaida_id)? 'selected': '';?> onclick="document.getElementById('hospital').style.display = 'none', document.getElementById('labelhospital').style.display = 'none';" value="<?= $item->internacao_motivosaida_id ?>"><? echo $item->nome ?> </option>
                         <? } ?>
                         <option name="motivosaida" onclick="document.getElementById('hospital').style.display = 'inline', document.getElementById('labelhospital').style.display = 'inline';" value="transferencia" >Transferência</option>
 

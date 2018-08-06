@@ -80,14 +80,19 @@ class motivosaida_model extends BaseModel {
                            i.data_internacao,
                            i.observacao_saida,
                            i.leito,
+                           i.ativo,
                            i.data_saida,
                            il.nome as leito_nome,
+                           ie.nome as enfermaria_nome,
+                           iu.nome as unidade_nome,
                            o.nome as medico_internacao,
                            o2.nome as medico_saida,
                            p.sexo,
                            p.nascimento');
         $this->db->from('tb_internacao i');
         $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
+        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
         $this->db->join('tb_operador o2', 'o2.operador_id = i.medico_saida', 'left');
@@ -111,8 +116,12 @@ class motivosaida_model extends BaseModel {
                            i.prelaudo,
                            o.nome as medico,
                            i.data_internacao,
+                           i.data_saida,
+                           i.motivo_saida,
+                           i.medico_saida,
                            i.forma_de_entrada,
                            i.estado,
+                           i.ativo,
                            i.carater_internacao,
                            i.justificativa,
                            i.observacao_saida,
@@ -124,6 +133,8 @@ class motivosaida_model extends BaseModel {
                            p.nascimento');
         $this->db->from('tb_internacao i');
         $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
+        $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
+        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
         $this->db->join('tb_internacao_motivosaida m', 'm.internacao_motivosaida_id = i.motivo_saida', 'left');
@@ -157,16 +168,37 @@ class motivosaida_model extends BaseModel {
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
+//        var_dump($_POST);
+//        die;
+        if ($_POST['ativo_internacao'] == 't') {
 
-        $this->db->set('internacao_id', $_POST['internacao_id']);
-        $this->db->set('leito_id', $_POST['leito_id']);
-        $this->db->set('tipo', 'SAIDA');
-        $this->db->set('status', 'SAIDA');
-        $this->db->set('data', $horario);
-        $this->db->set('operador_movimentacao', $operador_id);
-        $this->db->set('data_cadastro', $horario);
-        $this->db->set('operador_cadastro', $operador_id);
-        $this->db->insert('tb_internacao_leito_movimentacao');
+            $this->db->set('internacao_id', $_POST['internacao_id']);
+            $this->db->set('leito_id', $_POST['leito_id']);
+            $this->db->set('tipo', 'SAIDA');
+            $this->db->set('status', 'SAIDA');
+            $this->db->set('data', $horario);
+            $this->db->set('operador_movimentacao', $operador_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_internacao_leito_movimentacao');
+
+
+            //Tabela Ocupação alteração
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->set('ocupado', 'f');
+            $this->db->where('paciente_id', $_POST['idpaciente']);
+            $this->db->update('tb_internacao_ocupacao');
+
+            //Tabela internacao_leito
+
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->set('ativo', 't');
+            $this->db->where('internacao_leito_id', $_POST['leito_id']);
+            $this->db->update('tb_internacao_leito');
+        }
+
 
         //Tabela internação alteração
         if ($_POST['motivosaida'] == 'transferencia') {
@@ -196,22 +228,8 @@ class motivosaida_model extends BaseModel {
             $this->db->where('internacao_id', $_POST['internacao_id']);
             $this->db->update('tb_internacao');
         }
-        //Tabela Ocupação alteração
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->set('ocupado', 'f');
-        $this->db->where('paciente_id', $_POST['idpaciente']);
-        $this->db->update('tb_internacao_ocupacao');
-
-        //Tabela internacao_leito
-
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->set('ativo', 't');
-        $this->db->where('internacao_leito_id', $_POST['leito_id']);
-        $this->db->update('tb_internacao_leito');
     }
-    
+
     function gravarmotivosaida() {
 
         try {

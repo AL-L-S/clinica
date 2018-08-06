@@ -827,6 +827,12 @@
                             <dd>
                                 <input type="checkbox" id="botao_ficha_convenio" name="botao_ficha_convenio" <? if (@$obj->_botao_ficha_convenio == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ao ativar essa flag o Gerente de Recepção e perfil Recepção conseguem cancelar na recepção">Recepção Cancelar (Gerente e Recepção)</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="gerente_cancelar" name="gerente_cancelar" <? if (@$obj->_gerente_cancelar == 't') echo "checked"; ?>/> 
+                            </dd>
                         </fieldset>
                     <? } ?>
                 </dl>    

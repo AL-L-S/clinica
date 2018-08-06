@@ -193,6 +193,7 @@ class guia_model extends Model {
                             ep.orcamento_cadastro,
                             ep.repetir_horarios_agenda,
                             ep.senha_finalizar_laudo,
+                            ep.gerente_cancelar,
                             ep.valor_convenio_nao,
                             ep.producao_alternativo,
                             ep.apenas_procedimentos_multiplos,

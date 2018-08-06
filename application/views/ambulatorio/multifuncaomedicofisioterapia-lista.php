@@ -23,6 +23,7 @@
                     </a>
                 </div>
             </td>
+            
         </tr>
     </table>
     <div id="accordion">

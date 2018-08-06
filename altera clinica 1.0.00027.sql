@@ -153,6 +153,7 @@ END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
+<<<<<<< HEAD
 -- Dia 04/08/2018
 
 CREATE TABLE ponto.tb_laudo_parecer
@@ -167,3 +168,10 @@ CREATE TABLE ponto.tb_laudo_parecer
   antibiotico text,
   CONSTRAINT tb_laudo_parecer_pkey PRIMARY KEY (laudo_parecer_id)
 );
+=======
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar boolean DEFAULT true;
+
+
+ <?if(@$empresapermissoes->gerente_cancelar == 't' || $perfil_id == 1){?><?}?>
+>>>>>>> origin/master

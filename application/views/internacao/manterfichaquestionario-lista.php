@@ -17,7 +17,13 @@
                                 Nome
                             </th>
                             <th colspan="1" class="tabela_title">
-                               Ligação Confirmada
+                                Data Inicio
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                Data Fim
+                            </th>
+                            <th colspan="1" class="tabela_title">
+                                Ligação Confirmada
                             </th>
                             <th colspan="1" class="tabela_title">
                                 Aprovado
@@ -33,7 +39,19 @@
                             </th>
                             <th colspan="1" class="tabela_title">
 
-                                <select id="confirmado" name="confirmado"  class="texto03" >
+                                <input name="data_inicio" id="data_inicio" type="text" class="texto02" value="<?= @$_GET['data_inicio'] ?>">
+                                <!--<button type="submit" id="enviar">Pesquisar</button>-->
+
+                            </th>
+                            <th colspan="1" class="tabela_title">
+
+                                <input name="data_fim" id="data_fim" type="text" class="texto02" value="<?= @$_GET['data_fim'] ?>">
+                                <!--<button type="submit" id="enviar">Pesquisar</button>-->
+
+                            </th>
+                            <th colspan="1" class="tabela_title">
+
+                                <select id="confirmado" name="confirmado"  class="texto02" >
                                     <option value="">
                                         Selecione
                                     </option>
@@ -67,17 +85,21 @@
                                 <button type="submit" id="enviar">Pesquisar</button>
                             </th>
                         </tr>
+                        </table>
+                    <table>
                         <tr>
                             <th class="tabela_header">Nome Paciente</th>
                             <th class="tabela_header">Nome Responsável</th>
+                            <th class="tabela_header">Operador Cadastro</th>
 
                             <th class="tabela_header">Data/Hora</th>
                             <th class="tabela_header">Ligação</th>
                             <th class="tabela_header">Aprovação</th>
                             <!--<th class="tabela_header">Raz&atilde;o social</th>-->
                             <th class="tabela_header" colspan="5"><center>Detalhes</center></th>
-                    </tr>
-                    </thead>
+                        </tr>
+                        </thead>
+
                 </form>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
@@ -98,6 +120,7 @@
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->operador; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y H:i:s", strtotime($item->data_cadastro)); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= ($item->confirmado == 't' ? 'Efetuada' : 'Não-Efetuada'); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= ($item->aprovado == 't' ? 'Aprovado' : 'Não-Aprovado'); ?></td>
@@ -106,6 +129,10 @@
                                     <? if ($item->confirmado == 'f') { ?>
                                         <div class="bt_link">
                                             <a onclick="javascript:return confirm('Deseja confirmar a ligação?');" href="<?= base_url() ?>internacao/internacao/confirmarligacaofichaquestionario/<?= $item->internacao_ficha_questionario_id; ?>">Ligação</a>
+                                        </div>
+                                    <? } else { ?>
+                                        <div class="bt_link">
+                                            <a onclick="javascript:return confirm('Deseja retirar a confirmação de ligação?');" href="<?= base_url() ?>internacao/internacao/desconfirmarligacaofichaquestionario/<?= $item->internacao_ficha_questionario_id; ?>">Ligação</a>
                                         </div>
                                     <? } ?>
                                 </td>
@@ -156,8 +183,30 @@
     </div>
 
 </div> <!-- Final da DIV content -->
+<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript">
-
+    $(function () {
+        $("#data_inicio").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
+    $(function () {
+        $("#data_fim").datepicker({
+            autosize: true,
+            changeYear: true,
+            changeMonth: true,
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            buttonImage: '<?= base_url() ?>img/form/date.png',
+            dateFormat: 'dd/mm/yy'
+        });
+    });
     $(function () {
         $("#accordion").accordion();
     });
