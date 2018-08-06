@@ -115,7 +115,7 @@ class App extends Controller {
             } else {
                 $result = array(
                     "status" => "erro",
-                    "motivo" => "Neste link não foi encontrado nenhum usuario com os dados informados!"
+                    "motivo" => "Nome de usuário ou senha incorreto!"
                 );
             }
         } else {

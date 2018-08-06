@@ -286,6 +286,7 @@
                                     <option value="histconsulta" <?= (in_array('histconsulta', $opc_telatendimento)) ? 'selected' : ''; ?>>Histórico Consulta</option>
                                     <option value="histantigo" <?= (in_array('histantigo', $opc_telatendimento)) ? 'selected' : ''; ?>>Histórico Antigo</option>
                                     <option value="preencherform" <?= (in_array('preencherform', $opc_telatendimento)) ? 'selected' : ''; ?>>Preencher Formulário</option>
+                                    <option value="parecercirurgia" <?= (in_array('parecercirurgia', $opc_telatendimento)) ? 'selected' : ''; ?>>Parecer Cirurgia Pediátrica</option>
                                 </select>
                             </dd>
                         </div>
