@@ -3,7 +3,7 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <h4 class="title_relatorio">Relatório Pacientes Internados</h4>
+    <h4 class="title_relatorio">Relatório Paciente Saída</h4>
     <p></p>
     <h4 class="title_relatorio">Inicio: <?= $data_inicio; ?> - Fim: <?= $data_fim; ?> </h4>
 
@@ -45,9 +45,6 @@
                     Cid1
                 </th>
                 <th class="tabela_header">
-                    Data de Internação
-                </th>
-                <th class="tabela_header">
                     Dias de Internação
                 </th>
                
@@ -74,7 +71,7 @@
                     $dateInterval = $nascimento->diff($atual);
 
                     $data_inicio = new DateTime($item->data_internacao);
-                    $data_fim = new DateTime(date("Y-m-d H:i:s"));
+                    $data_fim = new DateTime($item->data_saida);
 
                     // Resgata diferença entre as datas
                     $dateInterval2 = $data_inicio->diff($data_fim);
@@ -89,7 +86,6 @@
                     <td ><?= ($item->nascimento != '')? $dateInterval->y : $item->idade; ?> Anos</td>
                     <td ><?= $item->procedimento; ?></td>
                     <td ><?= $item->cid1; ?></td>
-                    <td ><?= date("d/m/Y H:i:s",strtotime($item->data_internacao)); ?></td>
                     <td ><?= $dateInterval2->days; ?> Dias</td>
                 </tr>
                 <?

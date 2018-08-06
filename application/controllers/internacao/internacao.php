@@ -94,7 +94,7 @@ class internacao extends BaseController {
 //        var_dump($data['numero']);
 //        die;
         $data['internacao_ficha_id'] = $internacao_ficha_id;
-        if ($data['numero'] == 0 || true) {
+        if ($data['numero'] == 0) {
             $data['precadastro'] = $this->internacao_m->listarultimoprecadastro($paciente_id, $internacao_ficha_id);
             $data['paciente'] = $this->paciente->listardados($paciente_id);
             $data['medicos'] = $this->operador_m->listarmedicos();
@@ -104,7 +104,7 @@ class internacao extends BaseController {
             $data['paciente_id'] = $paciente_id;
             $this->loadView('internacao/cadastrarinternacao', $data);
         } else {
-            $data['mensagem'] = 'Paciente ja possui internacao';
+            $data['mensagem'] = 'Paciente já possui Internação';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "internacao/internacao/pesquisar");
         }
@@ -340,6 +340,17 @@ class internacao extends BaseController {
     function confirmarligacaofichaquestionario($internacao_modelo_grupo_id) {
 
         if ($this->internacao_m->confirmarligacaofichaquestionario($internacao_modelo_grupo_id)) {
+            $data['mensagem'] = 'Confirmação efetuada com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao efetuar confirmação';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/manterfichaquestionario");
+    }
+
+    function desconfirmarligacaofichaquestionario($internacao_modelo_grupo_id) {
+
+        if ($this->internacao_m->desconfirmarligacaofichaquestionario($internacao_modelo_grupo_id)) {
             $data['mensagem'] = 'Confirmação efetuada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao efetuar confirmação';
@@ -880,6 +891,11 @@ class internacao extends BaseController {
         $this->loadView('internacao/relatoriointernacao', $data);
     }
 
+    function relatoriosaidainternacao() {
+        $data['unidade'] = $this->internacao_m->listaunidade();
+        $this->loadView('internacao/relatoriosaidainternacao', $data);
+    }
+
     function gerarelatoriointernacao() {
 //        echo '<pre>';
 //        var_dump($_POST);
@@ -902,6 +918,30 @@ class internacao extends BaseController {
         }
 
         $this->load->View('internacao/impressaorelatoriointernacao', $data);
+    }
+
+    function gerarelatoriosaidainternacao() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $data['data_inicio'] = $_POST['txtdata_inicio'];
+        $data['data_fim'] = $_POST['txtdata_fim'];
+        $data['internacao'] = $this->internacao_m->relatoriosaidainternacao();
+//        echo '<pre>';
+//        var_dump($data['internacao']);
+//        die;
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
+        } else {
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
+            } else {
+                $data['convenio'] = 'TODOS';
+            }
+        }
+
+        $this->load->View('internacao/impressaorelatoriosaidainternacao', $data);
     }
 
     function relatoriointernacaofaturamento() {

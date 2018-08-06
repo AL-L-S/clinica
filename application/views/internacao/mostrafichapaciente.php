@@ -15,6 +15,14 @@ if (@$paciente[0] == '') {
                     </div>
 
                     <div>
+                        <label>Unidade</label>
+                        <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->unidade_nome; ?>" readonly/>
+                    </div>
+                    <div>
+                        <label>Enfermaria</label>
+                        <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->enfermaria_nome; ?>" readonly/>
+                    </div>
+                    <div>
                         <label>Leito</label>
                         <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->leito; ?>" readonly/>
                     </div>
@@ -23,6 +31,24 @@ if (@$paciente[0] == '') {
                     <div>
                         <label>Data da Internacao</label>                      
                         <input type="text" id="data_internacao" name="data_internacao"  class="texto09" value="<?= date("d/m/Y H:i:s", strtotime($paciente[0]->data_internacao)); ?>" readonly/>
+                    </div>
+                    <?
+                    $data_inicio = new DateTime($paciente[0]->data_internacao);
+                    $data_fim = new DateTime(date("Y-m-d H:i:s"));
+                    
+                    if($data_inicio > $data_fim){
+                       $dias =  '0 Dias';
+                    }else{
+                       $dias = $dateInterval2->days . ' Dias';
+                    }
+
+                    // Resgata diferença entre as datas
+                    $dateInterval2 = $data_inicio->diff($data_fim);
+                    
+                    ?>
+                    <div>
+                        <label>Dias de Internação</label>                      
+                        <input type="text" id="data_internacao" name="data_internacao"  class="texto09" value="<?= $dias; ?>" readonly/>
                     </div>
 
                     <div>

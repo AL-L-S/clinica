@@ -12,11 +12,20 @@
                 <div>
                     <label>Nome</label>                      
                     <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente[0]->paciente ?>" readonly/>
+                    <input type="hidden" id="txtAtivoInternacao" name="ativo_internacao"  class="texto09" value="<?= $paciente[0]->ativo ?>" readonly/>
                 </div>
 
                 <div>
+                    <label>Unidade</label>
+                    <input type="text"  name="leito" id="leito" class="texto09" value="<?= @$paciente[0]->unidade_nome; ?>" readonly/>
+                </div>
+                <div>
+                    <label>Enfermaria</label>
+                    <input type="text"  name="leito" id="leito" class="texto09" value="<?= @$paciente[0]->enfermaria_nome; ?>" readonly/>
+                </div>
+                <div>
                     <label>Leito</label>
-                    <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->leito_nome; ?>" readonly/>
+                    <input type="text"  name="leito" id="leito" class="texto09" value="<?= @$paciente[0]->leito_nome; ?>" readonly/>
                 </div>
 
 
@@ -86,6 +95,7 @@
                     <input type="text"  name="leito" id="leito" class="texto09" value="<?= $paciente[0]->observacao_saida; ?>" readonly/>
                 </div>
             </fieldset>
+            
 
         </form>
 

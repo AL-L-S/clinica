@@ -70,6 +70,9 @@
                             Cid
                         </th>
                         <th class="tabela_header">
+                            Data de Internação
+                        </th>
+                        <th class="tabela_header">
                             Dias De Internação
                         </th>
 
@@ -101,6 +104,7 @@
                         <td ><?= ($item->nascimento != '')? $dateInterval->y : $item->idade; ?> Anos</td>
                         <td ><?= $item->procedimento; ?></td>
                         <td ><?= $item->cid1; ?></td>
+                        <td ><?= date("d/m/Y H:i:s",strtotime($item->data_internacao)); ?></td>
                         <td ><?= $dateInterval2->days; ?> Dias</td>
                     </tr>
                     <?

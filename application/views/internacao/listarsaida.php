@@ -123,7 +123,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->internacao_m->listarsaida($_GET)->orderby('p.nome')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->internacao_m->listarsaida($_GET)->orderby('data_saida desc')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -137,6 +137,19 @@
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                 </td>
+                                <?
+                                $perfil_id = $this->session->userdata('perfil_id');
+                                ?>
+                                <? if ($perfil_id == 1) { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                        <div style="width: 70px;" class="bt_link_new">
+                                            <a href="<?= base_url() ?>internacao/internacao/mostrarnovasaidapaciente/<?= $item->internacao_id ?>">
+                                                Editar
+                                            </a>
+                                        </div>
+
+                                    </td>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                     <div style="width: 80px;" class="bt_link_new">
                                         <a href="<?= base_url() ?>internacao/internacao/retornarinternacao/<?= $item->internacao_id ?>">
