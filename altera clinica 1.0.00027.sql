@@ -77,6 +77,7 @@ CREATE TABLE ponto.tb_laudo_avaliacao
   guia_id integer,
   laudo_avaliacao_id serial primary key  
 );
+
 CREATE TABLE ponto.tb_internacao_procedimentos
 (
   internacao_procedimentos_id SERIAL NOT NULL,
@@ -167,4 +168,6 @@ CREATE TABLE ponto.tb_laudo_parecer
   antibiotico text,
   CONSTRAINT tb_laudo_parecer_pkey PRIMARY KEY (laudo_parecer_id)
 );
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN autorizar_sala_espera boolean DEFAULT true;
