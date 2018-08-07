@@ -153,8 +153,18 @@ END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
+-- Dia 04/08/2018
 
-ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar boolean DEFAULT true;
-
-
+CREATE TABLE ponto.tb_laudo_parecer
+(
+  dados text,
+  exames text,
+  exames_complementares text,
+  guia_id integer,
+  paciente_id integer,
+  laudo_parecer_id serial NOT NULL,
+  hipotese_diagnostica text,
+  antibiotico text,
+  CONSTRAINT tb_laudo_parecer_pkey PRIMARY KEY (laudo_parecer_id)
+);
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN autorizar_sala_espera boolean DEFAULT true;

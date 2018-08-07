@@ -125,6 +125,7 @@
                             <? } ?>
                         </td>
                         <tr>
+                           
                     </table>
 
 
@@ -351,10 +352,17 @@
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                             Receituario</a>
                                                     </div>
-                                                </td>
-
-<? } ?>
-
+                                            </td>
+                                             <td>
+                            <? if(in_array('parecercirurgia', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherparecer/<?= $ambulatorio_laudo_id ?>');" >
+                                   Parecer C.P</a></div>
+                             <? } ?>
+                        </td>
+                                            
+                                            <?}?>
+                                            
                                             <td rowspan="5" >
 
                                             </td>
