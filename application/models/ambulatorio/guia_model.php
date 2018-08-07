@@ -1703,9 +1703,9 @@ class guia_model extends Model {
         if ($return_convenio[0]->procedimento2 != '') {
             $procedimento2 = $return_convenio[0]->procedimento2;
         }
-        
+
         foreach ($return as $value) {
-            
+
             $this->db->select('ae.agenda_exames_id,
                                ae.valor_total,
                                pc.*
@@ -1723,7 +1723,7 @@ class guia_model extends Model {
 //            $this->db->groupby('ae.agenda_exames_id');
             $this->db->orderby('ae.valor_total desc');
             $return2 = $this->db->get()->result();
-            
+
             $b = 0;
 
 
@@ -2890,8 +2890,8 @@ class guia_model extends Model {
 
 //        $this->db->where("p.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
         $this->db->where("p.ativo", 't');
-        if ($_POST['cpf'] == 'SIM'){
-        $this->db->where("p.cpf !=", '');
+        if ($_POST['cpf'] == 'SIM') {
+            $this->db->where("p.cpf !=", '');
         }
         $return = $this->db->get();
         return $return->result();
@@ -3060,7 +3060,7 @@ class guia_model extends Model {
         if ($guia == "NAO") {
             $this->db->where('g.nota_fiscal', 't');
         }
-        if($_POST['empresa'] != '0'){
+        if ($_POST['empresa'] != '0') {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
         $this->db->where('ae.data >=', $inicio);
@@ -3103,7 +3103,7 @@ class guia_model extends Model {
         if ($_GET['guia'] == "NAO") {
             $this->db->where('g.nota_fiscal', 't');
         }
-        if($_GET['empresa'] != '0'){
+        if ($_GET['empresa'] != '0') {
             $this->db->where('ae.empresa_id', $_GET['empresa']);
         }
         $this->db->where('ae.data >=', $inicio);
@@ -4442,12 +4442,12 @@ class guia_model extends Model {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
-                
+
 //        $periodo = explode("/", $_POST["periodo_inicio"]);
 //        $mes = $periodo[0];
 //        $ano = $periodo[1];
         $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_inicio"])));
-        
+
 //        $periodo = explode("/", $_POST["periodo_fim"]);
 //        $mes = $periodo[0];
 //        $ano = $periodo[1];
@@ -4508,12 +4508,12 @@ class guia_model extends Model {
 //        $mes = $periodo[0];
 //        $ano = $periodo[1];
         $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_inicio"])));
-        
+
 //        $periodo = explode("/", $_POST["periodo_fim"]);
 //        $mes = $periodo[0];
 //        $ano = $periodo[1];
         $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_fim"])));
-        
+
 //        $this->db->where("( ( EXTRACT(month FROM al.data) = {$mes} ) AND ( EXTRACT(year FROM al.data) = {$ano}) )");
         $this->db->where("al.data >= '$data_inicio'");
         $this->db->where("al.data <= '$data_fim'");
@@ -4557,15 +4557,14 @@ class guia_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
-        
+
 //        echo "<pre>";
 //        var_dump($_POST["periodo_inicio"]); die;
-        
 //        $periodo = explode("/", $_POST["periodo_inicio"]);
 //        $mes = $periodo[0];
 //        $ano = $periodo[1];
         $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST["periodo_inicio"])));
-        
+
 //        $periodo = explode("/", $_POST["periodo_fim"]);
 //        $mes = $periodo[0];
 //        $ano = $periodo[1];
@@ -9231,7 +9230,7 @@ class guia_model extends Model {
 
     function gravartransformaorcamentocreditopersonalizado() {
         try {
-            
+
             $valor1 = $_POST['valor1'];
             $valor2 = $_POST['valor2'];
             $valor3 = $_POST['valor3'];
@@ -12840,8 +12839,8 @@ ORDER BY ae.paciente_credito_id)";
         $return = $this->db->get();
         return $return->result();
     }
-    
-        function listarconfiguracaoimpressaoformulario() {
+
+    function listarconfiguracaoimpressaoformulario() {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('ei.empresa_impressao_cabecalho_id,ei.cabecalho,ei.rodape, e.nome as empresa');
@@ -13452,6 +13451,28 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('senha', md5($agenda_exames_id));
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
+
+
+                $this->db->select('ep.autorizar_sala_espera');
+                $this->db->from('tb_empresa e');
+                $this->db->where('e.empresa_id', $this->session->userdata('empresa_id'));
+                $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+                $this->db->orderby('e.empresa_id');
+                $sala_de_espera_p = $this->db->get()->result();
+
+                if (@$sala_de_espera_p[0]->autorizar_sala_espera == 'f') {
+
+                    $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
+                    $dados['agenda_exames_id'] = $agenda_exames_id;
+                    $dados['medico'] = $_POST['medicoagenda'];
+                    $dados['paciente_id'] = $_POST['txtpaciente_id'];
+                    $dados['procedimento_tuss_id'] = $_POST['procedimento1'];
+                    $dados['sala_id'] = $_POST['sala1'];
+                    $dados['guia_id'] = $ambulatorio_guia_id;
+                    $dados['tipo'] = $tipo_grupo;
+
+                    $this->enviarsaladeespera($dados);
+                }
             }
 
 //            if( (isset($_POST['indicacao']) && isset($_POST['indicacao_paciente'])) && ($_POST['indicacao'] != $_POST['indicacao_paciente'])){
@@ -14113,7 +14134,7 @@ ORDER BY ae.paciente_credito_id)";
 //                        $this->db->from('tb_agenda_exames ae');
 //                        $this->db->where("agenda_exames_id", $agenda_exames_id);
 //                        $exame = $this->db->get()->result();
-                        
+
 
                         $informacoes['paciente_id'] = $_POST['txtpaciente_id'];
                         $informacoes['procedimento'] = $_POST['procedimento1'];
@@ -14123,19 +14144,19 @@ ORDER BY ae.paciente_credito_id)";
                         $informacoes['agenda_exames_id'] = $agenda_exames_id;
                         $informacoes['numero_consultas'] = $numero_consultas;
                         $informacoes['valor'] = $_POST['valor1'];
-                        
-                        
+
+
                         $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
                         if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
                             $this->db->where('agenda_exames_id', $agenda_exames_id);
                             $this->db->delete('tb_agenda_exames');
-                            
+
                             return array(
                                 "cod" => -1,
                                 "message" => $fidelidade
                             );
                         }
-                        
+
                         if ($fidelidade == 'true') {
                             $fidelidade_liberado = true;
                         } elseif ($fidelidade == 'false') {
@@ -14184,11 +14205,173 @@ ORDER BY ae.paciente_credito_id)";
                     $this->db->where('agenda_exames_id', $agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
 //                    die;
+
+                    $this->db->select('ep.autorizar_sala_espera');
+                    $this->db->from('tb_empresa e');
+                    $this->db->where('e.empresa_id', $this->session->userdata('empresa_id'));
+                    $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+                    $this->db->orderby('e.empresa_id');
+                    $sala_de_espera_p = $this->db->get()->result();
+
+                    if (@$sala_de_espera_p[0]->autorizar_sala_espera == 'f') {
+
+                        $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
+                        $dados['agenda_exames_id'] = $agenda_exames_id;
+                        $dados['medico'] = $_POST['medicoagenda'];
+                        $dados['paciente_id'] = $_POST['txtpaciente_id'];
+                        $dados['procedimento_tuss_id'] = $_POST['procedimento1'];
+                        $dados['sala_id'] = $_POST['sala1'];
+                        $dados['guia_id'] = $ambulatorio_guia_id;
+                        $dados['tipo'] = $tipo_grupo;
+
+                        $this->enviarsaladeespera($dados);
+                    }
                 }
             }
         } catch (Exception $exc) {
             return -1;
         }
+    }
+
+    function enviarsaladeespera($dados) {
+
+        $agenda_exames_id = $dados['agenda_exames_id'];
+        $medico = $dados['medico'];
+        $paciente_id = $dados['paciente_id'];
+        $procedimento_tuss_id = $dados['procedimento_tuss_id'];
+        $sala_id = $dados['sala_id'];
+        $guia_id = $dados['guia_id'];
+        $tipo = $dados['tipo'];
+
+        $horario = date("Y-m-d H:i:s");
+        $data = date("Y-m-d");
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $exame_id = $agenda_exames_id;
+//            echo '<pre>';
+//            var_dump($_POST);
+//            var_dump($procedimento_tuss_id);
+//            var_dump($guia_id);
+//            var_dump($agenda_exames_id);
+//            var_dump($tipo);
+//            die;
+
+
+        $this->db->select('al.ambulatorio_laudo_id');
+        $this->db->from('tb_ambulatorio_laudo al');
+        $this->db->join('tb_exames ae', 'ae.exames_id = al.exame_id', 'left');
+        $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->where("age.agenda_exames_id is not null");
+        $this->db->where("al.data <=", $data);
+        $this->db->where("age.paciente_id", $paciente_id);
+        $this->db->where("al.medico_parecer1", $medico);
+        $atendimentos = $this->db->get()->result();
+
+        $this->db->select('data_senha, senha, toten_fila_id, toten_senha_id');
+        $this->db->from('tb_paciente p');
+        $this->db->where("p.paciente_id", $paciente_id);
+        $paciente_inf = $this->db->get()->result();
+
+
+
+
+//            var_dump($atendimentos); die;
+        if (count($atendimentos) > 0) {
+            $primeiro_atendimento = 'f';
+        } else {
+            $primeiro_atendimento = 't';
+        }
+
+        $this->db->select('ppmc.dia_recebimento, ppmc.tempo_recebimento');
+        $this->db->from('tb_procedimento_percentual_medico ppm');
+        $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
+        $this->db->where("ppm.procedimento_tuss_id", $procedimento_tuss_id);
+        $this->db->where("ppmc.medico", $medico);
+        $retorno = $this->db->get()->result();
+
+//            echo "<pre>"; var_dump($retorno); die;
+        if (count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '') {
+            if (date("d") > $retorno[0]->dia_recebimento) {
+                $d = date("Y-m-", strtotime("+1 month")) . $retorno[0]->dia_recebimento;
+                $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+            } else {
+                $d = date("Y-m-") . $retorno[0]->dia_recebimento;
+                $dataProducao = date("Y-m-d", strtotime("+" . $retorno[0]->tempo_recebimento . " days", strtotime($d)));
+            }
+        } else {
+            $dataProducao = $data;
+        }
+
+//                $this->db->set('ativo', 'f');
+//                $this->db->where('exame_sala_id', $_POST['txtsalas']);
+//                $this->db->update('tb_exame_sala');
+
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('paciente_id', $paciente_id);
+
+        $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
+        $this->db->set('guia_id', $guia_id);
+        $this->db->set('tipo', $tipo);
+        $this->db->set('agenda_exames_id', $agenda_exames_id);
+        $this->db->set('sala_id', $sala_id);
+        if ($medico != "") {
+            $this->db->set('medico_realizador', $medico);
+        }
+
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_exames');
+        $exames_id = $this->db->insert_id();
+
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('data', $data);
+        if (count($paciente_inf) > 0) {
+            $this->db->set('toten_senha_id', $paciente_inf[0]->toten_senha_id);
+            $this->db->set('toten_fila_id', $paciente_inf[0]->toten_fila_id);
+            $this->db->set('senha ', $paciente_inf[0]->senha);
+            $this->db->set('data_senha', $paciente_inf[0]->data_senha);
+        }
+
+        $this->db->set('data_producao', $dataProducao);
+        $this->db->set('paciente_id', $paciente_id);
+        $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
+        $this->db->set('exame_id', $exames_id);
+        $this->db->set('guia_id', $guia_id);
+        $this->db->set('tipo', $tipo);
+        $this->db->set('primeiro_atendimento', $primeiro_atendimento);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        if ($medico != "") {
+            $this->db->set('medico_parecer1', $medico);
+        }
+//        $this->db->set('id_chamada', $_POST['idChamada']);
+        $this->db->insert('tb_ambulatorio_laudo');
+        $laudo_id = $this->db->insert_id();
+
+        if ($medico != "") {
+            $this->db->set('medico_consulta_id', $medico);
+            $this->db->set('medico_agenda', $medico);
+            $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            $this->db->set('percentual_medico', $percentual[0]->percentual);
+        }
+        $this->db->set('realizada', 'true');
+        $this->db->set('senha', md5($exame_id));
+        $this->db->set('data_realizacao', $horario);
+        $this->db->set('operador_realizacao', $operador_id);
+
+        $this->db->set('agenda_exames_nome_id', $sala_id);
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->update('tb_agenda_exames');
+
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('agenda_exames_id', $agenda_exames_id);
+        $this->db->set('sala_id', $sala_id);
+        $this->db->set('paciente_id', $paciente_id);
+        $this->db->insert('tb_ambulatorio_chamada');
+
+        return true;
     }
 
     function gravarorcamentoitemrecepcao($ambulatorio_orcamento_id, $paciente_id) {
@@ -14216,8 +14399,8 @@ ORDER BY ae.paciente_credito_id)";
             if ($_POST['formapamento'] != '') {
                 $this->db->set('forma_pagamento', $_POST['formapamento']);
             }
-            
-            if($_POST['txtdata'] != ''){
+
+            if ($_POST['txtdata'] != '') {
                 $this->db->set('data_preferencia', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdata']))));
             }
             $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
@@ -14294,8 +14477,8 @@ ORDER BY ae.paciente_credito_id)";
             }
 
 //            $this->db->set('dia_semana_preferencia', $_POST['dia_preferencia']);
-            
-            if($_POST['txtdata'] != ''){
+
+            if ($_POST['txtdata'] != '') {
                 $this->db->set('data_preferencia', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdata']))));
             }
             $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
@@ -14442,7 +14625,7 @@ ORDER BY ae.paciente_credito_id)";
                     $this->db->from('tb_paciente p');
                     $this->db->where("p.paciente_id", $_POST['txtpaciente_id']);
                     $dados_paciente = $this->db->get()->result();
-                    
+
 //                    $this->db->select('tipo');
 //                    $this->db->from('tb_agenda_exames ae');
 //                    $this->db->where("agenda_exames_id", $agenda_exames_id);
@@ -14456,7 +14639,7 @@ ORDER BY ae.paciente_credito_id)";
                     $informacoes['agenda_exames_id'] = $agenda_exames_id;
                     $informacoes['numero_consultas'] = $numero_consultas;
                     $informacoes['valor'] = $_POST['valor1'];
-                    
+
                     $fidelidade = $this->autorizarpacientefidelidade($fidelidade_endereco_ip, $informacoes);
                     if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
                         $this->db->where('agenda_exames_id', $agenda_exames_id);
@@ -14467,14 +14650,12 @@ ORDER BY ae.paciente_credito_id)";
                             "message" => $fidelidade
                         );
                     }
-                    
+
                     if ($fidelidade == 'true') {
                         $fidelidade_liberado = true;
-                    } 
-                    elseif ($fidelidade == 'false') {
+                    } elseif ($fidelidade == 'false') {
                         $fidelidade_liberado = false;
-                    } 
-                    else {
+                    } else {
                         $fidelidade_liberado = false;
                     }
                 } else {
@@ -14514,6 +14695,28 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('senha', md5($agenda_exames_id));
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
+
+
+                $this->db->select('ep.autorizar_sala_espera');
+                $this->db->from('tb_empresa e');
+                $this->db->where('e.empresa_id', $this->session->userdata('empresa_id'));
+                $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+                $this->db->orderby('e.empresa_id');
+                $sala_de_espera_p = $this->db->get()->result();
+
+                if (@$sala_de_espera_p[0]->autorizar_sala_espera == 'f') {
+
+                    $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
+                    $dados['agenda_exames_id'] = $agenda_exames_id;
+                    $dados['medico'] = $_POST['medicoagenda'];
+                    $dados['paciente_id'] = $_POST['txtpaciente_id'];
+                    $dados['procedimento_tuss_id'] = $_POST['procedimento1'];
+                    $dados['sala_id'] = $_POST['sala1'];
+                    $dados['guia_id'] = $ambulatorio_guia_id;
+                    $dados['tipo'] = $tipo_grupo;
+
+                    $this->enviarsaladeespera($dados);
+                }
             }
 
             return $agenda_exames_id;
@@ -14827,7 +15030,7 @@ ORDER BY ae.paciente_credito_id)";
                         if ($fidelidade == 'pending' || $fidelidade == 'no_exists') { // Caso esteja com pagamento pendente
                             $this->db->where('agenda_exames_id', $agenda_exames_id);
                             $this->db->delete('tb_agenda_exames');
-                            
+
                             return array(
                                 "cod" => -1,
                                 "message" => $fidelidade
@@ -14882,6 +15085,30 @@ ORDER BY ae.paciente_credito_id)";
                     $this->db->set('senha', md5($agenda_exames_id));
                     $this->db->where('agenda_exames_id', $agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
+
+
+
+
+                    $this->db->select('ep.autorizar_sala_espera');
+                    $this->db->from('tb_empresa e');
+                    $this->db->where('e.empresa_id', $this->session->userdata('empresa_id'));
+                    $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+                    $this->db->orderby('e.empresa_id');
+                    $sala_de_espera_p = $this->db->get()->result();
+
+                    if (@$sala_de_espera_p[0]->autorizar_sala_espera == 'f' && $index == 1) {
+
+                        $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
+                        $dados['agenda_exames_id'] = $agenda_exames_id;
+                        $dados['medico'] = $_POST['medicoagenda'];
+                        $dados['paciente_id'] = $_POST['txtpaciente_id'];
+                        $dados['procedimento_tuss_id'] = $_POST['procedimento1'];
+                        $dados['sala_id'] = $_POST['sala1'];
+                        $dados['guia_id'] = $ambulatorio_guia_id;
+                        $dados['tipo'] = $tipo_grupo;
+
+                        $this->enviarsaladeespera($dados);
+                    }
                 }
             }
 

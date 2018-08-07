@@ -483,7 +483,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                             if ($item->faturado == "f" && $item->dinheiro == "t") {
                                                 if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') {
                                                     ?>
-                                                                                    <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                                                            <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                     <div class="bt_link">
                                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
@@ -747,7 +747,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 
                                                 if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') {
                                                     ?>
-                                                                                                        <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                                                                                    <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
                                                     <div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
 
@@ -776,25 +776,25 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
                                 </th>
                                 <th class="tabela_footer" colspan="5">** = Valor diferenciado</th>
                                 <!--    <? if ($perfil_id != 11) { ?>
-                                                
+                                                    
                                     <?
                                     if ($perfil_id == 1 || $faturado == 0) {
                                         if ($botao_faturar_guia == 't') {
                                             ?>
-                                                                                                                            <th colspan="2" align="center"><center><div class="bt_linkf">
-                                                                                                                            <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
-                                                                                
-                                                                                                                            </a></div></center></th>
+                                                                                                                                        <th colspan="2" align="center"><center><div class="bt_linkf">
+                                                                                                                                        <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia . '/' . $item->grupo_pagamento_id; ?>  ', '_blank', 'width=800,height=600');">Faturar Guia
+                                                                                            
+                                                                                                                                        </a></div></center></th>
                                             <?
                                         }
                                         if ($botao_faturar_proc == 't') {
                                             ?>
-                                                                                                                    <th colspan="2" align="center">    
-                                                                                                                        <div class="bt_linkf">
-                                                                                                                            <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
-                                                                                
-                                                                                                                            </a></div></center>
-                                                                                                                    </th>
+                                                                                                                                <th colspan="2" align="center">    
+                                                                                                                                    <div class="bt_linkf">
+                                                                                                                                        <a onclick="javascript:window.open('////<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
+                                                                                            
+                                                                                                                                        </a></div></center>
+                                                                                                                                </th>
                                             <?
                                         }
                                     }
@@ -933,6 +933,7 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 
                                                                 $.getJSON('<?= base_url() ?>autocomplete/listarsalaporgrupo', {grupo1: $('#grupo1').val(), ajax: true}, function (j) {
                                                                     options = '<option value=""></option>';
+//                                                                    console.log(j);
                                                                     for (var c = 0; c < j.length; c++) {
                                                                         if (j.length == 1) {
                                                                             options += '<option value="' + j[c].exame_sala_id + '" selected>' + j[c].nome + '</option>';

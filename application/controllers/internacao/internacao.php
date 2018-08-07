@@ -418,6 +418,14 @@ class internacao extends BaseController {
         $this->loadView('internacao/mostraenfermarialeito', $data);
     }
 
+    function observacaoprecadastro($internacao_ficha_questionario_id) {
+        $data['internacao_ficha_questionario_id'] = $internacao_ficha_questionario_id;
+        $data['observacao'] = $this->internacao_m->observacaoprecadastros($internacao_ficha_questionario_id);
+//        $data['teste'] = 'ISSO E UM TESTE';
+//        var_dump($data['observacao']); die;
+        $this->load->View('internacao/observacaoprecadastro-form', $data);
+    }
+
     function mostrafichapaciente($leito_id) {
         $data['paciente'] = $this->unidade_m->mostrafichapaciente($leito_id);
         $this->loadView('internacao/mostrafichapaciente', $data);
@@ -633,6 +641,18 @@ class internacao extends BaseController {
         $this->internacao_m->excluirevolucaointernacao($internacao_evolucao_id);
 
         redirect(base_url() . "internacao/internacao/listarevolucaointernacao/$internacao_id", $data);
+    }
+
+    function gravarobservacaoprecadastro($internacao_ficha_questionario_id) {
+
+        if ($this->internacao_m->gravarobservacaoprecadastro($internacao_ficha_questionario_id)) {
+            $data['mensagem'] = 'Observação alterada com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao alterar observação';
+        }
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravarsaida() {

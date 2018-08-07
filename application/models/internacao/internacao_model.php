@@ -205,6 +205,30 @@ class internacao_model extends BaseModel {
         }
     }
 
+    function gravarobservacaoprecadastro($internacao_ficha_questionario_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        try {
+
+//            var_dump($_POST); die;
+
+            $this->db->set('observacao', $_POST['txtobservacao']);
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            // $this->db->set('paciente_id',$_POST['txtPacienteId'] );
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('internacao_ficha_questionario_id', $internacao_ficha_questionario_id);
+            $this->db->update('tb_internacao_ficha_questionario');
+
+
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
     function gravarretornarinternacao($internacao_id) {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -280,12 +304,14 @@ class internacao_model extends BaseModel {
                              o.nome as operador, 
                              if.data_cadastro,
                              if.paciente_id,
+                             if.observacao,
                              if.confirmado,
                              if.aprovado');
         $this->db->from('tb_internacao_ficha_questionario if');
         $this->db->join('tb_operador o', 'o.operador_id = if.operador_cadastro', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = if.paciente_id', 'left');
         $this->db->where('if.ativo', 't');
+
         if (isset($args['confirmado']) && strlen($args['confirmado']) > 0) {
             $this->db->where('if.confirmado', $args['confirmado']);
         }
@@ -304,6 +330,23 @@ class internacao_model extends BaseModel {
 //        var_dump(date("Y-m-d",strtotime($args['data_inicio']))); die;
 
         return $this->db;
+    }
+
+    function observacaoprecadastros($internacao_ficha_questionario_id) {
+
+        $this->db->select('if.internacao_ficha_questionario_id, 
+                             if.observacao, 
+                             if.data_cadastro,
+                             ');
+        $this->db->from('tb_internacao_ficha_questionario if');
+        $this->db->where('if.ativo', 't');
+        $this->db->where('if.internacao_ficha_questionario_id', $internacao_ficha_questionario_id);
+
+
+//        var_dump(date("Y-m-d",strtotime($args['data_inicio']))); die;
+
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function listarfichaquestionarioform($internacao_ficha_questionario_id) {

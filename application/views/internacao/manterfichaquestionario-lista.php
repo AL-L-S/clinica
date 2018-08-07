@@ -91,6 +91,7 @@
                             <th class="tabela_header">Nome Paciente</th>
                             <th class="tabela_header">Nome Responsável</th>
                             <th class="tabela_header">Operador Cadastro</th>
+                            <!--<th class="tabela_header">Observação</th>-->
 
                             <th class="tabela_header">Data/Hora</th>
                             <th class="tabela_header">Ligação</th>
@@ -113,6 +114,9 @@
                         <?php
                         $lista = $this->internacao_m->listarfichaquestionario($_GET)->limit($limit, $pagina)->orderby("if.data_cadastro desc")->get()->result();
                         $estilo_linha = "tabela_content01";
+//                        echo '<pre>';
+//                        var_dump($lista);
+//                        die;
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
@@ -121,11 +125,12 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->operador; ?></td>
+                                <!--<td class="<?php echo $estilo_linha; ?>"><a style="color: red" href="<?= base_url() ?>internacao/internacao/observacaoprecadastro/<?= $item->internacao_ficha_questionario_id; ?>" target="_blank"><?= substr($item->observacao, 0, 15); ?></a></td>-->
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y H:i:s", strtotime($item->data_cadastro)); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= ($item->confirmado == 't' ? 'Efetuada' : 'Não-Efetuada'); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= ($item->aprovado == 't' ? 'Aprovado' : 'Não-Aprovado'); ?></td>
 
-                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 80px;">
                                     <? if ($item->confirmado == 'f') { ?>
                                         <div class="bt_link">
                                             <a onclick="javascript:return confirm('Deseja confirmar a ligação?');" href="<?= base_url() ?>internacao/internacao/confirmarligacaofichaquestionario/<?= $item->internacao_ficha_questionario_id; ?>">Ligação</a>
@@ -136,7 +141,7 @@
                                         </div>
                                     <? } ?>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 80px;">
                                     <? //if($item->aprovado == 'f'){?>
                                     <div class="bt_link">
                                         <a onclick="javascript:return confirm('Deseja aprovar o Pré-Cadastro?');" href="<?= base_url() ?>internacao/internacao/confirmaraprovacaofichaquestionario/<?= $item->internacao_ficha_questionario_id; ?>/<?= $item->paciente_id; ?>">Aprovar</a>
@@ -144,10 +149,13 @@
                                     <? //}?>
                                 </td>
 
-                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;"><div class="bt_link">
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 50px;"><div class="bt_link">
+                                        <a target="_blank" href="<?= base_url() ?>internacao/internacao/observacaoprecadastro/<?= $item->internacao_ficha_questionario_id; ?>">Obs.</a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 70px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>internacao/internacao/carregarfichaquestionario/<?= $item->internacao_ficha_questionario_id; ?>">Editar</a></div>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;"><div class="bt_link">
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 70px;"><div class="bt_link">
                                         <a onclick="javascript:return confirm('Deseja realmente excluir esse pré-cadastro?');" href="<?= base_url() ?>internacao/internacao/excluirfichaquestionario/<?= $item->internacao_ficha_questionario_id; ?>">Excluir</a></div>
                                 </td>
                                 <?
@@ -172,7 +180,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="10">
+                        <th class="tabela_footer" colspan="11">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
