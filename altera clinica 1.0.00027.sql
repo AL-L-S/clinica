@@ -157,4 +157,4 @@ SELECT insereValor();
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar boolean DEFAULT true;
 
 
- <?if(@$empresapermissoes->gerente_cancelar == 't' || $perfil_id == 1){?><?}?>
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN autorizar_sala_espera boolean DEFAULT true;

@@ -7900,295 +7900,80 @@ class exame_model extends Model {
                 $dataProducao = $data;
             }
 
-            if ($_POST['txttipo'] == 'EXAME' || $_POST['txttipo'] == 'MEDICAMENTO' || $_POST['txttipo'] == 'MATERIAL') {
-
 //                $this->db->set('ativo', 'f');
 //                $this->db->where('exame_sala_id', $_POST['txtsalas']);
 //                $this->db->update('tb_exame_sala');
 
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
 
-                $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
-                $this->db->set('guia_id', $_POST['txtguia_id']);
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $agenda_exames_id = $_POST['txtguia_id'];
-                $this->db->set('sala_id', $_POST['txtsalas']);
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_realizador', $_POST['txtmedico']);
-                }
-                if ($_POST['txttecnico'] != "") {
-                    $this->db->set('tecnico_realizador', $_POST['txttecnico']);
-                }
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_exames');
-                $exames_id = $this->db->insert_id();
+            $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
+            $this->db->set('guia_id', $_POST['txtguia_id']);
+            $this->db->set('tipo', $_POST['txttipo']);
+            $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
+            $agenda_exames_id = $_POST['txtguia_id'];
+            $this->db->set('sala_id', $_POST['txtsalas']);
+            if ($_POST['txtmedico'] != "") {
+                $this->db->set('medico_realizador', $_POST['txtmedico']);
+            }
+            if ($_POST['txttecnico'] != "") {
+                $this->db->set('tecnico_realizador', $_POST['txttecnico']);
+            }
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_exames');
+            $exames_id = $this->db->insert_id();
 
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $data);
-                if (count($paciente_inf) > 0) {
-                    $this->db->set('toten_senha_id', $paciente_inf[0]->toten_senha_id);
-                    $this->db->set('toten_fila_id', $paciente_inf[0]->toten_fila_id);
-                    $this->db->set('senha ', $paciente_inf[0]->senha);
-                    $this->db->set('data_senha', $paciente_inf[0]->data_senha);
-                }
-
-                $this->db->set('data_producao', $dataProducao);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
-                $this->db->set('exame_id', $exames_id);
-                $this->db->set('guia_id', $_POST['txtguia_id']);
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('primeiro_atendimento', $primeiro_atendimento);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_parecer1', $_POST['txtmedico']);
-                }
-                $this->db->set('id_chamada', $_POST['idChamada']);
-                $this->db->insert('tb_ambulatorio_laudo');
-                $laudo_id = $this->db->insert_id();
-                $guia_id = $_POST['txtguia_id'];
-
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_consulta_id', $_POST['txtmedico']);
-                    $this->db->set('medico_agenda', $_POST['txtmedico']);
-                    $this->db->set('valor_medico', $percentual[0]->perc_medico);
-                    $this->db->set('percentual_medico', $percentual[0]->percentual);
-                }
-                $this->db->set('realizada', 'true');
-                $this->db->set('senha', md5($exame_id));
-                $this->db->set('data_realizacao', $horario);
-                $this->db->set('operador_realizacao', $operador_id);
-                if ($_POST['indicacao'] != "") {
-                    $this->db->set('indicacao', $_POST['indicacao']);
-                }
-                $this->db->set('agenda_exames_nome_id', $_POST['txtsalas']);
-                $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $this->db->update('tb_agenda_exames');
-
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $this->db->set('sala_id', $_POST['txtsalas']);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->insert('tb_ambulatorio_chamada');
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('data', $data);
+            if (count($paciente_inf) > 0) {
+                $this->db->set('toten_senha_id', $paciente_inf[0]->toten_senha_id);
+                $this->db->set('toten_fila_id', $paciente_inf[0]->toten_fila_id);
+                $this->db->set('senha ', $paciente_inf[0]->senha);
+                $this->db->set('data_senha', $paciente_inf[0]->data_senha);
             }
 
-            if ($_POST['txttipo'] == 'CONSULTA') {
-
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
-                $this->db->set('guia_id', $_POST['txtguia_id']);
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $agenda_exames_id = $_POST['txtguia_id'];
-                $this->db->set('sala_id', $_POST['txtsalas']);
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_realizador', $_POST['txtmedico']);
-                }
-                if ($_POST['txttecnico'] != "") {
-                    $this->db->set('tecnico_realizador', $_POST['txttecnico']);
-                }
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_exames');
-                $exames_id = $this->db->insert_id();
-
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $data);
-                if (count($paciente_inf) > 0) {
-                    $this->db->set('toten_senha_id', $paciente_inf[0]->toten_senha_id);
-                    $this->db->set('toten_fila_id', $paciente_inf[0]->toten_fila_id);
-                    $this->db->set('senha ', $paciente_inf[0]->senha);
-                    $this->db->set('data_senha', $paciente_inf[0]->data_senha);
-                }
-//                var_dump($guia_id); die;
-                $this->db->set('data_producao', $dataProducao);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
-                $this->db->set('exame_id', $exames_id);
-                $this->db->set('guia_id', $_POST['txtguia_id']);
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_parecer1', $_POST['txtmedico']);
-                }
-                $this->db->set('id_chamada', $_POST['idChamada']);
-                $this->db->set('primeiro_atendimento', $primeiro_atendimento);
-                $this->db->insert('tb_ambulatorio_laudo');
-                $laudo_id = $this->db->insert_id();
-                $guia_id = $_POST['txtguia_id'];
-
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_consulta_id', $_POST['txtmedico']);
-                    $this->db->set('medico_agenda', $_POST['txtmedico']);
-                    $this->db->set('valor_medico', $percentual[0]->perc_medico);
-                    $this->db->set('percentual_medico', $percentual[0]->percentual);
-                }
-                $this->db->set('realizada', 'true');
-                $this->db->set('senha', md5($exame_id));
-                $this->db->set('data_realizacao', $horario);
-                if ($_POST['indicacao'] != "") {
-                    $this->db->set('indicacao', $_POST['indicacao']);
-                }
-                $this->db->set('operador_realizacao', $operador_id);
-                $this->db->set('agenda_exames_nome_id', $_POST['txtsalas']);
-                $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $this->db->update('tb_agenda_exames');
-
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $this->db->set('sala_id', $_POST['txtsalas']);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->insert('tb_ambulatorio_chamada');
+            $this->db->set('data_producao', $dataProducao);
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+            $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
+            $this->db->set('exame_id', $exames_id);
+            $this->db->set('guia_id', $_POST['txtguia_id']);
+            $this->db->set('tipo', $_POST['txttipo']);
+            $this->db->set('primeiro_atendimento', $primeiro_atendimento);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            if ($_POST['txtmedico'] != "") {
+                $this->db->set('medico_parecer1', $_POST['txtmedico']);
             }
+            $this->db->set('id_chamada', $_POST['idChamada']);
+            $this->db->insert('tb_ambulatorio_laudo');
+            $laudo_id = $this->db->insert_id();
+            $guia_id = $_POST['txtguia_id'];
 
-            if ($_POST['txttipo'] == 'ESPECIALIDADE' || $_POST['txttipo'] == 'FISIOTERAPIA') {
-
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-
-                $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
-                $this->db->set('guia_id', $_POST['txtguia_id']);
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $agenda_exames_id = $_POST['txtguia_id'];
-                $this->db->set('sala_id', $_POST['txtsalas']);
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_realizador', $_POST['txtmedico']);
-                }
-                if ($_POST['txttecnico'] != "") {
-                    $this->db->set('tecnico_realizador', $_POST['txttecnico']);
-                }
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_exames');
-                $exames_id = $this->db->insert_id();
-
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $data);
-                $this->db->set('data_producao', $dataProducao);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
-                $this->db->set('exame_id', $exames_id);
-                $this->db->set('guia_id', $_POST['txtguia_id']);
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_parecer1', $_POST['txtmedico']);
-                }
-                if (count($paciente_inf) > 0) {
-                    $this->db->set('toten_senha_id', $paciente_inf[0]->toten_senha_id);
-                    $this->db->set('toten_fila_id', $paciente_inf[0]->toten_fila_id);
-                    $this->db->set('senha ', $paciente_inf[0]->senha);
-                    $this->db->set('data_senha', $paciente_inf[0]->data_senha);
-                }
-
-                $this->db->set('id_chamada', $_POST['idChamada']);
-                $this->db->set('primeiro_atendimento', $primeiro_atendimento);
-                $this->db->insert('tb_ambulatorio_laudo');
-                $laudo_id = $this->db->insert_id();
-                $guia_id = $_POST['txtguia_id'];
-
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_consulta_id', $_POST['txtmedico']);
-                    $this->db->set('medico_agenda', $_POST['txtmedico']);
-                    $this->db->set('valor_medico', $percentual[0]->perc_medico);
-                    $this->db->set('percentual_medico', $percentual[0]->percentual);
-                }
-                if ($_POST['indicacao'] != "") {
-                    $this->db->set('indicacao', $_POST['indicacao']);
-                }
-                $this->db->set('realizada', 'true');
-                $this->db->set('senha', md5($exame_id));
-                $this->db->set('data_realizacao', $horario);
-                $this->db->set('operador_realizacao', $operador_id);
-                $this->db->set('agenda_exames_nome_id', $_POST['txtsalas']);
-                $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $this->db->update('tb_agenda_exames');
-
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $this->db->set('sala_id', $_POST['txtsalas']);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->insert('tb_ambulatorio_chamada');
+            if ($_POST['txtmedico'] != "") {
+                $this->db->set('medico_consulta_id', $_POST['txtmedico']);
+                $this->db->set('medico_agenda', $_POST['txtmedico']);
+                $this->db->set('valor_medico', $percentual[0]->perc_medico);
+                $this->db->set('percentual_medico', $percentual[0]->percentual);
             }
-
-            if ($_POST['txttipo'] == 'PSICOLOGIA') {
-
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
-                $this->db->set('guia_id', $_POST['txtguia_id']);
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $agenda_exames_id = $_POST['txtguia_id'];
-                $this->db->set('sala_id', $_POST['txtsalas']);
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_realizador', $_POST['txtmedico']);
-                }
-                if ($_POST['txttecnico'] != "") {
-                    $this->db->set('tecnico_realizador', $_POST['txttecnico']);
-                }
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_exames');
-                $exames_id = $this->db->insert_id();
-
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data', $data);
-                $this->db->set('data_producao', $dataProducao);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->set('procedimento_tuss_id', $_POST['txtprocedimento_tuss_id']);
-                $this->db->set('exame_id', $exames_id);
-                $this->db->set('guia_id', $_POST['txtguia_id']);
-                $this->db->set('tipo', $_POST['txttipo']);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_parecer1', $_POST['txtmedico']);
-                }
-                $this->db->set('primeiro_atendimento', $primeiro_atendimento);
-                $this->db->insert('tb_ambulatorio_laudo');
-                $laudo_id = $this->db->insert_id();
-                $guia_id = $_POST['txtguia_id'];
-
-                if ($_POST['txtmedico'] != "") {
-                    $this->db->set('medico_consulta_id', $_POST['txtmedico']);
-                    $this->db->set('medico_agenda', $_POST['txtmedico']);
-                    $this->db->set('valor_medico', $percentual[0]->perc_medico);
-                    $this->db->set('percentual_medico', $percentual[0]->percentual);
-                }
-                $this->db->set('realizada', 'true');
-                $this->db->set('senha', md5($exame_id));
-                $this->db->set('data_realizacao', $horario);
-                $this->db->set('operador_realizacao', $operador_id);
-                $this->db->set('agenda_exames_nome_id', $_POST['txtsalas']);
-                $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $this->db->update('tb_agenda_exames');
-
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
-                $this->db->set('sala_id', $_POST['txtsalas']);
-                $this->db->set('paciente_id', $_POST['txtpaciente_id']);
-                $this->db->insert('tb_ambulatorio_chamada');
+            $this->db->set('realizada', 'true');
+            $this->db->set('senha', md5($exame_id));
+            $this->db->set('data_realizacao', $horario);
+            $this->db->set('operador_realizacao', $operador_id);
+            if ($_POST['indicacao'] != "") {
+                $this->db->set('indicacao', $_POST['indicacao']);
             }
+            $this->db->set('agenda_exames_nome_id', $_POST['txtsalas']);
+            $this->db->where('agenda_exames_id', $_POST['txtagenda_exames_id']);
+            $this->db->update('tb_agenda_exames');
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('agenda_exames_id', $_POST['txtagenda_exames_id']);
+            $this->db->set('sala_id', $_POST['txtsalas']);
+            $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+            $this->db->insert('tb_ambulatorio_chamada');
 
             return $laudo_id;
         } catch (Exception $exc) {
@@ -10270,7 +10055,6 @@ AND i.data_internacao <= '$data_fim'
 AND c.convenio_id = $convenio_id 
 --AND i.empresa_id = $empresa_id 
 ORDER BY i.internacao_id)";
-                
             } else {
 
                 $sql = "UPDATE ponto.tb_internacao_procedimentos

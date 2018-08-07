@@ -45,6 +45,7 @@ class login_model extends Model {
                            ep.botao_ativar_sala,
                            ep.retirar_preco_procedimento,
                            ep.relatorios_clinica_med,
+                           ep.autorizar_sala_espera,
                            ep.subgrupo_procedimento');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
@@ -64,6 +65,7 @@ class login_model extends Model {
             $relatoriorm = $retorno[0]->relatoriorm;
             $imagem = $retorno[0]->imagem;
             $consulta = $retorno[0]->consulta;
+            $autorizar_sala_espera = $retorno[0]->autorizar_sala_espera;
             $especialidade = $retorno[0]->especialidade;
             $odontologia = $retorno[0]->odontologia;
             $geral = $retorno[0]->geral;
@@ -132,6 +134,7 @@ class login_model extends Model {
                 'relatorio_ordem' => $relatorio_ordem,
                 'relatorio_producao' => $relatorio_producao,
                 'relatorios_recepcao' => $relatorios_recepcao,
+                'autorizar_sala_espera' => $autorizar_sala_espera,
                 'financeiro_cadastro' => $financeiro_cadastro,
                 'gerente_relatorio_financeiro' => $gerente_relatorio_financeiro,
                 'relatoriorm' => $relatoriorm,

@@ -832,6 +832,12 @@
                             <dd>
                                 <input type="checkbox" id="gerente_cancelar" name="gerente_cancelar" <? if (@$obj->_gerente_cancelar == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ao ativar essa flag o paciente passa para sala de espera ao ser autorizado">Sala de Espera</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="gerente_cancelar" name="autorizar_sala_espera" <? if (@$obj->_autorizar_sala_espera == 't') echo "checked"; ?>/> 
+                            </dd>
                         </fieldset>
                     <? } ?>
                 </dl>    
