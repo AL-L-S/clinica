@@ -6,23 +6,7 @@
 <link href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
 <link href="<?= base_url() ?>css/jquery-treeview.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
-<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/jquery.tinymce.min.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/langs/pt_BR.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/plugins/spellchecker/plugin.min.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js"></script>
-<!--<script type="text/javascript" src="<?= base_url() ?>js/tinymce2/tinymce/jquery.tinymce.min.js"></script>-->
-<!--<script type="text/javascript" src="<?= base_url() ?>js/tinymce2/tinymce/tinymce.min.js"></script>-->
 
-
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
 <div >
 
@@ -33,16 +17,16 @@
     $diff = $date_time->diff(new DateTime($dataFuturo));
     $teste = $diff->format('%Ya %mm %dd');
 
-    if (isset($obj->_peso)) {
-        $peso = @$obj->_peso;
-    } else {
-        $peso = @$laudo_peso[0]->peso;
-    }
-    if (isset($obj->_altura)) {
-        $altura = @$obj->_altura;
-    } else {
-        $altura = @$laudo_peso[0]->altura;
-    }
+//    if (isset($obj->_peso)) {
+//        $peso = @$obj->_peso;
+//    } else {
+//        $peso = @$laudo_peso[0]->peso;
+//    }
+//    if (isset($obj->_altura)) {
+//        $altura = @$obj->_altura;
+//    } else {
+//        $altura = @$laudo_peso[0]->altura;
+//    }
 
 
     if (@$empresapermissao[0]->campos_atendimentomed != '') {
