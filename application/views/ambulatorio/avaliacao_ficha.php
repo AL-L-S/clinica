@@ -83,7 +83,7 @@
                     </table>
                 </fieldset>
                 <fieldset>
-                    <? 
+                    <?
                     $tabela1 = json_decode(@$avaliacao[0]->avaliacao_tabela1);
                     ?>
                     <h2 align = "center">TABELA 1: ALGORITMO DE LEE</h2>
@@ -221,358 +221,358 @@
                     </table>
                     <br><br><br>
 
-                    <? 
+                    <?
                     $tabela2 = json_decode(@$avaliacao[0]->avaliacao_tabela2);
                     ?>
                     <div>
-                        
-                    <h2 align = "center">TABELA 2: CRITÉRIOS DO AMERICAN COLLEGE OF PYISICIANS (ACP)</h2>
-                    <table width = "900" border = "1" align = "center">
-                        <tr>
-                            <th><br><h5 align = "center"></h5>VARIÁVEL</th>
-                            <th><br><h5 align = "center"></h5>RESPOSTA</th>
-                            <th><br><h5 align = "center"></h5>PONTOS</th>
 
-                        </tr> 
-                        <tr>
-                            <td>
-                                IAM < 6 M
-                            </td>
-                            <td>
-                                <select name="c1tb2" id="c1tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c1tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c1tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc1tb2">
-                                <div id="divc1tb2">
+                        <h2 align = "center">TABELA 2: CRITÉRIOS DO AMERICAN COLLEGE OF PYISICIANS (ACP)</h2>
+                        <table width = "900" border = "1" align = "center">
+                            <tr>
+                                <th><br><h5 align = "center"></h5>VARIÁVEL</th>
+                                <th><br><h5 align = "center"></h5>RESPOSTA</th>
+                                <th><br><h5 align = "center"></h5>PONTOS</th>
 
-                                </div>
-                                <input type="hidden" id="inputc1tb2" value="" >
-                            </td>
-                        </tr>    
-                        <tr>
-                            <td>
-                                IAM > 6 M  
-                            </td>
-                            <td>
-                                <select name="c2tb2" id="c2tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c2tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c2tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc2tb2">
-                                <div id="divc2tb2">
+                            </tr> 
+                            <tr>
+                                <td>
+                                    IAM < 6 M
+                                </td>
+                                <td>
+                                    <select name="c1tb2" id="c1tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c1tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c1tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc1tb2">
+                                    <div id="divc1tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc2tb2" value="">
-                            </td>
-                        </tr>    
-                        <tr>
-                            <td>
-                                ANGINA CLASSE III 
-                            </td>
-                            <td>
-                                <select name="c3tb2" id="c3tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c3tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c3tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc3tb2">
-                                <div id="divc3tb2">
+                                    </div>
+                                    <input type="hidden" id="inputc1tb2" value="" >
+                                </td>
+                            </tr>    
+                            <tr>
+                                <td>
+                                    IAM > 6 M  
+                                </td>
+                                <td>
+                                    <select name="c2tb2" id="c2tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c2tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c2tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc2tb2">
+                                    <div id="divc2tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc3tb2" value="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                ANGINA CLASSE IV   
-                            </td>
-                            <td>
-                                <select name="c4tb2" id="c4tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c4tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c4tb2 == 'SIM') {
-                                    echo 'selected';
-                                    }
-                                 ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc4tb2">
-                                <div id="divc4tb2">
+                                    </div>
+                                    <input type="hidden" id="inputc2tb2" value="">
+                                </td>
+                            </tr>    
+                            <tr>
+                                <td>
+                                    ANGINA CLASSE III 
+                                </td>
+                                <td>
+                                    <select name="c3tb2" id="c3tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c3tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c3tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc3tb2">
+                                    <div id="divc3tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc4tb2" value="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                EAP HÁ UMA SEMANA  
-                            </td>
-                            <td>
-                                <select name="c5tb2" id="c5tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c5tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                            ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c5tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc5tb2">
-                                <div id="divc5tb2">
+                                    </div>
+                                    <input type="hidden" id="inputc3tb2" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    ANGINA CLASSE IV   
+                                </td>
+                                <td>
+                                    <select name="c4tb2" id="c4tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c4tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c4tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc4tb2">
+                                    <div id="divc4tb2">
 
-                                </div> 
-                                <input type="hidden" id="inputc5tb2" value="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                EAP QUALQUER TEMPO  
-                            </td>
-                            <td>
-                                <select name="c6tb2" id="c6tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c6tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c6tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc6tb2">
-                                <div id="divc6tb2">
+                                    </div>
+                                    <input type="hidden" id="inputc4tb2" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    EAP HÁ UMA SEMANA  
+                                </td>
+                                <td>
+                                    <select name="c5tb2" id="c5tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c5tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c5tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc5tb2">
+                                    <div id="divc5tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc6tb2" value="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                SUSPEITA DE EAO CRÍTICA
-                            </td>
-                            <td>
-                                <select name="c7tb2" id="c7tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c7tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c7tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc7tb2">
-                                <div id="divc7tb2">
+                                    </div> 
+                                    <input type="hidden" id="inputc5tb2" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    EAP QUALQUER TEMPO  
+                                </td>
+                                <td>
+                                    <select name="c6tb2" id="c6tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c6tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c6tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc6tb2">
+                                    <div id="divc6tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc7tb2" value="">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                RITMO NÃO SINUSAL OU ESSV NO ECG   
-                            </td>
-                            <td>
-                                <select name="c8tb2" id="c8tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                            if (@$tabela2->c8tb2 == 'NAO'):echo 'selected';
-                                            endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                            if (@$tabela2->c8tb2 == 'SIM') {
-                                                echo 'selected';
-                                            }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc8tb2">
-                                <div id="divc8tb2">
+                                    </div>
+                                    <input type="hidden" id="inputc6tb2" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    SUSPEITA DE EAO CRÍTICA
+                                </td>
+                                <td>
+                                    <select name="c7tb2" id="c7tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c7tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c7tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc7tb2">
+                                    <div id="divc7tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc8tb2" value="">
-                            </td>
-                        </tr>    
-                        <tr>
-                            <td>
-                                > 5 ESV NO ECG   
-                            </td>
-                            <td>
-                                <select name="c9tb2" id="c9tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c9tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c9tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc9tb2">
-                                <div id="divc9tb2">
+                                    </div>
+                                    <input type="hidden" id="inputc7tb2" value="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    RITMO NÃO SINUSAL OU ESSV NO ECG   
+                                </td>
+                                <td>
+                                    <select name="c8tb2" id="c8tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c8tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c8tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc8tb2">
+                                    <div id="divc8tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc9tb2" value="">
-                            </td>
-                        </tr>    
-                        <tr>
-                            <td>
-                                PO2< 60, PCO2> 50, K<3, U> 50, C> 3,0,RESTRITO AO LEITO  
-                            </td>
-                            <td>
-                                <select name="c10tb2" id="c10tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c10tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c10tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc10tb2">
-                                <div id="divc10tb2">
+                                    </div>
+                                    <input type="hidden" id="inputc8tb2" value="">
+                                </td>
+                            </tr>    
+                            <tr>
+                                <td>
+                                    > 5 ESV NO ECG   
+                                </td>
+                                <td>
+                                    <select name="c9tb2" id="c9tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c9tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c9tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc9tb2">
+                                    <div id="divc9tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc10tb2" value="">
-                            </td>
-                        </tr>    
-                        <tr>
-                            <td>
-                                IDADE > 70 ANOS  
-                            </td>
-                            <td>
-                                <select name="c11tb2" id="c11tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c11tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c11tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc11tb2">
-                                <div id="divc11tb2">
+                                    </div>
+                                    <input type="hidden" id="inputc9tb2" value="">
+                                </td>
+                            </tr>    
+                            <tr>
+                                <td>
+                                    PO2< 60, PCO2> 50, K<3, U> 50, C> 3,0,RESTRITO AO LEITO  
+                                </td>
+                                <td>
+                                    <select name="c10tb2" id="c10tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c10tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c10tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc10tb2">
+                                    <div id="divc10tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc11tb2" value="">
-                            </td>
-                        </tr>    
-                        <tr>
-                            <td>
-                                CIRURGIA DE EMERGÊNCIA  
-                            </td>
-                            <td>
-                                <select name="c12tb2" id="c12tb2" class="size2 change_tb2">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$tabela2->c12tb2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$tabela2->c12tb2 == 'SIM') {
-                                        echo 'selected';
-                                    }
-                                    ?> >SIM</option>
-                                </select>
-                            </td>
-                            <td id="tdc12tb2">
-                                <div id="divc12tb2">
+                                    </div>
+                                    <input type="hidden" id="inputc10tb2" value="">
+                                </td>
+                            </tr>    
+                            <tr>
+                                <td>
+                                    IDADE > 70 ANOS  
+                                </td>
+                                <td>
+                                    <select name="c11tb2" id="c11tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c11tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c11tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc11tb2">
+                                    <div id="divc11tb2">
 
-                                </div>
-                                <input type="hidden" id="inputc12tb2" value="">
-                            </td>
-                        </tr>    
-                    </table>
+                                    </div>
+                                    <input type="hidden" id="inputc11tb2" value="">
+                                </td>
+                            </tr>    
+                            <tr>
+                                <td>
+                                    CIRURGIA DE EMERGÊNCIA  
+                                </td>
+                                <td>
+                                    <select name="c12tb2" id="c12tb2" class="size2 change_tb2">
+                                        <option value=''>SELECIONE</option>
+                                        <option value='NAO'<?
+                                        if (@$tabela2->c12tb2 == 'NAO'):echo 'selected';
+                                        endif;
+                                        ?> >NÃO</option>
+                                        <option value='SIM' <?
+                                        if (@$tabela2->c12tb2 == 'SIM') {
+                                            echo 'selected';
+                                        }
+                                        ?> >SIM</option>
+                                    </select>
+                                </td>
+                                <td id="tdc12tb2">
+                                    <div id="divc12tb2">
+
+                                    </div>
+                                    <input type="hidden" id="inputc12tb2" value="">
+                                </td>
+                            </tr>    
+                        </table>
                     </div>
                     <br><br><br>
                     <div>
-                        
-                    <table position="relative" float ="left" align="center" border="1" width = "500">
-                        <h3 align = "center">VARIÁVEIS</h3>
 
-                        <tr>
-                            <td style="width:250;">≥ 20 PONTOS</td>
-                            <td style="width:250;">0 – 15 PONTOS</td>
-                        </tr>
-                        <tr>
-                            <td style="width:250;">ALTO RISCO</td>
-                            <td style="width:250;">AVALIAR TABELA 3</td>
-                        </tr>
-                    </table>
+                        <table position="relative" float ="left" align="center" border="1" width = "500">
+                            <h3 align = "center">VARIÁVEIS</h3>
+
+                            <tr>
+                                <td style="width:250;">≥ 20 PONTOS</td>
+                                <td style="width:250;">0 – 15 PONTOS</td>
+                            </tr>
+                            <tr>
+                                <td style="width:250;">ALTO RISCO</td>
+                                <td style="width:250;">AVALIAR TABELA 3</td>
+                            </tr>
+                        </table>
                     </div>
                     <div>
-                        
-                    <table align="center" border="1" width = "500">
-                        <h3 align = "center">RESULTADO</h3>                            
-                        <tr>
-                            <td id="tdresultado" style="width:250;"><div id="divresultado">
 
-                                </div><br></td>
-                            <td id="tdresult" style="width:250;"><div id="divresult">
+                        <table align="center" border="1" width = "500">
+                            <h3 align = "center">RESULTADO</h3>                            
+                            <tr>
+                                <td id="tdresultado" style="width:250;"><div id="divresultado">
 
-                                </div><br></td>
-                        </tr>
+                                    </div><br></td>
+                                <td id="tdresult" style="width:250;"><div id="divresult">
 
-                    </table><br><br><br>
+                                    </div><br></td>
+                            </tr>
+
+                        </table><br><br><br>
                     </div>
 
-                    <? 
+                    <?
                     $tabela3 = json_decode(@$avaliacao[0]->avaliacao_tabela3);
                     ?>
                     <table width = "900" border = "1" align = "center">
-                    <h2 align = "center">TABELA 3: VARIÁVEIS DE RISCO</h2>
+                        <h2 align = "center">TABELA 3: VARIÁVEIS DE RISCO</h2>
                         <tr>
                             <td>
                                 > 70 ANOS  
@@ -722,7 +722,7 @@
                     </table>
                     <br><br><br>
 
-                    <? 
+                    <?
                     $tabela4 = json_decode(@$avaliacao[0]->avaliacao_tabela4);
                     ?>
 
@@ -761,13 +761,13 @@
                                                 <th><select name="riscoalto" id="riscoalto" class="size2">
                                                         <option value=''>SELECIONE</option>
                                                         <option value='NAO'<?
-                                    if (@$tabela4->riscoalto == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
+                                                        if (@$tabela4->riscoalto == 'NAO'):echo 'selected';
+                                                        endif;
+                                                        ?> >NÃO</option>
                                                         <option value='SIM' <?
-                                    if (@$tabela4->riscoalto == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
+                                                        if (@$tabela4->riscoalto == 'SIM'):echo 'selected';
+                                                        endif;
+                                                        ?> >SIM</option>
                                                     </select></th>
                                             </tr>
                                         </table>
@@ -813,13 +813,13 @@
                                                 <th><select name="riscomedio" id="riscomedio" class="size2">
                                                         <option value=''>SELECIONE</option>
                                                         <option value='NAO'<?
-                                    if (@$tabela4->riscomedio == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
+                                                        if (@$tabela4->riscomedio == 'NAO'):echo 'selected';
+                                                        endif;
+                                                        ?> >NÃO</option>
                                                         <option value='SIM' <?
-                                    if (@$tabela4->riscomedio == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
+                                                        if (@$tabela4->riscomedio == 'SIM'):echo 'selected';
+                                                        endif;
+                                                        ?> >SIM</option>
                                                     </select></th>
                                             </tr>
                                         </table>
@@ -866,13 +866,13 @@
                                                 <th><select name="riscobaixo" id="riscobaixo" class="size2">
                                                         <option value=''>SELECIONE</option>
                                                         <option value='NAO'<?
-                                    if (@$tabela4->riscobaixo == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
+                                                        if (@$tabela4->riscobaixo == 'NAO'):echo 'selected';
+                                                        endif;
+                                                        ?> >NÃO</option>
                                                         <option value='SIM' <?
-                                    if (@$tabela4->riscobaixo == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
+                                                        if (@$tabela4->riscobaixo == 'SIM'):echo 'selected';
+                                                        endif;
+                                                        ?> >SIM</option>
                                                     </select></th>
                                             </tr>
                                         </table>
@@ -881,7 +881,7 @@
                         </tr>    
 
                     </table><br><br><br>
-                                      
+
                     <table align="center" border="1" width = "500">
                         <h3 align = "center">CONCLUSÕES</h3>
 
@@ -900,7 +900,7 @@
                     </table><br><br><br>
                     <table align="center">
                         <td><button type="submit" name="btnEnviar">Salvar</button></td>
-                        <td width="40px;"><button type="button" name="btnImprimir" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoformulario/<?= $ambulatorio_laudo_id ?>');">
+                        <td width="40px;"><button type="button" name="btnImprimir" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoavaliacao/<?= $ambulatorio_laudo_id ?>');">
 
                                 Imprimir
                             </button>

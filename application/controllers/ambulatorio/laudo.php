@@ -1805,7 +1805,66 @@ class Laudo extends BaseController {
     }
 
     function impressaoformulario($ambulatorio_laudo_id) {
-
+        
+        //$this->load->plugin('mpdf');
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);        
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['empresa'] = $this->guia->listarempresa();
+        $data['obj'] = $obj_laudo;
+        $paciente_id = @$obj_laudo->_paciente_id;
+        $guia_id = @$obj_laudo->_guia_id;
+        $data['formulario'] = $this->laudo->preencherformulario($paciente_id, $guia_id);
+        
+        $dataFuturo = date("Y-m-d");
+        $dataAtual = $data['laudo']['0']->nascimento;
+        $date_time = new DateTime($dataAtual);
+        $diff = $date_time->diff(new DateTime($dataFuturo));
+        $teste = $diff->format('%Ya %mm %dd');
+        
+        $this->load->View('ambulatorio/impressaoformulario', $data);
+     
+    }
+    function impressaoparecer($ambulatorio_laudo_id) {
+        
+        //$this->load->plugin('mpdf');
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);        
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['empresa'] = $this->guia->listarempresa();
+        $data['obj'] = $obj_laudo;
+        $paciente_id = @$obj_laudo->_paciente_id;
+        $guia_id = @$obj_laudo->_guia_id;
+        $data['parecer'] = $this->laudo->preencherparecer($paciente_id, $guia_id);
+        
+        $dataFuturo = date("Y-m-d");
+        $dataAtual = $data['laudo']['0']->nascimento;
+        $date_time = new DateTime($dataAtual);
+        $diff = $date_time->diff(new DateTime($dataFuturo));
+        $teste = $diff->format('%Ya %mm %dd');
+        
+        $this->load->View('ambulatorio/impressao_parecer_cirurgia_pediatrica', $data);
+     
+    }
+    function impressaoavaliacao($ambulatorio_laudo_id) {
+        
+        //$this->load->plugin('mpdf');
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);        
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['empresa'] = $this->guia->listarempresa();
+        $data['obj'] = $obj_laudo;
+        $paciente_id = @$obj_laudo->_paciente_id;
+        $guia_id = @$obj_laudo->_guia_id;
+        $data['avaliacao'] = $this->laudo->preencheravaliacao($paciente_id, $guia_id);
+        
+        $dataFuturo = date("Y-m-d");
+        $dataAtual = $data['laudo']['0']->nascimento;
+        $date_time = new DateTime($dataAtual);
+        $diff = $date_time->diff(new DateTime($dataFuturo));
+        $teste = $diff->format('%Ya %mm %dd');
+        
+        $this->load->View('ambulatorio/impressaoavaliacao', $data);
      
     }
 

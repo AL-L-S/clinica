@@ -12,6 +12,12 @@ class App extends Controller {
 
     function buscandoAgenda() {
         header('Access-Control-Allow-Origin: *');
+        
+        $operador_id = @$_GET['operador_id'];
+        $paciente = @$_GET['paciente'];
+        $situacao = @$_GET['situacao'];
+        $data = @$_GET['data'];
+        
         $result = $this->app->buscandoAgenda();
         $resumo = array(
             "OK"        => 0,
@@ -20,7 +26,7 @@ class App extends Controller {
             "FALTOU"    => 0,
             "TOTAL"    => 0,
         );
-//        var_dump($result);die;
+        
         if (count($result) > 0) {
             if (!isset($result["Erro"])) {
                 foreach ($result as $item) {
@@ -99,6 +105,37 @@ class App extends Controller {
         }
         
         die(json_encode(array("status" => "Nenhuma agenda encontrada!")));
+    }
+    
+    function listarhorarioscalendario() {
+        header('Access-Control-Allow-Origin: *');
+        $operador_id = @$_GET['operador_id'];
+        $paciente = @$_GET['paciente'];
+        
+        $result = $this->app->listarhorarioscalendario($operador_id, $paciente);
+        $var = Array();
+        $i = 0;
+
+        foreach ($result as $item) {
+            $i++;
+            $retorno['id'] = $i;
+            if ($item->situacao == 'LIVRE') {
+                $retorno['title'] = 'V: ' . $item->contagem;
+            } else {
+                $retorno['title'] = 'M: ' . $item->contagem;
+            }
+
+            $retorno['start'] = $item->data;
+            $retorno['end'] = $item->data;
+            if ($item->situacao == 'LIVRE') {
+                $retorno['color'] = '#62C462';
+            } else {
+                $retorno['color'] = '#B30802';
+            }
+            
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
     }
 
     function validaUsuario() {

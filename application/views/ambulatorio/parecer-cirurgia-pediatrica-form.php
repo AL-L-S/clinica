@@ -6,7 +6,7 @@
 <link href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
 <link href="<?= base_url() ?>css/jquery-treeview.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>-->
+
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 
@@ -82,18 +82,11 @@
                         <tr>
                             <td>Anorexia</td>
                             <td>
-                               
-                                <select name="dado1" id="dado1" class="size1 change_p">
-                                    <option value=''>SELECIONE</option>
+                                <input type="radio" id="dado1sim" name="dado1" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado1nao" name="dado1" value='NAO' class="change_p">
+                                Não                               
 
-                                    <option value='NAO' <? if (@$dados->dado1 == 'NAO'):echo 'selected';
-                                    endif; ?>>NÃO</option>
-                                    
-                                    <option value='SIM' <?
-                                    if (@$dados->dado1 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
                             </td>
                             <td id="tddado1">
                                 <div id="divdado1">
@@ -105,17 +98,10 @@
                         <tr>
                             <td>Náuseas e/ou Vômitos</td>
                             <td>
-                                <select name="dado2" id="dado2" class="size1 change_p">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado2  == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado2sim" name="dado2" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado2nao" name="dado2" value='NAO' class="change_p">
+                                Não 
                             </td>
                             <td id="tddado2">
                                 <div id="divdado2">
@@ -127,17 +113,10 @@
                         <tr>
                             <td>Vômitos Não-Biliosos sugestivos de Estenose Pilórica </td>
                             <td>
-                                <select name="dado3" id="dado3" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado3  == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado3  == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado3sim" name="dado3" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado3nao" name="dado3" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -146,17 +125,10 @@
                         <tr>
                             <td>Dor abdominal intensa e progressiva compatível com Isquemia Intestinal</td>
                             <td>
-                                <select name="dado4" id="dado4" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado4  == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado4  == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado4sim" name="dado4" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado4nao" name="dado4" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -165,17 +137,10 @@
                         <tr> 
                             <td>Migração da dor para quadrante inferior D</td>
                             <td>
-                                <select name="dado5" id="dado5" class="size1 change_p">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado5 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado5 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado5sim" name="dado5" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado5nao" name="dado5" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td id="tddado5">
                                 <div id="divdado5">
@@ -187,17 +152,10 @@
                         <tr>    
                             <td>História de dor localizada em FID</td>
                             <td>
-                                <select name="dado6" id="dado6" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado6 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado6  == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado6sim" name="dado6" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado6nao" name="dado6" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -206,17 +164,10 @@
                         <tr>    
                             <td>Dor Abdominal que piora com caminhar/pular ou tossir</td>
                             <td>
-                                <select name="dado7" id="dado7" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado7  == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado7  == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado7sim" name="dado7" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado7nao" name="dado7" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -225,17 +176,10 @@
                         <tr>    
                             <td>Dor Lombar com irradiação para abdome anterior sugestiva de Cólica Renal</td>
                             <td>
-                                <select name="dado8" id="dado8" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado8  == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado8  == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado8sim" name="dado8" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado8nao" name="dado8" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -244,17 +188,10 @@
                         <tr>    
                             <td>Dor + Abaulamento Inguinal sugestivo de encarceramento/estrangulamento herniário</td>
                             <td>
-                                <select name="dado9" id="dado9" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado9  == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado9  == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado9sim" name="dado9" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado9nao" name="dado9" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -263,17 +200,10 @@
                         <tr>    
                             <td>Relato de evacuações com sangue e muco ("Geléia de Morango")</td>
                             <td>
-                                <select name="dado10" id="dado10" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado10  == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado10  == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado10sim" name="dado10" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado10nao" name="dado10" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -282,17 +212,10 @@
                         <tr>    
                             <td>Relato de evacuações com sangue em grande quantidade</td>
                             <td>
-                                <select name="dado11" id="dado11" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado11 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado11 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado11sim" name="dado11" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado11nao" name="dado11" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -301,17 +224,10 @@
                         <tr>    
                             <td>Parada de eliminação de gases e fezes</td>
                             <td>
-                                <select name="dado12" id="dado12" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$dados->dado12 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$dados->dado12 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="dado12sim" name="dado12" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="dado12nao" name="dado12" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -331,17 +247,10 @@
                         <tr>
                             <td>Temperatura>37, 3oC</td>
                             <td>
-                                <select name="exame1" id="exame1" class="size1 change_p">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$exames->exame1 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$exames->exame1 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="exame1sim" name="exame1" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="exame1nao" name="exame1" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td id="tdexame1">
                                 <div id="divexame1">
@@ -353,17 +262,10 @@
                         <tr>
                             <td>Avaliação Pulmonar <b>NORMAL</b></td>
                             <td>
-                                <select name="exame2" id="exame2" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$exames->exame2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$exames->exame2 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="exame2sim" name="exame2" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="exame2nao" name="exame2" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -372,17 +274,10 @@
                         <tr>
                             <td>Defesa em Quadrante Inferior D</td>
                             <td>
-                                <select name="exame3" id="exame3" class="size1 change_p">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$exames->exame3 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$exames->exame3 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="exame3sim" name="exame3" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="exame3nao" name="exame3" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td id="tdexame3">
                                 <div id="divexame3">
@@ -394,17 +289,10 @@
                         <tr>
                             <td>Sinal de Murphy Positivo</td>
                             <td>
-                                <select name="exame4" id="exame4" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$exames->exame4 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$exames->exame4 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="exame4sim" name="exame4" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="exame4nao" name="exame4" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -413,17 +301,10 @@
                         <tr> 
                             <td>Sinal de Blumberg Positivo</td>
                             <td>
-                                <select name="exame5" id="exame5" class="size1 change_p">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$exames->exame5 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$exames->exame5 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="exame5sim" name="exame5" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="exame5nao" name="exame5" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td id="tdexame5">
                                 <div id="divexame5">
@@ -435,17 +316,10 @@
                         <tr>    
                             <td>Sinal de Rovsing Positivo</td>
                             <td>
-                                <select name="exame6" id="exame6" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$exames->exame6 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$exames->exame6 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="exame6sim" name="exame6" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="exame6nao" name="exame6" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -454,17 +328,10 @@
                         <tr>    
                             <td>Dificuldade para Deambular</td>
                             <td>
-                                <select name="exame7" id="exame7" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$exames->exame7 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$exames->exame7 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="exame7sim" name="exame7" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="exame7nao" name="exame7" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -473,17 +340,10 @@
                         <tr>    
                             <td>Massa Palpável sugestiva de Neoplasia ou Hidronefrose</td>
                             <td>
-                                <select name="exame8" id="exame8" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$exames->exame8 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$exames->exame8 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="exame8sim" name="exame8" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="exame8nao" name="exame8" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -492,17 +352,10 @@
                         <tr>    
                             <td>Abaulamento Inguinal Não-Redutível</td>
                             <td>
-                                <select name="exame9" id="exame9" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$exames->exame9 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$exames->exame9 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="exame9sim" name="exame9" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="exame9nao" name="exame9" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -521,17 +374,10 @@
                         <tr>
                             <td>Leucocitose > 10.000/μL</td>
                             <td>
-                                <select name="examec1" id="examec1" class="size1 change_p">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$examesc->examec1 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$examesc->examec1 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="examec1sim" name="examec1" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="examec1nao" name="examec1" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td id="tdexamec1">
                                 <div id="divexamec1">
@@ -543,17 +389,10 @@
                         <tr>
                             <td>Leucocitose com Desvio à Esquerda (>75% de Neutrófilos)</td>
                             <td>
-                                <select name="examec2" id="examec2" class="size1 change_p">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$examesc->examec2 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$examesc->examec2 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="examec2sim" name="examec2" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="examec2nao" name="examec2" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td id="tdexamec2">
                                 <div id="divexamec2">
@@ -565,17 +404,10 @@
                         <tr>
                             <td>Neutrófilos > 6.750/μL</td>
                             <td>
-                                <select name="examec3" id="examec3" class="size1">
-                                    <option value=''>SELECIONE</option>
-                                    <option value='NAO'<?
-                                    if (@$examesc->examec3 == 'NAO'):echo 'selected';
-                                    endif;
-                                    ?> >NÃO</option>
-                                    <option value='SIM' <?
-                                    if (@$examesc->examec3 == 'SIM'):echo 'selected';
-                                    endif;
-                                    ?> >SIM</option>
-                                </select><font>
+                                <input type="radio" id="examec3sim" name="examec3" value='SIM' class="change_p">
+                                Sim
+                                <input type="radio" id="examec3nao" name="examec3" value='NAO' class="change_p">
+                                Não
                             </td>
                             <td>
                                 
@@ -624,7 +456,7 @@
                     <br><br><br>
                     <table align="center">
                         <td><button type="submit" name="btnEnviar">Salvar</button></td>
-                        <td width="40px;"><button type="button" name="btnImprimir" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoformulario/<?= $ambulatorio_laudo_id ?>');">
+                        <td width="40px;"><button type="button" name="btnImprimir" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoparecer/<?= $ambulatorio_laudo_id ?>');">
 
                                 Imprimir
                             </button>
@@ -637,106 +469,122 @@
     </div>
 </div>
 <script>
-        $('#dado1').change(function () {
-
-            if ($('#dado1 :selected').val() == 'SIM') {
+        $('#dado1sim').change(function () {
+            
+            if ($('#dado1sim').val() == 'SIM') {
                 $('#divdado1').remove();
                 $('#tddado1').append('<div id="divdado1">1</div>');
                 $('#inputdado1').val('1');
-
-            } else {
-                $('#divdado1').remove();
+            }
+        });
+            $('#dado1nao').change(function () {
+            if($('#dado1nao').val() == 'NAO') {
+                $('#divdado1').remove();               
                 $('#tddado1').append('<div id="divdado1">0</div>');
                 $('#inputdado1').val('0');
             }
         });
-        $('#dado2').change(function () {
-
-            if ($('#dado2 :selected').val() == 'SIM') {
+        $('#dado2sim').change(function () {
+            
+            if ($('#dado2sim').val() == 'SIM') {
                 $('#divdado2').remove();
                 $('#tddado2').append('<div id="divdado2">1</div>');
                 $('#inputdado2').val('1');
-
-            } else {
-                $('#divdado2').remove();
+            }
+        });
+            $('#dado2nao').change(function () {
+            if($('#dado2nao').val() == 'NAO') {
+                $('#divdado2').remove();               
                 $('#tddado2').append('<div id="divdado2">0</div>');
                 $('#inputdado2').val('0');
             }
         });
-        $('#dado5').change(function () {
-
-            if ($('#dado5 :selected').val() == 'SIM') {
+        $('#dado5sim').change(function () {
+            
+            if ($('#dado5sim').val() == 'SIM') {
                 $('#divdado5').remove();
                 $('#tddado5').append('<div id="divdado5">1</div>');
                 $('#inputdado5').val('1');
-
-            } else {
-                $('#divdado5').remove();
+            }
+        });
+            $('#dado5nao').change(function () {
+            if($('#dado5nao').val() == 'NAO') {
+                $('#divdado5').remove();               
                 $('#tddado5').append('<div id="divdado5">0</div>');
                 $('#inputdado5').val('0');
             }
         });
-        $('#exame1').change(function () {
-
-            if ($('#exame1 :selected').val() == 'SIM') {
+        $('#exame1sim').change(function () {
+            
+            if ($('#exame1sim').val() == 'SIM') {
                 $('#divexame1').remove();
                 $('#tdexame1').append('<div id="divexame1">1</div>');
                 $('#inputexame1').val('1');
-
-            } else {
-                $('#divexame1').remove();
+            }
+        });
+            $('#exame1nao').change(function () {
+            if($('#exame1nao').val() == 'NAO') {
+                $('#divexame1').remove();               
                 $('#tdexame1').append('<div id="divexame1">0</div>');
                 $('#inputexame1').val('0');
             }
         });
-        $('#exame3').change(function () {
-
-            if ($('#exame3 :selected').val() == 'SIM') {
+        $('#exame3sim').change(function () {
+            
+            if ($('#exame3sim').val() == 'SIM') {
                 $('#divexame3').remove();
-                $('#tdexame3').append('<div id="divexame3">2</div>');
+                $('#tdexame3').append('<div id="divexame3">1</div>');
                 $('#inputexame3').val('1');
-
-            } else {
-                $('#divexame3').remove();
+            }
+        });
+            $('#exame3nao').change(function () {
+            if($('#exame3nao').val() == 'NAO') {
+                $('#divexame3').remove();               
                 $('#tdexame3').append('<div id="divexame3">0</div>');
                 $('#inputexame3').val('0');
             }
         });
-        $('#exame5').change(function () {
-
-            if ($('#exame5 :selected').val() == 'SIM') {
+        $('#exame5sim').change(function () {
+            
+            if ($('#exame5sim').val() == 'SIM') {
                 $('#divexame5').remove();
                 $('#tdexame5').append('<div id="divexame5">1</div>');
                 $('#inputexame5').val('1');
-
-            } else {
-                $('#divexame5').remove();
+            }
+        });
+            $('#exame5nao').change(function () {
+            if($('#exame5nao').val() == 'NAO') {
+                $('#divexame5').remove();               
                 $('#tdexame5').append('<div id="divexame5">0</div>');
                 $('#inputexame5').val('0');
             }
         });
-        $('#examec1').change(function () {
-
-            if ($('#examec1 :selected').val() == 'SIM') {
+        $('#examec1sim').change(function () {
+            
+            if ($('#examec1sim').val() == 'SIM') {
                 $('#divexamec1').remove();
-                $('#tdexamec1').append('<div id="divexamec1">2</div>');
-                $('#inputexamec1').val('2');
-
-            } else {
-                $('#divexamec1').remove();
+                $('#tdexamec1').append('<div id="divexamec1">1</div>');
+                $('#inputexamec1').val('1');
+            }
+        });
+            $('#examec1nao').change(function () {
+            if($('#examec1nao').val() == 'NAO') {
+                $('#divexamec1').remove();               
                 $('#tdexamec1').append('<div id="divexamec1">0</div>');
                 $('#inputexamec1').val('0');
             }
         });
-        $('#examec2').change(function () {
-
-            if ($('#examec2 :selected').val() == 'SIM') {
+        $('#examec2sim').change(function () {
+            
+            if ($('#examec2sim').val() == 'SIM') {
                 $('#divexamec2').remove();
                 $('#tdexamec2').append('<div id="divexamec2">1</div>');
                 $('#inputexamec2').val('1');
-
-            } else {
-                $('#divexamec2').remove();
+            }
+        });
+            $('#examec2nao').change(function () {
+            if($('#examec2nao').val() == 'NAO') {
+                $('#divexamec2').remove();               
                 $('#tdexamec2').append('<div id="divexamec2">0</div>');
                 $('#inputexamec2').val('0');
             }
@@ -760,15 +608,15 @@
             
             if($('#divtotal').text()<4){
                 $('#divresult').remove();
-                $('#tdresult').append('<div id="divresult"> BAIXO RISCO </div>'); 
+                $('#tdresult').append('<div id="divresult"><span style="color:green"> BAIXO RISCO</span> (Condulta clínica e, em casos selecionados, avaliação cirurgica)</div>'); 
             }
             if($('#divtotal').text()>=4 && $('#divtotal').text()<=7){
                 $('#divresult').remove();
-                $('#tdresult').append('<div id="divresult"> RISCO INTERMEDIÁRIO </div>'); 
+                $('#tdresult').append('<div id="divresult"><span style="color: #ff4700;"> RISCO INTERMEDIÁRIO</span> (US + Avaliação do Cirurgião) </div>'); 
             }
             if($('#divtotal').text()>7){
                 $('#divresult').remove();
-                $('#tdresult').append('<div id="divresult"> ALTO RISCO DE APENDICITE </div>');   
+                $('#tdresult').append('<div id="divresult"><span style="color:red"> ALTO RISCO DE APENDICITE</span> (Avaliação do Cirurgião) </div>');   
             }
         }
 

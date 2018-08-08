@@ -90,7 +90,7 @@ class app_model extends Model {
         return $return->result();
     }
 
-    function buscandoAgenda() {
+    function buscandoAgenda($operador_id, $paciente, $situacao, $data) {
         ini_set('display_errors',1);
         ini_set('display_startup_erros',1);
         error_reporting(E_ALL);
@@ -144,36 +144,39 @@ class app_model extends Model {
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
 //        $this->db->where('ae.data', $dataAtual);
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where('ae.medico_consulta_id', @$_GET['operador_id']);
-        if (@$_GET['situacao'] != '') {
-            switch ($_GET['situacao']) {
+        $this->db->where('ae.medico_consulta_id', $operador_id);
+        
+        if ($situacao != '') {
+            
+            switch ($situacao) {
                 case 'o':
-                    $situacao = 'OK';
+                    $sit = 'OK';
                     break;
                 case 'v':
-                    $situacao = 'LIVRE';
+                    $sit = 'LIVRE';
                     break;
                 case 'b':
-                    $situacao = 'BLOQUEADO';
+                    $sit = 'BLOQUEADO';
                     break;
                 case 'f':
-                    $situacao = 'FALTOU';
+                    $sit = 'FALTOU';
                     break;
                 default:
                     break;
             }
-            if (isset($situacao)) {
-                if ($situacao == "BLOQUEADO") {
+            
+            if (isset($sit)) {
+                if ($sit == "BLOQUEADO") {
                     $this->db->where('ae.bloqueado', 't');
                 }
-                if ($situacao == "LIVRE") {
+                if ($sit == "LIVRE") {
                     $this->db->where('ae.bloqueado', 'f');
                     $this->db->where('ae.situacao', 'LIVRE');
                 }
-                if ($situacao == "OK") {
+                if ($sit == "OK") {
                     $this->db->where('ae.situacao', 'OK');
                 }
-                if ($situacao == "FALTOU") {
+                if ($sit == "FALTOU") {
                     date_default_timezone_set('America/Fortaleza');
                     $data_atual = date('Y-m-d');
                     $this->db->where('ae.data <', $data_atual);
@@ -185,24 +188,47 @@ class app_model extends Model {
             }
         }
 
-        if(@$_GET['data'] != ""){
-            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))) );
-        }
-        else{
-            $this->db->where('ae.data', date("Y-m-d"));
+        if($data != ""){
+            $this->db->where('ae.data', date("Y-m-d", strtotime(str_replace('/', '-', $data))) );
         }
         
-        if(@$_GET['paciente'] != ""){
-            $this->db->where('p.nome ilike', "%" . $_GET['paciente'] . "%");
+        if($paciente != ""){
+            $this->db->where('p.nome ilike', "%" . $paciente . "%");
         }
         
         $this->db->orderby('ae.agenda_exames_id');
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
-        $this->db->orderby('al.situacao LIMIT 15 OFFSET ('. ((@$_GET['pagina'] != '') ? $_GET['pagina'] : 0).') * 15 ');
-//        $_GET['pagina'] = (@$_GET['pagina'] != '') ? $_GET['pagina'] : 0);
-//        $this->db->limit("");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarhorarioscalendario($operador_id, $paciente) {
+//        ini_set('display_errors',1);
+//        ini_set('display_startup_erros',1);
+//        error_reporting(E_ALL);
+//                
+        $data_passado = date('Y-m-d', strtotime("-1 year", strtotime(date('Y-m-d'))));
+        $data_futuro = date('Y-m-d', strtotime("+1 year", strtotime(date('Y-m-d'))));
         
+        $this->db->select('ae.data, count(ae.data) as contagem, ae.situacao, ae.medico_agenda as medico');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->where("ae.data is not null");
+        $this->db->where('ae.bloqueado', 'f');
+        $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.medico_consulta_id', $operador_id);
+        $this->db->where("ae.data >", $data_passado);
+        $this->db->where("ae.data <", $data_futuro);
+        
+        if($paciente != ""){
+            $this->db->where('p.nome ilike', "%" . $paciente . "%");
+        }
+        $this->db->groupby("ae.data, ae.situacao, ae.medico_agenda");
+        $this->db->orderby("ae.data, ae.situacao");
         $return = $this->db->get();
         return $return->result();
     }
