@@ -32,10 +32,9 @@ class fornecedor_model extends Model {
                             cpf,
                             telefone');
         $this->db->from('tb_financeiro_credor_devedor');
-        if(@$args['ativo'] == 'f'){
+        if (@$args['ativo'] == 'f') {
             $this->db->where('ativo', 'false');
-        }
-        else{
+        } else {
             $this->db->where('ativo', 'true');
         }
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
@@ -64,8 +63,8 @@ class fornecedor_model extends Model {
                                  WHERE financeiro_credor_devedor_id = $financeiro_credor_devedor_id LIMIT 1 )
                         )");
         $return = $this->db->get()->result();
-        
-        if( count($return) == 0 ){
+
+        if (count($return) == 0) {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $this->db->set('ativo', 't');
@@ -85,36 +84,36 @@ class fornecedor_model extends Model {
     }
 
     function verificadependenciasexclusao($financeiro_credor_devedor_id) {
-        
+
         $this->db->select('operador_id');
         $this->db->from('tb_operador');
         $this->db->where('credor_devedor_id', $financeiro_credor_devedor_id);
         $this->db->where('ativo', 't');
         $operadores = $this->db->get()->result();
-        
+
         $this->db->select('convenio_id');
         $this->db->from('tb_convenio');
         $this->db->where('credor_devedor_id', $financeiro_credor_devedor_id);
         $this->db->where('ativo', 't');
         $convenios = $this->db->get()->result();
-        
+
         $this->db->select('estoque_fornecedor_id');
         $this->db->from('tb_estoque_fornecedor');
         $this->db->where('credor_devedor_id', $financeiro_credor_devedor_id);
         $this->db->where('ativo', 't');
         $fornecedores = $this->db->get()->result();
-        
+
         $result = array(
             "fornecedores" => count($fornecedores),
             "operadores" => count($operadores),
             "convenios" => count($convenios)
         );
-        
+
         return $result;
     }
 
     function excluir($financeiro_credor_devedor_id) {
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('ativo', 'f');
@@ -132,22 +131,22 @@ class fornecedor_model extends Model {
     function gravar() {
         try {
             $cpf = str_replace("-", "", str_replace(".", "", $_POST['txtCPF']));
-            $cnpj =  str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ'])));
-            
+            $cnpj = str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ'])));
+
 //            var_dump($cnpj, $cpf);
-            
+
             $this->db->select('financeiro_credor_devedor_id');
             $this->db->from('tb_financeiro_credor_devedor fcd');
-            if($cpf != ''){
+            if ($cpf != '') {
                 $this->db->where("fcd.cpf", $cpf);
             }
-            if($cnpj != ''){
+            if ($cnpj != '') {
                 $this->db->where("fcd.cnpj", $cnpj);
             }
             $this->db->where("fcd.ativo", 't');
             $return = $this->db->get()->result();
-            
-        
+
+
             /* inicia o mapeamento no banco */
             $financeiro_credor_devedor_id = $_POST['txtcadastrosfornecedorid'];
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
@@ -164,6 +163,9 @@ class fornecedor_model extends Model {
             if ($_POST['municipio_id'] != '') {
                 $this->db->set('municipio_id', $_POST['municipio_id']);
             }
+            $this->db->set('tipo_pessoa', $_POST['tipo_pessoa']);
+            $this->db->set('email', $_POST['email']);
+            $this->db->set('observacao', $_POST['observacao']);
             $this->db->set('logradouro', $_POST['endereco']);
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
@@ -171,14 +173,14 @@ class fornecedor_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            
+
             if ($_POST['txtcadastrosfornecedorid'] == "") {// insert
 //                echo "<pre>";
 //                var_dump($return); die;
-                if(count($return) > 0){
+                if (count($return) > 0) {
                     return -1;
                 }
-                
+
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_credor_devedor');
@@ -211,6 +213,9 @@ class fornecedor_model extends Model {
                                telefone,
                                f.tipo_logradouro_id,
                                logradouro,
+                               tipo_pessoa,
+                               email,
+                               observacao,
                                numero,
                                bairro,
                                complemento,
@@ -229,6 +234,9 @@ class fornecedor_model extends Model {
             $this->_razao_social = $return[0]->razao_social;
             $this->_celular = $return[0]->celular;
             $this->_telefone = $return[0]->telefone;
+            $this->_tipo_pessoa = $return[0]->tipo_pessoa;
+            $this->_email = $return[0]->email;
+            $this->_observacao = $return[0]->observacao;
             $this->_tipo_logradouro_id = $return[0]->tipo_logradouro_id;
             $this->_logradouro = $return[0]->logradouro;
             $this->_numero = $return[0]->numero;

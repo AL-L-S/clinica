@@ -839,6 +839,12 @@
                             <dd>
                                 <input type="checkbox" id="gerente_cancelar" name="autorizar_sala_espera" <? if (@$obj->_autorizar_sala_espera == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ao ativar essa flag o gerente de recepção consegue cancelar na sala de espera independente de outra flag">Gerente Cancelar Sala de Espera</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="gerente_cancelar" name="gerente_cancelar_sala" <? if (@$obj->_gerente_cancelar_sala == 't') echo "checked"; ?>/> 
+                            </dd>
                         </fieldset>
                     <? } ?>
                 </dl>    

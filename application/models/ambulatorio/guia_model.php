@@ -12818,6 +12818,7 @@ ORDER BY ae.paciente_credito_id)";
                             ordem_chegada,
                             cancelar_sala_espera,
                             administrador_cancelar,
+                            gerente_cancelar_sala,
                             ');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);

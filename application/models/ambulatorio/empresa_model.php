@@ -1563,6 +1563,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('laudo_sigiloso', 'f');
                     }
+                    if (isset($_POST['gerente_cancelar_sala'])) {
+                        $this->db->set('gerente_cancelar_sala', 't');
+                    } else {
+                        $this->db->set('gerente_cancelar_sala', 'f');
+                    }
 
                     if (isset($_POST['subgrupo_procedimento'])) {
                         $this->db->set('subgrupo_procedimento', 't');
@@ -1768,6 +1773,11 @@ class empresa_model extends Model {
                         $this->db->set('autorizar_sala_espera', 't');
                     } else {
                         $this->db->set('autorizar_sala_espera', 'f');
+                    }
+                    if (isset($_POST['gerente_cancelar_sala'])) {
+                        $this->db->set('gerente_cancelar_sala', 't');
+                    } else {
+                        $this->db->set('gerente_cancelar_sala', 'f');
                     }
                     if (isset($_POST['tecnica_promotor'])) {
                         $this->db->set('tecnica_promotor', 't');
@@ -2238,6 +2248,7 @@ class empresa_model extends Model {
                                ep.gerente_relatorio_financeiro,
                                ep.botao_arquivos_paciente,
                                ep.botao_imagem_paciente,
+                               ep.gerente_cancelar_sala,
                                ep.autorizar_sala_espera,
                                f.endereco_upload,
                                f.horario_seg_sex_inicio,
@@ -2275,6 +2286,7 @@ class empresa_model extends Model {
             $this->_gerente_cancelar = $return[0]->gerente_cancelar;
             $this->_impressao_internacao = $return[0]->impressao_internacao;
             $this->_campos_cadastro = $return[0]->campos_cadastro;
+            $this->_gerente_cancelar_sala = $return[0]->gerente_cancelar_sala;
             $this->_campos_atendimentomed = $return[0]->campos_atendimentomed;
             $this->_orcamento_cadastro = $return[0]->orcamento_cadastro;
             $this->_endereco_upload = $return[0]->endereco_upload;

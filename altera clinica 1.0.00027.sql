@@ -171,3 +171,11 @@ CREATE TABLE ponto.tb_laudo_parecer
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN autorizar_sala_espera boolean DEFAULT true;
+
+-- Dia 08/08/2018
+ALTER TABLE ponto.tb_financeiro_credor_devedor ADD COLUMN tipo_pessoa text;
+ALTER TABLE ponto.tb_financeiro_credor_devedor ADD COLUMN email text;
+ALTER TABLE ponto.tb_financeiro_credor_devedor ADD COLUMN observacao text;
+
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar_sala boolean DEFAULT true;

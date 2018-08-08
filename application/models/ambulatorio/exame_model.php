@@ -3308,6 +3308,51 @@ class exame_model extends Model {
         return $return->result();
     }
 
+    function gerarelatoriodemandagrupoorcamento($args = array()) {
+        // $this->db->select("column1, column2, ...", false) # O false serve para avisar o CI não pôr aspas
+        $this->db->select(" ao.ambulatorio_orcamento_id,
+                            p.nome as paciente,
+                            p.celular,
+                            p.telefone,
+                            ao.data_criacao,
+                            ao.autorizado,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            aoi.dia_semana_preferencia,
+                            aoi.turno_prefencia,
+                            data_preferencia,
+                            CASE turno_prefencia
+                                WHEN 'manha' THEN 1
+                                WHEN 'tarde' THEN 2
+                                WHEN 'noite' THEN 3
+                                ELSE 4
+                            END AS num_turno_preferencia,
+                            e.nome as empresa_nome", false);
+        $this->db->from('tb_ambulatorio_orcamento_item aoi');
+        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ao.paciente_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ao.empresa_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'aoi.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('aoi.ativo', 't');
+        $this->db->where('ao.ativo', 't');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ao.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] != "") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('aoi.data_preferencia');
+        $this->db->orderby('ao.ambulatorio_orcamento_id');
+        $this->db->orderby('ao.data_criacao');
+        $this->db->orderby('pt.grupo');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function gravarpacienteorcamento($ambulatorio_orcamento_id) {
 
         try {
