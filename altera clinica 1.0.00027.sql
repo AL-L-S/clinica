@@ -171,3 +171,7 @@ CREATE TABLE ponto.tb_laudo_parecer
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN autorizar_sala_espera boolean DEFAULT true;
+
+-- Dia 09/08/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN dados_atendimentomed text;

@@ -130,7 +130,8 @@ class guia_model extends Model {
         }
 
         $this->db->select('e.empresa_id,
-                            ep.campos_atendimentomed,    
+                            ep.campos_atendimentomed,
+                            ep.dados_atendimentomed,
                             ordem_chegada,
                             oftamologia,
                             horario_sab,
@@ -187,6 +188,7 @@ class guia_model extends Model {
                             ep.campos_obrigatorios_pac_sexo,
                             ep.campos_cadastro,
                             ep.campos_atendimentomed,
+                            ep.dados_atendimentomed,
                             ep.campos_obrigatorios_pac_nascimento,
                             ep.campos_obrigatorios_pac_telefone,
                             ep.campos_obrigatorios_pac_municipio,

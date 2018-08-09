@@ -292,6 +292,39 @@
                         </div>
                         <br>
                         <br>
+                        <div>
+                            <dt>
+                                <label title="Definir os dados do paciente visíveis">Dados do Paciente (Atendimento)</label>
+                            </dt>
+                            <dd>
+                                <?
+                                if (@$obj->_dados_atendimentomed != '') {
+                                    $opc_dadospaciente = json_decode(@$obj->_dados_atendimentomed);
+                                } else {
+                                    $opc_dadospaciente = array();
+                                }
+                               
+                                ?>
+                                <select name="opc_dadospaciente[]" style="width: 47%;" class="chosen-select" data-placeholder="Selecione os campos..." multiple>
+                                    <option value="paciente" <?= (in_array('paciente', $opc_dadospaciente)) ? 'selected' : ''; ?>>Nome</option>
+                                    <option value="idade" <?= (in_array('idade', $opc_dadospaciente)) ? 'selected' : ''; ?>>Idade</option>
+                                    <option value="sexo" <?= (in_array('sexo', $opc_dadospaciente)) ? 'selected' : ''; ?>>Sexo</option>
+                                    <option value="indicacao" <?= (in_array('indicacao', $opc_dadospaciente)) ? 'selected' : ''; ?>>Indicação</option>
+                                    <option value="exame" <?= (in_array('exame', $opc_dadospaciente)) ? 'selected' : ''; ?>>Exame</option>
+                                    <option value="nascimento" <?= (in_array('nascimento', $opc_dadospaciente)) ? 'selected' : ''; ?>>Nascimento</option>
+                                    <option value="ocupacao" <?= (in_array('ocupacao', $opc_dadospaciente)) ? 'selected' : ''; ?>>Ocupação</option>
+                                    <option value="endereco" <?= (in_array('endereco', $opc_dadospaciente)) ? 'selected' : ''; ?>>Endereço</option>
+                                    <option value="estadocivil" <?= (in_array('estadocivil', $opc_dadospaciente)) ? 'selected' : ''; ?>>Estado Civil</option>
+                                    <option value="convenio" <?= (in_array('convenio', $opc_dadospaciente)) ? 'selected' : ''; ?>>Convênio</option>
+                                    <option value="solicitante" <?= (in_array('solicitante', $opc_dadospaciente)) ? 'selected' : ''; ?>>Solicitante</option>
+                                    <option value="sala" <?= (in_array('sala', $opc_dadospaciente)) ? 'selected' : ''; ?>>Sala</option>
+                                    <option value="telefone" <?= (in_array('telefone', $opc_dadospaciente)) ? 'selected' : ''; ?>>Telefone</option>
+                                    
+                                </select>
+                            </dd>
+                        </div>
+                        <br>
+                        <br>
                         <fieldset>
                             <!--<legend>TESTE</legend>-->
                             <dt>

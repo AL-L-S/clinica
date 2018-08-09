@@ -1307,6 +1307,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('campos_atendimentomed', '');
                     }
+                    if (count($_POST['opc_dadospaciente']) > 0) {
+                        $this->db->set('dados_atendimentomed', json_encode($_POST['opc_dadospaciente']));
+                    } else {
+                        $this->db->set('dados_atendimentomed', '');
+                    }
                     if (isset($_POST['valor_autorizar'])) {
                         $this->db->set('valor_autorizar', 't');
                     } else {
@@ -1758,6 +1763,11 @@ class empresa_model extends Model {
                         $this->db->set('campos_atendimentomed', json_encode($_POST['opc_telatendimento']));
                     } else {
                         $this->db->set('campos_atendimentomed', '');
+                    }
+                    if (count($_POST['opc_dadospaciente']) > 0) {
+                        $this->db->set('dados_atendimentomed', json_encode($_POST['opc_dadospaciente']));
+                    } else {
+                        $this->db->set('dados_atendimentomed', '');
                     }
                     if (isset($_POST['profissional_completo'])) {
                         $this->db->set('profissional_completo', 't');
@@ -2231,6 +2241,7 @@ class empresa_model extends Model {
                                ep.retirar_flag_solicitante,
                                ep.campos_cadastro,
                                ep.campos_atendimentomed,
+                               ep.dados_atendimentomed,
                                ep.cadastrar_painel_sala,
                                ep.apenas_procedimentos_multiplos,
                                ep.orcamento_cadastro,
@@ -2276,6 +2287,7 @@ class empresa_model extends Model {
             $this->_impressao_internacao = $return[0]->impressao_internacao;
             $this->_campos_cadastro = $return[0]->campos_cadastro;
             $this->_campos_atendimentomed = $return[0]->campos_atendimentomed;
+            $this->_dados_atendimentomed = $return[0]->dados_atendimentomed;
             $this->_orcamento_cadastro = $return[0]->orcamento_cadastro;
             $this->_endereco_upload = $return[0]->endereco_upload;
             $this->_conjuge = $return[0]->conjuge;
