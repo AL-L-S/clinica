@@ -152,7 +152,7 @@ class app_model extends Model {
                 case 'o':
                     $sit = 'OK';
                     break;
-                case 'v':
+                case 'l':
                     $sit = 'LIVRE';
                     break;
                 case 'b':

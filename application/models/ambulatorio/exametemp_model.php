@@ -7064,14 +7064,14 @@ class exametemp_model extends Model {
 
             $horario = date("Y-m-d");
             // O "false" no parametro so SELECT serve para dizer ao CodeIgniter não pôr aspas.
-            $this->db->select("a.data,
+            $this->db->select("a.data,to_char(a.data, 'DD-MM-YYYY') as data_formatada_picker,
                               to_char(a.data, 'DD/MM/YYYY') as data_formatada", false);
             $this->db->from('tb_agenda_exames a');
             $this->db->where('a.ativo', 'true');
             $this->db->where('a.bloqueado', 'false');
             $this->db->where('a.data >=', $horario);
             $this->db->where('a.empresa_id', $empresa_id);
-            $this->db->where("a.medico_consulta_id IN (
+            $this->db->where("a.medico_agenda IN (
                 SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
                 WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
                 AND cop.empresa_id = $empresa_id
@@ -7084,6 +7084,27 @@ class exametemp_model extends Model {
         } else {
             return false;
         }
+    }
+
+    function listarhorariosdisponiveisorcamentodata($parametro, $empresa_id, $data) {
+        $horario = date("Y-m-d");
+        // O "false" no parametro so SELECT serve para dizer ao CodeIgniter não pôr aspas.
+        $this->db->select("a.inicio,a.agenda_exames_id", false);
+        $this->db->from('tb_agenda_exames a');
+        $this->db->where('a.ativo', 'true');
+        $this->db->where('a.bloqueado', 'false');
+        $this->db->where('a.data', date("Y-m-d", strtotime(str_replace('/', '-', $data))));
+        $this->db->where('a.empresa_id', $empresa_id);
+        $this->db->where("a.medico_agenda IN (
+                SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
+                WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
+                AND cop.empresa_id = $empresa_id
+            )");
+        $this->db->orderby('a.inicio');
+//        $this->db->groupby('a.data');
+        //        $this->db->limit(250);
+        $return = $this->db->get()->result();
+        return $return;
     }
 
     function listarhorariosgeral($parametro = null, $teste = null) {

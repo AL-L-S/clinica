@@ -232,10 +232,11 @@ class Procedimentoplano extends BaseController {
         $this->loadView('ambulatorio/procedimentoplanoformapagamento', $data);
     }
 
-    function carregarprocedimentoplanosessao($convenio_id) {
+    function carregarprocedimentoplanosessao($procedimento_convenio_id) {
 
-        $data['convenio_id'] = $convenio_id;
-        $data['sessao'] = $this->procedimentoplano->listarprocedimentoconveniosessao($convenio_id);
+        $data['convenio_id'] = $procedimento_convenio_id;
+        $data['sessao'] = $this->procedimentoplano->listarprocedimentoconveniosessao($procedimento_convenio_id);
+        $data['procedimento'] = $this->procedimentoplano->listarprocedimentosessaomaxima($procedimento_convenio_id);
 
         $this->loadView('ambulatorio/procedimentoplanosessao', $data);
     }

@@ -845,6 +845,12 @@
                             <dd>
                                 <input type="checkbox" id="gerente_cancelar" name="gerente_cancelar_sala" <? if (@$obj->_gerente_cancelar_sala == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ao ativar essa flag o gerente de recepção tem acesso a alguns relatórios do Financeiro a pedido da Top Saude">Gerente de Recepção Relatórios Financeiro (Top Saúde)</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="gerente_recepcao_top_saude" name="gerente_recepcao_top_saude" <? if (@$obj->_gerente_recepcao_top_saude == 't') echo "checked"; ?>/> 
+                            </dd>
                         </fieldset>
                     <? } ?>
                 </dl>    

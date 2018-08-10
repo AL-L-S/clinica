@@ -16,7 +16,7 @@
                     </dt>
                     <dd>
                         <input type="hidden" name="procedimento_convenio_id" id="convenio" value="<?= $convenio_id ?>"/>
-                        <input type="number" min="1" required name="numero_sessao_ini" id="convenio" value=""/>
+                        <input type="number" min="1" <?=($procedimento[0]->qtde > 0)? "max='{$procedimento[0]->qtde}'": "max='1'"; ?> required name="numero_sessao_ini" id="convenio" value=""/>
                         
                         
                     </dd>
@@ -24,7 +24,7 @@
                         <label>Sessão Final*</label>
                     </dt>
                     <dd>
-                        <input type="number" min="1" required name="numero_sessao_fim" id="convenio" value=""/>
+                        <input type="number" min="1" <?=($procedimento[0]->qtde > 0)? "max='{$procedimento[0]->qtde}'": "max='1'"; ?> required name="numero_sessao_fim" id="convenio" value=""/>
                         
                         
                     </dd>

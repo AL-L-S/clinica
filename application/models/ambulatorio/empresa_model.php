@@ -1312,6 +1312,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('valor_autorizar', 'f');
                     }
+                    if (isset($_POST['gerente_recepcao_top_saude'])) {
+                        $this->db->set('gerente_recepcao_top_saude', 't');
+                    } else {
+                        $this->db->set('gerente_recepcao_top_saude', 'f');
+                    }
                     if (isset($_POST['autorizar_sala_espera'])) {
                         $this->db->set('autorizar_sala_espera', 't');
                     } else {
@@ -1799,6 +1804,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('botao_laudo_paciente', 'f');
                     }
+                    if (isset($_POST['gerente_recepcao_top_saude'])) {
+                        $this->db->set('gerente_recepcao_top_saude', 't');
+                    } else {
+                        $this->db->set('gerente_recepcao_top_saude', 'f');
+                    }
                     if (isset($_POST['gerente_relatorio_financeiro'])) {
                         $this->db->set('gerente_relatorio_financeiro', 't');
                     } else {
@@ -2260,6 +2270,7 @@ class empresa_model extends Model {
                                ep.ajuste_pagamento_procedimento,
                                ep.retirar_preco_procedimento,
                                ep.relatorios_clinica_med,
+                               ep.gerente_recepcao_top_saude,
                                ep.botao_ficha_convenio
                                ');
             $this->db->from('tb_empresa f');
@@ -2300,6 +2311,7 @@ class empresa_model extends Model {
             $this->_bairro = $return[0]->bairro;
             $this->_municipio_id = $return[0]->municipio_id;
             $this->_caixa = $return[0]->caixa;
+            $this->_gerente_recepcao_top_saude = $return[0]->gerente_recepcao_top_saude;
             $this->_valor_convenio_nao = $return[0]->valor_convenio_nao;
             $this->_desativar_taxa_administracao = $return[0]->desativar_taxa_administracao;
             $this->_promotor_medico = $return[0]->promotor_medico;

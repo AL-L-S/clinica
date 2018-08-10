@@ -1749,6 +1749,24 @@ class procedimentoplano_model extends Model {
         $result = $return->result();
         return $result;
     }
+    function listarprocedimentosessaomaxima($convenio_id) {
+
+        //verifica se esse medico já está cadastrado nesse procedimento 
+        $this->db->select('pc.procedimento_convenio_id, 
+                            pcs.procedimento_convenio_sessao_id,
+                            pcs.sessao,
+                            pt.qtde,
+                            pcs.valor_sessao');
+        $this->db->from('tb_procedimento_convenio_sessao pcs');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pcs.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('pcs.ativo', 't');
+        $this->db->where('pcs.procedimento_convenio_id', $convenio_id);
+        $this->db->orderby('pcs.sessao');
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
 
     function removeformapagamentoconvenio($formasSelecionadas, $convenio_id) {
         $horario = date("Y-m-d H:i:s");

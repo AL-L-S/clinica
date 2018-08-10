@@ -41,6 +41,7 @@ class login_model extends Model {
                            ep.laudo_sigiloso,
                            ep.gerente_relatorio_financeiro,
                            ep.financeiro_cadastro,       
+                           ep.gerente_recepcao_top_saude,       
                            ep.caixa_personalizado,       
                            ep.botao_ativar_sala,
                            ep.retirar_preco_procedimento,
@@ -85,6 +86,7 @@ class login_model extends Model {
             $recomendacao_configuravel = $retorno[0]->recomendacao_configuravel;
             $recomendacao_obrigatorio = $retorno[0]->recomendacao_obrigatorio;
             $botao_ativar_sala = $retorno[0]->botao_ativar_sala;
+            $gerente_recepcao_top_saude = $retorno[0]->gerente_recepcao_top_saude;
 
 
             $gerente_contasapagar = $retorno[0]->gerente_contasapagar;
@@ -133,6 +135,7 @@ class login_model extends Model {
                 'orcamento_recepcao' => $orcamento_recepcao,
                 'relatorio_ordem' => $relatorio_ordem,
                 'relatorio_producao' => $relatorio_producao,
+                'gerente_recepcao_top_saude' => $gerente_recepcao_top_saude,
                 'relatorios_recepcao' => $relatorios_recepcao,
                 'autorizar_sala_espera' => $autorizar_sala_espera,
                 'financeiro_cadastro' => $financeiro_cadastro,
@@ -748,6 +751,7 @@ class login_model extends Model {
         $this->db->select('empresa_id,
                             nome');
         $this->db->from('tb_empresa');
+        $this->db->where('ativo', 't');
         $this->db->orderby('empresa_id');
         $return = $this->db->get();
         return $return->result();

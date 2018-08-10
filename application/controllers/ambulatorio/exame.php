@@ -438,9 +438,10 @@ class Exame extends BaseController {
         $data['empresa_id'] = $_POST['empresa'];
         $data['grupo'] = $_POST['grupo'];
         $data['relatorio'] = $this->exame->gerarelatoriodemandagrupo();
+        $data['horarios'] = $this->exame->gerarelatoriodemandagrupohorario();
 
 //        echo "<pre>";
-//        var_dump($data['relatorio']); die;
+//        var_dump($data['horarios']); die;
         $this->load->View('ambulatorio/impressaorelatoriodemandagrupo', $data);
     }
 

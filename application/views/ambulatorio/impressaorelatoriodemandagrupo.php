@@ -10,17 +10,17 @@
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> até <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
 
     <hr>
-    
-    <? 
+
+    <?
     $grupos = array();
-    if( count($relatorio) > 0 ){
+    if (count($relatorio) > 0) {
         ?> 
         <h3 style="text-align: center;">Dia de Preferência</h3> 
         <?
-        foreach ($relatorio as $value){
-            $gp = str_replace(" ", "", (($value->grupo == '')?'void':$value->grupo));
-            if ($value->data_preferencia != ''){
-                switch (date('N', strtotime($value->data_preferencia))){
+        foreach ($relatorio as $value) {
+            $gp = str_replace(" ", "", (($value->grupo == '') ? 'void' : $value->grupo));
+            if ($value->data_preferencia != '') {
+                switch (date('N', strtotime($value->data_preferencia))) {
                     case 1:
                         $diaSemana = 'segunda';
                         break;
@@ -45,15 +45,15 @@
                     default :
                         $diaSemana = 'indiferente';
                         break;
-                }                
-            }
-            else {
+                }
+            } else {
                 $diaSemana = 'indiferente';
             }
-            @$grupos[$gp][$diaSemana]++;
-            @$grupos[$gp]['total']++;
-        } 
-        foreach($grupos as $key => $value){ ?>
+            @$grupos[$gp][$diaSemana] ++;
+            @$grupos[$gp]['total'] ++;
+        }
+        foreach ($grupos as $key => $value) {
+            ?>
             <table border="1" class="tableGrupos">
                 <tbody>
                     <tr>
@@ -63,52 +63,52 @@
                         <td style="text-align: center;">Dia</td>
                         <td style="text-align: center;">Quantidade</td>
                     </tr>
-                    <? if(@$value['segunda'] != 0) { ?>
+                    <? if (@$value['segunda'] != 0) { ?>
                         <tr>
                             <td>Segunda</td>
-                            <td style="text-align: right;"><?= (int)$value['segunda'] ?></td>
+                            <td style="text-align: right;"><?= (int) $value['segunda'] ?></td>
                         </tr>  
                     <? } ?>
-                    <? if(@$value['terca'] != 0) { ?>
+                    <? if (@$value['terca'] != 0) { ?>
                         <tr>
                             <td>Terça</td>
-                            <td style="text-align: right;"><?= (int)$value['terca'] ?></td>
+                            <td style="text-align: right;"><?= (int) $value['terca'] ?></td>
                         </tr>  
                     <? } ?>
-                    <? if(@$value['quarta'] != 0) { ?>
+                    <? if (@$value['quarta'] != 0) { ?>
                         <tr>
                             <td>Quarta</td>
-                            <td style="text-align: right;"><?= (int)$value['quarta'] ?></td>
+                            <td style="text-align: right;"><?= (int) $value['quarta'] ?></td>
                         </tr>  
                     <? } ?>
-                    <? if(@$value['quinta'] != 0) { ?>
+                    <? if (@$value['quinta'] != 0) { ?>
                         <tr>
                             <td>Quinta</td>
-                            <td style="text-align: right;"><?= (int)$value['quinta'] ?></td>
+                            <td style="text-align: right;"><?= (int) $value['quinta'] ?></td>
                         </tr>  
                     <? } ?>
-                    <? if(@$value['sexta'] != 0) { ?>
+                    <? if (@$value['sexta'] != 0) { ?>
                         <tr>
                             <td>Sexta</td>
-                            <td style="text-align: right;"><?= (int)$value['sexta'] ?></td>
+                            <td style="text-align: right;"><?= (int) $value['sexta'] ?></td>
                         </tr>  
                     <? } ?>
-                    <? if(@$value['sabado'] != 0) { ?>
+                    <? if (@$value['sabado'] != 0) { ?>
                         <tr>
                             <td>Sabado</td>
-                            <td style="text-align: right;"><?= (int)$value['sabado'] ?></td>
+                            <td style="text-align: right;"><?= (int) $value['sabado'] ?></td>
                         </tr>  
                     <? } ?>
-                    <? if(@$value['domingo'] != 0) { ?>
+                    <? if (@$value['domingo'] != 0) { ?>
                         <tr>
                             <td>Domingo</td>
-                            <td style="text-align: right;"><?= (int)$value['domingo'] ?></td>
+                            <td style="text-align: right;"><?= (int) $value['domingo'] ?></td>
                         </tr>  
                     <? } ?>
-                    <? if(@$value['indiferente'] != 0) { ?>
+                    <? if (@$value['indiferente'] != 0) { ?>
                         <tr>
                             <td>Indiferente</td>
-                            <td style="text-align: right;"><?= (int)$value['indiferente'] ?></td>
+                            <td style="text-align: right;"><?= (int) $value['indiferente'] ?></td>
                         </tr>  
                     <? } ?>
                     <tr>
@@ -116,11 +116,11 @@
                     </tr>
                 </tbody>
             </table>
-            
+
         <? } ?>
         <div id="turnoPreferencia" style="display: none">
             <hr>
-            <h3 style="text-align: center">Turno de Preferência</h3>
+            <h3 style="text-align: center">Horário de Preferência</h3>
             <table border='1' style="margin: auto">
                 <tr>
                     <td colspan='2' style='text-align: center; background-color: #ccc'>
@@ -129,13 +129,21 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style='text-align: center;'>Turno</td>
+                    <td style='text-align: center;'>Horário</td>
                     <td style='text-align: center;'>Quantidade</td>
                 </tr>
-                <tr><td>Manhã</td><td style='text-align: right;'><span class="manhaValor">0</span></td></tr>
-                <tr><td>Tarde</td><td style='text-align: right;'><span class="tardeValor">0</span></td></tr>
-                <tr><td>Noite</td><td style='text-align: right;'><span class="noiteValor">0</span></td></tr>
-                <tr><td>Indiferente</td><td style='text-align: right;'><span class="indiferenteValor">0</span></td></tr>
+                <tr>
+                    <td colspan="2">
+                        <table id="tabelaComHorarios" style="width: 100%">
+                            <tr class=''><td></td><td style='text-align: right;'></td></tr>
+                            <tr class='linhaHorario'><td>Tarde</td><td style='text-align: right;'><span class="linhaHorario">0</span></td></tr>
+                            <tr class='linhaHorario'><td>Noite</td><td style='text-align: right;'><span class="linhaHorario">0</span></td></tr>
+                            <tr class='linhaHorario'><td>Indiferente</td><td style='text-align: right;'><span class="linhaHorario">0</span></td></tr>  
+                        </table>
+                    </td>
+                </tr>
+
+
                 <tr>
                     <td colspan='3' rowspan='3' style='text-align: center;'>
                         <div id='turnoGrupo' style='height: 250px; width: 250px;'></div>
@@ -143,12 +151,12 @@
                 </tr>
             </table>
         </div>
-    
-    <? } 
-    else {
+
+    <?
+    } else {
         echo "<h3>Não há resultados para essa consulta.</h3>";
     }
-?>
+    ?>
 </div> <!-- Final da DIV content -->
 <style>
     .tableGrupos{
@@ -170,13 +178,11 @@
             }, 1000);
         });
     });
-            
+
     var turnoGrafico = new Morris.Donut({
         element: 'turnoGrupo',
         data: [
-            {label: "Manhã", value: 0, formatted: '0%'},
-            {label: "Tarde", value: 0, formatted: '0%'},
-            {label: "Noite", value: 0, formatted: '0%'},
+            
             {label: "Indiferente", value: 0, formatted: '0%'}
         ],
         colors: [
@@ -187,19 +193,20 @@
         ],
         formatter: function (x, data) {
             return data.formatted;
-        } 
+        }
     });
-    <? 
-    foreach($grupos as $key => $value){ ?> 
-        
+<? foreach ($grupos as $key => $value) { ?>
+
         new Morris.Donut({
             element: '<?= $key ?>',
             data: [
-                <? foreach ($value as $key2 => $item) { 
-                    if($key2 != 'total') { ?>
-                        {label: "<?= $key2; ?>", value: <?= $item; ?>, formatted: '<?= number_format(($item/$value['total'])*100, 2, ',', ''); ?>%'},
-                <?  }
-                } ?>
+    <? foreach ($value as $key2 => $item) {
+        if ($key2 != 'total') {
+            ?>
+                        {label: "<?= $key2; ?>", value: <?= $item; ?>, formatted: '<?= number_format(($item / $value['total']) * 100, 2, ',', ''); ?>%'},
+        <? }
+    }
+    ?>
             ],
             colors: [
                 '#e74c3c',
@@ -214,42 +221,48 @@
             formatter: function (x, data) {
                 return data.formatted;
             }
-        }).on('click', function(value, item){
+        }).on('click', function (value, item) {
             $("#turnoPreferencia").css('display', 'block');
-            
+
             var parametros = new Object();
             parametros.txtdata_inicio = '<?= $_POST['txtdata_inicio'] ?>';
             parametros.txtdata_fim = '<?= $_POST['txtdata_fim'] ?>';
             parametros.empresa = '<?= $_POST['empresa'] ?>';
             parametros.grupo = '<?= $key ?>';
             parametros.dia = item.label;
-            
+//            console.log(parametros.dia);
+
             $("span.grupoValor").text(parametros.grupo);
             $("span.diaValor").text(parametros.dia);
-            
+            $('.linhaHorario').remove();
             $.getJSON('<?= base_url() ?>autocomplete/buscadadosgraficorelatoriodemandagrupo', parametros, function (j) {
-                $("span.manhaValor").text(j.manha);
-                $("span.tardeValor").text(j.tarde);
-                $("span.noiteValor").text(j.noite);
-                $("span.indiferenteValor").text(j.indiferente);
-                
-                var total = parseInt(j.manha) + parseInt(j.tarde) + parseInt(j.noite) + parseInt(j.indiferente);
-                
-                var json = [
-                    {label: "Manhã", value: parseInt(j.manha), formatted: ((j.manha/total)*100).toFixed(2).replace(".",",")+'%'},
-                    {label: "Tarde", value: parseInt(j.tarde), formatted: ((j.tarde/total)*100).toFixed(2).replace(".",",")+'%'},
-                    {label: "Noite", value: parseInt(j.noite), formatted: ((j.noite/total)*100).toFixed(2).replace(".",",")+'%'},
-                    {label: "Indiferente", value: parseInt(j.indiferente), formatted: ((j.indiferente/total)*100).toFixed(2).replace(".",",")+'%'}
-                ];
-                
+//                var linhaTabela = '';
+//                 alert('sdasds');
+//                console.log(j);
+                var total = 0;
+                for(var i = 0; i < j.length; i++){
+                   linhaTabela = "<tr class='linhaHorario'><td>"+j[i].horario +"</td><td style='text-align: right;'><span class='linhaHorario'>"+j[i].contador +"</span></td></tr>";
+                   $('#tabelaComHorarios tr:last').after(linhaTabela);  
+                   total = total + parseInt(j[i].contador);
+                }
+                var json = [];
+//                var obj = {};
+                for(var i = 0; i < j.length; i++){
+                   var obj = {label: j[i].horario, value: parseInt(j[i].contador), formatted: ((j[i].contador / total) * 100).toFixed(2).replace(".", ",") + '%'};
+                   json.push(obj);
+                }
+//                var total = parseInt(j.manha) + parseInt(j.tarde) + parseInt(j.noite) + parseInt(j.indiferente);
+//
+                console.log(json);
+//
                 turnoGrafico.setData(json);
-                
+
             });
         });
-    <? } ?>
-    
-    $(function () {
-        $("#accordion").accordion();
-    });
+<? } ?>
+
+//    $(function () {
+//        $("#accordion").accordion();
+//    });
 
 </script>

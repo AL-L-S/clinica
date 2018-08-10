@@ -246,7 +246,25 @@ class internacao_model extends BaseModel {
             $this->db->where('internacao_id', $internacao_id);
             $this->db->update('tb_internacao');
 
+            $this->db->set('ativo', 'false');
+            $this->db->where('internacao_leito_id', $_POST['leitoID']);
+            $this->db->update('tb_internacao_leito');
 
+            $this->db->set('paciente_id', $_POST['idpaciente']);
+            $this->db->set('leito_id', $_POST['leitoID']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_internacao_ocupacao');
+
+            $this->db->set('internacao_id', $internacao_id);
+            $this->db->set('leito_id', $_POST['leitoID']);
+            $this->db->set('tipo', 'ENTRADA');
+            $this->db->set('status', 'INTERNACAO');
+            $this->db->set('data', date("Y-m-d"));
+            $this->db->set('operador_movimentacao', $operador_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_internacao_leito_movimentacao');
 
             return $internacao_id;
         } catch (Exception $exc) {

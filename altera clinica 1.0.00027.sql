@@ -179,3 +179,9 @@ ALTER TABLE ponto.tb_financeiro_credor_devedor ADD COLUMN observacao text;
 
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar_sala boolean DEFAULT true;
+
+
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN horario_preferencia time without time zone;
+
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_recepcao_top_saude boolean DEFAULT false;

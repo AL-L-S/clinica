@@ -104,17 +104,78 @@ class Autocomplete extends Controller {
 
     function buscadadosgraficorelatoriodemandagrupo() {
         $result = $this->exame->buscadadosgraficorelatoriodemandagrupo();
-        $array = array(
-            'manha' => 0,
-            'tarde' => 0,
-            'noite' => 0,
-            'indiferente' => 0
-        );
-        foreach ($result as $value) {
-            $indice = ($value->turno_prefencia != '') ? $value->turno_prefencia : 'indiferente';
-            @$array[$indice] ++;
+//        echo '<pre>';
+//        var_dump($result);die;
+
+        $array = array();
+        $array['Indiferente'] = 0;
+        $contador = 0;
+        foreach ($result as $item) {
+            if ($item->data_preferencia != '') {
+                switch (date('N', strtotime($item->data_preferencia))) {
+                    case 1:
+                        $diaSemana = 'segunda';
+                        break;
+                    case 2:
+                        $diaSemana = 'terca';
+                        break;
+                    case 3:
+                        $diaSemana = 'quarta';
+                        break;
+                    case 4:
+                        $diaSemana = 'quinta';
+                        break;
+                    case 5:
+                        $diaSemana = 'sexta';
+                        break;
+                    case 6:
+                        $diaSemana = 'sabado';
+                        break;
+                    case 7:
+                        $diaSemana = 'domingo';
+                        break;
+                    default :
+                        $diaSemana = 'indiferente';
+                        break;
+                }
+            } else {
+                $diaSemana = 'indiferente';
+            }
+
+            if ($diaSemana == $_GET['dia']) {
+//                var_dump($item->data_preferencia);
+//                var_dump($item->horario_preferencia);
+//                var_dump($diaSemana);
+                if ($item->horario_preferencia != '') {
+                    if (!isset($array[$item->horario_preferencia])) {
+                        $array[$item->horario_preferencia] = 1;
+                    } else {
+                        if ($item->horario_preferencia == $result[$contador - 1]->horario_preferencia) {
+                            $array[$item->horario_preferencia] ++;
+                        } else {
+//                        $array[$item->horario_preferencia] = 1;
+                        }
+                    }
+                } else {
+                    $array['Indiferente']++;
+                }
+            }
+
+
+            $contador++;
         }
-        echo json_encode($array);
+        $array_horarios = array();
+        
+        foreach ($array as $key => $value) {
+            $array_atual = array(
+                'horario' => $key,
+                'contador' =>$value
+            );
+            array_push($array_horarios, $array_atual);    
+            
+        }
+
+        echo json_encode($array_horarios);
     }
 
     function procedimentoconveniocirurgicoagrupador() {
@@ -661,8 +722,16 @@ class Autocomplete extends Controller {
 
     function horariosdisponiveisorcamento() {
         $result = array();
-        if(isset($_GET['procedimento1']) && isset($_GET['empresa1'])){
+        if (isset($_GET['procedimento1']) && isset($_GET['empresa1'])) {
             $result = $this->exametemp->listarhorariosdisponiveisorcamento($_GET['procedimento1'], $_GET['empresa1']);
+        }
+        echo json_encode($result);
+    }
+
+    function horariosdisponiveisorcamentodata() {
+        $result = array();
+        if (isset($_GET['procedimento1']) && isset($_GET['empresa1']) && isset($_GET['data'])) {
+            $result = $this->exametemp->listarhorariosdisponiveisorcamentodata($_GET['procedimento1'], $_GET['empresa1'], $_GET['data']);
         }
         echo json_encode($result);
     }
@@ -2552,26 +2621,25 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
-      function repetirreceituario() {
+
+    function repetirreceituario() {
 
         if (isset($_GET['receita'])) {
-            
+
             $result = $this->laudo->listarautocompleterepetirreceituario($_GET['receita']);
         } else {
             $result = $this->laudo->listarautocompleterepetirreceituario();
-            
         }
         echo json_encode($result);
     }
-          function editarreceituario() {
+
+    function editarreceituario() {
 
         if (isset($_GET['receita'])) {
-            
+
             $result = $this->laudo->listarautocompleteeditarreceituario($_GET['receita']);
         } else {
             $result = $this->laudo->listarautocompleteeditarreceituario();
-            
         }
         echo json_encode($result);
     }
@@ -3248,7 +3316,7 @@ class Autocomplete extends Controller {
             $result = $this->enfermaria_m->listaenfermariajson();
         }
         foreach ($result as $item) {
-            $retorno['value'] = $item->internacao_enfermaria_id . ' - ' .  $item->nome;
+            $retorno['value'] = $item->internacao_enfermaria_id . ' - ' . $item->nome;
             $retorno['id'] = $item->internacao_enfermaria_id;
             $var[] = $retorno;
         }

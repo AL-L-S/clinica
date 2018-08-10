@@ -26,6 +26,7 @@ $especialidade = $this->session->userdata('especialidade');
 $centrocirurgico = $this->session->userdata('centrocirurgico');
 $relatorio_ordem = $this->session->userdata('relatorio_ordem');
 $calendario_layout = $this->session->userdata('calendario_layout');
+$sala_de_espera = $this->session->userdata('autorizar_sala_espera');
 $orcamento_recepcao = $this->session->userdata('orcamento_recepcao');
 $relatorio_producao = $this->session->userdata('relatorio_producao');
 $relatorios_recepcao = $this->session->userdata('relatorios_recepcao');
@@ -33,9 +34,9 @@ $financeiro_cadastro = $this->session->userdata('financeiro_cadastro');
 $caixa_personalizado = $this->session->userdata('caixa_personalizado');
 $gerente_contasapagar = $this->session->userdata('gerente_contasapagar');
 $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
-$sala_de_espera = $this->session->userdata('autorizar_sala_espera');
 $relatorios_clinica_med = $this->session->userdata('relatorios_clinica_med');
 $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+$gerente_recepcao_top_saude = $this->session->userdata('gerente_recepcao_top_saude');
 $retirar_preco_procedimento = $this->session->userdata('retirar_preco_procedimento');
 $gerente_relatorio_financeiro = $this->session->userdata('gerente_relatorio_financeiro');
 
@@ -747,7 +748,7 @@ function debug($object) {
                             </ul>
                         </li>
                                 <? } ?>
-                                <? if ($faturamento == 't' && ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16) || ($gerente_relatorio_financeiro == 't' && $perfil_id == 18)) { ?>
+                                <? if ($faturamento == 't' && ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16) || ($gerente_relatorio_financeiro == 't' && ($perfil_id == 18 || $perfil_id == 5))) { ?>
 
 
                         <li><span class="folder">Faturamento</span>
@@ -870,7 +871,7 @@ function debug($object) {
                         </li>
                                 <? } ?>
 
-                                <? if ($financeiro == 't' && ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || $perfil_id == 18 || ($perfil_id == 5 && $gerente_contasapagar == 't'))) { ?>
+                                <? if ($financeiro == 't' && ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || $perfil_id == 18 || ($perfil_id == 5 && $gerente_contasapagar == 't') || ($gerente_recepcao_top_saude == 't' && $perfil_id == 5))) { ?>
 
 
                         <li><span class="folder">Financeiro</span>
@@ -915,7 +916,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatorioacompanhamentodecontas">Relatorio Acompanhamento de contas</a></span></ul>
                                         <?
                                     }
-                                    if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17) {
+                                    if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || ($gerente_recepcao_top_saude == 't' && $perfil_id == 5)) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioresumogeral">Relatorio Resumo</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocredito">Relatorio Crédito Paciente</a></span></ul>
@@ -946,7 +947,7 @@ function debug($object) {
                                         <?
                                     }
                                     ?>
-                                    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 6 || $perfil_id == 17) {
+                                    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 6 || $perfil_id == 17 || ($gerente_recepcao_top_saude == 't' && $perfil_id == 5)) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconveniofinanceiro">Relatorio Produção Médica</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacaoexames">Relatorio Produção Promotor</a></span></ul>
