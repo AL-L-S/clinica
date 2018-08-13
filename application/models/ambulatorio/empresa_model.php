@@ -230,7 +230,7 @@ class empresa_model extends Model {
     function listarconfiguracaoimpressaoreciboform($empresa_impressao_cabecalho_id) {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('ei.empresa_impressao_recibo_id, ei.nome as nome_recibo,ei.texto, ei.cabecalho,ei.rodape, e.nome as empresa, linha_procedimento');
+        $this->db->select('ei.empresa_impressao_recibo_id, ei.repetir_recibo, ei.nome as nome_recibo,ei.texto, ei.cabecalho,ei.rodape, e.nome as empresa, linha_procedimento');
         $this->db->from('tb_empresa_impressao_recibo ei');
         $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
         $this->db->where('ei.empresa_impressao_recibo_id', $empresa_impressao_cabecalho_id);
@@ -701,11 +701,14 @@ class empresa_model extends Model {
             if (count($teste) > 0) {
                 $impressao_id = $teste[0]->empresa_impressao_recibo_id;
             }
-
+//            var_dump($_POST); die;
             if (count($teste) == 0) {
                 $this->db->set('nome', $_POST['nome']);
                 $this->db->set('linha_procedimento', $_POST['linha_procedimento']);
                 $this->db->set('cabecalho', $_POST['cabecalho']);
+                if ($_POST['repetir_recibo'] > 0) {
+                    $this->db->set('repetir_recibo', $_POST['repetir_recibo']);
+                }
                 $this->db->set('rodape', $_POST['rodape']);
                 $this->db->set('texto', $_POST['texto']);
                 $this->db->set('empresa_id', $empresa_id);
@@ -717,6 +720,9 @@ class empresa_model extends Model {
                 $this->db->insert('tb_empresa_impressao_recibo');
             } else {
                 $this->db->set('nome', $_POST['nome']);
+                if ($_POST['repetir_recibo'] > 0) {
+                    $this->db->set('repetir_recibo', $_POST['repetir_recibo']);
+                }
                 $this->db->set('linha_procedimento', $_POST['linha_procedimento']);
                 $this->db->set('cabecalho', $_POST['cabecalho']);
                 $this->db->set('rodape', $_POST['rodape']);
@@ -1307,6 +1313,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('campos_atendimentomed', '');
                     }
+                    if (count($_POST['opc_dadospaciente']) > 0) {
+                        $this->db->set('dados_atendimentomed', json_encode($_POST['opc_dadospaciente']));
+                    } else {
+                        $this->db->set('dados_atendimentomed', '');
+                    }
                     if (isset($_POST['valor_autorizar'])) {
                         $this->db->set('valor_autorizar', 't');
                     } else {
@@ -1768,6 +1779,11 @@ class empresa_model extends Model {
                         $this->db->set('campos_atendimentomed', json_encode($_POST['opc_telatendimento']));
                     } else {
                         $this->db->set('campos_atendimentomed', '');
+                    }
+                    if (count($_POST['opc_dadospaciente']) > 0) {
+                        $this->db->set('dados_atendimentomed', json_encode($_POST['opc_dadospaciente']));
+                    } else {
+                        $this->db->set('dados_atendimentomed', '');
                     }
                     if (isset($_POST['profissional_completo'])) {
                         $this->db->set('profissional_completo', 't');
@@ -2251,6 +2267,7 @@ class empresa_model extends Model {
                                ep.retirar_flag_solicitante,
                                ep.campos_cadastro,
                                ep.campos_atendimentomed,
+                               ep.dados_atendimentomed,
                                ep.cadastrar_painel_sala,
                                ep.apenas_procedimentos_multiplos,
                                ep.orcamento_cadastro,
@@ -2299,6 +2316,7 @@ class empresa_model extends Model {
             $this->_campos_cadastro = $return[0]->campos_cadastro;
             $this->_gerente_cancelar_sala = $return[0]->gerente_cancelar_sala;
             $this->_campos_atendimentomed = $return[0]->campos_atendimentomed;
+            $this->_dados_atendimentomed = $return[0]->dados_atendimentomed;
             $this->_orcamento_cadastro = $return[0]->orcamento_cadastro;
             $this->_endereco_upload = $return[0]->endereco_upload;
             $this->_conjuge = $return[0]->conjuge;

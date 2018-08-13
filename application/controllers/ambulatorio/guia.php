@@ -1141,17 +1141,15 @@ class Guia extends BaseController {
                 $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
                 if ($agrupador[0]->agrupador != 't') {
                     $retorno = $this->guia->gravarexames($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
-                    if(@$retorno["cod"] == -1){
-                        if ($retorno['message'] == 'pending'){
+                    if (@$retorno["cod"] == -1) {
+                        if ($retorno['message'] == 'pending') {
                             $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
-                        }
-                        else{
+                        } else {
                             $messagem = "O paciente não existe no sistema de fidelidade.";
                         }
-                        $this->session->set_flashdata('message', $messagem); 
-                        redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$ambulatorio_guia");                          
+                        $this->session->set_flashdata('message', $messagem);
+                        redirect(base_url() . "ambulatorio/guia/novo/$paciente_id/$ambulatorio_guia");
                     }
-
                 } else {
                     // Cria um agrupador para o pacote
                     $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
@@ -1204,7 +1202,7 @@ class Guia extends BaseController {
 //        ini_set('display_startup_erros',1);
 //        error_reporting(E_ALL);
 //        var_dump($_POST); die;
-        $_POST['formapamento'] = (int)$_POST['formapamento'];
+        $_POST['formapamento'] = (int) $_POST['formapamento'];
         $paciente_id = $_POST['txtpaciente_id'];
         if ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
@@ -1261,14 +1259,13 @@ class Guia extends BaseController {
 
                     if ($agrupador[0]->agrupador != 't') {
                         $retorno = $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
-                        if(@$retorno["cod"] == -1){
-                            if ($retorno['message'] == 'pending'){
+                        if (@$retorno["cod"] == -1) {
+                            if ($retorno['message'] == 'pending') {
                                 $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
-                            }
-                            else{
+                            } else {
                                 $messagem = "O paciente não existe no sistema de fidelidade.";
                             }
-                            $this->session->set_flashdata('message', $messagem);   
+                            $this->session->set_flashdata('message', $messagem);
                             redirect(base_url() . "ambulatorio/guia/novoatendimento/$paciente_id/$ambulatorio_guia");
                         }
                     } else {
@@ -1373,20 +1370,18 @@ class Guia extends BaseController {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 }
                 $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
-                
+
                 if ($agrupador[0]->agrupador != 't') {
                     $retorno = $this->guia->gravarconsulta($ambulatorio_guia, $percentual, $percentual_laboratorio);
-                    if(@$retorno["cod"] == -1){
-                        if ($retorno['message'] == 'pending'){
+                    if (@$retorno["cod"] == -1) {
+                        if ($retorno['message'] == 'pending') {
                             $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
-                        }
-                        else{
+                        } else {
                             $messagem = "O paciente não existe no sistema de fidelidade.";
                         }
-                        $this->session->set_flashdata('message', $messagem);                            
+                        $this->session->set_flashdata('message', $messagem);
                         redirect(base_url() . "ambulatorio/guia/novoconsulta/$paciente_id/$ambulatorio_guia");
                     }
-
                 } else {
                     // Cria um agrupador para o pacote
                     $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
@@ -1483,14 +1478,13 @@ class Guia extends BaseController {
                     }
                     $medico_id = $_POST['crm1'];
                     $retorno = $this->guia->gravarfisioterapia($ambulatorio_guia, $percentual, $medico_id, $percentual_laboratorio);
-                    if(@$retorno["cod"] == -1){
-                        if ($retorno['message'] == 'pending'){
+                    if (@$retorno["cod"] == -1) {
+                        if ($retorno['message'] == 'pending') {
                             $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
-                        }
-                        else{
+                        } else {
                             $messagem = "O paciente não existe no sistema de fidelidade.";
                         }
-                        $this->session->set_flashdata('message', $messagem); 
+                        $this->session->set_flashdata('message', $messagem);
                         redirect(base_url() . "ambulatorio/guia/novofisioterapia/$paciente_id/$ambulatorio_guia");
                     }
                 }
@@ -1718,8 +1712,8 @@ class Guia extends BaseController {
 //            var_dump($teste); die;
             if (count($teste) > 0) {
 //                $data['x'] ++;
-            }else{
-                $data['x'] ++; 
+            } else {
+                $data['x'] ++;
             }
         }
 //        var_dump($data['exames']); die;
@@ -1784,7 +1778,7 @@ class Guia extends BaseController {
         $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
         $data['grupos'] = $this->procedimento->listargruposespecialidade();
         $data['x'] = 0;
-        
+
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);
             if (empty($teste)) {
@@ -1814,7 +1808,7 @@ class Guia extends BaseController {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
-        
+
 
         if ($ambulatorio_guia_id != null && $ambulatorio_guia_id != '') {
             $data['exames'] = $this->exametemp->listaraexamespaciente($ambulatorio_guia_id);
@@ -1863,13 +1857,11 @@ class Guia extends BaseController {
         $data['paciente_id'] = @$procedimentos[0]->paciente_id;
         $data['orcamento_id'] = $orcamento_id;
         $permissoes = $this->guia->listarempresapermissoes();
-        if($permissoes[0]->ajuste_pagamento_procedimento == 't') {
+        if ($permissoes[0]->ajuste_pagamento_procedimento == 't') {
             $this->load->View('ambulatorio/transformaorcamentocreditopersonalizado-form', $data);
-        }
-        else {
+        } else {
             $this->load->View('ambulatorio/transformaorcamentocredito-form', $data);
         }
-        
     }
 
     function faturar($agenda_exames_id, $procedimento_convenio_id) {
@@ -2012,7 +2004,7 @@ class Guia extends BaseController {
         $_POST['valor2'] = (float) str_replace(',', '.', $_POST['valor2']);
         $_POST['valor3'] = (float) str_replace(',', '.', $_POST['valor3']);
         $_POST['valor4'] = (float) str_replace(',', '.', $_POST['valor4']);
-        
+
         $resulta = $_POST['valortotal'];
         if ($resulta == "0.00") {
             $ambulatorio_guia_id = $this->guia->gravarfaturadopersonalizado();
@@ -2116,29 +2108,28 @@ class Guia extends BaseController {
         $data['exame'][0] = new stdClass();
         // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
         // A linha acima inicia o Objeto antes de atribuir um valor
-        
+
         $total = 0;
         $forma_pagamento_ajuste = array();
         $data['forma_pagamento'] = $this->guia->formadepagamento();
         $data['exame1'] = $this->guia->listarexameguiaprocedimentospersonalizado($guia_id);
-        foreach($data['exame1'] as $item){
-            
+        foreach ($data['exame1'] as $item) {
+
             if ($item->procedimento_possui_ajuste_pagamento != "f") {
                 $total += ($item->valor_ajuste * $item->quantidade);
                 $valor = @$forma_pagamento_ajuste[$item->forma_pagamento_ajuste] + $item->valor_ajuste;
                 $forma_pagamento_ajuste[$item->forma_pagamento_ajuste] = $valor;
-            }
-            else{
+            } else {
                 $total += ($item->valor * $item->quantidade);
             }
         }
-        
+
         $data['exame'][0]->total = $total;
-        
+
         foreach ($forma_pagamento_ajuste as $key => $value) {
             $data['pagamento_ajuste'][] = array("valor" => $value, "forma" => $key);
         }
-        
+
 
         $data['guia_id'] = $guia_id;
         $data['valor'] = 0.00;
@@ -3005,7 +2996,7 @@ class Guia extends BaseController {
 
         $data['relatorio'] = $this->guia->relatoriogeralconvenio();
         $data['contador'] = count($data['relatorio']);
-        
+
 //        echo "<pre>";
 //        var_dump($data['listarconvenio']); die;
 
@@ -3509,30 +3500,29 @@ class Guia extends BaseController {
         $data['relatorio'] = $this->guia->relatorionotafiscal($_POST['guia']);
         $this->load->View('ambulatorio/impressaorelatorionotafiscal', $data);
     }
-    
-    function gerarXmlLoteRPS(){
+
+    function gerarXmlLoteRPS() {
         $relatorio = $this->guia->listarnotasfiscais();
-        
+
         $lotes = array();
         $rps = array();
-        
+
         $j = 0; // A cada vez que i chega a 50, essa variavel incrementa
-        $i = 0; 
-        
-        foreach ($relatorio as $item){
+        $i = 0;
+
+        foreach ($relatorio as $item) {
             $indentificacaoRPS = array(
                 "Numero" => '', // Fica a cargo do sistema STG
                 "Serie" => '', // Fica a cargo do sistema STG
                 "Tipo" => '1' // 1 - RPS | 2 - NF conjugada | 3 - Cupom
             );
-            
+
             $sevico = array(
-                
             );
-            
+
             $rps[]["InfRps"] = array(
                 "IdentificacaoRps" => $indentificacaoRPS,
-                "DataEmissao" => date("Y-m-d")."T".date("h:i:s"),
+                "DataEmissao" => date("Y-m-d") . "T" . date("h:i:s"),
                 "NaturezaOperacao" => '01', // 01 - Tributação no municipio | 02 - Tributação fora do municipio | 03 - Isenção | 04 - Imune
                 "RegimeEspecialTributacao" => '', // 1 - Microempresa municipal | 2 - Estimativa | 3 – Sociedade de profissionais | 4 – Cooperativa | 5 - MEI | 6 - ME EPP
                 "OptanteSimplesNacional" => '', // 1 - SIM | 2 - NAO
@@ -3545,7 +3535,7 @@ class Guia extends BaseController {
                 "IntermediarioServico" => '',
                 "ConstrucaoCivil" => ''
             );
-            
+
             $lotes[$j] = array(
                 "NumeroLote" => $j, // Fica a cargo do sistema STG
                 "Cnpj" => '', // CNPJ da empresa (apenas numeros)
@@ -3554,20 +3544,20 @@ class Guia extends BaseController {
                 "ListaRps" => $rps
             );
             $i++;
-            if($i < 50){
+            if ($i < 50) {
                 continue;
-            }
-            else{
+            } else {
                 $j++;
                 $i = 0;
                 $rps = array();
             }
         }
-        
+
         echo "<pre>";
-        var_dump($lotes); die;
+        var_dump($lotes);
+        die;
     }
-    
+
     function gerarelatoriovalormedio() {
         $data['txtdatainicio'] = str_replace("/", "-", $_POST['txtdata_inicio']);
         $data['txtdatafim'] = str_replace("/", "-", $_POST['txtdata_fim']);
@@ -4011,6 +4001,7 @@ class Guia extends BaseController {
         $data['impressaorecibo'] = $this->guia->listarconfiguracaoimpressaorecibo($empresa_id);
         @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
         @$rodape_config = $data['cabecalho'][0]->rodape;
+
 //        echo '<pre>';
 //        var_dump($data['exames']); die;
         $exames = $data['exames'];
@@ -4070,8 +4061,15 @@ class Guia extends BaseController {
             }
             $data['cabecalho'] = $cabecalho;
             $data['rodape'] = $rodape;
-
-            $this->load->View('ambulatorio/impressaoreciboconfiguravel', $data);
+            @$repetir_recibo = $data['impressaorecibo'][0]->repetir_recibo;
+            if (@$repetir_recibo > 1) {
+                $html_recibo = $this->load->View('ambulatorio/impressaoreciboconfiguravel', $data, true);
+                for ($i = 0; $i < @$repetir_recibo; $i++) {
+                    echo $html_recibo;
+                }
+            } else {
+                $this->load->View('ambulatorio/impressaoreciboconfiguravel', $data);
+            }
         } else {
             if ($data['empresa'][0]->impressao_recibo == 1) {
                 $this->load->View('ambulatorio/impressaorecibomed', $data);

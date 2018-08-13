@@ -3187,6 +3187,7 @@ class Autocomplete extends Controller {
             $retorno['value'] = $item->nome;
             $retorno['itens'] = $item->telefone;
             $retorno['celular'] = $item->celular;
+            $retorno['cpf'] = $item->cpf;
             $retorno['valor'] = substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4);
             $retorno['id'] = $item->paciente_id;
             $retorno['endereco'] = $item->logradouro . " - " . $item->numero;

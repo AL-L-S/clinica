@@ -172,6 +172,9 @@ CREATE TABLE ponto.tb_laudo_parecer
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar boolean DEFAULT true;
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN autorizar_sala_espera boolean DEFAULT true;
 
+-- Dia 09/08/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN dados_atendimentomed text;
 -- Dia 08/08/2018
 ALTER TABLE ponto.tb_financeiro_credor_devedor ADD COLUMN tipo_pessoa text;
 ALTER TABLE ponto.tb_financeiro_credor_devedor ADD COLUMN email text;
@@ -185,3 +188,5 @@ ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN horario_preferencia t
 
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_recepcao_top_saude boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_impressao_recibo ADD COLUMN repetir_recibo integer;
