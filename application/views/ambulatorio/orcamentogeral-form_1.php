@@ -22,6 +22,10 @@
                     <input type="text" name="nascimento" id="nascimento" class="texto02" alt="date"  maxlength="10" value="<?php echo substr(@$obj->_nascimento, 8, 2) . '/' . substr(@$obj->_nascimento, 5, 2) . '/' . substr(@$obj->_nascimento, 0, 4); ?>" required=""/>
                 </div>
                 <div>
+                    <label>CPF</label>
+                    <input type="text" id="cpf" class="texto02" name="cpf" value="<?= @$obj->_cpf; ?>"/>
+                </div>
+                <div>
                     <label>Telefone</label>
                     <input type="text" id="txtTelefone" class="texto02" name="txtTelefone" value="<?= @$obj->_telefone; ?>" required=""/>
                 </div>
@@ -211,7 +215,7 @@
                                         <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia)); 
                                            else echo "Não informado";?>
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->horario_preferencia ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?=($item->horario_preferencia != '')? date("H:i", strtotime($item->horario_preferencia)) : 'Não-Informado' ?></td>
                                     
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirorcamentorecepcao/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
@@ -338,7 +342,7 @@
                                                 <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia)); 
                                                    else echo "Não informado";?>
                                             </td>
-                                            <td class="<?php echo $estilo_linha; ?>"><?= $item->horario_preferencia ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?=($item->horario_preferencia != '')? date("H:i", strtotime($item->horario_preferencia)) : 'Não-Informado' ?></td>
 <!--                                            <td class="<?php echo $estilo_linha; ?>">
                                                 <a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirorcamentorecepcao/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
                                                 </a>
@@ -421,6 +425,7 @@
 //    var array_datas_teste = [];
     
 //     $(document).ready(function() {
+    function date_picker (){
         $("#txtdata").datepicker({
             beforeShowDay: function(d) {
         // normalize the date for searching in array
@@ -440,7 +445,8 @@
             dateFormat: 'dd/mm/yy'
         });
 //    });
-    
+    }
+    date_picker();
     $(function () {
         $('#procedimento1').change(function () {
             $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
@@ -457,11 +463,15 @@
                         }
                     }
 //                    console.log(array_datas);
-                    $("#txtdata").datepicker("refresh");
+//                    $("#txtdata").datepicker("refresh");
+                    date_picker();
 //                    $('select#txtdata').html(options).show();
                     $('.carregando').hide();
                    
                     
+                }else{
+                    array_datas = [];
+                    date_picker();
                 }
             });
         });
@@ -487,15 +497,15 @@
                             hora = j[c].inicio;
                             if(parseInt(hora.substring(0, 2)) < 12 && manha == ''){
                                 manha = j[c].inicio;
-                                options += '<option value="' + manha + '">' + manha + '</option>';
+                                options += '<option value="' + manha + '">' + manha.substring(0, 5) + '</option>';
                             }
                             if(parseInt(hora.substring(0, 2)) < 18 && parseInt(hora.substring(0, 2)) > 11 && tarde == ''){
                                 tarde = j[c].inicio;
-                                options += '<option value="' + tarde + '">' + tarde + '</option>';
+                                options += '<option value="' + tarde + '">' + tarde.substring(0, 5) + '</option>';
                             }
                             if(parseInt(hora.substring(0, 2)) > 17 && noite == ''){
                                 noite = j[c].inicio;
-                                options += '<option value="' + noite + '">' + noite + '</option>';
+                                options += '<option value="' + noite + '">' + noite.substring(0, 5) + '</option>';
                             }
                             
                         }
@@ -638,6 +648,7 @@
                                                                 $("#txtTelefone").val(ui.item.itens);
                                                                 $("#txtCelular").val(ui.item.celular);
                                                                 $("#nascimento").val(ui.item.valor);
+                                                                $("#cpf").val(ui.item.cpf);
                                                                 return false;
                                                             }
                                                         });

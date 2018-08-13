@@ -77,7 +77,8 @@ $perfil_id = $this->session->userdata('perfil_id');
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/exametemp/gerarecibocredito/<?= $item->paciente_credito_id ?>/<?= $paciente_id ?>">Recibo</a></div>
                                 </td>
-                                <?if($perfil_id == 1){?>
+                                <?$gerente_recepcao_top_saude = $this->session->userdata('gerente_recepcao_top_saude');?>
+                                <?if($perfil_id == 1 || ($gerente_recepcao_top_saude && $perfil_id == 5)){?>
                                 <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
                                         <a onclick="confirmarEstorno(<?= $item->paciente_credito_id ?>,<?= $paciente_id ?>)" href="#">Estornar</a></div>
                                 </td>    

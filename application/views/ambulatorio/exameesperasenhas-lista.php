@@ -94,7 +94,7 @@
             type: "POST",
             data: {teste: 'teste'},
             //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-            url: "<?= $endereco ?>/webService/telaAtendimento/proximo/<?= $setor_string ?>/Guichê 1/true/false/<?= $operador_id ?>",
+            url: "<?= $endereco ?>/webService/telaAtendimento/proximo/<?= $setor_string ?>/Guichê 1/true/false/<?= $operador_id ?>/1",
             success: function (data) {
 //                alert('asdsadsd');
 //                console.log(data);
@@ -153,7 +153,6 @@
             },
             error: function (data) {
                 console.log(data);
-                alert('DEU MERDA');
             }
         });
     

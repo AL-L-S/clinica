@@ -152,7 +152,7 @@
             </table>
         </div>
 
-    <?
+        <?
     } else {
         echo "<h3>Não há resultados para essa consulta.</h3>";
     }
@@ -182,7 +182,7 @@
     var turnoGrafico = new Morris.Donut({
         element: 'turnoGrupo',
         data: [
-            
+
             {label: "Indiferente", value: 0, formatted: '0%'}
         ],
         colors: [
@@ -200,11 +200,13 @@
         new Morris.Donut({
             element: '<?= $key ?>',
             data: [
-    <? foreach ($value as $key2 => $item) {
+    <?
+    foreach ($value as $key2 => $item) {
         if ($key2 != 'total') {
             ?>
                         {label: "<?= $key2; ?>", value: <?= $item; ?>, formatted: '<?= number_format(($item / $value['total']) * 100, 2, ',', ''); ?>%'},
-        <? }
+            <?
+        }
     }
     ?>
             ],
@@ -230,31 +232,45 @@
             parametros.empresa = '<?= $_POST['empresa'] ?>';
             parametros.grupo = '<?= $key ?>';
             parametros.dia = item.label;
-//            console.log(parametros.dia);
+            //            console.log(parametros.dia);
 
             $("span.grupoValor").text(parametros.grupo);
             $("span.diaValor").text(parametros.dia);
             $('.linhaHorario').remove();
             $.getJSON('<?= base_url() ?>autocomplete/buscadadosgraficorelatoriodemandagrupo', parametros, function (j) {
-//                var linhaTabela = '';
-//                 alert('sdasds');
-//                console.log(j);
+                //                var linhaTabela = '';
+                //                 alert('sdasds');
+                console.log(j);
                 var total = 0;
-                for(var i = 0; i < j.length; i++){
-                   linhaTabela = "<tr class='linhaHorario'><td>"+j[i].horario +"</td><td style='text-align: right;'><span class='linhaHorario'>"+j[i].contador +"</span></td></tr>";
-                   $('#tabelaComHorarios tr:last').after(linhaTabela);  
-                   total = total + parseInt(j[i].contador);
+                for (var i = 0; i < j.length; i++) {
+                    if (j[i].horario == 'Indiferente') {
+                        // var label = 'Indiferente';
+                        linhaTabela = "<tr class='linhaHorario'><td>" + j[i].horario + "</td><td style='text-align: right;'><span class='linhaHorario'>" + j[i].contador + "</span></td></tr>";
+                    } else {
+                        linhaTabela = "<tr class='linhaHorario'><td>" + j[i].horario.substring(0, 5) + "</td><td style='text-align: right;'><span class='linhaHorario'>" + j[i].contador + "</span></td></tr>";
+                    }
+
+                    $('#tabelaComHorarios tr:last').after(linhaTabela);
+                    total = total + parseInt(j[i].contador);
                 }
                 var json = [];
-//                var obj = {};
-                for(var i = 0; i < j.length; i++){
-                   var obj = {label: j[i].horario, value: parseInt(j[i].contador), formatted: ((j[i].contador / total) * 100).toFixed(2).replace(".", ",") + '%'};
-                   json.push(obj);
+                //                var obj = {};
+                for (var i = 0; i < j.length; i++) {
+                    //                   if((j[i].contador > 0 && j[i].horario == 'Indiferente') || j[i].horario != 'Indiferente'){
+                    if (j[i].horario == 'Indiferente') {
+                        var label = 'Indiferente';
+                    } else {
+                        var label = j[i].horario.substring(0, 5);
+                    }
+
+                    var obj = {label: label, value: parseInt(j[i].contador), formatted: ((j[i].contador / total) * 100).toFixed(2).replace(".", ",") + '%'};
+                    json.push(obj);
+                    //                   }
                 }
-//                var total = parseInt(j.manha) + parseInt(j.tarde) + parseInt(j.noite) + parseInt(j.indiferente);
-//
+                //                var total = parseInt(j.manha) + parseInt(j.tarde) + parseInt(j.noite) + parseInt(j.indiferente);
+                //
                 console.log(json);
-//
+                //
                 turnoGrafico.setData(json);
 
             });

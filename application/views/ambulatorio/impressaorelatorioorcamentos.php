@@ -66,23 +66,23 @@
 
                     <tr>
                         <td><b><?
-            if ($item->paciente != '')
-                echo $item->paciente;
-            else
-                echo 'NÃO INFORMADO';
-            ?></b>
+                                if ($item->paciente != '')
+                                    echo $item->paciente;
+                                else
+                                    echo 'NÃO INFORMADO';
+                                ?></b>
                         </td>
                         <td><?= $telefone ?></td>
                         <td><?= $item->cpf; ?></b></td>
-                        <td><?=($item->data_preferencia != '')?date("d/m/Y", strtotime($item->data_preferencia)): date("d/m/Y", strtotime($item->data_criacao)); ?></td>
+                        <td><?= ($item->data_preferencia != '') ? date("d/m/Y", strtotime($item->data_preferencia)) : date("d/m/Y", strtotime($item->data_criacao)); ?></td>
                         <td style="text-align: right">
                             <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}/" . date("Y-m-d", strtotime($item->data_preferencia)) ?>', '_blank', 'width=800,height=800');">
-        <?= number_format($item->valor, 2, ',', "") ?>
+                                <?= number_format($item->valor, 2, ',', "") ?>
                             </a>
                         </td>
                         <td style="text-align: right">
                             <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}/" . date("Y-m-d", strtotime($item->data_preferencia)) ?>', '_blank', 'width=800,height=800');">
-        <?= number_format($item->valorcartao, 2, ',', "") ?>
+                                <?= number_format($item->valorcartao, 2, ',', "") ?>
                             </a>
                         </td>
                         <td><b><?= $item->empresa_nome; ?></b></td>
@@ -103,13 +103,13 @@
                                 <? } else { ?>
                                     <a  href="<?= base_url() ?>ambulatorio/exame/autorizarorcamentonaocadastro/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a>
                                 <? } ?>
-        <? } ?>
+                            <? } ?>
 
 
                         </td>
                         <td style="text-align: left">
                             <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterardescricao/<?= $item->ambulatorio_orcamento_id ?>/<?= date("Y-m-d", strtotime($item->data_preferencia)) ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\
-                                     width=500,height=400');">=> <?= $item->observacao; ?></td>
+                                                             width=500,height=400');">=> <?= $item->observacao; ?></td>
                         </a> 
                         </td>    
                     </tr>
@@ -263,7 +263,7 @@
             </table>
         </div>
 
-    <?
+        <?
     } else {
         echo "<h3>Não há resultados para essa consulta.</h3>";
     }
@@ -282,96 +282,110 @@
 <script type="text/javascript" src="<?= base_url() ?>js/morris/morris.js" ></script>
 <script src="<?= base_url() ?>js/morris/raphael.js"></script>
 <script>
-    $(document).ready(function () {
-        $(".tableGrupos").click(function () {
-            $('html, body').animate({
-                scrollTop: $("#turnoPreferencia").offset().top
-            }, 1000);
-        });
-    });
+                        $(document).ready(function () {
+                            $(".tableGrupos").click(function () {
+                                $('html, body').animate({
+                                    scrollTop: $("#turnoPreferencia").offset().top
+                                }, 1000);
+                            });
+                        });
 
-    var turnoGrafico = new Morris.Donut({
-        element: 'turnoGrupo',
-        data: [
-            
-            {label: "Indiferente", value: 0, formatted: '0%'}
-        ],
-        colors: [
-            '#e74c3c',
-            '#2980b9',
-            '#2ecc71',
-            '#7f8c8d',
-        ],
-        formatter: function (x, data) {
-            return data.formatted;
-        }
-    });
+                        var turnoGrafico = new Morris.Donut({
+                            element: 'turnoGrupo',
+                            data: [
+
+                                {label: "Indiferente", value: 0, formatted: '0%'}
+                            ],
+                            colors: [
+                                '#e74c3c',
+                                '#2980b9',
+                                '#2ecc71',
+                                '#7f8c8d',
+                            ],
+                            formatter: function (x, data) {
+                                return data.formatted;
+                            }
+                        });
 <? foreach ($grupos as $key => $value) { ?>
 
-        new Morris.Donut({
-            element: '<?= $key ?>',
-            data: [
-    <? foreach ($value as $key2 => $item) {
+                            new Morris.Donut({
+                                element: '<?= $key ?>',
+                                data: [
+    <?
+    foreach ($value as $key2 => $item) {
         if ($key2 != 'total') {
             ?>
-                        {label: "<?= $key2; ?>", value: <?= $item; ?>, formatted: '<?= number_format(($item / $value['total']) * 100, 2, ',', ''); ?>%'},
-        <? }
+                                            {label: "<?= $key2; ?>", value: <?= $item; ?>, formatted: '<?= number_format(($item / $value['total']) * 100, 2, ',', ''); ?>%'},
+            <?
+        }
     }
     ?>
-            ],
-            colors: [
-                '#e74c3c',
-                '#2980b9',
-                '#2ecc71',
-                '#7f8c8d',
-                '#34495e',
-                '#f1c40f',
-                '#9b59b6',
-                '#F8EFBA',
-            ],
-            formatter: function (x, data) {
-                return data.formatted;
-            }
-        }).on('click', function (value, item) {
-            $("#turnoPreferencia").css('display', 'block');
+                                ],
+                                colors: [
+                                    '#e74c3c',
+                                    '#2980b9',
+                                    '#2ecc71',
+                                    '#7f8c8d',
+                                    '#34495e',
+                                    '#f1c40f',
+                                    '#9b59b6',
+                                    '#F8EFBA',
+                                ],
+                                formatter: function (x, data) {
+                                    return data.formatted;
+                                }
+                            }).on('click', function (value, item) {
+                                $("#turnoPreferencia").css('display', 'block');
 
-            var parametros = new Object();
-            parametros.txtdata_inicio = '<?= $_POST['txtdata_inicio'] ?>';
-            parametros.txtdata_fim = '<?= $_POST['txtdata_fim'] ?>';
-            parametros.empresa = '<?= $_POST['empresa'] ?>';
-            parametros.grupo = '<?= $key ?>';
-            parametros.dia = item.label;
-//            console.log(parametros.dia);
+                                var parametros = new Object();
+                                parametros.txtdata_inicio = '<?= $_POST['txtdata_inicio'] ?>';
+                                parametros.txtdata_fim = '<?= $_POST['txtdata_fim'] ?>';
+                                parametros.empresa = '<?= $_POST['empresa'] ?>';
+                                parametros.grupo = '<?= $key ?>';
+                                parametros.dia = item.label;
+                                //            console.log(parametros.dia);
 
-            $("span.grupoValor").text(parametros.grupo);
-            $("span.diaValor").text(parametros.dia);
-            $('.linhaHorario').remove();
-            $.getJSON('<?= base_url() ?>autocomplete/buscadadosgraficorelatoriodemandagrupo', parametros, function (j) {
-//                var linhaTabela = '';
-//                 alert('sdasds');
-                console.log(j);
-                var total = 0;
-                for(var i = 0; i < j.length; i++){
-                   linhaTabela = "<tr class='linhaHorario'><td>"+j[i].horario +"</td><td style='text-align: right;'><span class='linhaHorario'>"+j[i].contador +"</span></td></tr>";
-                   $('#tabelaComHorarios tr:last').after(linhaTabela);  
-                   total = total + parseInt(j[i].contador);
-                }
-                var json = [];
-//                var obj = {};
-                for(var i = 0; i < j.length; i++){
-//                   if((j[i].contador > 0 && j[i].horario == 'Indiferente') || j[i].horario != 'Indiferente'){
-                     var obj = {label: j[i].horario, value: parseInt(j[i].contador), formatted: ((j[i].contador / total) * 100).toFixed(2).replace(".", ",") + '%'};
-                     json.push(obj);
-//                   }
-                }
-//                var total = parseInt(j.manha) + parseInt(j.tarde) + parseInt(j.noite) + parseInt(j.indiferente);
-//
-                console.log(json);
-//
-                turnoGrafico.setData(json);
+                                $("span.grupoValor").text(parametros.grupo);
+                                $("span.diaValor").text(parametros.dia);
+                                $('.linhaHorario').remove();
+                                $.getJSON('<?= base_url() ?>autocomplete/buscadadosgraficorelatoriodemandagrupo', parametros, function (j) {
+                                    //                var linhaTabela = '';
+                                    //                 alert('sdasds');
+                                    console.log(j);
+                                    var total = 0;
+                                    for (var i = 0; i < j.length; i++) {
+                                        if (j[i].horario == 'Indiferente') {
+                                            // var label = 'Indiferente';
+                                            linhaTabela = "<tr class='linhaHorario'><td>" + j[i].horario + "</td><td style='text-align: right;'><span class='linhaHorario'>" + j[i].contador + "</span></td></tr>";
+                                        } else {
+                                            linhaTabela = "<tr class='linhaHorario'><td>" + j[i].horario.substring(0, 5) + "</td><td style='text-align: right;'><span class='linhaHorario'>" + j[i].contador + "</span></td></tr>";
+                                        }
 
-            });
-        });
+                                        $('#tabelaComHorarios tr:last').after(linhaTabela);
+                                        total = total + parseInt(j[i].contador);
+                                    }
+                                    var json = [];
+                                    //                var obj = {};
+                                    for (var i = 0; i < j.length; i++) {
+                                        //                   if((j[i].contador > 0 && j[i].horario == 'Indiferente') || j[i].horario != 'Indiferente'){
+                                        if (j[i].horario == 'Indiferente') {
+                                            var label = 'Indiferente';
+                                        } else {
+                                            var label = j[i].horario.substring(0, 5);
+                                        }
+
+                                        var obj = {label: label, value: parseInt(j[i].contador), formatted: ((j[i].contador / total) * 100).toFixed(2).replace(".", ",") + '%'};
+                                        json.push(obj);
+                                        //                   }
+                                    }
+                                    //                var total = parseInt(j.manha) + parseInt(j.tarde) + parseInt(j.noite) + parseInt(j.indiferente);
+                                    //
+                                    console.log(json);
+                                    //
+                                    turnoGrafico.setData(json);
+
+                                });
+                            });
 <? } ?>
 
 //    $(function () {

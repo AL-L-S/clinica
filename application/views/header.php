@@ -955,11 +955,11 @@ function debug($object) {
         <?
     }
     ?>
-                        <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17) {
+                        <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || ($gerente_recepcao_top_saude == 't' && $perfil_id == 5)) {
                             ?>
                             <? if ($caixa_personalizado == 'f') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenioprevisaofinanceiro">Relatorio Previs&atilde;o M&eacute;dica</a></span></ul>
-            <? if (($gerente_relatorio_financeiro == 'f' && $perfil_id == 18) || $perfil_id != 18) { ?>
+            <? if (($gerente_relatorio_financeiro == 'f' && $perfil_id == 18) || ($perfil_id != 18 && $perfil_id != 5)) { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoatendimentomensal">Relatorio Atendimento Mensal</a></span></ul>
             <? } ?>
                                             <?
