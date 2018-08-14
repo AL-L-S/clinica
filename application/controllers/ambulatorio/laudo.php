@@ -289,6 +289,10 @@ class Laudo extends BaseController {
         $data['historico'] = $this->laudo->listarconsultahistorico($paciente_id);
         $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
         $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
+        $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
+        $data['historicowebcon'] = $this->laudo->listarconsultahistoricoweb($paciente_id);
+//        var_dump($data['historicowebcon']); die;
+        $data['historicowebexa'] = $this->laudo->listarexamehistoricoweb($paciente_id);
 //        var_dump($data['historicoexame']); die;
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
@@ -391,6 +395,7 @@ class Laudo extends BaseController {
 
         $this->load->View('ambulatorio/formulario_ficha', $data);
     }
+
     function carregarparecer($ambulatorio_laudo_id) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
@@ -562,7 +567,12 @@ class Laudo extends BaseController {
 //        var_dump($data['laudo_peso']); die;
         $data['historico'] = $this->laudo->listarconsultahistorico($paciente_id);
         $data['historicoantigo'] = $this->laudo->listarconsultahistoricoantigo($paciente_id);
+        $data['historicowebcon'] = $this->laudo->listarconsultahistoricoweb($paciente_id);
+//        var_dump($data['historicowebcon']); die;
+        $data['historicowebexa'] = $this->laudo->listarexamehistoricoweb($paciente_id);
+        $data['historicowebesp'] = $this->laudo->listarespecialidadehistoricoweb($paciente_id);
         $data['historicoexame'] = $this->laudo->listarexamehistorico($paciente_id);
+        $data['historicoespecialidade'] = $this->laudo->listarespecialidadehistorico($paciente_id);
         $data['operadores'] = $this->operador_m->listarmedicos();
         $data['mensagem'] = $messagem;
         $data['paciente_id'] = $paciente_id;
@@ -591,7 +601,7 @@ class Laudo extends BaseController {
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->load->View('ambulatorio/formulario_ficha', $data);
     }
-    
+
     function preencherparecer($ambulatorio_laudo_id) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
@@ -1805,67 +1815,66 @@ class Laudo extends BaseController {
     }
 
     function impressaoformulario($ambulatorio_laudo_id) {
-        
+
         //$this->load->plugin('mpdf');
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
-        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);        
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['empresa'] = $this->guia->listarempresa();
         $data['obj'] = $obj_laudo;
         $paciente_id = @$obj_laudo->_paciente_id;
         $guia_id = @$obj_laudo->_guia_id;
         $data['formulario'] = $this->laudo->preencherformulario($paciente_id, $guia_id);
-        
+
         $dataFuturo = date("Y-m-d");
         $dataAtual = $data['laudo']['0']->nascimento;
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
-        
+
         $this->load->View('ambulatorio/impressaoformulario', $data);
-     
     }
+
     function impressaoparecer($ambulatorio_laudo_id) {
-        
+
         //$this->load->plugin('mpdf');
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
-        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);        
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['empresa'] = $this->guia->listarempresa();
         $data['obj'] = $obj_laudo;
         $paciente_id = @$obj_laudo->_paciente_id;
         $guia_id = @$obj_laudo->_guia_id;
         $data['parecer'] = $this->laudo->preencherparecer($paciente_id, $guia_id);
-        
+
         $dataFuturo = date("Y-m-d");
         $dataAtual = $data['laudo']['0']->nascimento;
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
-        
+
         $this->load->View('ambulatorio/impressao_parecer_cirurgia_pediatrica', $data);
-     
     }
+
     function impressaoavaliacao($ambulatorio_laudo_id) {
-        
+
         //$this->load->plugin('mpdf');
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
-        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);        
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['empresa'] = $this->guia->listarempresa();
         $data['obj'] = $obj_laudo;
         $paciente_id = @$obj_laudo->_paciente_id;
         $guia_id = @$obj_laudo->_guia_id;
         $data['avaliacao'] = $this->laudo->preencheravaliacao($paciente_id, $guia_id);
-        
+
         $dataFuturo = date("Y-m-d");
         $dataAtual = $data['laudo']['0']->nascimento;
         $date_time = new DateTime($dataAtual);
         $diff = $date_time->diff(new DateTime($dataFuturo));
         $teste = $diff->format('%Ya %mm %dd');
-        
+
         $this->load->View('ambulatorio/impressaoavaliacao', $data);
-     
     }
 
     function impressaolaudolaboratorial($ambulatorio_laudo_id, $exame_id) {
@@ -3705,6 +3714,7 @@ class Laudo extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/laudo/carregarformulario/$ambulatorio_laudo_id");
     }
+
     function gravarparecer($ambulatorio_laudo_id) {
 
         $this->laudo->gravarparecer($ambulatorio_laudo_id);
@@ -3877,6 +3887,49 @@ class Laudo extends BaseController {
                 }
 
                 $this->laudo->setaemailparaenviado($ambulatorio_laudo_id);
+            }
+        }
+        $medico_inf = $this->operador_m->medicoenderecoweb($_POST['medico']);
+
+//        echo '<pre>';
+//        var_dump($medico_inf);
+//        die;
+        if (@$medico_inf[0]->endereco_sistema != '') {
+
+            $endereco = @$medico_inf[0]->endereco_sistema;
+
+
+            @$teste = file_get_contents("{$endereco}/autocomplete/testarconexaointegracaolaudo");
+            @$decode_teste = json_decode(@$teste);
+//            var_dump(@$decode_teste); die;
+            if (@$decode_teste == 'true') {
+
+                $paciente_inf = $this->laudo->listartudopaciente($paciente_id);
+                $laudo_inf = $this->laudo->listarlaudointegracaoweb($ambulatorio_laudo_id);
+                $paciente_json = json_encode($paciente_inf);
+                $laudo_json = json_encode($laudo_inf);
+//                 var_dump(@$decode_teste); die;
+
+                $url = "{$endereco}/autocomplete/gravaratendimentointegracaoweb";
+                $postdata = http_build_query(
+                        array(
+                            'paciente_json' => $paciente_json,
+                            'laudo_json' => $laudo_json
+                        )
+                );
+                $opts = array('http' =>
+                    array(
+                        'method' => 'POST',
+                        'header' => 'Content-type: application/x-www-form-urlencoded',
+                        'content' => $postdata
+                    )
+                );
+
+                $context = stream_context_create($opts);
+                $result = file_get_contents($url, false, $context);
+                $retorno_result = json_decode($result);
+//            var_dump($retorno_result);
+//            die;
             }
         }
 

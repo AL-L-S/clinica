@@ -77,6 +77,41 @@ class Autocomplete extends Controller {
         }
     }
 
+    function testarconexaointegracaolaudo() {
+        header('Access-Control-Allow-Origin: *');
+        set_time_limit(0); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
+        ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexãoF
+
+        echo json_encode('true');
+    }
+
+    function gravaratendimentointegracaoweb() {
+        header('Access-Control-Allow-Origin: *');
+        set_time_limit(0); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
+        ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão
+        if (isset($_POST)) {
+            $paciente_obj = json_decode($_POST['paciente_json']);
+            $laudo_obj = json_decode($_POST['laudo_json']);
+            $paciente_web_id = $paciente_obj[0]->paciente_id;
+//            echo '<pre>';
+//            var_dump($paciente_obj);
+            if ($paciente_obj[0]->cpf != '') {
+                $paciente_id = $this->exametemp->criarnovopacienteintegracaoweb($paciente_obj[0]->cpf, $paciente_obj);
+                $retorno = $this->laudo->gravarlaudointegracaoweb($paciente_id, $paciente_web_id, $laudo_obj);
+            } else {
+                $retorno = false;
+            }
+
+//            var_dump($retorno);
+        } else {
+            $retorno = false;
+        }
+//        echo '<pre>';
+//        var_dump($_POST);
+        echo json_encode($retorno);
+//        die;
+    }
+
     function atendersenhatoten() {
         header('Access-Control-Allow-Origin: *');
 
@@ -157,7 +192,7 @@ class Autocomplete extends Controller {
                         }
                     }
                 } else {
-                    $array['Indiferente']++;
+                    $array['Indiferente'] ++;
                 }
             }
 
@@ -165,14 +200,13 @@ class Autocomplete extends Controller {
             $contador++;
         }
         $array_horarios = array();
-        
+
         foreach ($array as $key => $value) {
             $array_atual = array(
                 'horario' => $key,
-                'contador' =>$value
+                'contador' => $value
             );
-            array_push($array_horarios, $array_atual);    
-            
+            array_push($array_horarios, $array_atual);
         }
 
         echo json_encode($array_horarios);

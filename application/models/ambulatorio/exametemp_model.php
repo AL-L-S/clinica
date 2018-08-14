@@ -4445,6 +4445,50 @@ class exametemp_model extends Model {
         return $paciente_id;
     }
 
+    function criarnovopacienteintegracaoweb($cpf, $paciente_obj) {
+
+        $this->db->select('paciente_id');
+        $this->db->from('tb_paciente');
+        $this->db->where("ativo", 't');
+        $this->db->where("cpf", $cpf);
+        $this->db->where("cpf is not null");
+        $query = $this->db->get();
+        $return = $query->result();
+
+
+//        $paciente_id = $return[0]->paciente_id;
+//        var_dump($return2); die;
+
+        if (count($return) == 0) {
+
+            $this->db->set('celular', $paciente_obj[0]->celular);
+            $this->db->set('cpf', $paciente_obj[0]->cpf);
+            $this->db->set('telefone', $paciente_obj[0]->telefone);
+            $this->db->set('nome', $paciente_obj[0]->nome);
+            $this->db->set('nascimento', $paciente_obj[0]->nascimento);
+            $this->db->set('logradouro', $paciente_obj[0]->logradouro);
+            $this->db->set('numero', $paciente_obj[0]->numero);
+            $this->db->set('bairro', $paciente_obj[0]->bairro);
+            $this->db->set('nome_mae', $paciente_obj[0]->nome_mae);
+            $this->db->set('data_cadastro', date("Y-m-d H:i:s"));
+            $this->db->set('paciente_web_id', $paciente_obj[0]->paciente_id);
+
+//            $this->db->where('paciente_id', $paciente_id);
+            $this->db->insert('tb_paciente');
+            
+            $paciente_id = $this->db->insert_id();
+        } else {
+            $paciente_id = $return[0]->paciente_id;
+
+//            $this->db->set('celular', $_GET['txtCelular']);
+//            $this->db->set('telefone', $_GET['txtTelefone']);
+//            $this->db->set('nome', $_GET['txtNome']);
+//            $this->db->where('paciente_id', $paciente_id);
+//            $this->db->update('tb_paciente');
+        }
+        return $paciente_id;
+    }
+
     function crianovopacientefidelidade() {
 
         $this->db->select('paciente_id');

@@ -295,7 +295,7 @@ if (count($pacs) > 0) {
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
                                         <?php // foreach ($linha as $item) {    ?>
-                                                                                                                        <option value="<?php // echo $item->nome;                 ?>" ><?php // echo $item->nome;                 ?></option>
+                                                                                                                        <option value="<?php // echo $item->nome;                  ?>" ><?php // echo $item->nome;                  ?></option>
                                         <?php // }  ?>
                                         </select>-->
 
@@ -565,12 +565,62 @@ if (count($pacs) > 0) {
                                 <br>
                                 <br>
                                 <fieldset>
-                                    <legend><b><font size="3" color="red">Histórico de exames</font></b></legend>
+                                    <legend><b><font size="3" color="red">Historico de exames</font></b></legend>
                                     <div>
-                                        <table>
-                                            <tbody>
-                                                <? foreach ($historicoexame as $item) {
+
+                                        <?
+                                        $contador_exame = 0;
+                                        foreach ($historicoexame as $item) {
+                                            // Verifica se há informação
+                                            if (isset($historicowebexa[$contador_exame])) {
+                                                // Define as datas
+                                                $data_foreach = date("Y-m-d", strtotime($item->data_cadastro));
+                                                $data_while = date("Y-m-d", strtotime($historicowebexa[$contador_exame]->data));
+                                                // Caso a data do Index atual da integracao seja maior que a data rodando no foreach, ele irá mostrar
+
+                                                while ($data_while > $data_foreach) {
                                                     ?>
+
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td ><span style="color: #007fff">Integração</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td >Empresa: <?= $historicowebexa[$contador_exame]->empresa; ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td >Data: <?= substr($historicowebexa[$contador_exame]->data, 8, 2) . "/" . substr($historicowebexa[$contador_exame]->data, 5, 2) . "/" . substr($historicowebexa[$contador_exame]->data, 0, 4); ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td >Medico: <?= $historicowebexa[$contador_exame]->medico_integracao; ?></td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td >Tipo: <?= $historicowebexa[$contador_exame]->procedimento; ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td >Queixa principal: <?= $historicowebexa[$contador_exame]->texto; ?></td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                    <hr>
+                                                    <?
+                                                    $contador_exame ++;
+                                                    // Verifica se o próximo index existe e se sim, ele redefine a data_while pra poder rodar novamente o while
+                                                    if (isset($historicowebexa[$contador_exame])) {
+                                                        $data_while = date("Y-m-d", strtotime($historicowebexa[$contador_exame]->data_cadastro));
+                                                    } else {
+                                                        // Caso não exista ele simplesmente dá um break e deixa o foreach rodar
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            ?>
+                                            <table>
+                                                <tbody>
+
 
                                                     <tr>
                                                         <td >Data: <?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
@@ -645,10 +695,46 @@ if (count($pacs) > 0) {
                                                             none;border-right:none;' colspan="10">&nbsp;</th>
                                                     </tr>
 
-                                                <? }
+
+                                                </tbody>
+                                            </table>
+                                        <? }
+                                        ?>
+                                        <?
+                                        if (count($historico) == 0 || $contador_exame < count($historicowebexa)) {
+                                            while ($contador_exame < count($historicowebexa)) {
                                                 ?>
-                                            </tbody>
-                                        </table>
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><span style="color: #007fff">Integração</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >Empresa: <?= $historicowebexa[$contador_exame]->empresa; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >Data: <?= substr($historicowebexa[$contador_exame]->data, 8, 2) . "/" . substr($historicowebexa[$contador_exame]->data, 5, 2) . "/" . substr($historicowebexa[$contador_exame]->data, 0, 4); ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >Medico: <?= $historicowebexa[$contador_exame]->medico_integracao; ?></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td >Tipo: <?= $historicowebexa[$contador_exame]->procedimento; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >Queixa principal: <?= $historicowebexa[$contador_exame]->texto; ?></td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                                <hr>
+
+                                                <?
+                                                $contador_exame++;
+                                            }
+                                        }
+                                        ?>
                                     </div>
 
                                 </fieldset>
@@ -712,272 +798,272 @@ if (count($pacs) > 0) {
                             <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
                             <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
                             <script type="text/javascript">
-                                                                jQuery('#rev').change(function () {
-                                                                    if (this.checked) {
-                                                                        var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
+                                                        jQuery('#rev').change(function () {
+                                                            if (this.checked) {
+                                                                var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
 //                                                            var tag += '';
 ////                                                           <input type="radio" name="OPCAO1" VALUE="op1"> opção1
 ////                                                            var tag += '';
 //                                                            jQuery("#Altura").mask("999", {placeholder: " "});
-                                                                        jQuery(".dias").append(tag);
-                                                                    } else {
-                                                                        jQuery(".dias span").remove();
-                                                                        jQuery(".dias input").remove();
+                                                                jQuery(".dias").append(tag);
+                                                            } else {
+                                                                jQuery(".dias span").remove();
+                                                                jQuery(".dias input").remove();
+                                                            }
+                                                        });
+                                                        document.getElementById('titulosenha').style.display = "none";
+                                                        document.getElementById('senha').style.display = "none";
+
+                                                        $(document).ready(function () {
+                                                            $("body").keypress(function (event) {
+
+                                                                if (event.keyCode == 119)   // se a tecla apertada for 13 (enter)
+                                                                {
+                                                                    document.getElementById('Imprimir').click();
+                                                                }
+                                                                if (event.keyCode == 120)   // se a tecla apertada for 13 (enter)
+                                                                {
+                                                                    var combosituacao = document.getElementById("situacao");
+                                                                    combosituacao.selectedIndex = 2;
+                                                                    document.getElementById('titulosenha').style.display = "block";
+                                                                    document.getElementById('senha').style.display = "block";
+                                                                    document.form_laudo.senha.focus()
+                                                                }
+                                                            });
+                                                        });
+                                                        $(document).ready(function () {
+                                                            $('#sortable').sortable();
+                                                        });
+
+
+                                                        $(document).ready(function () {
+                                                            jQuery('#ficha_laudo').validate({
+                                                                rules: {
+                                                                    imagem: {
+                                                                        required: true
                                                                     }
-                                                                });
-                                                                document.getElementById('titulosenha').style.display = "none";
-                                                                document.getElementById('senha').style.display = "none";
-
-                                                                $(document).ready(function () {
-                                                                    $("body").keypress(function (event) {
-
-                                                                        if (event.keyCode == 119)   // se a tecla apertada for 13 (enter)
-                                                                        {
-                                                                            document.getElementById('Imprimir').click();
-                                                                        }
-                                                                        if (event.keyCode == 120)   // se a tecla apertada for 13 (enter)
-                                                                        {
-                                                                            var combosituacao = document.getElementById("situacao");
-                                                                            combosituacao.selectedIndex = 2;
-                                                                            document.getElementById('titulosenha').style.display = "block";
-                                                                            document.getElementById('senha').style.display = "block";
-                                                                            document.form_laudo.senha.focus()
-                                                                        }
-                                                                    });
-                                                                });
-                                                                $(document).ready(function () {
-                                                                    $('#sortable').sortable();
-                                                                });
-
-
-                                                                $(document).ready(function () {
-                                                                    jQuery('#ficha_laudo').validate({
-                                                                        rules: {
-                                                                            imagem: {
-                                                                                required: true
-                                                                            }
-                                                                        },
-                                                                        messages: {
-                                                                            imagem: {
-                                                                                required: "*"
-                                                                            }
-                                                                        }
-                                                                    });
-                                                                });
+                                                                },
+                                                                messages: {
+                                                                    imagem: {
+                                                                        required: "*"
+                                                                    }
+                                                                }
+                                                            });
+                                                        });
 <? if (@$obj->_id_chamada != '') { ?>
-                                                                    $("#botaochamar").click(function () {
-                                                                        //        alert('asadasdadad');
-                                                                        $.ajax({
-                                                                            type: "POST",
-                                                                            data: {teste: 'teste'},
-                                                                            //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                                                                            url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>",
-                                                                                        success: function (data) {
+                                                            $("#botaochamar").click(function () {
+                                                                //        alert('asadasdadad');
+                                                                $.ajax({
+                                                                    type: "POST",
+                                                                    data: {teste: 'teste'},
+                                                                    //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                                    url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>",
+                                                                                success: function (data) {
 
-                                                                                            alert('Operação efetuada com sucesso');
+                                                                                    alert('Operação efetuada com sucesso');
 
 
-                                                                                        },
-                                                                                        error: function (data) {
-                                                                                            console.log(data);
-                                                                                            alert('Erro ao chamar paciente');
-                                                                                        }
-                                                                                    });
-                                                                                });
+                                                                                },
+                                                                                error: function (data) {
+                                                                                    console.log(data);
+                                                                                    alert('Erro ao chamar paciente');
+                                                                                }
+                                                                            });
+                                                                        });
 <? } ?>
 
 
 
-                                                                            function muda(obj) {
-                                                                                if (obj.value == 'FINALIZADO') {
-                                                                                    document.getElementById('titulosenha').style.display = "block";
-                                                                                    document.getElementById('senha').style.display = "block";
-                                                                                } else {
-                                                                                    document.getElementById('titulosenha').style.display = "none";
-                                                                                    document.getElementById('senha').style.display = "none";
-                                                                                }
-                                                                            }
+                                                                    function muda(obj) {
+                                                                        if (obj.value == 'FINALIZADO') {
+                                                                            document.getElementById('titulosenha').style.display = "block";
+                                                                            document.getElementById('senha').style.display = "block";
+                                                                        } else {
+                                                                            document.getElementById('titulosenha').style.display = "none";
+                                                                            document.getElementById('senha').style.display = "none";
+                                                                        }
+                                                                    }
 
 
 <?
 //                                                            var_dump($laudo_sigiloso); die;
 ?>
-                                                                            var readonly = <?= $readonly ?>;
+                                                                    var readonly = <?= $readonly ?>;
 
-                                                                            tinyMCE.init({
-                                                                                // General options
-                                                                                mode: "specific_textareas",
-                                                                                editor_selector: "laudo",
-                                                                                theme: "advanced",
-                                                                                readonly: readonly,
-                                                                                plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                                                                                // Theme options
-                                                                                theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                                                                                theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
-                                                                                theme_advanced_toolbar_location: "top",
-                                                                                theme_advanced_toolbar_align: "left",
-                                                                                theme_advanced_statusbar_location: "bottom",
-                                                                                theme_advanced_resizing: true,
-                                                                                browser_spellcheck: true,
-                                                                                // Example content CSS (should be your site CSS)
-                                                                                //                                    content_css : "css/content.css",
-                                                                                content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                                                                                // Drop lists for link/image/media/template dialogs
-                                                                                template_external_list_url: "lists/template_list.js",
-                                                                                external_link_list_url: "lists/link_list.js",
-                                                                                external_image_list_url: "lists/image_list.js",
-                                                                                media_external_list_url: "lists/media_list.js",
-                                                                                // Style formats
-                                                                                style_formats: [
-                                                                                    {title: 'Bold text', inline: 'b'},
-                                                                                    {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                                                                                    {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                                                                                    {title: 'Example 1', inline: 'span', classes: 'example1'},
-                                                                                    {title: 'Example 2', inline: 'span', classes: 'example2'},
-                                                                                    {title: 'Table styles'},
-                                                                                    {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                                                                                ],
-                                                                                // Replace values for the template plugin
-                                                                                template_replace_values: {
-                                                                                    username: "Some User",
-                                                                                    staffid: "991234"
-                                                                                }
+                                                                    tinyMCE.init({
+                                                                        // General options
+                                                                        mode: "specific_textareas",
+                                                                        editor_selector: "laudo",
+                                                                        theme: "advanced",
+                                                                        readonly: readonly,
+                                                                        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                                        // Theme options
+                                                                        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                                                        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
+                                                                        theme_advanced_toolbar_location: "top",
+                                                                        theme_advanced_toolbar_align: "left",
+                                                                        theme_advanced_statusbar_location: "bottom",
+                                                                        theme_advanced_resizing: true,
+                                                                        browser_spellcheck: true,
+                                                                        // Example content CSS (should be your site CSS)
+                                                                        //                                    content_css : "css/content.css",
+                                                                        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                                                        // Drop lists for link/image/media/template dialogs
+                                                                        template_external_list_url: "lists/template_list.js",
+                                                                        external_link_list_url: "lists/link_list.js",
+                                                                        external_image_list_url: "lists/image_list.js",
+                                                                        media_external_list_url: "lists/media_list.js",
+                                                                        // Style formats
+                                                                        style_formats: [
+                                                                            {title: 'Bold text', inline: 'b'},
+                                                                            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                                            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                                            {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                                            {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                                            {title: 'Table styles'},
+                                                                            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                                        ],
+                                                                        // Replace values for the template plugin
+                                                                        template_replace_values: {
+                                                                            username: "Some User",
+                                                                            staffid: "991234"
+                                                                        }
 
-                                                                            });
+                                                                    });
 
-                                                                            tinyMCE.init({
-                                                                                // General options
-                                                                                mode: "specific_textareas",
-                                                                                editor_selector: "adendo",
-                                                                                theme: "advanced",
+                                                                    tinyMCE.init({
+                                                                        // General options
+                                                                        mode: "specific_textareas",
+                                                                        editor_selector: "adendo",
+                                                                        theme: "advanced",
 
-                                                                                plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                                                                                // Theme options
-                                                                                theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                                                                                theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
-                                                                                theme_advanced_toolbar_location: "top",
-                                                                                theme_advanced_toolbar_align: "left",
-                                                                                theme_advanced_statusbar_location: "bottom",
-                                                                                theme_advanced_resizing: true,
-                                                                                browser_spellcheck: true,
-                                                                                // Example content CSS (should be your site CSS)
-                                                                                //                                    content_css : "css/content.css",
-                                                                                content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                                                                                // Drop lists for link/image/media/template dialogs
-                                                                                template_external_list_url: "lists/template_list.js",
-                                                                                external_link_list_url: "lists/link_list.js",
-                                                                                external_image_list_url: "lists/image_list.js",
-                                                                                media_external_list_url: "lists/media_list.js",
-                                                                                // Style formats
-                                                                                style_formats: [
-                                                                                    {title: 'Bold text', inline: 'b'},
-                                                                                    {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                                                                                    {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                                                                                    {title: 'Example 1', inline: 'span', classes: 'example1'},
-                                                                                    {title: 'Example 2', inline: 'span', classes: 'example2'},
-                                                                                    {title: 'Table styles'},
-                                                                                    {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                                                                                ],
-                                                                                // Replace values for the template plugin
-                                                                                template_replace_values: {
-                                                                                    username: "Some User",
-                                                                                    staffid: "991234"
-                                                                                }
+                                                                        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                                        // Theme options
+                                                                        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                                                        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
+                                                                        theme_advanced_toolbar_location: "top",
+                                                                        theme_advanced_toolbar_align: "left",
+                                                                        theme_advanced_statusbar_location: "bottom",
+                                                                        theme_advanced_resizing: true,
+                                                                        browser_spellcheck: true,
+                                                                        // Example content CSS (should be your site CSS)
+                                                                        //                                    content_css : "css/content.css",
+                                                                        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                                                        // Drop lists for link/image/media/template dialogs
+                                                                        template_external_list_url: "lists/template_list.js",
+                                                                        external_link_list_url: "lists/link_list.js",
+                                                                        external_image_list_url: "lists/image_list.js",
+                                                                        media_external_list_url: "lists/media_list.js",
+                                                                        // Style formats
+                                                                        style_formats: [
+                                                                            {title: 'Bold text', inline: 'b'},
+                                                                            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                                            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                                            {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                                            {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                                            {title: 'Table styles'},
+                                                                            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                                        ],
+                                                                        // Replace values for the template plugin
+                                                                        template_replace_values: {
+                                                                            username: "Some User",
+                                                                            staffid: "991234"
+                                                                        }
 
-                                                                            });
+                                                                    });
 
-                                                                            $(function () {
-                                                                                $('#exame').change(function () {
-                                                                                    if ($(this).val()) {
-                                                                                        //$('#laudo').hide();
-                                                                                        $('.carregando').show();
-                                                                                        $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
-                                                                                            options = "";
+                                                                    $(function () {
+                                                                        $('#exame').change(function () {
+                                                                            if ($(this).val()) {
+                                                                                //$('#laudo').hide();
+                                                                                $('.carregando').show();
+                                                                                $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
+                                                                                    options = "";
 
-                                                                                            options += j[0].texto;
-                                                                                            //                                                document.getElementById("laudo").value = options
+                                                                                    options += j[0].texto;
+                                                                                    //                                                document.getElementById("laudo").value = options
 
-                                                                                            $('#laudo').val(options)
-                                                                                            var ed = tinyMCE.get('laudo');
-                                                                                            ed.setContent($('#laudo').val());
+                                                                                    $('#laudo').val(options)
+                                                                                    var ed = tinyMCE.get('laudo');
+                                                                                    ed.setContent($('#laudo').val());
 
-                                                                                            //$('#laudo').val(options);
-                                                                                            //$('#laudo').html(options).show();
-                                                                                            //                                                $('.carregando').hide();
-                                                                                            //history.go(0) 
-                                                                                        });
-                                                                                    } else {
-                                                                                        $('#laudo').html('value=""');
-                                                                                    }
+                                                                                    //$('#laudo').val(options);
+                                                                                    //$('#laudo').html(options).show();
+                                                                                    //                                                $('.carregando').hide();
+                                                                                    //history.go(0) 
                                                                                 });
-                                                                            });
+                                                                            } else {
+                                                                                $('#laudo').html('value=""');
+                                                                            }
+                                                                        });
+                                                                    });
 
-                                                                            $(function () {
-                                                                                $('#linha').change(function () {
-                                                                                    if ($(this).val()) {
-                                                                                        //$('#laudo').hide();
-                                                                                        $('.carregando').show();
-                                                                                        $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
-                                                                                            options = "";
+                                                                    $(function () {
+                                                                        $('#linha').change(function () {
+                                                                            if ($(this).val()) {
+                                                                                //$('#laudo').hide();
+                                                                                $('.carregando').show();
+                                                                                $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
+                                                                                    options = "";
 
-                                                                                            options += j[0].texto;
-                                                                                            //                                                document.getElementById("laudo").value = $('#laudo').val() + options
-                                                                                            $('#laudo').val() + options
-                                                                                            var ed = tinyMCE.get('laudo');
-                                                                                            ed.setContent($('#laudo').val());
-                                                                                            //$('#laudo').html(options).show();
-                                                                                        });
-                                                                                    } else {
-                                                                                        $('#laudo').html('value=""');
-                                                                                    }
+                                                                                    options += j[0].texto;
+                                                                                    //                                                document.getElementById("laudo").value = $('#laudo').val() + options
+                                                                                    $('#laudo').val() + options
+                                                                                    var ed = tinyMCE.get('laudo');
+                                                                                    ed.setContent($('#laudo').val());
+                                                                                    //$('#laudo').html(options).show();
                                                                                 });
-                                                                            });
+                                                                            } else {
+                                                                                $('#laudo').html('value=""');
+                                                                            }
+                                                                        });
+                                                                    });
 
-                                                                            $(function () {
-                                                                                $("#linha2").autocomplete({
-                                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
-                                                                                    minLength: 1,
-                                                                                    focus: function (event, ui) {
-                                                                                        $("#linha2").val(ui.item.label);
-                                                                                        return false;
-                                                                                    },
-                                                                                    select: function (event, ui) {
-                                                                                        $("#linha2").val(ui.item.value);
-                                                                                        tinyMCE.triggerSave(true, true);
-                                                                                        document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
-                                                                                        $('#laudo').val() + ui.item.id
-                                                                                        var ed = tinyMCE.get('laudo');
-                                                                                        ed.setContent($('#laudo').val());
-                                                                                        //$( "#laudo" ).val() + ui.item.id;
-                                                                                        document.getElementById("linha2").value = ''
-                                                                                        return false;
-                                                                                    }
+                                                                    $(function () {
+                                                                        $("#linha2").autocomplete({
+                                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
+                                                                            minLength: 1,
+                                                                            focus: function (event, ui) {
+                                                                                $("#linha2").val(ui.item.label);
+                                                                                return false;
+                                                                            },
+                                                                            select: function (event, ui) {
+                                                                                $("#linha2").val(ui.item.value);
+                                                                                tinyMCE.triggerSave(true, true);
+                                                                                document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
+                                                                                $('#laudo').val() + ui.item.id
+                                                                                var ed = tinyMCE.get('laudo');
+                                                                                ed.setContent($('#laudo').val());
+                                                                                //$( "#laudo" ).val() + ui.item.id;
+                                                                                document.getElementById("linha2").value = ''
+                                                                                return false;
+                                                                            }
+                                                                        });
+                                                                    });
+
+                                                                    $(function (a) {
+                                                                        $('#anteriores').change(function () {
+                                                                            if ($(this).val()) {
+                                                                                //$('#laudo').hide();
+                                                                                $('.carregando').show();
+                                                                                $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
+                                                                                    option = "";
+
+                                                                                    option = i[0].texto;
+                                                                                    tinyMCE.triggerSave();
+                                                                                    document.getElementById("laudo").value = option
+                                                                                    //$('#laudo').val(options);
+                                                                                    //$('#laudo').html(options).show();
+                                                                                    $('.carregando').hide();
+                                                                                    history.go(0)
                                                                                 });
-                                                                            });
-
-                                                                            $(function (a) {
-                                                                                $('#anteriores').change(function () {
-                                                                                    if ($(this).val()) {
-                                                                                        //$('#laudo').hide();
-                                                                                        $('.carregando').show();
-                                                                                        $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
-                                                                                            option = "";
-
-                                                                                            option = i[0].texto;
-                                                                                            tinyMCE.triggerSave();
-                                                                                            document.getElementById("laudo").value = option
-                                                                                            //$('#laudo').val(options);
-                                                                                            //$('#laudo').html(options).show();
-                                                                                            $('.carregando').hide();
-                                                                                            history.go(0)
-                                                                                        });
-                                                                                    } else {
-                                                                                        $('#laudo').html('value="texto"');
-                                                                                    }
-                                                                                });
-                                                                            });
-                                                                            //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-                                                                            $('.jqte-test').jqte();
+                                                                            } else {
+                                                                                $('#laudo').html('value="texto"');
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                    //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+                                                                    $('.jqte-test').jqte();
 
 
 

@@ -1107,6 +1107,42 @@ class laudo_model extends Model {
         return $return->result();
     }
 
+    function listarconsultahistoricoweb($paciente_id) {
+
+        $this->db->select('ali.*, o.nome as medico_integracao');
+        $this->db->from('tb_ambulatorio_laudo_integracao ali');
+        $this->db->join('tb_operador o', 'ali.medico_id = o.operador_id', 'left');
+        $this->db->where('paciente_id', $paciente_id);
+        $this->db->where('tipo', 'CONSULTA');
+        $this->db->orderby('data_cadastro desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarexamehistoricoweb($paciente_id) {
+
+        $this->db->select('ali.*, o.nome as medico_integracao');
+        $this->db->from('tb_ambulatorio_laudo_integracao ali');
+        $this->db->join('tb_operador o', 'ali.medico_id = o.operador_id', 'left');
+        $this->db->where('paciente_id', $paciente_id);
+        $this->db->where('tipo', 'EXAME');
+        $this->db->orderby('data_cadastro desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarespecialidadehistoricoweb($paciente_id) {
+
+        $this->db->select('ali.*,o.nome as medico_integracao');
+        $this->db->from('tb_ambulatorio_laudo_integracao ali');
+        $this->db->join('tb_operador o', 'ali.medico_id = o.operador_id', 'left');
+        $this->db->where('paciente_id', $paciente_id);
+        $this->db->where('tipo', 'ESPECIALIDADE');
+        $this->db->orderby('data_cadastro desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarhistoricoantigo2($args = array()) {
 
         $this->db->select('distinct(la.paciente_id), p.nome as paciente');
@@ -1454,6 +1490,41 @@ class laudo_model extends Model {
         $this->db->where('ae.paciente_id', $paciente_id);
 //        $this->db->where('ag.empresa_id', $empresa_id);
         $this->db->where('agr.tipo !=', 'CONSULTA');
+        $this->db->where('agr.tipo !=', 'ESPECIALIDADE');
+        $this->db->where("ag.cancelada", 'false');
+        $this->db->orderby('ag.data_cadastro desc');
+        $this->db->orderby('ag.situacao');
+        $this->db->orderby('ag.data_cadastro');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarespecialidadehistorico($paciente_id) {
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ag.ambulatorio_laudo_id,
+                            ag.data_cadastro,
+                            ag.situacao,
+                            o.nome as medico,
+                            ag.texto,
+                            ae.exames_id,
+                            age.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            ag.medico_parecer1,
+                            ae.agenda_exames_id,
+                            age.agenda_exames_nome_id,
+                            p.nome as paciente');
+        $this->db->from('tb_ambulatorio_laudo ag');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
+        $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ag.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo agr', 'agr.nome = pt.grupo', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
+        $this->db->where('ae.paciente_id', $paciente_id);
+//        $this->db->where('ag.empresa_id', $empresa_id);
+        $this->db->where('agr.tipo', 'ESPECIALIDADE');
         $this->db->where("ag.cancelada", 'false');
         $this->db->orderby('ag.data_cadastro desc');
         $this->db->orderby('ag.situacao');
@@ -1772,6 +1843,59 @@ class laudo_model extends Model {
         $this->db->where("pt.grupo", $grupo);
         $return = $this->db->get();
         return $return->result();
+    }
+
+    function listartudopaciente($paciente_id) {
+        $this->db->select('*');
+        $this->db->from('tb_paciente p');
+        $this->db->where("p.paciente_id", $paciente_id);
+        $return = $this->db->get();
+        return $return->result_array();
+    }
+
+    function listartudoexames($exames_id) {
+        $this->db->select('*');
+        $this->db->from('tb_exames');
+        $this->db->where("exames_id", $exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listartudoagendaexames($agenda_exames_id) {
+        $this->db->select('*');
+        $this->db->from('tb_agenda_exames');
+        $this->db->where("agenda_exames_id", $agenda_exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarlaudointegracaoweb($ambulatorio_laudo_id) {
+        $this->db->select('p.nome as procedimento, 
+                            ag.texto,
+                            ag.ambulatorio_laudo_id,
+                            o.nome as medico,
+                            o.cpf,
+                            e.nome as empresa,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            agr.tipo,
+                            ag.data,
+                            c.nome as convenio
+                            ');
+        $this->db->from('tb_ambulatorio_laudo ag');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        $this->db->join('tb_exames ae', 'ae.exames_id = ag.exame_id', 'left');
+        $this->db->join('tb_agenda_exames age', 'age.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = age.empresa_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = age.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo agr', 'pt.grupo = agr.nome', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
+        $this->db->where("ambulatorio_laudo_id", $ambulatorio_laudo_id);
+        $query = $this->db->get();
+        $return = $query->result_array();
+        return $return;
     }
 
     function listarlaudoantigo($args = array()) {
@@ -3503,7 +3627,7 @@ class laudo_model extends Model {
             $query = $this->db->get();
             $return = $query->result();
 
-            if ($empresa_id == null) {
+            if (@$empresa_id == null) {
                 $empresa_id = $this->session->userdata('empresa_id');
             }
 
@@ -3588,12 +3712,12 @@ class laudo_model extends Model {
                     $this->db->set('pressao_ocular_hora', null);
                 }
 
-                if ($_POST['refracao_retinoscopia'] != '') {
+                if (@$_POST['refracao_retinoscopia'] != '') {
                     $this->db->set('refracao_retinoscopia', $_POST['refracao_retinoscopia']);
                 } else {
                     $this->db->set('refracao_retinoscopia', '');
                 }
-                if ($_POST['dinamica_estatica'] != '') {
+                if (@$_POST['dinamica_estatica'] != '') {
                     $this->db->set('dinamica_estatica', $_POST['dinamica_estatica']);
                 } else {
                     $this->db->set('dinamica_estatica', '');
@@ -3628,7 +3752,7 @@ class laudo_model extends Model {
             $this->db->set('texto', $_POST['laudo']);
 
 
-            if ($_POST['adendo'] != '') {
+            if (@$_POST['adendo'] != '') {
                 $adendo_coluna = "<p>Adendo de: " . date("d/m/Y H:i:s") . "<br></p>" . $_POST['adendo'];
                 $adendo = $_POST['laudo'] . "<p><strong>Adendo de: " . date("d/m/Y H:i:s") . "<br></strong></p>" . $_POST['adendo'];
 //                $this->db->set('adendo', $adendo_coluna);
@@ -3812,7 +3936,7 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
-    
+
     function preencherformulario($paciente_id, $guia_id) {
 
         $this->db->select('*');
@@ -3823,7 +3947,7 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
-    
+
     function preencheravaliacao($paciente_id, $guia_id) {
 
         $this->db->select('*');
@@ -3865,7 +3989,7 @@ class laudo_model extends Model {
             $result = $return->result();
 
             if (count($result) > 0) {
-                
+
 
                 if (count($perguntas_form) > 0) {
                     $this->db->set('questoes', json_encode($perguntas_form));
@@ -3909,7 +4033,7 @@ class laudo_model extends Model {
                 if ($_POST['sopros'] != '') {
                     $this->db->set('sopros', $_POST['sopros']);
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
                 $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
@@ -3972,62 +4096,61 @@ class laudo_model extends Model {
             return -1;
         }
     }
+
     function gravarparecer() {
         try {
-            $paciente_id = $this->session->userdata('paciente_id');            
+            $paciente_id = $this->session->userdata('paciente_id');
             $guia_id = $this->session->userdata('guia_id');
-            
+
 
             $dados_form = array(
-                "dado1" =>(isset($_POST["dado1"]))? $_POST["dado1"]:'',
-                "dado2" =>(isset($_POST["dado2"]))? $_POST["dado2"]:'',
-                "dado3" =>(isset($_POST["dado3"]))? $_POST["dado3"]:'',
-                "dado4" =>(isset($_POST["dado4"]))? $_POST["dado4"]:'',
-                "dado5" =>(isset($_POST["dado5"]))? $_POST["dado5"]:'',
-                "dado6" =>(isset($_POST["dado6"]))? $_POST["dado6"]:'',
-                "dado7" =>(isset($_POST["dado7"]))? $_POST["dado7"]:'',
-                "dado8" =>(isset($_POST["dado8"]))? $_POST["dado8"]:'',
-                "dado9" =>(isset($_POST["dado9"]))? $_POST["dado9"]:'',
-                "dado10" =>(isset($_POST["dado10"]))? $_POST["dado10"]:'',
-                "dado11" =>(isset($_POST["dado11"]))? $_POST["dado11"]:'',
-                "dado12" =>(isset($_POST["dado12"]))? $_POST["dado12"]:'',
-                "dado13"=>(isset($_POST["dado13"]))? $_POST["dado13"]:''
+                "dado1" => (isset($_POST["dado1"])) ? $_POST["dado1"] : '',
+                "dado2" => (isset($_POST["dado2"])) ? $_POST["dado2"] : '',
+                "dado3" => (isset($_POST["dado3"])) ? $_POST["dado3"] : '',
+                "dado4" => (isset($_POST["dado4"])) ? $_POST["dado4"] : '',
+                "dado5" => (isset($_POST["dado5"])) ? $_POST["dado5"] : '',
+                "dado6" => (isset($_POST["dado6"])) ? $_POST["dado6"] : '',
+                "dado7" => (isset($_POST["dado7"])) ? $_POST["dado7"] : '',
+                "dado8" => (isset($_POST["dado8"])) ? $_POST["dado8"] : '',
+                "dado9" => (isset($_POST["dado9"])) ? $_POST["dado9"] : '',
+                "dado10" => (isset($_POST["dado10"])) ? $_POST["dado10"] : '',
+                "dado11" => (isset($_POST["dado11"])) ? $_POST["dado11"] : '',
+                "dado12" => (isset($_POST["dado12"])) ? $_POST["dado12"] : '',
+                "dado13" => (isset($_POST["dado13"])) ? $_POST["dado13"] : ''
             );
             $exames_form = array(
-                "exame1" =>(isset($_POST["exame1"]))? $_POST["exame1"]:'',
-                "exame2" =>(isset($_POST["exame2"]))? $_POST["exame2"]:'',
-                "exame3" =>(isset($_POST["exame3"]))? $_POST["exame3"]:'',
-                "exame4" =>(isset($_POST["exame4"]))? $_POST["exame4"]:'',
-                "exame5" =>(isset($_POST["exame5"]))? $_POST["exame5"]:'',
-                "exame6" =>(isset($_POST["exame6"]))? $_POST["exame6"]:'',
-                "exame7" =>(isset($_POST["exame7"]))? $_POST["exame7"]:'',
-                "exame8" =>(isset($_POST["exame8"]))? $_POST["exame8"]:'',
-                "exame9" =>(isset($_POST["exame9"]))? $_POST["exame9"]:'',
-                "exame10" =>(isset($_POST["exame10"]))? $_POST["exame10"]:''
-                
+                "exame1" => (isset($_POST["exame1"])) ? $_POST["exame1"] : '',
+                "exame2" => (isset($_POST["exame2"])) ? $_POST["exame2"] : '',
+                "exame3" => (isset($_POST["exame3"])) ? $_POST["exame3"] : '',
+                "exame4" => (isset($_POST["exame4"])) ? $_POST["exame4"] : '',
+                "exame5" => (isset($_POST["exame5"])) ? $_POST["exame5"] : '',
+                "exame6" => (isset($_POST["exame6"])) ? $_POST["exame6"] : '',
+                "exame7" => (isset($_POST["exame7"])) ? $_POST["exame7"] : '',
+                "exame8" => (isset($_POST["exame8"])) ? $_POST["exame8"] : '',
+                "exame9" => (isset($_POST["exame9"])) ? $_POST["exame9"] : '',
+                "exame10" => (isset($_POST["exame10"])) ? $_POST["exame10"] : ''
             );
             $examesc_form = array(
-                "examec1" =>(isset($_POST["examec1"]))? $_POST["examec1"]:'',
-                "examec2" =>(isset($_POST["examec2"]))? $_POST["examec2"]:'',
-                "examec3" =>(isset($_POST["examec3"]))? $_POST["examec3"]:'',
-                "examec4" =>(isset($_POST["examec4"]))? $_POST["examec4"]:''
-                
+                "examec1" => (isset($_POST["examec1"])) ? $_POST["examec1"] : '',
+                "examec2" => (isset($_POST["examec2"])) ? $_POST["examec2"] : '',
+                "examec3" => (isset($_POST["examec3"])) ? $_POST["examec3"] : '',
+                "examec4" => (isset($_POST["examec4"])) ? $_POST["examec4"] : ''
             );
-            
+
             $hipotese_diagnostica = array(
-                "diagnostico1" =>(isset($_POST["diagnostico1"]))? $_POST["diagnostico1"]:'',
-                "diagnostico2" =>(isset($_POST["diagnostico2"]))? $_POST["diagnostico2"]:'',
-                "diagnostico3" =>(isset($_POST["diagnostico3"]))? $_POST["diagnostico3"]:'',
-                "diagnostico4" =>(isset($_POST["diagnostico4"]))? $_POST["diagnostico4"]:'',
-                "diagnostico5" =>(isset($_POST["diagnostico5"]))? $_POST["diagnostico5"]:'',
-                "diagnostico6" =>(isset($_POST["diagnostico6"]))? $_POST["diagnostico6"]:'',
-                "diagnostico7" =>(isset($_POST["diagnostico7"]))? $_POST["diagnostico7"]:'',
-                "diagnostico8" =>(isset($_POST["diagnostico8"]))? $_POST["diagnostico8"]:'',
-                "diagnostico9" =>(isset($_POST["diagnostico9"]))? $_POST["diagnostico9"]:'',
-                "diagnostico10" =>(isset($_POST["diagnostico10"]))? $_POST["diagnostico10"]:''
+                "diagnostico1" => (isset($_POST["diagnostico1"])) ? $_POST["diagnostico1"] : '',
+                "diagnostico2" => (isset($_POST["diagnostico2"])) ? $_POST["diagnostico2"] : '',
+                "diagnostico3" => (isset($_POST["diagnostico3"])) ? $_POST["diagnostico3"] : '',
+                "diagnostico4" => (isset($_POST["diagnostico4"])) ? $_POST["diagnostico4"] : '',
+                "diagnostico5" => (isset($_POST["diagnostico5"])) ? $_POST["diagnostico5"] : '',
+                "diagnostico6" => (isset($_POST["diagnostico6"])) ? $_POST["diagnostico6"] : '',
+                "diagnostico7" => (isset($_POST["diagnostico7"])) ? $_POST["diagnostico7"] : '',
+                "diagnostico8" => (isset($_POST["diagnostico8"])) ? $_POST["diagnostico8"] : '',
+                "diagnostico9" => (isset($_POST["diagnostico9"])) ? $_POST["diagnostico9"] : '',
+                "diagnostico10" => (isset($_POST["diagnostico10"])) ? $_POST["diagnostico10"] : ''
             );
-            
-            
+
+
 
             $this->db->select('lp.guia_id, lp.paciente_id');
             $this->db->from('tb_laudo_parecer lp');
@@ -4035,7 +4158,7 @@ class laudo_model extends Model {
             $this->db->where('lp.paciente_id', $_POST['paciente_id']);
             $return = $this->db->get();
             $result = $return->result();
-          //  var_dump($result);die;
+            //  var_dump($result);die;
 
             if (count($result) > 0) {
                 if (count($dados_form) > 0) {
@@ -4064,9 +4187,9 @@ class laudo_model extends Model {
                 if (isset($_POST['nao'])) {
                     $this->db->set('antibiotico', $_POST['nao']);
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
-                $this->db->where('paciente_id', $_POST['paciente_id']);                
+                $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_parecer');
@@ -4097,7 +4220,7 @@ class laudo_model extends Model {
                 if (isset($_POST['nao'])) {
                     $this->db->set('antibiotico', "NÃO");
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
                 $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
@@ -4117,7 +4240,7 @@ class laudo_model extends Model {
         try {
             $paciente_id = $this->session->userdata('paciente_id');
             $guia_id = $this->session->userdata('guia_id');
-            
+
 
             $criterios_tb1 = array(
                 "c1tb1" => $_POST["c1tb1"],
@@ -4164,7 +4287,7 @@ class laudo_model extends Model {
             $result = $return->result();
 
             if (count($result) > 0) {
-                
+
 
                 if (count($criterios_tb1) > 0) {
                     $this->db->set('avaliacao_tabela1', json_encode($criterios_tb1));
@@ -4192,7 +4315,7 @@ class laudo_model extends Model {
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_avaliacao');
             } else {
-                
+
 
                 if (count($criterios_tb1) > 0) {
                     $this->db->set('avaliacao_tabela1', json_encode($criterios_tb1));
@@ -4645,6 +4768,59 @@ class laudo_model extends Model {
             return 0;
         } catch (Exception $exc) {
             return -1;
+        }
+    }
+
+    function gravarlaudointegracaoweb($paciente_id, $paciente_web_id, $laudo_obj) {
+        try {
+//            var_dump($laudo_obj);
+//            die;
+            $horario = date("Y-m-d H:i:s");
+
+            $this->db->select('operador_id');
+            $this->db->from('tb_operador');
+            $this->db->where("ativo", 't');
+            $this->db->where("cpf", $laudo_obj[0]->cpf);
+            $query = $this->db->get();
+            $return = $query->result();
+
+            $this->db->select('ambulatorio_laudoweb_id');
+            $this->db->from('tb_ambulatorio_laudo_integracao');
+            $this->db->where("ambulatorio_laudoweb_id", $laudo_obj[0]->ambulatorio_laudo_id);
+            $query2 = $this->db->get();
+            $return2 = $query2->result();
+
+
+            if (count($return) > 0) {
+                $medico_id = $return[0]->operador_id;
+
+//                var_dump($return2); die;
+                $this->db->set('paciente_id', $paciente_id);
+                $this->db->set('paciente_web_id', $paciente_web_id);
+                $this->db->set('procedimento', $laudo_obj[0]->procedimento);
+                $this->db->set('texto', $laudo_obj[0]->texto);
+                $this->db->set('ambulatorio_laudoweb_id', $laudo_obj[0]->ambulatorio_laudo_id);
+                $this->db->set('empresa', $laudo_obj[0]->empresa);
+                $this->db->set('tipo', $laudo_obj[0]->tipo);
+                $this->db->set('data', $laudo_obj[0]->data);
+                $this->db->set('medico_id', $medico_id);
+                $this->db->set('convenio', $laudo_obj[0]->convenio);
+
+                $this->db->set('laudo_json', $_POST['laudo_json']);
+                $this->db->set('paciente_json', $_POST['paciente_json']);
+                if (count($return2) > 0) {
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->where('ambulatorio_laudoweb_id', $laudo_obj[0]->ambulatorio_laudo_id);
+                    $this->db->update('tb_ambulatorio_laudo_integracao');
+                } else {
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->insert('tb_ambulatorio_laudo_integracao');
+                }
+            }
+
+            return true;
+        } catch (Exception $exc) {
+            return false;
         }
     }
 
