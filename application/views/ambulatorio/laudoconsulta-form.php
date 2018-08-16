@@ -400,12 +400,20 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            
 <? if (in_array('historicoimprimir', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaohistoricoescolhermedico/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                             Imprimir Histórico</a></div>
                                                 </td>
                                             <? } ?>
+                                                <td>
+                            <? if(in_array('cirurgias', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercirurgia/<?= $ambulatorio_laudo_id ?>');" >
+                                   Cirurgias</a></div>
+                             <? } ?>
+                        </td>
                                         </tr>
                                         <tr>
 <? if (in_array('receituarioesp', $opc_telatendimento)) { ?>
@@ -414,6 +422,13 @@
                                                             R. especial</a></div>
                                                 </td>
                                             <? } ?>
+                                                 <td>
+                            <? if(in_array('cirurgias', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherexameslab/<?= $ambulatorio_laudo_id ?>');" >
+                                   E. Laboratoriais</a></div>
+                             <? } ?>
+                        </td>
                                         </tr>
                                         <tr>
 <? if (in_array('solicitar_exames', $opc_telatendimento)) { ?>
@@ -423,6 +438,13 @@
                                                     <!--                                        impressaolaudo -->
                                                 </td>
                                             <? } ?>
+                                                <td>
+                            <? if(in_array('eco', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherecocardio/<?= $ambulatorio_laudo_id ?>');" >
+                                   Ecocardiograma</a></div>
+                             <? } ?>
+                        </td>
                                         </tr>
                                         <tr>
 <? if (in_array('atestado', $opc_telatendimento)) { ?>
@@ -431,6 +453,13 @@
                                                             Atestado</a></div>
                                                 </td>
                                             <? } ?>
+                                                <td>
+                            <? if(in_array('ecostress', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherecostress/<?= $ambulatorio_laudo_id ?>');" >
+                                   Eco Stress</a></div>
+                             <? } ?>
+                        </td>
                                         </tr>
                                         <tr>
 <? if (in_array('declaracao', $opc_telatendimento)) { ?>
@@ -439,6 +468,13 @@
                                                             Declaração</a></div>
                                                 </td>
                                             <? } ?>
+                                                <td>
+                            <? if(in_array('cate', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercate/<?= $ambulatorio_laudo_id ?>');" >
+                                   Cateterismo</a></div>
+                             <? } ?>
+                        </td>
                                         </tr>
                                         <tr>
 <? if (in_array('arquivos', $opc_telatendimento)) { ?>
@@ -447,6 +483,13 @@
                                                             Arquivos</a></div>
                                                 </td>
                                             <? } ?>
+                                                <td>
+                            <? if(in_array('holter', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercirurgia/<?= $ambulatorio_laudo_id ?>');" >
+                                   Holter 24h</a></div>
+                             <? } ?>
+                        </td>
                                         </tr>
                                         <tr>
 <? if (in_array('aih', $opc_telatendimento)) { ?>
@@ -455,6 +498,13 @@
                                                             AIH</a></div>
                                                 </td>
                                             <? } ?>
+                                                <td>
+                            <? if(in_array('cintil', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercirurgia/<?= $ambulatorio_laudo_id ?>');" >
+                                   Cintilografia</a></div>
+                             <? } ?>
+                        </td>
                                         </tr>
                                         <tr>
 <? if (in_array('consultar_procedimento', $opc_telatendimento)) { ?>
@@ -463,6 +513,13 @@
                                                             Consultar Proc...</a></div>
                                                 </td>
                                             <? } ?>
+                                                <td>
+                            <? if(in_array('mapa', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercirurgia/<?= $ambulatorio_laudo_id ?>');" >
+                                   Mapa</a></div>
+                             <? } ?>
+                        </td>
                                         </tr>
                                         <tr>
 <? if (in_array('sadt', $opc_telatendimento)) { ?>
@@ -471,6 +528,13 @@
                                                             Solicitação SADT</a></div>
                                                 </td>
                                             <? } ?>
+                                                <td>
+                            <? if(in_array('te', $opc_telatendimento)){ ?>
+                            <div class="bt_link_new">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercirurgia/<?= $ambulatorio_laudo_id ?>');" >
+                                   Teste Ergométrico</a></div>
+                             <? } ?>
+                        </td>
                                         </tr>
                                         <tr>
 <? if (in_array('cadastro_aso', $opc_telatendimento)) { ?>

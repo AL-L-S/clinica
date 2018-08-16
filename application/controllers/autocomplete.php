@@ -37,6 +37,7 @@ class Autocomplete extends Controller {
         $this->load->model('cadastro/classe_model', 'financeiro_classe');
         $this->load->model('estoque/menu_model', 'menu');
         $this->load->model('centrocirurgico/centrocirurgico_model', 'centrocirurgico');
+        $this->load->model('ambulatorio/saudeocupacional_model', 'saudeocupacional');
     }
 
     function index() {
@@ -661,7 +662,7 @@ class Autocomplete extends Controller {
 
     function horariosdisponiveisorcamento() {
         $result = array();
-        if(isset($_GET['procedimento1']) && isset($_GET['empresa1'])){
+        if (isset($_GET['procedimento1']) && isset($_GET['empresa1'])) {
             $result = $this->exametemp->listarhorariosdisponiveisorcamento($_GET['procedimento1'], $_GET['empresa1']);
         }
         echo json_encode($result);
@@ -1041,18 +1042,6 @@ class Autocomplete extends Controller {
             $var[] = $retorno;
         }
         echo json_encode($var);
-
-//        foreach ($result2 as $value) {
-//            $retorno['title'] =  'H: Ocupados: ' . $value->contagem_ocupado;
-//            $retorno['start'] = $value->data;
-//            $retorno['end'] = $value->data;
-//            $retorno['color'] = '#0E9AA7';
-//            $dia = date("d", strtotime($item->data));
-//            $mes = date("m", strtotime($item->data));
-//            $ano = date("Y", strtotime($item->data));
-//            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaoconsulta?empresa=&especialidade=&medico=&situacao=OK&data=$dia%2F$mes%2F$ano&nome=";
-//            $var[] = $retorno;
-//        }
     }
 
     function listarhorarioscalendarioespecialidade() {
@@ -1117,22 +1106,10 @@ class Autocomplete extends Controller {
             $var[] = $retorno;
         }
         echo json_encode($var);
-
-//        foreach ($result2 as $value) {
-//            $retorno['title'] =  'H: Ocupados: ' . $value->contagem_ocupado;
-//            $retorno['start'] = $value->data;
-//            $retorno['end'] = $value->data;
-//            $retorno['color'] = '#0E9AA7';
-//            $dia = date("d", strtotime($item->data));
-//            $mes = date("m", strtotime($item->data));
-//            $ano = date("Y", strtotime($item->data));
-//            $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaoconsulta?empresa=&especialidade=&medico=&situacao=OK&data=$dia%2F$mes%2F$ano&nome=";
-//            $var[] = $retorno;
-//        }
     }
 
     function centrocirurgicomedicos() {
-//        var_dump(123);die;
+
 
         if (isset($_GET['term'])) {
             $result = $this->centrocirurgico->listarmedicocirurgiaautocomplete($_GET['term']);
@@ -1573,6 +1550,36 @@ class Autocomplete extends Controller {
         }
 
         echo json_encode($result);
+    }
+
+    function funcaosetormt() {
+
+        if (isset($_GET['setor'])) {
+            $result = $this->saudeocupacional->listarautocompletefuncaosetormt($_GET['setor']);
+        } else {
+            $result = $this->saudeocupacional->listarautocompletefuncaosetormt(@$_GET['setor']);
+        }
+
+        $json_funcao = json_decode($result[0]->aso_funcao_id);
+
+        $result2 = $this->saudeocupacional->listarautocompletesetorjson($json_funcao);
+
+        echo json_encode($result2);
+    }
+    
+    function riscofuncaomt() {
+
+        if (isset($_GET['funcao'])) {
+            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt($_GET['funcao']);
+        } else {
+            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt(@$_GET['funcao']);
+        }
+
+        $json_riscos = json_decode($result[0]->aso_risco_id);
+
+        $result2 = $this->saudeocupacional->listarautocompletefuncaojson($json_riscos);
+
+        echo json_encode($result2);
     }
 
     function listargruposala() {
@@ -2552,26 +2559,25 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
-    
-      function repetirreceituario() {
+
+    function repetirreceituario() {
 
         if (isset($_GET['receita'])) {
-            
+
             $result = $this->laudo->listarautocompleterepetirreceituario($_GET['receita']);
         } else {
             $result = $this->laudo->listarautocompleterepetirreceituario();
-            
         }
         echo json_encode($result);
     }
-          function editarreceituario() {
+
+    function editarreceituario() {
 
         if (isset($_GET['receita'])) {
-            
+
             $result = $this->laudo->listarautocompleteeditarreceituario($_GET['receita']);
         } else {
             $result = $this->laudo->listarautocompleteeditarreceituario();
-            
         }
         echo json_encode($result);
     }
@@ -3248,7 +3254,7 @@ class Autocomplete extends Controller {
             $result = $this->enfermaria_m->listaenfermariajson();
         }
         foreach ($result as $item) {
-            $retorno['value'] = $item->internacao_enfermaria_id . ' - ' .  $item->nome;
+            $retorno['value'] = $item->internacao_enfermaria_id . ' - ' . $item->nome;
             $retorno['id'] = $item->internacao_enfermaria_id;
             $var[] = $retorno;
         }

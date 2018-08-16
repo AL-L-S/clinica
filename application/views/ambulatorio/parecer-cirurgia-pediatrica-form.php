@@ -63,9 +63,7 @@
 
                
                     <?
-//                    echo '<pre>';
-//                    var_dump($formulario);
-//                    die;
+
                     
                     $dados = json_decode(@$parecer[0]->dados);
                     $exames = json_decode(@$parecer[0]->exames);

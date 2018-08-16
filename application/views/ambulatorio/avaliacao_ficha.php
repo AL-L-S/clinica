@@ -10,11 +10,6 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/jquery.tinymce.min.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/langs/pt_BR.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/plugins/spellchecker/plugin.min.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js"></script>
 
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
@@ -30,16 +25,16 @@
     $diff = $date_time->diff(new DateTime($dataFuturo));
     $teste = $diff->format('%Ya %mm %dd');
 
-    if (isset($obj->_peso)) {
-        $peso = @$obj->_peso;
-    } else {
-        $peso = @$laudo_peso[0]->peso;
-    }
-    if (isset($obj->_altura)) {
-        $altura = @$obj->_altura;
-    } else {
-        $altura = @$laudo_peso[0]->altura;
-    }
+//    if (isset($obj->_peso)) {
+//        $peso = @$obj->_peso;
+//    } else {
+//        $peso = @$laudo_peso[0]->peso;
+//    }
+//    if (isset($obj->_altura)) {
+//        $altura = @$obj->_altura;
+//    } else {
+//        $altura = @$laudo_peso[0]->altura;
+//    }
 
 
     if (@$empresapermissao[0]->campos_atendimentomed != '') {

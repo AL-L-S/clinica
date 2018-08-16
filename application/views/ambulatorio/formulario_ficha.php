@@ -6,7 +6,8 @@
 <link href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css" />
 <link href="<?= base_url() ?>css/jquery-treeview.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
 <div >
 

@@ -7704,7 +7704,7 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-
+    
     function listarautocompletegrupoweb($parametro = null) {
         $this->db->select('ag.tipo');
         $this->db->from('tb_procedimento_convenio pc');

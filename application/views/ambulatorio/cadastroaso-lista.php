@@ -1,7 +1,7 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>ambulatorio/guia/carregarcadastroaso/<?=$paciente_id?>/0/<?=$medico_id?>">
+        <a href="<?php echo base_url() ?>ambulatorio/guia/carregarcadastroaso/<?=$paciente_id?>/0/">
             Novo Cadastro ASO
         </a>
     </div>

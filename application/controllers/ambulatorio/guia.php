@@ -35,6 +35,7 @@ class Guia extends BaseController {
         $this->load->model('cadastro/grupoclassificacao_model', 'grupoclassificacao');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/GExtenso', 'GExtenso');
+        $this->load->model('ambulatorio/saudeocupacional_model', 'saudeocupacional');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -185,24 +186,28 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/impressaoguiasolicitacaospsadt', $data);
     }
 
-    function carregarcadastroaso($paciente_id, $cadastro_aso_id, $medico_id) {
+    function carregarcadastroaso($paciente_id, $cadastro_aso_id) {
         $data['informacao_aso'] = $this->guia->carregarcadastroaso($cadastro_aso_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['setor'] = $this->saudeocupacional->carregarsetores();
+        $data['convenio'] = $this->convenio->listardados();
+        $data['procedimento'] = $this->procedimento->listarprocedimentos();                
         $data['paciente_id'] = $paciente_id;
-        $data['medico_id'] = $medico_id;
+       
+        
 
         $this->loadView('ambulatorio/cadastroaso-form', $data);
     }
 
-    function cadastroaso($paciente_id, $medico_id) {
+    function cadastroaso($paciente_id) {
         $data['paciente_id'] = $paciente_id;
-        $data['medico_id'] = $medico_id;
+        
 
         $this->loadView('ambulatorio/cadastroaso-lista', $data);
     }
 
-    function gravarcadastroaso($paciente_id, $medico_id) {
+    function gravarcadastroaso($paciente_id) {
 //        echo '<pre>';
 //        var_dump($_POST); die;
         $ambulatorio_guia_id = $this->guia->gravarcadastroaso($paciente_id);
@@ -211,7 +216,7 @@ class Guia extends BaseController {
         } else {
             $data['mensagem'] = 'Sucesso ao gravar ASO.';
         }
-        redirect(base_url() . "ambulatorio/guia/cadastroaso/$paciente_id/$medico_id");
+        redirect(base_url() . "ambulatorio/guia/cadastroaso/$paciente_id");
     }
 
     function excluircadastroaso($cadastro_aso_id, $paciente_id, $medico_id) {

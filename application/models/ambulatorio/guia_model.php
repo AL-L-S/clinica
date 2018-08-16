@@ -93,7 +93,7 @@ class guia_model extends Model {
         $this->db->set('paciente_id', $paciente_id);
         $this->db->set('impressao_aso', $valores);
         $this->db->set('tipo', $_POST['tipo']);
-        $this->db->set('medico_responsavel', $_POST['medico_responsavel']);
+//        $this->db->set('medico_responsavel', $_POST['medico_responsavel']);
 
         if ($_POST['cadastro_aso_id'] > 0) {
             $this->db->set('operador_atualizacao', $operador_id);

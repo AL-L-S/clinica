@@ -144,7 +144,7 @@ class app_model extends Model {
         $this->db->join('tb_operador tel', 'tel.operador_id = ae.operador_telefonema', 'left');
 //        $this->db->where('ae.data', $dataAtual);
         $this->db->where('ae.cancelada', 'false');
-        $this->db->where('ae.medico_consulta_id', $operador_id);
+        $this->db->where("(ae.medico_consulta_id = $operador_id OR ae.medico_agenda = $operador_id)");
         
         if ($situacao != '') {
             

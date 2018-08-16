@@ -4,17 +4,25 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 } else {
     $config = '';
 }
+
+
+if (count(json_decode(@$obj[0]->aso_risco_id)) > 0) {
+    $array_riscos = json_decode(@$obj[0]->aso_risco_id);
+} else {
+    $array_riscos = array();
+}
+
+if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
+    $array_funcao = json_decode(@$obj[0]->aso_funcao_id);
+} else {
+    $array_funcao = array();
+}
 ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <h3>Cadastro ASO</h3>
-    <!--<div style="width: 100%">-->
-    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/guia/gravarcadastroaso/<?= @$paciente[0]->paciente_id ?>/<?=@$medico_id?>" method="post">
-        <!--                <fieldset>
-                            <legend>Nome</legend>
-                            <input type="text" id="nome" name="nome" value="<?= @$config->nome ?>"/>
-                            
-                
-                        </fieldset>-->
+
+    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/guia/gravarcadastroaso/<?= @$paciente[0]->paciente_id ?>/" method="post">
+
 
         <fieldset>
             <legend>Dados do Paciente</legend>
@@ -23,6 +31,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <input readonly="" type="text" id="txtNome" name="nome_paciente"  class="texto09" value="<?= $paciente[0]->nome ?>" />
                 <input type="hidden" id="txtPacienteId" name="txtPacienteId"  class="texto09" value="<?= @$paciente[0]->paciente_id ?>"/>
                 <input type="hidden" id="cadastro_aso_id" name="cadastro_aso_id"  class="texto09" value="<?= @$informacao_aso[0]->cadastro_aso_id ?>"/>
+
             </div>
             <div>
                 <label>Sexo</label>
@@ -56,11 +65,6 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                 <input readonly="" type="text" onblur="calculoIdade()" name="idade"  id="idade" class="texto02"   maxlength="10" value="<?php echo substr(@$paciente[0]->nascimento, 8, 2) . '/' . substr(@$paciente[0]->nascimento, 5, 2) . '/' . substr(@$paciente[0]->nascimento, 0, 4); ?>" required=""/>
             </div>
-
-            <!--            <div>
-                            <label>Nome do Paciente</label>
-                            <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  />
-                        </div>-->
 
 
         </fieldset>
@@ -96,30 +100,62 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
             <div>
                 <label>Empresa</label>
-                <input type="text" name="empresa" id="empresa" class="texto09" value="<?= @$config->empresa ?>" />
+
+                <select  name="convenio1" id="convenio1" class="size2" required="" >      
+                    <option value="">Selecione </option>
+                    <?
+                    foreach ($convenio as $item) :
+                        
+                        ?>
+                        <option value="<?= $item->convenio_id; ?>" <? //if ($lastConv == $item->convenio_id) echo 'selected'; ?>>
+                            <?= $item->nome; ?>
+                        </option>
+                    <? endforeach; ?>
+                </select>
             </div>
 
             <div>
+
                 <label>Setor</label>
-                <input type="text" name="setor" id="setor" class="texto04" value="<?= @$config->setor ?>" />
+                <select name="setor" id="setor" class="size2">
+                    <option value="">Selecione </option>
+                    <? foreach ($setor as $item) : ?>                   
+                        <option value="<?= $item->aso_setor_id; ?>"<?
+                        if (565656 == $item->aso_setor_id):echo 'selected';
+                        endif;
+                        ?>><?= $item->descricao_setor; ?></option>
+                            <? endforeach; ?>
+                </select>
             </div>
             <div>
                 <label>Função</label>
-                <input type="text" name="funcao" id="funcao" class="texto04" value="<?= @$config->funcao ?>" />
-            </div>
-            <div>
-                <label>Riscos Ocupacionais Específicos</label>
-                <input type="text" name="riscos_ocupacionais" id="riscos_ocupacionais" class="texto09" value="<?= @$config->riscos_ocupacionais ?>" />
+                <select name="funcao" id="funcao" class="size2">
+
+                </select>
             </div>
             <div>
                 <label>Data De Realização</label>
                 <input type="text" name="data_realizacao" id="data_realizacao" class="texto04" value="<?= @$config->data_realizacao ?>" />
             </div>
 
-            <!--            <div>
-                            <label>Nome do Paciente</label>
-                            <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  />
-                        </div>-->
+            <div>
+
+                <label>Exames Complementares</label>
+                <select name="exameprocedimento" id="exameprocedimento" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Exames..." multiple>
+
+                </select>
+            </div>
+
+            <div>               
+
+                <label>Riscos Ocupacionais Específicos</label>
+
+
+                <select name="riscos[]" id="riscos" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Riscos..." multiple tabindex="1">
+                   
+                </select>
+
+            </div>
 
 
         </fieldset>
@@ -194,12 +230,12 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
         </fieldset>
         <fieldset>
-            <?if(@$informacao_aso[0]->medico_responsavel != ''){?>
-                 <input type="hidden" name="medico_responsavel" id="medico_responsavel" class="texto04" value="<?= @$informacao_aso[0]->medico_responsavel ?>" />
-            <?}else{?>
-                 <input type="hidden" name="medico_responsavel" id="medico_responsavel" class="texto04" value="<?=@$medico_id ?>" />
-            <?}?>
-             
+            <? if (@$informacao_aso[0]->medico_responsavel != '') { ?>
+                <input type="hidden" name="medico_responsavel" id="medico_responsavel" class="texto04" value="<?= @$informacao_aso[0]->medico_responsavel ?>" />
+            <? } else { ?>
+                <input type="hidden" name="medico_responsavel" id="medico_responsavel" class="texto04" value="<?= @$medico_id ?>" />
+            <? } ?>
+
             <div style="width: 100%;">
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
@@ -217,12 +253,18 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
         /*height: 50pt;*/
     }
 </style>
-<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<style>
+    .chosen-container{ margin-top: 5pt;}
+    #procedimento1_chosen a { width: 330px; }
+</style>
 <script type="text/javascript">
 
                     $(function () {
@@ -237,128 +279,76 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                         });
                     });
 
-                    $(function () {
-                        $("#txtCidade").autocomplete({
-                            source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
-                            minLength: 3,
-                            focus: function (event, ui) {
-                                $("#txtCidade").val(ui.item.label);
-                                return false;
-                            },
-                            select: function (event, ui) {
-                                $("#txtCidade").val(ui.item.value);
-                                $("#txtCidadeID").val(ui.item.id);
-                                return false;
-                            }
-                        });
-                    });
+
+
 
                     $(function () {
-                        $('#plano_saude').change(function () {
-//                                    alert($(this).val());
-                            if ($(this).val() == 'SIM') {
-                                $("#convenio").prop('required', true);
+                        $('#setor').change(function () {
 
-                            } else {
-                                $("#convenio").prop('required', false);
-                            }
-                        });
-                    });
-
-                    function atualizagrupomodelo(id) {
-                        var options = grupo_modelo[id];
-                        $('#grupo').val(options)
-                        var ed = tinyMCE.get('grupo');
-                        ed.setContent($('#grupo').val());
-                    }
-
-                    function calculoIdade() {
-                        var data = document.getElementById("nascimento").value;
-
-                        if (data != '' && data != '//') {
-
-                            var ano = data.substring(6, 12);
-                            var idade = new Date().getFullYear() - ano;
-
-                            var dtAtual = new Date();
-                            var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
-
-                            if (dtAtual < aniversario) {
-                                idade--;
-                            }
-
-
-                            document.getElementById("idade").value = idade;
-                        }
-                    }
-                    calculoIdade();
-
-                    jQuery("#telefone_contato")
-                            .mask("(99) 9999-9999?9")
-                            .focusout(function (event) {
-                                var target, phone, element;
-                                target = (event.currentTarget) ? event.currentTarget : event.srcElement;
-                                phone = target.value.replace(/\D/g, '');
-                                element = $(target);
-                                element.unmask();
-                                if (phone.length > 10) {
-                                    element.mask("(99) 99999-999?9");
-                                } else {
-                                    element.mask("(99) 9999-9999?9");
+//                            $('.carregando').show();
+//                            alert('asdsd');
+                            $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt', {setor: $(this).val()}, function (j) {
+                                options = '<option value=""></option>';
+//                                console.log(j);
+                                for (var c = 0; c < j.length; c++) {
+                                    options += '<option value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
                                 }
+
+
+                                $('#funcao option').remove();
+                                $('#funcao').append(options);
+                                $("#funcao").trigger("chosen:updated");
+                                $('.carregando').hide();
                             });
-                    $(function () {
-                        $("#accordion").accordion();
+
+                        });
                     });
 
                     $(function () {
-                        $('#modelo_grupo').change(function () {
+                        $('#funcao').change(function () {
+
+//                            $('.carregando').show();
+//                            alert('asdsd');
+                            $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt', {funcao: $(this).val(), ajax: true}, function (j) {
+                                options = '<option value=""></option>';
+//                                console.log(j);
+                                for (var c = 0; c < j.length; c++) {
+                                    options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                }
+
+
+                                $('#riscos option').remove();
+                                $('#riscos').append(options);
+//                                $("#riscos_teste").trigger("listz:updated");
+                                $("#riscos").trigger("chosen:updated");
+//                                $('.carregando').hide();
+                            });
+
+                        });
+                    });
+
+                    $(function () {
+                        $('#convenio1').change(function () {
                             if ($(this).val()) {
-                                //$('#laudo').hide();
-//                                alert('asdasd');
                                 $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/modelosgrupo', {exame: $(this).val(), ajax: true}, function (j) {
-                                    options = "";
-//                                    console.log(j);
-                                    options += j[0].texto;
-                                    //                                                document.getElementById("laudo").value = options
-
-                                    $('#grupo').val(options)
-                                    var ed = tinyMCE.get('grupo');
-                                    ed.setContent($('#grupo').val());
-
-                                    //$('#laudo').val(options);
-                                    //$('#laudo').html(options).show();
-                                    //                                                $('.carregando').hide();
-                                    //history.go(0) 
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioajustarvalor', {convenio1: $(this).val(), ajax: true}, function (j) {
+                                    options = '<option value=""></option>';
+                                    console.log(j);
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    }
+//                            $('#procedimento1').html(options).show();
+                                    $('#procedimento1 option').remove();
+                                    $('#procedimento1').append(options);
+                                    $("#procedimento1").trigger("chosen:updated");
+                                    $('.carregando').hide();
                                 });
                             } else {
-                                $('#grupo').html('value=""');
+                                $('#procedimento1').html('<option value="">Selecione</option>');
                             }
                         });
                     });
 
-<? if (@$config->paciente_id == NULL) { ?>
-                        $(function () {
-                            $("#txtNome").autocomplete({
-                                source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-                                minLength: 5,
-                                focus: function (event, ui) {
-                                    $("#txtNome").val(ui.item.label);
-                                    return false;
-                                },
-                                select: function (event, ui) {
-                                    $("#txtNome").val(ui.item.value);
-                                    $("#txtNomeid").val(ui.item.id);
-                                    $("#txtTelefone").val(ui.item.itens);
-                                    $("#txtCelular").val(ui.item.celular);
-                                    $("#nascimento").val(ui.item.valor);
-                                    calculoIdade();
-                                    return false;
-                                }
-                            });
-                        });
-<? } ?>
 
                     tinyMCE.init({
                         // General options

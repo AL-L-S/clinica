@@ -18,7 +18,7 @@ class App extends Controller {
         $situacao = @$_GET['situacao'];
         $data = @$_GET['data'];
         
-        $result = $this->app->buscandoAgenda();
+        $result = $this->app->buscandoAgenda($operador_id, $paciente, $situacao, $data);
         $resumo = array(
             "OK"        => 0,
             "LIVRE"     => 0,
@@ -79,7 +79,6 @@ class App extends Controller {
                             $paciente .= $value . " ";
                         }
                     }
-//                    die;
 
                     $retorno['agenda_exames_id'] = $item->agenda_exames_id;
                     $retorno['paciente'] = $paciente;
@@ -94,7 +93,6 @@ class App extends Controller {
                     $retorno['celular'] = $item->celular;
                     $retorno['observacoes'] = $item->observacoes;
                     $retorno['externoNome'] = @$_GET['externoNome'];
-                    $retorno['externoId'] = @$_GET['externoId'];
                     $var[] = $retorno;
                     
                     @$resumo[$situacao]++;

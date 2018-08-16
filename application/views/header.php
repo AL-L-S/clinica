@@ -387,6 +387,7 @@ function debug($object) {
                                     <? if (($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */$perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 15 || $perfil_id == 19) || ( $financeiro_cadastro == 't' && $perfil_id == 13)) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/pacientes">Cadastro</a></span></ul> 
+                                        
 
                                         <? if ($perfil_id != 11 && $perfil_id != 4 && $perfil_id != 15) {
                                             if ($relatorios_clinica_med != 't') {
@@ -1163,6 +1164,20 @@ function debug($object) {
                                     }
                                 }
                                 ?>
+                                </li>
+                                <li><span class="folder">M. Trabalho</span>                    
+                                    <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10) { ?>
+
+
+
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarsetor">Manter Setor</a></span></ul>                                        
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarfuncao">Manter Função</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarrisco">Manter Riscos OE.</a></span></ul>
+                                      
+           
+                                          
+                              <?  } ?>
+                                
                                 </li>
     <? if ($imagem == 't') { ?>
                                     <li><span class="folder">Imagem</span> 

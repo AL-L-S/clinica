@@ -203,8 +203,6 @@
                                     $campos_obrigatorios = array();
                                 }
 
-//                                in_array('', $campos_obrigatorios);
-//                                var_dump($campos_obrigatorios); die;
                                 ?>
                                 <select name="campos_obrigatorio[]" style="width: 47%;" class="chosen-select" data-placeholder="Selecione os campos..." multiple>
                                     <!--<option value="nome" <?= (in_array('nome', $campos_obrigatorios)) ? 'selected' : ''; ?>>Nome</option>-->

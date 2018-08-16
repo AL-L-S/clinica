@@ -175,3 +175,92 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN autorizar_sala_espera boolean
 -- Dia 09/08/2018
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN dados_atendimentomed text;
+
+-- Dia 10/08/2018
+
+CREATE TABLE ponto.tb_laudo_cirurgias
+(
+  cirurgias text,
+  complicacoes text,
+  ressonanciamag text,
+  guia_id integer,
+  paciente_id integer,
+  laudo_cirurgia_id serial primary key  
+  
+);
+
+-- Dia 11/08/2018
+
+CREATE TABLE ponto.tb_laudo_exameslab
+(
+  exames_laboratoriais text,  
+  guia_id integer,
+  paciente_id integer,
+  laudo_exameslab_id serial primary key  
+  
+);
+
+-- Dia 13/08/2018
+
+CREATE TABLE ponto.tb_laudo_ecocardio
+(
+  ecocardio text,  
+  guia_id integer,
+  paciente_id integer,
+  laudo_ecocardio_id serial primary key  
+  
+);
+
+CREATE TABLE ponto.tb_laudo_cate
+(
+  cate text,
+  guia_id integer,
+  paciente_id integer,
+  laudo_cate_id serial primary key 
+);
+
+CREATE TABLE ponto.tb_laudo_ecostress
+(
+  ecostress text,
+  guia_id integer,
+  paciente_id integer,
+  laudo_ecostress_id serial primary key 
+);
+
+-- Dia 14/08/2018
+
+CREATE TABLE ponto.tb_aso_setor
+(
+  aso_setor_id serial primary key,
+  descricao_setor character varying(200),  
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  aso_funcao_id text,  
+);
+
+CREATE TABLE ponto.tb_aso_funcao
+(
+  aso_funcao_id serial primary key,
+  descricao_funcao character varying(200),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  aso_risco_id text
+ 
+);
+
+CREATE TABLE ponto.tb_aso_risco
+(
+  aso_risco_id serial primary key,
+  descricao_risco character varying(200),  
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer  
+);

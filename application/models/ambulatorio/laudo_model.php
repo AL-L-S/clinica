@@ -3812,7 +3812,58 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
-    
+    function preencherecocardio($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_ecocardio lec');
+        $this->db->where('lec.guia_id', $guia_id);
+        $this->db->where('lec.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+    function preencherecostress($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_ecostress les');
+        $this->db->where('les.guia_id', $guia_id);
+        $this->db->where('les.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+    function preenchercate($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_cate lca');
+        $this->db->where('lca.guia_id', $guia_id);
+        $this->db->where('lca.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+
+    function preenchercirurgia($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_cirurgias lc');
+        $this->db->where('lc.guia_id', $guia_id);
+        $this->db->where('lc.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+    function preencherexameslab($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_exameslab le');
+        $this->db->where('le.guia_id', $guia_id);
+        $this->db->where('le.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+
     function preencherformulario($paciente_id, $guia_id) {
 
         $this->db->select('*');
@@ -3823,7 +3874,7 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
-    
+
     function preencheravaliacao($paciente_id, $guia_id) {
 
         $this->db->select('*');
@@ -3865,7 +3916,7 @@ class laudo_model extends Model {
             $result = $return->result();
 
             if (count($result) > 0) {
-                
+
 
                 if (count($perguntas_form) > 0) {
                     $this->db->set('questoes', json_encode($perguntas_form));
@@ -3909,7 +3960,7 @@ class laudo_model extends Model {
                 if ($_POST['sopros'] != '') {
                     $this->db->set('sopros', $_POST['sopros']);
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
                 $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
@@ -3972,62 +4023,61 @@ class laudo_model extends Model {
             return -1;
         }
     }
+
     function gravarparecer() {
         try {
-            $paciente_id = $this->session->userdata('paciente_id');            
+            $paciente_id = $this->session->userdata('paciente_id');
             $guia_id = $this->session->userdata('guia_id');
-            
+
 
             $dados_form = array(
-                "dado1" =>(isset($_POST["dado1"]))? $_POST["dado1"]:'',
-                "dado2" =>(isset($_POST["dado2"]))? $_POST["dado2"]:'',
-                "dado3" =>(isset($_POST["dado3"]))? $_POST["dado3"]:'',
-                "dado4" =>(isset($_POST["dado4"]))? $_POST["dado4"]:'',
-                "dado5" =>(isset($_POST["dado5"]))? $_POST["dado5"]:'',
-                "dado6" =>(isset($_POST["dado6"]))? $_POST["dado6"]:'',
-                "dado7" =>(isset($_POST["dado7"]))? $_POST["dado7"]:'',
-                "dado8" =>(isset($_POST["dado8"]))? $_POST["dado8"]:'',
-                "dado9" =>(isset($_POST["dado9"]))? $_POST["dado9"]:'',
-                "dado10" =>(isset($_POST["dado10"]))? $_POST["dado10"]:'',
-                "dado11" =>(isset($_POST["dado11"]))? $_POST["dado11"]:'',
-                "dado12" =>(isset($_POST["dado12"]))? $_POST["dado12"]:'',
-                "dado13"=>(isset($_POST["dado13"]))? $_POST["dado13"]:''
+                "dado1" => (isset($_POST["dado1"])) ? $_POST["dado1"] : '',
+                "dado2" => (isset($_POST["dado2"])) ? $_POST["dado2"] : '',
+                "dado3" => (isset($_POST["dado3"])) ? $_POST["dado3"] : '',
+                "dado4" => (isset($_POST["dado4"])) ? $_POST["dado4"] : '',
+                "dado5" => (isset($_POST["dado5"])) ? $_POST["dado5"] : '',
+                "dado6" => (isset($_POST["dado6"])) ? $_POST["dado6"] : '',
+                "dado7" => (isset($_POST["dado7"])) ? $_POST["dado7"] : '',
+                "dado8" => (isset($_POST["dado8"])) ? $_POST["dado8"] : '',
+                "dado9" => (isset($_POST["dado9"])) ? $_POST["dado9"] : '',
+                "dado10" => (isset($_POST["dado10"])) ? $_POST["dado10"] : '',
+                "dado11" => (isset($_POST["dado11"])) ? $_POST["dado11"] : '',
+                "dado12" => (isset($_POST["dado12"])) ? $_POST["dado12"] : '',
+                "dado13" => (isset($_POST["dado13"])) ? $_POST["dado13"] : ''
             );
             $exames_form = array(
-                "exame1" =>(isset($_POST["exame1"]))? $_POST["exame1"]:'',
-                "exame2" =>(isset($_POST["exame2"]))? $_POST["exame2"]:'',
-                "exame3" =>(isset($_POST["exame3"]))? $_POST["exame3"]:'',
-                "exame4" =>(isset($_POST["exame4"]))? $_POST["exame4"]:'',
-                "exame5" =>(isset($_POST["exame5"]))? $_POST["exame5"]:'',
-                "exame6" =>(isset($_POST["exame6"]))? $_POST["exame6"]:'',
-                "exame7" =>(isset($_POST["exame7"]))? $_POST["exame7"]:'',
-                "exame8" =>(isset($_POST["exame8"]))? $_POST["exame8"]:'',
-                "exame9" =>(isset($_POST["exame9"]))? $_POST["exame9"]:'',
-                "exame10" =>(isset($_POST["exame10"]))? $_POST["exame10"]:''
-                
+                "exame1" => (isset($_POST["exame1"])) ? $_POST["exame1"] : '',
+                "exame2" => (isset($_POST["exame2"])) ? $_POST["exame2"] : '',
+                "exame3" => (isset($_POST["exame3"])) ? $_POST["exame3"] : '',
+                "exame4" => (isset($_POST["exame4"])) ? $_POST["exame4"] : '',
+                "exame5" => (isset($_POST["exame5"])) ? $_POST["exame5"] : '',
+                "exame6" => (isset($_POST["exame6"])) ? $_POST["exame6"] : '',
+                "exame7" => (isset($_POST["exame7"])) ? $_POST["exame7"] : '',
+                "exame8" => (isset($_POST["exame8"])) ? $_POST["exame8"] : '',
+                "exame9" => (isset($_POST["exame9"])) ? $_POST["exame9"] : '',
+                "exame10" => (isset($_POST["exame10"])) ? $_POST["exame10"] : ''
             );
             $examesc_form = array(
-                "examec1" =>(isset($_POST["examec1"]))? $_POST["examec1"]:'',
-                "examec2" =>(isset($_POST["examec2"]))? $_POST["examec2"]:'',
-                "examec3" =>(isset($_POST["examec3"]))? $_POST["examec3"]:'',
-                "examec4" =>(isset($_POST["examec4"]))? $_POST["examec4"]:''
-                
+                "examec1" => (isset($_POST["examec1"])) ? $_POST["examec1"] : '',
+                "examec2" => (isset($_POST["examec2"])) ? $_POST["examec2"] : '',
+                "examec3" => (isset($_POST["examec3"])) ? $_POST["examec3"] : '',
+                "examec4" => (isset($_POST["examec4"])) ? $_POST["examec4"] : ''
             );
-            
+
             $hipotese_diagnostica = array(
-                "diagnostico1" =>(isset($_POST["diagnostico1"]))? $_POST["diagnostico1"]:'',
-                "diagnostico2" =>(isset($_POST["diagnostico2"]))? $_POST["diagnostico2"]:'',
-                "diagnostico3" =>(isset($_POST["diagnostico3"]))? $_POST["diagnostico3"]:'',
-                "diagnostico4" =>(isset($_POST["diagnostico4"]))? $_POST["diagnostico4"]:'',
-                "diagnostico5" =>(isset($_POST["diagnostico5"]))? $_POST["diagnostico5"]:'',
-                "diagnostico6" =>(isset($_POST["diagnostico6"]))? $_POST["diagnostico6"]:'',
-                "diagnostico7" =>(isset($_POST["diagnostico7"]))? $_POST["diagnostico7"]:'',
-                "diagnostico8" =>(isset($_POST["diagnostico8"]))? $_POST["diagnostico8"]:'',
-                "diagnostico9" =>(isset($_POST["diagnostico9"]))? $_POST["diagnostico9"]:'',
-                "diagnostico10" =>(isset($_POST["diagnostico10"]))? $_POST["diagnostico10"]:''
+                "diagnostico1" => (isset($_POST["diagnostico1"])) ? $_POST["diagnostico1"] : '',
+                "diagnostico2" => (isset($_POST["diagnostico2"])) ? $_POST["diagnostico2"] : '',
+                "diagnostico3" => (isset($_POST["diagnostico3"])) ? $_POST["diagnostico3"] : '',
+                "diagnostico4" => (isset($_POST["diagnostico4"])) ? $_POST["diagnostico4"] : '',
+                "diagnostico5" => (isset($_POST["diagnostico5"])) ? $_POST["diagnostico5"] : '',
+                "diagnostico6" => (isset($_POST["diagnostico6"])) ? $_POST["diagnostico6"] : '',
+                "diagnostico7" => (isset($_POST["diagnostico7"])) ? $_POST["diagnostico7"] : '',
+                "diagnostico8" => (isset($_POST["diagnostico8"])) ? $_POST["diagnostico8"] : '',
+                "diagnostico9" => (isset($_POST["diagnostico9"])) ? $_POST["diagnostico9"] : '',
+                "diagnostico10" => (isset($_POST["diagnostico10"])) ? $_POST["diagnostico10"] : ''
             );
-            
-            
+
+
 
             $this->db->select('lp.guia_id, lp.paciente_id');
             $this->db->from('tb_laudo_parecer lp');
@@ -4035,7 +4085,7 @@ class laudo_model extends Model {
             $this->db->where('lp.paciente_id', $_POST['paciente_id']);
             $return = $this->db->get();
             $result = $return->result();
-          //  var_dump($result);die;
+            //  var_dump($result);die;
 
             if (count($result) > 0) {
                 if (count($dados_form) > 0) {
@@ -4059,14 +4109,14 @@ class laudo_model extends Model {
                     $this->db->set('hipotese_diagnostica', '');
                 }
                 if (isset($_POST['sim'])) {
-                    $this->db->set('antibiotico', $_POST['sim']);
+                    $this->db->set('antibiotico', "SIM");
                 }
                 if (isset($_POST['nao'])) {
-                    $this->db->set('antibiotico', $_POST['nao']);
+                    $this->db->set('antibiotico', "NÃO");
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
-                $this->db->where('paciente_id', $_POST['paciente_id']);                
+                $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_parecer');
@@ -4097,7 +4147,7 @@ class laudo_model extends Model {
                 if (isset($_POST['nao'])) {
                     $this->db->set('antibiotico', "NÃO");
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
                 $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
@@ -4113,11 +4163,422 @@ class laudo_model extends Model {
         }
     }
 
+    function gravarcirurgia() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $cirurgias_form = array(
+                "mie" => (isset($_POST["mie"])) ? $_POST["mie"] : '',
+                "mid" => (isset($_POST["mid"])) ? $_POST["mid"] : '',
+                "pvs1" => (isset($_POST["pvs1"])) ? $_POST["pvs1"] : '',
+                "pvs2" => (isset($_POST["pvs2"])) ? $_POST["pvs2"] : '',
+                "pvs3" => (isset($_POST["pvs3"])) ? $_POST["pvs3"] : '',
+                "radiald" => (isset($_POST["radiald"])) ? $_POST["radiald"] : '',
+                "radiale" => (isset($_POST["radiale"])) ? $_POST["radiale"] : '',
+                "gastroepiploica" => (isset($_POST["gastroepiploica"])) ? $_POST["gastroepiploica"] : '',
+                "endarterectomia1" => (isset($_POST["endarterectomia1"])) ? $_POST["endarterectomia1"] : '',
+                "endarterectomia2" => (isset($_POST["endarterectomia2"])) ? $_POST["endarterectomia2"] : '',
+                "protesevalvar1" => (isset($_POST["protesevalvar1"])) ? $_POST["protesevalvar1"] : '',
+                "protesevalvar2" => (isset($_POST["protesevalvar2"])) ? $_POST["protesevalvar2"] : '',
+                "plastiavalvar1" => (isset($_POST["plastiavalvar1"])) ? $_POST["plastiavalvar1"] : '',
+                "plastiavalvar2" => (isset($_POST["plastiavalvar2"])) ? $_POST["plastiavalvar2"] : '',
+                "congenitas" => (isset($_POST["congenitas"])) ? $_POST["congenitas"] : '',
+                "outrascirurgias" => (isset($_POST["outrascirurgias"])) ? $_POST["outrascirurgias"] : ''
+            );
+            $complicacao_form = array(
+                "complicacao1" => (isset($_POST["complicacao1"])) ? $_POST["complicacao1"] : '',
+                "complicacao2" => (isset($_POST["complicacao2"])) ? $_POST["complicacao2"] : '',
+                "complicacao3" => (isset($_POST["complicacao3"])) ? $_POST["complicacao3"] : '',
+                "complicacao4" => (isset($_POST["complicacao4"])) ? $_POST["complicacao4"] : '',
+                "complicacao5" => (isset($_POST["complicacao5"])) ? $_POST["complicacao5"] : '',
+                "complicacao6" => (isset($_POST["complicacao6"])) ? $_POST["complicacao6"] : '',
+                "complicacao7" => (isset($_POST["complicacao7"])) ? $_POST["complicacao7"] : '',
+                "complicacao8" => (isset($_POST["complicacao8"])) ? $_POST["complicacao8"] : '',
+                "complicacao9" => (isset($_POST["complicacao9"])) ? $_POST["complicacao9"] : '',
+                "complicacao10" => (isset($_POST["complicacao10"])) ? $_POST["complicacao10"] : '',
+                "complicacao11" => (isset($_POST["complicacao11"])) ? $_POST["complicacao11"] : '',
+                "complicacao12" => (isset($_POST["complicacao12"])) ? $_POST["complicacao12"] : '',
+                "complicacao13" => (isset($_POST["complicacao13"])) ? $_POST["complicacao13"] : '',
+                "complicacao14" => (isset($_POST["complicacao14"])) ? $_POST["complicacao14"] : '',
+                "complicacao15" => (isset($_POST["complicacao15"])) ? $_POST["complicacao15"] : '',
+                "complicacao16" => (isset($_POST["complicacao16"])) ? $_POST["complicacao16"] : '',
+                "complicacao17" => (isset($_POST["complicacao17"])) ? $_POST["complicacao17"] : '',
+                "complicacao18" => (isset($_POST["complicacao18"])) ? $_POST["complicacao18"] : '',
+                "complicacao19" => (isset($_POST["complicacao19"])) ? $_POST["complicacao19"] : '',
+                "complicacao20" => (isset($_POST["complicacao20"])) ? $_POST["complicacao20"] : '',
+                "complicacao21" => (isset($_POST["complicacao21"])) ? $_POST["complicacao21"] : '',
+                "complicacao22" => (isset($_POST["complicacao22"])) ? $_POST["complicacao22"] : '',
+                "complicacao23" => (isset($_POST["complicacao23"])) ? $_POST["complicacao23"] : '',
+                "complicacao24" => (isset($_POST["complicacao24"])) ? $_POST["complicacao24"] : '',
+                "complicacao25" => (isset($_POST["complicacao25"])) ? $_POST["complicacao25"] : '',
+                "complicacao26" => (isset($_POST["complicacao26"])) ? $_POST["complicacao26"] : '',
+                "complicacao27" => (isset($_POST["complicacao27"])) ? $_POST["complicacao27"] : '',
+                "complicacao28" => (isset($_POST["complicacao28"])) ? $_POST["complicacao28"] : '',
+                "complicacao29" => (isset($_POST["complicacao29"])) ? $_POST["complicacao29"] : '',
+                "complicacao30" => (isset($_POST["complicacao30"])) ? $_POST["complicacao30"] : '',
+                "complicacao31" => (isset($_POST["complicacao31"])) ? $_POST["complicacao31"] : '',
+                "complicacao32" => (isset($_POST["complicacao32"])) ? $_POST["complicacao32"] : '',
+                "complicacao33" => (isset($_POST["complicacao33"])) ? $_POST["complicacao33"] : ''
+            );
+
+
+
+            $this->db->select('lc.guia_id, lc.paciente_id');
+            $this->db->from('tb_laudo_cirurgias lc');
+            $this->db->where('lc.guia_id', $_POST['guia_id']);
+            $this->db->where('lc.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+//            var_dump($result); die;
+            if (count($result) > 0) {
+                if (count($cirurgias_form) > 0) {
+                    $this->db->set('cirurgias', json_encode($cirurgias_form));
+                } else {
+                    $this->db->set('cirurgias', '');
+                }
+                if (count($complicacao_form) > 0) {
+                    $this->db->set('complicacoes', json_encode($complicacao_form));
+                } else {
+                    $this->db->set('complicacoes', '');
+                }
+
+                if ($_POST['ressonanciamag'] == "on") {
+                    $this->db->set('ressonanciamag', "SIM");
+                } else {
+                    $this->db->set('ressonanciamag', '');
+                }
+
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_cirurgias');
+            } else {
+                
+                    if (count($cirurgias_form) > 0) {
+                        $this->db->set('cirurgias', json_encode($cirurgias_form));
+                    } else {
+                        $this->db->set('cirurgias', '');
+                    }
+                    if (count($complicacao_form) > 0) {
+                        $this->db->set('complicacoes', json_encode($complicacao_form));
+                    } else {
+                        $this->db->set('complicacoes', '');
+                    }
+
+                    if ($_POST['ressonanciamag'] == "on") {
+                        $this->db->set('ressonanciamag', "SIM");
+                    } else {
+                        $this->db->set('ressonanciamag', '');
+                    }
+
+                    $this->db->where('guia_id', $_POST['guia_id']);
+                    $this->db->where('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('guia_id', $_POST['guia_id']);
+                    $this->db->insert('tb_laudo_cirurgias');
+                }
+            
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarexameslab() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $exameslab_form = array(
+                "ct" => (isset($_POST["ct"])) ? $_POST["ct"] : '',
+                "hdl" => (isset($_POST["hdl"])) ? $_POST["hdl"] : '',
+                "tg" => (isset($_POST["tg"])) ? $_POST["tg"] : '',
+                "ldl" => (isset($_POST["ldl"])) ? $_POST["ldl"] : '',
+                "cthdl" => (isset($_POST["cthdl"])) ? $_POST["cthdl"] : '',
+                "ldlhdl" => (isset($_POST["ldlhdl"])) ? $_POST["ldlhdl"] : '',
+                "glicose" => (isset($_POST["glicose"])) ? $_POST["glicose"] : '',
+                "glpp" => (isset($_POST["glpp"])) ? $_POST["glpp"] : '',
+                "hemoglic" => (isset($_POST["hemoglic"])) ? $_POST["hemoglic"] : '',
+                "ureia" => (isset($_POST["ureia"])) ? $_POST["ureia"] : '',
+                "creatina" => (isset($_POST["creatina"])) ? $_POST["creatina"] : '',
+                "hb" => (isset($_POST["hb"])) ? $_POST["hb"] : '',
+                "ht" => (isset($_POST["ht"])) ? $_POST["ht"] : '',
+                "leucocitos" => (isset($_POST["leucocitos"])) ? $_POST["leucocitos"] : '',
+                "t3" => (isset($_POST["t3"])) ? $_POST["t3"] : '',
+                "t4" => (isset($_POST["t4"])) ? $_POST["t4"] : '',
+                "tsh" => (isset($_POST["tsh"])) ? $_POST["tsh"] : '',
+                "tapinr" => (isset($_POST["tapinr"])) ? $_POST["tapinr"] : '',
+                "acurico" => (isset($_POST["acurico"])) ? $_POST["acurico"] : '',
+                "digoxina" => (isset($_POST["digoxina"])) ? $_POST["digoxina"] : ''
+            );
+           
+
+
+            $this->db->select('le.guia_id, le.paciente_id');
+            $this->db->from('tb_laudo_exameslab le');
+            $this->db->where('le.guia_id', $_POST['guia_id']);
+            $this->db->where('le.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+//            var_dump($result); die;
+            if (count($result) > 0) {
+                if (count($exameslab_form) > 0) {
+                    $this->db->set('exames_laboratoriais', json_encode($exameslab_form));
+                } else {
+                    $this->db->set('exames_laboratoriais', '');
+                }
+                
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_exameslab');
+            } else {
+                
+                    if (count($exameslab_form) > 0) {
+                    $this->db->set('exames_laboratoriais', json_encode($exameslab_form));
+                    } else {
+                    $this->db->set('exames_laboratoriais', '');
+                    }
+                    
+                    $this->db->where('guia_id', $_POST['guia_id']);
+                    $this->db->where('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('guia_id', $_POST['guia_id']);
+                    $this->db->insert('tb_laudo_exameslab');
+                }
+            
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarecocardio() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $ecocardio_form = array(
+                "diastve" => (isset($_POST["diastve"])) ? $_POST["diastve"] : '',
+                "sistve" => (isset($_POST["sistve"])) ? $_POST["sistve"] : '',
+                "septoiv" => (isset($_POST["septoiv"])) ? $_POST["septoiv"] : '',
+                "diastppve" => (isset($_POST["diastppve"])) ? $_POST["diastppve"] : '',
+                "massave" => (isset($_POST["massave"])) ? $_POST["massave"] : '',
+                "diastvi" => (isset($_POST["diastvi"])) ? $_POST["diastvi"] : '',
+                "sistae" => (isset($_POST["sistae"])) ? $_POST["sistae"] : '',
+                "ao" => (isset($_POST["ao"])) ? $_POST["ao"] : '',
+                "fe" => (isset($_POST["fe"])) ? $_POST["fe"] : '',
+                "sistad" => (isset($_POST["sistad"])) ? $_POST["sistad"] : '',
+                "vdfve" => (isset($_POST["vdfve"])) ? $_POST["vdfve"] : '',
+                "vsfve" => (isset($_POST["vsfve"])) ? $_POST["vsfve"] : '',
+                "cavidades" => (isset($_POST["cavidades"])) ? $_POST["cavidades"] : '',
+                "contratilidade" => (isset($_POST["contratilidade"])) ? $_POST["contratilidade"] : '',
+                "valvulas" => (isset($_POST["valvulas"])) ? $_POST["valvulas"] : '',
+                "aorta" => (isset($_POST["aorta"])) ? $_POST["aorta"] : '',
+                "pericardio" => (isset($_POST["pericardio"])) ? $_POST["pericardio"] : '',
+                "conclusao" => (isset($_POST["conclusao"])) ? $_POST["conclusao"] : ''
+               
+            );
+           
+
+
+            $this->db->select('lec.guia_id, lec.paciente_id');
+            $this->db->from('tb_laudo_ecocardio lec');
+            $this->db->where('lec.guia_id', $_POST['guia_id']);
+            $this->db->where('lec.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+
+            if (count($result) > 0) {
+                if (count($ecocardio_form) > 0) {
+                    $this->db->set('ecocardio', json_encode($ecocardio_form));
+                } else {
+                    $this->db->set('ecocardio', '');
+                }
+                
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_ecocardio');
+            } else {
+                
+                if (count($ecocardio_form) > 0) {
+                    $this->db->set('ecocardio', json_encode($ecocardio_form));
+                } else {
+                    $this->db->set('ecocardio', '');
+                }
+                    
+                    $this->db->where('guia_id', $_POST['guia_id']);
+                    $this->db->where('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('guia_id', $_POST['guia_id']);
+                    $this->db->insert('tb_laudo_ecocardio');
+                }
+            
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarecostress() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $ecostress_form = array(
+                "hipocinesiaanterior" => (isset($_POST["hipocinesiaanterior"])) ? $_POST["hipocinesiaanterior"] : '',
+                "hipocinesiamedial" => (isset($_POST["hipocinesiamedial"])) ? $_POST["hipocinesiamedial"] : '',
+                "hipocinesiaapical" => (isset($_POST["hipocinesiaapical"])) ? $_POST["hipocinesiaapical"] : '',
+                "hipocinesiainferior" => (isset($_POST["hipocinesiainferior"])) ? $_POST["hipocinesiainferior"] : '',
+                "hipocinesialateral" => (isset($_POST["hipocinesialateral"])) ? $_POST["hipocinesialateral"] : '',
+                "disfuncao" => (isset($_POST["disfuncao"])) ? $_POST["disfuncao"] : ''
+                               
+            );
+           
+
+
+            $this->db->select('les.guia_id, les.paciente_id');
+            $this->db->from('tb_laudo_ecostress les');
+            $this->db->where('les.guia_id', $_POST['guia_id']);
+            $this->db->where('les.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+
+            if (count($result) > 0) {
+                if (count($ecostress_form) > 0) {
+                    $this->db->set('ecostress', json_encode($ecostress_form));
+                } else {
+                    $this->db->set('ecostress', '');
+                }
+                
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_ecostress');
+            } else {
+                
+                if (count($ecostress_form) > 0) {
+                    $this->db->set('ecostress', json_encode($ecostress_form));
+                } else {
+                    $this->db->set('ecostress', '');
+                }
+                    
+                    $this->db->where('guia_id', $_POST['guia_id']);
+                    $this->db->where('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('guia_id', $_POST['guia_id']);
+                    $this->db->insert('tb_laudo_ecostress');
+                }
+            
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarcate() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $cateterismo_form = array(
+                "da" => (isset($_POST["da"])) ? $_POST["da"] : '',
+                "cx" => (isset($_POST["cx"])) ? $_POST["cx"] : '',
+                "mgcx1" => (isset($_POST["mgcx1"])) ? $_POST["mgcx1"] : '',
+                "mgcx2" => (isset($_POST["mgcx2"])) ? $_POST["mgcx2"] : '',
+                "mgcx3" => (isset($_POST["mgcx3"])) ? $_POST["mgcx3"] : '',
+                "diag" => (isset($_POST["diag"])) ? $_POST["diag"] : '',
+                "diagonalis" => (isset($_POST["diagonalis"])) ? $_POST["diagonalis"] : '',
+                "cd" => (isset($_POST["cd"])) ? $_POST["cd"] : '',
+                "dpcd" => (isset($_POST["dpcd"])) ? $_POST["dpcd"] : '',
+                "vpcd" => (isset($_POST["vpcd"])) ? $_POST["vpcd"] : '',
+                "colaterais" => (isset($_POST["colaterais"])) ? $_POST["colaterais"] : '',
+                "ve" => (isset($_POST["ve"])) ? $_POST["ve"] : '',
+                "vm" => (isset($_POST["vm"])) ? $_POST["vm"] : '',
+                "vao" => (isset($_POST["vao"])) ? $_POST["vao"] : '',
+                "vt" => (isset($_POST["vt"])) ? $_POST["vt"] : '',
+                "vp" => (isset($_POST["vp"])) ? $_POST["vp"] : '',
+                "circpulmonar" => (isset($_POST["circpulmonar"])) ? $_POST["circpulmonar"] : '',
+                "observacoes" => (isset($_POST["observacoes"])) ? $_POST["observacoes"] : ''
+               
+            );
+           
+
+
+            $this->db->select('lca.guia_id, lca.paciente_id');
+            $this->db->from('tb_laudo_cate lca');
+            $this->db->where('lca.guia_id', $_POST['guia_id']);
+            $this->db->where('lca.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+
+            if (count($result) > 0) {
+                if (count($cateterismo_form) > 0) {
+                    $this->db->set('cate', json_encode($cateterismo_form));
+                } else {
+                    $this->db->set('cate', '');
+                }
+                
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_cate');
+            } else {
+                
+                if (count($cateterismo_form) > 0) {
+                    $this->db->set('cate', json_encode($cateterismo_form));
+                } else {
+                    $this->db->set('cate', '');
+                }
+                    
+                    $this->db->where('guia_id', $_POST['guia_id']);
+                    $this->db->where('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('paciente_id', $_POST['paciente_id']);
+                    $this->db->set('guia_id', $_POST['guia_id']);
+                    $this->db->insert('tb_laudo_cate');
+                }
+            
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+
     function gravaravaliacao() {
         try {
             $paciente_id = $this->session->userdata('paciente_id');
             $guia_id = $this->session->userdata('guia_id');
-            
+
 
             $criterios_tb1 = array(
                 "c1tb1" => $_POST["c1tb1"],
@@ -4164,7 +4625,7 @@ class laudo_model extends Model {
             $result = $return->result();
 
             if (count($result) > 0) {
-                
+
 
                 if (count($criterios_tb1) > 0) {
                     $this->db->set('avaliacao_tabela1', json_encode($criterios_tb1));
@@ -4192,7 +4653,7 @@ class laudo_model extends Model {
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_avaliacao');
             } else {
-                
+
 
                 if (count($criterios_tb1) > 0) {
                     $this->db->set('avaliacao_tabela1', json_encode($criterios_tb1));

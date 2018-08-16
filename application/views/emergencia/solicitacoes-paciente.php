@@ -50,6 +50,10 @@
                     <? if ($imagem != 't') { ?>
                         <td width="100px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/acompanhamento/<?= $paciente_id ?>">Acompanhamento</a></div></td>
                     <? } ?>
+                        <td width="40px;"><div class="bt_link_new">
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/cadastroaso/<?= $paciente_id ?>/<?= @$obj->_medico_parecer1 ?>');" >
+                                                            Cadastro ASO</a></div>
+                        </td>
                 </tr>
                 <tr>
                     <? if ($imagem == 't') { ?>
