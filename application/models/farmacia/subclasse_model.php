@@ -22,7 +22,7 @@ class subclasse_model extends Model {
         $this->db->join('tb_farmacia_classe c', 'c.farmacia_classe_id = sc.classe_id', 'left');
         $this->db->where('sc.ativo', 'true');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('descricao ilike', "%" . $args['nome'] . "%");
+            $this->db->where('sc.descricao ilike', "%" . $args['nome'] . "%");
         }
         return $this->db;
     }

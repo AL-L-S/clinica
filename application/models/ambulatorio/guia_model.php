@@ -8528,6 +8528,9 @@ class guia_model extends Model {
             if ($_POST['nascimento'] != '') {
                 $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
             }
+            if ($_POST['cpf'] != '') {
+                $this->db->set('cpf', $_POST['cpf']);
+            }
             $this->db->set('celular', $_POST['txtCelular']);
             $this->db->set('telefone', $_POST['txtTelefone']);
             $this->db->set('nome', $_POST['txtNome']);
@@ -8535,7 +8538,10 @@ class guia_model extends Model {
             $paciente_id = $this->db->insert_id();
         } else {
             $paciente_id = $_POST['txtNomeid'];
-
+            
+            if ($_POST['cpf'] != '') {
+                $this->db->set('cpf', $_POST['cpf']);
+            }
             $this->db->set('celular', $_POST['txtCelular']);
             $this->db->set('telefone', $_POST['txtTelefone']);
             $this->db->set('nome', $_POST['txtNome']);
@@ -12820,6 +12826,7 @@ ORDER BY ae.paciente_credito_id)";
                             ordem_chegada,
                             cancelar_sala_espera,
                             administrador_cancelar,
+                            gerente_cancelar_sala,
                             ');
         $this->db->from('tb_empresa e');
         $this->db->where('e.empresa_id', $empresa_id);
@@ -12886,7 +12893,7 @@ ORDER BY ae.paciente_credito_id)";
     function listarconfiguracaoimpressaorecibo() {
         $data = date("Y-m-d");
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->select('ei.empresa_impressao_recibo_id,ei.cabecalho,ei.texto,ei.rodape, e.nome as empresa, linha_procedimento');
+        $this->db->select('ei.empresa_impressao_recibo_id,ei.cabecalho,ei.texto,ei.rodape, ei.repetir_recibo, e.nome as empresa, linha_procedimento');
         $this->db->from('tb_empresa_impressao_recibo ei');
         $this->db->join('tb_empresa e', 'e.empresa_id = ei.empresa_id', 'left');
         $this->db->where('ei.empresa_id', $empresa_id);
@@ -14405,7 +14412,11 @@ ORDER BY ae.paciente_credito_id)";
             if ($_POST['txtdata'] != '') {
                 $this->db->set('data_preferencia', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdata']))));
             }
-            $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
+//            $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
+            if ($_POST['turno_preferencia'] != '') {
+                $this->db->set('horario_preferencia', $_POST['turno_preferencia']);
+            }
+
 
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('data', $data);

@@ -3188,9 +3188,11 @@ class exame_model extends Model {
         if ($_POST['status'] == "1") {
             $this->db->where('ao.autorizado', 'f');
         }
-
-        $this->db->where("aoi.data_preferencia >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("aoi.data_preferencia <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $this->db->where("(aoi.data_preferencia >= '$data_inicio' OR (ao.data_criacao >='$data_inicio' AND aoi.data_preferencia is null))");
+        $this->db->where("(aoi.data_preferencia <= '$data_fim' OR (ao.data_criacao <='$data_fim' AND aoi.data_preferencia is null))");
+//        $this->db->where("aoi.data_preferencia <= '$data_fim'");
 
         if (isset($_POST['nome']) && strlen($_POST['nome']) > 0) {
             $this->db->where("(p.nome ilike '%" . $_POST['nome'] . "%' OR p.cpf ilike '%" . $_POST['nome'] . "%')");
@@ -3228,14 +3230,10 @@ class exame_model extends Model {
 
     function buscadadosgraficorelatoriodemandagrupo() {
         // $this->db->select("column1, column2, ...", false) # O false serve para avisar o CI não pôr aspas
-        $this->db->select(" ao.ambulatorio_orcamento_id,
-                            p.nome as paciente,
-                            ao.data_criacao,
-                            pt.nome as procedimento,
-                            pt.grupo,
-                            aoi.dia_semana_preferencia,
-                            aoi.turno_prefencia,
-                            e.nome as empresa_nome", false);
+        $this->db->select(" 
+                            aoi.data_preferencia,
+                            aoi.horario_preferencia,
+                            ", false);
         $this->db->from('tb_ambulatorio_orcamento_item aoi');
         $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = ao.paciente_id', 'left');
@@ -3251,10 +3249,56 @@ class exame_model extends Model {
             $this->db->where('ao.empresa_id', $_GET['empresa']);
         }
         if ($_GET['dia'] != "indiferente") {
-            $this->db->where('aoi.dia_semana_preferencia', $_GET['dia']);
+//            $this->db->where('aoi.dia_semana_preferencia', $_GET['dia']);
         } else {
             $this->db->where("(aoi.dia_semana_preferencia IS NULL OR aoi.dia_semana_preferencia = '')");
         }
+//        $this->db->orderby('aoi.data_preferencia');
+        $this->db->orderby('aoi.horario_preferencia');
+//        $this->db->orderby('pt.grupo');
+//        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gerarelatoriodemandagrupo($args = array()) {
+        // $this->db->select("column1, column2, ...", false) # O false serve para avisar o CI não pôr aspas
+        $this->db->select(" ao.ambulatorio_orcamento_id,
+                            p.nome as paciente,
+                            p.celular,
+                            p.telefone,
+                            ao.data_criacao,
+                            ao.autorizado,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            aoi.dia_semana_preferencia,
+                            aoi.turno_prefencia,
+                            aoi.horario_preferencia,
+                            data_preferencia,
+                            CASE turno_prefencia
+                                WHEN 'manha' THEN 1
+                                WHEN 'tarde' THEN 2
+                                WHEN 'noite' THEN 3
+                                ELSE 4
+                            END AS num_turno_preferencia,
+                            e.nome as empresa_nome", false);
+        $this->db->from('tb_ambulatorio_orcamento_item aoi');
+        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ao.paciente_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = ao.empresa_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'aoi.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('aoi.ativo', 't');
+        $this->db->where('ao.ativo', 't');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ao.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] != "") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->orderby('aoi.data_preferencia');
         $this->db->orderby('ao.ambulatorio_orcamento_id');
         $this->db->orderby('ao.data_criacao');
         $this->db->orderby('pt.grupo');
@@ -3263,7 +3307,32 @@ class exame_model extends Model {
         return $return->result();
     }
 
-    function gerarelatoriodemandagrupo($args = array()) {
+    function gerarelatoriodemandagrupohorario($args = array()) {
+        // $this->db->select("column1, column2, ...", false) # O false serve para avisar o CI não pôr aspas
+        $this->db->select("aoi.data_preferencia, aoi.horario_preferencia, count(aoi.horario_preferencia) as contador, pt.grupo", false);
+        $this->db->from('tb_ambulatorio_orcamento_item aoi');
+        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left'); 
+        $this->db->join('tb_procedimento_convenio pc', 'aoi.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('aoi.ativo', 't');
+        $this->db->where('ao.ativo', 't');
+//        $this->db->where('horario_preferencia is not null');
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ao.empresa_id', $_POST['empresa']);
+        }
+        if ($_POST['grupo'] != "") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        $this->db->where("ao.data_criacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->groupby('aoi.data_preferencia,horario_preferencia, pt.grupo');
+        $this->db->orderby('aoi.data_preferencia');
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gerarelatoriodemandagrupoorcamento($args = array()) {
         // $this->db->select("column1, column2, ...", false) # O false serve para avisar o CI não pôr aspas
         $this->db->select(" ao.ambulatorio_orcamento_id,
                             p.nome as paciente,

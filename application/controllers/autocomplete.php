@@ -78,6 +78,41 @@ class Autocomplete extends Controller {
         }
     }
 
+    function testarconexaointegracaolaudo() {
+        header('Access-Control-Allow-Origin: *');
+        set_time_limit(0); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
+        ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexãoF
+
+        echo json_encode('true');
+    }
+
+    function gravaratendimentointegracaoweb() {
+        header('Access-Control-Allow-Origin: *');
+        set_time_limit(0); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
+        ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão
+        if (isset($_POST)) {
+            $paciente_obj = json_decode($_POST['paciente_json']);
+            $laudo_obj = json_decode($_POST['laudo_json']);
+            $paciente_web_id = $paciente_obj[0]->paciente_id;
+//            echo '<pre>';
+//            var_dump($paciente_obj);
+            if ($paciente_obj[0]->cpf != '') {
+                $paciente_id = $this->exametemp->criarnovopacienteintegracaoweb($paciente_obj[0]->cpf, $paciente_obj);
+                $retorno = $this->laudo->gravarlaudointegracaoweb($paciente_id, $paciente_web_id, $laudo_obj);
+            } else {
+                $retorno = false;
+            }
+
+//            var_dump($retorno);
+        } else {
+            $retorno = false;
+        }
+//        echo '<pre>';
+//        var_dump($_POST);
+        echo json_encode($retorno);
+//        die;
+    }
+
     function atendersenhatoten() {
         header('Access-Control-Allow-Origin: *');
 
@@ -105,17 +140,77 @@ class Autocomplete extends Controller {
 
     function buscadadosgraficorelatoriodemandagrupo() {
         $result = $this->exame->buscadadosgraficorelatoriodemandagrupo();
-        $array = array(
-            'manha' => 0,
-            'tarde' => 0,
-            'noite' => 0,
-            'indiferente' => 0
-        );
-        foreach ($result as $value) {
-            $indice = ($value->turno_prefencia != '') ? $value->turno_prefencia : 'indiferente';
-            @$array[$indice] ++;
+//        echo '<pre>';
+//        var_dump($result);die;
+
+        $array = array();
+        $array['Indiferente'] = 0;
+        $contador = 0;
+        foreach ($result as $item) {
+            if ($item->data_preferencia != '') {
+                switch (date('N', strtotime($item->data_preferencia))) {
+                    case 1:
+                        $diaSemana = 'segunda';
+                        break;
+                    case 2:
+                        $diaSemana = 'terca';
+                        break;
+                    case 3:
+                        $diaSemana = 'quarta';
+                        break;
+                    case 4:
+                        $diaSemana = 'quinta';
+                        break;
+                    case 5:
+                        $diaSemana = 'sexta';
+                        break;
+                    case 6:
+                        $diaSemana = 'sabado';
+                        break;
+                    case 7:
+                        $diaSemana = 'domingo';
+                        break;
+                    default :
+                        $diaSemana = 'indiferente';
+                        break;
+                }
+            } else {
+                $diaSemana = 'indiferente';
+            }
+
+            if ($diaSemana == $_GET['dia']) {
+//                var_dump($item->data_preferencia);
+//                var_dump($item->horario_preferencia);
+//                var_dump($diaSemana);
+                if ($item->horario_preferencia != '') {
+                    if (!isset($array[$item->horario_preferencia])) {
+                        $array[$item->horario_preferencia] = 1;
+                    } else {
+                        if ($item->horario_preferencia == $result[$contador - 1]->horario_preferencia) {
+                            $array[$item->horario_preferencia] ++;
+                        } else {
+//                        $array[$item->horario_preferencia] = 1;
+                        }
+                    }
+                } else {
+                    $array['Indiferente'] ++;
+                }
+            }
+
+
+            $contador++;
         }
-        echo json_encode($array);
+        $array_horarios = array();
+
+        foreach ($array as $key => $value) {
+            $array_atual = array(
+                'horario' => $key,
+                'contador' => $value
+            );
+            array_push($array_horarios, $array_atual);
+        }
+
+        echo json_encode($array_horarios);
     }
 
     function procedimentoconveniocirurgicoagrupador() {
@@ -664,6 +759,14 @@ class Autocomplete extends Controller {
         $result = array();
         if (isset($_GET['procedimento1']) && isset($_GET['empresa1'])) {
             $result = $this->exametemp->listarhorariosdisponiveisorcamento($_GET['procedimento1'], $_GET['empresa1']);
+        }
+        echo json_encode($result);
+    }
+
+    function horariosdisponiveisorcamentodata() {
+        $result = array();
+        if (isset($_GET['procedimento1']) && isset($_GET['empresa1']) && isset($_GET['data'])) {
+            $result = $this->exametemp->listarhorariosdisponiveisorcamentodata($_GET['procedimento1'], $_GET['empresa1'], $_GET['data']);
         }
         echo json_encode($result);
     }
@@ -3125,6 +3228,7 @@ class Autocomplete extends Controller {
             $retorno['value'] = $item->nome;
             $retorno['itens'] = $item->telefone;
             $retorno['celular'] = $item->celular;
+            $retorno['cpf'] = $item->cpf;
             $retorno['valor'] = substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4);
             $retorno['id'] = $item->paciente_id;
             $retorno['endereco'] = $item->logradouro . " - " . $item->numero;

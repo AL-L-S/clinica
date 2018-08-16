@@ -933,7 +933,7 @@ class Convenio_model extends Model {
                         foreach ($result2 as $value) {
                             $valortotal = $value->valortotal + ($value->valortotal * (float) $_POST['valor'][$key] / 100);
 //                            var_dump($valortotal); die;
-
+                            $percentual_post = (float) $_POST['valor'][$key] / 100;
                             $this->db->set('qtdech', $value->qtdech);
                             $this->db->set('valorch', $value->valorch);
                             $this->db->set('qtdefilme', $value->qtdefilme);
@@ -951,6 +951,14 @@ class Convenio_model extends Model {
                             $this->db->insert('tb_procedimento_convenio');
                             $pc_id = $this->db->insert_id();
 
+                            // INSERINDO AS INFORMAÇÕES SOBRE SESSÃO
+                            $sql_sessao = "INSERT INTO ponto.tb_procedimento_convenio_sessao (procedimento_convenio_id, valor_sessao, sessao, data_cadastro, operador_cadastro)
+                                    SELECT {$pc_id}, valor_sessao + (valor_sessao * $percentual_post), sessao, '{$horario}', {$operador_id}
+                                    FROM ponto.tb_procedimento_convenio_sessao pc1
+                                    WHERE pc1.ativo = 't'
+                                    AND pc1.procedimento_convenio_id = {$value->procedimento_convenio_id}";
+                            $this->db->query($sql_sessao);
+                            
                             // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico)
                             $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico (procedimento_tuss_id, medico, valor, data_cadastro, operador_cadastro)
                                     SELECT {$pc_id}, ppm.medico, ppm.valor, '{$horario}', {$operador_id}

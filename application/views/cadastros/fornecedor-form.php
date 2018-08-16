@@ -7,81 +7,92 @@
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                    <label>Raz&atilde;o social*</label>
+                        <label>Raz&atilde;o social*</label>
                     </dt>
                     <dd>
                         <input type="hidden" name="txtcadastrosfornecedorid" class="texto10" value="<?= @$obj->_financeiro_credor_devedor_id; ?>" />
                         <input type="text" name="txtrazaosocial" class="texto10" value="<?= @$obj->_razao_social; ?>" />
                     </dd>
                     <dt>
-                    <label>CNPJ*</label>
+                        <label>CNPJ*</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtCNPJ" maxlength="14" alt="cnpj" class="texto03" value="<?= @$obj->_cnpj; ?>" />
                     </dd>
                     <dt>
-                    <label>CPF*</label>
+                        <label>CPF*</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtCPF" maxlength="11" alt="cpf" class="texto03" value="<?= @$obj->_cpf; ?>" />
                     </dd>
                     <dt>
-                    <label>Tipo</label>
+                        <label>Tipo Pessoa</label>
                     </dt>
                     <dd>
-                        <select name="txttipo_id" id="txttipo_id" class="size4">
-                            <? foreach ($tipo as $value) : ?>
-                                <option value="<?= $value->tipo_logradouro_id; ?>"<?
-                                if (@$obj->_tipo_logradouro_id == $value->tipo_logradouro_id):echo'selected';
-                                endif;
-                                ?>><?php echo $value->descricao; ?></option>
-                                    <? endforeach; ?>
+                        <select name="tipo_pessoa" id="tipo_pessoa" class="size4" required="">
+
+                            <option value="">Selecione</option>
+                            <option <?=(@$obj->_tipo_pessoa == 'pessoa_f')? 'selected':'' ; ?> value="pessoa_f">Pessoa Física</option>
+                            <option <?=(@$obj->_tipo_pessoa == 'pessoa_j')? 'selected':'' ; ?> value="pessoa_j">Pessoa Jurídica</option>
+
                         </select>
                     </dd>
                     <dt>
-                    <label>Endere&ccedil;o*</label>
+                        <label>Endere&ccedil;o*</label>
                     </dt>
                     <dd>
                         <input type="text" id="txtendereco" class="texto10" name="endereco" value="<?= @$obj->_logradouro; ?>" />
                     </dd>
                     <dt>
-                    <label>N&uacute;mero</label>
+                        <label>N&uacute;mero</label>
                     </dt>
                     <dd>
                         <input type="text" id="txtNumero" class="texto02" name="numero" value="<?= @$obj->_numero; ?>" />
                     </dd>
                     <dt>
-                    <label>Bairro</label>
+                        <label>Bairro</label>
                     </dt>
                     <dd>
                         <input type="text" id="txtBairro" class="texto03" name="bairro" value="<?= @$obj->_bairro; ?>" />
                     </dd>
                     <dt>
-                    <label>Complemento</label>
+                        <label>Complemento</label>
                     </dt>
                     <dd>
                         <input type="text" id="txtComplemento" class="texto10" name="complemento" value="<?= @$obj->_complemento; ?>" />
                     </dd>
                     <dt>
-                    <label>Telefone</label>
+                        <label>Telefone</label>
                     </dt>
                     <dd>
                         <input type="text" id="txtTelefone" class="texto02" name="telefone" alt="phone" value="<?= @$obj->_telefone; ?>" />
                     </dd>
                     <dt>
-                    <label>Celular</label>
+                        <label>Celular</label>
                     </dt>
                     <dd>
                         <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" value="<?= @$obj->_celular; ?>" />
                     </dd>
                     <dt>
-                    <label>Município</label>
+                        <label>Email</label>
+                    </dt>
+                    <dd>
+                        <input type="text" id="email" class="texto04" name="email" value="<?= @$obj->_email; ?>" />
+                    </dd>
+                    <dt>
+                        <label>Município</label>
                     </dt>
                     <dd>
                         <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$obj->_municipio_id; ?>" readonly="true" />
                         <input type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$obj->_nome; ?>" />
                     </dd>
-                   
+                    <dt>
+                        <label>Observa&ccedil;&atilde;o</label>
+                    </dt>
+                    <dd class="dd_texto">
+                        <textarea cols="70" rows="3" name="observacao" id="observacao"><?= @$obj->_observacao; ?></textarea><br/>
+                    </dd>
+
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
@@ -94,18 +105,18 @@
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $('#btnVoltar').click(function() {
+    $('#btnVoltar').click(function () {
         $(location).attr('href', '<?= base_url(); ?>cadastros/fornecedor');
     });
-    $(function() {
+    $(function () {
         $("#txtCidade").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
             minLength: 3,
-            focus: function(event, ui) {
+            focus: function (event, ui) {
                 $("#txtCidade").val(ui.item.label);
                 return false;
             },
-            select: function(event, ui) {
+            select: function (event, ui) {
                 $("#txtCidade").val(ui.item.value);
                 $("#txtCidadeID").val(ui.item.id);
                 return false;
@@ -114,11 +125,11 @@
     });
 
 
-    $(function() {
+    $(function () {
         $("#accordion").accordion();
     });
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         jQuery('#form_fornecedor').validate({
             rules: {
                 txtrazaosocial: {

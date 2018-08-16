@@ -8,6 +8,7 @@
             $empresa = $this->guia->listarempresasaladeespera();
             @$ordem_chegada = @$empresa[0]->ordem_chegada;
             @$administrador_cancelar = @$empresa[0]->administrador_cancelar;
+            @$gerente_recepcao_cancelar = @$empresa[0]->gerente_cancelar_sala;
             $medicos = $this->operador_m->listarmedicos();
             $situacaocaixa = $this->exame->listarcaixaempresa();
 //            var_dump($situacaocaixa);
@@ -92,6 +93,7 @@
                     <tbody>
                         <?php
                         $perfil_id = $this->session->userdata('perfil_id');
+                        $operador_id = $this->session->userdata('operador_id');
                         $estilo_linha = "tabela_content01";
 //                        echo '<pre>';
 //                        var_dump($lista); die;
@@ -200,7 +202,7 @@
                                         </td>
                                     <? } ?>
 
-                                <? } elseif( @$administrador_cancelar == 't' && $perfil_id == 1) { ?>
+                                <? } elseif( (@$administrador_cancelar == 't' && $perfil_id == 1) || $operador_id == 1 || (@$gerente_recepcao_cancelar == 't' && $perfil_id == 5)) { ?>
                                      <?if($item->agrupador_pacote_id == ''){?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar

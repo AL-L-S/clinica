@@ -4445,6 +4445,50 @@ class exametemp_model extends Model {
         return $paciente_id;
     }
 
+    function criarnovopacienteintegracaoweb($cpf, $paciente_obj) {
+
+        $this->db->select('paciente_id');
+        $this->db->from('tb_paciente');
+        $this->db->where("ativo", 't');
+        $this->db->where("cpf", $cpf);
+        $this->db->where("cpf is not null");
+        $query = $this->db->get();
+        $return = $query->result();
+
+
+//        $paciente_id = $return[0]->paciente_id;
+//        var_dump($return2); die;
+
+        if (count($return) == 0) {
+
+            $this->db->set('celular', $paciente_obj[0]->celular);
+            $this->db->set('cpf', $paciente_obj[0]->cpf);
+            $this->db->set('telefone', $paciente_obj[0]->telefone);
+            $this->db->set('nome', $paciente_obj[0]->nome);
+            $this->db->set('nascimento', $paciente_obj[0]->nascimento);
+            $this->db->set('logradouro', $paciente_obj[0]->logradouro);
+            $this->db->set('numero', $paciente_obj[0]->numero);
+            $this->db->set('bairro', $paciente_obj[0]->bairro);
+            $this->db->set('nome_mae', $paciente_obj[0]->nome_mae);
+            $this->db->set('data_cadastro', date("Y-m-d H:i:s"));
+            $this->db->set('paciente_web_id', $paciente_obj[0]->paciente_id);
+
+//            $this->db->where('paciente_id', $paciente_id);
+            $this->db->insert('tb_paciente');
+            
+            $paciente_id = $this->db->insert_id();
+        } else {
+            $paciente_id = $return[0]->paciente_id;
+
+//            $this->db->set('celular', $_GET['txtCelular']);
+//            $this->db->set('telefone', $_GET['txtTelefone']);
+//            $this->db->set('nome', $_GET['txtNome']);
+//            $this->db->where('paciente_id', $paciente_id);
+//            $this->db->update('tb_paciente');
+        }
+        return $paciente_id;
+    }
+
     function crianovopacientefidelidade() {
 
         $this->db->select('paciente_id');
@@ -7064,14 +7108,14 @@ class exametemp_model extends Model {
 
             $horario = date("Y-m-d");
             // O "false" no parametro so SELECT serve para dizer ao CodeIgniter não pôr aspas.
-            $this->db->select("a.data,
+            $this->db->select("a.data,to_char(a.data, 'DD-MM-YYYY') as data_formatada_picker,
                               to_char(a.data, 'DD/MM/YYYY') as data_formatada", false);
             $this->db->from('tb_agenda_exames a');
             $this->db->where('a.ativo', 'true');
             $this->db->where('a.bloqueado', 'false');
             $this->db->where('a.data >=', $horario);
             $this->db->where('a.empresa_id', $empresa_id);
-            $this->db->where("a.medico_consulta_id IN (
+            $this->db->where("a.medico_agenda IN (
                 SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
                 WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
                 AND cop.empresa_id = $empresa_id
@@ -7084,6 +7128,27 @@ class exametemp_model extends Model {
         } else {
             return false;
         }
+    }
+
+    function listarhorariosdisponiveisorcamentodata($parametro, $empresa_id, $data) {
+        $horario = date("Y-m-d");
+        // O "false" no parametro so SELECT serve para dizer ao CodeIgniter não pôr aspas.
+        $this->db->select("a.inicio,a.agenda_exames_id", false);
+        $this->db->from('tb_agenda_exames a');
+        $this->db->where('a.ativo', 'true');
+        $this->db->where('a.bloqueado', 'false');
+        $this->db->where('a.data', date("Y-m-d", strtotime(str_replace('/', '-', $data))));
+        $this->db->where('a.empresa_id', $empresa_id);
+        $this->db->where("a.medico_agenda IN (
+                SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
+                WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
+                AND cop.empresa_id = $empresa_id
+            )");
+        $this->db->orderby('a.inicio');
+//        $this->db->groupby('a.data');
+        //        $this->db->limit(250);
+        $return = $this->db->get()->result();
+        return $return;
     }
 
     function listarhorariosgeral($parametro = null, $teste = null) {

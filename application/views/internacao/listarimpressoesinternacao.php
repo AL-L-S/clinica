@@ -12,6 +12,11 @@
                     <a style="width: 220px;"  target="_blank" href="<?php echo base_url() ?>internacao/internacao/termoresponsabilidade/<?= $internacao_id ?>">Termo de Responsabilidade</a>
                 </div>  
             </td>
+<!--            <td>
+                <div style="width: 220px;" class="bt_link_new">
+                    <a style="width: 220px;"  target="_blank" href="<?php echo base_url() ?>internacao/internacao/acompanhamentoanestesico/<?= $internacao_id ?>">Acompanhamento Anestésico</a>
+                </div>  
+            </td>-->
             <? if (@$impressao_empresa_id == 2) { ?>
                 <td>
                     <div style="width: 110px;" class="bt_link_new">

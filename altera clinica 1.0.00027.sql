@@ -264,3 +264,42 @@ CREATE TABLE ponto.tb_aso_risco
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer  
 );
+-- Dia 08/08/2018
+ALTER TABLE ponto.tb_financeiro_credor_devedor ADD COLUMN tipo_pessoa text;
+ALTER TABLE ponto.tb_financeiro_credor_devedor ADD COLUMN email text;
+ALTER TABLE ponto.tb_financeiro_credor_devedor ADD COLUMN observacao text;
+
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_cancelar_sala boolean DEFAULT true;
+
+
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN horario_preferencia time without time zone;
+
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN gerente_recepcao_top_saude boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_impressao_recibo ADD COLUMN repetir_recibo integer;
+
+ALTER TABLE ponto.tb_operador ADD COLUMN endereco_sistema text;
+
+CREATE TABLE ponto.tb_ambulatorio_laudo_integracao
+(
+  ambulatorio_laudo_integracao_id serial NOT NULL,
+  paciente_id integer,
+  paciente_web_id integer,
+  ambulatorio_laudoweb_id integer,
+  procedimento text,
+  empresa text,
+  tipo text,
+  medico_id integer,
+  convenio text,
+  data date,
+  data_cadastro timestamp without time zone,
+  data_atualizacao timestamp without time zone,
+  texto text,
+  laudo_json text,
+  paciente_json text,
+  CONSTRAINT tb_ambulatorio_laudo_integracao_pkey PRIMARY KEY (ambulatorio_laudo_integracao_id)
+);
+
+ALTER TABLE ponto.tb_paciente ADD COLUMN paciente_web_id integer;

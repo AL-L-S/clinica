@@ -32,7 +32,7 @@ class caixa_model extends Model {
 
         $this->db->select('valor,
                             entradas_id,
-                            observacao,
+                            e.observacao,
                             fe.descricao as conta,
                             data,
                             fcd.razao_social,

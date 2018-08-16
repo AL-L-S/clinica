@@ -158,7 +158,10 @@
 
         </fieldset>
         <fieldset>
-            <legend>Orçamento</legend>
+            
+            <legend>Recibo</legend>
+            
+            
             <label for="cabecalho">Cabeçalho</label>
             <input type="checkbox" id="cabecalho" <?
             if (@$impressao[0]->cabecalho == 't') {
@@ -172,8 +175,16 @@
                 echo 'checked';
             }
             ?>  name="rodape" id="rodape"/>
+            
+            <!--<div>-->
+                <label>Repetir</label>
+                <input type="number" name="repetir_recibo" id="repetir_recibo" class="texto02" value="<?= @$impressao[0]->repetir_recibo; ?>" />
+            <!--</div>-->
+            <br>
+            <br>
             <textarea style="width: 100%; height:400px;" name="texto" id=""><?= @$impressao[0]->texto ?></textarea>
             <br>
+            <!--<br>-->
             <table border="1">
                 <thead>
                     <tr class="tabela_header">

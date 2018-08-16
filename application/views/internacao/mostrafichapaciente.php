@@ -35,15 +35,15 @@ if (@$paciente[0] == '') {
                     <?
                     $data_inicio = new DateTime($paciente[0]->data_internacao);
                     $data_fim = new DateTime(date("Y-m-d H:i:s"));
-                    
+                    $dateInterval2 = $data_inicio->diff($data_fim);
                     if($data_inicio > $data_fim){
                        $dias =  '0 Dias';
                     }else{
-                       $dias = $dateInterval2->days . ' Dias';
+                       $dias = @$dateInterval2->days . ' Dias';
                     }
 
                     // Resgata diferença entre as datas
-                    $dateInterval2 = $data_inicio->diff($data_fim);
+                   
                     
                     ?>
                     <div>

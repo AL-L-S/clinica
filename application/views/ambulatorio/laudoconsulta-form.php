@@ -95,54 +95,54 @@
                     <table> 
                         <tr >
                             <? if (in_array('paciente', $opc_dadospaciente)) { ?>
-                            <td colspan="3" width="400px;">Paciente:<?= @$obj->_nome ?></td>
+                                <td colspan="3" width="400px;">Paciente:<?= @$obj->_nome ?></td>
                             <? } ?>
                             <? if (in_array('exame', $opc_dadospaciente)) { ?>
-                            <td colspan="3" width="400px;">Exame: <?= @$obj->_procedimento ?></td>
+                                <td colspan="3" width="400px;">Exame: <?= @$obj->_procedimento ?></td>
                             <? } ?>
                             <? if (in_array('solicitante', $opc_dadospaciente)) { ?>
-                            <td>Solicitante: <?= @$obj->_solicitante ?></td>
+                                <td>Solicitante: <?= @$obj->_solicitante ?></td>
                             <? } ?>
-                            <!--<td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>-->
+<!--<td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>-->
                         </tr>
                         <tr>
                             <? if (in_array('idade', $opc_dadospaciente)) { ?>
-                            <td colspan="3">Idade: <?= $teste ?></td>
+                                <td colspan="3">Idade: <?= $teste ?></td>
                             <? } ?>
                             <? if (in_array('nascimento', $opc_dadospaciente)) { ?>
-                            <td colspan="3">Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
+                                <td colspan="3">Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
                             <? } ?>
                             <? if (in_array('sala', $opc_dadospaciente)) { ?>
-                            <td>Sala:<?= @$obj->_sala ?></td>
+                                <td>Sala:<?= @$obj->_sala ?></td>
                             <? } ?>
                         </tr>
                         <tr>
                             <? if (in_array('sexo', $opc_dadospaciente)) { ?>
-                            <td colspan="2">Sexo: <?= @$obj->_sexo ?></td>
+                                <td colspan="2">Sexo: <?= @$obj->_sexo ?></td>
                             <? } ?>
                             <? if (in_array('estadocivil', $opc_dadospaciente)) { ?>
-                            <td colspan="2">Ocupação: <?= @$obj->_profissao_cbo ?> </td>
+                                <td colspan="2">Ocupação: <?= @$obj->_profissao_cbo ?> </td>
                             <? } ?>
                             <? if (in_array('ocupacao', $opc_dadospaciente)) { ?>
-                            <td >Estado Civíl: <?= @$estado_civil ?> </td>
+                                <td >Estado Civíl: <?= @$estado_civil ?> </td>
                             <? } ?>
                             <? if (in_array('convenio', $opc_dadospaciente)) { ?>
-                            <td>Convenio:<?= @$obj->_convenio; ?></td>
+                                <td>Convenio:<?= @$obj->_convenio; ?></td>
                             <? } ?>
                             <? if (in_array('telefone', $opc_dadospaciente)) { ?>
-                            <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
+                                <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
                             <? } ?>
 
                         </tr>
 
                         <tr>
                             <? if (in_array('telefone', $opc_dadospaciente)) { ?>
-                            <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
+                                <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
                             <? } ?>
 
 <!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
                             <? if (in_array('endereco', $opc_dadospaciente)) { ?>
-                            <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
+                                <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                             <? } ?>
                         </tr>
                         <tr>
@@ -157,7 +157,7 @@
                             <? } ?>
                         </td>
                         <tr>
-                           
+
                     </table>
 
 
@@ -182,28 +182,30 @@
                                     </div>
 
 
-                                <? }
+                                    <?
+                                }
                             } else {
                                 ?>
-    <? if (in_array('chamar', $opc_telatendimento)) { ?>
+                                <? if (in_array('chamar', $opc_telatendimento)) { ?>
                                     <div class="bt_link_new">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
                                             Chamar</a>
                                     </div>
-                                <? }
+                                    <?
+                                }
                             }
                             ?>
                         </td>
 
                         <td>
-<? if (in_array('editar', $opc_telatendimento)) { ?>
+                            <? if (in_array('editar', $opc_telatendimento)) { ?>
                                 <div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $paciente_id ?>');" >
                                         Editar</a></div>
-                        <? } ?>
+                            <? } ?>
                         </td>
 
-<? if (@$obj->_status != 'FINALIZADO') { ?>
+                        <? if (@$obj->_status != 'FINALIZADO') { ?>
                             <td>
                                 <div class="bt_link_new">
                                     <a onclick="javascript: return confirm('Deseja realmente deixar o atendimento pendente?');" href="<?= base_url() ?>ambulatorio/laudo/pendenteespecialidade/<?= $exame_id ?>" >
@@ -211,10 +213,10 @@
                                     </a>
                                 </div>
                             </td>
-                            <? } ?>
+                        <? } ?>
 
                         <td>
-<? if (in_array('encaminhar', $opc_telatendimento)) { ?>
+                            <? if (in_array('encaminhar', $opc_telatendimento)) { ?>
                                 <div class="bt_link_new">
                                     <a href="<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>" >
                                         Encaminhar
@@ -225,7 +227,7 @@
                         <td>
                             <? if (in_array('histconsulta', $opc_telatendimento)) { ?>
                                 <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregarlaudohistorico/<?= $paciente_id ?>">Hist. Consulta</a></div>
-<? } ?>
+                            <? } ?>
                         </td>
                         <td>
                             <div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/laudo/carregaranamineseantigo/<?= $paciente_id ?>">Hist. Antigo</a></div>
@@ -270,13 +272,13 @@
                                     <select name="diabetes" id="diabetes" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='nao'<?
-                                                if (@$obj->_diabetes == 'nao'):echo 'selected';
-                                                endif;
-                                                ?> >Não</option>
+                                        if (@$obj->_diabetes == 'nao'):echo 'selected';
+                                        endif;
+                                        ?> >Não</option>
                                         <option value='sim' <?
-                                                if (@$obj->_diabetes == 'sim'):echo 'selected';
-                                                endif;
-                                                ?> >Sim</option>
+                                        if (@$obj->_diabetes == 'sim'):echo 'selected';
+                                        endif;
+                                        ?> >Sim</option>
                                     </select><font></td>
                                 <td width="20px;"></td>
                                 <td><font size = -1>Hipertens&atilde;o:</font></td>
@@ -284,19 +286,19 @@
                                     <select name="hipertensao" id="hipertensao" class="size1">
                                         <option value=''>SELECIONE</option>
                                         <option value='nao'<?
-                                                if (@$obj->_diabetes == 'nao'):echo 'selected';
-                                                endif;
-                                                ?> >Não</option>
+                                        if (@$obj->_diabetes == 'nao'):echo 'selected';
+                                        endif;
+                                        ?> >Não</option>
                                         <option value='sim' <?
-                                                if (@$obj->_diabetes == 'sim'):echo 'selected';
-                                                endif;
-                                                ?> >Sim</option>
+                                        if (@$obj->_diabetes == 'sim'):echo 'selected';
+                                        endif;
+                                        ?> >Sim</option>
                                     </select><font></td>
                             </tr>
                         </table>
                     </fieldset>
                 </div>
-<? if ($empresapermissao[0]->oftamologia == 't' && @$obj->_grupo == 'OFTALMOLOGIA') { ?>
+                <? if ($empresapermissao[0]->oftamologia == 't' && @$obj->_grupo == 'OFTALMOLOGIA') { ?>
                     <script>
                         $(function () {
                             $("#tabs").tabs();
@@ -308,27 +310,27 @@
 
                     </script>    
 
-<? }
-?>
+                <? }
+                ?>
 
 
                 <div>
 
                     <fieldset>
                         <div id="tabs">
-<? if ($empresapermissao[0]->oftamologia == 't' && @$obj->_grupo == 'OFTALMOLOGIA') { ?>
+                            <? if ($empresapermissao[0]->oftamologia == 't' && @$obj->_grupo == 'OFTALMOLOGIA') { ?>
                                 <ul>
                                     <li><a class="tab-ativa" href="#tabs-2">Anamnese</a></li>
                                     <li><a href="#tabs-1">Oftamologia</a></li>
                                 </ul>
-<? }
-?>
+                            <? }
+                            ?>
 
                             <div id="tabs-2">
                                 <? if ($empresapermissao[0]->oftamologia == 'f') { ?>
                                     <legend>Anamnese</legend>
-<? }
-?>
+                                <? }
+                                ?>
 
                                 <div>
                                     <label>Laudo</label>
@@ -336,7 +338,7 @@
                                         <option value='' >selecione</option>
                                         <?php foreach ($lista as $item) { ?>
                                             <option value="<?php echo $item->ambulatorio_modelo_laudo_id; ?>" ><?php echo $item->nome; ?></option>
-                                    <?php } ?>
+                                        <?php } ?>
                                     </select>
                                     <?
                                     if (@$obj->_cabecalho == "") {
@@ -378,23 +380,23 @@
                                     <table>
                                         <tr><td rowspan="11" >
                                                 <textarea id="laudo" name="laudo" rows="30" cols="80" style="width: 100%"><?= @$obj->_texto; ?></textarea></td>
-<? if (in_array('receituario', $opc_telatendimento)) { ?>
+                                            <? if (in_array('receituario', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
 
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                             Receituario</a>
                                                     </div>
-                                            </td>
-                                             <td>
-                            <? if(in_array('parecercirurgia', $opc_telatendimento)){ ?>
-                            <div class="bt_link_new">
-                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherparecer/<?= $ambulatorio_laudo_id ?>');" >
-                                   Parecer C.P</a></div>
-                             <? } ?>
-                        </td>
-                                            
-                                            <?}?>
-                                            
+                                                </td>
+                                                <td>
+                                                    <? if (in_array('parecercirurgia', $opc_telatendimento)) { ?>
+                                                        <div class="bt_link_new">
+                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherparecer/<?= $ambulatorio_laudo_id ?>');" >
+                                                                Parecer C.P</a></div>
+                                                    <? } ?>
+                                                </td>
+
+                                            <? } ?>
+
                                             <td rowspan="5" >
 
                                             </td>
@@ -416,7 +418,7 @@
                         </td>
                                         </tr>
                                         <tr>
-<? if (in_array('receituarioesp', $opc_telatendimento)) { ?>
+                                            <? if (in_array('receituarioesp', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituarioespecial/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                             R. especial</a></div>
@@ -431,7 +433,7 @@
                         </td>
                                         </tr>
                                         <tr>
-<? if (in_array('solicitar_exames', $opc_telatendimento)) { ?>
+                                            <? if (in_array('solicitar_exames', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarexames/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');" >
                                                             S. exames</a></div>
@@ -447,7 +449,7 @@
                         </td>
                                         </tr>
                                         <tr>
-<? if (in_array('atestado', $opc_telatendimento)) { ?>
+                                            <? if (in_array('atestado', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregaratestado/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                             Atestado</a></div>
@@ -462,7 +464,7 @@
                         </td>
                                         </tr>
                                         <tr>
-<? if (in_array('declaracao', $opc_telatendimento)) { ?>
+                                            <? if (in_array('declaracao', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/escolherdeclaracao/<?= $paciente_id ?>/<?= @$obj->_guia_id; ?>/<?= $agenda_exames_id ?>');" >
                                                             Declaração</a></div>
@@ -477,7 +479,7 @@
                         </td>
                                         </tr>
                                         <tr>
-<? if (in_array('arquivos', $opc_telatendimento)) { ?>
+                                            <? if (in_array('arquivos', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $ambulatorio_laudo_id ?>');" >
                                                             Arquivos</a></div>
@@ -492,7 +494,7 @@
                         </td>
                                         </tr>
                                         <tr>
-<? if (in_array('aih', $opc_telatendimento)) { ?>
+                                            <? if (in_array('aih', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/imprimirmodeloaih/<?= $ambulatorio_laudo_id ?>');" >
                                                             AIH</a></div>
@@ -507,7 +509,7 @@
                         </td>
                                         </tr>
                                         <tr>
-<? if (in_array('consultar_procedimento', $opc_telatendimento)) { ?>
+                                            <? if (in_array('consultar_procedimento', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/procedimentoplanoconsultalaudo);" >
                                                             Consultar Proc...</a></div>
@@ -522,7 +524,7 @@
                         </td>
                                         </tr>
                                         <tr>
-<? if (in_array('sadt', $opc_telatendimento)) { ?>
+                                            <? if (in_array('sadt', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/pesquisarsolicitacaosadt/<?= $paciente_id ?>/<?= @$obj->_convenio_id ?>/<?= @$obj->_medico_parecer1 ?>');" >
                                                             Solicitação SADT</a></div>
@@ -537,15 +539,15 @@
                         </td>
                                         </tr>
                                         <tr>
-<? if (in_array('cadastro_aso', $opc_telatendimento)) { ?>
+                                            <? if (in_array('cadastro_aso', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/cadastroaso/<?= $paciente_id ?>/<?= @$obj->_medico_parecer1 ?>');" >
                                                             Cadastro ASO</a></div>
                                                 </td>
-                                        <? } ?>
+                                            <? } ?>
                                         </tr>
 
-<? if ($adendo) { ?>
+                                        <? if ($adendo) { ?>
                                             <tr>
                                                 <td>
                                                     <div>
@@ -554,8 +556,8 @@
                                                     </div>  
                                                 </td>
                                             </tr>
-<? }
-?>
+                                        <? }
+                                        ?>
 
 
 
@@ -577,10 +579,10 @@
                                     <select name="medico" id="medico" class="size2">
                                         <? foreach ($operadores as $value) : ?>
                                             <option value="<?= $value->operador_id; ?>"<?
-                                                    if (@$obj->_medico_parecer1 == $value->operador_id):echo "selected = 'true'";
-                                                    endif;
-                                                    ?>><?= $value->nome; ?></option>
-                                    <? endforeach; ?>
+                                            if (@$obj->_medico_parecer1 == $value->operador_id):echo "selected = 'true'";
+                                            endif;
+                                            ?>><?= $value->nome; ?></option>
+                                                <? endforeach; ?>
                                     </select>
                                     <? if ($empresapermissao[0]->desativar_personalizacao_impressao != 't') { ?>
                                         <?php
@@ -607,17 +609,17 @@
                                         }
                                         ?>
 
-<? } ?>
+                                    <? } ?>
                                     <label>situa&ccedil;&atilde;o</label>
                                     <select name="situacao" id="situacao" class="size2" ">
                                         <option value='DIGITANDO'<?
-                                                if (@$obj->_status == 'DIGITANDO'):echo "selected = 'true'";
-                                                endif;
-                                                ?> >DIGITANDO</option>
+                                        if (@$obj->_status == 'DIGITANDO'):echo "selected = 'true'";
+                                        endif;
+                                        ?> >DIGITANDO</option>
                                         <option value='FINALIZADO' <?
-                                                if (@$obj->_status == 'FINALIZADO'):echo "selected = 'true'";
-                                                endif;
-                                                ?> >FINALIZADO</option>
+                                        if (@$obj->_status == 'FINALIZADO'):echo "selected = 'true'";
+                                        endif;
+                                        ?> >FINALIZADO</option>
                                     </select>
                                     <input type="hidden" name="status" id="status" value="<?= @$obj->_status; ?>" class="size2" />
 
@@ -678,10 +680,10 @@
                                                             <option value=""> </option>
                                                             <? foreach ($listaracuidadeoe as $value) : ?>
                                                                 <option value="<?= $value->nome; ?>"<?
-                                                                        if (@$obj->_acuidade_oe == $value->nome):echo "selected = 'true'";
-                                                                        endif;
-                                                                        ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                if (@$obj->_acuidade_oe == $value->nome):echo "selected = 'true'";
+                                                                endif;
+                                                                ?>><?= $value->nome; ?></option>
+                                                                    <? endforeach; ?>
                                                         </select> 
                                                     </td>
                                                     <td>
@@ -689,10 +691,10 @@
                                                             <option value=""> </option>
                                                             <? foreach ($listaracuidadeod as $value) : ?>
                                                                 <option value="<?= $value->nome; ?>"<?
-                                                                        if (@$obj->_acuidade_od == $value->nome):echo "selected = 'true'";
-                                                                        endif;
-                                                                        ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                if (@$obj->_acuidade_od == $value->nome):echo "selected = 'true'";
+                                                                endif;
+                                                                ?>><?= $value->nome; ?></option>
+                                                                    <? endforeach; ?>
                                                         </select>   
 
                                                     </td>
@@ -792,10 +794,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listarodes as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_od_esferico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_od_esferico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -803,10 +805,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listarodcl as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_od_cilindrico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_od_cilindrico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -814,10 +816,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listarodeixo as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_od_eixo == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_od_eixo == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -825,10 +827,10 @@
                                                                 <option value="Selecione"></option>
                                                                 <? foreach ($listarodav as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_od_av == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_od_av == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
 
@@ -840,10 +842,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaroees as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_oe_esferico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_oe_esferico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -851,10 +853,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaroecl as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_oe_cilindrico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_oe_cilindrico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -862,10 +864,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaroeeixo as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_oe_eixo == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_oe_eixo == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -873,10 +875,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaroeav as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_oe_av == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_oe_av == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                     </tr>
@@ -887,10 +889,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listarades as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_ad_esferico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_ad_esferico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <td>
@@ -898,10 +900,10 @@
                                                                 <option value=""> </option>
                                                                 <? foreach ($listaradcl as $value) : ?>
                                                                     <option value="<?= $value->nome; ?>"<?
-                                                                            if (@$obj->_oftamologia_ad_cilindrico == $value->nome):echo "selected = 'true'";
-                                                                            endif;
-                                                                            ?>><?= $value->nome; ?></option>
-<? endforeach; ?>
+                                                                    if (@$obj->_oftamologia_ad_cilindrico == $value->nome):echo "selected = 'true'";
+                                                                    endif;
+                                                                    ?>><?= $value->nome; ?></option>
+                                                                        <? endforeach; ?>
                                                             </select> 
                                                         </td>
                                                         <!--<td>-->
@@ -1034,8 +1036,65 @@
                     <fieldset>
                         <legend><b><font size="3" color="red">Historico de consultas</font></b></legend>
                         <div>
-<? foreach ($historico as $item) {
-    ?>
+                            <?
+                            // Esse código serve para mostrar os históricos que foram importados
+                            // De outro sistema STG.
+                            // Na hora que o médico finaliza o atendimento, o sistema manda os dados para o endereço do sistema
+                            // Digitado no cadastro do médico, caso exista ele salva numa tabela especifica.
+                            // Para não criar um outro local onde iriam aparecer os atendimentos dessa tabela 
+                            // Há essa lógica aqui embaixo para inserir no meio dos outros atendimentos da ambulatorio_laudo os outros
+                            // da integração
+                            $contador_teste = 0;
+                            // Contador para utilizar no array
+//                            $historico = array();
+                            foreach ($historico as $item) {
+                                // Verifica se há informação
+                                if (isset($historicowebcon[$contador_teste])) {
+                                    // Define as datas
+                                    $data_foreach = date("Y-m-d", strtotime($item->data_cadastro));
+                                    $data_while = date("Y-m-d", strtotime($historicowebcon[$contador_teste]->data));
+                                    // Caso a data do Index atual da integracao seja maior que a data rodando no foreach, ele irá mostrar
+
+                                    while ($data_while > $data_foreach) {
+                                        ?>
+
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td ><span style="color: #007fff">Integração</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Empresa: <?= $historicowebcon[$contador_teste]->empresa; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Data: <?= substr($historicowebcon[$contador_teste]->data, 8, 2) . "/" . substr($historicowebcon[$contador_teste]->data, 5, 2) . "/" . substr($historicowebcon[$contador_teste]->data, 0, 4); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Medico: <?= $historicowebcon[$contador_teste]->medico_integracao; ?></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td >Tipo: <?= $historicowebcon[$contador_teste]->procedimento; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Queixa principal: <?= $historicowebcon[$contador_teste]->texto; ?></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <hr>
+                                        <?
+                                        $contador_teste ++;
+                                        // Verifica se o próximo index existe e se sim, ele redefine a data_while pra poder rodar novamente o while
+                                        if (isset($historicowebcon[$contador_teste])) {
+                                            $data_while = date("Y-m-d", strtotime($historicowebcon[$contador_teste]->data_cadastro));
+                                        } else {
+                                            // Caso não exista ele simplesmente dá um break e deixa o foreach rodar
+                                            break;
+                                        }
+                                    }
+                                }
+                                ?>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -1076,13 +1135,48 @@
                                     </tbody>
                                 </table>
                                 <hr>
-<? }
-?>
+                            <? }
+                            ?>
                         </div>
+                        <?
+                        if (count($historico) == 0 || $contador_teste < count($historicowebcon)) {
+                            while ($contador_teste < count($historicowebcon)) {
+                                ?>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td><span style="color: #007fff">Integração</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Empresa: <?= $historicowebcon[$contador_teste]->empresa; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Data: <?= substr($historicowebcon[$contador_teste]->data, 8, 2) . "/" . substr($historicowebcon[$contador_teste]->data, 5, 2) . "/" . substr($historicowebcon[$contador_teste]->data, 0, 4); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Medico: <?= $historicowebcon[$contador_teste]->medico_integracao; ?></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td >Tipo: <?= $historicowebcon[$contador_teste]->procedimento; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Queixa principal: <?= $historicowebcon[$contador_teste]->texto; ?></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <hr>
+
+                                <?
+                                $contador_teste++;
+                            }
+                        }
+                        ?>
 
                         <div>
-<? foreach ($historicoantigo as $itens) {
-    ?>
+                            <? foreach ($historicoantigo as $itens) {
+                                ?>
                                 <table>
                                     <tbody>
                                         <tr>
@@ -1094,8 +1188,8 @@
                                     </tbody>
                                 </table>
                                 <hr>
-<? }
-?>
+                            <? }
+                            ?>
                         </div>
 
                     </fieldset>
@@ -1103,10 +1197,60 @@
                     <fieldset>
                         <legend><b><font size="3" color="red">Historico de exames</font></b></legend>
                         <div>
-                            <table>
-                                <tbody>
-<? foreach ($historicoexame as $item) {
-    ?>
+
+                            <?
+                            $contador_exame = 0;
+                            foreach ($historicoexame as $item) {
+                                // Verifica se há informação
+                                if (isset($historicowebexa[$contador_exame])) {
+                                    // Define as datas
+                                    $data_foreach = date("Y-m-d", strtotime($item->data_cadastro));
+                                    $data_while = date("Y-m-d", strtotime($historicowebexa[$contador_exame]->data));
+                                    // Caso a data do Index atual da integracao seja maior que a data rodando no foreach, ele irá mostrar
+
+                                    while ($data_while > $data_foreach) {
+                                        ?>
+
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td ><span style="color: #007fff">Integração</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Empresa: <?= $historicowebexa[$contador_exame]->empresa; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Data: <?= substr($historicowebexa[$contador_exame]->data, 8, 2) . "/" . substr($historicowebexa[$contador_exame]->data, 5, 2) . "/" . substr($historicowebexa[$contador_exame]->data, 0, 4); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Medico: <?= $historicowebexa[$contador_exame]->medico_integracao; ?></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td >Tipo: <?= $historicowebexa[$contador_exame]->procedimento; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Queixa principal: <?= $historicowebexa[$contador_exame]->texto; ?></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <hr>
+                                        <?
+                                        $contador_exame ++;
+                                        // Verifica se o próximo index existe e se sim, ele redefine a data_while pra poder rodar novamente o while
+                                        if (isset($historicowebexa[$contador_exame])) {
+                                            $data_while = date("Y-m-d", strtotime($historicowebexa[$contador_exame]->data_cadastro));
+                                        } else {
+                                            // Caso não exista ele simplesmente dá um break e deixa o foreach rodar
+                                            break;
+                                        }
+                                    }
+                                }
+                                ?>
+                                <table>
+                                    <tbody>
+
 
                                         <tr>
                                             <td >Data: <?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
@@ -1181,10 +1325,220 @@
                                                 none;border-right:none;' colspan="10">&nbsp;</th>
                                         </tr>
 
-<? }
-?>
-                                </tbody>
-                            </table>
+
+                                    </tbody>
+                                </table>
+                            <? }
+                            ?>
+                            <?
+                            if (count($historico) == 0 || $contador_exame < count($historicowebexa)) {
+                                while ($contador_exame < count($historicowebexa)) {
+                                    ?>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><span style="color: #007fff">Integração</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td >Empresa: <?= $historicowebexa[$contador_exame]->empresa; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td >Data: <?= substr($historicowebexa[$contador_exame]->data, 8, 2) . "/" . substr($historicowebexa[$contador_exame]->data, 5, 2) . "/" . substr($historicowebexa[$contador_exame]->data, 0, 4); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td >Medico: <?= $historicowebexa[$contador_exame]->medico_integracao; ?></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td >Tipo: <?= $historicowebexa[$contador_exame]->procedimento; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td >Queixa principal: <?= $historicowebexa[$contador_exame]->texto; ?></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <hr>
+
+                                    <?
+                                    $contador_exame++;
+                                }
+                            }
+                            ?>
+                        </div>
+
+                    </fieldset>
+                    <fieldset>
+                        <legend><b><font size="3" color="red">Historico de especialidades</font></b></legend>
+                        <div>
+
+                            <?
+                            $contador_especialidade = 0;
+                            foreach ($historicoespecialidade as $item) {
+                                // Verifica se há informação
+                                if (isset($historicowebesp[$contador_especialidade])) {
+                                    // Define as datas
+                                    $data_foreach = date("Y-m-d", strtotime($item->data_cadastro));
+                                    $data_while = date("Y-m-d", strtotime($historicowebesp[$contador_especialidade]->data));
+                                    // Caso a data do Index atual da integracao seja maior que a data rodando no foreach, ele irá mostrar
+
+                                    while ($data_while > $data_foreach) {
+                                        ?>
+
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td ><span style="color: #007fff">Integração</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Empresa: <?= $historicowebesp[$contador_especialidade]->empresa; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Data: <?= substr($historicowebesp[$contador_especialidade]->data, 8, 2) . "/" . substr($historicowebesp[$contador_especialidade]->data, 5, 2) . "/" . substr($historicowebesp[$contador_especialidade]->data, 0, 4); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Medico: <?= $historicowebesp[$contador_especialidade]->medico_integracao; ?></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td >Tipo: <?= $historicowebesp[$contador_especialidade]->procedimento; ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Queixa principal: <?= $historicowebesp[$contador_especialidade]->texto; ?></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                        <hr>
+                                        <?
+                                        $contador_especialidade ++;
+                                        // Verifica se o próximo index existe e se sim, ele redefine a data_while pra poder rodar novamente o while
+                                        if (isset($historicowebesp[$contador_especialidade])) {
+                                            $data_while = date("Y-m-d", strtotime($historicowebesp[$contador_especialidade]->data_cadastro));
+                                        } else {
+                                            // Caso não exista ele simplesmente dá um break e deixa o foreach rodar
+                                            break;
+                                        }
+                                    }
+                                }
+                                ?>
+                                <table>
+                                    <tbody>
+
+
+                                        <tr>
+                                            <td >Data: <?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Medico: <?= $item->medico; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td >Tipo: <?= $item->procedimento; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <?
+                                            $this->load->helper('directory');
+                                            $arquivo_pastaimagem = directory_map("./upload/$item->especialidades_id/");
+//        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$especialidade_id/");
+                                            if ($arquivo_pastaimagem != false) {
+                                                sort($arquivo_pastaimagem);
+                                            }
+                                            $i = 0;
+                                            if ($arquivo_pastaimagem != false) {
+                                                foreach ($arquivo_pastaimagem as $value) {
+                                                    $i++;
+                                                }
+                                            }
+                                            ?>
+                                            <td >Imagens : <font size="2"><b> <?= $i ?></b>
+                                                <?
+                                                if ($arquivo_pastaimagem != false):
+                                                    foreach ($arquivo_pastaimagem as $value) {
+                                                        ?>
+                                                        <a onclick="javascript:window.open('<?= base_url() . "upload/" . $item->especialidades_id . "/" . $value ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=650');"><img  width="100px" height="100px" src="<?= base_url() . "upload/" . $item->especialidades_id . "/" . $value ?>"></a>
+                                                        <?
+                                                    }
+                                                    $arquivo_pastaimagem = "";
+                                                endif
+                                                ?>
+                                                <!--                <ul id="sortable">
+
+                                                                </ul>-->
+                                            </td >
+                                        </tr>
+                                        <tr>
+                                            <td >Laudo: <?= $item->texto; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Arquivos anexos:
+                                                <?
+                                                $this->load->helper('directory');
+                                                $arquivo_pasta = directory_map("./upload/consulta/$item->ambulatorio_laudo_id/");
+
+                                                $w = 0;
+                                                if ($arquivo_pasta != false):
+
+                                                    foreach ($arquivo_pasta as $value) :
+                                                        $w++;
+                                                        ?>
+
+                                                        <a onclick="javascript:window.open('<?= base_url() . "upload/consulta/" . $item->ambulatorio_laudo_id . "/" . $value ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=650');"><img  width="50px" height="50px" src="<?= base_url() . "upload/consulta/" . $item->ambulatorio_laudo_id . "/" . $value ?>"></a>
+                                                        <?
+                                                        if ($w == 8) {
+                                                            
+                                                        }
+                                                    endforeach;
+                                                    $arquivo_pasta = "";
+                                                endif
+                                                ?>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th style='width:10pt;border:solid windowtext 1.0pt;
+                                                border-bottom:none;mso-border-top-alt:none;border-left:
+                                                none;border-right:none;' colspan="10">&nbsp;</th>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            <? }
+                            ?>
+                            <?
+                            if (count($historico) == 0 || $contador_especialidade < count($historicowebesp)) {
+                                while ($contador_especialidade < count($historicowebesp)) {
+                                    ?>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><span style="color: #007fff">Integração</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td >Empresa: <?= $historicowebesp[$contador_especialidade]->empresa; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td >Data: <?= substr($historicowebesp[$contador_especialidade]->data, 8, 2) . "/" . substr($historicowebesp[$contador_especialidade]->data, 5, 2) . "/" . substr($historicowebesp[$contador_especialidade]->data, 0, 4); ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td >Medico: <?= $historicowebesp[$contador_especialidade]->medico_integracao; ?></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td >Tipo: <?= $historicowebesp[$contador_especialidade]->procedimento; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td >Queixa principal: <?= $historicowebesp[$contador_especialidade]->texto; ?></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                    <hr>
+
+                                    <?
+                                    $contador_especialidade++;
+                                }
+                            }
+                            ?>
                         </div>
 
                     </fieldset>
