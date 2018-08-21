@@ -141,7 +141,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <?= $impressao_aso->empresa ?> 
+                                <?= $impressao_aso->convenio1 ?> 
                             </td>
 
                         </tr>

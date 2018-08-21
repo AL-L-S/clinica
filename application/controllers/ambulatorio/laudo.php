@@ -2018,7 +2018,7 @@ class Laudo extends BaseController {
     }
     function impressaoexameslab($ambulatorio_laudo_id) {
         
-        //$this->load->plugin('mpdf');
+       
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);        
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;

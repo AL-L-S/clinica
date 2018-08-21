@@ -223,6 +223,21 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function listarprocedimentoaso($procedimento_convenio_id) {
+        $this->db->select(' pt.procedimento_tuss_id,
+                            pt.nome,
+                            pt.grupo,
+                            pt.codigo                           
+                            ');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->join('tb_procedimento_convenio pc', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+
+        $this->db->orderby('nome');
+        $this->db->where("pt.ativo", 't');
+        $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarprocedimentoagrupados($procedimento_agrupador_id) {
         $this->db->select('procedimentos_agrupados_ambulatorial_id as procedimento_agrupador_id,

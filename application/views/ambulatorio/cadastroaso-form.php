@@ -4,20 +4,12 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 } else {
     $config = '';
 }
-
-
-if (count(json_decode(@$obj[0]->aso_risco_id)) > 0) {
-    $array_riscos = json_decode(@$obj[0]->aso_risco_id);
-} else {
-    $array_riscos = array();
-}
-
-if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
-    $array_funcao = json_decode(@$obj[0]->aso_funcao_id);
-} else {
-    $array_funcao = array();
-}
 ?>
+<?php
+    $this->load->library('utilitario');
+//    var_dump($this->session->flashdata('message')); die;
+    Utilitario::pmf_mensagem($this->session->flashdata('message'));
+    ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <h3>Cadastro ASO</h3>
 
@@ -65,6 +57,10 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
 
                 <input readonly="" type="text" onblur="calculoIdade()" name="idade"  id="idade" class="texto02"   maxlength="10" value="<?php echo substr(@$paciente[0]->nascimento, 8, 2) . '/' . substr(@$paciente[0]->nascimento, 5, 2) . '/' . substr(@$paciente[0]->nascimento, 0, 4); ?>" required=""/>
             </div>
+            <div>
+                <label>RG</label>
+                <input readonly="" type="text" name="rg" id="rg" class="texto04" value="<?= @$paciente[0]->rg ?>" />
+            </div>
 
 
         </fieldset>
@@ -105,9 +101,8 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
                     <option value="">Selecione </option>
                     <?
                     foreach ($convenio as $item) :
-                        
                         ?>
-                        <option value="<?= $item->convenio_id; ?>" <? //if ($lastConv == $item->convenio_id) echo 'selected'; ?>>
+                        <option value="<?= $item->convenio_id; ?>" <?= (@$config->convenio1 == $item->convenio_id) ? 'selected' : '' ?>>
                             <?= $item->nome; ?>
                         </option>
                     <? endforeach; ?>
@@ -117,19 +112,19 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
             <div>
 
                 <label>Setor</label>
-                <select name="setor" id="setor" class="size2">
+                <select name="setor" id="setor" class="size2" required="">
                     <option value="">Selecione </option>
                     <? foreach ($setor as $item) : ?>                   
-                        <option value="<?= $item->aso_setor_id; ?>"<?
-                        if (565656 == $item->aso_setor_id):echo 'selected';
-                        endif;
-                        ?>><?= $item->descricao_setor; ?></option>
-                            <? endforeach; ?>
+                        <option value="<?= $item->aso_setor_id; ?>" <?= (@$config->setor == $item->aso_setor_id) ? 'selected' : '' ?>>
+                            <?= $item->descricao_setor; ?>
+                        </option>                        
+                    <? endforeach; ?>
                 </select>
             </div>
             <div>
                 <label>Função</label>
                 <select name="funcao" id="funcao" class="size2">
+
 
                 </select>
             </div>
@@ -137,11 +132,27 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
                 <label>Data De Realização</label>
                 <input type="text" name="data_realizacao" id="data_realizacao" class="texto04" value="<?= @$config->data_realizacao ?>" />
             </div>
-
             <div>
+                <label>Médico</label>
+                <select name="medico" id="medico" class="size2">
+                    <option value="">Selecione</option>
+                    <? foreach ($medicos as $item) : ?>
+                        <option value="<?= $item->operador_id; ?>" <?= (@$informacao_aso[0]->medico_responsavel == $item->operador_id) ? 'selected' : '' ?>>
+                            <?= $item->nome; ?>
+                        </option>
+                    <? endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <label>Validade do Exame</label>
+                <input type="text" name="validade_exame" id="validade_exame" class="texto04" value="<?= @$config->validade_exame ?>" />
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="examec">
 
                 <label>Exames Complementares</label>
-                <select name="exameprocedimento" id="exameprocedimento" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Exames..." multiple>
+                <select name="procedimento1[]" id="procedimento1" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Exames..." multiple>
 
                 </select>
             </div>
@@ -152,7 +163,7 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
 
 
                 <select name="riscos[]" id="riscos" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Riscos..." multiple tabindex="1">
-                   
+
                 </select>
 
             </div>
@@ -239,7 +250,8 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
             <div style="width: 100%;">
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
-                <button type="reset" name="btnLimpar">Limpar</button>
+                <button type="reset" name="btnLimpar">Limpar</button>               
+
             </div>
         </fieldset>
 
@@ -251,6 +263,12 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
         width: 90%;
         /*font-size: 18pt;*/
         /*height: 50pt;*/
+
+        .examec {
+            display: inline;
+            float: left;
+
+        }
     }
 </style>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
@@ -261,10 +279,12 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/scripts_alerta.js" ></script>
 <style>
     .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 330px; }
 </style>
+<? //var_dump(@$config->riscos);die;?>
 <script type="text/javascript">
 
                     $(function () {
@@ -279,7 +299,49 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
                         });
                     });
 
+                    $(function () {
+                        $("#validade_exame").datepicker({
+                            autosize: true,
+                            changeYear: true,
+                            changeMonth: true,
+                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                            dateFormat: 'dd/mm/yy'
+                        });
+                    });
 
+
+
+
+<? if (@$config->funcao != '') { ?>
+
+                        var funcao = <?= @$config->funcao ?>;
+                        carregarFuncaoAtualizar();
+<? } else { ?>
+                        var funcao = '';
+<? }
+?>
+                    function carregarFuncaoAtualizar() {
+                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt', {setor: $('#setor').val()}, function (j) {
+                            options = '<option value=""></option>';
+//                                console.log(j);
+                            for (var c = 0; c < j.length; c++) {
+                                if (funcao == j[c].aso_funcao_id) {
+                                    options += '<option selected value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
+                                } else {
+                                    options += '<option value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
+                                }
+
+                            }
+
+
+                            $('#funcao option').remove();
+                            $('#funcao').append(options);
+                            $("#funcao").trigger("chosen:updated");
+                            $('.carregando').hide();
+                        });
+                    }
 
 
                     $(function () {
@@ -291,7 +353,12 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
                                 options = '<option value=""></option>';
 //                                console.log(j);
                                 for (var c = 0; c < j.length; c++) {
-                                    options += '<option value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
+                                    if (funcao == j[c].aso_funcao_id) {
+                                        options += '<option selected value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
+                                    } else {
+                                        options += '<option value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
+                                    }
+
                                 }
 
 
@@ -303,17 +370,55 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
 
                         });
                     });
+                    
+                    <? if (@$config->riscos != '') { ?>
+//                        var risco = []
+                        var risco = [<?= implode(', ',@$config->riscos); ?>]; 
+                        carregarRiscoAtualizar();
+<? } else { ?>
+                        var risco = '';
+<? }
+?>
+                    
+                    function carregarRiscoAtualizar() {
+                  
+                        $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt', {funcao: $('#funcao').val()}, function (j) {
+                                options = '<option value=""></option>';
+                                console.log(j);
+                                for (var c = 0; c < j.length; c++) {
+//                                    alert(risco.indexOf(parseInt(j[c].aso_risco_id)));
+//                                    alert(j[c].aso_risco_id);
+                                    if (risco.indexOf(parseInt(j[c].aso_risco_id)) > -1) {
+                                        options += '<option selected value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                    } else {
+                                        options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                    }
+                                    
+                                }
+
+
+                                $('#riscos option').remove();
+                                $('#riscos').append(options);
+//                                $("#riscos_teste").trigger("listz:updated");
+                                $("#riscos").trigger("chosen:updated");
+//                                $('.carregando').hide();
+                            });
+                    }
+
 
                     $(function () {
                         $('#funcao').change(function () {
+                            
+//                            
 
-//                            $('.carregando').show();
-//                            alert('asdsd');
-                            $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt', {funcao: $(this).val(), ajax: true}, function (j) {
+                            $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt', {funcao: $(this).val()}, function (j) {
                                 options = '<option value=""></option>';
-//                                console.log(j);
+
                                 for (var c = 0; c < j.length; c++) {
-                                    options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                  
+                                        options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                   
+                                    
                                 }
 
 
@@ -326,12 +431,43 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
 
                         });
                     });
+                                        <? if (@$config->procedimento1 != '') { ?>
+//                       
+                        var exame = [<?= implode(', ',@$config->procedimento1); ?>]; 
+                        carregarProcedimentoAtualizar();
+<? } else { ?>
+                        var exame = '';
+<? }
+?>
+                    
+                    function carregarProcedimentoAtualizar() {
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $('#convenio1').val()}, function (j) {
+                                options = '<option value=""></option>';
+
+                                for (var c = 0; c < j.length; c++) {
+//                                    alert(exame.indexOf(parseInt(j[c].procedimento_convenio_id)));
+//                                    alert(j[c].procedimento_convenio_id);
+                                    if (exame.indexOf(parseInt(j[c].procedimento_convenio_id)) > -1) {
+                                        options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    } else {
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    }
+                                    
+                                }
+
+
+                                $('#procedimento1 option').remove();
+                                    $('#procedimento1').append(options);
+                                    $("#procedimento1").trigger("chosen:updated");
+                            });
+                    }
 
                     $(function () {
                         $('#convenio1').change(function () {
                             if ($(this).val()) {
-                                $('.carregando').show();
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioajustarvalor', {convenio1: $(this).val(), ajax: true}, function (j) {
+//                                $('.carregando').show();
+
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val()}, function (j) {
                                     options = '<option value=""></option>';
                                     console.log(j);
                                     for (var c = 0; c < j.length; c++) {
@@ -388,4 +524,25 @@ if (count(json_decode(@$obj[0]->aso_funcao_id)) > 0) {
                         }
 
                     });
+                    function calculoIdade() {
+                        var data = document.getElementById("nascimento").value;
+
+                        if (data != '' && data != '//') {
+
+                            var ano = data.substring(6, 12);
+                            var idade = new Date().getFullYear() - ano;
+
+                            var dtAtual = new Date();
+                            var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
+
+                            if (dtAtual < aniversario) {
+                                idade--;
+                            }
+                            document.getElementById("idade").value = idade + " ano(s)";
+                        } else {
+
+                        }
+                    }
+                    calculoIdade();
+
 </script>

@@ -80,6 +80,23 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function impressaoaso2($cadastro_aso_id) {
+        $this->db->select('ca.*, p.nome as paciente,
+                            p.nascimento,
+                            p.rg,
+                            o.nome as medico,
+                            o.conselho,
+                            o.telefone,
+                            o.celular                            
+                                     ');
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ca.medico_responsavel', 'left');        
+        $this->db->where('cadastro_aso_id', $cadastro_aso_id);
+//        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function gravarcadastroaso($paciente_id) {
 //        var_dump($_POST['valor']); die;
@@ -93,7 +110,7 @@ class guia_model extends Model {
         $this->db->set('paciente_id', $paciente_id);
         $this->db->set('impressao_aso', $valores);
         $this->db->set('tipo', $_POST['tipo']);
-//        $this->db->set('medico_responsavel', $_POST['medico_responsavel']);
+        $this->db->set('medico_responsavel', $_POST['medico']);
 
         if ($_POST['cadastro_aso_id'] > 0) {
             $this->db->set('operador_atualizacao', $operador_id);
@@ -732,7 +749,7 @@ class guia_model extends Model {
         return $return;
     }
 
-    function listarcadastroaso() {
+    function listarcadastroaso($paciente_id) {
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
 
@@ -745,7 +762,8 @@ class guia_model extends Model {
         $this->db->from('tb_cadastro_aso ca');
         $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
         $this->db->where("ca.ativo", 'true');
-        $this->db->where("ca.medico_responsavel", $operador_id);
+        $this->db->where("p.paciente_id", $paciente_id);
+//        $this->db->where("ca.medico_responsavel", $operador_id);
 
         return $this->db;
     }
@@ -758,10 +776,12 @@ class guia_model extends Model {
                             ca.impressao_aso,
                             ca.medico_responsavel,
                             ca.data_cadastro,
-                            p.nome as paciente');
+                            p.nome as paciente
+                            ');
         $this->db->from('tb_cadastro_aso ca');
         $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
-        $this->db->where("ca.cadastro_aso_id", $cadastro_aso_id);
+        $this->db->where("ca.cadastro_aso_id", $cadastro_aso_id);       
+        
         $this->db->orderby("ca.cadastro_aso_id");
         $query = $this->db->get();
         $return = $query->result();
