@@ -20,6 +20,7 @@ class procedimento_model extends Model {
     var $_sala_preparo = null;
     var $_revisao = null;
     var $_revisao_dias = null;
+    var $_tipo_aso = null;
 
     function Procedimento_model($procedimento_tuss_id = null) {
         parent::Model();
@@ -756,6 +757,12 @@ class procedimento_model extends Model {
             $this->db->set('tuss_id', $_POST['txtprocedimento']);
             $this->db->set('codigo', $_POST['txtcodigo']);
             $this->db->set('descricao', $_POST['txtdescricao']);
+            if ($_POST['tipo_aso'] != '') {
+                $this->db->set('tipo_aso', $_POST['tipo_aso']);
+            }
+            else{
+                $this->db->set('tipo_aso', null);
+            }
             if ($_POST['subgrupo_id'] != '') {
                 $this->db->set('subgrupo_id', $_POST['subgrupo_id']);
             }
@@ -1146,7 +1153,7 @@ class procedimento_model extends Model {
                                pt.carboidratos, pt.lipidios, pt.kcal,pt.laboratorio_id,
                                pt.revisao, pt.sala_preparo, pt.revisao_dias,
                                pt.associacao_procedimento_tuss_id, pt.retorno_dias,
-                               pt.subgrupo_id, pt.agrupador_grupo');
+                               pt.subgrupo_id, pt.agrupador_grupo, pt.tipo_aso');
             $this->db->from('tb_procedimento_tuss pt');
             $this->db->join('tb_tuss t', 't.tuss_id = pt.tuss_id', 'left');
             $this->db->where("procedimento_tuss_id", $procedimento_tuss_id);
@@ -1185,6 +1192,7 @@ class procedimento_model extends Model {
             $this->_retorno_dias = $return[0]->retorno_dias;
             $this->_subgrupo_id = $return[0]->subgrupo_id;
             $this->_agrupador_grupo = $return[0]->agrupador_grupo;
+            $this->_tipo_aso = $return[0]->tipo_aso;
         } else {
             $this->_procedimento_tuss_id = null;
         }

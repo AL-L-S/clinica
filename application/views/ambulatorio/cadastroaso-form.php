@@ -112,13 +112,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             <div>
 
                 <label>Setor</label>
-                <select name="setor" id="setor" class="size2" required="">
-                    <option value="">Selecione </option>
-                    <? foreach ($setor as $item) : ?>                   
-                        <option value="<?= $item->aso_setor_id; ?>" <?= (@$config->setor == $item->aso_setor_id) ? 'selected' : '' ?>>
-                            <?= $item->descricao_setor; ?>
-                        </option>                        
-                    <? endforeach; ?>
+                <select name="setor" id="setor" class="size2">
+                    
                 </select>
             </div>
             <div>
@@ -146,6 +141,17 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             <div>
                 <label>Validade do Exame</label>
                 <input type="text" name="validade_exame" id="validade_exame" class="texto04" value="<?= @$config->validade_exame ?>" />
+            </div>
+            <div>
+                <label>Sala</label>
+                <select  name="sala1" id="sala1" class="size2">
+                    <option value="">Selecione</option>
+                    <? foreach ($salas as $item) : ?>
+                        <option value="<?= $item->exame_sala_id; ?>"<?= (@$config->sala1 == $item->exame_sala_id) ? 'selected': '' ?>>
+                            <?= $item->nome; ?>
+                        </option>
+                    <? endforeach; ?>
+                </select>
             </div>
         </fieldset>
         <fieldset>
@@ -314,6 +320,62 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
 
 
+<? if (@$config->setor != '') { ?>
+
+                        var setor = <?= @$config->setor ?>;
+                        carregarSetorAtualizar();
+<? } else { ?>
+                        var setor = '';
+<? }
+?>
+                    function carregarSetorAtualizar() {
+                        $.getJSON('<?= base_url() ?>autocomplete/setorempresamt', {convenio1: $('#convenio1').val()}, function (j) {
+                            options = '<option value=""></option>';
+//                                console.log(j);
+                            for (var c = 0; c < j.length; c++) {
+                                if (setor == j[c].aso_setor_id) {
+                                    options += '<option selected value="' + j[c].aso_setor_id + '">' + j[c].descricao_setor + '</option>';
+                                } else {
+                                    options += '<option value="' + j[c].aso_setor_id + '">' + j[c].descricao_setor + '</option>';
+                                }
+
+                            }
+
+
+                            $('#setor option').remove();
+                            $('#setor').append(options);
+                            $("#setor").trigger("chosen:updated");
+                            $('.carregando').hide();
+                        });
+                    }
+
+
+                    $(function () {
+                        $('#convenio1').change(function () {
+
+//                            $('.carregando').show();
+//                            alert('asdsd');
+                            $.getJSON('<?= base_url() ?>autocomplete/setorempresamt', {convenio1: $(this).val()}, function (j) {
+                                options = '<option value=""></option>';
+                                console.log(j);
+                                for (var c = 0; c < j.length; c++) {
+                                    if (setor == j[c].aso_setor_id) {
+                                        options += '<option selected value="' + j[c].aso_setor_id + '">' + j[c].descricao_setor + '</option>';
+                                    } else {
+                                        options += '<option value="' + j[c].aso_setor_id + '">' + j[c].descricao_setor + '</option>';
+                                    }
+
+                                }
+
+
+                                $('#setor option').remove();
+                                $('#setor').append(options);
+                                $("#setor").trigger("chosen:updated");
+                                $('.carregando').hide();
+                            });
+
+                        });
+                    });
 <? if (@$config->funcao != '') { ?>
 
                         var funcao = <?= @$config->funcao ?>;
@@ -384,7 +446,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                   
                         $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt', {funcao: $('#funcao').val()}, function (j) {
                                 options = '<option value=""></option>';
-                                console.log(j);
+//                                console.log(j);
                                 for (var c = 0; c < j.length; c++) {
 //                                    alert(risco.indexOf(parseInt(j[c].aso_risco_id)));
 //                                    alert(j[c].aso_risco_id);
@@ -469,7 +531,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val()}, function (j) {
                                     options = '<option value=""></option>';
-                                    console.log(j);
+//                                    console.log(j);
                                     for (var c = 0; c < j.length; c++) {
                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                                     }

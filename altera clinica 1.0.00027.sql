@@ -303,3 +303,26 @@ CREATE TABLE ponto.tb_ambulatorio_laudo_integracao
 );
 
 ALTER TABLE ponto.tb_paciente ADD COLUMN paciente_web_id integer;
+
+-- Dia 21/08/2018
+
+ALTER TABLE ponto.tb_aso_setor ADD COLUMN convenio_id integer;
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN aso_id integer;
+
+-- Dia 22/08/2018
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'ASO');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
+        VALUES ('ASO', 'CONSULTA');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();

@@ -43,6 +43,34 @@
                         </select>
                     </dd>
                     
+                    <div id="tipo_aso">
+                    <dt>
+                        <label>Tipo</label>
+                    </dt>
+                    <dd>
+                        <select name="tipo_aso" id="tipo_aso" class="size2" >
+                    <option value="">
+                        Selecione
+                    </option>
+                    <option value="ADMISSIONAL" <?= (@$obj->_tipo_aso == 'ADMISSIONAL') ? 'selected' : ''; ?>>
+                        ADMISSIONAL
+                    </option>
+                    <option value="PERÍODICO" <?= (@$obj->_tipo_aso == 'PERÍODICO') ? 'selected' : ''; ?>>
+                        PERÍODICO
+                    </option>
+                    <option value="RETORNO AO TRABALHO" <?= (@$obj->_tipo_aso == 'RETORNO AO TRABALHO') ? 'selected' : ''; ?>>
+                        RETORNO AO TRABALHO
+                    </option>
+                    <option value="MUDANÇA DE FUNÇÃO" <?= (@$obj->_tipo_aso == 'MUDANÇA DE FUNÇÃO') ? 'selected' : ''; ?>>
+                        MUDANÇA DE FUNÇÃO
+                    </option>
+                    <option value="DEMISSIONAL" <?= (@$obj->_tipo_aso == 'DEMISSIONAL') ? 'selected' : ''; ?>>
+                        DEMISSIONAL
+                    </option>
+                        </select>
+                    </dd>
+                    </div>                    
+                     
                     <? $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
                     if($subgrupo_procedimento == 't') { ?>
                         <dt>
@@ -257,7 +285,7 @@
                     <dd>
                         <textarea  type="text" name="descricao" id="descricao" class="textarea" cols="60" rows="1" ><?= @$obj->_descricao_procedimento; ?> </textarea>
                     </dd>
-                    
+                    <br>
                     <dt>
                         <label>Manutenção?</label>
                     </dt>
@@ -397,5 +425,20 @@
             }
         });
     });
+    
+    $('#grupo').change(function () {
+        
+            var x = document.getElementById("tipo_aso");
+            
+            if ($('#grupo :selected').val() == 'ASO') {
+            
+            x.style.display = "block";
+
+            } else {
+            
+            x.style.display = "none";
+            
+            }
+        });
 
 </script>

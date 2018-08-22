@@ -44,7 +44,8 @@ class saudeocupacional_model extends Model {
     function carregarsetores() {
         $this->db->select('se.aso_setor_id,
                             se.descricao_setor,
-                            se.aso_funcao_id');
+                            se.aso_funcao_id,
+                            se.convenio_id');
         $this->db->from('tb_aso_setor se');
         $this->db->where('se.ativo', 'true');
         $return = $this->db->get();
@@ -175,6 +176,7 @@ class saudeocupacional_model extends Model {
             $aso_setor_id = $_POST['txtasosetorid'];
             $this->db->set('descricao_setor', $_POST['nome']);
             $this->db->set('aso_funcao_id', $array_funcao);
+            $this->db->set('convenio_id', $_POST['convenio1']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -284,6 +286,25 @@ class saudeocupacional_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function listarautocompletesetorempresamt($parametro = null) {
+        $this->db->select(' se.aso_setor_id,
+                            se.convenio_id,
+                            se.descricao_setor
+                                            ');
+        
+        $this->db->from('tb_aso_setor se');    
+    
+        $this->db->where('se.ativo', 'true');        
+        
+
+        if ($parametro != null) {
+            $this->db->where('se.convenio_id', $parametro);
+        }
+       
+        $this->db->orderby("se.descricao_setor");
+        $return = $this->db->get();
+        return $return->result();
+    }
     
     function listarautocompleteriscofuncaomt($parametro = null) {
         $this->db->select(' fu.aso_risco_id,
@@ -325,6 +346,7 @@ class saudeocupacional_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
     function listarautocompletefuncaojson($parametro = array()) {
         
 

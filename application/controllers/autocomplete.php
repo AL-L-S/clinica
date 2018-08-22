@@ -1670,6 +1670,16 @@ class Autocomplete extends Controller {
 
         echo json_encode($result2);
     }
+    function setorempresamt() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['convenio1'])) {
+            $result = $this->saudeocupacional->listarautocompletesetorempresamt($_GET['convenio1']);
+        } else {
+            $result = $this->saudeocupacional->listarautocompletesetorempresamt(@$_GET['convenio1']);
+        }
+        
+        echo json_encode($result);
+    }
 
     function riscofuncaomt() {
         header('Access-Control-Allow-Origin: *');
