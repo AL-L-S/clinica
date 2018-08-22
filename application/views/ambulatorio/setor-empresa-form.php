@@ -40,6 +40,23 @@
                             <? endforeach; ?>
                         </select>
                     </dd>
+                    <br><br>
+                    <dt>
+                    <label>Empresa</label>
+                    </dt>
+                    <dd>
+                       <select  name="convenio1" id="convenio1" class="size2" required="" >      
+                    <option value="">Selecione </option>
+                    <?
+                    foreach ($convenio as $item) :
+                        
+                        ?>
+                        <option value="<?= $item->convenio_id; ?>">
+                            <?= $item->nome; ?>
+                        </option>
+                    <? endforeach; ?>
+                       </select>
+                    </dd>
                  </dl> 
                 <br><br>
                 <hr/>

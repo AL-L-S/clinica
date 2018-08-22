@@ -1572,6 +1572,7 @@ class Autocomplete extends Controller {
     }
 
     function procedimentoconvenio() {
+        header('Access-Control-Allow-Origin: *');
 
         if (isset($_GET['convenio1'])) {
             $result = $this->exametemp->listarautocompleteprocedimentos($_GET['convenio1']);
@@ -1711,7 +1712,7 @@ class Autocomplete extends Controller {
     }
 
     function funcaosetormt() {
-
+        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['setor'])) {
             $result = $this->saudeocupacional->listarautocompletefuncaosetormt($_GET['setor']);
         } else {
@@ -1726,7 +1727,7 @@ class Autocomplete extends Controller {
     }
 
     function riscofuncaomt() {
-
+        header('Access-Control-Allow-Origin: *');
         if (isset($_GET['funcao'])) {
             $result = $this->saudeocupacional->listarautocompleteriscofuncaomt($_GET['funcao']);
         } else {

@@ -106,6 +106,17 @@ class saudeocupacional_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function carregarriscoaso($aso_risco_id) {
+        
+        $this->db->select('r.aso_risco_id,
+                            r.descricao_risco');
+        $this->db->from('tb_aso_risco r');
+
+        $this->db->where('r.aso_risco_id', $aso_risco_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function excluirsetor($aso_setor_id) {
 
@@ -261,7 +272,7 @@ class saudeocupacional_model extends Model {
                                             ');
         
         $this->db->from('tb_aso_setor se');    
-//        $this->db->join('tb_aso_funcao fu, fu.aso_funcao_id = se.aso_funcao_id');    
+    
         $this->db->where('se.ativo', 'true');        
         
 

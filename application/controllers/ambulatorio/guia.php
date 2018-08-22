@@ -206,6 +206,7 @@ class Guia extends BaseController {
 
         $this->loadView('ambulatorio/cadastroaso-lista', $data);
     }
+    
 
     function gravarcadastroaso($paciente_id) {
 //        echo '<pre>';
@@ -240,22 +241,22 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($medico_id);
 
-        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
-        if ($data['cabecalhomedico'][0]->cabecalho != '') { // Cabeçalho do Profissional
-            $cabecalho = $data['cabecalhomedico'][0]->cabecalho;
-        } else {
-            if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
-                $data['cabecalho_imp'] = "$cabecalho_config";
-            } else {
-                $data['cabecalho_imp'] = "<table><tr><td><img width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr></table>";
-            }
-        }
-
-//        echo '<pre>';
-//        var_dump($data['relatorio']); die;
-
 
         $this->load->View('ambulatorio/impressaoaso', $data);
+    }
+    function impressaoaso2($cadastro_aso_id) {
+
+        $data['relatorio'] = $this->guia->impressaoaso2($cadastro_aso_id);
+        $medico_id = $data['relatorio'][0]->medico_responsavel;
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($medico_id);
+//        $data['risco'] = $this->saudeocupacional->listarrisco();
+
+
+
+        $this->load->View('ambulatorio/impressaoaso2', $data);
     }
 
     function impressaoguiaconsultaspsadtprocedimento($agenda_exames_id) {

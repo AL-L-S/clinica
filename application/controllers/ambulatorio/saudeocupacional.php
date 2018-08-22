@@ -35,6 +35,7 @@ class Saudeocupacional extends BaseController {
         $this->load->model('cadastro/grupoclassificacao_model', 'grupoclassificacao');
         $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->model('ambulatorio/GExtenso', 'GExtenso');
+        $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -72,6 +73,7 @@ class Saudeocupacional extends BaseController {
     function carregarrisco($aso_risco_id) {
         
         $data['obj'] = $this->saudeocupacional->carregarrisco($aso_risco_id);
+        $data['riscos'] = $this->saudeocupacional->carregarriscoaso($aso_risco_id);
         $data['risco'] = $this->saudeocupacional->listarrisco();
         $this->loadView('ambulatorio/risco-empresa-form', $data);
     }
@@ -80,6 +82,7 @@ class Saudeocupacional extends BaseController {
 
         $data['obj'] = $this->saudeocupacional->carregarsetor($aso_setor_id);        
         $data['funcao'] = $this->saudeocupacional->listarsetorfuncao();
+        $data['convenio'] = $this->convenio->listardados();
         $this->loadView('ambulatorio/setor-empresa-form', $data);
     }
 
