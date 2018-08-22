@@ -3936,6 +3936,7 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
+
     function preencherecocardio($paciente_id, $guia_id) {
 
         $this->db->select('*');
@@ -3946,6 +3947,7 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
+
     function preencherecostress($paciente_id, $guia_id) {
 
         $this->db->select('*');
@@ -3956,6 +3958,7 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
+
     function preenchercate($paciente_id, $guia_id) {
 
         $this->db->select('*');
@@ -3977,6 +3980,7 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
+
     function preencherexameslab($paciente_id, $guia_id) {
 
         $this->db->select('*');
@@ -4382,31 +4386,31 @@ class laudo_model extends Model {
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_cirurgias');
             } else {
-                
-                    if (count($cirurgias_form) > 0) {
-                        $this->db->set('cirurgias', json_encode($cirurgias_form));
-                    } else {
-                        $this->db->set('cirurgias', '');
-                    }
-                    if (count($complicacao_form) > 0) {
-                        $this->db->set('complicacoes', json_encode($complicacao_form));
-                    } else {
-                        $this->db->set('complicacoes', '');
-                    }
 
-                    if ($_POST['ressonanciamag'] == "on") {
-                        $this->db->set('ressonanciamag', "SIM");
-                    } else {
-                        $this->db->set('ressonanciamag', '');
-                    }
-
-                    $this->db->where('guia_id', $_POST['guia_id']);
-                    $this->db->where('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('guia_id', $_POST['guia_id']);
-                    $this->db->insert('tb_laudo_cirurgias');
+                if (count($cirurgias_form) > 0) {
+                    $this->db->set('cirurgias', json_encode($cirurgias_form));
+                } else {
+                    $this->db->set('cirurgias', '');
                 }
-            
+                if (count($complicacao_form) > 0) {
+                    $this->db->set('complicacoes', json_encode($complicacao_form));
+                } else {
+                    $this->db->set('complicacoes', '');
+                }
+
+                if ($_POST['ressonanciamag'] == "on") {
+                    $this->db->set('ressonanciamag', "SIM");
+                } else {
+                    $this->db->set('ressonanciamag', '');
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_cirurgias');
+            }
+
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
@@ -4415,6 +4419,7 @@ class laudo_model extends Model {
             return -1;
         }
     }
+
     function gravarexameslab() {
         try {
             $paciente_id = $this->session->userdata('paciente_id');
@@ -4443,7 +4448,7 @@ class laudo_model extends Model {
                 "acurico" => (isset($_POST["acurico"])) ? $_POST["acurico"] : '',
                 "digoxina" => (isset($_POST["digoxina"])) ? $_POST["digoxina"] : ''
             );
-           
+
 
 
             $this->db->select('le.guia_id, le.paciente_id');
@@ -4460,27 +4465,27 @@ class laudo_model extends Model {
                 } else {
                     $this->db->set('exames_laboratoriais', '');
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
                 $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_exameslab');
             } else {
-                
-                    if (count($exameslab_form) > 0) {
+
+                if (count($exameslab_form) > 0) {
                     $this->db->set('exames_laboratoriais', json_encode($exameslab_form));
-                    } else {
+                } else {
                     $this->db->set('exames_laboratoriais', '');
-                    }
-                    
-                    $this->db->where('guia_id', $_POST['guia_id']);
-                    $this->db->where('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('guia_id', $_POST['guia_id']);
-                    $this->db->insert('tb_laudo_exameslab');
                 }
-            
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_exameslab');
+            }
+
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
@@ -4489,6 +4494,7 @@ class laudo_model extends Model {
             return -1;
         }
     }
+
     function gravarecocardio() {
         try {
             $paciente_id = $this->session->userdata('paciente_id');
@@ -4514,9 +4520,8 @@ class laudo_model extends Model {
                 "aorta" => (isset($_POST["aorta"])) ? $_POST["aorta"] : '',
                 "pericardio" => (isset($_POST["pericardio"])) ? $_POST["pericardio"] : '',
                 "conclusao" => (isset($_POST["conclusao"])) ? $_POST["conclusao"] : ''
-               
             );
-           
+
 
 
             $this->db->select('lec.guia_id, lec.paciente_id');
@@ -4533,27 +4538,27 @@ class laudo_model extends Model {
                 } else {
                     $this->db->set('ecocardio', '');
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
                 $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_ecocardio');
             } else {
-                
+
                 if (count($ecocardio_form) > 0) {
                     $this->db->set('ecocardio', json_encode($ecocardio_form));
                 } else {
                     $this->db->set('ecocardio', '');
                 }
-                    
-                    $this->db->where('guia_id', $_POST['guia_id']);
-                    $this->db->where('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('guia_id', $_POST['guia_id']);
-                    $this->db->insert('tb_laudo_ecocardio');
-                }
-            
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_ecocardio');
+            }
+
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
@@ -4562,6 +4567,7 @@ class laudo_model extends Model {
             return -1;
         }
     }
+
     function gravarecostress() {
         try {
             $paciente_id = $this->session->userdata('paciente_id');
@@ -4575,9 +4581,8 @@ class laudo_model extends Model {
                 "hipocinesiainferior" => (isset($_POST["hipocinesiainferior"])) ? $_POST["hipocinesiainferior"] : '',
                 "hipocinesialateral" => (isset($_POST["hipocinesialateral"])) ? $_POST["hipocinesialateral"] : '',
                 "disfuncao" => (isset($_POST["disfuncao"])) ? $_POST["disfuncao"] : ''
-                               
             );
-           
+
 
 
             $this->db->select('les.guia_id, les.paciente_id');
@@ -4594,27 +4599,27 @@ class laudo_model extends Model {
                 } else {
                     $this->db->set('ecostress', '');
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
                 $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_ecostress');
             } else {
-                
+
                 if (count($ecostress_form) > 0) {
                     $this->db->set('ecostress', json_encode($ecostress_form));
                 } else {
                     $this->db->set('ecostress', '');
                 }
-                    
-                    $this->db->where('guia_id', $_POST['guia_id']);
-                    $this->db->where('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('guia_id', $_POST['guia_id']);
-                    $this->db->insert('tb_laudo_ecostress');
-                }
-            
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_ecostress');
+            }
+
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
@@ -4623,6 +4628,7 @@ class laudo_model extends Model {
             return -1;
         }
     }
+
     function gravarcate() {
         try {
             $paciente_id = $this->session->userdata('paciente_id');
@@ -4648,9 +4654,8 @@ class laudo_model extends Model {
                 "vp" => (isset($_POST["vp"])) ? $_POST["vp"] : '',
                 "circpulmonar" => (isset($_POST["circpulmonar"])) ? $_POST["circpulmonar"] : '',
                 "observacoes" => (isset($_POST["observacoes"])) ? $_POST["observacoes"] : ''
-               
             );
-           
+
 
 
             $this->db->select('lca.guia_id, lca.paciente_id');
@@ -4667,27 +4672,27 @@ class laudo_model extends Model {
                 } else {
                     $this->db->set('cate', '');
                 }
-                
+
                 $this->db->where('guia_id', $_POST['guia_id']);
                 $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_cate');
             } else {
-                
+
                 if (count($cateterismo_form) > 0) {
                     $this->db->set('cate', json_encode($cateterismo_form));
                 } else {
                     $this->db->set('cate', '');
                 }
-                    
-                    $this->db->where('guia_id', $_POST['guia_id']);
-                    $this->db->where('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('paciente_id', $_POST['paciente_id']);
-                    $this->db->set('guia_id', $_POST['guia_id']);
-                    $this->db->insert('tb_laudo_cate');
-                }
-            
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_cate');
+            }
+
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
@@ -4696,7 +4701,6 @@ class laudo_model extends Model {
             return -1;
         }
     }
-
 
     function gravaravaliacao() {
         try {

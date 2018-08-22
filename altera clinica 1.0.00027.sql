@@ -238,7 +238,7 @@ CREATE TABLE ponto.tb_aso_setor
   operador_cadastro integer,
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
-  aso_funcao_id text,  
+  aso_funcao_id text
 );
 
 CREATE TABLE ponto.tb_aso_funcao
@@ -303,3 +303,6 @@ CREATE TABLE ponto.tb_ambulatorio_laudo_integracao
 );
 
 ALTER TABLE ponto.tb_paciente ADD COLUMN paciente_web_id integer;
+
+ALTER TABLE ponto.tb_paciente ALTER COLUMN convenionumero TYPE text;
+ALTER TABLE ponto.tb_paciente ALTER COLUMN cns TYPE text;
