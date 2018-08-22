@@ -238,7 +238,7 @@ CREATE TABLE ponto.tb_aso_setor
   operador_cadastro integer,
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
-  aso_funcao_id text,  
+  aso_funcao_id text
 );
 
 CREATE TABLE ponto.tb_aso_funcao
@@ -326,3 +326,5 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+ALTER TABLE ponto.tb_paciente ALTER COLUMN convenionumero TYPE text;
+ALTER TABLE ponto.tb_paciente ALTER COLUMN cns TYPE text;

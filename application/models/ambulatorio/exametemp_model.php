@@ -54,6 +54,28 @@ class exametemp_model extends Model {
         return $return[0]->paciente_id;
     }
 
+    function listarpacientecriarpasta() {
+        $this->db->select('paciente_id, nome');
+        $this->db->from('tb_paciente');
+        $this->db->where('ativo', 't');
+        $this->db->orderby('paciente_id');
+        $this->db->limit(100);
+
+        $return = $this->db->get()->result();
+
+        return $return;
+    }
+
+    function listaridlaudovaleimagem() {
+        $sql = 'SELECT  "IDagendaItens", "IDpacie"
+         FROM "TBagendaItens"
+         WHERE "IDpacie" is not null';
+        $return = $this->db->query($sql);
+        $return = $return->result();
+
+        return $return;
+    }
+
     function listarcredito($paciente_id) {
 
         $this->db->select('pcr.paciente_credito_id,
@@ -4475,7 +4497,7 @@ class exametemp_model extends Model {
 
 //            $this->db->where('paciente_id', $paciente_id);
             $this->db->insert('tb_paciente');
-            
+
             $paciente_id = $this->db->insert_id();
         } else {
             $paciente_id = $return[0]->paciente_id;
@@ -7771,7 +7793,7 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarautocompletegrupoweb($parametro = null) {
         $this->db->select('ag.tipo');
         $this->db->from('tb_procedimento_convenio pc');

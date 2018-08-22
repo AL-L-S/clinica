@@ -1300,6 +1300,61 @@ class Autocomplete extends Controller {
         echo json_encode(array("saldo" => $saldoCredito[0]->saldo, "paciente_id" => $paciente_id));
     }
 
+    function criarPastasPacienteValeImagem() {
+        $this->load->helper('directory');
+        $pacientes = $this->exametemp->listarpacientecriarpasta();
+//        echo '<pre>';
+//        var_dump($pacientes);
+//        die;
+        if (!is_dir("./upload/paciente")) {
+            mkdir("./upload/paciente");
+            $destino = "./upload/paciente";
+            chmod($destino, 0777);
+        }
+
+        foreach ($pacientes as $value) {
+            if (!is_dir("./upload/paciente/$value->paciente_id")) {
+                mkdir("./upload/paciente/$value->paciente_id");
+                $destino = "./upload/paciente/$value->paciente_id";
+                chmod($destino, 0777);
+            }
+        }
+    }
+
+    function moverLaudoPacienteValeImagem() {
+        $this->load->helper('directory');
+        $atendimentos = $this->exametemp->listaridlaudovaleimagem();
+        echo '<pre>';
+//        var_dump($atendimentos);
+//        die;
+        $arquivos = directory_map("./upload/PDFVALE/");
+        sort($arquivos);
+//        var_dump($arquivos);
+//        die;
+
+        if (!is_dir("./upload/paciente")) {
+            mkdir("./upload/paciente");
+            $destino = "./upload/paciente";
+            chmod($destino, 0777);
+        }
+
+        foreach ($atendimentos as $item) {
+            if (in_array($item->IDagendaItens . ".pdf", $arquivos)) {
+                if (!is_dir("./upload/paciente/$item->IDpacie")) {
+                    mkdir("./upload/paciente/$item->IDpacie");
+                    $destino = "./upload/paciente/$item->IDpacie";
+                    chmod($destino, 0777);
+                }
+                var_dump($item);
+
+                $origem = "./upload/PDFVALE/$item->IDagendaItens.pdf";
+                $destino = "./upload/paciente/$item->IDpacie/$item->IDagendaItens.pdf";
+                copy($origem, $destino);
+            }
+//            
+        }
+    }
+
     function buscarsaldopaciente() {
         if (isset($_GET['guia_id'])) {
 
