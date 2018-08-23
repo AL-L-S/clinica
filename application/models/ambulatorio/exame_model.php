@@ -2968,7 +2968,7 @@ class exame_model extends Model {
 //        $this->db->where('ae.data >=', $data);
 //        $this->db->where('ae.tipo', 'CONSULTA');
 //        $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.realizada', 'false');
+//        $this->db->where('ae.realizada', 'false');
         $this->db->where('ae.cancelada', 'false');
         if (isset($_GET['nome']) && strlen($_GET['nome']) > 0) {
             $this->db->where('p.nome ilike', "%" . $_GET['nome'] . "%");

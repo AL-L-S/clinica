@@ -226,7 +226,7 @@
                 <div>
                     <label >Endereço (Ex:http://stgclinica.ddns.net/stgsaude)</label>
 
-                    <input type="text" id="endereco_sistema" name="endereco_sistema"  class="texto08" value="<?= @$obj->_endereco_sistema; ?>" required="true"/>
+                    <input type="text" id="endereco_sistema" name="endereco_sistema"  class="texto08" value="<?= @$obj->_endereco_sistema; ?>" />
                 </div>
                 
                 

@@ -328,3 +328,5 @@ $$ LANGUAGE plpgsql;
 SELECT insereValor();
 ALTER TABLE ponto.tb_paciente ALTER COLUMN convenionumero TYPE text;
 ALTER TABLE ponto.tb_paciente ALTER COLUMN cns TYPE text;
+
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN tipo_aso text;

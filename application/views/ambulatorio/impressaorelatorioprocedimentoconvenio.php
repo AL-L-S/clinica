@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <div class="content"> <!-- Inicio da DIV content -->
     <?
     $i = 0;
@@ -6,7 +7,7 @@
         <thead>
 
             <tr>
-                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">FATURAMENTO POR GRUPO DE PRODUTO</th>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">RELATÓRIO PROCEDIMENTO CONVÊNIO</th>
             </tr>
             <? if ($grupo == "0") { ?>
                 <tr>
