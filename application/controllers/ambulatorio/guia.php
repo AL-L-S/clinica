@@ -195,8 +195,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
-        $empresa_id = $this->session->userdata('empresa_id');
-        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+        
 
 
         $this->loadView('ambulatorio/cadastroaso-form', $data);
@@ -214,7 +213,7 @@ class Guia extends BaseController {
 //        
             
 
-            if (!$_POST['cadastro_aso_id'] > 0 || true) {
+            if (!$_POST['cadastro_aso_id'] > 0) {
 
                 $paciente_id = $_POST['txtPacienteId'];
 
@@ -267,6 +266,8 @@ class Guia extends BaseController {
                         $retorno = $this->guia->gravarconsultaaso($ambulatorio_guia, $percentual, $percentual_laboratorio, $procedimento_convenio_id);
                     }
                 }
+            } else{
+                
             }
             if ($ambulatorio_guia_id) {
                 $data['mensagem'] = 'Erro ao gravar ASO.';
