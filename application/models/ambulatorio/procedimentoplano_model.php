@@ -915,6 +915,8 @@ class procedimentoplano_model extends Model {
         $this->db->where('convenio_primario_id', $_POST['convenio']);
         $this->db->where('ativo', 't');
         $conv_sec = $this->db->get()->result();
+        
+//        var_dump($conv_sec); die;
 
         if (count($conv_sec) > 0) {
             /* Irá verificar se os convenio secundários associados a esse convenio (se houver), possuem 
@@ -1107,6 +1109,11 @@ class procedimentoplano_model extends Model {
         $this->db->where("ativo", 't');
         $query = $this->db->get();
         $procedimentos = $query->result();
+//        echo '<pre>';
+//        var_dump($agrupados);
+//        var_dump($procedimentos);
+//        die;
+
 
         if (count($agrupados) <= count($procedimentos)) {
             return count($procedimentos);
@@ -1713,7 +1720,7 @@ class procedimentoplano_model extends Model {
                 $this->db->insert('tb_procedimento_convenio_sessao');
             }
         }
-        
+
         return 1;
 
 
@@ -1749,7 +1756,7 @@ class procedimentoplano_model extends Model {
         $result = $return->result();
         return $result;
     }
-    
+
     function listarprocedimentosessaomaxima($convenio_id) {
 
         //verifica se esse medico já está cadastrado nesse procedimento 

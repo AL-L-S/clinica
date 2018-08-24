@@ -6,11 +6,12 @@
         </a>
         <?
         $procedimentos_array = array();
+        
         foreach($procedimentoagrupados as $item){
             array_push($procedimentos_array, $item->procedimento_tuss_id);
         }
 //        var_dump($procedimentos_array); die;
-        
+        $procedimentos_json = json_encode($procedimentos_array);
         ?>
     </div>
     <div id="accordion">
@@ -24,6 +25,7 @@
                     </dt>
                     <dd>
                         <input type="hidden" name="txtprocedimentotussid" value="<?= @$obj->_procedimento_tuss_id; ?>" />
+                        <input type="hidden" name="array_proc" value='<?= @$procedimentos_json; ?>' />
                         <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_nome; ?>" required=""/>
                     </dd>
                     <dt>
