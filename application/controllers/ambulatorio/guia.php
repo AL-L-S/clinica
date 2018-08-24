@@ -210,58 +210,52 @@ class Guia extends BaseController {
 
     function gravarcadastroaso($paciente_id) {
 
-        $aso_id = $this->guia->gravarcadastroaso($paciente_id);      
-                  
-        if(!$_POST['cadastro_aso_id'] > 0){
-            
-        $paciente_id = $_POST['txtPacienteId'];
+        $aso_id = $this->guia->gravarcadastroaso($paciente_id);
 
-        $resultadoguia = $this->guia->listarguia($paciente_id);
+        if (!$_POST['cadastro_aso_id'] > 0) {
 
-        if ($_POST['medico_responsavel'] != '') {
+            $paciente_id = $_POST['txtPacienteId'];
 
-            if ($resultadoguia == null) {
-                $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
-            } else {
-                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+            $resultadoguia = $this->guia->listarguia($paciente_id);
+
+            if ($_POST['medico_responsavel'] != '') {
+
+                if ($resultadoguia == null) {
+                    $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+                } else {
+                    $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                }
+
+                $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
             }
-        
-        $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
-        
-        
-        }
-        foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
-            
-        
-        $procedimentopercentual = $procedimento_convenio_id;
-        $medicopercentual = $_POST['medico_responsavel'];
-        $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
-        if (count($percentual) == 0) {
-            $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
-        }
+            foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
 
-        $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimento_convenio_id);
 
-        $paciente_id = $_POST['txtPacienteId'];
+                $procedimentopercentual = $procedimento_convenio_id;
+                $medicopercentual = $_POST['medico_responsavel'];
+                $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+                if (count($percentual) == 0) {
+                    $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+                }
 
-        $resultadoguia = $this->guia->listarguia($paciente_id);
+                $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimento_convenio_id);
 
-        if ($_POST['medico_responsavel'] != '') {
+                $paciente_id = $_POST['txtPacienteId'];
 
-            if ($resultadoguia == null) {
-                $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
-            } else {
-                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                $resultadoguia = $this->guia->listarguia($paciente_id);
+
+                if ($_POST['medico_responsavel'] != '') {
+
+                    if ($resultadoguia == null) {
+                        $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+                    } else {
+                        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                    }
+
+
+                    $retorno = $this->guia->gravarconsultaaso($ambulatorio_guia, $percentual, $percentual_laboratorio, $procedimento_convenio_id);
+                }
             }
-
-
-            $retorno = $this->guia->gravarconsultaaso($ambulatorio_guia, $percentual, $percentual_laboratorio, $procedimento_convenio_id);
-            
-         
-        }
-       
-    }
-    
         }
         if ($ambulatorio_guia_id) {
             $data['mensagem'] = 'Erro ao gravar ASO.';
@@ -470,6 +464,17 @@ class Guia extends BaseController {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['exame'] = $this->guia->listarexame($exames_id);
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        @$data['cabecalho_config'] = $data['cabecalho'][0]->cabecalho;
+        @$data['rodape_config'] = $data['cabecalho'][0]->rodape;
+        $data['formapagamento'] = $this->formapagamento->listarformanaocredito();
+        @$data_exame = @$data['exame'][0]->data;
+        if (@$data_exame != '') {
+            $data['exameanterior'] = $this->guia->listarexameanterior($paciente_id, @$data_exame);
+        } else {
+            @$data['exameanterior'] = array();
+        }
+
         $grupo = $data['exame'][0]->grupo;
         $data['ordem_atendimento'] = $this->exame->listarexamesficha();
         $data['grupos'] = $this->guia->listargrupoficha($guia_id, $grupo);
@@ -522,6 +527,22 @@ class Guia extends BaseController {
                 $this->fichaxml($paciente_id, $guia_id, $exames_id);
             }
         }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 33) { //VALEIMAGEM 
+            if ($grupo == "TOMOGRAFIA") {
+                $this->load->View('ambulatorio/impressaofichavaleimagemtomografia', $data);
+            } elseif ($grupo == "MAMOGRAFIA") {
+                $this->load->View('ambulatorio/impressaofichavaleimagemmamografia', $data);
+            } elseif ($grupo == "RM") {
+                $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
+            } elseif ($grupo == "RX(TORAX)") {
+                $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
+            }
+        }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_tipo == 2) { //PROIMAGEM 

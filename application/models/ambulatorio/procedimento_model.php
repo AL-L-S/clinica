@@ -243,6 +243,7 @@ class procedimento_model extends Model {
     function listarprocedimentoagrupados($procedimento_agrupador_id) {
         $this->db->select('procedimentos_agrupados_ambulatorial_id as procedimento_agrupador_id,
                             pt.nome,
+                            pt.procedimento_tuss_id,
                             pt.grupo,
                             pt.codigo');
         $this->db->from('tb_procedimentos_agrupados_ambulatorial pa');
