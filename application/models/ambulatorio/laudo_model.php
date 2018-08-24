@@ -3969,6 +3969,46 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
+    function preencherholter($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_holter lh');
+        $this->db->where('lh.guia_id', $guia_id);
+        $this->db->where('lh.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+    function preenchercintilografia($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_cintil lc');
+        $this->db->where('lc.guia_id', $guia_id);
+        $this->db->where('lc.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+    function preenchermapa($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_mapa lm');
+        $this->db->where('lm.guia_id', $guia_id);
+        $this->db->where('lm.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+    function preenchertergometrico($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_tergometrico lt');
+        $this->db->where('lt.guia_id', $guia_id);
+        $this->db->where('lt.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
 
     function preenchercirurgia($paciente_id, $guia_id) {
 
@@ -4691,6 +4731,256 @@ class laudo_model extends Model {
                 $this->db->set('paciente_id', $_POST['paciente_id']);
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->insert('tb_laudo_cate');
+            }
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarholter() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $holter_form = array(
+                "ritmo" => (isset($_POST["ritmo"])) ? $_POST["ritmo"] : '',
+                "fcmax" => (isset($_POST["fcmax"])) ? $_POST["fcmax"] : '',
+                "fcmin" => (isset($_POST["fcmin"])) ? $_POST["fcmin"] : '',
+                "fcmed" => (isset($_POST["fcmed"])) ? $_POST["fcmed"] : '',
+                "essv" => (isset($_POST["essv"])) ? $_POST["essv"] : '',
+                "esv" => (isset($_POST["esv"])) ? $_POST["esv"] : '',
+                "taquiarritmias" => (isset($_POST["taquiarritmias"])) ? $_POST["taquiarritmias"] : '',
+                "bradiarritmias" => (isset($_POST["bradiarritmias"])) ? $_POST["bradiarritmias"] : '',
+                "sintomas" => (isset($_POST["sintomas"])) ? $_POST["sintomas"] : '',
+                "pausas" => (isset($_POST["pausas"])) ? $_POST["pausas"] : '',
+                "arventricular" => (isset($_POST["arventricular"])) ? $_POST["arventricular"] : '',                
+                "conclusao" => (isset($_POST["conclusao"])) ? $_POST["conclusao"] : ''
+            );
+
+
+
+            $this->db->select('lh.guia_id, lh.paciente_id');
+            $this->db->from('tb_laudo_holter lh');
+            $this->db->where('lh.guia_id', $_POST['guia_id']);
+            $this->db->where('lh.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+
+            if (count($result) > 0) {
+                if (count($holter_form) > 0) {
+                    $this->db->set('holter', json_encode($holter_form));
+                } else {
+                    $this->db->set('holter', '');
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_holter');
+            } else {
+
+                if (count($holter_form) > 0) {
+                    $this->db->set('holter', json_encode($holter_form));
+                } else {
+                    $this->db->set('holter', '');
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_holter');
+            }
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarcintilografia() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $cintil_form = array(
+                "tipo" => (isset($_POST["tipo"])) ? $_POST["tipo"] : '',
+                "sss" => (isset($_POST["sss"])) ? $_POST["sss"] : '',
+                "fe" => (isset($_POST["fe"])) ? $_POST["fe"] : '',
+                "afibrose" => (isset($_POST["afibrose"])) ? $_POST["afibrose"] : '',
+                "aisquemia" => (isset($_POST["aisquemia"])) ? $_POST["aisquemia"] : '',
+                "disfuncao" => (isset($_POST["disfuncao"])) ? $_POST["disfuncao"] : '',
+                "tergometrico" => (isset($_POST["tergometrico"])) ? $_POST["tergometrico"] : '',                                
+                "outrosachados" => (isset($_POST["outrosachados"])) ? $_POST["outrosachados"] : ''
+            );
+
+
+
+            $this->db->select('lc.guia_id, lc.paciente_id');
+            $this->db->from('tb_laudo_cintil lc');
+            $this->db->where('lc.guia_id', $_POST['guia_id']);
+            $this->db->where('lc.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+
+            if (count($result) > 0) {
+                if (count($cintil_form) > 0) {
+                    $this->db->set('cintil', json_encode($cintil_form));
+                } else {
+                    $this->db->set('cintil', '');
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_cintil');
+            } else {
+
+                if (count($cintil_form) > 0) {
+                    $this->db->set('cintil', json_encode($cintil_form));
+                } else {
+                    $this->db->set('cintil', '');
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_cintil');
+            }
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarmapa() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $mapa_form = array(
+                "medidas" => (isset($_POST["medidas"])) ? $_POST["medidas"] : '',
+                "pasvigilia" => (isset($_POST["pasvigilia"])) ? $_POST["pasvigilia"] : '',
+                "padvigilia" => (isset($_POST["padvigilia"])) ? $_POST["padvigilia"] : '',
+                "passono" => (isset($_POST["passono"])) ? $_POST["passono"] : '',
+                "padsono" => (isset($_POST["padsono"])) ? $_POST["padsono"] : '',
+                "sistolico" => (isset($_POST["sistolico"])) ? $_POST["sistolico"] : '',
+                "distolico" => (isset($_POST["distolico"])) ? $_POST["distolico"] : '',                                
+                "conclusao" => (isset($_POST["conclusao"])) ? $_POST["conclusao"] : ''
+            );
+
+
+
+            $this->db->select('lm.guia_id, lm.paciente_id');
+            $this->db->from('tb_laudo_mapa lm');
+            $this->db->where('lm.guia_id', $_POST['guia_id']);
+            $this->db->where('lm.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+
+            if (count($result) > 0) {
+                if (count($mapa_form) > 0) {
+                    $this->db->set('mapa', json_encode($mapa_form));
+                } else {
+                    $this->db->set('mapa', '');
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_mapa');
+            } else {
+
+                if (count($mapa_form) > 0) {
+                    $this->db->set('mapa', json_encode($mapa_form));
+                } else {
+                    $this->db->set('mapa', '');
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_mapa');
+            }
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravartergometrico() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $tergometrico_form = array(
+                "estagio" => (isset($_POST["estagio"])) ? $_POST["estagio"] : '',
+                "pa" => (isset($_POST["pa"])) ? $_POST["pa"] : '',
+                "arritmias" => (isset($_POST["arritmias"])) ? $_POST["arritmias"] : '',
+                "isquemia" => (isset($_POST["isquemia"])) ? $_POST["isquemia"] : '',
+                "aptidaofisica" => (isset($_POST["aptidaofisica"])) ? $_POST["aptidaofisica"] : '',                                               
+                "conclusao" => (isset($_POST["conclusao"])) ? $_POST["conclusao"] : ''
+            );
+
+
+
+            $this->db->select('lt.guia_id, lt.paciente_id');
+            $this->db->from('tb_laudo_tergometrico lt');
+            $this->db->where('lt.guia_id', $_POST['guia_id']);
+            $this->db->where('lt.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+
+
+            if (count($result) > 0) {
+                if (count($tergometrico_form) > 0) {
+                    $this->db->set('tergometrico', json_encode($tergometrico_form));
+                } else {
+                    $this->db->set('tergometrico', '');
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_tergometrico');
+            } else {
+
+                if (count($tergometrico_form) > 0) {
+                    $this->db->set('tergometrico', json_encode($tergometrico_form));
+                } else {
+                    $this->db->set('tergometrico', '');
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_tergometrico');
             }
 
             $erro = $this->db->_error_message();

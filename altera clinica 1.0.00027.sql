@@ -328,3 +328,38 @@ $$ LANGUAGE plpgsql;
 SELECT insereValor();
 ALTER TABLE ponto.tb_paciente ALTER COLUMN convenionumero TYPE text;
 ALTER TABLE ponto.tb_paciente ALTER COLUMN cns TYPE text;
+
+
+CREATE TABLE ponto.tb_laudo_holter
+(
+  holter text,
+  guia_id integer,
+  paciente_id integer,
+  laudo_holter_id serial primary key  
+);
+
+-- Dia 23/08/2018
+
+CREATE TABLE ponto.tb_laudo_cintil
+(
+  cintil text,
+  guia_id integer,
+  paciente_id integer,
+  laudo_cintil_id serial primary key  
+);
+
+CREATE TABLE ponto.tb_laudo_mapa
+(
+  mapa text,
+  guia_id integer,
+  paciente_id integer,
+  laudo_mapa_id serial primary key  
+);
+
+CREATE TABLE ponto.tb_laudo_tergometrico
+(
+  tergometrico text,
+  guia_id integer,
+  paciente_id integer,
+  laudo_tergometrico_id serial primary key  
+);

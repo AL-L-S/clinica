@@ -104,8 +104,8 @@ class guia_model extends Model {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $valores = json_encode($_POST);
-        
-        
+
+
         $this->db->set('paciente_id', $paciente_id);
         $this->db->set('impressao_aso', $valores);
         $this->db->set('tipo', $_POST['tipo']);
@@ -117,7 +117,6 @@ class guia_model extends Model {
             $this->db->where('cadastro_aso_id', $_POST['cadastro_aso_id']);
             $this->db->update('tb_cadastro_aso');
             $aso_id = $_POST['cadastro_aso_id'];
-                        
         } else {
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('data_cadastro', $horario);
@@ -14759,10 +14758,12 @@ ORDER BY ae.paciente_credito_id)";
             return -1;
         }
     }
-    function gravarprocedimentoaso(){
-        try{
+
+    function gravarprocedimentoaso($ambulatorio_guia_id) {
+        try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
+
 
             $this->db->select('ep.ajuste_pagamento_procedimento as ajustepagamento');
             $this->db->from('tb_empresa e');
@@ -14770,52 +14771,65 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
             $this->db->orderby('e.empresa_id');
             $flags = $this->db->get()->result();
-            
+
+
             $this->db->select('pc.valortotal, pc.procedimento_convenio_id');
             $this->db->from('tb_procedimento_convenio pc');
-            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');            
-            $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');            
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
             $this->db->where('pt.tipo_aso', $_POST['tipo']);
+            $this->db->where('pc.convenio_id', $_POST['convenio1']);
+            $this->db->where('pt.grupo', 'ASO');
             $result = $this->db->get()->result();
             
-            $valoraso = $result[0]->valortotal;
-            $procedimento_convenio_id = $result[0]->procedimento_convenio_id;
-            
-            $this->db->set('valor', $valoraso);
-            $valortotal = $valoraso;
-            $this->db->set('valor_total', $valortotal);
-                        
-            $procedimentopercentual = $procedimento_convenio_id;
-            $medicopercentual = $_POST['medico_responsavel']; 
-//            var_dump($_POST['medico_responsavel']);die;
-            $percentual = $this->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
-            if (count($percentual) == 0) {
-            $percentual = $this->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+            if (count($result) > 0) {
+                $valoraso = $result[0]->valortotal;
+                $procedimento_convenio_id = $result[0]->procedimento_convenio_id;
+                 $valortotal = $valoraso;
             }
-            
+
+           
+
+
+            if (count($result) > 0) {
+                $procedimentopercentual = $procedimento_convenio_id;
+            } else {
+                return -1;
+            }
+            if ($_POST['medico'] != "") {
+                $medicopercentual = $_POST['medico'];
+//            var_dump($_POST['medico']);die;            
+                $percentual = $this->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+                if (count($percentual) == 0) {
+                    $percentual = $this->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+                }
+            }
+
             $hora = date("H:i:s");
             $data = date("Y-m-d");
-
+            $this->db->set('valor', $valoraso);
+            $this->db->set('valor_total', $valortotal);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('procedimento_tuss_id', $procedimento_convenio_id); //procedimento_tuss_id na tabela de agenda exames é o procedimento_convenio_id
-            
+//            var_dump($percentual[0]->percentual);die;
             $percentual_laboratorio = $this->percentuallaboratorioconvenioexames($procedimento_convenio_id);
-            
+
             if (count($percentual_laboratorio) > 0) {
                 $this->db->set('valor_laboratorio', $percentual_laboratorio[0]->perc_laboratorio);
                 $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
                 $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
             }
 
-            if ($_POST['medico_responsavel'] != "") {
-                $this->db->set('medico_consulta_id', $_POST['medico_responsavel']);
-                $this->db->set('medico_agenda', $_POST['medico_responsavel']);
+            if ($_POST['medico'] != "") {
+                $this->db->set('medico_consulta_id', $_POST['medico']);
+                $this->db->set('medico_agenda', $_POST['medico']);
             }
-                                   
-                        
+
+
+
             $this->db->set('quantidade', 1);
-            $this->db->set('autorizacao', $_POST['autorizacao1']);
+//            $this->db->set('autorizacao', $_POST['autorizacao1']);
 
             $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
             $this->db->set('inicio', $hora);
@@ -14861,7 +14875,7 @@ ORDER BY ae.paciente_credito_id)";
 
                     $tipo_grupo = $this->verificatipoprocedimento($procedimento_convenio_id);
                     $dados['agenda_exames_id'] = $agenda_exames_id;
-                    $dados['medico'] = $_POST['medico_responsavel'];
+                    $dados['medico'] = $_POST['medico'];
                     $dados['paciente_id'] = $_POST['txtPacienteId'];
                     $dados['procedimento_tuss_id'] = $procedimento_convenio_id;
                     $dados['sala_id'] = $_POST['sala1'];
@@ -14892,11 +14906,11 @@ ORDER BY ae.paciente_credito_id)";
 
 
             $this->db->select('pc.valortotal');
-            $this->db->from('tb_procedimento_convenio pc');            
-            $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);         
+            $this->db->from('tb_procedimento_convenio pc');
+            $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);
             $valorproc = $this->db->get()->result();
-            
-            
+
+
             $hora = date("H:i:s");
             $data = date("Y-m-d");
 
@@ -14910,13 +14924,13 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
             }
 
-            if ($_POST['medico_responsavel'] != "") {
-                $this->db->set('medico_consulta_id', $_POST['medico_responsavel']);
-                $this->db->set('medico_agenda', $_POST['medico_responsavel']);
+            if ($_POST['medico'] != "") {
+                $this->db->set('medico_consulta_id', $_POST['medico']);
+                $this->db->set('medico_agenda', $_POST['medico']);
             }
 
             $valorProc = $valorproc[0]->valortotal;
-            
+
             $this->db->set('valor', $valorProc);
             $valortotal = $valorProc;
             $this->db->set('valor_total', $valortotal);
@@ -14968,7 +14982,7 @@ ORDER BY ae.paciente_credito_id)";
 
                     $tipo_grupo = $this->verificatipoprocedimento($procedimento_convenio_id);
                     $dados['agenda_exames_id'] = $agenda_exames_id;
-                    $dados['medico'] = $_POST['medico_responsavel'];
+                    $dados['medico'] = $_POST['medico'];
                     $dados['paciente_id'] = $_POST['txtpaciente_id'];
                     $dados['procedimento_tuss_id'] = $procedimento_convenio_id;
                     $dados['sala_id'] = $_POST['sala1'];

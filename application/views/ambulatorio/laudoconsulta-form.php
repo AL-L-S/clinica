@@ -486,7 +486,7 @@
                                             <td>
                                                 <? if (in_array('holter', $opc_telatendimento)) { ?>
                                                     <div class="bt_link_new">
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercirurgia/<?= $ambulatorio_laudo_id ?>');" >
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherholter/<?= $ambulatorio_laudo_id ?>');" >
                                                             Holter 24h</a></div>
                                                 <? } ?>
                                             </td>
@@ -501,7 +501,7 @@
                                             <td>
                                                 <? if (in_array('cintil', $opc_telatendimento)) { ?>
                                                     <div class="bt_link_new">
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercirurgia/<?= $ambulatorio_laudo_id ?>');" >
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercintilografia/<?= $ambulatorio_laudo_id ?>');" >
                                                             Cintilografia</a></div>
                                                 <? } ?>
                                             </td>
@@ -516,7 +516,7 @@
                                             <td>
                                                 <? if (in_array('mapa', $opc_telatendimento)) { ?>
                                                     <div class="bt_link_new">
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercirurgia/<?= $ambulatorio_laudo_id ?>');" >
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchermapa/<?= $ambulatorio_laudo_id ?>');" >
                                                             Mapa</a></div>
                                                 <? } ?>
                                             </td>
@@ -531,7 +531,7 @@
                                             <td>
                                                 <? if (in_array('te', $opc_telatendimento)) { ?>
                                                     <div class="bt_link_new">
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchercirurgia/<?= $ambulatorio_laudo_id ?>');" >
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preenchertergometrico/<?= $ambulatorio_laudo_id ?>');" >
                                                             Teste Ergométrico</a></div>
                                                 <? } ?>
                                             </td>

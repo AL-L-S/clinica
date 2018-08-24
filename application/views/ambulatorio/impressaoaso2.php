@@ -47,14 +47,18 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
     <tr height="70px">
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-            <?
+            
+            <? $procedimentos = $this->procedimento->listarprocedimentoaso();
+            if(count($procedimentos) > 0){
             foreach ($impressao_aso->procedimento1 as $key => $item) :
                 $procedimentos = $this->procedimento->listarprocedimentoaso($item);
                 ?>
                 <? if($key == count($impressao_aso->procedimento1)-1){ echo $procedimentos[0]->nome;}
                 else{ echo $procedimentos[0]->nome . ", ";} ?>
             
-            <? endforeach; ?>
+            <? endforeach; } else{
+                echo "NENHUM EXAME COMPLEMENTAR";
+            } ?>
         </td>
     </tr>
     <tr height="30px">

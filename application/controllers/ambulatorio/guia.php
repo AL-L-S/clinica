@@ -209,67 +209,71 @@ class Guia extends BaseController {
     }
 
     function gravarcadastroaso($paciente_id) {
-
-        $aso_id = $this->guia->gravarcadastroaso($paciente_id);      
-                  
-        if(!$_POST['cadastro_aso_id'] > 0){
+//        
             
-        $paciente_id = $_POST['txtPacienteId'];
 
-        $resultadoguia = $this->guia->listarguia($paciente_id);
+            if (!$_POST['cadastro_aso_id'] > 0 || true) {
 
-        if ($_POST['medico_responsavel'] != '') {
+                $paciente_id = $_POST['txtPacienteId'];
 
-            if ($resultadoguia == null) {
-                $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
-            } else {
-                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                $resultadoguia = $this->guia->listarguia($paciente_id);
+
+                if ($_POST['medico'] != '') {
+
+                    if ($resultadoguia == null) {
+                        $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+                    } else {
+                        $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                    }
+                
+                    $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
+//                    
+                    if ($retorno2 == -1) {
+                        $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
+                        $this->session->set_flashdata('message', $data['mensagem']);
+                        redirect(base_url() . "ambulatorio/guia/carregarcadastroaso/$paciente_id/0");
+                    }else{
+                        $aso_id = $this->guia->gravarcadastroaso($paciente_id);
+                    }
+                }
+
+                foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
+
+
+                    $procedimentopercentual = $procedimento_convenio_id;
+                    $medicopercentual = $_POST['medico'];
+                    $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+
+                    if (count($percentual) == 0) {
+                        $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+                    }
+
+                    $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimento_convenio_id);
+
+                    $paciente_id = $_POST['txtPacienteId'];
+
+                    $resultadoguia = $this->guia->listarguia($paciente_id);
+
+                    if ($_POST['medico'] != '') {
+
+                        if ($resultadoguia == null) {
+                            $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+                        } else {
+                            $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                        }
+
+                        $retorno = $this->guia->gravarconsultaaso($ambulatorio_guia, $percentual, $percentual_laboratorio, $procedimento_convenio_id);
+                    }
+                }
             }
-        
-        $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
-        
-        
-        }
-        foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
-            
-        
-        $procedimentopercentual = $procedimento_convenio_id;
-        $medicopercentual = $_POST['medico_responsavel'];
-        $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
-        if (count($percentual) == 0) {
-            $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
-        }
-
-        $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimento_convenio_id);
-
-        $paciente_id = $_POST['txtPacienteId'];
-
-        $resultadoguia = $this->guia->listarguia($paciente_id);
-
-        if ($_POST['medico_responsavel'] != '') {
-
-            if ($resultadoguia == null) {
-                $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+            if ($ambulatorio_guia_id) {
+                $data['mensagem'] = 'Erro ao gravar ASO.';
             } else {
-                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+                $data['mensagem'] = 'Sucesso ao gravar ASO.';
             }
-
-
-            $retorno = $this->guia->gravarconsultaaso($ambulatorio_guia, $percentual, $percentual_laboratorio, $procedimento_convenio_id);
-            
-         
-        }
-       
-    }
-    
-        }
-        if ($ambulatorio_guia_id) {
-            $data['mensagem'] = 'Erro ao gravar ASO.';
-        } else {
-            $data['mensagem'] = 'Sucesso ao gravar ASO.';
-        }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/guia/cadastroaso/$paciente_id");
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/cadastroaso/$paciente_id");
+//        
     }
 
     function excluircadastroaso($cadastro_aso_id, $paciente_id, $medico_id) {
