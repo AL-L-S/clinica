@@ -195,7 +195,8 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
-
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
 
 
         $this->loadView('ambulatorio/cadastroaso-form', $data);
@@ -203,7 +204,8 @@ class Guia extends BaseController {
 
     function cadastroaso($paciente_id) {
         $data['paciente_id'] = $paciente_id;
-
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
 
         $this->loadView('ambulatorio/cadastroaso-lista', $data);
     }
@@ -309,7 +311,7 @@ class Guia extends BaseController {
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($medico_id);
-//        $data['risco'] = $this->saudeocupacional->listarrisco();
+        
 
 
 

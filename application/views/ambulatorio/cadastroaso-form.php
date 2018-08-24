@@ -168,7 +168,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <label>Riscos Ocupacionais Específicos</label>
 
 
-                <select name="riscos[]" id="riscos" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Riscos..." multiple tabindex="1" required="">
+                <select name="riscos[]" id="riscos" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Riscos..." multiple tabindex="1">
 
                 </select>
 

@@ -66,7 +66,7 @@
     ?>
     <body>
         <div style="width: 100%">
-            <?=@$cabecalho_imp;?>
+            <?= @$cabecalho_imp; ?>
         </div>
         <table border="1" style="width: 100%;border-collapse: collapse;" >
             <tr class="trcinza">
@@ -87,7 +87,7 @@
                     <table cellspacing="6" style="width: 100%">
                         <tr>
                             <td >
-                                <div class="<?=($relatorio[0]->tipo == 'ADMISSIONAL')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= ($relatorio[0]->tipo == 'ADMISSIONAL') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -95,14 +95,14 @@
 
                             </td>
                             <td>
-                                <div class="<?=($relatorio[0]->tipo == 'PERÍODICO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= ($relatorio[0]->tipo == 'PERÍODICO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado BRANCO--> &nbsp; &nbsp; &nbsp;
                                 </div>
 
                                 <div style="display: inline-block;">PERÍODICO</div>
                             </td>
                             <td>
-                                <div class="<?=($relatorio[0]->tipo == 'RETORNO AO TRABALHO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= ($relatorio[0]->tipo == 'RETORNO AO TRABALHO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado BRANCO--> &nbsp; &nbsp; &nbsp;
                                 </div>
 
@@ -111,7 +111,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <div class="<?=($relatorio[0]->tipo == 'MUDANÇA DE FUNÇÃO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= ($relatorio[0]->tipo == 'MUDANÇA DE FUNÇÃO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp; &nbsp;
                                 </div>
 
@@ -119,7 +119,7 @@
 
                             </td>
                             <td>
-                                <div class="<?=($relatorio[0]->tipo == 'DEMISSIONAL')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= ($relatorio[0]->tipo == 'DEMISSIONAL') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado BRANCO--> &nbsp; &nbsp; &nbsp;
                                 </div>
 
@@ -141,7 +141,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <?= $impressao_aso->convenio1 ?> 
+                                <? $convenio = $this->convenio->listarconvenioselecionado($impressao_aso->convenio1); ?>
+                                <?= $convenio[0]->nome ?> 
                             </td>
 
                         </tr>
@@ -180,10 +181,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <?= $impressao_aso->setor ?>  
+                                <? $setor = $this->saudeocupacional->carregarsetor($impressao_aso->setor); ?>
+                                <?= $setor[0]->descricao_setor ?>  
                             </td>
                             <td>
-                                <?= $impressao_aso->funcao ?>  
+                                <? $funcao = $this->saudeocupacional->carregarfuncao($impressao_aso->funcao); ?>
+                                <?= $funcao[0]->descricao_funcao ?>
                             </td>
 
                         </tr>
@@ -220,12 +223,12 @@
 
 // Resgata diferença entre as datas
                                     $dateInterval = $nascimento->diff($atual);
-                                    $idade = $dateInterval->y ;
-                                }else{
+                                    $idade = $dateInterval->y;
+                                } else {
                                     $idade = '';
                                 }
                                 ?>
-                                <?=$idade?>  
+                                <?= $idade ?>  
                             </td>
 
                         </tr>
@@ -245,7 +248,24 @@
                         </tr>
                         <tr>
                             <td>
-                                <?= @$impressao_aso->riscos_ocupacionais ?>   
+                               <?
+            if (isset($impressao_aso->riscos)) {
+                foreach ($impressao_aso->riscos as $key => $item) :
+                    $risco = $this->saudeocupacional->carregarriscoaso($item);
+                    ?>
+                    <? if ($key == count($impressao_aso->riscos) - 1) {
+                        echo $risco[0]->descricao_risco;
+                    } else {
+                        echo $risco[0]->descricao_risco . ", ";
+                    }
+                    ?>                
+
+            <?
+            endforeach;
+        } else {
+            echo "SEM RISCOS OCUP. ESPECÍFICOS";
+        }
+        ?> 
                             </td>
                         </tr>
                     </table>
@@ -256,7 +276,7 @@
                     <table style="width: 100%">
                         <tr>
                             <td class="titulo80SemB">
-                                Exames
+                                Exames Complementares
                             </td>
                             <td class="tituloSemB">
                                 Data de Realização
@@ -265,10 +285,28 @@
                         </tr>
                         <tr>
                             <td>
-                                ASO 
+                                <?
+                                if (isset($impressao_aso->procedimento1)) {
+                                    foreach ($impressao_aso->procedimento1 as $key => $item) :
+                                        $procedimentos = $this->procedimento->listarprocedimentoaso($item);
+                                        ?>
+                                        <?
+                                        if ($key == count($impressao_aso->procedimento1) - 1) {
+                                            echo $procedimentos[0]->nome;
+                                        } else {
+                                            echo $procedimentos[0]->nome . ", ";
+                                        }
+                                        ?>
+
+                                        <?
+                                    endforeach;
+                                } else {
+                                    echo "NENHUM EXAME COMPLEMENTAR NECESSÁRIO";
+                                }
+                                ?>
                             </td>
                             <td>
-                                <?= (@$impressao_aso->data_realizacao != '') ? @$impressao_aso->data_realizacao : ''; ?>
+<?= (@$impressao_aso->data_realizacao != '') ? @$impressao_aso->data_realizacao : ''; ?>
                             </td>
 
                         </tr>
@@ -282,7 +320,7 @@
             </tr>
             <tr >
                 <td colspan="2" style="min-height: 50px;">
-                    <?= @$impressao_aso->avaliacao_clinica ?>    
+<?= @$impressao_aso->avaliacao_clinica ?>    
                 </td>
             </tr>
             <tr>
@@ -295,7 +333,7 @@
                         </tr>
                         <tr>
                             <td class="td20p">
-                                <div class="<?=(@$impressao_aso->questao_um == 'APTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_um == 'APTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -303,7 +341,7 @@
 
                             </td>
                             <td >
-                                <div class="<?=(@$impressao_aso->questao_um == 'INAPTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_um == 'INAPTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -326,7 +364,7 @@
                         </tr>
                         <tr>
                             <td class="td20p">
-                                <div class="<?=(@$impressao_aso->questao_dois == 'APTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_dois == 'APTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -334,7 +372,7 @@
 
                             </td>
                             <td class="td20p">
-                                <div class="<?=(@$impressao_aso->questao_dois == 'INAPTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_dois == 'INAPTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -342,7 +380,7 @@
 
                             </td>
                             <td >
-                                <div class="<?=(@$impressao_aso->questao_dois == 'NÃO MAPEADO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_dois == 'NÃO MAPEADO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -364,7 +402,7 @@
                         </tr>
                         <tr>
                             <td class="td20p">
-                                <div class="<?=(@$impressao_aso->questao_tres == 'APTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_tres == 'APTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -372,7 +410,7 @@
 
                             </td>
                             <td class="td20p">
-                                <div class="<?=(@$impressao_aso->questao_tres == 'INAPTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_tres == 'INAPTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -380,7 +418,7 @@
 
                             </td>
                             <td >
-                                <div class="<?=(@$impressao_aso->questao_tres == 'NÃO MAPEADO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_tres == 'NÃO MAPEADO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -397,7 +435,7 @@
                     <table style="width: 100%">
                         <tr>
                             <td class="td40p">
-                                <div class="<?=(@$impressao_aso->questao_quatro == 'APTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_quatro == 'APTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -405,7 +443,7 @@
 
                             </td>
                             <td class="td40p">
-                                <div class="<?=(@$impressao_aso->questao_quatro == 'INAPTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_quatro == 'INAPTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -413,7 +451,7 @@
 
                             </td>
                             <td >
-                                <div class="<?=(@$impressao_aso->questao_quatro == 'NÃO MAPEADO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_quatro == 'NÃO MAPEADO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -435,7 +473,7 @@
                         </tr>
                         <tr>
                             <td class="td20p">
-                                <div class="<?=(@$impressao_aso->questao_cinco == 'APTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_cinco == 'APTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -443,7 +481,7 @@
 
                             </td>
                             <td class="td20p">
-                                <div class="<?=(@$impressao_aso->questao_cinco == 'INAPTO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_cinco == 'INAPTO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -451,7 +489,7 @@
 
                             </td>
                             <td >
-                                <div class="<?=(@$impressao_aso->questao_cinco == 'NÃO MAPEADO')? 'caixaPreta': 'caixaBranca'?>">
+                                <div class="<?= (@$impressao_aso->questao_cinco == 'NÃO MAPEADO') ? 'caixaPreta' : 'caixaBranca' ?>">
                                     <!--Quadrado PRETO--> &nbsp; &nbsp;&nbsp;
                                 </div>
 
@@ -491,12 +529,12 @@
                         <tr  class="trAlturaMaior">
                             <td>
                                 <p>
-                                    <?=@$relatorio[0]->medico?>  CRM: <?=@$relatorio[0]->conselho?>
+<?= @$relatorio[0]->medico ?>  CRM: <?= @$relatorio[0]->conselho ?>
                                 </p>
                                 <p>
-                                    <?=@$relatorio[0]->telefone?>/<?=@$relatorio[0]->celular?>
+<?= @$relatorio[0]->telefone ?>/<?= @$relatorio[0]->celular ?>
                                 </p>
-                                
+
                             </td>
                         </tr>
                     </table>

@@ -220,7 +220,8 @@ class guia_model extends Model {
                             ep.percentual_multiplo,
                             ep.ajuste_pagamento_procedimento,
                             ep.valor_autorizar,
-                            ep.botao_ficha_convenio
+                            ep.botao_ficha_convenio,
+                            ep.impressao_cimetra
                             
                             ');
         $this->db->from('tb_empresa e');
