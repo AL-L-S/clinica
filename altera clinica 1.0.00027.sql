@@ -363,3 +363,4 @@ CREATE TABLE ponto.tb_laudo_tergometrico
   paciente_id integer,
   laudo_tergometrico_id serial primary key  
 );
+ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN tipo_aso text;
