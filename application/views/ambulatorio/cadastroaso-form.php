@@ -112,13 +112,13 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             <div>
 
                 <label>Setor</label>
-                <select name="setor" id="setor" class="size2">
+                <select name="setor" id="setor" class="size2" required="">
                     
                 </select>
             </div>
             <div>
                 <label>Função</label>
-                <select name="funcao" id="funcao" class="size2">
+                <select name="funcao" id="funcao" class="size2" required="">
 
 
                 </select>
@@ -129,7 +129,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             </div>
             <div>
                 <label>Médico</label>
-                <select name="medico" id="medico" class="size2">
+                <select name="medico" id="medico" class="size2" required="">
                     <option value="">Selecione</option>
                     <? foreach ($medicos as $item) : ?>
                         <option value="<?= $item->operador_id; ?>" <?= (@$informacao_aso[0]->medico_responsavel == $item->operador_id) ? 'selected' : '' ?>>
@@ -144,7 +144,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             </div>
             <div>
                 <label>Sala</label>
-                <select  name="sala1" id="sala1" class="size2">
+                <select  name="sala1" id="sala1" class="size2" required="">
                     <option value="">Selecione</option>
                     <? foreach ($salas as $item) : ?>
                         <option value="<?= $item->exame_sala_id; ?>"<?= (@$config->sala1 == $item->exame_sala_id) ? 'selected': '' ?>>

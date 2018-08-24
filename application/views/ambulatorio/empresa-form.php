@@ -882,6 +882,12 @@
                             <dd>
                                 <input type="checkbox" id="gerente_recepcao_top_saude" name="gerente_recepcao_top_saude" <? if (@$obj->_gerente_recepcao_top_saude == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ativando essa opção, irá aparecer a opção de impressão para papel carta.">Impressão Papel Carta - Cimetra</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="impressao_cimetra" name="impressao_cimetra" <? if (@$obj->_impressao_cimetra == 't') echo "checked"; ?>/> 
+                            </dd>
                         </fieldset>
                     <? } ?>
                 </dl>    

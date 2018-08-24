@@ -194,7 +194,8 @@ class procedimento_model extends Model {
         $this->db->select('procedimento_tuss_id,
                             nome,
                             codigo,
-                            descricao');
+                            descricao,
+                            tipo_aso');
         $this->db->from('tb_procedimento_tuss');
         $this->db->where("ativo", 't');
         $this->db->orderby("nome");

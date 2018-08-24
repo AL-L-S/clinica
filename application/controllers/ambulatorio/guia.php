@@ -195,6 +195,8 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
 
 
 
@@ -203,22 +205,23 @@ class Guia extends BaseController {
 
     function cadastroaso($paciente_id) {
         $data['paciente_id'] = $paciente_id;
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
 
 
         $this->loadView('ambulatorio/cadastroaso-lista', $data);
     }
 
     function gravarcadastroaso($paciente_id) {
-
-        $aso_id = $this->guia->gravarcadastroaso($paciente_id);
-
+//        
+//        if (true) {
         if (!$_POST['cadastro_aso_id'] > 0) {
 
             $paciente_id = $_POST['txtPacienteId'];
 
             $resultadoguia = $this->guia->listarguia($paciente_id);
 
-            if ($_POST['medico_responsavel'] != '') {
+            if ($_POST['medico'] != '') {
 
                 if ($resultadoguia == null) {
                     $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
@@ -227,13 +230,23 @@ class Guia extends BaseController {
                 }
 
                 $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
+//                    
+                if ($retorno2 == -1) {
+                    $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
+                    $this->session->set_flashdata('message', $data['mensagem']);
+                    redirect(base_url() . "ambulatorio/guia/carregarcadastroaso/$paciente_id/0");
+                } else {
+                    $aso_id = $this->guia->gravarcadastroaso($paciente_id);
+                }
             }
+
             foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
 
 
                 $procedimentopercentual = $procedimento_convenio_id;
-                $medicopercentual = $_POST['medico_responsavel'];
+                $medicopercentual = $_POST['medico'];
                 $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
+
                 if (count($percentual) == 0) {
                     $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
                 }
@@ -244,7 +257,7 @@ class Guia extends BaseController {
 
                 $resultadoguia = $this->guia->listarguia($paciente_id);
 
-                if ($_POST['medico_responsavel'] != '') {
+                if ($_POST['medico'] != '') {
 
                     if ($resultadoguia == null) {
                         $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
@@ -299,7 +312,7 @@ class Guia extends BaseController {
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($medico_id);
-//        $data['risco'] = $this->saudeocupacional->listarrisco();
+
 
 
 

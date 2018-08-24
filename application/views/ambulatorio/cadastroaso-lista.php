@@ -1,4 +1,3 @@
-
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
         <a href="<?php echo base_url() ?>ambulatorio/guia/carregarcadastroaso/<?=$paciente_id?>/0/">
@@ -26,7 +25,8 @@
                     </thead>
                 </form>
                 <?php
-//                        echo'<pre>'; var_dump($paciente_id);die;
+                
+                
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->guia->listarcadastroaso($paciente_id);
                 $total = $consulta->count_all_results();
@@ -54,6 +54,8 @@
                                     </div>
 
                                 </td>
+                               
+                                <?if ($permissoes[0]->impressao_cimetra == 't') {?>
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
 
                                     <div class="bt_link">
@@ -61,6 +63,16 @@
                                     </div>
 
                                 </td>
+                                <? } else{ ?>
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
+
+                                    <div class="bt_link">
+                                        <a href="<?= base_url() ?>ambulatorio/guia/impressaoaso/<?= $item->cadastro_aso_id; ?>">Imprimir</a>
+                                    </div>
+
+                                </td>
+                                
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
                                     <? //if($item->aprovado == 'f'){?>
                                     <div class="bt_link">

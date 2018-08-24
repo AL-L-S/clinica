@@ -1639,6 +1639,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('relatorios_clinica_med', 'f');
                     }
+                    if (isset($_POST['impressao_cimetra'])) {
+                        $this->db->set('impressao_cimetra', 't');
+                    } else {
+                        $this->db->set('impressao_cimetra', 'f');
+                    }
                     if (isset($_POST['botao_ficha_convenio'])) {
                         $this->db->set('botao_ficha_convenio', 't');
                     } else {
@@ -2132,6 +2137,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('relatorios_clinica_med', 'f');
                     }
+                    if (isset($_POST['impressao_cimetra'])) {
+                        $this->db->set('impressao_cimetra', 't');
+                    } else {
+                        $this->db->set('impressao_cimetra', 'f');
+                    }
                     if (isset($_POST['botao_ficha_convenio'])) {
                         $this->db->set('botao_ficha_convenio', 't');
                     } else {
@@ -2288,6 +2298,7 @@ class empresa_model extends Model {
                                ep.ajuste_pagamento_procedimento,
                                ep.retirar_preco_procedimento,
                                ep.relatorios_clinica_med,
+                               ep.impressao_cimetra,
                                ep.gerente_recepcao_top_saude,
                                ep.botao_ficha_convenio
                                ');
@@ -2434,6 +2445,7 @@ class empresa_model extends Model {
             $this->_retirar_preco_procedimento = $return[0]->retirar_preco_procedimento;
             $this->_relatorios_clinica_med = $return[0]->relatorios_clinica_med;
             $this->_botao_ficha_convenio = $return[0]->botao_ficha_convenio;
+            $this->_impressao_cimetra = $return[0]->impressao_cimetra;
         } else {
             $this->_empresa_id = null;
         }

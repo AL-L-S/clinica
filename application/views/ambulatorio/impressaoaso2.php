@@ -35,26 +35,48 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             <?
-            foreach ($impressao_aso->riscos as $key => $item) :
-                $risco = $this->saudeocupacional->carregarriscoaso($item);
-                ?>
-                <? if($key == count($impressao_aso->riscos)-1){echo $risco[0]->descricao_risco;}
-                else{echo $risco[0]->descricao_risco . ", ";} ?>                
+            if (isset($impressao_aso->riscos)) {
+                foreach ($impressao_aso->riscos as $key => $item) :
+                    $risco = $this->saudeocupacional->carregarriscoaso($item);
+                    ?>
+                    <? if ($key == count($impressao_aso->riscos) - 1) {
+                        echo $risco[0]->descricao_risco;
+                    } else {
+                        echo $risco[0]->descricao_risco . ", ";
+                    }
+                    ?>                
 
-            <? endforeach; ?>
+            <?
+            endforeach;
+        } else {
+            echo "SEM RISCOS OCUP. ESPECÍFICOS";
+        }
+        ?>
         </td>    
     </tr>
     <tr height="70px">
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-            <?
-            foreach ($impressao_aso->procedimento1 as $key => $item) :
-                $procedimentos = $this->procedimento->listarprocedimentoaso($item);
-                ?>
-                <? if($key == count($impressao_aso->procedimento1)-1){ echo $procedimentos[0]->nome;}
-                else{ echo $procedimentos[0]->nome . ", ";} ?>
             
-            <? endforeach; ?>
+            <?
+                                if (isset($impressao_aso->procedimento1)) {
+                                    foreach ($impressao_aso->procedimento1 as $key => $item) :
+                                        $procedimentos = $this->procedimento->listarprocedimentoaso($item);
+                                        ?>
+                                        <?
+                                        if ($key == count($impressao_aso->procedimento1) - 1) {
+                                            echo $procedimentos[0]->nome;
+                                        } else {
+                                            echo $procedimentos[0]->nome . ", ";
+                                        }
+                                        ?>
+
+                                        <?
+                                    endforeach;
+                                } else {
+                                    echo "NENHUM EXAME COMPLEMENTAR NECESSÁRIO";
+                                }
+                                ?>
         </td>
     </tr>
     <tr height="30px">
