@@ -14917,6 +14917,7 @@ ORDER BY ae.paciente_credito_id)";
 
     function gravarconsultaaso($ambulatorio_guia_id, $percentual, $percentual_laboratorio, $procedimento_convenio_id) {
         try {
+            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 

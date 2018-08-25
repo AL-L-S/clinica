@@ -195,8 +195,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
-        $empresa_id = $this->session->userdata('empresa_id');
-        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+        
 
 
 
@@ -548,7 +547,7 @@ class Guia extends BaseController {
             } elseif ($grupo == "MAMOGRAFIA") {
                 $this->load->View('ambulatorio/impressaofichavaleimagemmamografia', $data);
             } elseif ($grupo == "RM") {
-                $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
+                $this->load->View('ambulatorio/impressaofichavaleimagemrm', $data);
             } elseif ($grupo == "RX(TORAX)") {
                 $this->load->View('ambulatorio/impressaofichavaleimagemrxtorax', $data);
             } else {
