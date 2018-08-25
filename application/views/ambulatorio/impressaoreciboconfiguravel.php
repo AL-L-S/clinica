@@ -57,14 +57,14 @@ $corpo = str_replace("_CPF_", $paciente['0']->cpf, $corpo);
 
 $corpo = str_replace("_valor_extenso_", $extenso, $corpo);
 
-$corpo = str_replace("_primeiro_procedimento_", $exames['0']->procedimento, $corpo);
-$corpo = str_replace("_primeiro_valor_total_", number_format($exames['0']->valor_total, 2, ',', '.'), $corpo);
-$corpo = str_replace("_primeiro_valor_", number_format($exames['0']->valor_total / $exames['0']->quantidade, 2, ',', '.'), $corpo);
+$corpo = str_replace("_primeiro_procedimento_", @$exames['0']->procedimento, $corpo);
+$corpo = str_replace("_primeiro_valor_total_", number_format(@$exames['0']->valor_total, 2, ',', '.'), $corpo);
+@$corpo = str_replace("_primeiro_valor_", number_format(@$exames['0']->valor_total / @$exames['0']->quantidade, 2, ',', '.'), $corpo);
 
-$corpo = str_replace("_primeira_quantidade_", $exames['0']->quantidade, $corpo);
+$corpo = str_replace("_primeira_quantidade_", @$exames['0']->quantidade, $corpo);
 
 $corpo = str_replace("_recibo_total_", number_format($total, 2, ',', '.'), $corpo);
-$corpo = str_replace("_procedimentos_", $procedimentos, $corpo);
+$corpo = str_replace("_procedimentos_", @$procedimentos, $corpo);
 $corpo = str_replace("_data_", substr($paciente['0']->data_cadastro, 8, 2) . '/' . substr($paciente['0']->data_cadastro, 5, 2) . '/' . substr($paciente['0']->data_cadastro, 0, 4), $corpo);
 
 

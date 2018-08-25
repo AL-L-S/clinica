@@ -4,7 +4,14 @@
         <a href="<?= base_url() ?>ambulatorio/procedimento">
             Voltar
         </a>
-
+        <?
+        $procedimentos_array = array();
+        foreach($procedimentoagrupados as $item){
+            array_push($procedimentos_array, $item->procedimento_tuss_id);
+        }
+//        var_dump($procedimentos_array); die;
+        
+        ?>
     </div>
     <div id="accordion">
         <h3 class="singular"><a href="#">Cadastro de Agrupador Procedimento</a></h3>
@@ -71,7 +78,7 @@
                                             <td><?= $item->grupo ?></td>
 
                                             <td class="add_conv_sec">
-                                                <input type="checkbox" name="add_agrupador[<?= $i ?>]"  id="add_conv_sec<?= $i ?>" class="checkbox" colspan="2"/>
+                                                <input <?=(in_array($item->procedimento_tuss_id,$procedimentos_array))? 'checked': ''; ?> type="checkbox" name="add_agrupador[<?= $i ?>]"  id="add_conv_sec<?= $i ?>" class="checkbox" colspan="2"/>
                                             </td>
                                         </tr>
 

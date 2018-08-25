@@ -97,6 +97,7 @@ class Procedimento extends BaseController {
         $data['obj'] = $obj_procedimento;
         $data['procedimento'] = $this->procedimento->listarprocedimento3();
         $data['procedimentoagrupados'] = $this->procedimento->listarprocedimentoagrupados($procedimento_tuss_id);
+//        var_dump($data['procedimentoagrupados']); die;
         $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/agrupadorprocedimento-form', $data);
     }

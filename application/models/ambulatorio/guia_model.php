@@ -7638,6 +7638,11 @@ class guia_model extends Model {
                             ae.forma_pagamento2,
                             ae.forma_pagamento3,
                             ae.forma_pagamento4,
+                            ae.valor1,
+                            ae.valor2,
+                            ae.valor3,
+                            ae.valor4,
+                            ae.desconto,
                             p.sexo,
                             p.nascimento,
                             p.cpf,
@@ -8065,6 +8070,23 @@ class guia_model extends Model {
         $this->db->join('tb_cid cid', 'cid.co_cid = ae.cid', 'left');
         $this->db->where("ae.agenda_exames_id", $exames_id);
         $this->db->where("ae.cancelada", "f");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarexameanterior($paciente_id, $data_exame = null) {
+
+        $this->db->select('ae.agenda_exames_id,
+                            ae.agenda_exames_nome_id,
+                            ae.data
+                            ');
+        $this->db->from('tb_agenda_exames ae');
+        
+        $this->db->where("ae.paciente_id", $paciente_id);
+        $this->db->where("ae.data <", $data_exame);
+        $this->db->where("ae.cancelada", "f");
+        $this->db->where("ae.realizada", "t");
+        $this->db->where("ae.confirmado", "t");
         $return = $this->db->get();
         return $return->result();
     }
@@ -15713,9 +15735,9 @@ ORDER BY ae.paciente_credito_id)";
             if (isset($_POST['data_faturar'])) {
                 $this->db->set('data_faturar', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_faturar']))));
             }
-//            if (isset($_POST['data_entrega'])) {
-//                $this->db->set('data_entrega', $_POST['data_entrega']);
-//            }
+            if (isset($_POST['data_entrega'])) {
+                $this->db->set('data_entrega', $_POST['data_entrega']);
+            }
             $this->db->set('medico_agenda', $_POST['medico_agenda']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
