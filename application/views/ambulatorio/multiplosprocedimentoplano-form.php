@@ -59,6 +59,7 @@
 <style>
     .divTabela { border: 1pt solid #aaa; border-radius: 10pt; padding: 5pt; }
     .linhaTabela { border-bottom: 1pt solid #aaa; }
+    .base { max-height: 400pt; overflow-y: auto; }
 </style>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>

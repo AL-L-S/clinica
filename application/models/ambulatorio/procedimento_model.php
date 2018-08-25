@@ -293,6 +293,7 @@ class procedimento_model extends Model {
                     $this->db->where("ativo", 't');
                     $return = $this->db->get()->result();
                     array_push($procedimentos_retirar_id, $_POST['procedimento_id'][$key]);
+
                     if (count($return) == 0) {
 
                         $this->db->set('procedimento_agrupador_id', $procedimento_agrupador_id);
@@ -301,29 +302,32 @@ class procedimento_model extends Model {
                         $this->db->set('operador_cadastro', $operador_id);
                         $this->db->insert('tb_procedimentos_agrupados_ambulatorial');
                     }
-
-                    $this->db->set('ativo', 'f');
-                    $this->db->set('data_cadastro', $horario);
-                    $this->db->set('operador_cadastro', $operador_id);
-                    $this->db->where_not_in('procedimento_tuss_id', $procedimentos_retirar_id);
-                    $this->db->where('procedimento_agrupador_id', $procedimento_agrupador_id);
-                    $this->db->update('tb_procedimentos_agrupados_ambulatorial');
                 } else {
                     continue;
                 }
             }
 
+            if (count($procedimentos_retirar_id) > 0) {
+                $this->db->set('ativo', 'f');
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where_not_in('procedimento_tuss_id', $procedimentos_retirar_id);
+                $this->db->where('ativo', 't');
+                $this->db->where('procedimento_agrupador_id', $procedimento_agrupador_id);
+                $this->db->update('tb_procedimentos_agrupados_ambulatorial');
+            }
+
             if ($_POST['agrupador_grupo'] != '') {
                 // Caso tenha definido um grupo para o agrupador ele irá setar pra falso todos os procedimentos que não forem daquele grupo
-                $sql = "UPDATE ponto.tb_procedimentos_agrupados_ambulatorial paa
-                        SET ativo = 'f', data_atualizacao = '{$horario}', operador_atualizacao = {$operador_id}
-                        FROM ponto.tb_procedimentos_agrupados_ambulatorial paa2
-                        INNER JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = paa2.procedimento_tuss_id
-                        WHERE paa2.procedimentos_agrupados_ambulatorial_id = paa.procedimentos_agrupados_ambulatorial_id
-                        AND pt.grupo != '" . $_POST['agrupador_grupo'] . "'
-                        AND paa2.ativo = 't'
-                        AND paa2.procedimento_agrupador_id = {$procedimento_agrupador_id}";
-                $this->db->query($sql);
+//                $sql = "UPDATE ponto.tb_procedimentos_agrupados_ambulatorial paa
+//                        SET ativo = 'f', data_atualizacao = '{$horario}', operador_atualizacao = {$operador_id}
+//                        FROM ponto.tb_procedimentos_agrupados_ambulatorial paa2
+//                        INNER JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = paa2.procedimento_tuss_id
+//                        WHERE paa2.procedimentos_agrupados_ambulatorial_id = paa.procedimentos_agrupados_ambulatorial_id
+//                        AND pt.grupo != '" . $_POST['agrupador_grupo'] . "'
+//                        AND paa2.ativo = 't'
+//                        AND paa2.procedimento_agrupador_id = {$procedimento_agrupador_id}";
+//                $this->db->query($sql);
             }
 
             return $procedimento_agrupador_id;
