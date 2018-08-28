@@ -475,7 +475,9 @@ class Guia extends BaseController {
         $data['emissao'] = date("d-m-Y");
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
+//        $data['relatorio'] = $this->guia->impressaoaso($cadastro_aso_id);
         $data['exame'] = $this->guia->listarexame($exames_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         @$data['cabecalho_config'] = $data['cabecalho'][0]->cabecalho;
         @$data['rodape_config'] = $data['cabecalho'][0]->rodape;
@@ -486,13 +488,11 @@ class Guia extends BaseController {
         } else {
             @$data['exameanterior'] = array();
         }
-
+        
         $grupo = $data['exame'][0]->grupo;
         $data['ordem_atendimento'] = $this->exame->listarexamesficha();
         $data['grupos'] = $this->guia->listargrupoficha($guia_id, $grupo);
-//        echo '<pre>';
-//        var_dump($data['lista']); die;
-//        $grupo = $data['exame'][0]->grupo;
+        
         $dinheiro = $data['exame'][0]->dinheiro;
 
         $data['exames'] = $this->guia->listarexamesguia($guia_id);
@@ -552,6 +552,15 @@ class Guia extends BaseController {
                 $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
             } else {
                 $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
+            }
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 12) { //CIMETRA 
+            if ($grupo == "AUDIOMETRIA") {
+                $this->load->View('ambulatorio/impressaofichaavalaudiologica', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaofichageral', $data);
             }
         }
 

@@ -65,7 +65,7 @@ $empresa_p = $this->guia->listarempresapermissoes();
                             <? endforeach; ?>
                         </select>
                     </dd>
-                    <? if (($perfil_id == 1 || $perfil_id == 10) && $empresa_p[0]->tecnica_promotor == 't') { ?>
+                    <? if (($perfil_id == 1 || $perfil_id == 10) || $empresa_p[0]->tecnica_promotor == 'f') { ?>
                         <dt>
                             <label>Recomendação</label>
                         </dt>
