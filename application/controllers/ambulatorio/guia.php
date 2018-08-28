@@ -549,7 +549,7 @@ class Guia extends BaseController {
             } elseif ($grupo == "RM") {
                 $this->load->View('ambulatorio/impressaofichavaleimagemrm', $data);
             } elseif ($grupo == "RX(TORAX)") {
-                $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
+                $this->load->View('ambulatorio/impressaofichavaleimagemrxtorax', $data);
             } else {
                 $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
             }
@@ -1289,7 +1289,7 @@ class Guia extends BaseController {
                             $valor = $value->valortotal;
                         }
                         $i++;
-                        $this->guia->gravarexamesagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo);
+                        $this->guia->gravarexamesagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo, $value->quantidade_agrupador);
                     }
                 }
             }
@@ -1357,7 +1357,8 @@ class Guia extends BaseController {
                     $this->session->set_flashdata('message', $data['mensagem']);
                 } else {
                     $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
-
+                    
+                    
                     if ($agrupador[0]->agrupador != 't') {
                         $retorno = $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
                         if (@$retorno["cod"] == -1) {
@@ -1372,10 +1373,10 @@ class Guia extends BaseController {
                     } else {
                         // Cria um agrupador para o pacote
                         $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
-
+                       
                         // Traz os procedimentos desse pacote bem como o valor
                         $pacoteProc = $this->guia->listarprocedimentospacote($_POST['procedimento1']);
-
+//                         var_dump($agrupador); die;
                         if ($pacoteProc[0]->valor_pacote_diferenciado == 't') {
                             $vl_pacote = 0;
                             $valorTotal = 0;
@@ -1407,7 +1408,7 @@ class Guia extends BaseController {
                                 $valor = $value->valortotal;
                             }
                             $i++;
-                            $this->guia->gravaratendimentoagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo);
+                            $this->guia->gravaratendimentoagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo, $value->quantidade_agrupador);
                         }
                     }
                 }
@@ -1521,7 +1522,7 @@ class Guia extends BaseController {
                             $valor = $value->valortotal;
                         }
                         $i++;
-                        $this->guia->gravarconsultaagrupador($ambulatorio_guia, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo);
+                        $this->guia->gravarconsultaagrupador($ambulatorio_guia, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo, $value->quantidade_agrupador);
                     }
                 }
             }

@@ -2033,18 +2033,20 @@ class Exame extends BaseController {
         redirect(base_url() . "ambulatorio/exame/listarexamerealizando");
     }
 
-    function gastosdesala($exames_id, $convenio_id, $sala_id = null) {
+    function gastosdesala($exames_id, $convenio_id, $sala_id = null, $mensagem = null) {
         $data['convenio_id'] = $convenio_id;
         $data['sala_id'] = $sala_id;
+        $data['mensagem'] = $mensagem;
 
         $data['armazem_id'] = $this->exame->listararmazemsala($sala_id);
         $armazem_id = $data['armazem_id'];
         $data['paciente'] = $this->exame->listarpacientegastos($exames_id);
+        $data['procedimentoagrupados'] = $this->procedimento->listarprocedimentoagrupadosgastodesala($convenio_id);
         $data['produtos'] = $this->exame->listarprodutossalagastos($convenio_id, $armazem_id);
         $data['guia_id'] = $this->exame->listargastodesalaguia($exames_id);
         $data['produtos_gastos'] = $this->exame->listaritensgastos($data['guia_id']);
         $data['laudo'] = $this->exame->mostrarlaudogastodesala($exames_id);
-//        echo '<pre>'; var_dump($data['produtos']); die;
+//        echo '<pre>'; var_dump($data['procedimentoagrupados']); die;
         $data['exames_id'] = $exames_id;
         $this->load->View('ambulatorio/gastosdesala', $data);
     }
@@ -2052,28 +2054,72 @@ class Exame extends BaseController {
     function gravargastodesala() {
 
         $exame_id = $_POST['exame_id'];
-//        var_dump($exame_id);
+//        var_dump($_POST);
 //        die;
         $sala_id = $_POST['sala_id'];
 //        $convenio_id = $_POST['convenio_id'];
-        $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
-        $convenio_id = $data['agenda_exames'][0]->convenio_id;
-        $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id'], $convenio_id);
-        $valor = $data['procedimento'][0]->valortotal;
+        $mensagem = '';
+        if ($_POST['pacote_id'] > 0) {
+
+            $procedimentos_pacote = $this->procedimento->listarprocedimentoagrupadosgastodesalagravar();
+
+//            echo '<pre>';
+//            var_dump($procedimentos_pacote);
+//            die;
+
+            foreach ($procedimentos_pacote as $item) {
+
+                $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+                $convenio_id = $data['agenda_exames'][0]->convenio_id;
+                $data['procedimento'] = $this->exame->listaprocedimento($item->procedimento_tuss_id, $convenio_id);
+                $valor = $data['procedimento'][0]->valortotal;
 //        var_dump($data['procedimento']); die;
-        $gasto_id = $this->exame->gravargastodesala($valor);
-        if (isset($_POST['faturar'])) {
+                $produto_id = $item->estoque_produto_id;
+                $quantidade = $item->quantidade_agrupador;
+                $gasto_id = $this->exame->gravargastodesalapacote($valor, $produto_id, $quantidade);
+                if ($gasto_id > 0) {
+//                    if (isset($_POST['faturar'])) {
 
 
-            $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
-            $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
+                    $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
+                    $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
 
 //            var_dump($data['procedimento']); die;
-            if (count($data['procedimento']) > 0) {
-                $this->exame->faturargastodesala($data['procedimento'][0], $gasto_id);
+                    if (count($data['procedimento']) > 0) {
+                        $this->exame->faturargastodesalapacote($data['procedimento'][0], $gasto_id, $quantidade);
+                    }
+//                    }
+                } else {
+                    $mensagem = 1;
+                }
             }
+
+            $this->session->set_flashdata('message', $mensagem);
+            redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id/$mensagem");
+        } elseif ($_POST['produto_id'] > 0) {
+
+            $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+            $convenio_id = $data['agenda_exames'][0]->convenio_id;
+            $data['procedimento'] = $this->exame->listaprocedimento($_POST['procedimento_id'], $convenio_id);
+            $valor = $data['procedimento'][0]->valortotal;
+//        var_dump($data['procedimento']); die;
+            $gasto_id = $this->exame->gravargastodesala($valor);
+            if (isset($_POST['faturar'])) {
+
+
+                $_POST['medicoagenda'] = $data['agenda_exames'][0]->medico_agenda;
+                $_POST['tipo'] = $data['agenda_exames'][0]->tipo;
+
+//            var_dump($data['procedimento']); die;
+                if (count($data['procedimento']) > 0) {
+                    $this->exame->faturargastodesala($data['procedimento'][0], $gasto_id);
+                }
+            }
+        } else {
+            $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+            $convenio_id = $data['agenda_exames'][0]->convenio_id;
+            redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id");
         }
-        redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id");
     }
 
     function excluirgastodesala($gasto_id, $exame_id, $convenio_id, $sala_id) {

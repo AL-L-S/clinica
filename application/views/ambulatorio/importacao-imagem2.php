@@ -21,7 +21,7 @@
                             if ($arquivo_pasta != false):
                                 foreach ($arquivo_pasta as $value) :
                                     ?>
-                                    <li class="ui-state-default"><input type="hidden"  value="<?= $value ?>" name="teste[]" class="size2" />
+                                    <li class="" style="height: 115px"><input type="hidden"  value="<?= $value ?>" name="teste[]" class="size2" />
                                         <a href="#" onclick="javascript:window.open('<?= base_url() . "ambulatorio/laudo/alterarnomeimagem/" . $exame_id . "/" . $value ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=800');">
                                             Nome
                                         </a>
@@ -87,9 +87,9 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-                                    $(document).ready(function () {
-                                        $('#sortable').sortable();
-                                    });
+                                            $(document).ready(function () {
+                                                $('#sortable').sortable();
+                                            });
 
 
 

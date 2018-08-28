@@ -47,8 +47,8 @@
 
                 <div>
                     <label>Idade</label>
-                    <? 
-                    if($paciente['0']->nascimento != '') { 
+                    <?
+                    if ($paciente['0']->nascimento != '') {
                         $data_atual = date('Y-m-d');
                         $data1 = new DateTime($data_atual);
                         $data2 = new DateTime($paciente[0]->nascimento);
@@ -85,10 +85,11 @@
                                     </a>
                                 </th>
 
-                                <? 
-                                if ($perfil_id != 12) { 
+                                <?
+                                if ($perfil_id != 12) {
                                     if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') {
-                                        if ($botao_faturar_guia == 't') { ?>
+                                        if ($botao_faturar_guia == 't') {
+                                            ?>
                                             <th class="tabela_header">
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguia/" . $guia_id; ?> ', '_blank', 'width=1000,height=600');">F. Guia</a>
@@ -103,10 +104,10 @@
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia_id; ?> ', '_blank', 'width=1000,height=600');">F. Proc</a>
                                                 </div>
                                             </th>  
-                                        <?                                         
+                                            <?
                                         }
-                                    }
-                                    else { ?>
+                                    } else {
+                                        ?>
                                         <th class="tabela_header">
                                             <div class="bt_link">
                                                 <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentospersonalizados/" . $guia_id; ?> ', '_blank', 'width=1000,height=600');">F. Proc</a>
@@ -114,7 +115,7 @@
                                         </th>  
                                         <?
                                     }
-                                } 
+                                }
                                 ?>
 
                                 <th class="tabela_header"><div class="bt_link">
@@ -252,10 +253,10 @@
                                             </td>
                                         <? } ?>
 
-                                                                                                                                                                                                                                                                                                                                                                                                <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                                                                                                                                                                                                                                                                                                                                                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
-                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                        </td>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                <!--                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/editarfichaxml/<?= $paciente['0']->paciente_id; ?>/<?= $item->agenda_exames_id ?>');">Editar Ficha RM
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </td>-->
                                         <? if ($item->grupo != 'MEDICAMENTO' && $item->grupo != 'MATERIAL') { ?>
 
                                             <? if ($empresapermissoes[0]->retirar_botao_ficha == 'f') { ?>
@@ -294,7 +295,7 @@
 
                                             <? if (($item->faturado == "f" || $perfil_id == 1 || $perfil_id == 13 || $perfil_id == 5 || $perfil_id == 18) && ($item->dinheiro == "t")) { ?>
                                                 <? if ($perfil_id != 12) { ?>
-                                                    <? if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't'  || $item->procedimento_possui_ajuste_pagamento == 'f') { ?>
+                                                    <? if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't' || $item->procedimento_possui_ajuste_pagamento == 'f') { ?>
                                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');">Faturar</a>
                                                         </td>
@@ -308,8 +309,9 @@
                                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                 </td>
                                             <? } ?>
-                                        <? } 
-                                        else { ?>
+                                        <? } else {
+                                            ?>
+
                                             <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                 <a href="#" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaconvenioexame/$guia_id/$item->agenda_exames_id"; ?> ', '_blank', 'width=800,height=250');">N. Guia
 
@@ -320,6 +322,11 @@
 
                                                 </a>
                                             </td>
+                                            <? if ($perfil_id != 12) { ?>
+                                                <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');">Faturar</a>
+                                                </td>    
+                                            <? } ?>
 
                                         <? }
                                         ?>   

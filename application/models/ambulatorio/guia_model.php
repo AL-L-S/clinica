@@ -8081,7 +8081,7 @@ class guia_model extends Model {
                             ae.data
                             ');
         $this->db->from('tb_agenda_exames ae');
-        
+
         $this->db->where("ae.paciente_id", $paciente_id);
         $this->db->where("ae.data <", $data_exame);
         $this->db->where("ae.cancelada", "f");
@@ -13635,7 +13635,7 @@ ORDER BY ae.paciente_credito_id)";
         return $tipo[0]->tipo;
     }
 
-    function gravarexamesagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio, $grupo) {
+    function gravarexamesagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio, $grupo, $quantidade = 1) {
         try {
 //            var_dump($_POST); die;
             $horario = date("Y-m-d H:i:s");
@@ -13681,10 +13681,10 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
             }
             $this->db->set('valor', $valor);
-            $valortotal = $_POST['valor1'] * $_POST['qtde1'];
+            $valortotal = $_POST['valor1'] * $quantidade;
             $this->db->set('valor_total', $valor);
 //            $this->db->set('percentual_medico', $valor_percentual);
-            $this->db->set('quantidade', $_POST['qtde1']);
+            $this->db->set('quantidade', $quantidade);
             $this->db->set('autorizacao', $_POST['autorizacao1']);
             $this->db->set('guiaconvenio', $_POST['guiaconvenio']);
 //            $this->db->set('observacoes', $_POST['observacao']);
@@ -13711,6 +13711,9 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('confirmado', 't');
             $this->db->set('tipo', $grupo);
+            if ($grupo == 'MEDICAMENTO' || $grupo == 'MATERIAL') {
+                $this->db->set('realizada', 't');
+            }
             $this->db->set('ativo', 'f');
             $this->db->set('situacao', 'OK');
             $this->db->set('guia_id', $ambulatorio_guia_id);
@@ -13736,6 +13739,21 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('senha', md5($agenda_exames_id));
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
+
+                if ($grupo == 'MEDICAMENTO' || $grupo == 'MATERIAL') {
+
+                    $this->db->set('empresa_id', $empresa_id);
+                    $this->db->set('procedimento_tuss_id', $procedimento);
+                    $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+                    $this->db->set('medico_realizador', $_POST['medicoagenda']);
+                    $this->db->set('situacao', 'FINALIZADO');
+                    $this->db->set('guia_id', $ambulatorio_guia_id);
+                    $this->db->set('agenda_exames_id', $agenda_exames_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_exames');
+                    $exames_id = $this->db->insert_id();
+                }
             }
 
 //            if( (isset($_POST['indicacao']) && isset($_POST['indicacao_paciente'])) && ($_POST['indicacao'] != $_POST['indicacao_paciente'])){
@@ -13856,6 +13874,7 @@ ORDER BY ae.paciente_credito_id)";
         // 
         $this->db->select(" pc.valortotal as valor_pacote,
                             pc.valor_pacote_diferenciado,
+                            pa.quantidade_agrupador,,
                             pc2.valortotal,
                             pc2.procedimento_convenio_id,
                             pt.grupo");
@@ -13896,7 +13915,7 @@ ORDER BY ae.paciente_credito_id)";
         return $query->result();
     }
 
-    function gravaratendimentoagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio, $grupo) {
+    function gravaratendimentoagrupador($ambulatorio_guia_id, $medico_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio, $grupo, $quantidade = 1) {
         try {
 
             $horario = date("Y-m-d H:i:s");
@@ -13951,11 +13970,11 @@ ORDER BY ae.paciente_credito_id)";
                     $this->db->set('medico_agenda', $_POST['medicoagenda']);
                 }
                 $this->db->set('convenio_id', $_POST['convenio1']);
-                $this->db->set('quantidade', '1');
+                $this->db->set('quantidade', $quantidade);
                 if ($dinheiro == "t") {
                     if ($index == 1) {
                         $this->db->set('valor', $valor);
-                        $this->db->set('valor_total', $valor);
+                        $this->db->set('valor_total', $valor * $quantidade);
                         $this->db->set('confirmado', 't');
                     } else {
                         $this->db->set('valor', 0);
@@ -13965,11 +13984,11 @@ ORDER BY ae.paciente_credito_id)";
                 } else {
                     if ($index == 1) {
                         $this->db->set('valor', $valor);
-                        $this->db->set('valor_total', $valor);
+                        $this->db->set('valor_total', $valor * $quantidade);
                         $this->db->set('confirmado', 't');
                     } else {
                         $this->db->set('valor', $valor);
-                        $this->db->set('valor_total', $valor);
+                        $this->db->set('valor_total', $valor * $quantidade);
                         $this->db->set('confirmado', 'f');
                     }
                 }
@@ -13993,8 +14012,13 @@ ORDER BY ae.paciente_credito_id)";
                 }
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('quantidade', '1');
+                $this->db->set('quantidade', $quantidade);
                 $this->db->set('ativo', 'f');
+                if ($grupo == 'MEDICAMENTO' || $grupo == 'MATERIAL') {
+//                    Se for medicamento ou material já envia da sala de espera
+                    $this->db->set('realizada', 't');
+                }
+
                 $this->db->set('situacao', 'OK');
                 $this->db->set('guia_id', $ambulatorio_guia_id);
 
@@ -14021,6 +14045,21 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('senha', md5($agenda_exames_id));
                 $this->db->where('agenda_exames_id', $agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
+
+                if ($grupo == 'MEDICAMENTO' || $grupo == 'MATERIAL') {
+
+                    $this->db->set('empresa_id', $empresa_id);
+                    $this->db->set('procedimento_tuss_id', $procedimento);
+                    $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+                    $this->db->set('medico_realizador', $_POST['medicoagenda']);
+                    $this->db->set('situacao', 'FINALIZADO');
+                    $this->db->set('guia_id', $ambulatorio_guia_id);
+                    $this->db->set('agenda_exames_id', $agenda_exames_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_exames');
+                    $exames_id = $this->db->insert_id();
+                }
             }
         } catch (Exception $exc) {
             return -1;
@@ -14804,14 +14843,14 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->where('pc.convenio_id', $_POST['convenio1']);
             $this->db->where('pt.grupo', 'ASO');
             $result = $this->db->get()->result();
-            
+
             if (count($result) > 0) {
                 $valoraso = $result[0]->valortotal;
                 $procedimento_convenio_id = $result[0]->procedimento_convenio_id;
-                 $valortotal = $valoraso;
+                $valortotal = $valoraso;
             }
 
-           
+
 
 
             if (count($result) > 0) {
@@ -14917,7 +14956,7 @@ ORDER BY ae.paciente_credito_id)";
 
     function gravarconsultaaso($ambulatorio_guia_id, $percentual, $percentual_laboratorio, $procedimento_convenio_id) {
         try {
-            
+
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -15023,7 +15062,7 @@ ORDER BY ae.paciente_credito_id)";
         }
     }
 
-    function gravarconsultaagrupador($ambulatorio_guia_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio, $grupo) {
+    function gravarconsultaagrupador($ambulatorio_guia_id, $agrupador_id, $procedimento, $valor, $valor_diferenciado, $percentual, $percentual_laboratorio, $grupo, $quantidade = 1) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -15074,7 +15113,7 @@ ORDER BY ae.paciente_credito_id)";
 //            $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valor);
 //            $this->db->set('percentual_medico', $valor_percentual);
-            $this->db->set('quantidade', $_POST['qtde1']);
+            $this->db->set('quantidade', 1);
             $this->db->set('autorizacao', $_POST['autorizacao1']);
 //            $this->db->set('observacoes', $_POST['observacao']);
             if ($_POST['ordenador'] != "") {

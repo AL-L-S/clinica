@@ -6,11 +6,15 @@
         </a>
         <?
         $procedimentos_array = array();
-        foreach($procedimentoagrupados as $item){
+        $quantidade_array = array();
+
+        foreach ($procedimentoagrupados as $key => $item) {
             array_push($procedimentos_array, $item->procedimento_tuss_id);
+            $quantidade_array[$item->procedimento_tuss_id] = $item->quantidade_agrupador;
         }
 //        var_dump($procedimentos_array); die;
-        
+        $procedimentos_json = json_encode($procedimentos_array);
+//        $procedimentos_json = json_encode($quantidade_array);
         ?>
     </div>
     <div id="accordion">
@@ -24,6 +28,7 @@
                     </dt>
                     <dd>
                         <input type="hidden" name="txtprocedimentotussid" value="<?= @$obj->_procedimento_tuss_id; ?>" />
+                        <input type="hidden" name="array_proc" value='<?= @$procedimentos_json; ?>' />
                         <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_nome; ?>" required=""/>
                     </dd>
                     <dt>
@@ -33,7 +38,7 @@
                         <select name="agrupador_grupo" id="agrupador_grupo" required="">
                             <option value="">Selecione</option>
                             <? foreach ($grupos as $value) { ?>
-                                <option value="<?= $value->nome ?>" <?= ($value->nome == @$obj->_agrupador_grupo)? 'selected': ''?>>
+                                <option value="<?= $value->nome ?>" <?= ($value->nome == @$obj->_agrupador_grupo) ? 'selected' : '' ?>>
                                     <?= $value->nome ?>
                                 </option>
                             <? } ?>
@@ -41,16 +46,19 @@
                     </dd>
 <!--                    <p style="font-style: italic;">Obs: Caso seja informado um grupo para o agrupador, ele só irá salvar os procedimentos pertencentes a este grupo.</p>
                     --><br>
-                    
+
                     <div class="divTabela">
                         <div class='base'>
-                            
+
                             <div style="float: right; margin-bottom: 20pt;">
                                 <input type="text" id="procText" onkeypress="filtrarTabela()" placeholder="Pesquisar texto..." title="Pesquise pelo nome do procedimento ou pelo codigo">
                                 <select id="grupoText">
                                     <option value="">TODOS</option>
-                                    <? foreach ($grupos as $value) { 
-                                        if($value->nome == 'AGRUPADOR') continue; ?>
+                                    <?
+                                    foreach ($grupos as $value) {
+                                        if ($value->nome == 'AGRUPADOR')
+                                            continue;
+                                        ?>
                                         <option value="<?= $value->nome ?>"><?= $value->nome ?></option>
                                     <? } ?>
                                 </select>
@@ -62,11 +70,13 @@
                                     <tr>
                                         <th class="tabela_title">Procedimento</th>
                                         <th class="tabela_title">Grupo</th>
+                                        <th class="tabela_title">Quantidade</th>
                                         <th class="tabela_title">Adicionar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <? $i = 0;
+                                    <?
+                                    $i = 0;
                                     foreach ($procedimento as $item) {
                                         ?>
                                         <tr class="linhaTabela" id="<?= $item->grupo ?>">
@@ -76,13 +86,23 @@
                                             </td>
 
                                             <td><?= $item->grupo ?></td>
-
+                                            <?
+                                            if (in_array($item->procedimento_tuss_id, $procedimentos_array)) {
+                                                $quantidade = $quantidade_array[$item->procedimento_tuss_id];
+                                            } else {
+                                                $quantidade = '';
+                                            }
+                                            ?>
+                                            <td >
+                                                <input type="number" min="1" name="quantidade[<?= $i ?>]" value="<?= $quantidade ?>"   class="texto01" colspan="2"/>
+                                            </td>
                                             <td class="add_conv_sec">
-                                                <input <?=(in_array($item->procedimento_tuss_id,$procedimentos_array))? 'checked': ''; ?> type="checkbox" name="add_agrupador[<?= $i ?>]"  id="add_conv_sec<?= $i ?>" class="checkbox" colspan="2"/>
+                                                <input <?= (in_array($item->procedimento_tuss_id, $procedimentos_array)) ? 'checked' : ''; ?> type="checkbox" name="add_agrupador[<?= $i ?>]"  id="add_conv_sec<?= $i ?>" class="checkbox" colspan="2"/>
                                             </td>
                                         </tr>
 
-                                        <? $i++;
+                                        <?
+                                        $i++;
                                     }
                                     ?>
                                 </tbody>
@@ -97,8 +117,8 @@
                 <button type="button" id="btnVoltar" name="btnVoltar">Voltar</button>
             </form>
         </div>
-        
-        <? if(count($procedimentoagrupados) > 0){ ?>
+
+        <? if (count($procedimentoagrupados) > 0) { ?>
             <h3 class="singular"><a href="#">Lista Procedimentos Agrupados</a></h3>
             <div>
                 <table>
@@ -107,28 +127,30 @@
                             <th class="tabela_header">Codigo</th>
                             <th class="tabela_header">Nome</th>
                             <th class="tabela_header">Grupo</th>
+                            <th class="tabela_header">Quantidade</th>
                             <th colspan="3" class="tabela_header"></th>
                         </tr>
                     </thead>
                     <tbody>
-                    <? 
-                    $estilo_linha = "tabela_content01";
-                    foreach ($procedimentoagrupados as $item) { 
-                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                        ?>
-                                <tr>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
-                                    <td class="<?php echo $estilo_linha; ?>">
-                                        <a href="<?= base_url() ?>ambulatorio/procedimento/excluirprocedimentoagrupado/<?= $item->procedimento_agrupador_id; ?>/<?= @$obj->_procedimento_tuss_id; ?>" class="delete"></a>
-                                    </td>
-                                </tr>
-                    <? } ?>
+                        <?
+                        $estilo_linha = "tabela_content01";
+                        foreach ($procedimentoagrupados as $item) {
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            ?>
+                            <tr>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->codigo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->quantidade_agrupador; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>">
+                                    <a href="<?= base_url() ?>ambulatorio/procedimento/excluirprocedimentoagrupado/<?= $item->procedimento_agrupador_id; ?>/<?= @$obj->_procedimento_tuss_id; ?>" class="delete"></a>
+                                </td>
+                            </tr>
+                        <? } ?>
                     </tbody>
                 </table>
             </div>
-        <?}?>
+        <? } ?>
     </div>
 </div> <!-- Final da DIV content -->
 <style>
@@ -143,64 +165,64 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js" ></script>
 <script type="text/javascript">
-    $(function () {
-        $("#accordion").accordion();
-    });
+                                    $(function () {
+                                        $("#accordion").accordion();
+                                    });
 
-    function filtrarTabela() {
-        var input, procedimento, select, grupo, table, tr, td, i;
-        input = document.getElementById("procText");
-        procedimento = input.value.toUpperCase();
+                                    function filtrarTabela() {
+                                        var input, procedimento, select, grupo, table, tr, td, i;
+                                        input = document.getElementById("procText");
+                                        procedimento = input.value.toUpperCase();
 
-        select = document.getElementById("grupoText");
-        grupo = select.options[select.selectedIndex].value.toUpperCase();
+                                        select = document.getElementById("grupoText");
+                                        grupo = select.options[select.selectedIndex].value.toUpperCase();
 
-        var id = 'procedimentos';
-        table = document.getElementById(id);
-        tr = table.getElementsByTagName("tr");
+                                        var id = 'procedimentos';
+                                        table = document.getElementById(id);
+                                        tr = table.getElementsByTagName("tr");
 
-        if (grupo == "" && procedimento != "") { // CASO TENHA INFORMADO SOMENTE PROCEDIMENTO
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        } else if (grupo != "" && procedimento == "") { // CASO TENHA INFORMADO APENAS O GRUPO
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    var id = tr[i].getAttribute("id");
-                    if (grupo == id) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        } else if (grupo != "" && procedimento != "") { // CASO TENHA INFORMADO O GRUPO E O PROCEDIMENTO
-            for (i = 0; i < tr.length; i++) {
+                                        if (grupo == "" && procedimento != "") { // CASO TENHA INFORMADO SOMENTE PROCEDIMENTO
+                                            for (i = 0; i < tr.length; i++) {
+                                                td = tr[i].getElementsByTagName("td")[0];
+                                                if (td) {
+                                                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1) {
+                                                        tr[i].style.display = "";
+                                                    } else {
+                                                        tr[i].style.display = "none";
+                                                    }
+                                                }
+                                            }
+                                        } else if (grupo != "" && procedimento == "") { // CASO TENHA INFORMADO APENAS O GRUPO
+                                            for (i = 0; i < tr.length; i++) {
+                                                td = tr[i].getElementsByTagName("td")[0];
+                                                if (td) {
+                                                    var id = tr[i].getAttribute("id");
+                                                    if (grupo == id) {
+                                                        tr[i].style.display = "";
+                                                    } else {
+                                                        tr[i].style.display = "none";
+                                                    }
+                                                }
+                                            }
+                                        } else if (grupo != "" && procedimento != "") { // CASO TENHA INFORMADO O GRUPO E O PROCEDIMENTO
+                                            for (i = 0; i < tr.length; i++) {
 
-                td = tr[i].getElementsByTagName("td")[0];
-                var id = tr[i].getAttribute("id");
+                                                td = tr[i].getElementsByTagName("td")[0];
+                                                var id = tr[i].getAttribute("id");
 
-                if (td) {
-                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1 && grupo == id) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        } else {
-            for (i = 0; i < tr.length; i++) {
-                tr[i].style.display = "";
-            }
-        }
-    }
+                                                if (td) {
+                                                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1 && grupo == id) {
+                                                        tr[i].style.display = "";
+                                                    } else {
+                                                        tr[i].style.display = "none";
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            for (i = 0; i < tr.length; i++) {
+                                                tr[i].style.display = "";
+                                            }
+                                        }
+                                    }
 
 </script>

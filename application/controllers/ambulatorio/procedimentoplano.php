@@ -1014,6 +1014,7 @@ class Procedimentoplano extends BaseController {
             $data['mensagem'] = 'Erro ao gravar o Agrupador. Alguns procedimentos do pacote não estão cadastrados nesse convenio.';
         } else {
             $procedimento_id = $this->procedimentoplano->gravaragrupador();
+//            var_dump($procedimento_id); die;
             if ($procedimento_id == "-1") {
                 $data['mensagem'] = 'Erro ao gravar o Agrupador. Operação cancelada.';
             } elseif ($procedimento_id == "-2") {

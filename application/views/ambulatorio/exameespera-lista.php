@@ -85,9 +85,10 @@
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $limit = $limite_paginacao;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
-//                $consulta = $this->exame->listarexameagendaconfirmada($_GET);
+                $consulta = $this->exame->listarexameagendaconfirmada($_GET);
+                $total = $consulta->count_all_results();
                 $lista = $this->exame->listarexameagendaconfirmada2($_GET, @$ordem_chegada)->limit($limit, $pagina)->get()->result();
-                $total = count($lista);
+
                 if ($total > 0) {
                     ?>
                     <tbody>
@@ -183,18 +184,18 @@
                                     </td>
                                 <? } ?>
         <!--                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente2/<?= $item->ambulatorio_laudo_id ?> ">
-                                        Chamar</a></div>
-                                                                        impressaolaudo 
-                            </td>-->
+                            <a href="<?= base_url() ?>ambulatorio/laudo/chamarpaciente2/<?= $item->ambulatorio_laudo_id ?> ">
+                                Chamar</a></div>
+                                                                impressaolaudo 
+                    </td>-->
                                 <? if ($empresa[0]->cancelar_sala_espera == 't') { ?>
-                                    <?if($item->agrupador_pacote_id == ''){?>
+                                    <? if ($item->agrupador_pacote_id == '') { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar
 
                                                 </a></div>
                                         </td>
-                                    <?} else {?>
+                                    <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
                                                 <a target="_blank" href="<?= base_url() ?>ambulatorio/exame/esperacancelamentopacote/<?= $item->guia_id ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>">Cancelar Pacote
 
@@ -202,24 +203,24 @@
                                         </td>
                                     <? } ?>
 
-                                <? } elseif( (@$administrador_cancelar == 't' && $perfil_id == 1) || $operador_id == 1 || (@$gerente_recepcao_cancelar == 't' && $perfil_id == 5)) { ?>
-                                     <?if($item->agrupador_pacote_id == ''){?>
+                                <? } elseif ((@$administrador_cancelar == 't' && $perfil_id == 1) || $operador_id == 1 || (@$gerente_recepcao_cancelar == 't' && $perfil_id == 5)) { ?>
+                                    <? if ($item->agrupador_pacote_id == '') { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                                 <a href="<?= base_url() ?>ambulatorio/exame/esperacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>">Cancelar
 
                                                 </a></div>
                                         </td>
-                                    <?} else {?>
+                                    <? } else { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link_new">
                                                 <a target="_blank" href="<?= base_url() ?>ambulatorio/exame/esperacancelamentopacote/<?= $item->guia_id ?>/<?= $item->paciente_id ?>/<?= $item->agrupador_pacote_id ?>">Cancelar Pacote
 
                                                 </a></div>
                                         </td>
                                     <? } ?>
-                                <? }else{?>
+                                <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;">
                                     </td> 
-                                <?} ?>
+                                <? } ?>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/observacao/<?= $item->agenda_exames_id ?>/<?= $item->paciente; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=230');">Obs.
@@ -236,7 +237,8 @@
                     <tr>
                         <th class="tabela_footer" colspan="15">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
-                            Total de registros: <?php echo $total; ?> <div style="display: inline">
+                            Total de registros: <?php echo $total; ?> 
+                            <div style="display: inline">
                                 <span style="margin-left: 15px; color: white; font-weight: bolder;"> Limite: </span>
                                 <select style="width: 57px">
                                     <option onclick="javascript:window.location.href = ('<?= base_url() ?>ambulatorio/exame/listarsalasespera/25');" <?

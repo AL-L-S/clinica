@@ -58,9 +58,9 @@
                         <td><input type="text" name="sexo" class="input_pequeno" value="<?
                             if ($paciente[0]->sexo == 'F') {
                                 echo 'Feminino';
-                            } elseif($paciente[0]->sexo == 'M') {
+                            } elseif ($paciente[0]->sexo == 'M') {
                                 echo 'Masculino';
-                            }else{
+                            } else {
                                 echo 'Outro';
                             }
                             ?>" readonly /></td>
@@ -101,6 +101,37 @@
             </div>
         </fieldset>  
         <fieldset>
+            <legend>Pacote</legend>
+            <table>
+                <tr>
+                    <td> <label>Pacote</label> </td>
+                    <!--<td> <label>Quantidade</label> </td>-->
+                    <td> <label>Descricao</label> </td>
+                    <!--<td> <label>Faturar</label> </td>-->
+                </tr>
+                <tr id="gastosPacote">
+                    <td> 
+                        <select name="pacote_id" id="pacote_id" class="size4" style="width: 250px" >
+                            <option value="">SELECIONE</option>
+                            <? foreach ($procedimentoagrupados as $value) : ?>
+
+
+
+                                <option value="<?= $value->procedimento_tuss_id; ?>" ><?php echo $value->nome ?></option>
+
+                            <? endforeach; ?>
+                        </select> 
+                    </td>
+                    <!--<td> <input style="width: 100px" type="number" name="txtqtde" id="txtqtde" min="0" /> </td>-->
+                    <td><textarea name="descricao" id="descricao" style="margin-left: 10px; width: 300px"></textarea></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td> <button type="submit" name="btnEnviar" >Adicionar</button> </td>
+                </tr>
+            </table>
+        </fieldset>
+        <fieldset>
             <legend>Gastos de Sala</legend>
             <table>
                 <tr>
@@ -111,7 +142,7 @@
                 </tr>
                 <tr id="gastos">
                     <td> 
-                        <select name="produto_id" id="produto_id" class="size4" style="width: 250px" required="true">
+                        <select name="produto_id" id="produto_id" class="size4" style="width: 250px" >
                             <option value="">SELECIONE</option>
                             <? foreach ($produtos as $value) : ?>
 
@@ -122,7 +153,7 @@
                             <? endforeach; ?>
                         </select> 
                     </td>
-                    <td> <input style="width: 100px" type="number" name="txtqtde" id="txtqtde" min="0" required="true"/> </td>
+                    <td> <input style="width: 100px" type="number" name="txtqtde" id="txtqtde" min="0" /> </td>
                     <td><textarea name="descricao" id="descricao" style="margin-left: 10px; width: 300px"></textarea></td>
                     <td></td>
                 </tr>
@@ -214,6 +245,11 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
+<? if ($mensagem == 1) { ?>
+                                    alert('Alguns Produtos não puderam ser gravados pois não há saldo suficiente no estoque');
+<? }
+?>
+
                                 function procedimento_id(id) {
                                     if (id != undefined) {
                                         $('#procedimento_id').val(id);
