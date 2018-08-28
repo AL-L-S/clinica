@@ -370,3 +370,7 @@ ALTER TABLE ponto.tb_procedimento_tuss ADD COLUMN tipo_aso text;
 -- Dia 24/08/2018
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN impressao_cimetra boolean DEFAULT false;
+
+--Dia 27/08/2018
+
+ALTER TABLE ponto.tb_procedimentos_agrupados_ambulatorial ADD COLUMN quantidade_agrupador integer;

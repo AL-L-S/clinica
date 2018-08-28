@@ -242,6 +242,7 @@ class procedimento_model extends Model {
 
     function listarprocedimentoagrupados($procedimento_agrupador_id) {
         $this->db->select('procedimentos_agrupados_ambulatorial_id as procedimento_agrupador_id,
+                            pa.quantidade_agrupador,
                             pt.nome,
                             pt.procedimento_tuss_id,
                             pt.grupo,
@@ -250,6 +251,43 @@ class procedimento_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pa.procedimento_tuss_id', 'left');
         $this->db->where("pa.ativo", 't');
         $this->db->where("pa.procedimento_agrupador_id", $procedimento_agrupador_id);
+        $this->db->orderby('pt.grupo');
+        $this->db->orderby('pt.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimentoagrupadosgastodesalagravar() {
+        $this->db->select('procedimentos_agrupados_ambulatorial_id as procedimento_agrupador_id,
+                            pa.quantidade_agrupador,
+                            pt.nome,
+                            pro.estoque_produto_id,
+                            pt.procedimento_tuss_id,
+                            pt.grupo,
+                            pt.codigo');
+        $this->db->from('tb_procedimentos_agrupados_ambulatorial pa');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pa.procedimento_tuss_id', 'left');
+        $this->db->join('tb_estoque_produto pro', 'pt.procedimento_tuss_id = pro.procedimento_id', 'left');
+        $this->db->where("pa.ativo", 't');
+        $this->db->where("pt.grupo IN ('MATERIAL', 'MEDICAMENTO')");
+        $this->db->where("pa.procedimento_agrupador_id", $_POST['pacote_id']);
+        $this->db->orderby('pt.grupo');
+        $this->db->orderby('pt.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimentoagrupadosgastodesala($convenio_id) {
+        $this->db->select('
+                            pt.nome,
+                            pt.procedimento_tuss_id,
+                            pt.grupo,
+                            pt.codigo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("pt.agrupador", 't');
+        $this->db->where("pc.convenio_id", $convenio_id);
         $this->db->orderby('pt.grupo');
         $this->db->orderby('pt.nome');
         $return = $this->db->get();
@@ -293,14 +331,26 @@ class procedimento_model extends Model {
                     $this->db->where("ativo", 't');
                     $return = $this->db->get()->result();
                     array_push($procedimentos_retirar_id, $_POST['procedimento_id'][$key]);
-
+                    if ($_POST['quantidade'][$key] > 0) {
+                        $quantidade = $_POST['quantidade'][$key];
+                    } else {
+                        $quantidade = 1;
+                    }
                     if (count($return) == 0) {
 
                         $this->db->set('procedimento_agrupador_id', $procedimento_agrupador_id);
                         $this->db->set('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
+                        $this->db->set('quantidade_agrupador', $quantidade);
                         $this->db->set('data_cadastro', $horario);
                         $this->db->set('operador_cadastro', $operador_id);
                         $this->db->insert('tb_procedimentos_agrupados_ambulatorial');
+                    } else {
+
+                        $this->db->set('quantidade_agrupador', $quantidade);
+                        $this->db->set('data_atualizacao', $horario);
+                        $this->db->set('operador_atualizacao', $operador_id);
+                        $this->db->where('procedimentos_agrupados_ambulatorial_id', $return[0]->procedimentos_agrupados_ambulatorial_id);
+                        $this->db->update('tb_procedimentos_agrupados_ambulatorial');
                     }
                 } else {
                     continue;

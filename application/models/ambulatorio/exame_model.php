@@ -3314,7 +3314,7 @@ class exame_model extends Model {
         // $this->db->select("column1, column2, ...", false) # O false serve para avisar o CI não pôr aspas
         $this->db->select("aoi.data_preferencia, aoi.horario_preferencia, count(aoi.horario_preferencia) as contador, pt.grupo", false);
         $this->db->from('tb_ambulatorio_orcamento_item aoi');
-        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left'); 
+        $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'aoi.procedimento_tuss_id = pc.procedimento_convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where('aoi.ativo', 't');
@@ -3330,7 +3330,7 @@ class exame_model extends Model {
         $this->db->where("ao.data_criacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
         $this->db->groupby('aoi.data_preferencia,horario_preferencia, pt.grupo');
         $this->db->orderby('aoi.data_preferencia');
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -6975,6 +6975,135 @@ class exame_model extends Model {
         return $ambulatorio_gasto_sala_id;
     }
 
+    function gravargastodesalapacote($valor, $produto_id, $quantidade_pacote) {
+        $horario = date('Y-m-d');
+        $operador_id = $this->session->userdata('operador_id');
+
+
+// ESTOQUE SAIDA E SALDO
+//   SELECIONA
+
+
+        $this->db->select('ea.descricao as armazem,
+ 
+            sum(es.quantidade) as total,
+            ep.descricao as produto');
+        $this->db->from('tb_estoque_saldo es');
+        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
+//        $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
+        $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = es.produto_id', 'left');
+        $this->db->where('es.ativo', 'true');
+        $this->db->where('es.armazem_id', $_POST['armazem_id']);
+        $this->db->where('es.produto_id', $produto_id);
+        $this->db->groupby('ea.descricao, ep.descricao');
+        $this->db->orderby('ea.descricao, ep.descricao');
+        $saldo = $this->db->get()->result();
+
+        $this->db->select('e.estoque_entrada_id,
+                            e.produto_id,
+                            e.fornecedor_id,
+                            e.armazem_id,
+                            e.valor_compra,
+                            sum(s.quantidade) as quantidade,
+                            e.nota_fiscal,
+                            e.validade');
+        $this->db->from('tb_estoque_saldo s');
+        $this->db->join('tb_estoque_entrada e', 'e.estoque_entrada_id = s.estoque_entrada_id', 'left');
+        $this->db->where('e.produto_id', $produto_id);
+        $this->db->where('e.armazem_id', $_POST['armazem_id']);
+        $this->db->where('e.ativo', 't');
+        $this->db->where('s.ativo', 't');
+//        $this->db->where('quantidade >', '0');
+        $this->db->groupby("e.estoque_entrada_id,
+                            e.produto_id,
+                            e.fornecedor_id,
+                            e.armazem_id,
+                            e.valor_compra,
+                            e.nota_fiscal,
+                            e.validade");
+        $this->db->orderby("sum(s.quantidade) desc");
+
+        $return = $this->db->get()->result();
+//        echo '<pre>';
+//        var_dump($saldo); die;
+        if ($quantidade_pacote >= @$saldo[0]->total) {
+            return false;
+        } else {
+            
+        }
+
+        if ($_POST['descricao'] != '') {
+            $this->db->set('descricao', $_POST['descricao']);
+        }
+        $this->db->set('valor', $valor);
+        $this->db->set('guia_id', $_POST['txtguia_id']);
+        $this->db->set('produto_id', $produto_id);
+        $this->db->set('quantidade', $quantidade_pacote);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_ambulatorio_gasto_sala');
+        $ambulatorio_gasto_sala_id = $this->db->insert_id();
+
+        //GRAVA SAIDA 
+//        echo '<pre>';
+//        var_dump($return);die;
+
+        $qtdeProduto = $quantidade_pacote;
+        $qtdeProdutoSaldo = $saldo[0]->total;
+        $i = 0;
+        while ($qtdeProduto > 0) {
+            if ($qtdeProduto > $return[$i]->quantidade) {
+                $qtdeProduto = $qtdeProduto - $return[$i]->quantidade;
+                $qtde = $return[$i]->quantidade;
+            } else {
+                $qtde = $qtdeProduto;
+                $qtdeProduto = 0;
+            }
+
+
+            $this->db->set('estoque_entrada_id', $return[$i]->estoque_entrada_id);
+            //        $this->db->set('solicitacao_cliente_id', $_POST['txtestoque_solicitacao_id']);
+            if ($_POST['txtexame'] != '') {
+                $this->db->set('exames_id', $_POST['txtexame']);
+            }
+            $this->db->set('produto_id', $return[$i]->produto_id);
+            $this->db->set('fornecedor_id', $return[$i]->fornecedor_id);
+            $this->db->set('armazem_id', $return[$i]->armazem_id);
+            $this->db->set('valor_venda', $return[$i]->valor_compra);
+            $this->db->set('ambulatorio_gasto_sala_id', $ambulatorio_gasto_sala_id);
+            $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $qtde)));
+            $this->db->set('nota_fiscal', $return[$i]->nota_fiscal);
+            if ($return[$i]->validade != "") {
+                $this->db->set('validade', $return[$i]->validade);
+            }
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_estoque_saida');
+            $estoque_saida_id = $this->db->insert_id();
+
+            // SALDO 
+            $this->db->set('estoque_entrada_id', $return[$i]->estoque_entrada_id);
+            $this->db->set('estoque_saida_id', $estoque_saida_id);
+            $this->db->set('produto_id', $return[$i]->produto_id);
+            $this->db->set('fornecedor_id', $return[$i]->fornecedor_id);
+            $this->db->set('armazem_id', $return[$i]->armazem_id);
+            $this->db->set('valor_compra', $return[$i]->valor_compra);
+            $this->db->set('ambulatorio_gasto_sala_id', $ambulatorio_gasto_sala_id);
+            $quantidade = -(str_replace(",", ".", str_replace(".", "", $qtde)));
+            $this->db->set('quantidade', $quantidade);
+            $this->db->set('nota_fiscal', $return[$i]->nota_fiscal);
+            if ($return[$i]->validade != "") {
+                $this->db->set('validade', $return[$i]->validade);
+            }
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_estoque_saldo');
+
+            $i++;
+        }
+        return $ambulatorio_gasto_sala_id;
+    }
+
     function excluirgastodesala($gasto_id) {
 
         $this->db->select('agenda_exames_id');
@@ -7038,7 +7167,7 @@ class exame_model extends Model {
 
         $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id);
         $this->db->set('valor', $dados->valortotal);
-        $this->db->set('valor1', $dados->valortotal);
+//        $this->db->set('valor1', $dados->valortotal);
         $this->db->set('valor_total', $valortotal);
         $this->db->set('quantidade', $_POST['txtqtde']);
 //            $this->db->set('autorizacao', $_POST['autorizacao1']);
@@ -7051,7 +7180,7 @@ class exame_model extends Model {
             $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
             $this->db->set('medico_solicitante', $_POST['medicoagenda']);
         }
-        $this->db->set('faturado', 't');
+//        $this->db->set('faturado', 't');
         $this->db->set('situacao', 'OK');
         $this->db->set('guia_id', $_POST['txtguia_id']);
         $horario = date("Y-m-d H:i:s");
@@ -7065,8 +7194,66 @@ class exame_model extends Model {
         $this->db->set('operador_cadastro', $operador_id);
         $this->db->set('data_realizacao', $horario);
         $this->db->set('operador_realizacao', $operador_id);
-        $this->db->set('data_faturamento', $horario);
-        $this->db->set('operador_faturamento', $operador_id);
+//        $this->db->set('data_faturamento', $horario);
+//        $this->db->set('operador_faturamento', $operador_id);
+        $this->db->set('operador_autorizacao', $operador_id);
+        $this->db->set('ambulatorio_gasto_sala_id', $gasto_id);
+        $this->db->insert('tb_agenda_exames');
+        $agenda_exames_id = $this->db->insert_id();
+
+
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id);
+        $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+        $this->db->set('medico_realizador', $_POST['medicoagenda']);
+        $this->db->set('situacao', 'FINALIZADO');
+        $this->db->set('guia_id', $_POST['txtguia_id']);
+        $this->db->set('agenda_exames_id', $agenda_exames_id);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_exames');
+        $exames_id = $this->db->insert_id();
+    }
+
+    function faturargastodesalapacote($dados, $gasto_id, $quantidade) {
+        $horario = date('Y-m-d');
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $hora = date("H:i:s");
+        $data = date("Y-m-d");
+        $valortotal = (int) $quantidade * (float) $dados->valortotal;
+
+        $this->db->set('procedimento_tuss_id', $dados->procedimento_convenio_id);
+        $this->db->set('valor', $dados->valortotal);
+//        $this->db->set('valor1', $dados->valortotal);
+        $this->db->set('valor_total', $valortotal);
+        $this->db->set('quantidade', $quantidade);
+//            $this->db->set('autorizacao', $_POST['autorizacao1']);
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->set('confirmado', 't');
+        $this->db->set('tipo', $_POST['tipo']);
+        $this->db->set('ativo', 'f');
+        $this->db->set('realizada', 't');
+        if ($_POST['medicoagenda'] != "") {
+            $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+            $this->db->set('medico_solicitante', $_POST['medicoagenda']);
+        }
+//        $this->db->set('faturado', 't');
+        $this->db->set('situacao', 'OK');
+        $this->db->set('guia_id', $_POST['txtguia_id']);
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('paciente_id', $_POST['txtpaciente_id']);
+//            $this->db->set('data', $_POST['txtdata']);
+        $this->db->set('data_autorizacao', $horario);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('data', $data);
+        $this->db->set('data_faturar', $data);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->set('data_realizacao', $horario);
+        $this->db->set('operador_realizacao', $operador_id);
+//        $this->db->set('data_faturamento', $horario);
+//        $this->db->set('operador_faturamento', $operador_id);
         $this->db->set('operador_autorizacao', $operador_id);
         $this->db->set('ambulatorio_gasto_sala_id', $gasto_id);
         $this->db->insert('tb_agenda_exames');

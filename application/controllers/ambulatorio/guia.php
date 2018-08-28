@@ -1280,7 +1280,7 @@ class Guia extends BaseController {
                             $valor = $value->valortotal;
                         }
                         $i++;
-                        $this->guia->gravarexamesagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo);
+                        $this->guia->gravarexamesagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo, $value->quantidade_agrupador);
                     }
                 }
             }
@@ -1399,7 +1399,7 @@ class Guia extends BaseController {
                                 $valor = $value->valortotal;
                             }
                             $i++;
-                            $this->guia->gravaratendimentoagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo);
+                            $this->guia->gravaratendimentoagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo, $value->quantidade_agrupador);
                         }
                     }
                 }
@@ -1513,7 +1513,7 @@ class Guia extends BaseController {
                             $valor = $value->valortotal;
                         }
                         $i++;
-                        $this->guia->gravarconsultaagrupador($ambulatorio_guia, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo);
+                        $this->guia->gravarconsultaagrupador($ambulatorio_guia, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo, $value->quantidade_agrupador);
                     }
                 }
             }
