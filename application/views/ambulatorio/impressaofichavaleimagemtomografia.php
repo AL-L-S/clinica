@@ -10,30 +10,42 @@
     $idade = $diff->format('%Y');
     ?>
 
+<table>
+        <td>
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <?= @$cabecalho_config; ?>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
+                        <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
+                    </tr>
+                    <tr>
+                        <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
+                        <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
+                        <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
+                    </tr>
+                    <tr>
+                        <? //echo '<pre>'; var_dump($exame); die;?>
+                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
+                        <td ><font size = -1>Agradecemos a sua preferência</td>
+                    </tr>
 
-
-    <table style="width: 100%;">
-        <tbody>
-            <tr>
-                <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-                <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
-            </tr>
-            <tr>
-                <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
-                <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-                <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
-            </tr>
-            <tr>
-                <? //echo '<pre>'; var_dump($exame); die;?>
-                <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
-                <td ><font size = -1>Agradecemos a sua preferência</td>
-            </tr>
-
-        </tbody>
+                </tbody>
+            </table>
+        </td>
     </table>
     <table style="width: 100%">
         <tr>
-            <td colspan="1"><font size = -1>Exame(s): <?= $exame[0]->procedimento; ?></b></td>
+            <td></td>
+            <td colspan="1"><font size = -1>Exame(s):<b> <?= $exame[0]->procedimento; ?></b></td>
             <td ><font size = -1>
                 <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
                 Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>
@@ -346,16 +358,15 @@
     <br class="quebrapagina">
     <!-- Cabaçalho da clinica configurável-->
     <?= @$cabecalho_config; ?>
-    <table style="width: 100%; text-align: center;">
+    <table style="width: 100%; text-align: center; font-size: 10pt">
         <tr>
             <td>
                 <span> QUESTIONÁRIO / TERMO DE CONSENTIMENTO INFORMADO PARA EXAMES RADIOLÓGICOS CONTRASTADOS</span>
             </td>
         </tr>
     </table>
-    <br>
-    <br>
-    <table style="width: 100%; text-align: center;font-weight: bolder;">
+    <br>    
+    <table style="width: 100%; text-align: center;font-weight: bolder; font-size: 10pt">
         <tr>
             <td>
                 <span> INFORMAÇÕES IMPORTANTES </span>
@@ -363,7 +374,7 @@
         </tr>
     </table>
     <br>
-    <table style="width: 100%; text-align: justify;">
+    <table style="width: 100%; text-align: justify; font-size: 10pt">
         <tr>
             <td>
                 <span> Amamentação e gravidez (confirmada ou suspeita) deverão ser comunicadas ao médico radiologista ou ao técnico em radiologia antes da realização do exame.
@@ -373,7 +384,7 @@
         </tr>
     </table>
     <br>
-    <table style="width: 100%; text-align: justify;">
+    <table style="width: 100%; text-align: justify; font-size: 10pt">
         <tr>
             <td class="tdpadding">
                 PACIENTE: <?= $paciente[0]->nome ?>
@@ -395,9 +406,8 @@
             </td>
         </tr>
     </table>
-    <br>
-    <br>
-    <table style="width: 100%; text-align: justify;">
+    <br>    
+    <table style="width: 100%; text-align: justify; font-size: 10pt">
         <tr>
             <td class="tdpadding" style="width: 50%">
                 1. Quando foi a última refeição ou <br> ingestão de líquidos? Às_______horas
@@ -471,7 +481,7 @@
         </tr>
 
     </table>
-    <table style="width: 100%">
+    <table style="width: 100%; font-size: 10pt">
         <tr>
             <td colspan="2">
                 AUTORIZAÇÃO:

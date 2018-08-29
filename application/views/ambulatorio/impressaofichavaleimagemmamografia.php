@@ -9,30 +9,42 @@
     $teste = $diff->format('%Ya %mm %dd');
     ?>
 
+<table>
+        <td>
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <?= @$cabecalho_config; ?>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
+                        <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
+                    </tr>
+                    <tr>
+                        <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
+                        <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
+                        <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
+                    </tr>
+                    <tr>
+                        <? //echo '<pre>'; var_dump($exame); die;?>
+                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
+                        <td ><font size = -1>Agradecemos a sua preferência</td>
+                    </tr>
 
-
-    <table style="width: 100%;">
-        <tbody>
-            <tr>
-                <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-                <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
-            </tr>
-            <tr>
-                <td ><font size = -1>Formulário: <?= $exame[0]->agenda_exames_id; ?></td>
-                <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-                <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
-            </tr>
-            <tr>
-                <? //echo '<pre>'; var_dump($exame); die;?>
-                <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
-                <td ><font size = -1>Agradecemos a sua preferência</td>
-            </tr>
-
-        </tbody>
+                </tbody>
+            </table>
+        </td>
     </table>
     <table style="width: 100%">
         <tr>
-            <td colspan="1"><font size = -1>Exame(s): <?= $exame[0]->procedimento; ?></b></td>
+            <td></td>
+            <td colspan="1"><font size = -1>Exame(s):<b> <?= $exame[0]->procedimento; ?></b></td>
             <td ><font size = -1>
                 <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
                 Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>

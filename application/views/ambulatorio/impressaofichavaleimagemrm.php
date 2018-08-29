@@ -8,31 +8,42 @@
     $diff = $date_time->diff(new DateTime($dataFuturo));
     $teste = $diff->format('%Ya %mm %dd');
     ?>
+    <table>
+        <td>
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <?= @$cabecalho_config; ?>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
+                        <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
+                    </tr>
+                    <tr>
+                        <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
+                        <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
+                        <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
+                    </tr>
+                    <tr>
+                        <? //echo '<pre>'; var_dump($exame); die;?>
+                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
+                        <td ><font size = -1>Agradecemos a sua preferência</td>
+                    </tr>
 
-
-    <?= @$cabecalho_config; ?>
-    <table style="width: 100%;">
-        <tbody>
-            <tr>
-                <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-                <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
-            </tr>
-            <tr>
-                <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
-                <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-                <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
-            </tr>
-            <tr>
-                <? //echo '<pre>'; var_dump($exame); die;?>
-                <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
-                <td ><font size = -1>Agradecemos a sua preferência</td>
-            </tr>
-
-        </tbody>
+                </tbody>
+            </table>
+        </td>
     </table>
     <table style="width: 100%">
         <tr>
-            <td colspan="1"><font size = -1>Exame(s): <?= $exame[0]->procedimento; ?></b></td>
+            <td></td>
+            <td colspan="1"><font size = -1>Exame(s):<b> <?= $exame[0]->procedimento; ?></b></td>
             <td ><font size = -1>
                 <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
                 Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>
@@ -325,7 +336,7 @@
     <style>
 
         .tdpadding{
-            padding: 8px;
+            padding: 5px;
         }
 
 
@@ -343,18 +354,18 @@
     <?= @$cabecalho_config; ?>
    
     <!--<br>-->
-    <table style="width: 100%;text-align: center; font-size: 11pt">
+    <table style="width: 100%;text-align: center; font-size: 10pt">
         <tr>
             <td>
                 <!--<h4 style="text-align: center;">-->
-                <span style="font-weight: bold; font-size: 11pt">QUESTIONÁRIO - ACOMPANHANTE RESSONÂNCIA MAGNÉTICA</span> <br>
-                <span style="font-weight: normal; font-size: 11pt">PARA O ACOMPANHAMENTO DO PACIENTE É NECESSÁRIO QUE TODAS AS PERGUNTAS SEJAM RESPONDIDAS COM EXATIDÃO</span>
+                <span style="font-weight: bold; font-size: 10pt">QUESTIONÁRIO - ACOMPANHANTE RESSONÂNCIA MAGNÉTICA</span> <br>
+                <span style="font-weight: normal; font-size: 10pt">PARA O ACOMPANHAMENTO DO PACIENTE É NECESSÁRIO QUE TODAS AS PERGUNTAS SEJAM RESPONDIDAS COM EXATIDÃO</span>
                 <!--</h4>-->  
             </td>
         </tr>
     </table>
    
-    <table style="width: 100%; font-size: 11pt;padding: 14px;">
+    <table style="width: 100%; font-size: 10pt;padding: 14px;">
         <tr>
             <td class="tdpadding" style="width: 100%">
                 ACOMPANHANTE:_______________________________________________________________________  FORM: <?= $exame[0]->ambulatorio_guia_id; ?>&nbsp;&nbsp;
@@ -366,8 +377,8 @@
             </td>
         </tr>     
     </table>
-    <br><br><br>
-    <table align="center" width="100%" style="text-align:center; border-collapse: collapse" border="1">
+    <br>
+    <table align="center" width="100%" style="text-align:center; border-collapse: collapse; font-size:10pt" border="1">
         <tr>
         <th>DATA DO EXAME</th>
         <th>HORÁRIO PREVISTO</th>
@@ -378,7 +389,7 @@
         <td><?= $exame[0]->inicio; ?></td>
         <td><?= substr($dataatualizacao, 10, 9); ?></td>
         </tr>
-    </table> <br><br><br>
+    </table> <br>
     <table width="100%" style="font-size: 10pt">
         <tr><td class="tdpadding" style="width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>1.  TEM MARCAPASSO CARDÍACO, DESFIBRILADOR OU CARDIOVERTER?</b></td><td> (SIM)(NÃO)</td></tr>
         <tr><td class="tdpadding" style="width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>2.  FEZ SUBSTITUIÇÃO DE "VÁLVULAS" CARDÍACAS?</b></td><td> (SIM)(NÃO)</td></tr>
@@ -395,13 +406,13 @@
         <tr><td class="tdpadding" style="width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;13. ESTÁ GRAVIDA OU AMAMENTANDO?</td><td> (SIM)(NÃO)</td></tr>
         <tr><td class="tdpadding" style="width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;14. TEM TATUAGEM/PIERCING/AGULHA DE ACUPUNTURA?</td><td> (SIM)(NÃO)</td></tr>
         <tr><td class="tdpadding" style="width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;15. TEM FOBIA A AMBIENTES FECHADOS?</td><td> (SIM)(NÃO)</td></tr>
-    </table> <br><br><br>
+    </table> <br>
     <b><span style="font-size: 10pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OBS.: CASO POSITIVO EM PELO MENOS UMA DAS QUATRO PRIMEIRAS QUESTÕES, O ACOMPANHANTE NÃO PODE ENTRAR NA SALA DE RESSONÂNCIA.</span></b> 
-    <br><br><br><br><br><br><br><br>
+    <br><br><br><br>
     <table width="100%">
         <tr>
             <td>
-             &nbsp;&nbsp;&nbsp;&nbsp;   _________________________________________________________________________ <br>
+             &nbsp;&nbsp;&nbsp;&nbsp;   _______________________________________________ <br>
              &nbsp;&nbsp;&nbsp;&nbsp;   Assinatura do acompanhante do paciente
             </td>
             <td>
@@ -425,42 +436,42 @@
     <?= @$cabecalho_config; ?>
     
     
-    <table style="width: 100%;text-align: center; font-size: 11pt">
+    <table style="width: 100%;text-align: center; font-size: 9pt">
         <tr>
             <td>
                 
-                <span style="font-weight: bold; font-size: 11pt">QUESTIONÁRIO - RESSONÂNCIA MAGNÉTICA</span> <br>
+                <span style="font-weight: bold; font-size: 9pt">QUESTIONÁRIO - RESSONÂNCIA MAGNÉTICA</span> <br>
                 <!--<span style="font-weight: normal">PARA O ACOMPANHAMENTO DO PACIENTE É NECESSÁRIO QUE TODAS AS PERGUNTAS SEJAM RESPONDIDAS COM EXATIDÃO</span>-->
                   
             </td>
         </tr>
     </table>
     <br>
-    <table><span style="font-size: 10pt;">
+    <table><span style="font-size: 9pt;">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;O seu médico julgou que este exame é necessário para sua avaliação, podendo necessitar da injeção de constraste na veia. Como ocorre com qualquer tipo de medicamento, esse contraste pode, em raras ocasiões, provocar reações adversas como, por exemplo, alergia. Essas reações são, na grande maioria das vezes, leves e de fácil tratamento.<br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;No entanto, embora o risco seja <b>muito pequeno</b>, reações mais graves e até mesmo fatais também podem ocorrer.<br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Apesar de ser impossível prever com certeza quem terá reação ao contraste, algumas informações podem alertar para uma situação de risco aumentado. Por isso, é necessário que todas as perguntas sejam respondidas com exatidão.</span>
     </table>
     
-    <table style="width: 100%; font-size: 10pt;padding: 14px;">
+    <table style="width: 100%; font-size: 8pt;padding: 14px;">
         <tr>
-            <td class="tdpadding" style="font-size: 9pt; width: 100%">
+            <td class="tdpadding" style="font-size: 8pt; width: 100%">
                 PACIENTE: <?= $paciente['0']->nome; ?> FORM: <?= $exame[0]->ambulatorio_guia_id; ?>&nbsp;&nbsp;
             </td>
         </tr>
         <tr>
-            <td class="tdpadding" style="font-size: 9pt; width: 100%">
+            <td class="tdpadding" style="font-size: 8pt; width: 100%">
                 IDADE: <?= $teste; ?>&nbsp;&nbsp;&nbsp;&nbsp; TELEFONE: <?= $paciente[0]->telefone; ?>  - <?= $paciente[0]->celular; ?> - <?= $paciente[0]->whatsapp; ?>&nbsp;&nbsp;&nbsp;&nbsp; CONVÊNIO: <?= $exame[0]->convenio; ?>
             </td>
         </tr>
         <tr>
-            <td class="tdpadding" style="font-size: 9pt; width: 100%">
+            <td class="tdpadding" style="font-size: 8pt; width: 100%">
                 MÉDICO SOLICITANTE:  <?= $exame[0]->medico_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?> &nbsp;&nbsp;&nbsp; PACIENTE INTERNADO?   (SIM)(NÃO)&nbsp;&nbsp;  EXAME: <?= $exame[0]->procedimento; ?>
             </td>
         </tr>
         
         <tr>
-            <td class="tdpadding" style="font-size: 9pt; width: 100%">
+            <td class="tdpadding" style="font-size: 8pt; width: 100%">
                 SINAIS E SINTOMAS:_____________________________________________________________________________________
             </td>
         </tr>
@@ -471,52 +482,52 @@
     
     <table align="center" width="100%" style="text-align:center; border-collapse: collapse" border="1">
         <tr>
-        <th style="font-size: 9pt;">DATA DO EXAME</th>
-        <th style="font-size: 9pt;">HORÁRIO PREVISTO</th>
-        <th style="font-size: 9pt;">HORÁRIO DE CHEGADA</th>
+        <th style="font-size: 8pt;">DATA DO EXAME</th>
+        <th style="font-size: 8pt;">HORÁRIO PREVISTO</th>
+        <th style="font-size: 8pt;">HORÁRIO DE CHEGADA</th>
         </tr>
         <tr>
-        <td style="font-size: 9pt;"><?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-        <td style="font-size: 9pt;"><?= $exame[0]->inicio; ?></td>
-        <td style="font-size: 9pt;"><?= substr($dataatualizacao, 10, 9); ?></td>
+        <td style="font-size: 8pt;"><?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
+        <td style="font-size: 8pt;"><?= $exame[0]->inicio; ?></td>
+        <td style="font-size: 8pt;"><?= substr($dataatualizacao, 10, 9); ?></td>
         </tr>
         <tr>
-        <th style="font-size: 9pt;">JEJUM (SIM)(NÃO) HORAS</th>
-        <th style="font-size: 9pt;">PESO(KG)</th>
-        <th style="font-size: 9pt;">INFORMADO POR</th>
+        <th style="font-size: 8pt;">JEJUM (SIM)(NÃO) HORAS</th>
+        <th style="font-size: 8pt;">PESO(KG)</th>
+        <th style="font-size: 8pt;">INFORMADO POR</th>
         </tr>
-        <tr>
-        <td>&nbsp;&nbsp;</td>
-        <td>&nbsp;&nbsp;</td>
-        <td>&nbsp;&nbsp;</td>
+        <tr height="18px">
+        <td></td>
+        <td></td>
+        <td></td>
         </tr>
-    </table> <br>
-     <table width="100%"style="font-size: 9pt">
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>1.  TEM MARCAPASSO CARDÍACO, DESFIBRILADOR OU CARDIOVERTER?</b></td><td> (SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>2.  FEZ SUBSTITUIÇÃO DE "VÁLVULAS" CARDÍACAS?</b></td><td> (SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>3.  FEZ CIRURGIA CEREBRAL (ANEURISMA) QUE USE CLIP METÁLICO?</b></td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>4.  TEM PRÓTESE/IMPLANTE NO OUVIDO (COCLEAR, ESTRIBO) OU APARELHO AUDITIVO?</b></td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;5.  FAZ HEMODIÁLISE OU DIÁLISE PERITONEAL?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;6.  TEM INSUFICIÊNCIA RENAL?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;7.  TRABALHA OU TRABALHOU COM METAIS?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;8.  TEM OU TEVE FRAGMENTOS METÁLICOS NOS OLHOS?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;9.  JÁ SOFREU FERIMENTO COM ESTILHAÇO DE METAL OU ARMA DE FOGO?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;10.  TEM "PUMPS" OU NEUROESTIMULADORES IMPLANTADOS?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;11.  TEM ALGUM COMPONENTE ARTIFICIAL NO CORPO?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;12. TEM PRÓTESE DENTÁRIA, APARELHO ORTODÔNTICO OU PERUCA?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;13. TEM IMPLANTE (PRÓTESE DE MAMA OU PÊNIS)?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;14. TEM D.I.U (DISPOSITIVO INTRAUTERINO)?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;15. ESTÁ GRAVIDA OU AMAMENTANDO?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;16. TEM TATUAGEM/PIERCING/AGULHA DE ACUPUNTURA?</td><td>(SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;17. TEM FOBIA A AMBIENTES FECHADOS?</td><td> (SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;18. TEM ALERGIA? A QUÊ?</td><td> (SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;19. JÁ FEZ ALGUM TRATAMENTO QUIMIOTERÁPICO OU RADIOTERÁPICO?</td><td> (SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;20. APRESENTA ANOMALIAS DE NASCIMENTO?</td><td> (SIM)(NÃO)</td></tr>
-        <tr><td class="tdpadding" style="font-size: 9pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;21. JÁ REALIZOU ALGUMA CIRURGIA DA REGIÃO A SER EXAMINADA?</td><td> (SIM)(NÃO)</td></tr>
-    </table> <br>
-    <b><span style="font-size: 9pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OBS.: CASO POSITIVO EM PELO MENOS UMA DAS QUATRO PRIMEIRAS QUESTÕES, O EXAME ESTÁ CONTRA INDICADO.</span></b> 
+    </table>
+     <table width="100%"style="font-size: 8pt">
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>1.  TEM MARCAPASSO CARDÍACO, DESFIBRILADOR OU CARDIOVERTER?</b></td><td> (SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>2.  FEZ SUBSTITUIÇÃO DE "VÁLVULAS" CARDÍACAS?</b></td><td> (SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>3.  FEZ CIRURGIA CEREBRAL (ANEURISMA) QUE USE CLIP METÁLICO?</b></td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;<b>4.  TEM PRÓTESE/IMPLANTE NO OUVIDO (COCLEAR, ESTRIBO) OU APARELHO AUDITIVO?</b></td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;5.  FAZ HEMODIÁLISE OU DIÁLISE PERITONEAL?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;6.  TEM INSUFICIÊNCIA RENAL?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;7.  TRABALHA OU TRABALHOU COM METAIS?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;8.  TEM OU TEVE FRAGMENTOS METÁLICOS NOS OLHOS?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;9.  JÁ SOFREU FERIMENTO COM ESTILHAÇO DE METAL OU ARMA DE FOGO?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;10.  TEM "PUMPS" OU NEUROESTIMULADORES IMPLANTADOS?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;11.  TEM ALGUM COMPONENTE ARTIFICIAL NO CORPO?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;12. TEM PRÓTESE DENTÁRIA, APARELHO ORTODÔNTICO OU PERUCA?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;13. TEM IMPLANTE (PRÓTESE DE MAMA OU PÊNIS)?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;14. TEM D.I.U (DISPOSITIVO INTRAUTERINO)?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;15. ESTÁ GRAVIDA OU AMAMENTANDO?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;16. TEM TATUAGEM/PIERCING/AGULHA DE ACUPUNTURA?</td><td>(SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;17. TEM FOBIA A AMBIENTES FECHADOS?</td><td> (SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;18. TEM ALERGIA? A QUÊ?</td><td> (SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;19. JÁ FEZ ALGUM TRATAMENTO QUIMIOTERÁPICO OU RADIOTERÁPICO?</td><td> (SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;20. APRESENTA ANOMALIAS DE NASCIMENTO?</td><td> (SIM)(NÃO)</td></tr>
+        <tr><td class="tdpadding" style="font-size: 8pt; width: 100%">&nbsp;&nbsp;&nbsp;&nbsp;21. JÁ REALIZOU ALGUMA CIRURGIA DA REGIÃO A SER EXAMINADA?</td><td> (SIM)(NÃO)</td></tr>
+     </table><br>
+    <b><span style="font-size: 8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OBS.: CASO POSITIVO EM PELO MENOS UMA DAS QUATRO PRIMEIRAS QUESTÕES, O EXAME ESTÁ CONTRA INDICADO.</span></b> 
     <br><br>
-    <table width="100%">
+    <table width="100%" style="font-size: 9pt">
         <tr>
             <td>
              &nbsp;&nbsp;&nbsp;&nbsp;   _______________________________________________________________________<br>

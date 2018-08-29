@@ -425,6 +425,17 @@
             }
         });
     });
+    var x = document.getElementById("tipo_aso");
+            
+            if ($('#grupo :selected').val() == 'ASO') {
+            
+            x.style.display = "block";
+
+            } else {
+            
+            x.style.display = "none";
+            
+            }
     
     $('#grupo').change(function () {
         
