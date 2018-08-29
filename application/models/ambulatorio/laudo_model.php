@@ -2016,6 +2016,9 @@ class laudo_model extends Model {
                             c.nome as convenio,
                             pc.convenio_id,
                             p.sexo,
+                            p.celular,
+                            p.telefone,
+                            p.whatsapp,
                             p.nome as paciente");
         $this->db->from('tb_ambulatorio_laudo ag');
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');

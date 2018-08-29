@@ -55,6 +55,17 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function horariosambulatorioexamereagendar() {
+        $_GET['teste'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['teste'])));
+
+        if (isset($_GET['exame'])) {
+            $result = $this->exametemp->listarautocompletehorariosexame($_GET['exame'], $_GET['teste']);
+        } else {
+            $result = $this->exametemp->listarautocompletehorariosexame();
+        }
+        echo json_encode($result);
+    }
+
     function gravarhorarioagendawebconvenio() {
         header('Access-Control-Allow-Origin: *');
         $paciente_id = $this->exametemp->crianovopacientefidelidade();
@@ -1725,6 +1736,7 @@ class Autocomplete extends Controller {
 
         echo json_encode($result2);
     }
+
     function setorempresamt() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['convenio1'])) {
@@ -1732,7 +1744,7 @@ class Autocomplete extends Controller {
         } else {
             $result = $this->saudeocupacional->listarautocompletesetorempresamt(@$_GET['convenio1']);
         }
-        
+
         echo json_encode($result);
     }
 

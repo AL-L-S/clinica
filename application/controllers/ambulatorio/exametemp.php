@@ -157,9 +157,9 @@ class Exametemp extends BaseController {
 
     function gravarunificar() {
         $this->load->helper('directory');
-        
+
         $pacientetemp_id = $_POST['paciente_id'];
-        
+
         if ($_POST['paciente_id'] == $_POST['pacienteid']) {
             $data['mensagem'] = 'Erro ao unificar. Você está tentando unificar ';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -176,21 +176,21 @@ class Exametemp extends BaseController {
                 $data['mensagem'] = 'Erro ao unificar Paciente. Opera&ccedil;&atilde;o cancelada.';
             } else {
                 // Unificando arquivos
-                $arquivos = directory_map("./upload/paciente/".$_POST['pacienteid']."/");
+                $arquivos = directory_map("./upload/paciente/" . $_POST['pacienteid'] . "/");
                 if (count($arquivos) > 0) {
-                    
-                    if (!is_dir("./upload/paciente/".$_POST['paciente_id'])) {
-                        mkdir("./upload/paciente/".$_POST['paciente_id']);
-                        $destino = "./upload/paciente/".$_POST['paciente_id'];
+
+                    if (!is_dir("./upload/paciente/" . $_POST['paciente_id'])) {
+                        mkdir("./upload/paciente/" . $_POST['paciente_id']);
+                        $destino = "./upload/paciente/" . $_POST['paciente_id'];
                         chmod($destino, 0777);
                     }
-                    foreach($arquivos as $arq){
-                        $file = "./upload/paciente/".$_POST['pacienteid']."/".$arq;
-                        $newfile = "./upload/paciente/".$_POST['paciente_id']."/".$arq;
+                    foreach ($arquivos as $arq) {
+                        $file = "./upload/paciente/" . $_POST['pacienteid'] . "/" . $arq;
+                        $newfile = "./upload/paciente/" . $_POST['paciente_id'] . "/" . $arq;
                         rename($file, $newfile);
                     }
                 }
-                
+
                 $data['mensagem'] = 'Sucesso ao unificar Paciente.';
             }
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -288,6 +288,26 @@ class Exametemp extends BaseController {
         $this->loadView('ambulatorio/reagendarfisioterapiapacientetemp-form', $data);
     }
 
+    function reangedarexametemp($agenda_exames_id, $pacientetemp_id, $medico_consulta_id) {
+//        if (isset($faltou)) {
+//            $data['faltou'] = $faltou;
+//        }
+        $data['pacientetemp_id'] = $pacientetemp_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['medico_consulta_id'] = $medico_consulta_id;
+        $obj_paciente = new paciente_model($pacientetemp_id);
+        $data['obj'] = $obj_paciente;
+        $data['medico'] = $this->exametemp->listarmedicoconsulta();
+        $data['convenio'] = $this->procedimentoplano->listarconvenio();
+        $data['contador'] = $this->exametemp->contadorfisioterapiapaciente($pacientetemp_id);
+        $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapiareangedar($agenda_exames_id);
+        $data['consultasanteriores'] = $this->exametemp->listarespecialidadeanterior($pacientetemp_id);
+        $data['consultaanteriorcontador'] = $this->exametemp->listarconsultaanteriorcontador($pacientetemp_id);
+
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('ambulatorio/reagendarexamepacientetemp-form', $data);
+    }
+
     function reangedarconsultatemp($agenda_exames_id, $pacientetemp_id, $medico_consulta_id) {
 //        if (isset($faltou)) {
 //            $data['faltou'] = $faltou;
@@ -307,6 +327,7 @@ class Exametemp extends BaseController {
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/reagendarconsultapacientetemp-form', $data);
     }
+
     function reangedargeraltemp($agenda_exames_id, $pacientetemp_id, $medico_consulta_id) {
 //        if (isset($faltou)) {
 //            $data['faltou'] = $faltou;
@@ -376,9 +397,9 @@ class Exametemp extends BaseController {
         $data['impressaorecibo'] = $this->guia->listarconfiguracaoimpressaorecibo($empresa_id);
         @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
         @$rodape_config = $data['cabecalho'][0]->rodape;
-        
+
         $data['paciente'] = $this->paciente->listardados($paciente_id);
-        
+
         $credito = $this->exametemp->gerarecibocredito($paciente_credito_id);
 //        var_dump($credito); die;
         if ($credito[0]->valor == '0,00') {
@@ -389,8 +410,8 @@ class Exametemp extends BaseController {
         }
 
         $data['credito'] = $credito;
-        
-                if ($data['empresapermissoes'][0]->recibo_config == 't') {
+
+        if ($data['empresapermissoes'][0]->recibo_config == 't') {
 
             if ($data['impressaorecibo'][0]->cabecalho == 't') {
                 if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
@@ -413,14 +434,11 @@ class Exametemp extends BaseController {
             }
             $data['cabecalho'] = $cabecalho;
             $data['rodape'] = $rodape;
-            
+
             $this->load->View('ambulatorio/impressaorecibocreditoconfiguravel', $data);
-        }else{
+        } else {
             $this->load->view('ambulatorio/reciboprocedimentocredito', $data);
         }
-        
-
-        
     }
 
     function enviarpendenteatendimento($exames_id, $sala_id, $agenda_exames_id) {
@@ -463,10 +481,9 @@ class Exametemp extends BaseController {
         $data['credito_id'] = $credito_id;
         $data['valor'] = 0.00;
         $permissoes = $this->guia->listarempresapermissoes();
-        if($permissoes[0]->ajuste_pagamento_procedimento == 't') {
+        if ($permissoes[0]->ajuste_pagamento_procedimento == 't') {
             $this->load->View('ambulatorio/faturarcreditopersonalizado-form', $data);
-        }
-        else {
+        } else {
             $this->load->View('ambulatorio/faturarcredito-form', $data);
         }
     }
@@ -474,12 +491,11 @@ class Exametemp extends BaseController {
     function gravarfaturarcreditopersonalizado() {
         $credito_id = $_POST['credito_id'];
         $paciente_id = $_POST['paciente_teste_id'];
-        
-        if((float)$_POST['valortotal'] == 0){
+
+        if ((float) $_POST['valortotal'] == 0) {
             $this->guia->gravarfaturarcreditopersonalizado();
             redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
-        }
-        else {            
+        } else {
             redirect(base_url() . "ambulatorio/exametemp/faturarcreditos/$credito_id/$paciente_id");
         }
     }
@@ -487,11 +503,10 @@ class Exametemp extends BaseController {
     function gravarfaturarcredito() {
         $credito_id = $_POST['credito_id'];
         $paciente_id = $_POST['paciente_teste_id'];
-        if((float)$_POST['valortotal'] == 0){
+        if ((float) $_POST['valortotal'] == 0) {
             $this->guia->gravarfaturamentocredito();
             redirect(base_url() . "ambulatorio/exametemp/listarcredito/$paciente_id");
-        }
-        else {            
+        } else {
             redirect(base_url() . "ambulatorio/exametemp/faturarcreditos/$credito_id/$paciente_id");
         }
 //        $data['agenda_exames_id'] = $agenda_exames_id;
@@ -1131,7 +1146,16 @@ class Exametemp extends BaseController {
         redirect(base_url() . "ambulatorio/exametemp/carregarpacienteconsultatemp/$pacientetemp_id");
 //        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
     }
-    
+
+    function gravarexamepacientetempreagendar() {
+
+        $pacientetemp_id = $_POST['txtpaciente_id'];
+//        $data['exames'] = $this->exametemp->listaragendatotalpacientefisioterapiareangedar();
+        $this->exametemp->gravarexamepacientetempreagendar($pacientetemp_id);
+        redirect(base_url() . "ambulatorio/exametemp/carregarpacientetemp/$pacientetemp_id");
+//        $this->carregarpacientefisioterapiatemp($pacientetemp_id);
+    }
+
     function gravargeralpacientetempreagendar() {
 
         $pacientetemp_id = $_POST['txtpaciente_id'];

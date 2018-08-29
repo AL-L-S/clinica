@@ -580,7 +580,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
           type: "POST",
           data: {teste: 'teste'},
           //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-          url: "<?= $endereco ?>/webService/telaChamado/proximo/" + medico_id,
+          url: "<?= $endereco ?>/webService/telaChamado/proximo/" + medico_id + '/1',
           success: function (data) {
 
               alert('Operação efetuada com sucesso');

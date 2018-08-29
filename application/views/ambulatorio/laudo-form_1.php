@@ -74,6 +74,13 @@ if (count($pacs) > 0) {
     } else {
         $adendo = false;
     }
+    if (@$empresapermissao[0]->dados_atendimentomed != '') {
+        $opc_dadospaciente = json_decode(@$empresapermissao[0]->dados_atendimentomed);
+    } else {
+        $opc_dadospaciente = array();
+    }
+
+
 //    var_dump($laudo_sigiloso); die;
 //    $estado_civil = @$obj->_estado_civil_id;
     if (@$obj->_estado_civil == ''):$estado_civil = 'Solteiro';
@@ -93,62 +100,104 @@ if (count($pacs) > 0) {
             <div >
                 <fieldset>
                     <legend>Dados</legend>
-                    <table > 
+                    <table> 
                         <tr >
-                            <td colspan="3" width="400px;">Paciente:<?= @$obj->_nome ?></td>
-                            <td colspan="3" width="400px;">Exame: <?= @$obj->_procedimento ?></td>
-                            <td>Solicitante: <?= @$obj->_solicitante ?></td>
-                            <td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>
-                        </tr>
-                        <tr><td colspan="3">Idade: <?= $teste ?></td>
-                            <td colspan="3">Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
-                            <td>Sala:<?= @$obj->_sala ?></td>
+                            <? if (in_array('paciente', $opc_dadospaciente)) { ?>
+                                <td colspan="3" width="400px;">Paciente:<?= @$obj->_nome ?></td>
+                            <? } ?>
+                            <? if (in_array('exame', $opc_dadospaciente)) { ?>
+                                <td colspan="3" width="400px;">Exame: <?= @$obj->_procedimento ?></td>
+                            <? } ?>
+                            <? if (in_array('solicitante', $opc_dadospaciente)) { ?>
+                                <td>Solicitante: <?= @$obj->_solicitante ?></td>
+                            <? } ?>
+<!--<td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>-->
                         </tr>
                         <tr>
-                            <td colspan="2">Sexo: <?= @$obj->_sexo ?></td>
-                            <td colspan="2">Ocupação: <?= @$obj->_profissao_cbo ?> </td>
-                            <td >Estado Civíl: <?= @$estado_civil ?> </td>
-                            <td>Convenio:<?= @$obj->_convenio; ?></td>
-                            <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
+                            <? if (in_array('idade', $opc_dadospaciente)) { ?>
+                                <td colspan="3">Idade: <?= $teste ?></td>
+                            <? } ?>
+                            <? if (in_array('nascimento', $opc_dadospaciente)) { ?>
+                                <td colspan="3">Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
+                            <? } ?>
+                            <? if (in_array('sala', $opc_dadospaciente)) { ?>
+                                <td>Sala:<?= @$obj->_sala ?></td>
+                            <? } ?>
+                        </tr>
+                        <tr>
+                            <? if (in_array('sexo', $opc_dadospaciente)) { ?>
+                                <td colspan="2">Sexo: <?= @$obj->_sexo ?></td>
+                            <? } ?>
+                            <? if (in_array('estadocivil', $opc_dadospaciente)) { ?>
+                                <td colspan="1">Ocupação: <?= @$obj->_profissao_cbo ?> </td>
+                            <? } ?>
+                            <? if (in_array('ocupacao', $opc_dadospaciente)) { ?>
+                                <td colspan="2">Estado Civíl: <?= @$estado_civil ?> </td>
+                            <? } ?>
+                            <? if (in_array('convenio', $opc_dadospaciente)) { ?>
+                                <td colspan="">Convenio:<?= @$obj->_convenio; ?></td>
+                            <? } ?>
+                            <? if (in_array('telefone', $opc_dadospaciente)) { ?>
+                                <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
+                            <? } ?>
 
                         </tr>
+
                         <tr>
-                            <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
+                            <? if (in_array('telefone', $opc_dadospaciente)) { ?>
+                                <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
+                            <? } ?>
+
+<!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
+                            <? if (in_array('endereco', $opc_dadospaciente)) { ?>
+                                <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
+                            <? } ?>
                         </tr>
+<!--                        <tr>
+                            <td colspan="2"></td>
+                        </tr>-->
+
+
+
+
                     </table>
+
+
                 </fieldset>
                 <table>
                     <tr>
 
-
-                        <? if (@$obj->_id_chamada != '') { ?>
-
-                        <div class="bt_link_new">
-                            <a href='#' id='botaochamar' >Chamar</a>
-                        </div>
+                        <td>
 
 
-                    <? } else { ?>
-                        <div class="bt_link_new">
-                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
-                                Chamar</a>
-                        </div>
-                    <? } ?>
+                            <? if (@$obj->_id_chamada != '') { ?>
 
-                    <td>
-                        <div class="bt_link_new">
-                            <a onclick="javascript: return confirm('Deseja realmente deixar o atendimento pendente?');" href="<?= base_url() ?>ambulatorio/laudo/pendenteexamemultifuncao/<?= $exame_id ?>" >
-                                Pendente
-                            </a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="bt_link_new">
-                            <a href="<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>" >
-                                Encaminhar
-                            </a>
-                        </div>
-                    </td>
+                                <div class="bt_link_new">
+                                    <a href='#' id='botaochamar' >Chamar</a>
+                                </div>
+
+
+                            <? } else { ?>
+                                <div class="bt_link_new">
+                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
+                                        Chamar</a>
+                                </div>
+                            <? } ?>
+                        </td>
+                        <td>
+                            <div class="bt_link_new">
+                                <a onclick="javascript: return confirm('Deseja realmente deixar o atendimento pendente?');" href="<?= base_url() ?>ambulatorio/laudo/pendenteexamemultifuncao/<?= $exame_id ?>" >
+                                    Pendente
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="bt_link_new">
+                                <a href="<?= base_url() ?>ambulatorio/laudo/encaminharatendimento/<?= $ambulatorio_laudo_id ?>" >
+                                    Encaminhar
+                                </a>
+                            </div>
+                        </td>
 
                     </tr>
 
@@ -295,7 +344,7 @@ if (count($pacs) > 0) {
                 <!--                        <select name="linha" id="linha" class="size2" >
                                             <option value='' >selecione</option>
                                         <?php // foreach ($linha as $item) {    ?>
-                                                                                                                        <option value="<?php // echo $item->nome;                  ?>" ><?php // echo $item->nome;                  ?></option>
+                                                                                                                        <option value="<?php // echo $item->nome;                       ?>" ><?php // echo $item->nome;                       ?></option>
                                         <?php // }  ?>
                                         </select>-->
 

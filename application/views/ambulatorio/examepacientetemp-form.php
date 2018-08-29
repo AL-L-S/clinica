@@ -66,9 +66,11 @@
         <fieldset>
             <div>
                 <label>Data</label>
-                <input type="text"  id="data_ficha" name="data_ficha" class="size1" required value="<? if (count($exames) > 0) {
-                echo date("d/m/Y", strtotime(@$exames[0]->data));
-            } ?>"/>
+                <input type="text"  id="data_ficha" name="data_ficha" class="size1" required value="<?
+                if (count($exames) > 0) {
+                    echo date("d/m/Y", strtotime(@$exames[0]->data));
+                }
+                ?>"/>
                 <input type="hidden" name="txtpaciente_id" value="<?= @$obj->_paciente_id; ?>" />
             </div>
             <legend>Exames tipo</legend>
@@ -82,9 +84,9 @@
                     foreach ($salas as $item) {
                         ?>
                         <option value="<?= $item->exame_sala_id ?>" <? if ($lastSala == $item->exame_sala_id) echo 'selected'; ?>>
-                        <?= $item->nome ?>
+                            <?= $item->nome ?>
                         </option>
-<? } ?>
+                    <? } ?>
                     <!--                    <option value="RX" >RX</option>
                                         <option value="TOMOGRAFIA" >TOMOGRAFIA</option>
                                         <option value="RM" >RM</option>
@@ -115,9 +117,9 @@
                     foreach ($convenio as $value) :
                         ?>
                         <option value="<?= $value->convenio_id; ?>" <? if ($lastCov == $value->convenio_id) echo 'selected'; ?>>
-                        <?php echo $value->nome; ?>
+                            <?php echo $value->nome; ?>
                         </option>
-<? endforeach; ?>
+                    <? endforeach; ?>
                 </select>
             </div>
             <div>
@@ -126,7 +128,7 @@
                     <option value="">Selecione</option>
                     <? foreach ($grupos as $item) : ?>
                         <option value="<?= $item->nome; ?>"><?= $item->nome; ?></option>
-<? endforeach; ?>
+                    <? endforeach; ?>
                 </select>
             </div>
             <div>
@@ -164,7 +166,7 @@
                     <th class="tabela_header">Sala</th>
                     <th class="tabela_header">Exame</th>
                     <th class="tabela_header">Observa&ccedil;&otilde;es</th>
-                    <th class="tabela_header" colspan="2">&nbsp;</th>
+                    <th class="tabela_header" colspan="3">&nbsp;</th>
                 </tr>
             </thead>
             <?
@@ -178,26 +180,31 @@
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><?= $item->sala . "-" . $item->medico; ?></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/vizualizarpreparo/<?= $item->tuss_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                width=800,height=400');"><?= $item->procedimento; ?></a></td>
+                                                                                                                                                                        width=800,height=400');"><?= $item->procedimento; ?></a></td>
                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                width=500,height=230');">=><?= $item->observacoes; ?></a></td>
+                                                                                                                                                                        width=500,height=230');">=><?= $item->observacoes; ?></a></td>
 
                         <? if (empty($faltou)) { ?>
 
-            <? if ($item->encaixe == 't') { ?>
+                            <? if ($item->encaixe == 't') { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                         <a onclick="javascript: return confirm('Deseja realmente excluir o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/excluirexametempencaixe/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
                                             Excluir</a></td></div>
-            <? } else { ?>
+                            <? } else { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                         <a onclick="javascript: return confirm('Deseja realmente excluir o exame?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirexametemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>">
                                             Excluir</a></td></div>
 
-            <? } ?>
-        <? } ?>
+                            <? } ?>
+                        <? } ?>
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
                                 <a href="<?= base_url() ?>ambulatorio/exametemp/reservarexametemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->agenda_exames_nome_id; ?>/<?= $item->data; ?>">
                                     reservar</a></td></div>
+                        <? if ($item->confirmado == 'f' && $item->realizada == 'f') { ?>
+                            <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
+                                    <a href="<?= base_url() ?>ambulatorio/exametemp/reangedarexametemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>">
+                                        Re-Agendar</a></div></td>
+                        <? } ?>
                     </tr>
 
 
@@ -254,94 +261,94 @@
 </style>
 <script>
 
-                            if ($("#exame").val() != "") {
-                                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorio', {exame: $("#exame").val(), teste: $("#data_ficha").val()}, function (j) {
-                                    var options = '<option value=""></option>';
-                                    for (var i = 0; i < j.length; i++) {
-                                        options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '-' + j[i].nome + '- Dr. ' + j[i].medico + '</option>';
-                                    }
-                                    $('#horarios').html(options).show();
-                                    $('.carregando').hide();
-                                });
-                            }
+                                            if ($("#exame").val() != "") {
+                                                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorio', {exame: $("#exame").val(), teste: $("#data_ficha").val()}, function (j) {
+                                                    var options = '<option value=""></option>';
+                                                    for (var i = 0; i < j.length; i++) {
+                                                        options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '-' + j[i].nome + '- Dr. ' + j[i].medico + '</option>';
+                                                    }
+                                                    $('#horarios').html(options).show();
+                                                    $('.carregando').hide();
+                                                });
+                                            }
 
-                            if ($("#convenio1").val() != "0") {
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $("#convenio1").val(), ajax: true}, function (j) {
-                                    options = '<option value=""></option>';
-                                    for (var c = 0; c < j.length; c++) {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                    }
+                                            if ($("#convenio1").val() != "0") {
+                                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $("#convenio1").val(), ajax: true}, function (j) {
+                                                    options = '<option value=""></option>';
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                                    }
 //                                    $('#procedimento1').html(options).show();
-                                    $('#procedimento1 option').remove();
-                                    $('#procedimento1').append(options);
-                                    $("#procedimento1").trigger("chosen:updated");
-                                    $('.carregando').hide();
-                                });
-                            }
+                                                    $('#procedimento1 option').remove();
+                                                    $('#procedimento1').append(options);
+                                                    $("#procedimento1").trigger("chosen:updated");
+                                                    $('.carregando').hide();
+                                                });
+                                            }
 
-                            $(function () {
-                                $('#grupo').change(function () {
+                                            $(function () {
+                                                $('#grupo').change(function () {
 //                                                if ($(this).val()) {
-                                    $('.carregando').show();
-                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
-                                        options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                        }
+                                                    $('.carregando').show();
+                                                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        for (var c = 0; c < j.length; c++) {
+                                                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                        }
 //                                        $('#procedimento1').html(options).show();
-                                        $('#procedimento1 option').remove();
-                                        $('#procedimento1').append(options);
-                                        $("#procedimento1").trigger("chosen:updated");
-                                        $('.carregando').hide();
-                                    });
+                                                        $('#procedimento1 option').remove();
+                                                        $('#procedimento1').append(options);
+                                                        $("#procedimento1").trigger("chosen:updated");
+                                                        $('.carregando').hide();
+                                                    });
 //                                                } else {
 //                                                    $('#procedimento1').html('<option value="">Selecione</option>');
 //                                                }
-                                });
-                            });
+                                                });
+                                            });
 
 
-                            function mascaraTelefone(campo) {
+                                            function mascaraTelefone(campo) {
 
-                                function trata(valor, isOnBlur) {
+                                                function trata(valor, isOnBlur) {
 
-                                    valor = valor.replace(/\D/g, "");
-                                    valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
+                                                    valor = valor.replace(/\D/g, "");
+                                                    valor = valor.replace(/^(\d{2})(\d)/g, "($1)$2");
 
-                                    if (isOnBlur) {
+                                                    if (isOnBlur) {
 
-                                        valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
-                                    } else {
+                                                        valor = valor.replace(/(\d)(\d{4})$/, "$1-$2");
+                                                    } else {
 
-                                        valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
-                                    }
-                                    return valor;
-                                }
+                                                        valor = valor.replace(/(\d)(\d{3})$/, "$1-$2");
+                                                    }
+                                                    return valor;
+                                                }
 
-                                campo.onkeypress = function (evt) {
+                                                campo.onkeypress = function (evt) {
 
-                                    var code = (window.event) ? window.event.keyCode : evt.which;
-                                    var valor = this.value
+                                                    var code = (window.event) ? window.event.keyCode : evt.which;
+                                                    var valor = this.value
 
-                                    if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
-                                        return false;
-                                    } else {
-                                        this.value = trata(valor, false);
-                                    }
-                                }
+                                                    if (code > 57 || (code < 48 && code != 0 && code != 8 && code != 9)) {
+                                                        return false;
+                                                    } else {
+                                                        this.value = trata(valor, false);
+                                                    }
+                                                }
 
-                                campo.onblur = function () {
+                                                campo.onblur = function () {
 
-                                    var valor = this.value;
-                                    if (valor.length < 13) {
-                                        this.value = ""
-                                    } else {
-                                        this.value = trata(this.value, true);
-                                    }
-                                }
+                                                    var valor = this.value;
+                                                    if (valor.length < 13) {
+                                                        this.value = ""
+                                                    } else {
+                                                        this.value = trata(this.value, true);
+                                                    }
+                                                }
 
-                                campo.maxLength = 14;
-                            }
+                                                campo.maxLength = 14;
+                                            }
 
 
 </script>

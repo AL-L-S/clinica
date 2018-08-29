@@ -326,6 +326,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+
 ALTER TABLE ponto.tb_paciente ALTER COLUMN convenionumero TYPE text;
 ALTER TABLE ponto.tb_paciente ALTER COLUMN cns TYPE text;
 
@@ -374,3 +376,17 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN impressao_cimetra boolean DEF
 --Dia 27/08/2018
 
 ALTER TABLE ponto.tb_procedimentos_agrupados_ambulatorial ADD COLUMN quantidade_agrupador integer;
+
+
+UPDATE ponto.tb_procedimentos_agrupados_ambulatorial
+   SET  quantidade_agrupador = 1
+ WHERE quantidade_agrupador is null;
+
+UPDATE ponto.tb_empresa_permissoes
+    SET dados_atendimentomed = '["paciente","idade","sexo","indicacao","exame","nascimento","ocupacao","endereco","estadocivil","convenio","solicitante","sala","telefone"]'
+ WHERE dados_atendimentomed is null;
+
+UPDATE ponto.tb_empresa_permissoes
+   SET campos_cadastro='["sexo","telefone1"]' 
+ WHERE campos_cadastro is null OR campos_cadastro = '';
+

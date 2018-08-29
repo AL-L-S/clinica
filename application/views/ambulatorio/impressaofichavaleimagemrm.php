@@ -10,7 +10,7 @@
     ?>
 
 
-    <?= @$cabecalho_config; ?>
+    <?//= @$cabecalho_config; ?>
     <table style="width: 100%;">
         <tbody>
             <tr>

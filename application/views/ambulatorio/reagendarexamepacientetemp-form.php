@@ -1,10 +1,10 @@
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div class="clear"></div>
 
-    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarconsultapacientetempreagendar" method="post">
+    <form name="form_exametemp" id="form_exametemp" action="<?= base_url() ?>ambulatorio/exametemp/gravarexamepacientetempreagendar" method="post">
 
         <fieldset>
-            <legend>Reagendar Consulta</legend>
+            <legend>Reagendar Exame</legend>
 
             <div>
                 <label>Nome</label>
@@ -251,10 +251,10 @@
             if ($(this).val()) {
                 $('#horarios').hide();
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorioconsulta', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
+                $.getJSON('<?= base_url() ?>autocomplete/horariosambulatorioexamereagendar', {exame: $(this).val(), teste: $("#data_ficha").val()}, function (j) {
                     var options = '<option value=""></option>';
                     for (var i = 0; i < j.length; i++) {
-                        options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + '</option>';
+                        options += '<option value="' + j[i].agenda_exames_id + '">' + j[i].inicio + ' '+ j[i].nome + '</option>';
                     }
                     $('#horarios').html(options).show();
                     $('.carregando').hide();
