@@ -2862,6 +2862,11 @@ class laudo_model extends Model {
             } else {
                 $this->db->set('assinatura', 'f');
             }
+            if (isset($_POST['carimbo'])) {
+                $this->db->set('carimbo', 't');
+            } else {
+                $this->db->set('carimbo', 'f');
+            }
 
             $this->db->set('cabecalho', $_POST['cabecalho']);
             if (isset($_POST['imagem'])) {
@@ -5642,6 +5647,7 @@ class laudo_model extends Model {
                             ag.revisor,
                             ag.diabetes,
                             ag.hipertensao,
+                            ag.carimbo,
                             p.nome,
                             pt.nome as procedimento,
                             p.idade,
@@ -5777,6 +5783,7 @@ class laudo_model extends Model {
             $this->_indicacao = $return[0]->indicacao;
             $this->_situacaolaudo = $return[0]->situacaolaudo;
             $this->_agenda_exames_id = $return[0]->agenda_exames_id;
+            $this->_carimbo = $return[0]->carimbo;
             $this->_atendimento = $return[0]->atendimento;
             $this->_paciente_id = $return[0]->paciente_id;
             $this->_cpf = $return[0]->cpf;

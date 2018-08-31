@@ -344,35 +344,49 @@
     <br>
     <br>
     <br>
-    <table style="width: 100%; font-size: 10pt;">
+    <table style="width: 100%; font-size: 9pt;">
         <tr>
             <td class="tdpadding" style="width: 100%">
-                FUMANTE:(S/N)______&nbsp;&nbsp; HÁ ______ ANOS
+                PESO:________&nbsp;&nbsp; ALTURA __________
             </td>
         </tr>
         <tr>
             <td class="tdpadding" style="width: 100%">
-                FEBRE:(S/N)______&nbsp;&nbsp; HÁ ______ DIAS
+                MENOPAUSA: ( &nbsp;)SIM ( &nbsp;)NÃO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IDADE: <?= $teste; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                FUMA: ( )SIM ( )NUNCA ( )EX FUMANTE
             </td>
         </tr>
         <tr>
             <td class="tdpadding" style="width: 100%">
-                TOSSE: (S/N)______&nbsp;&nbsp; SECA ( ) PRODUTIVA ( )
+                FAZ TRATAMENTO TRH: ( &nbsp;)SIM ( &nbsp;)NÃO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                CORTICOIDE: ( &nbsp;)SIM ( &nbsp;)NÃO  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                HORMONIO TIREOIDE: ( &nbsp;)SIM ( &nbsp;)NÃO
+            </td>
+        </tr>
+        <tr>
+            <td class="tdpadding" style="width: 100%;font-size: 8pt;">
+                CALCIO + VITAMINA D: ( &nbsp;)SIM ( &nbsp;)NÃO &nbsp;
+                FAZ EXERCICIO FISICO: ( &nbsp;)SIM ( &nbsp;)NÃO &nbsp;
+                TROUXE EXAME ANTERIOR?: ( &nbsp;)SIM ( &nbsp;)NÃO
+            </td>
+        </tr>
+<!--        <tr>
+            <td class="tdpadding" style="width: 100%">
+                CALCIO + VITAMINA D: ( &nbsp;)SIM ( &nbsp;)NÃO &nbsp;
+                FAZ EXERCICIO FISICO: ( &nbsp;)SIM ( &nbsp;)NÃO &nbsp;
+                TROUXE EXAME ANTERIOR?: ( &nbsp;)SIM ( &nbsp;)NÃO
+            </td>
+        </tr>-->
+        <tr>
+            <td class="tdpadding" style="width: 100%">
+                NA FAMILIA: OSTEOPOROSE ( &nbsp;)SIM ( &nbsp;)NÃO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                OSTEOPENIA: ( &nbsp;)SIM ( &nbsp;)NÃO &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                FRATURAS: ( &nbsp;)SIM ( &nbsp;)NÃO
             </td>
         </tr>
         <tr>
             <td class="tdpadding" style="width: 100%">
-                DISPNEIA: (S/N)______&nbsp;&nbsp; 
-            </td>
-        </tr>
-        <tr>
-            <td class="tdpadding" style="width: 100%">
-                DOR: (S/N)______&nbsp;&nbsp; LADO DIREITO ( ) LADO ESQUERDO ( )
-            </td>
-        </tr>
-        <tr>
-            <td class="tdpadding" style="width: 100%">
-                TRAUMA: (S/N)______&nbsp;&nbsp; LADO DIREITO ( ) LADO ESQUERDO ( )
+                LOCAL:________________________
             </td>
         </tr>
 

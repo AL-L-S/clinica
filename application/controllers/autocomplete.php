@@ -2826,6 +2826,18 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function carimbomedico() {
+
+        if (isset($_GET['medico_id'])) {
+            //$result = 'oi';
+            $result = $this->operador_m->carimbomedico($_GET['medico_id']);
+        } else {
+            $result = $this->operador_m->carimbomedico();
+            //$result = 'oi nao';
+        }
+        echo json_encode($result);
+    }
+
     function medicoespecialidadetodos() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtcbo'])) {

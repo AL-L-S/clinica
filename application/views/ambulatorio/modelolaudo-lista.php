@@ -22,49 +22,57 @@
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header">Medico</th>
                         <th class="tabela_header">Procedimento</th>
-                        <th class="tabela_header">Detalhes</th>
+                        <th class="tabela_header" colspan="2">Detalhes</th>
                     </tr>
                 </thead>
                 <?php
-                    $url      = $this->utilitario->build_query_params(current_url(), $_GET);
-                    $consulta = $this->modelolaudo->listar($_GET);
-                    $total    = $consulta->count_all_results();
-                    $limit    = 10;
-                    isset ($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+                $url = $this->utilitario->build_query_params(current_url(), $_GET);
+                $consulta = $this->modelolaudo->listar($_GET);
+                $total = $consulta->count_all_results();
+                $limit = 10;
+                isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
-                    if ($total > 0) {
-                ?>
-                <tbody>
-                    <?php
+                if ($total > 0) {
+                    ?>
+                    <tbody>
+                        <?php
                         $lista = $this->modelolaudo->listar($_GET)->orderby('medico')->orderby('procedimento')->orderby('nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                     ?>
+                            ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                  
+
                                     <a href="<?= base_url() ?>ambulatorio/modelolaudo/carregarmodelolaudo/<?= $item->ambulatorio_modelo_laudo_id ?>">
- editar
+                                        Editar
                                     </a>
-                            </td>
-                        </tr>
+
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="100px;">
+
+                                    <a onclick="javascript: return confirm('Deseja realmente excluir o modelo de Laudo?');" href="<?= base_url() ?>ambulatorio/modelolaudo/excluir/<?= $item->ambulatorio_modelo_laudo_id ?>">
+                                        Excluir
+                                    </a>
+
+                                </td>
+                            </tr>
 
                         </tbody>
                         <?php
-                                }
-                            }
-                        ?>
-                        <tfoot>
-                            <tr>
-                                <th class="tabela_footer" colspan="6">
-                                   <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                    }
+                }
+                ?>
+                <tfoot>
+                    <tr>
+                        <th class="tabela_footer" colspan="6">
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
-                                </th>
+                        </th>
                     </tr>
                 </tfoot>
             </table>
@@ -74,8 +82,8 @@
 </div> <!-- Final da DIV content -->
 <script type="text/javascript">
 
-    $(function() {
-        $( "#accordion" ).accordion();
+    $(function () {
+        $("#accordion").accordion();
     });
 
 </script>

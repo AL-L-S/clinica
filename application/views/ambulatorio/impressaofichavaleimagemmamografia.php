@@ -81,7 +81,7 @@
     <table style="width: 100%; font-size: 11pt;">
         <tr>
             <td>
-                Agenda...: <?= $exame[0]->medico_agenda; ?>  - <?= $exame[0]->medico; ?>
+                Agenda...: <?= $exame[0]->crm_medico; ?>  - <?= $exame[0]->medico; ?>
             </td>
             <td>
                 <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $exame[0]->agenda_exames_id; ?></span> 
@@ -145,7 +145,7 @@
         </tr>
         <tr>
             <td>
-                Solicitante: <?= $exame[0]->medico_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?>
+                Solicitante: <?= $exame[0]->crm_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?>
             </td>
             <td>
                 Validade: <? //= $exame[0]->agenda_exames_id;                   ?>

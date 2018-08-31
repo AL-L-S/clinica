@@ -5020,13 +5020,14 @@ class exametemp_model extends Model {
                         $w++;
                         if ($i == $w) {
                             $convenio = $itemconvenio;
-                            $this->db->select('dinheiro, fidelidade_endereco_ip');
+                            $this->db->select('dinheiro, fidelidade_endereco_ip, nome');
                             $this->db->from('tb_convenio');
                             $this->db->where("convenio_id", $convenio);
                             $query = $this->db->get();
                             $return = $query->result();
                             $dinheiro = $return[0]->dinheiro;
                             $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
+                            $convenio_nome = $return[0]->nome;
 
                             break;
                         }
@@ -5059,6 +5060,25 @@ class exametemp_model extends Model {
 //                    echo '<pre>';
 //                    var_dump();
 //                    die;
+                    $this->db->select('nome, nascimento, sexo');
+                    $this->db->from('tb_paciente ');
+                    $this->db->where('paciente_id', $paciente_id);
+                    $paciente_inf = $this->db->get()->result();
+
+                    $sexo = ($paciente_inf[0]->sexo != '') ? $paciente_inf[0]->sexo : '';
+                    $nascimento_str = strtotime($paciente_inf[0]->nascimento);
+                    $string_worklist = $paciente_inf[0]->nome . ";{$ambulatorio_guia_id};$nascimento_str;{$convenio_nome};{$sexo};V2; \n";
+                    if (!is_dir("./upload/RIS")) {
+                        mkdir("./upload/RIS");
+                        $destino = "./upload/RIS";
+                        chmod($destino, 0777);
+                    }
+                    $fp = fopen("./upload/RIS/worklist.txt", "a+");
+                    $escreve = fwrite($fp, $string_worklist);
+                    fclose($fp);
+                    chmod("./upload/RIS/worklist.txt", 0777);
+//                var_dump($string_worklist);
+//                die;
                     $this->db->select('mc.valor as perc_medico, mc.percentual');
                     $this->db->from('tb_procedimento_percentual_medico_convenio mc');
                     $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
@@ -6785,13 +6805,14 @@ class exametemp_model extends Model {
                         $w++;
                         if ($i == $w) {
                             $convenio = $itemconvenio;
-                            $this->db->select('dinheiro, fidelidade_endereco_ip');
+                            $this->db->select('dinheiro, fidelidade_endereco_ip, nome');
                             $this->db->from('tb_convenio');
                             $this->db->where("convenio_id", $convenio);
                             $query = $this->db->get();
                             $return = $query->result();
                             $dinheiro = $return[0]->dinheiro;
                             $fidelidade_endereco_ip = $return[0]->fidelidade_endereco_ip;
+                            $convenio_nome = $return[0]->nome;
                             break;
                         }
                     }
@@ -6825,6 +6846,29 @@ class exametemp_model extends Model {
                     }
                     if ($medico_id == '') {
                         $medico_id = 0;
+                    }
+
+
+                    if ($tipo == 'EXAME') {
+                        //Insere no Arquivo de Worklist.
+                        $this->db->select('nome, nascimento, sexo');
+                        $this->db->from('tb_paciente ');
+                        $this->db->where('paciente_id', $paciente_id);
+                        $paciente_inf = $this->db->get()->result();
+                        $sexo = ($paciente_inf[0]->sexo != '') ? $paciente_inf[0]->sexo : '';
+                        $nascimento_str = strtotime($paciente_inf[0]->nascimento);
+                        $string_worklist = $paciente_inf[0]->nome . ";{$ambulatorio_guia_id};$nascimento_str;{$convenio_nome};{$sexo};V2; \n";
+                        if (!is_dir("./upload/RIS")) {
+                            mkdir("./upload/RIS");
+                            $destino = "./upload/RIS";
+                            chmod($destino, 0777);
+                        }
+                        $fp = fopen("./upload/RIS/worklist.txt", "a+");
+                        $escreve = fwrite($fp, $string_worklist);
+                        fclose($fp);
+                        chmod("./upload/RIS/worklist.txt", 0777);
+//                var_dump($string_worklist);
+//                die;
                     }
 
                     if ($fidelidade_endereco_ip != '') {
@@ -8467,7 +8511,18 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
-    function listarmodeloslaudo($procedimento_tuss_id) {
+    function listarmodeloslaudo($procedimento_tuss_id, $medico_id = null) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('ep.modelo_laudo_medico,
+                            ');
+        $this->db->from('tb_empresa e');
+        $this->db->where('e.empresa_id', $empresa_id);
+        $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+        $this->db->orderby('e.empresa_id');
+        $return1 = $this->db->get()->result();
+
+
+
         $this->db->select('aml.ambulatorio_modelo_laudo_id,
                             aml.nome,
                             aml.texto');
@@ -8475,7 +8530,25 @@ class exametemp_model extends Model {
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = aml.procedimento_tuss_id');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
         $this->db->where('aml.ativo', 'true');
+        if (@$return1[0]->modelo_laudo_medico == 't' && $medico_id != null) {
+            $this->db->where('aml.medico_id', $medico_id);
+        }
         $this->db->where('pc.procedimento_convenio_id', $procedimento_tuss_id);
+        $this->db->orderby('aml.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarmodeloslaudovisualizar($modelo_id) {
+
+        $this->db->select('aml.ambulatorio_modelo_laudo_id,
+                            aml.nome,
+                            aml.texto');
+        $this->db->from('tb_ambulatorio_modelo_laudo aml');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = aml.procedimento_tuss_id');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+//        $this->db->where('aml.ativo', 'true');
+        $this->db->where('aml.ambulatorio_modelo_laudo_id', $modelo_id);
         $this->db->orderby('aml.nome');
         $return = $this->db->get();
         return $return->result();

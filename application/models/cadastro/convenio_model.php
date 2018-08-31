@@ -328,29 +328,29 @@ class Convenio_model extends Model {
     }
 
     function excluir($convenio_id) {
-        
+
         // Excluindo credor associado a esse operador
         $result = $this->db->select('credor_devedor_id')->from('tb_convenio')->where('convenio_id', $convenio_id)->get()->result();
-        @$credor_id = (int)$result[0]->credor_devedor_id;
-        
+        @$credor_id = (int) $result[0]->credor_devedor_id;
+
 //        $this->db->select('convenio_id')->from('tb_convenio')->where('ativo', 't')->where('credor_devedor_id', @$credor_id);
 //        $convenio = $this->db->get()->result();
-        
+
         $this->db->select('cep')->from('tb_estoque_fornecedor')->where('ativo', 't')->where('credor_devedor_id', @$credor_id);
         $fornecedor = $this->db->get()->result();
-        
+
         $this->db->select('operador_id')->from('tb_operador')->where('ativo', 't')->where('credor_devedor_id', @$credor_id);
         $operador = $this->db->get()->result();
-        
-        if(count($operador) == 0 && count($fornecedor) == 0){
+
+        if (count($operador) == 0 && count($fornecedor) == 0) {
             $this->db->set('ativo', 'f');
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_exclusao_id);
             $this->db->where('financeiro_credor_devedor_id', $credor_id);
             $this->db->update('tb_financeiro_credor_devedor');
         }
-        
-        
+
+
         $this->db->select('convenio_secudario_associacao_id');
         $this->db->from('tb_convenio_secudario_associacao');
         $this->db->where("ativo", 't');
@@ -958,7 +958,7 @@ class Convenio_model extends Model {
                                     WHERE pc1.ativo = 't'
                                     AND pc1.procedimento_convenio_id = {$value->procedimento_convenio_id}";
                             $this->db->query($sql_sessao);
-                            
+
                             // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico)
                             $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico (procedimento_tuss_id, medico, valor, data_cadastro, operador_cadastro)
                                     SELECT {$pc_id}, ppm.medico, ppm.valor, '{$horario}', {$operador_id}
@@ -995,8 +995,7 @@ class Convenio_model extends Model {
                             $this->db->query($sql);
                         }
                     }
-                } 
-                else {
+                } else {
                     if ($_POST['convenio'][$key] == '' && $_POST['convenio_associacao_id'][$key] != '') {
 
                         // Buscando os convenios secundarios associados a esse Convenio
@@ -1189,7 +1188,7 @@ class Convenio_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $horario = date("Y-m-d H:i:s");
 
-        $this->db->select('tuss_id, descricao, codigo');
+        $this->db->select('tuss_id, descricao, codigo,t.grupo');
         $this->db->from('tb_tuss t');
         $this->db->where("tabela", 'CBHPM');
         $this->db->where("tuss_id NOT IN (
@@ -1210,7 +1209,7 @@ class Convenio_model extends Model {
                 $this->db->set('tuss_id', $item->tuss_id);
                 $this->db->set('codigo', $item->codigo);
                 $this->db->set('descricao', $item->descricao);
-                $this->db->set('grupo', 'CIRURGICO');
+                $this->db->set('grupo', $item->grupo);
                 $this->db->set('revisao', 'f');
                 $this->db->set('associacao_procedimento_tuss_id', null);
                 $this->db->set('retorno_dias', null);
@@ -1230,6 +1229,12 @@ class Convenio_model extends Model {
 
         $valor_por = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']));
         $valor_por = ($valor_por) / 100;
+
+        $valor_uco = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_uco']));
+        $valor_uco = ($valor_uco) / 100;
+
+        $valor_filme = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_filme']));
+        $valor_filme = ($valor_filme) / 100;
 
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
@@ -1284,8 +1289,14 @@ class Convenio_model extends Model {
 
         // Alterando os valores antigos
         $sql = "UPDATE ponto.tb_procedimento_convenio pc2
-                SET valorch = t.valor_porte + ($valor_por * t.valor_porte), 
-                    valortotal = t.valor_porte + ($valor_por * t.valor_porte),
+                SET 
+                    valorporte = t.valor_porte,
+                    qtdeporte = 1,
+                    valorfilme = t.valorfilme,
+                    qtdefilme = t.qtdefilme,
+                    valoruco = t.valoruco,
+                    qtdeuco = t.qtdeuco,
+                    valortotal = (t.valor_porte + ($valor_por * t.valor_porte)) +  ((t.valorfilme * t.qtdefilme) + ($valor_filme * (t.valorfilme * t.qtdefilme))) +((t.valoruco * t.qtdeuco) + ($valor_uco * (t.valoruco * t.qtdeuco))),
                     data_atualizacao = '$horario', operador_atualizacao = $operador_id
                 FROM ponto.tb_procedimento_convenio pc
                 LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
@@ -1452,14 +1463,14 @@ class Convenio_model extends Model {
     function gravar() {
         try {
             $cnpj = str_replace("-", "", str_replace("/", "", str_replace(".", "", $_POST['txtCNPJ'])));
-            
+
             $result = array();
             $this->db->select('financeiro_credor_devedor_id')->from('tb_financeiro_credor_devedor');
             $this->db->where('cnpj', $cnpj);
             $this->db->where('ativo', 't');
             $result = $this->db->get()->result();
 
-            if ( count($result) == 0 ) {
+            if (count($result) == 0) {
                 $this->db->set('razao_social', $_POST['txtNome']);
                 $this->db->set('cnpj', $cnpj);
                 $this->db->set('cep', $_POST['cep']);
@@ -1486,8 +1497,7 @@ class Convenio_model extends Model {
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_financeiro_credor_devedor');
                 $financeiro_credor_devedor_id = $this->db->insert_id();
-            }
-            else{
+            } else {
                 $financeiro_credor_devedor_id = $result[0]->financeiro_credor_devedor_id;
             }
 
@@ -1513,7 +1523,7 @@ class Convenio_model extends Model {
                 $this->db->set('associacao_percentual', 0);
                 $this->db->set('associacao_convenio_id', null);
             }
-            
+
             if ($financeiro_credor_devedor_id != "") {
                 $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
             }
@@ -1535,6 +1545,12 @@ class Convenio_model extends Model {
             }
             if ($_POST['valor_ajuste_cbhpm'] != "") {
                 $this->db->set('valor_ajuste_cbhpm', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm'])));
+            }
+            if ($_POST['valor_ajuste_cbhpm_uco'] != "") {
+                $this->db->set('valor_ajuste_cbhpm_uco', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_uco'])));
+            }
+            if ($_POST['valor_ajuste_cbhpm_filme'] != "") {
+                $this->db->set('valor_ajuste_cbhpm_filme', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_filme'])));
             }
             if ($_POST['ir'] != "") {
                 $this->db->set('ir', str_replace(",", ".", $_POST['ir']));
@@ -1800,6 +1816,8 @@ class Convenio_model extends Model {
                                 co.associacao_convenio_id,
                                 co.razao_social,
                                 co.convenio_pasta,
+                                co.valor_ajuste_cbhpm_uco,
+                                co.valor_ajuste_cbhpm_filme,
                                 co.guia_prestador_unico,
                                 c.nome as cidade_nome,
                                 c.municipio_id,
@@ -1860,6 +1878,8 @@ class Convenio_model extends Model {
             $this->_guia_prestador_unico = $return[0]->guia_prestador_unico;
             $this->_dia_aquisicao = $return[0]->dia_aquisicao;
             $this->_valor_ajuste_cbhpm = $return[0]->valor_ajuste_cbhpm;
+            $this->_valor_ajuste_cbhpm_filme = $return[0]->valor_ajuste_cbhpm_filme;
+            $this->_valor_ajuste_cbhpm_uco = $return[0]->valor_ajuste_cbhpm_uco;
             $this->_credor = $return[0]->credor;
         } else {
             $this->_convenio_id = null;

@@ -26,10 +26,11 @@ class modelolaudo_model extends Model {
         $this->db->from('tb_ambulatorio_modelo_laudo aml');
         $this->db->join('tb_operador o', 'o.operador_id = aml.medico_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = aml.procedimento_tuss_id', 'left');
+        $this->db->where('aml.ativo', 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
-            $this->db->where('aml.nome ilike', "%" . $args['nome'] . "%");
-            $this->db->orwhere('o.nome ilike', "%" . $args['nome'] . "%");
-            $this->db->orwhere('pt.nome ilike', "%" . $args['nome'] . "%");
+            $this->db->where("(aml.nome ilike '%{$args['nome']}%' OR pt.nome ilike '%{$args['nome']}%' OR pt.nome ilike '%{$args['nome']}%')");
+//            $this->db->orwhere('o.nome ilike', "%" . $args['nome'] . "%");
+//            $this->db->orwhere('pt.nome ilike', "%" . $args['nome'] . "%");
         }
         return $this->db;
     }

@@ -195,7 +195,7 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
-        
+
 
 
 
@@ -488,11 +488,11 @@ class Guia extends BaseController {
         } else {
             @$data['exameanterior'] = array();
         }
-        
+
         $grupo = $data['exame'][0]->grupo;
         $data['ordem_atendimento'] = $this->exame->listarexamesficha();
         $data['grupos'] = $this->guia->listargrupoficha($guia_id, $grupo);
-        
+
         $dinheiro = $data['exame'][0]->dinheiro;
 
         $data['exames'] = $this->guia->listarexamesguia($guia_id);
@@ -548,13 +548,15 @@ class Guia extends BaseController {
                 $this->load->View('ambulatorio/impressaofichavaleimagemmamografia', $data);
             } elseif ($grupo == "RM") {
                 $this->load->View('ambulatorio/impressaofichavaleimagemrm', $data);
+            } elseif ($grupo == "DENSITOMETRIA") {
+                $this->load->View('ambulatorio/impressaofichavaleimagemdensitometria', $data);
             } elseif ($grupo == "RX(TORAX)") {
                 $this->load->View('ambulatorio/impressaofichavaleimagemrxtorax', $data);
             } else {
                 $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
             }
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_tipo == 12) { //CIMETRA 
             if ($grupo == "AUDIOMETRIA") {
@@ -1240,8 +1242,37 @@ class Guia extends BaseController {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                 }
                 $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
+
+                $paciente_informacoes = $this->paciente->listardados($paciente_id);
+                $convenio_informacoes = $this->convenio->listarconvenioselecionado($_POST['convenio1']);
+                $nascimento_str = strtotime(@$paciente_informacoes[0]->nascimento);
+                $sexo = (@$paciente_informacoes[0]->sexo != '') ? @$paciente_informacoes[0]->sexo : '';
+                $string_worklist = @$paciente_informacoes[0]->nome . ";{$ambulatorio_guia};$nascimento_str;{$convenio_informacoes[0]->nome};{$sexo};V2; \n";
+//                if (!is_dir("./upload/RIS")) {
+//                    mkdir("./upload/RIS");
+//                    $destino = "./upload/RIS";
+//                    chmod($destino, 0777);
+//                }
+//                $fp = fopen("./upload/RIS/worklist.txt", "a+");
+//                $escreve = fwrite($fp, $string_worklist);
+//                fclose($fp);
+//                chmod("./upload/RIS/worklist.txt", 0777);
+//                var_dump($string_worklist);
+//                die;
+
+
                 if ($agrupador[0]->agrupador != 't') {
                     $retorno = $this->guia->gravarexames($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
+
+                    if (!is_dir("./upload/RIS")) {
+                        mkdir("./upload/RIS");
+                        $destino = "./upload/RIS";
+                        chmod($destino, 0777);
+                    }
+                    $fp = fopen("./upload/RIS/worklist.txt", "a+");
+                    $escreve = fwrite($fp, $string_worklist);
+                    fclose($fp);
+                    chmod("./upload/RIS/worklist.txt", 0777);
                     if (@$retorno["cod"] == -1) {
                         if ($retorno['message'] == 'pending') {
                             $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
@@ -1290,6 +1321,16 @@ class Guia extends BaseController {
                         }
                         $i++;
                         $this->guia->gravarexamesagrupador($ambulatorio_guia, $medico_id, $agrupador_id, $value->procedimento_convenio_id, $valor, $value->valor_pacote_diferenciado, $percentual, $percentual_laboratorio, $value->grupo, $value->quantidade_agrupador);
+
+//                        if (!is_dir("./upload/RIS")) {
+//                            mkdir("./upload/RIS");
+//                            $destino = "./upload/RIS";
+//                            chmod($destino, 0777);
+//                        }
+//                        $fp = fopen("./upload/RIS/worklist.txt", "a+");
+//                        $escreve = fwrite($fp, $string_worklist);
+//                        fclose($fp);
+//                        chmod("./upload/RIS/worklist.txt", 0777);
                     }
                 }
             }
@@ -1357,10 +1398,38 @@ class Guia extends BaseController {
                     $this->session->set_flashdata('message', $data['mensagem']);
                 } else {
                     $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
-                    
-                    
+
+
+                    $paciente_informacoes = $this->paciente->listardados($paciente_id);
+                    $convenio_informacoes = $this->convenio->listarconvenioselecionado($_POST['convenio1']);
+                    $nascimento_str = strtotime(@$paciente_informacoes[0]->nascimento);
+                    $sexo = (@$paciente_informacoes[0]->sexo != '') ? @$paciente_informacoes[0]->sexo : '';
+                    $string_worklist = @$paciente_informacoes[0]->nome . ";{$ambulatorio_guia};$nascimento_str;{$convenio_informacoes[0]->nome};{$sexo};V2; \n";
+//                if (!is_dir("./upload/RIS")) {
+//                    mkdir("./upload/RIS");
+//                    $destino = "./upload/RIS";
+//                    chmod($destino, 0777);
+//                }
+//                $fp = fopen("./upload/RIS/worklist.txt", "a+");
+//                $escreve = fwrite($fp, $string_worklist);
+//                fclose($fp);
+//                chmod("./upload/RIS/worklist.txt", 0777);
+//                var_dump($string_worklist);
+//                die;
                     if ($agrupador[0]->agrupador != 't') {
                         $retorno = $this->guia->gravaratendimemto($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
+
+                        if ($tipo == 'EXAME') {
+                            if (!is_dir("./upload/RIS")) {
+                                mkdir("./upload/RIS");
+                                $destino = "./upload/RIS";
+                                chmod($destino, 0777);
+                            }
+                            $fp = fopen("./upload/RIS/worklist.txt", "a+");
+                            $escreve = fwrite($fp, $string_worklist);
+                            fclose($fp);
+                            chmod("./upload/RIS/worklist.txt", 0777);
+                        }
                         if (@$retorno["cod"] == -1) {
                             if ($retorno['message'] == 'pending') {
                                 $messagem = "O paciente posssui pagamentos pendentes no sistema do fidelidade.";
@@ -1373,7 +1442,7 @@ class Guia extends BaseController {
                     } else {
                         // Cria um agrupador para o pacote
                         $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
-                       
+
                         // Traz os procedimentos desse pacote bem como o valor
                         $pacoteProc = $this->guia->listarprocedimentospacote($_POST['procedimento1']);
 //                         var_dump($agrupador); die;

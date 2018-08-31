@@ -668,6 +668,12 @@
                             <dd>
                                 <input type="checkbox" id="botao_ficha_convenio" name="botao_ficha_convenio" <? if (@$obj->_botao_ficha_convenio == 't') echo "checked"; ?>/> 
                             </dd>
+                            <dt>
+                                <label title="Ativando essa opção os modelos de Laudo no atendimento serão apenas os do médico que está atendendo">Modelo Laudo Por Médico</label>
+                            </dt>
+                            <dd>
+                                <input type="checkbox" id="modelo_laudo_medico" name="modelo_laudo_medico" <? if (@$obj->_modelo_laudo_medico == 't') echo "checked"; ?>/> 
+                            </dd>
                             
                             
                             
