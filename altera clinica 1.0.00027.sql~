@@ -412,7 +412,5 @@ UPDATE ponto.tb_tuss
    SET valor_porte= valorporte
  WHERE valor_porte is null;
 
+
 SELECT setval('ponto.tb_tuss_tuss_id_seq', (SELECT MAX(tuss_id) FROM ponto.tb_tuss)+1);
-
-ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN modelo_laudo_medico boolean DEFAULT false;
-

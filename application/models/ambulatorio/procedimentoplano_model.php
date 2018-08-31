@@ -1360,6 +1360,9 @@ class procedimentoplano_model extends Model {
 
         $this->db->select(' c.convenio_id,
                             c.nome,
+                            c.valor_ajuste_cbhpm_uco,
+                            c.valor_ajuste_cbhpm_filme,
+                            c.valor_ajuste_cbhpm,
                             c.dinheiro,
                             c.conta_id');
         $this->db->from('tb_convenio c');
@@ -2981,7 +2984,7 @@ class procedimentoplano_model extends Model {
                                 } else {
                                     $this->db->where('pc.empresa_id', $empresa_id);
                                 }
-                                $this->db->where('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
+                                $this->db->where('pc.procedimento_tuss_id', $_POST['procedimento_id'][$key]);
                                 $this->db->where('convenio_id', $sec->convenio_secundario_id);
                                 $query = $this->db->get()->result();
 
@@ -6059,6 +6062,9 @@ class procedimentoplano_model extends Model {
                             pc.procedimento_tuss_id,
                             pt.nome as procedimento,
                             pc.qtdech,
+                            c.valor_ajuste_cbhpm,
+                            c.valor_ajuste_cbhpm_uco,
+                            c.valor_ajuste_cbhpm_filme,
                             pc.valorch,
                             pc.qtdefilme,
                             pc.valorfilme,
@@ -6078,6 +6084,7 @@ class procedimentoplano_model extends Model {
             $this->_convenio_id = $return[0]->convenio_id;
             $this->_convenio = $return[0]->convenio;
             $this->_procedimento_tuss_id = $return[0]->procedimento_tuss_id;
+            $this->_valor_ajuste_cbhpm_filme = $return[0]->valor_ajuste_cbhpm_filme;
             $this->_procedimento = $return[0]->procedimento;
             $this->_qtdech = $return[0]->qtdech;
             $this->_valorch = $return[0]->valorch;

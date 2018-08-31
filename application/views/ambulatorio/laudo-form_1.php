@@ -170,19 +170,21 @@ if (count($pacs) > 0) {
                         <td>
 
 
-                            <? if (@$obj->_id_chamada != '') { ?>
+                            <? if (($endereco != '')) { ?>
 
                                 <div class="bt_link_new">
                                     <a href='#' id='botaochamar' >Chamar</a>
                                 </div>
 
 
-                            <? } else { ?>
+                            <? } else {
+                                ?>
                                 <div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpaciente/<?= $ambulatorio_laudo_id ?>');" >
                                         Chamar</a>
-                                </div>
-                            <? } ?>
+                                </div>  
+                            <? }
+                            ?>
                         </td>
                         <td>
                             <div class="bt_link_new">
@@ -331,26 +333,48 @@ if (count($pacs) > 0) {
                                         <input type="text" id="cabecalho" class="texto10" name="cabecalho" value="<?= $cabecalho ?>"/>
                                     </div>
                                     <div>
-                                        <label>Laudo</label>
-                                        <select name="exame" id="exame" class="size2" >
-                                            <option value='' >selecione</option>
-                                            <?php foreach ($lista as $item) { ?>
-                                                <option value="<?php echo $item->ambulatorio_modelo_laudo_id; ?>" ><?php echo $item->nome; ?></option>
-                                            <?php } ?>
-                                        </select>
+                                        <table style="font-size: 10pt;" >
 
-                                        <label>Linha</label>
-                                        <input type="text" id="linha2" class="texto02" name="linha2"/>
-                <!--                        <select name="linha" id="linha" class="size2" >
-                                            <option value='' >selecione</option>
-                                        <?php // foreach ($linha as $item) {    ?>
-                                                                                                                        <option value="<?php // echo $item->nome;                       ?>" ><?php // echo $item->nome;                       ?></option>
-                                        <?php // }  ?>
-                                        </select>-->
+                                            <tr>
+                                                <td style="width: 100px;">
+                                                    <label>Laudo</label>
+                                                    <select name="exame" id="exame" class="size2" >
+                                                        <option value='' >selecione</option>
+                                                        <?php foreach ($lista as $item) { ?>
+                                                            <option value="<?php echo $item->ambulatorio_modelo_laudo_id; ?>" ><?php echo $item->nome; ?></option>
+                                                        <?php } ?>
+                                                    </select>   
+                                                </td>
+                                                <td>
+                                                    <label>Linha</label>
+                                                    <input type="text" id="linha2" class="texto02" name="linha2"/>
 
-                                        <div class="bt_link">
-                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');">
-                                                <font size="-1"> Imprimir</font></a></div>
+                                                </td>
+                                                <td>
+                                                    <div class="bt_link" style="width: 120px;">
+                                                        <a onclick="visualizarModeloLaudo();">
+                                                            <font size="-1"> Visualizar Modelo</font></a></div>  
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>
+
+
+                                                    <div style="width: 180px;" class="bt_link">
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaolaudo/<?= $ambulatorio_laudo_id ?>/<?= $exame_id ?>');">
+                                                            <font size="-1"> Imprimir</font></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </table>
+
+
+
+
+
+
                                     </div>
                                     <div>
                                         <textarea id="laudo" class="laudo" name="laudo" rows="30" cols="80" style="width: 80%"><?= @$obj->_texto; ?></textarea>
@@ -415,7 +439,7 @@ if (count($pacs) > 0) {
                                                 <?php
                                             }
                                             ?>
-
+                                            <input type="checkbox" name="carimbo" id="carimbo" <? //=(@$obj->_carimbo == 't')? 'checked': '';                 ?> /><label>Carimbo</label>
                                             <?php
                                             if (@$obj->_indicado == "t") {
                                                 ?>
@@ -899,23 +923,73 @@ if (count($pacs) > 0) {
                                                                 }
                                                             });
                                                         });
-<? if (@$obj->_id_chamada != '') { ?>
+                                                        function visualizarModeloLaudo() {
+                                                            if($('#exame').val() != ''){
+                                                              varWindow = window.open('<?= base_url() ?>ambulatorio/laudo/carregarmodelolaudoselecionado/' + $('#exame').val(), 'popup', "width=800, height=600 ");  
+                                                            }else{
+                                                                alert('Escolha um modelo de laudo antes de tentar visualizá-lo');
+                                                            }
+                                                            
+                                                        }
+<? if (($endereco != '')) { ?>
+    <?
+    if ($obj->_cpf != '') {
+        $cpf = $obj->_cpf;
+    } else {
+        $cpf = 'null';
+    }
+    $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$obj->_toten_fila_id/$obj->_nome/$cpf/$obj->_medico_parecer1/$obj->_medico_nome/$obj->_toten_sala_id/false";
+    ?>
                                                             $("#botaochamar").click(function () {
-                                                                //        alert('asadasdadad');
+//                                                                alert('<?//= $url_enviar_ficha ?>');
                                                                 $.ajax({
                                                                     type: "POST",
                                                                     data: {teste: 'teste'},
                                                                     //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                                                                    url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>",
+                                                                    url: "<?= $url_enviar_ficha ?>",
+                                                                    success: function (data) {
+                                                                        //                console.log(data);
+                                                                        //                    alert(data.id);
+                                                                        $("#idChamada").val(data.id);
+
+                                                                    },
+                                                                    error: function (data) {
+                                                                        console.log(data);
+                                                                        //                alert('DEU MERDA');
+                                                                    }
+                                                                });
+
+
+                                                                $.ajax({
+                                                                    type: "POST",
+                                                                    data: {teste: 'teste'},
+                                                                    //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                                    url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>/1",
+                                                                    success: function (data) {
+
+                                                                        alert('Operação efetuada com sucesso');
+
+
+                                                                    },
+                                                                    error: function (data) {
+                                                                        console.log(data);
+                                                                        alert('Erro ao chamar paciente');
+                                                                    }
+                                                                });
+                                                                $.ajax({
+                                                                    type: "POST",
+                                                                    data: {teste: 'teste'},
+                                                                    //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                                    url: "<?= $endereco ?>/webService/telaChamado/cancelar/<?= @$obj->_toten_fila_id ?>",
                                                                                 success: function (data) {
 
-                                                                                    alert('Operação efetuada com sucesso');
+                                                                                    //                            alert('Operação efetuada com sucesso');
 
 
                                                                                 },
                                                                                 error: function (data) {
                                                                                     console.log(data);
-                                                                                    alert('Erro ao chamar paciente');
+                                                                                    //                            alert('Erro ao chamar paciente');
                                                                                 }
                                                                             });
                                                                         });
@@ -1069,6 +1143,28 @@ if (count($pacs) > 0) {
                                                                     });
 
                                                                     $(function () {
+                                                                        $('#carimbo').change(function () {
+//                                                                            alert('adasd');
+                                                                            if ($(this).prop('checked') == true) {
+                                                                                //$('#laudo').hide();
+                                                                                $('.carregando').show();
+                                                                                $.getJSON('<?= base_url() ?>autocomplete/carimbomedico', {medico_id: $('#medico').val(), ajax: true}, function (j) {
+                                                                                    options = "";
+
+                                                                                    options += j[0].carimbo;
+                                                                                    tinyMCE.triggerSave(true, true);
+                                                                                    document.getElementById("laudo").value = $('#laudo').val() + j[0].carimbo;
+                                                                                    $('#laudo').val() + j[0].carimbo;
+                                                                                    var ed = tinyMCE.get('laudo');
+                                                                                    ed.setContent($('#laudo').val());
+                                                                                });
+                                                                            } else {
+                                                                                $('#laudo').html('value=""');
+                                                                            }
+                                                                        });
+                                                                    });
+
+                                                                    $(function () {
                                                                         $("#linha2").autocomplete({
                                                                             source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
                                                                             minLength: 1,
@@ -1079,8 +1175,8 @@ if (count($pacs) > 0) {
                                                                             select: function (event, ui) {
                                                                                 $("#linha2").val(ui.item.value);
                                                                                 tinyMCE.triggerSave(true, true);
-                                                                                document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
-                                                                                $('#laudo').val() + ui.item.id
+                                                                                document.getElementById("laudo").value = $('#laudo').val() + ui.item.id;
+                                                                                $('#laudo').val() + ui.item.id;
                                                                                 var ed = tinyMCE.get('laudo');
                                                                                 ed.setContent($('#laudo').val());
                                                                                 //$( "#laudo" ).val() + ui.item.id;

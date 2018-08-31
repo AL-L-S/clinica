@@ -244,7 +244,7 @@ class pacientes extends BaseController {
     }
 
     function autorizarambulatoriotempgeral($paciente_id) {
-
+//        var_dump(date("Y-m-d", -370126800)); die;
         $resultadoguia = $this->guia->listarguia($paciente_id);
         $ambulatorio_guia_id = $resultadoguia['ambulatorio_guia_id'];
         if ($ambulatorio_guia_id == 0) {
@@ -427,7 +427,7 @@ class pacientes extends BaseController {
         } else {
             $contadorcpf = 0;
         }
-        
+
         if ($this->utilitario->validaCPF($_POST['cpf']) || $contadorcpf == 0) {
             if ($contador == 0 && $contadorcpf == 0) {
                 if ($paciente_id = $this->paciente->gravar()) {
@@ -435,7 +435,7 @@ class pacientes extends BaseController {
                 } else {
                     $data['mensagem'] = 'Erro ao gravar paciente';
                 }
-            
+
 
                 if ($paciente_id != false && $_POST['mydata'] != '') {
                     $encoded_data = $_POST['mydata'];

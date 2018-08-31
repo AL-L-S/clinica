@@ -283,7 +283,7 @@ class Laudo extends BaseController {
         if (count($data['integracao']) > 0) {
             $this->laudo->atualizacaolaudosintegracao($agenda_exames_id);
         }
-        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
+        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id, @$obj_laudo->_medico_parecer1);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
         $data['laudos_anteriores'] = $this->laudo->listarlaudos($paciente_id, $ambulatorio_laudo_id);
         $data['historico'] = $this->laudo->listarconsultahistorico($paciente_id);
@@ -329,6 +329,17 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/uploadimagens');
     }
 
+    function carregarmodelolaudoselecionado($modelo_id = null) {
+//        var_dump($modelo_id);
+//        die;
+        if ($modelo_id != null) {
+            $modelolaudo = $this->exametemp->listarmodeloslaudovisualizar($modelo_id);
+            if (count($modelolaudo) > 0) {
+                echo $modelolaudo[0]->texto;
+            }
+        }
+    }
+
     function redirecionauploadcliente() {
         $caminho = $_POST['caminho'];
         $arquivo = (isset($_POST['arquivo'])) ? $_POST['arquivo'] : '';
@@ -338,7 +349,7 @@ class Laudo extends BaseController {
 
     function carregarlaudolaboratorial($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
-        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
+        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id, @$obj_laudo->_medico_parecer1);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
         $data['laudos_anteriores'] = $this->laudo->listarlaudos($paciente_id, $ambulatorio_laudo_id);
 
@@ -362,7 +373,7 @@ class Laudo extends BaseController {
 
     function carregarlaudoeco($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
-        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
+        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id, @$obj_laudo->_medico_parecer1);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
         $data['laudos_anteriores'] = $this->laudo->listarlaudos($paciente_id, $ambulatorio_laudo_id);
 
@@ -600,7 +611,7 @@ class Laudo extends BaseController {
         $data['listaracuidadeod'] = $this->laudo->listaracuidadeod();
         $data['listaracuidadeoe'] = $this->laudo->listaracuidadeoe();
 
-        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
+        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id, @$obj_laudo->_medico_parecer1);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
         $data['laudos_anteriores'] = $this->laudo->listarlaudos($paciente_id, $ambulatorio_laudo_id);
         $data['laudo_peso'] = $this->laudo->listarlaudospesoaltura($paciente_id, $ambulatorio_laudo_id);
@@ -667,7 +678,7 @@ class Laudo extends BaseController {
         $data['listaracuidadeod'] = $this->laudo->listaracuidadeod();
         $data['listaracuidadeoe'] = $this->laudo->listaracuidadeoe();
 
-        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
+        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id, @$obj_laudo->_medico_parecer1);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
         $data['laudos_anteriores'] = $this->laudo->listarlaudos($paciente_id, $ambulatorio_laudo_id);
         $data['laudo_peso'] = $this->laudo->listarlaudospesoaltura($paciente_id, $ambulatorio_laudo_id);
@@ -1241,7 +1252,7 @@ class Laudo extends BaseController {
 
     function carregarlaudodigitador($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
-        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
+        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id, @$obj_laudo->_medico_parecer1);
         $data['linha'] = $this->exametemp->listarmodeloslinha($procedimento_tuss_id);
         $data['laudos_anteriores'] = $this->laudo->listarlaudos($paciente_id, $ambulatorio_laudo_id);
         $data['padrao'] = $this->laudo->listarlaudopadrao($procedimento_tuss_id);
@@ -1270,7 +1281,7 @@ class Laudo extends BaseController {
     function todoslaudo($ambulatorio_laudo_id, $exame_id, $paciente_id, $procedimento_tuss_id, $guia_id, $messagem = null) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
-        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id);
+        $data['lista'] = $this->exametemp->listarmodeloslaudo($procedimento_tuss_id, @$obj_laudo->_medico_parecer1);
         $data['operadores'] = $this->operador_m->listarmedicos();
         $grupo = @$obj_laudo->_grupo;
         $procedimento = $this->laudo->listarprocedimentos($guia_id, $grupo);
@@ -1440,7 +1451,7 @@ class Laudo extends BaseController {
             $cabecalho = str_replace("_telefone2_", $data['laudo'][0]->celular, $cabecalho);
             $cabecalho = str_replace("_whatsapp_", $data['laudo'][0]->whatsapp, $cabecalho);
 
-            $cabecalho = $cabecalho . "<br> {$data['impressaolaudo'][0]->adicional_cabecalho}";
+            $cabecalho = $cabecalho . "{$data['impressaolaudo'][0]->adicional_cabecalho}";
             $cabecalho = $this->adicionalcabecalho($cabecalho, $data['laudo']);
 
 
@@ -1495,7 +1506,11 @@ class Laudo extends BaseController {
 
             $html = $this->load->view('ambulatorio/impressaolaudoconfiguravel', $data, true);
 //            echo '<pre>';
-//            var_dump($html); die;
+//            echo $cabecalho;
+//            echo $html; 
+//            $margin = "";
+//            echo $rodape; 
+//            die;
 //            $cabecalho = '';
 //            $rodape = '';
             pdf($html, $filename, $cabecalho, $rodape);
@@ -2051,10 +2066,11 @@ class Laudo extends BaseController {
                 $cabecalho = str_replace("_telefone1_", $data['laudo'][0]->telefone, $cabecalho);
                 $cabecalho = str_replace("_telefone2_", $data['laudo'][0]->celular, $cabecalho);
                 $cabecalho = str_replace("_whatsapp_", $data['laudo'][0]->whatsapp, $cabecalho);
-                
+
                 $cabecalho = $cabecalho . "<br> {$data['impressaolaudo'][0]->adicional_cabecalho}";
                 $cabecalho = $this->adicionalcabecalho($cabecalho, $data['laudo']);
-                var_dump($operador_atual); die;
+                var_dump($operador_atual);
+                die;
 
 
                 if (file_exists("upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg")) {

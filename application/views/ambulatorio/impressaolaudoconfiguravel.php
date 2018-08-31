@@ -1,10 +1,10 @@
-<style>
+<!--<style>
     /*    .teste {
             
     
         }*/
 
-</style>
+</style>-->
 
 <?
 if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
@@ -35,8 +35,8 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
 //echo $assinatura;
     @$corpo = $impressaolaudo[0]->texto;
     @$corpo = str_replace("<p", '<div', @$corpo);
-    @$corpo = str_replace("</p>", '</div><br>', @$corpo);
-//    var_dump($corpo);
+    @$corpo = str_replace("</p>", '</div>', @$corpo);
+//    echo($corpo);
 //    die;
 
     $texto = $laudo['0']->texto;
@@ -74,7 +74,7 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
 //        $corpo = str_replace("_assinatura_", '', $corpo);
 //    }
 
-
+    echo "<style> p {margin-top:0px;margin-bottom:0px;}</style>";
     echo $corpo;
 //    var_dump($corpo);
 //    die;

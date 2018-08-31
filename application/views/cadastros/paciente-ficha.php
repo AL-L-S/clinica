@@ -63,7 +63,7 @@
             </div>
             <div>
                 <label>Sexo</label>
-                <select name="sexo" id="txtSexo" class="size1" <?= (in_array('nascimento', $campos_obrigatorios)) ? 'required' : '' ?>>
+                <select name="sexo" id="txtSexo" class="size1" <?= (in_array('sexo', $campos_obrigatorios)) ? 'required' : '' ?>>
                     <option value="" <?
                        if (@$obj->_sexo == ""):echo 'selected';
                        endif;
