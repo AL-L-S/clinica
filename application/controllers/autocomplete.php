@@ -23,6 +23,7 @@ class Autocomplete extends Controller {
         $this->load->model('ponto/cargo_model', 'cargo');
         $this->load->model('ponto/setor_model', 'setor');
         $this->load->model('cadastro/paciente_model', 'paciente_m');
+        $this->load->model('cadastro/convenio_model', 'convenio');
         $this->load->model('cadastro/contaspagar_model', 'contaspagar');
         $this->load->model('cadastro/classe_model', 'financeiro_classe');
         $this->load->model('cadastro/forma_model', 'forma');
@@ -1725,12 +1726,38 @@ class Autocomplete extends Controller {
 
         echo json_encode($result2);
     }
+    
+    function funcaosetormt2() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['setor'])) {
+            $result = $this->convenio->listarautocompletefuncao($_GET['setor']);
+        } else {
+            $result = $this->convenio->listarautocompletefuncao(@$_GET['setor']);
+        }
+
+//        $json_funcao = json_decode($result[0]->aso_funcao_id);
+//
+//        $result2 = $this->saudeocupacional->listarautocompletesetorjson($json_funcao);
+
+        echo json_encode($result);
+    }
     function setorempresamt() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['convenio1'])) {
             $result = $this->saudeocupacional->listarautocompletesetorempresamt($_GET['convenio1']);
         } else {
             $result = $this->saudeocupacional->listarautocompletesetorempresamt(@$_GET['convenio1']);
+        }
+        
+        echo json_encode($result);
+    }
+    
+    function setorempresamt2() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['convenio1'])) {
+            $result = $this->convenio->listarautocompletesetor($_GET['convenio1']);
+        } else {
+            $result = $this->convenio->listarautocompletesetor(@$_GET['convenio1']);
         }
         
         echo json_encode($result);

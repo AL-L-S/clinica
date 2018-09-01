@@ -13,7 +13,7 @@
                         <input type="hidden" name="txtasofuncaoid" class="texto10" value="<?= @$obj[0]->aso_funcao_id; ?>" />
                         <input type="text" name="nome" class="texto10" value="<?= @$obj[0]->descricao_funcao; ?>" />
                     </dd> 
-                    <dt>
+<!--                    <dt>
                     <label>Riscos</label>
                     </dt>
                     <dd>
@@ -34,7 +34,7 @@
                         ?>><?= $value->descricao_risco; ?></option>
                             <? endforeach; ?>
                         </select>
-                    </dd>
+                    </dd>-->
                  </dl> 
                 <br><br>
                 <hr/>

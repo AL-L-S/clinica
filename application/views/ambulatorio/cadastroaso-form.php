@@ -329,14 +329,14 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 <? }
 ?>
                     function carregarSetorAtualizar() {
-                        $.getJSON('<?= base_url() ?>autocomplete/setorempresamt', {convenio1: $('#convenio1').val()}, function (j) {
+                        $.getJSON('<?= base_url() ?>autocomplete/setorempresamt2', {convenio1: $('#convenio1').val()}, function (j) {
                             options = '<option value=""></option>';
 //                                console.log(j);
                             for (var c = 0; c < j.length; c++) {
-                                if (setor == j[c].aso_setor_id) {
-                                    options += '<option selected value="' + j[c].aso_setor_id + '">' + j[c].descricao_setor + '</option>';
+                                if (setor == j[c].setor_id) {
+                                    options += '<option selected value="' + j[c].setor_id + '">' + j[c].descricao_setor + '</option>';
                                 } else {
-                                    options += '<option value="' + j[c].aso_setor_id + '">' + j[c].descricao_setor + '</option>';
+                                    options += '<option value="' + j[c].setor_id + '">' + j[c].descricao_setor + '</option>';
                                 }
 
                             }
@@ -355,14 +355,15 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
 //                            $('.carregando').show();
 //                            alert('asdsd');
-                            $.getJSON('<?= base_url() ?>autocomplete/setorempresamt', {convenio1: $(this).val()}, function (j) {
+                            $.getJSON('<?= base_url() ?>autocomplete/setorempresamt2', {convenio1: $(this).val()}, function (j) {
                                 options = '<option value=""></option>';
-                                console.log(j);
+//                                console.log(j);
+                                
                                 for (var c = 0; c < j.length; c++) {
-                                    if (setor == j[c].aso_setor_id) {
-                                        options += '<option selected value="' + j[c].aso_setor_id + '">' + j[c].descricao_setor + '</option>';
+                                    if (setor == j[c].setor_id) {
+                                        options += '<option selected value="' + j[c].setor_id + '">' + j[c].descricao_setor + '</option>';
                                     } else {
-                                        options += '<option value="' + j[c].aso_setor_id + '">' + j[c].descricao_setor + '</option>';
+                                        options += '<option value="' + j[c].setor_id + '">' + j[c].descricao_setor + '</option>';
                                     }
 
                                 }
@@ -385,14 +386,14 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 <? }
 ?>
                     function carregarFuncaoAtualizar() {
-                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt', {setor: $('#setor').val()}, function (j) {
+                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: $('#setor').val()}, function (j) {
                             options = '<option value=""></option>';
 //                                console.log(j);
                             for (var c = 0; c < j.length; c++) {
-                                if (funcao == j[c].aso_funcao_id) {
-                                    options += '<option selected value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
+                                if (funcao == j[c].funcao_id) {
+                                    options += '<option selected value="' + j[c].funcao_id + '">' + j[c].descricao_funcao + '</option>';
                                 } else {
-                                    options += '<option value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
+                                    options += '<option value="' + j[c].funcao_id + '">' + j[c].descricao_funcao + '</option>';
                                 }
 
                             }
@@ -411,14 +412,14 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
 //                            $('.carregando').show();
 //                            alert('asdsd');
-                            $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt', {setor: $(this).val()}, function (j) {
+                            $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: $(this).val()}, function (j) {
                                 options = '<option value=""></option>';
-//                                console.log(j);
+                                console.log(j);
                                 for (var c = 0; c < j.length; c++) {
-                                    if (funcao == j[c].aso_funcao_id) {
-                                        options += '<option selected value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
+                                    if (funcao == j[c].funcao_id) {
+                                        options += '<option selected value="' + j[c].funcao_id + '">' + j[c].descricao_funcao + '</option>';
                                     } else {
-                                        options += '<option value="' + j[c].aso_funcao_id + '">' + j[c].descricao_funcao + '</option>';
+                                        options += '<option value="' + j[c].funcao_id + '">' + j[c].descricao_funcao + '</option>';
                                     }
 
                                 }

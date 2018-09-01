@@ -19,7 +19,7 @@
                         <input type="hidden" name="txtasosetorid" class="texto10" value="<?= @$obj[0]->aso_setor_id; ?>" />
                         <input type="text" name="nome" class="texto10" value="<?= @$obj[0]->descricao_setor; ?>" />
                     </dd>
-                    <dt>
+<!--                    <dt>
                     <label>Funções</label>
                     </dt>
                     <dd>
@@ -56,7 +56,7 @@
                         </option>
                     <? endforeach; ?>
                        </select>
-                    </dd>
+                    </dd>-->
                  </dl> 
                 <br><br>
                 <hr/>

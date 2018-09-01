@@ -374,3 +374,19 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN impressao_cimetra boolean DEF
 --Dia 27/08/2018
 
 ALTER TABLE ponto.tb_procedimentos_agrupados_ambulatorial ADD COLUMN quantidade_agrupador integer;
+
+--Dia 30/08/2018
+
+CREATE TABLE ponto.tb_setor_cadastro
+(
+  setor_cadastro_id serial primary key,
+  setor_id integer,
+  funcao_id integer,
+  risco_id text,
+  empresa_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer  
+);

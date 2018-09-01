@@ -23,6 +23,15 @@ class saudeocupacional_model extends Model {
         $this->db->where('se.ativo', 'true');
         return $this->db;
     }
+    function listarsetor2() {
+        $this->db->select('se.aso_setor_id,
+                            se.descricao_setor');
+        $this->db->from('tb_aso_setor se');
+        $this->db->where('se.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarsetorfuncao() {
         $this->db->select('fu.aso_funcao_id,
                             fu.descricao_funcao');
@@ -94,6 +103,16 @@ class saudeocupacional_model extends Model {
                            r.descricao_risco');
         $this->db->from('tb_aso_risco r');
         $this->db->where('r.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarriscofuncao2($item) {
+        $this->db->select('r.aso_risco_id,
+                           r.descricao_risco');
+        $this->db->from('tb_aso_risco r');
+        $this->db->where('r.ativo', 'true');
+        $this->db->where('r.aso_risco_id', $item);
         $return = $this->db->get();
         return $return->result();
     }
@@ -170,13 +189,13 @@ class saudeocupacional_model extends Model {
     function gravarsetor() {
         try {
                                    
-            $array_funcao = json_encode($_POST['txtfuncao_id']);
+//            $array_funcao = json_encode($_POST['txtfuncao_id']);
              
             /* inicia o mapeamento no banco */
             $aso_setor_id = $_POST['txtasosetorid'];
             $this->db->set('descricao_setor', $_POST['nome']);
-            $this->db->set('aso_funcao_id', $array_funcao);
-            $this->db->set('convenio_id', $_POST['convenio1']);
+//            $this->db->set('aso_funcao_id', $array_funcao);
+//            $this->db->set('convenio_id', $_POST['convenio1']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -206,7 +225,7 @@ class saudeocupacional_model extends Model {
         try {
                                 
             
-            $array_riscos = json_encode($_POST['txtrisco_id']);
+//            $array_riscos = json_encode($_POST['txtrisco_id']);
             /* inicia o mapeamento no banco */
             $aso_funcao_id = $_POST['txtasofuncaoid'];
             $this->db->set('descricao_funcao', $_POST['nome']);
@@ -287,6 +306,7 @@ class saudeocupacional_model extends Model {
         return $return->result();
     }
     function listarautocompletesetorempresamt($parametro = null) {
+//        var_dump($_GET['convenio1']);die;
         $this->db->select(' se.aso_setor_id,
                             se.convenio_id,
                             se.descricao_setor
@@ -294,7 +314,9 @@ class saudeocupacional_model extends Model {
         
         $this->db->from('tb_aso_setor se');    
     
-        $this->db->where('se.ativo', 'true');        
+    
+        $this->db->where('se.ativo', 'true');       
+        
         
 
         if ($parametro != null) {
