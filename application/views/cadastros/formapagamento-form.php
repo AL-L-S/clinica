@@ -12,14 +12,17 @@
                         <input type="hidden" name="txtcadastrosformapagamentoid" class="texto10" value="<?= @$obj->_forma_pagamento_id; ?>" />
                         <input type="text" name="txtNome" class="texto05" value="<?= @$obj->_nome; ?>" required/>
                     </dd>
-
-                    <dt title="Ajuste percentual da forma de pagamento">
-                        <label>Ajuste</label>
-                    </dt>
-                    <dd title="Ajuste percentual da forma de pagamento">
-                        <input type="text" name="ajuste" class="texto02" id="ajuste" value="<?= @$obj->_ajuste; ?>" />%
-                    </dd>
-
+                    <?
+                    $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
+                    ?>
+                    <? if ($procedimento_multiempresa == 'f') { ?>
+                        <dt title="Ajuste percentual da forma de pagamento">
+                            <label>Ajuste</label>
+                        </dt>
+                        <dd title="Ajuste percentual da forma de pagamento">
+                            <input type="text" name="ajuste" class="texto02" id="ajuste" value="<?= @$obj->_ajuste; ?>" />%
+                        </dd>
+                    <? } ?>
                     <dt title="Preencha caso a forma de pagamento tenha um dia certo do mês para cair">
                         <label>Dia de Recebimento</label>
                     </dt>
@@ -45,20 +48,20 @@
                     <dd>
                         <input type="text" name="parcela_minima" class="texto02" alt="decimal" id="parcela_minima" value= "<?= @$obj->_parcela_minima; ?>" />
                     </dd>
-<!--                    <dt title="Selecione a conta onde o dinheiro irá ingressar">
-                        <label>Conta</label>
-                    </dt>
-                    <dd title="Selecione a conta onde o dinheiro irá ingressar">
-                        <select name="conta" id="conta" class="texto03" required>
-                            <option value="">SELECIONE</option>
-                            <? foreach ($conta as $value) { ?>
-                                <option value="<?= $value->forma_entradas_saida_id ?>" <?
-                                if (@$obj->_conta_id == $value->forma_entradas_saida_id):echo 'selected';
-                                endif;
-                                ?>><?= $value->descricao ?></option>
-                                    <? } ?>                            
-                        </select>
-                    </dd>-->
+                    <!--                    <dt title="Selecione a conta onde o dinheiro irá ingressar">
+                                            <label>Conta</label>
+                                        </dt>
+                                        <dd title="Selecione a conta onde o dinheiro irá ingressar">
+                                            <select name="conta" id="conta" class="texto03" required>
+                                                <option value="">SELECIONE</option>
+                    <? foreach ($conta as $value) { ?>
+                                                        <option value="<?= $value->forma_entradas_saida_id ?>" <?
+                        if (@$obj->_conta_id == $value->forma_entradas_saida_id):echo 'selected';
+                        endif;
+                        ?>><?= $value->descricao ?></option>
+                    <? } ?>                            
+                                            </select>
+                                        </dd>-->
                     <dt>
                         <label>Credor/Devedor</label>
                     </dt>
@@ -102,25 +105,25 @@
         $("#accordion").accordion();
     });
 
-       if ($('#cartao').is(":checked")) {
-            
-            $("#credor_devedor").prop('required', true);
-            $("#parcelas").prop('required', true);
+    if ($('#cartao').is(":checked")) {
 
-        } else {
-            
-            $("#credor_devedor").prop('required', false);
-            $("#parcelas").prop('required', false);
-        }
+        $("#credor_devedor").prop('required', true);
+        $("#parcelas").prop('required', true);
+
+    } else {
+
+        $("#credor_devedor").prop('required', false);
+        $("#parcelas").prop('required', false);
+    }
 
     $('#cartao').change(function () {
         if ($(this).is(":checked")) {
-            
+
             $("#credor_devedor").prop('required', true);
             $("#parcelas").prop('required', true);
 
         } else {
-            
+
             $("#credor_devedor").prop('required', false);
             $("#parcelas").prop('required', false);
         }

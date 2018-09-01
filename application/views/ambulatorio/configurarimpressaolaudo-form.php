@@ -134,6 +134,54 @@
                 </tr>
                 <tr class="tabela_content01">
                     <td>
+                        Numero da Guia ----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _guia_
+                    </td>
+                </tr>
+                <tr class="tabela_content02">
+                    <td>
+                        Usuário Logado ----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _usuario_logado_
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
+                        Prontuário ----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _prontuario_
+                    </td>
+                </tr>
+                <tr class="tabela_content02">
+                    <td>
+                        Telefone1 ----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _telefone1_
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
+                        Telefone2 ----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _telefone2_
+                    </td>
+                </tr>
+                <tr class="tabela_content02">
+                    <td>
+                        Whatsapp ----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _whatsapp_
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
                         Solicitante ----------->
                     </td>
                     <td style="text-align: left;">

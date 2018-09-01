@@ -328,7 +328,7 @@ class empresa_model extends Model {
         $this->db->from('tb_empresa');
         $this->db->where('ativo', 't');
         $this->db->orderby('nome');
-        
+
         $return = $this->db->get();
         return $return->result();
     }
@@ -1329,6 +1329,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('gerente_recepcao_top_saude', 'f');
                     }
+                    if (isset($_POST['modelo_laudo_medico'])) {
+                        $this->db->set('modelo_laudo_medico', 't');
+                    } else {
+                        $this->db->set('modelo_laudo_medico', 'f');
+                    }
                     if (isset($_POST['autorizar_sala_espera'])) {
                         $this->db->set('autorizar_sala_espera', 't');
                     } else {
@@ -1790,6 +1795,11 @@ class empresa_model extends Model {
                         $this->db->set('dados_atendimentomed', json_encode($_POST['opc_dadospaciente']));
                     } else {
                         $this->db->set('dados_atendimentomed', '');
+                    }
+                    if (isset($_POST['modelo_laudo_medico'])) {
+                        $this->db->set('modelo_laudo_medico', 't');
+                    } else {
+                        $this->db->set('modelo_laudo_medico', 'f');
                     }
                     if (isset($_POST['profissional_completo'])) {
                         $this->db->set('profissional_completo', 't');
@@ -2273,6 +2283,7 @@ class empresa_model extends Model {
                                ep.repetir_horarios_agenda,
                                ep.desativar_taxa_administracao,
                                ep.producao_alternativo,
+                               ep.modelo_laudo_medico,
                                ep.subgrupo_procedimento,
                                ep.senha_finalizar_laudo,
                                ep.retirar_flag_solicitante,
@@ -2329,6 +2340,7 @@ class empresa_model extends Model {
             $this->_gerente_cancelar_sala = $return[0]->gerente_cancelar_sala;
             $this->_campos_atendimentomed = $return[0]->campos_atendimentomed;
             $this->_dados_atendimentomed = $return[0]->dados_atendimentomed;
+            $this->_modelo_laudo_medico = $return[0]->modelo_laudo_medico;
             $this->_orcamento_cadastro = $return[0]->orcamento_cadastro;
             $this->_endereco_upload = $return[0]->endereco_upload;
             $this->_conjuge = $return[0]->conjuge;

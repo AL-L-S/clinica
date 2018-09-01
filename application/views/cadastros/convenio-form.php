@@ -142,9 +142,20 @@
 
                 </div>
                 <div id="ajuste-cbhpm"> 
-                    <label>Ajuste CBHPM (%)</label>
+                    <label>Ajuste CBHPM Porte (%)</label>
                     <input type="number" id="valor_ajuste_cbhpm" class="texto02" name="valor_ajuste_cbhpm" step="0.01" value="<?= @$obj->_valor_ajuste_cbhpm; ?>" />
                 </div>
+                
+                <div id="ajuste-cbhpmfilme"> 
+                    <label>Ajuste CBHPM Filme (%)</label>
+                    <input type="number" id="valor_ajuste_cbhpm_filme" class="texto02" name="valor_ajuste_cbhpm_filme" step="0.01" value="<?= @$obj->_valor_ajuste_cbhpm_filme; ?>" />
+                </div>
+                
+                <div id="ajuste-cbhpmuco"> 
+                    <label>Ajuste CBHPM Uco (%)</label>
+                    <input type="number" id="valor_ajuste_cbhpm_uco" class="texto02" name="valor_ajuste_cbhpm_uco" step="0.01" value="<?= @$obj->_valor_ajuste_cbhpm_uco; ?>" />
+                </div>
+                
                 <div>
                     <label>Grupo convenio</label>
                     <select name="grupoconvenio" id="grupoconvenio" class="size2" >
@@ -341,6 +352,8 @@
     <? }
     if (@$obj->_tabela != "CBHPM"){ ?>
        $("#ajuste-cbhpm").hide(); 
+       $("#ajuste-cbhpmuco").hide(); 
+       $("#ajuste-cbhpmfilme").hide(); 
     <? } ?>
     $('#associaconvenio').change(function () {
         if ($(this).is(":checked")) {
@@ -367,8 +380,12 @@
         $('#tipo').change(function () {
             if($(this).val() == 'CBHPM'){
                 $("#ajuste-cbhpm").show();
+                $("#ajuste-cbhpmuco").show();
+                $("#ajuste-cbhpmfilme").show();
             }else{
                 $("#ajuste-cbhpm").hide();
+                $("#ajuste-cbhpmuco").hide();
+                $("#ajuste-cbhpmfilme").hide();
             }
             
             if ($(this).val() == 'PROPRIA' || $(this).val() == 'CBHPM') {

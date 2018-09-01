@@ -326,6 +326,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+
 ALTER TABLE ponto.tb_paciente ALTER COLUMN convenionumero TYPE text;
 ALTER TABLE ponto.tb_paciente ALTER COLUMN cns TYPE text;
 
@@ -374,6 +376,45 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN impressao_cimetra boolean DEF
 --Dia 27/08/2018
 
 ALTER TABLE ponto.tb_procedimentos_agrupados_ambulatorial ADD COLUMN quantidade_agrupador integer;
+
+
+UPDATE ponto.tb_procedimentos_agrupados_ambulatorial
+   SET  quantidade_agrupador = 1
+ WHERE quantidade_agrupador is null;
+
+UPDATE ponto.tb_empresa_permissoes
+    SET dados_atendimentomed = '["paciente","idade","sexo","indicacao","exame","nascimento","ocupacao","endereco","estadocivil","convenio","solicitante","sala","telefone"]'
+ WHERE dados_atendimentomed is null;
+
+UPDATE ponto.tb_empresa_permissoes
+   SET campos_cadastro='["sexo","telefone1"]' 
+ WHERE campos_cadastro is null OR campos_cadastro = '';
+
+--Dia 30/08/2018
+
+ALTER TABLE ponto.tb_tuss ADD COLUMN valorfilme numeric(10,4);
+ALTER TABLE ponto.tb_tuss ADD COLUMN qtdefilme numeric(10,4);
+
+ALTER TABLE ponto.tb_tuss ADD COLUMN qtdeuco numeric(10,4);
+ALTER TABLE ponto.tb_tuss ADD COLUMN valoruco numeric(10,4);
+
+ALTER TABLE ponto.tb_tuss ADD COLUMN qtdeporte text;
+ALTER TABLE ponto.tb_tuss ADD COLUMN valorporte numeric(10,4);
+
+ALTER TABLE ponto.tb_tuss ADD COLUMN valor_total numeric(10,4);
+
+
+
+ALTER TABLE ponto.tb_convenio ADD COLUMN valor_ajuste_cbhpm_uco numeric;
+ALTER TABLE ponto.tb_convenio ADD COLUMN valor_ajuste_cbhpm_filme numeric;
+
+UPDATE ponto.tb_tuss
+   SET valor_porte= valorporte
+ WHERE valor_porte is null;
+
+SELECT setval('ponto.tb_tuss_tuss_id_seq', (SELECT MAX(tuss_id) FROM ponto.tb_tuss)+1);
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN modelo_laudo_medico boolean DEFAULT false;
 
 --Dia 30/08/2018
 

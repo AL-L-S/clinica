@@ -56,6 +56,17 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function horariosambulatorioexamereagendar() {
+        $_GET['teste'] = date("Y-m-d", strtotime(str_replace("/", "-", $_GET['teste'])));
+
+        if (isset($_GET['exame'])) {
+            $result = $this->exametemp->listarautocompletehorariosexame($_GET['exame'], $_GET['teste']);
+        } else {
+            $result = $this->exametemp->listarautocompletehorariosexame();
+        }
+        echo json_encode($result);
+    }
+
     function gravarhorarioagendawebconvenio() {
         header('Access-Control-Allow-Origin: *');
         $paciente_id = $this->exametemp->crianovopacientefidelidade();
@@ -1748,7 +1759,7 @@ class Autocomplete extends Controller {
         } else {
             $result = $this->saudeocupacional->listarautocompletesetorempresamt(@$_GET['convenio1']);
         }
-        
+
         echo json_encode($result);
     }
     
@@ -2836,6 +2847,18 @@ class Autocomplete extends Controller {
             $result = $this->exametemp->listarautocompletelinha($_GET['linha']);
         } else {
             $result = $this->exametemp->listarautocompletelinha();
+            //$result = 'oi nao';
+        }
+        echo json_encode($result);
+    }
+
+    function carimbomedico() {
+
+        if (isset($_GET['medico_id'])) {
+            //$result = 'oi';
+            $result = $this->operador_m->carimbomedico($_GET['medico_id']);
+        } else {
+            $result = $this->operador_m->carimbomedico();
             //$result = 'oi nao';
         }
         echo json_encode($result);

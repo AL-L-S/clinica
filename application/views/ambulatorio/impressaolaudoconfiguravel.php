@@ -1,10 +1,10 @@
-<style>
+<!--<style>
     /*    .teste {
             
     
         }*/
 
-</style>
+</style>-->
 
 <?
 if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
@@ -34,9 +34,9 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
 
 //echo $assinatura;
     @$corpo = $impressaolaudo[0]->texto;
-    @$corpo = str_replace("<p", '<div', @$corpo);
-    @$corpo = str_replace("</p>", '</div><br>', @$corpo);
-//    var_dump($corpo);
+    @$corpo = str_replace("<p", '<t', @$corpo);
+    @$corpo = str_replace("</p>", '</t>', @$corpo);
+//    echo($corpo);
 //    die;
 
     $texto = $laudo['0']->texto;
@@ -60,14 +60,21 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
     $corpo = str_replace("_altura_", $laudo['0']->altura, $corpo);
     $corpo = str_replace("_cid1_", $laudo['0']->cid1, $corpo);
     $corpo = str_replace("_cid2_", $laudo['0']->cid2, $corpo);
-
+    $corpo = str_replace("_guia_", $laudo[0]->guia_id, $corpo);
+    $operador_id = $this->session->userdata('operador_id');
+    $operador_atual = $this->operador_m->operadoratualsistema($operador_id);
+    @$corpo = str_replace("_usuario_logado_", @$operador_atual[0]->nome, $corpo);
+    $corpo = str_replace("_prontuario_", $laudo[0]->paciente_id, $corpo);
+    $corpo = str_replace("_telefone1_", $laudo[0]->telefone, $corpo);
+    $corpo = str_replace("_telefone2_", $laudo[0]->celular, $corpo);
+    $corpo = str_replace("_whatsapp_", $laudo[0]->whatsapp, $corpo);
 //    if($laudo['0']->situacao == "FINALIZADO"){
     $corpo = str_replace("_assinatura_", $assinatura, $corpo);
 //    }else{
 //        $corpo = str_replace("_assinatura_", '', $corpo);
 //    }
 
-
+    echo "<style> p {margin-top:0px;margin-bottom:0px;}</style>";
     echo $corpo;
 //    var_dump($corpo);
 //    die;

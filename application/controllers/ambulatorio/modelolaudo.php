@@ -45,7 +45,7 @@ class Modelolaudo extends BaseController {
     }
 
     function excluir($exame_modelolaudo_id) {
-        if ($this->procedimento->excluir($exame_modelolaudo_id)) {
+        if ($this->modelolaudo->excluir($exame_modelolaudo_id)) {
             $mensagem = 'Sucesso ao excluir a Modelolaudo';
         } else {
             $mensagem = 'Erro ao excluir a modelolaudo. Opera&ccedil;&atilde;o cancelada.';

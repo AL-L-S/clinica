@@ -1298,7 +1298,7 @@ class Convenio_model extends Model {
         $empresa_id = $this->session->userdata('empresa_id');
         $horario = date("Y-m-d H:i:s");
 
-        $this->db->select('tuss_id, descricao, codigo');
+        $this->db->select('tuss_id, descricao, codigo,t.grupo');
         $this->db->from('tb_tuss t');
         $this->db->where("tabela", 'CBHPM');
         $this->db->where("tuss_id NOT IN (
@@ -1319,7 +1319,7 @@ class Convenio_model extends Model {
                 $this->db->set('tuss_id', $item->tuss_id);
                 $this->db->set('codigo', $item->codigo);
                 $this->db->set('descricao', $item->descricao);
-                $this->db->set('grupo', 'CIRURGICO');
+                $this->db->set('grupo', $item->grupo);
                 $this->db->set('revisao', 'f');
                 $this->db->set('associacao_procedimento_tuss_id', null);
                 $this->db->set('retorno_dias', null);
@@ -1339,6 +1339,12 @@ class Convenio_model extends Model {
 
         $valor_por = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']));
         $valor_por = ($valor_por) / 100;
+
+        $valor_uco = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_uco']));
+        $valor_uco = ($valor_uco) / 100;
+
+        $valor_filme = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_filme']));
+        $valor_filme = ($valor_filme) / 100;
 
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
@@ -1393,8 +1399,14 @@ class Convenio_model extends Model {
 
         // Alterando os valores antigos
         $sql = "UPDATE ponto.tb_procedimento_convenio pc2
-                SET valorch = t.valor_porte + ($valor_por * t.valor_porte), 
-                    valortotal = t.valor_porte + ($valor_por * t.valor_porte),
+                SET 
+                    valorporte = t.valor_porte,
+                    qtdeporte = 1,
+                    valorfilme = t.valorfilme,
+                    qtdefilme = t.qtdefilme,
+                    valoruco = t.valoruco,
+                    qtdeuco = t.qtdeuco,
+                    valortotal = (t.valor_porte + ($valor_por * t.valor_porte)) +  ((t.valorfilme * t.qtdefilme) + ($valor_filme * (t.valorfilme * t.qtdefilme))) +((t.valoruco * t.qtdeuco) + ($valor_uco * (t.valoruco * t.qtdeuco))),
                     data_atualizacao = '$horario', operador_atualizacao = $operador_id
                 FROM ponto.tb_procedimento_convenio pc
                 LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
@@ -1643,6 +1655,12 @@ class Convenio_model extends Model {
             }
             if ($_POST['valor_ajuste_cbhpm'] != "") {
                 $this->db->set('valor_ajuste_cbhpm', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm'])));
+            }
+            if ($_POST['valor_ajuste_cbhpm_uco'] != "") {
+                $this->db->set('valor_ajuste_cbhpm_uco', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_uco'])));
+            }
+            if ($_POST['valor_ajuste_cbhpm_filme'] != "") {
+                $this->db->set('valor_ajuste_cbhpm_filme', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_filme'])));
             }
             if ($_POST['ir'] != "") {
                 $this->db->set('ir', str_replace(",", ".", $_POST['ir']));
@@ -1991,6 +2009,8 @@ class Convenio_model extends Model {
                                 co.associacao_convenio_id,
                                 co.razao_social,
                                 co.convenio_pasta,
+                                co.valor_ajuste_cbhpm_uco,
+                                co.valor_ajuste_cbhpm_filme,
                                 co.guia_prestador_unico,
                                 c.nome as cidade_nome,
                                 c.municipio_id,
@@ -2051,6 +2071,8 @@ class Convenio_model extends Model {
             $this->_guia_prestador_unico = $return[0]->guia_prestador_unico;
             $this->_dia_aquisicao = $return[0]->dia_aquisicao;
             $this->_valor_ajuste_cbhpm = $return[0]->valor_ajuste_cbhpm;
+            $this->_valor_ajuste_cbhpm_filme = $return[0]->valor_ajuste_cbhpm_filme;
+            $this->_valor_ajuste_cbhpm_uco = $return[0]->valor_ajuste_cbhpm_uco;
             $this->_credor = $return[0]->credor;
         } else {
             $this->_convenio_id = null;
