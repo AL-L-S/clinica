@@ -118,6 +118,12 @@
                                         </a>
                                     </div>
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a href="<?= base_url() ?>cadastros/convenio/setores/<?= $item->convenio_id ?>">                                            
+                                            Setores 
+                                        </a>
+                                    </div>
+                                </td>
                                 <td class="<?php echo $estilo_linha; ?>" colspan="10"></td>
                             </tr>
 

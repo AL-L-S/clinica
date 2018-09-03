@@ -416,3 +416,21 @@ SELECT setval('ponto.tb_tuss_tuss_id_seq', (SELECT MAX(tuss_id) FROM ponto.tb_tu
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN modelo_laudo_medico boolean DEFAULT false;
 
+<<<<<<< HEAD
+=======
+--Dia 30/08/2018
+
+CREATE TABLE ponto.tb_setor_cadastro
+(
+  setor_cadastro_id serial primary key,
+  setor_id integer,
+  funcao_id integer,
+  risco_id text,
+  empresa_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer  
+);
+>>>>>>> 8b238435424b7843e0ea186e9aca3d6d2666526a

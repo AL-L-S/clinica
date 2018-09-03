@@ -16,6 +16,7 @@ class Convenio extends BaseController {
     function Convenio() {
         parent::Controller();
         $this->load->model('cadastro/convenio_model', 'convenio');
+        $this->load->model('ambulatorio/saudeocupacional_model', 'saudeocupacional');
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('ambulatorio/procedimento_model', 'procedimento');
         $this->load->model('ambulatorio/empresa_model', 'empresa');
@@ -52,7 +53,7 @@ class Convenio extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $this->loadView('cadastros/convenio-form', $data);
     }
-
+  
     function copiar($convenio_id) {
         $data['convenio'] = $this->convenio->listarconvenioscopiar($convenio_id);
         $data['convenio_selecionado'] = $this->convenio->listarconvenioselecionado($convenio_id);
@@ -68,7 +69,44 @@ class Convenio extends BaseController {
         $data['convenioid'] = $convenio_id;
         $this->loadView('cadastros/empresaconvenio-form', $data);
     }
+    
+    function setores($convenio_id) {
+        
+        $data['cadastro'] = $this->convenio->setorcadastro();
+        $data['riscos'] = $this->saudeocupacional->listarriscofuncao();
+        $data['funcao'] = $this->saudeocupacional->listarsetorfuncao();
+        $data['setor'] = $this->saudeocupacional->listarsetor2();        
+        $data['convenio_selecionado'] = $this->convenio->listarconvenioselecionado2($convenio_id);
+        $data['convenioid'] = $convenio_id;
+        $this->loadView('cadastros/convenio-setores', $data);
+    }
+    
+    function excluirsetor($setor_cadastro_id, $convenio_id) {       
 
+        
+        $valida = $this->convenio->excluirsetor($setor_cadastro_id);
+        if ($valida == 0) {
+            $data['mensagem'] = 'Sucesso ao excluir Setor';
+        } else {
+            $data['mensagem'] = 'Erro ao excluir Setor. Opera&ccedil;&atilde;o cancelada.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "cadastros/convenio/setores/$convenio_id");
+    }
+    
+    function editarsetor($setor_cadastro_id, $convenio_id) {
+
+        $data['cadastro'] = $this->convenio->setorcadastro();
+        $data['riscos'] = $this->saudeocupacional->listarriscofuncao();
+        $data['funcao'] = $this->saudeocupacional->listarsetorfuncao();
+        $data['setor'] = $this->saudeocupacional->listarsetor2();        
+        $data['convenio_selecionado'] = $this->convenio->listarconvenioselecionado2($convenio_id);
+        $data['setor_selecionado'] = $this->convenio->listarsetorselecionado($setor_cadastro_id);
+        $data['convenioid'] = $convenio_id;
+        $data['setor_cadastro_id'] = $setor_cadastro_id;
+        $this->loadView('cadastros/convenio-setores-editar', $data);
+    }
+    
     function ajustargrupo($convenio_id) {
         $data['convenios'] = $this->convenio->listarconveniosprimarios();
         $data['grupos'] = $this->convenio->listargrupos();
@@ -121,7 +159,7 @@ class Convenio extends BaseController {
     }
 
     function excluir($convenio_id) {
-//        $this->convenio->removeassociacoescomoutrosconvenios($convenio_id);
+;
         $result = $this->convenio->excluir($convenio_id);
         if ($result == "-1") {
             $mensagem = 'Erro ao excluir a Convenio. Opera&ccedil;&atilde;o cancelada.';
@@ -188,6 +226,32 @@ class Convenio extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/convenio/empresaconvenio/$convenio_id");
+    }
+    
+    function gravarsetorempresa() {
+        $convenio_id = $_POST['txtconvenioid'];
+        $setor_id = $this->convenio->gravarsetorempresa();
+        if ($setor_id == 'banana') {
+//            $data['mensagem'] = 'Erro ao gravar setor. Setor já cadastrado.';
+        } else {
+//            $data['mensagem'] = 'Sucesso ao gravar setor.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "cadastros/convenio/setores/$convenio_id");
+    }
+    
+    function editarsetorempresa($setor_cadastro_id, $convenio_id) {
+        
+        $valida = $this->convenio->editarsetorempresa($setor_cadastro_id);
+//        var_dump($_POST); die;
+        if (!$valida == 0) {
+//            $data['mensagem'] = 'Sucesso ao excluir Setor';
+        } else {
+//            $data['mensagem'] = 'Erro ao excluir Setor. Opera&ccedil;&atilde;o cancelada.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+//        var_dump($convenio_id);die;
+        redirect(base_url() . "cadastros/convenio/setores/$convenio_id");
     }
     
     function excluirconvenioempresa($convenio_empresa_id,$convenio_id) {

@@ -34,8 +34,13 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
 
 //echo $assinatura;
     @$corpo = $impressaolaudo[0]->texto;
+<<<<<<< HEAD
     @$corpo = str_replace("<p", '<div', @$corpo);
     @$corpo = str_replace("</p>", '</div>', @$corpo);
+=======
+    @$corpo = str_replace("<p", '<t', @$corpo);
+    @$corpo = str_replace("</p>", '</t>', @$corpo);
+>>>>>>> 8b238435424b7843e0ea186e9aca3d6d2666526a
 //    echo($corpo);
 //    die;
 

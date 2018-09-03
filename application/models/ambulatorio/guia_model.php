@@ -15749,6 +15749,7 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->where('mc.ativo', 'true');
                 $return2 = $this->db->get()->result();
             } else {
+                
                 $return2 = array();
             }
 
@@ -15762,7 +15763,7 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('guia_id', $_POST['guia_id']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-
+//            var_dump($_POST['medico']);die;
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             if ($_POST['medico'] != '') {
                 $this->db->set('medico_solicitante', $_POST['medico']);
@@ -15777,8 +15778,9 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('data_faturar', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_faturar']))));
             }
             if (isset($_POST['data_entrega'])) {
-                $this->db->set('data_entrega', $_POST['data_entrega']);
+                $this->db->set('data_entrega', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_entrega']))));
             }
+            
             $this->db->set('medico_agenda', $_POST['medico_agenda']);
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
