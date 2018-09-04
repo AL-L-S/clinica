@@ -90,6 +90,122 @@ class Autocomplete extends Controller {
         }
     }
 
+    function testandoIntegracaoLabLuz() {
+        header('Access-Control-Allow-Origin: *');
+        //Lote
+        $criacaoLis = date("Y-m-d") . 'T' . date("H:i:s") . '-0300';
+        $codigoLis = '1253';
+        $identificadorLis = 'teste';
+        $origemLis = 'teste';
+        // Solicitacao
+        $solCodigoLis = '9996';
+        $codigoConvenio = '1';
+        $descConvenio = '1';
+        $descConvenio = 'CONVENIO TESTE';
+        $codigoPlano = '1';
+        $descricaoPlano = 'PLANO TESTE';
+        // Solicitacao->Paciente
+        $pacienteCodigoLis = '123';
+        $nome = 'PACIENTE TESTE';
+        $nascimento = '1955-02-05';
+        $sexo = 'M';
+        // Solicitacao->Exames
+       
+        // Exames ->Exame
+        $exameCodigoLis = 'TR4';
+        $amostraLis = '5555555';
+        $materialLis = '4956';
+        // Exame-> Solicitantes
+        // Solicitantes -> Solicitante
+        $conselho = 'CRM';
+        $uf = 'BA';
+        $numero = '9999999999';
+        $nome_medico = 'MÉDICO';
+
+        $teste = array(0 => '', 1 => '');
+
+        // A Você que verá o código a seguir, sinto muito, mas era o único jeito.
+
+        $xml_PT1 = "'<lote codigoLis='$codigoLis' identificadorLis='$identificadorLis' origemLis='$origemLis'
+        criacaoLis='$criacaoLis'>
+        <solicitacoes>
+                <solicitacao codigoLis='$solCodigoLis' criacaoLis='$criacaoLis'
+                    codigoConvenio='$codigoConvenio' descConvenio='$descConvenio' codigoPlano='$codigoPlano'
+                    descricaoPlano='$descricaoPlano'>
+
+                    <paciente codigoLis='$pacienteCodigoLis' nome='$nome'
+                    nascimento='$nascimento' sexo='$sexo'/>
+
+                    <exames>
+                    
+                    '";
+                    
+        $xml_PT2 = '';
+
+        foreach ($teste as $item){
+
+            $string = "<exame codigoLis='$exameCodigoLis' amostraLis='$amostraLis' materialLis='$materialLis'>
+                                <solicitantes>
+                                    <solicitante conselho='$conselho' uf='$uf' numero='$numero'
+                                    nome='$nome_medico'/>
+                                </solicitantes>
+                        </exame>
+                        
+                        ";
+            $xml_PT2  =$xml_PT2 . $string;
+        }
+
+        $xml_PT3 = '</exames>
+
+                    </solicitacao>
+            </solicitacoes>
+            </lote>';
+         
+        $xml_final = $xml_PT1 . $xml_PT2 . $xml_PT3;
+
+        $xml_string = '<lote codigoLis="112" identificadorLis="teste" origemLis="TESTE"
+        criacaoLis="2016-08-01T06:56:52-0300">
+        <solicitacoes>
+                <solicitacao codigoLis="9996" criacaoLis="2016-06-30T21:00:00-0300"
+                    codigoConvenio="1" descConvenio="CONVENIO TESTE" codigoPlano="1"
+                    descricaoPlano="PLANO TESTE">
+
+                    <paciente codigoLis="123" nome="PACIENTE TESTE"
+                    nascimento="1955-02-05" sexo="M"/>
+                    <exames>
+                        <exame codigoLis="TR4" amostraLis="5555555" materialLis="4956">
+                                <solicitantes>
+                                    <solicitante conselho="CRM" uf="BA" numero="9999999999"
+                                    nome="MÉDICO"/>
+                                </solicitantes>
+                        </exame>
+                        <exame codigoLis="TR5" amostraLis="5555555" materialLis="4956">
+                                <solicitantes>
+                                    <solicitante conselho="CRM" uf="BA" numero="9999999999"
+                                    nome="MÉDICO"/>
+                                </solicitantes>
+                        </exame>
+                    </exames>
+
+                </solicitacao>
+        </solicitacoes>
+        </lote>';
+
+        $xml = simplexml_load_string($xml_string);
+        $json = json_encode($xml);
+        $array = json_decode($json,TRUE);
+        // echo '<pre>';
+        // var_dump($array);
+        var_dump($xml_final);
+        // var_dump($xml_string);
+
+
+
+
+        die;
+
+    }
+
     function testarconexaointegracaolaudo() {
         header('Access-Control-Allow-Origin: *');
         set_time_limit(0); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
