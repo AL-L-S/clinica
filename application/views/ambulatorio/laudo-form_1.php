@@ -439,7 +439,7 @@ if (count($pacs) > 0) {
                                                 <?php
                                             }
                                             ?>
-                                            <input type="checkbox" name="carimbo" id="carimbo" <? //=(@$obj->_carimbo == 't')? 'checked': '';                 ?> /><label>Carimbo</label>
+                                            <input type="checkbox" name="carimbo" id="carimbo" <? //=(@$obj->_carimbo == 't')? 'checked': '';?> /><label>Carimbo</label>
                                             <?php
                                             if (@$obj->_indicado == "t") {
                                                 ?>
@@ -1159,7 +1159,7 @@ if (count($pacs) > 0) {
                                                                                     ed.setContent($('#laudo').val());
                                                                                 });
                                                                             } else {
-                                                                                $('#laudo').html('value=""');
+                                                                                //$('#laudo').html('value=""');
                                                                             }
                                                                         });
                                                                     });

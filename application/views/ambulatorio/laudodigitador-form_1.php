@@ -101,6 +101,7 @@
                             <?php
                         }
                         ?>
+                        <input type="checkbox" name="carimbo" id="carimbo" <? //=(@$obj->_carimbo == 't')? 'checked': '';?> /><label>Carimbo</label>
                         <select name="medicorevisor" id="medicorevisor" class="size2">
                             <option value="">Selecione</option>
                             <? foreach ($operadores as $valor) : ?>
@@ -235,6 +236,28 @@
                                         imagem: {
                                             required: "*"
                                         }
+                                    }
+                                });
+                            });
+
+                            $(function () {
+                                $('#carimbo').change(function () {
+                            //                                                                            alert('adasd');
+                                    if ($(this).prop('checked') == true) {
+                                        //$('#laudo').hide();
+                                        $('.carregando').show();
+                                        $.getJSON('<?= base_url() ?>autocomplete/carimbomedico', {medico_id: $('#medico').val(), ajax: true}, function (j) {
+                                            options = "";
+
+                                            options += j[0].carimbo;
+                                            tinyMCE.triggerSave(true, true);
+                                            document.getElementById("laudo").value = $('#laudo').val() + j[0].carimbo;
+                                            $('#laudo').val() + j[0].carimbo;
+                                            var ed = tinyMCE.get('laudo');
+                                            ed.setContent($('#laudo').val());
+                                        });
+                                    } else {
+                                        //$('#laudo').html('value=""');
                                     }
                                 });
                             });
