@@ -4,7 +4,7 @@
         <div >
             <?= form_open_multipart(base_url() . 'ambulatorio/empresa/gravarlogomarca'); ?>
             <div>
-                <label>Informe o arquivo para importa&ccedil;&atilde;o</label><br>
+                <label>Informe o arquivo para importa&ccedil;&atilde;o(.jpg)</label><br>
                 <input type="file" name="userfile"/>
             </div>
             <br>

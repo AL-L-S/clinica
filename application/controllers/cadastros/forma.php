@@ -16,6 +16,8 @@ class Forma extends BaseController {
     function Forma() {
         parent::Controller();
         $this->load->model('cadastro/forma_model', 'forma');
+        $this->load->model('ambulatorio/guia_model', 'guia');
+        $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -36,7 +38,8 @@ class Forma extends BaseController {
     function carregarforma($forma_entradas_saida_id) {
         $obj_forma = new forma_model($forma_entradas_saida_id);
         $data['obj'] = $obj_forma;
-        //$this->carregarView($data, 'giah/servidor-form');
+        $data['empresa'] = $this->guia->listarempresa2();
+        $data['perfil'] = $this->operador_m->listarPerfil();
         $this->loadView('cadastros/forma-form', $data);
     }
 
@@ -61,6 +64,18 @@ class Forma extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "cadastros/forma");
     }
+    
+//    function listarcontas() {
+//        header('Access-Control-Allow-Origin: *');
+//
+//        $result = $this->forma->listar2();
+//
+//        $json_empresas = json_decode($result[0]->empresa_id);
+//
+//        $result2 = $this->forma->listarcontas($json_empresas);
+//
+//        echo json_encode($result2);
+//    }
 
     private function carregarView($data = null, $view = null) {
         if (!isset($data)) {

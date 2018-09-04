@@ -37,11 +37,15 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->forma->listar($_GET)->orderby('descricao')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->forma->listar($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
-                        foreach ($lista as $item) {
+                        foreach ($lista as $item) { 
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            ?>
+//                             $dados = $this->forma->listar2($item->empresa_id);
+//                             echo'<pre>';
+//                             var_dump($dados);die;
+//                             foreach ($dados as $dado) {
+                            ?> 
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->agencia; ?></td>
@@ -72,6 +76,7 @@
 
                             </tbody>
                             <?php
+//                            }
                         }
                     }
                     ?>

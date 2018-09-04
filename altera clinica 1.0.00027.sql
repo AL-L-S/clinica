@@ -431,3 +431,12 @@ CREATE TABLE ponto.tb_setor_cadastro
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer  
 );
+
+--Dia 03/09/2018
+
+ALTER TABLE ponto.tb_empresa
+ALTER COLUMN celular TYPE character varying(16),
+ALTER COLUMN telefone TYPE character varying(16);
+
+--Dia 04/09/2018
+

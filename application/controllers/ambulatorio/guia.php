@@ -212,8 +212,9 @@ class Guia extends BaseController {
     }
 
     function gravarcadastroaso($paciente_id) {
-//        
-//        if (true) {
+//        var_dump($_POST);die;
+        $aso_id = $this->guia->gravarcadastroaso($paciente_id);
+        
         if (!$_POST['cadastro_aso_id'] > 0) {
 
             $paciente_id = $_POST['txtPacienteId'];

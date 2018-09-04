@@ -6,24 +6,56 @@
 
                 <dl class="dl_desconto_lista">
                     <dt>
-                    <label>Nome</label>
+                        <label>Nome</label>
                     </dt>
                     <dd>
                         <input type="hidden" name="txtcadastrosformaid" class="texto10" value="<?= @$obj->_forma_entradas_saida_id; ?>" />
                         <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_descricao; ?>" />
                     </dd>
                     <dt>
-                    <label>Agencia</label>
+                        <label>Agencia</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtagencia" class="texto04" value="<?= @$obj->_agencia; ?>" />
                     </dd>
                     <dt>
-                    <label>Conta</label>
+                        <label>Conta</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtconta" class="texto04" value="<?= @$obj->_conta; ?>" />
+                    </dd><br>
+                    <dt>
+                        <label>Perfil</label>
+                    </dt>
+                    <dd>
+<!--                        <select  name="perfil[]" id="perfil" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Perfis..." multiple required="" >      
+                            <option value="">Selecione </option>
+                            <?
+                            foreach ($perfil as $item) :
+                                ?>
+                                <option value="<?= $item->perfil_id; ?>" <?= (@$obj->_perfil_id == $item->perfil_id) ? 'selected' : '' ?>>
+                                    <?= $item->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>-->
                     </dd>
+                    <br><br>
+                    <dt>
+                        <label>Empresa</label>
+                    </dt>
+                    <dd>
+<!--                        <select  name="empresa[]" id="empresa" style="width: 400px" class="chosen-select" data-placeholder="Selecione as Empresas..." multiple required="" >      
+                            <option value="">Selecione </option>
+                            <?
+                            foreach ($empresa as $item) :
+                                ?>
+                                <option value="<?= $item->empresa_id; ?>" <?= (@$obj->_empresa_id == $item->empresa_id) ? 'selected' : '' ?>>
+                                    <?= $item->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>-->
+                    </dd>
+                    <br><br>
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>
@@ -33,20 +65,23 @@
         </div>
     </div>
 </div> <!-- Final da DIV content -->
-
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $('#btnVoltar').click(function() {
+    $('#btnVoltar').click(function () {
         $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
     });
 
-    $(function() {
-        $( "#accordion" ).accordion();
+    $(function () {
+        $("#accordion").accordion();
     });
 
 
-    $(document).ready(function(){
-        jQuery('#form_forma').validate( {
+    $(document).ready(function () {
+        jQuery('#form_forma').validate({
             rules: {
                 txtNome: {
                     required: true,

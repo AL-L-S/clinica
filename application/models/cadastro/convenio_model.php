@@ -126,7 +126,7 @@ class Convenio_model extends Model {
     
     function listarautocompletesetor($parametro = null){
         
-        $this->db->select(' sc.setor_id,
+        $this->db->select(' distinct(sc.setor_id),
                             sc.empresa_id,
                             se.descricao_setor
                                             ');
@@ -142,14 +142,15 @@ class Convenio_model extends Model {
             $this->db->where('sc.empresa_id', $parametro);
         }
        
+        $this->db->groupby("sc.setor_id, sc.empresa_id, se.descricao_setor");
         $this->db->orderby("se.descricao_setor");
         $return = $this->db->get();
         return $return->result();
     }
     
-    function listarautocompletefuncao($parametro = null){
+    function listarautocompletefuncao($parametro = null, $empresa = null){
         
-        $this->db->select(' sc.funcao_id,
+        $this->db->select(' distinct(sc.funcao_id),
                             sc.empresa_id,
                             sc.setor_id,
                             fu.descricao_funcao
@@ -162,9 +163,36 @@ class Convenio_model extends Model {
 
         if ($parametro != null) {
             $this->db->where('sc.setor_id', $parametro);
+            $this->db->where('sc.empresa_id', $empresa);
         }
        
+        $this->db->groupby("sc.funcao_id, sc.empresa_id, sc.setor_id, fu.descricao_funcao");
         $this->db->orderby("fu.descricao_funcao");
+        $return = $this->db->get();
+        return $return->result();
+        
+    }
+    
+    function listarautocompleteriscos($parametro = null, $setor = null, $empresa = null ){
+        
+        $this->db->select(' sc.funcao_id,
+                            sc.empresa_id,
+                            sc.setor_id,
+                            sc.risco_id
+                                            ');
+        
+        $this->db->from('tb_setor_cadastro sc');  
+//        $this->db->join('tb_aso_risco r', 'sc.risco_id = r.aso_risco_id', 'left');
+        $this->db->where('sc.ativo', 'true');        
+        
+
+        if ($parametro != null) {
+            $this->db->where('sc.funcao_id', $parametro);
+            $this->db->where('sc.empresa_id', $empresa);
+            $this->db->where('sc.setor_id', $setor);
+        }
+       
+//        $this->db->orderby("r.descricao_risco");
         $return = $this->db->get();
         return $return->result();
         

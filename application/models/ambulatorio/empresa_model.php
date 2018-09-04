@@ -30,8 +30,9 @@ class empresa_model extends Model {
     }
 
     function listar($args = array()) {
-
-        $operador_id = $this->session->userdata('operador_id');
+        
+        $perfil_id = $this->session->userdata('perfil_id');
+//        $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
 
         $this->db->select('empresa_id,
@@ -39,7 +40,7 @@ class empresa_model extends Model {
                             razao_social,
                             cnpj');
         $this->db->from('tb_empresa');
-        if ($operador_id != 1) {
+        if ($perfil_id != 1) {
             $this->db->where('empresa_id', $empresa_id);
         }
         $this->db->where('ativo', 't');

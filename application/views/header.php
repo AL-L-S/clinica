@@ -352,7 +352,7 @@ function debug($object) {
 
             <? if ($logo_clinica == 't') { ?>
                 <div id="imgLogoClinica">
-                    <img src="<?= base_url(); ?>upload/logomarca/<?= $empresa_id; ?>/logomarca" alt="Logo Clinica"
+                    <img src="<?= base_url(); ?>upload/logomarca/<?= $empresa_id; ?>/logomarca.jpg" alt="Logo Clinica"
                          title="Logo Clinica" height="70" id="Insert_logo" />
                 </div>
             <? } ?>

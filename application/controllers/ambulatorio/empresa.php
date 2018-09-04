@@ -148,7 +148,7 @@ class Empresa extends BaseController {
         $arquivo = "./upload/logomarca/$empresa_id/$nome";
         $str = explode(".", $nome);
         $ext = $str[count($str) - 1];
-        $arquivoNome = "./upload/logomarca/$empresa_id/logomarca";
+        $arquivoNome = "./upload/logomarca/$empresa_id/logomarca.jpg";
         rename($arquivo, $arquivoNome);
 
         redirect(base_url() . "ambulatorio/empresa/configurarlogomarca/$empresa_id");
@@ -168,7 +168,7 @@ class Empresa extends BaseController {
         }
         
 //        echo "<pre>";
-//        var_dump(glob("./upload/logomarca/$empresa_id/*.*")); die;
+//        var_dump(unlink("./upload/logomarca/$empresa_id/logomarca")); die;
 //        
         array_map('unlink', glob("./upload/logomarca/$empresa_id/*.*"));
         unlink("./upload/logomarca/$empresa_id/logomarca");

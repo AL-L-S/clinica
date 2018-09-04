@@ -103,21 +103,23 @@ class guia_model extends Model {
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        $valores = json_encode($_POST);
-
-
-        $this->db->set('paciente_id', $paciente_id);
-        $this->db->set('impressao_aso', $valores);
-        $this->db->set('tipo', $_POST['tipo']);
-        $this->db->set('medico_responsavel', $_POST['medico']);
+        $valores = json_encode($_POST);        
 
         if ($_POST['cadastro_aso_id'] > 0) {
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->set('impressao_aso', $valores);
+            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('medico_responsavel', $_POST['medico']);
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->set('data_atualizacao', $horario);
             $this->db->where('cadastro_aso_id', $_POST['cadastro_aso_id']);
             $this->db->update('tb_cadastro_aso');
             $aso_id = $_POST['cadastro_aso_id'];
         } else {
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->set('impressao_aso', $valores);
+            $this->db->set('tipo', $_POST['tipo']);
+            $this->db->set('medico_responsavel', $_POST['medico']);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('data_cadastro', $horario);
             $this->db->insert('tb_cadastro_aso');
@@ -12839,6 +12841,47 @@ ORDER BY ae.paciente_credito_id)";
                             impressao_tipo');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa_id);
+        $this->db->orderby('empresa_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarempresa2() {
+//        if ($empresa_id == null) {
+//            $empresa_id = $this->session->userdata('empresa_id');
+//        }
+
+        $this->db->select('empresa_id,
+                            razao_social,
+                            logradouro,
+                            numero,
+                            nome,
+                            telefone,
+                            email,
+                            cnes,
+                            horario_sab,
+                            horario_seg_sex,
+                            producaomedicadinheiro,
+                            impressao_declaracao,
+                            impressao_orcamento,
+                            impressao_internacao,
+                            data_contaspagar,
+                            medico_laudodigitador,
+                            impressao_laudo,
+                            chamar_consulta,
+                            impressao_recibo,
+                            cabecalho_config,
+                            rodape_config,
+                            laudo_config,
+                            recibo_config,
+                            ficha_config,
+                            declaracao_config,
+                            atestado_config,
+                            celular,
+                            bairro,
+                            impressao_tipo');
+        $this->db->from('tb_empresa');
+        $this->db->where('ativo', 'true');
         $this->db->orderby('empresa_id');
         $return = $this->db->get();
         return $return->result();
