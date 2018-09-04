@@ -1685,6 +1685,7 @@ class laudo_model extends Model {
         if (isset($args['situacaorevisor']) && strlen($args['situacaorevisor']) > 0) {
             $this->db->where('ag.situacao_revisor', $args['situacaorevisor']);
         }
+
         return $this->db;
     }
 

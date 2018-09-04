@@ -191,7 +191,7 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                                 <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"width="10px;">
                                     <?
-                                    if ($convenioAtual == $lista[$i+1]->convenio_id && $procedimentoAtual == $lista[$i+1]->procedimento_tuss_id && $i != count($lista) - 2){ 
+                                    if ($convenioAtual == @$lista[$i+1]->convenio_id && $procedimentoAtual == @$lista[$i+1]->procedimento_tuss_id && $i != count($lista) - 2){ 
                                         $cor = 'red';
                                     } else {
                                         $cor = 'black';

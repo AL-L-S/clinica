@@ -1509,7 +1509,7 @@ class Laudo extends BaseController {
 //            echo $cabecalho;
 //            echo $html; 
 //            $margin = "";
-//            echo $rodape . $margin; 
+//            echo $rodape; 
 //            die;
 //            $cabecalho = '';
 //            $rodape = '';

@@ -2984,7 +2984,7 @@ class procedimentoplano_model extends Model {
                                 } else {
                                     $this->db->where('pc.empresa_id', $empresa_id);
                                 }
-                                $this->db->where('procedimento_tuss_id', $_POST['procedimento_id'][$key]);
+                                $this->db->where('pc.procedimento_tuss_id', $_POST['procedimento_id'][$key]);
                                 $this->db->where('convenio_id', $sec->convenio_secundario_id);
                                 $query = $this->db->get()->result();
 

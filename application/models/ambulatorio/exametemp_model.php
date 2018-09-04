@@ -4715,19 +4715,21 @@ class exametemp_model extends Model {
     function reservarexametemp($agenda_exames_id, $paciente_id, $medico_consulta_id, $data) {
         try {
 
+            $this->db->select('procedimento_tuss_id, inicio');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('agenda_exames_id ', $agenda_exames_id);
+            $return1 = $this->db->get()->result();
+//            var_dump($return1); die;
             $this->db->select('agenda_exames_id');
             $this->db->from('tb_agenda_exames ae');
             $this->db->where('data', $data);
             $this->db->where('medico_agenda', $medico_consulta_id);
-            $this->db->where('agenda_exames_id >', $agenda_exames_id);
+            $this->db->where('inicio >', $return1[0]->inicio);
             $this->db->where('paciente_id is null');
             $return = $this->db->get()->result();
 
             if (count($return) > 0) {
-                $this->db->select('procedimento_tuss_id');
-                $this->db->from('tb_agenda_exames ae');
-                $this->db->where('agenda_exames_id ', $agenda_exames_id);
-                $return1 = $this->db->get()->result();
+
                 $procedimento_convenio_id = $return1[0]->procedimento_tuss_id;
                 $agenda_exames_novo_id = $return[0]->agenda_exames_id;
 //            var_dump($return); die;
@@ -4759,18 +4761,23 @@ class exametemp_model extends Model {
 
 
 
+            $this->db->select('procedimento_tuss_id, inicio');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('agenda_exames_id ', $agenda_exames_id);
+            $return1 = $this->db->get()->result();
+//            var_dump($return1); die;
             $this->db->select('agenda_exames_id');
             $this->db->from('tb_agenda_exames ae');
             $this->db->where('data', $data);
             $this->db->where('medico_agenda', $medico_consulta_id);
-            $this->db->where('agenda_exames_id >', $agenda_exames_id);
+            $this->db->where('inicio >', $return1[0]->inicio);
             $this->db->where('paciente_id is null');
             $return = $this->db->get()->result();
             if (count($return) > 0) {
-                $this->db->select('procedimento_tuss_id');
-                $this->db->from('tb_agenda_exames ae');
-                $this->db->where('agenda_exames_id', $agenda_exames_id);
-                $return1 = $this->db->get()->result();
+//                $this->db->select('procedimento_tuss_id');
+//                $this->db->from('tb_agenda_exames ae');
+//                $this->db->where('agenda_exames_id', $agenda_exames_id);
+//                $return1 = $this->db->get()->result();
                 $procedimento_convenio_id = $return1[0]->procedimento_tuss_id;
 
 
@@ -4803,19 +4810,24 @@ class exametemp_model extends Model {
 
 
 
+            $this->db->select('procedimento_tuss_id, inicio');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('agenda_exames_id ', $agenda_exames_id);
+            $return1 = $this->db->get()->result();
+//            var_dump($return1); die;
             $this->db->select('agenda_exames_id');
             $this->db->from('tb_agenda_exames ae');
             $this->db->where('data', $data);
             $this->db->where('medico_agenda', $medico_consulta_id);
-            $this->db->where('agenda_exames_id >', $agenda_exames_id);
+            $this->db->where('inicio >', $return1[0]->inicio);
             $this->db->where('paciente_id is null');
             $return = $this->db->get()->result();
 
             if (count($return) > 0) {
-                $this->db->select('procedimento_tuss_id');
-                $this->db->from('tb_agenda_exames ae');
-                $this->db->where('agenda_exames_id ', $agenda_exames_id);
-                $return1 = $this->db->get()->result();
+//                $this->db->select('procedimento_tuss_id');
+//                $this->db->from('tb_agenda_exames ae');
+//                $this->db->where('agenda_exames_id ', $agenda_exames_id);
+//                $return1 = $this->db->get()->result();
                 $procedimento_convenio_id = $return1[0]->procedimento_tuss_id;
 
                 $agenda_exames_novo_id = $return[0]->agenda_exames_id;

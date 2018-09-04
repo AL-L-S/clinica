@@ -198,7 +198,7 @@
                             <? } ?>
                         <? } ?>
                         <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">
-                                <a href="<?= base_url() ?>ambulatorio/exametemp/reservarexametemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->agenda_exames_nome_id; ?>/<?= $item->data; ?>">
+                                <a href="<?= base_url() ?>ambulatorio/exametemp/reservarexametemp/<?= $item->agenda_exames_id; ?>/<?= @$obj->_paciente_id; ?>/<?= $item->medico_consulta_id; ?>/<?= $item->data; ?>">
                                     reservar</a></td></div>
                         <? if ($item->confirmado == 'f' && $item->realizada == 'f') { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="40px;"><div class="bt_link">

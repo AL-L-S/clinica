@@ -1365,15 +1365,15 @@ class Convenio_model extends Model {
         // Cria procedimentos CBHPM que nao estao cadastrados na MANTER PROCEDIMENTO
         $this->criarProcedimentoCBHPM();
 
-        $valor_por = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm']));
+        $valor_por = (float) str_replace(",", ".", $_POST['valor_ajuste_cbhpm']);
         $valor_por = ($valor_por) / 100;
 
-        $valor_uco = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_uco']));
+        $valor_uco = (float) str_replace(",", ".", $_POST['valor_ajuste_cbhpm_uco']);
         $valor_uco = ($valor_uco) / 100;
 
-        $valor_filme = (float) str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_filme']));
-        $valor_filme = ($valor_filme) / 100;
-
+        $valor_filme = (float) str_replace(",", ".", $_POST['valor_ajuste_cbhpm_filme']);
+//        $valor_filme = ($valor_filme) / 100;
+//        var_dump($valor_filme); die;
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
         $horario = date("Y-m-d H:i:s");
@@ -1424,17 +1424,18 @@ class Convenio_model extends Model {
                 AND pc.ativo = 't'
                 AND t.tabela = 'CBHPM'";
         $this->db->query($sql);
-
-        // Alterando os valores antigos
-        $sql = "UPDATE ponto.tb_procedimento_convenio pc2
+//        var_dump($valor_filme);
+//        die;
+        if ($valor_filme != '') {
+            $sql = "UPDATE ponto.tb_procedimento_convenio pc2
                 SET 
                     valorporte = t.valor_porte,
                     qtdeporte = 1,
-                    valorfilme = t.valorfilme,
+                    valorfilme = $valor_filme,
                     qtdefilme = t.qtdefilme,
                     valoruco = t.valoruco,
                     qtdeuco = t.qtdeuco,
-                    valortotal = (t.valor_porte + ($valor_por * t.valor_porte)) +  ((t.valorfilme * t.qtdefilme) + ($valor_filme * (t.valorfilme * t.qtdefilme))) +((t.valoruco * t.qtdeuco) + ($valor_uco * (t.valoruco * t.qtdeuco))),
+                    valortotal = (t.valor_porte + ($valor_por * t.valor_porte)) +  $valor_filme + ((t.valoruco) + ($valor_uco * (t.valoruco))),
                     data_atualizacao = '$horario', operador_atualizacao = $operador_id
                 FROM ponto.tb_procedimento_convenio pc
                 LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
@@ -1443,7 +1444,28 @@ class Convenio_model extends Model {
                 AND pc2.procedimento_convenio_id = pc.procedimento_convenio_id
                 AND pc.ativo = 't'
                 AND t.tabela = 'CBHPM' ";
-        $this->db->query($sql);
+            $this->db->query($sql);
+        } else {
+            $sql = "UPDATE ponto.tb_procedimento_convenio pc2
+                SET 
+                    valorporte = t.valor_porte,
+                    qtdeporte = 1,
+                    valorfilme = t.valorfilme,
+                    qtdefilme = t.qtdefilme,
+                    valoruco = t.valoruco,
+                    qtdeuco = t.qtdeuco,
+                    valortotal = (t.valor_porte + ($valor_por * t.valor_porte)) +  t.valorfilme + ((t.valoruco) + ($valor_uco * (t.valoruco))),
+                    data_atualizacao = '$horario', operador_atualizacao = $operador_id
+                FROM ponto.tb_procedimento_convenio pc
+                LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                LEFT JOIN ponto.tb_tuss t ON t.tuss_id = pt.tuss_id
+                WHERE pc.convenio_id = $convenio_id
+                AND pc2.procedimento_convenio_id = pc.procedimento_convenio_id
+                AND pc.ativo = 't'
+                AND t.tabela = 'CBHPM' ";
+            $this->db->query($sql);
+        }
+        // Alterando os valores antigos
     }
 
     function testarnomecampopostlog($key_POST) {
@@ -1682,7 +1704,13 @@ class Convenio_model extends Model {
                 $this->db->set('tipo_logradouro_id', $_POST['tipo_logradouro']);
             }
             if ($_POST['valor_ajuste_cbhpm'] != "") {
-                $this->db->set('valor_ajuste_cbhpm', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm'])));
+                $this->db->set('valor_ajuste_cbhpm', str_replace(",", ".", $_POST['valor_ajuste_cbhpm']));
+            }
+            if ($_POST['valor_ajuste_cbhpm_uco'] != "") {
+                $this->db->set('valor_ajuste_cbhpm_uco', str_replace(",", ".", $_POST['valor_ajuste_cbhpm_uco']));
+            }
+            if ($_POST['valor_ajuste_cbhpm_filme'] != "") {
+                $this->db->set('valor_ajuste_cbhpm_filme', str_replace(",", ".", $_POST['valor_ajuste_cbhpm_filme']));
             }
             if ($_POST['valor_ajuste_cbhpm_uco'] != "") {
                 $this->db->set('valor_ajuste_cbhpm_uco', str_replace(",", ".", str_replace(".", "", $_POST['valor_ajuste_cbhpm_uco'])));

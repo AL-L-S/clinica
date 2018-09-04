@@ -28,7 +28,11 @@ class modelolaudo_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = aml.procedimento_tuss_id', 'left');
         $this->db->where('aml.ativo', 't');
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
+<<<<<<< HEAD
+            $this->db->where("(aml.nome ilike '%{$args['nome']}%' OR pt.nome ilike '%{$args['nome']}%' OR o.nome ilike '%{$args['nome']}%')");
+=======
             $this->db->where("(aml.nome ilike '%{$args['nome']}%' OR pt.nome ilike '%{$args['nome']}%' OR pt.nome ilike '%{$args['nome']}%')");
+>>>>>>> 8b238435424b7843e0ea186e9aca3d6d2666526a
 //            $this->db->orwhere('o.nome ilike', "%" . $args['nome'] . "%");
 //            $this->db->orwhere('pt.nome ilike', "%" . $args['nome'] . "%");
         }
