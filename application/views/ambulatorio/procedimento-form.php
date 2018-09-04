@@ -115,13 +115,13 @@
                     
                     
                     <dt>
-                        <label>Perc./Valor Medico</label>
+                        <label>Repasse Médico</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtperc_medico" id="txtperc_medico" class="texto" value="<?= @$obj->_perc_medico; ?>" />
                     </dd>
                     <dt>
-                        <label>Percentual</label>
+                        <label>Percentual Médico</label>
                     </dt>
                     <dd>
                         <select name="percentual" id="percentual" class="size2">
@@ -205,7 +205,7 @@
                         </select>
                     </dd>-->
                     <dt>
-                        <label>Perc./Valor Revisor</label>
+                        <label>Repasse Revisor</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtperc_revisor" id="txtperc_revisor" class="texto" value="<?=@ $obj->_valor_revisor; ?>" />

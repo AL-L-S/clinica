@@ -390,6 +390,28 @@ class saudeocupacional_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarautocompletefuncaojson2($parametro = array()) {
+        
+
+        
+        $this->db->select(' r.aso_risco_id,
+                            r.descricao_risco
+                                            ');
+        
+        $this->db->from('tb_aso_risco r');  
+        $this->db->where('r.ativo', 'true');      
+                       
+        
+
+        if ($parametro != null) {
+            $this->db->where_in('r.aso_risco_id', $parametro);
+        }
+       
+        $this->db->orderby("r.descricao_risco");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
 }
 

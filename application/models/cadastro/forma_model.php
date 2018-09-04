@@ -30,6 +30,36 @@ class forma_model extends Model {
         }
         return $this->db;
     }
+    
+//    function listar2($args = array()) {
+//        $this->db->select('c.forma_entradas_saida_id,
+//                            c.conta,
+//                            c.agencia,
+//                            c.empresa_id,
+//                            c.descricao');
+//        $this->db->from('tb_forma_entradas_saida c');        
+//        $this->db->where('c.ativo', 'true');        
+//        
+//        $return = $this->db->get();
+//        return $return->result();
+//    }
+//    
+//    function listarcontas($args = array()) {
+//        $this->db->select('e.empresa_id,
+//                           e.nome
+//                                            ');
+//        $this->db->from('tb_empresa e');        
+//        $this->db->where('e.ativo', 'true');
+//
+//        if ($args != null) {
+//            $this->db->where_in('empresa_id', $args);
+//        }
+//        
+//        $this->db->groupby("e.nome, e.empresa_id");
+//        $this->db->orderby("e.nome");
+//        
+//        return $this->db;
+//    }
 
     function listarforma() {
         $this->db->select('c.forma_entradas_saida_id,
@@ -106,19 +136,22 @@ class forma_model extends Model {
     }
 
     function gravar() {
+//        var_dump($_POST);die;
         try {
             /* inicia o mapeamento no banco */
-            $forma_entradas_saida_id = $_POST['txtcadastrosformaid'];
-            $this->db->set('descricao', $_POST['txtNome']);
-            $this->db->set('agencia', $_POST['txtagencia']);
-            $this->db->set('conta', $_POST['txtconta']);
-            $empresa_id = $this->session->userdata('empresa_id');
-//            var_du
-            $this->db->set('empresa_id', $empresa_id);
+            $array_empresa = json_encode($_POST['empresa']);
+            $array_perfil = json_encode($_POST['perfil']);
+            
+            $forma_entradas_saida_id = $_POST['txtcadastrosformaid'];            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
             if ($_POST['txtcadastrosformaid'] == "") {// insert
+                $this->db->set('descricao', $_POST['txtNome']);
+                $this->db->set('agencia', $_POST['txtagencia']);
+                $this->db->set('conta', $_POST['txtconta']);            
+                $this->db->set('empresa_id', $array_empresa);
+                $this->db->set('perfil_id', $array_perfil);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_forma_entradas_saida');
@@ -129,6 +162,11 @@ class forma_model extends Model {
                     $forma_entradas_saida_id = $this->db->insert_id();
             }
             else { // update
+                $this->db->set('descricao', $_POST['txtNome']);
+                $this->db->set('agencia', $_POST['txtagencia']);
+                $this->db->set('conta', $_POST['txtconta']);            
+                $this->db->set('empresa_id', $array_empresa);
+                $this->db->set('perfil_id', $array_perfil);
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $exame_forma_id = $_POST['txtcadastrosformaid'];
@@ -144,7 +182,7 @@ class forma_model extends Model {
     private function instanciar($forma_entradas_saida_id) {
 
         if ($forma_entradas_saida_id != 0) {
-            $this->db->select('forma_entradas_saida_id, descricao, conta, agencia');
+            $this->db->select('forma_entradas_saida_id, descricao, conta, agencia, empresa_id, perfil_id');
             $this->db->from('tb_forma_entradas_saida');
             $this->db->where("forma_entradas_saida_id", $forma_entradas_saida_id);
             $query = $this->db->get();
@@ -153,6 +191,8 @@ class forma_model extends Model {
             $this->_descricao = $return[0]->descricao;
             $this->_agencia = $return[0]->agencia;
             $this->_conta = $return[0]->conta;
+            $this->_empresa_id = $return[0]->empresa_id;
+            $this->_perfil_id = $return[0]->perfil_id;
         } else {
             $this->_forma_entradas_saida_id = null;
         }

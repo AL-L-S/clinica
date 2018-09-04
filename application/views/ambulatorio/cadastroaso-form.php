@@ -1,9 +1,10 @@
 <?
-if (count(@$informacao_aso[0]->impressao_aso) > 0) {
+if (count(@$informacao_aso[0]->impressao_aso) > 0) {    
     $config = json_decode(@$informacao_aso[0]->impressao_aso);
 } else {
     $config = '';
 }
+
 ?>
 <?php
     $this->load->library('utilitario');
@@ -242,8 +243,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                 </select>
             </div>
-
-
+           
 
         </fieldset>
         <fieldset>
@@ -290,7 +290,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
     .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 330px; }
 </style>
-<? //var_dump(@$config->riscos);die;?>
+<? // var_dump(@$config->funcao);die;?>
 <script type="text/javascript">
 
                     $(function () {
@@ -386,9 +386,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 <? }
 ?>
                     function carregarFuncaoAtualizar() {
-                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: $('#setor').val()}, function (j) {
-                            options = '<option value=""></option>';
 //                                console.log(j);
+                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: $('#setor').val(), empresa: $('#convenio1').val()}, function (j) {
+                            options = '<option value=""></option>';
                             for (var c = 0; c < j.length; c++) {
                                 if (funcao == j[c].funcao_id) {
                                     options += '<option selected value="' + j[c].funcao_id + '">' + j[c].descricao_funcao + '</option>';
@@ -412,9 +412,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
 //                            $('.carregando').show();
 //                            alert('asdsd');
-                            $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: $(this).val()}, function (j) {
+                            $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: $(this).val(), empresa: $('#convenio1').val()}, function (j) {
                                 options = '<option value=""></option>';
-                                console.log(j);
+//                                console.log(j);
                                 for (var c = 0; c < j.length; c++) {
                                     if (funcao == j[c].funcao_id) {
                                         options += '<option selected value="' + j[c].funcao_id + '">' + j[c].descricao_funcao + '</option>';
@@ -445,7 +445,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                     
                     function carregarRiscoAtualizar() {
                   
-                        $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt', {funcao: $('#funcao').val()}, function (j) {
+                        $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                 options = '<option value=""></option>';
 //                                console.log(j);
                                 for (var c = 0; c < j.length; c++) {
@@ -474,9 +474,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             
 //                            
 
-                            $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt', {funcao: $(this).val()}, function (j) {
+                            $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $(this).val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                 options = '<option value=""></option>';
-
+//                                console.log(j);
                                 for (var c = 0; c < j.length; c++) {
                                   
                                         options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
