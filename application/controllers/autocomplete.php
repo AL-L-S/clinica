@@ -1904,25 +1904,25 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-    function funcaosetormt() {
-        header('Access-Control-Allow-Origin: *');
-        if (isset($_GET['setor'])) {
-            $result = $this->saudeocupacional->listarautocompletefuncaosetormt($_GET['setor']);
-        } else {
-            $result = $this->saudeocupacional->listarautocompletefuncaosetormt(@$_GET['setor']);
-        }
-
-        $json_funcao = json_decode($result[0]->aso_funcao_id);
-
-        $result2 = $this->saudeocupacional->listarautocompletesetorjson($json_funcao);
-
-        echo json_encode($result2);
-    }
+//    function funcaosetormt() {
+//        header('Access-Control-Allow-Origin: *');
+//        if (isset($_GET['setor'])) {
+//            $result = $this->saudeocupacional->listarautocompletefuncaosetormt($_GET['setor']);
+//        } else {
+//            $result = $this->saudeocupacional->listarautocompletefuncaosetormt(@$_GET['setor']);
+//        }
+//
+//        $json_funcao = json_decode($result[0]->aso_funcao_id);
+//
+//        $result2 = $this->saudeocupacional->listarautocompletesetorjson($json_funcao);
+//
+//        echo json_encode($result2);
+//    }
     
     function funcaosetormt2() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['setor'])) {
-            $result = $this->convenio->listarautocompletefuncao($_GET['setor']);
+            $result = $this->convenio->listarautocompletefuncao($_GET['setor'], $_GET['empresa']);
         } else {
             $result = $this->convenio->listarautocompletefuncao(@$_GET['setor']);
         }
@@ -1933,16 +1933,16 @@ class Autocomplete extends Controller {
 
         echo json_encode($result);
     }
-    function setorempresamt() {
-        header('Access-Control-Allow-Origin: *');
-        if (isset($_GET['convenio1'])) {
-            $result = $this->saudeocupacional->listarautocompletesetorempresamt($_GET['convenio1']);
-        } else {
-            $result = $this->saudeocupacional->listarautocompletesetorempresamt(@$_GET['convenio1']);
-        }
-
-        echo json_encode($result);
-    }
+//    function setorempresamt() {
+//        header('Access-Control-Allow-Origin: *');
+//        if (isset($_GET['convenio1'])) {
+//            $result = $this->saudeocupacional->listarautocompletesetorempresamt($_GET['convenio1']);
+//        } else {
+//            $result = $this->saudeocupacional->listarautocompletesetorempresamt(@$_GET['convenio1']);
+//        }
+//
+//        echo json_encode($result);
+//    }
     
     function setorempresamt2() {
         header('Access-Control-Allow-Origin: *');
@@ -1955,17 +1955,34 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-    function riscofuncaomt() {
+//    function riscofuncaomt() {
+//        header('Access-Control-Allow-Origin: *');
+//        if (isset($_GET['funcao'])) {
+//            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt($_GET['funcao']);
+//        } else {
+//            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt(@$_GET['funcao']);
+//        }
+//
+//        $json_riscos = json_decode($result[0]->aso_risco_id);
+//
+//        $result2 = $this->saudeocupacional->listarautocompletefuncaojson($json_riscos);
+//
+//        echo json_encode($result2);
+//    }
+    
+    function riscofuncaomt2() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['funcao'])) {
-            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt($_GET['funcao']);
+            $result = $this->convenio->listarautocompleteriscos($_GET['funcao'], $_GET['setor'], $_GET['empresa']);
+            
+//            var_dump($result);die;
         } else {
-            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt(@$_GET['funcao']);
+            $result = $this->convenio->listarautocompleteriscos(@$_GET['funcao']);            
         }
+        
+        $json_riscos = json_decode($result[0]->risco_id);
 
-        $json_riscos = json_decode($result[0]->aso_risco_id);
-
-        $result2 = $this->saudeocupacional->listarautocompletefuncaojson($json_riscos);
+        $result2 = $this->saudeocupacional->listarautocompletefuncaojson2($json_riscos);
 
         echo json_encode($result2);
     }
