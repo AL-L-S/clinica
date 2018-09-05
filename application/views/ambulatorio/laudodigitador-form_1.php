@@ -57,16 +57,35 @@
                         <input type="text" id="cabecalho" class="texto10" name="cabecalho" value="<?= $cabecalho ?>"/>
                     </div>
                     <div>
-                        <label>Laudo</label>
-                        <select name="exame" id="exame" class="size2" >
-                            <option value='' >selecione</option>
-                            <?php foreach ($lista as $item) { ?>
-                                <option value="<?php echo $item->ambulatorio_modelo_laudo_id; ?>" ><?php echo $item->nome; ?></option>
-                            <?php } ?>
-                        </select>
+                    <table>
+                        <tr>
+                            <td>
+                                <label>Laudo</label>
+                                <select name="exame" id="exame" class="size2" >
+                                    <option value='' >selecione</option>
+                                    <?php foreach ($lista as $item) { ?>
+                                        <option value="<?php echo $item->ambulatorio_modelo_laudo_id; ?>" ><?php echo $item->nome; ?></option>
+                                    <?php } ?>
+                                </select>
 
-                        <label>Linha</label>
-                        <input type="text" id="linha2" class="texto02" name="linha2"/>
+                            </td>
+                            <td>
+                                <label>Linha</label>
+                                <input type="text" id="linha2" class="texto02" name="linha2"/>
+
+                            </td>
+                            <td>
+                                <div class="bt_link" style="width: 140px;">
+                                    <a onclick="visualizarModeloLaudo();">
+                                        <font size="-1"> Visual. Modelo</font>
+                                    </a>
+                                </div> 
+                            </td>
+                        </tr>
+                    </table>
+                        
+                       
+                         
 <!--                        <select name="linha" id="linha" class="size2" >
                             <option value='' >selecione</option>
                         <?php foreach ($linha as $item) { ?>
@@ -360,6 +379,15 @@
                                     }
                                 });
                             });
+
+                            function visualizarModeloLaudo() {
+                                if($('#exame').val() != ''){
+                                    varWindow = window.open('<?= base_url() ?>ambulatorio/laudo/carregarmodelolaudoselecionado/' + $('#exame').val(), 'popup', "width=800, height=600 ");  
+                                }else{
+                                    alert('Escolha um modelo de laudo antes de tentar visualizá-lo');
+                                }
+                                
+                            }
 
                             $(function() {
                                 $("#linha2").autocomplete({

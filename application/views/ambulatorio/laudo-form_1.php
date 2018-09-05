@@ -347,13 +347,15 @@ if (count($pacs) > 0) {
                                                 </td>
                                                 <td>
                                                     <label>Linha</label>
+                                                    <br>
                                                     <input type="text" id="linha2" class="texto02" name="linha2"/>
 
                                                 </td>
                                                 <td>
-                                                    <div class="bt_link" style="width: 120px;">
+                                                    <div class="bt_link" style="width: 140px;">
                                                         <a onclick="visualizarModeloLaudo();">
-                                                            <font size="-1"> Visualizar Modelo</font></a></div>  
+                                                            <font size="-1"> Visual. Modelo</font></a>
+                                                    </div>  
                                                 </td>
 
                                             </tr>
@@ -369,12 +371,6 @@ if (count($pacs) > 0) {
                                             </tr>
 
                                         </table>
-
-
-
-
-
-
                                     </div>
                                     <div>
                                         <textarea id="laudo" class="laudo" name="laudo" rows="30" cols="80" style="width: 80%"><?= @$obj->_texto; ?></textarea>

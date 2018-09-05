@@ -34,13 +34,8 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
 
 //echo $assinatura;
     @$corpo = $impressaolaudo[0]->texto;
-<<<<<<< HEAD
     @$corpo = str_replace("<p", '<div', @$corpo);
     @$corpo = str_replace("</p>", '</div>', @$corpo);
-=======
-    @$corpo = str_replace("<p", '<t', @$corpo);
-    @$corpo = str_replace("</p>", '</t>', @$corpo);
->>>>>>> 8b238435424b7843e0ea186e9aca3d6d2666526a
 //    echo($corpo);
 //    die;
 
@@ -68,7 +63,7 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
     $corpo = str_replace("_guia_", $laudo[0]->guia_id, $corpo);
     $operador_id = $this->session->userdata('operador_id');
     $operador_atual = $this->operador_m->operadoratualsistema($operador_id);
-    @$corpo = str_replace("_usuario_logado_", @$operador_atual[0]->nome, $corpo);
+    @$corpo = str_replace("_usuario_logado_", @$operador_atual[0]->usuario, $corpo);
     $corpo = str_replace("_prontuario_", $laudo[0]->paciente_id, $corpo);
     $corpo = str_replace("_telefone1_", $laudo[0]->telefone, $corpo);
     $corpo = str_replace("_telefone2_", $laudo[0]->celular, $corpo);
