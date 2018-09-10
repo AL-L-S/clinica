@@ -498,6 +498,9 @@
                                             <td><input type="checkbox" id="relatorio_caixa" name="relatorio_caixa" <? if (@$obj->_relatorio_caixa == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a opção de Relatório Caixa vai ser ativada na Recepção">Relatório Caixa</label></td>
                                             
                                         </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="reservar_escolher_proc" name="reservar_escolher_proc" <? if (@$obj->_reservar_escolher_proc == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, você deve escolher o procedimento ao reservar um horário.">Escolher Procedimento Ao Reservar</label></td>
+                                        </tr>
                                     </table>
                                 </fieldset>
                                 <br><br><br>
