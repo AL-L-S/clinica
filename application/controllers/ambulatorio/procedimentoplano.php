@@ -278,7 +278,54 @@ class Procedimentoplano extends BaseController {
                 $ambulatorio_orcamento = $resultadoorcamento['ambulatorio_orcamento_id'];
             }
 
-            $this->guia->gravarorcamentoitemrecepcao($ambulatorio_orcamento, $paciente_id);
+
+            $agrupador = $this->guia->verificaprocedimentoagrupador($_POST['procedimento1']);
+            if ($agrupador[0]->agrupador != 't') {
+                $this->guia->gravarorcamentoitemrecepcao($ambulatorio_orcamento, $paciente_id);
+            } else {
+                // Cria um agrupador para o pacote
+                $agrupador_id = $this->guia->gravaragrupadorpacote($_POST['procedimento1']);
+
+                // Traz os procedimentos desse pacote bem como o valor  
+                $pacoteProc = $this->guia->listarprocedimentospacote($_POST['procedimento1']);
+
+                if ($pacoteProc[0]->valor_pacote_diferenciado == 't') {
+                    $vl_pacote = 0;
+                    $valorTotal = 0;
+                    foreach ($pacoteProc as $value) {
+                        $valorTotal += $value->valortotal;
+                    }
+                }
+                // echo '<pre>';
+                // var_dump($pacoteProc); die;
+
+                $i = 0;
+                $totPro = count($pacoteProc);
+                foreach ($pacoteProc as $value) {
+
+                    if ($value->valor_pacote_diferenciado == 't') {
+                        /* Caso seja um valor diferenciado, ele vai descobrir o valor unitário.
+                         * Para isso, usa-se a seguinte regra: se antes o proc valia 15% do total do pacote,
+                         * entao, mesmo com um valor diferenciado, ele deve continuar valendo 15% do total. */
+                        $valor = round(($value->valor_pacote * $value->valortotal) / $valorTotal);
+                        $vl_pacote += $valor;
+
+                        if ($i == $totPro - 1) {
+                             /* Caso tenha acontecido alguma diferença no valor informado na criaçao do pacote 
+                             * para o valor aqui calculado (geralmente ocorre uma diferença de alguns centavos)
+                             * ele acrescenta essa diferença no ultimo procedimento. */
+
+                            $diferenca = (float)$value->valor_pacote - (float)$vl_pacote;
+                            $valor += $diferenca;
+                        }
+                    } else {
+                        $valor = $value->valortotal;
+                    }
+                    $i++;
+                    $this->guia->gravarorcamentoitemrecepcaoagrupador($ambulatorio_orcamento, $paciente_id, $value->procedimento_convenio_id, $value->quantidade_agrupador, $valor);
+                }
+            }
+            
 
             redirect(base_url() . "ambulatorio/procedimentoplano/orcamento/$paciente_id/$ambulatorio_orcamento");
         }

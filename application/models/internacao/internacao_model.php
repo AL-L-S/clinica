@@ -2919,7 +2919,7 @@ cast((Select sum(quantidade) from ponto.tb_internacao_procedimentos
     function verificainternacao($paciente_id) {
         $this->db->select();
         $this->db->from('tb_internacao');
-//        $this->db->where("ativo", 'true');
+        $this->db->where("ativo", 'true');
         $this->db->where("paciente_id", $paciente_id);
         $return = $this->db->count_all_results();
         return $return;

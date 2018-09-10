@@ -416,6 +416,21 @@ SELECT setval('ponto.tb_tuss_tuss_id_seq', (SELECT MAX(tuss_id) FROM ponto.tb_tu
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN modelo_laudo_medico boolean DEFAULT false;
 
+--Dia 30/08/2018
+
+CREATE TABLE ponto.tb_setor_cadastro
+(
+  setor_cadastro_id serial primary key,
+  setor_id integer,
+  funcao_id integer,
+  risco_id text,
+  empresa_id integer,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer  
+);
 
 --Dia 03/09/2018
 
@@ -424,6 +439,13 @@ ALTER COLUMN celular TYPE character varying(16),
 ALTER COLUMN telefone TYPE character varying(16);
 
 --Dia 06/09/2018
+
+
+--Dia 06/09/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN reservar_escolher_proc boolean DEFAULT false;
+
+
+ALTER TABLE ponto.tb_ambulatorio_laudo ADD COLUMN carimbo boolean DEFAULT false;
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN manter_indicacao boolean DEFAULT false;
 

@@ -181,7 +181,7 @@ CREATE TABLE ponto.tb_convenio_forma_pagamento
   operador_cadastro integer,
   data_atualizacao timestamp without time zone,
   operador_atualizacao integer,
-  CONSTRAINT tb_convenio_forma_pagamento_pkey PRIMARY KEY (procedimento_convenio_forma_pagamento_id)
+  CONSTRAINT tb_convenio_forma_pagamento_pkey PRIMARY KEY (convenio_forma_pagamento_id)
 );
 
 -- Dia 12/06/2018

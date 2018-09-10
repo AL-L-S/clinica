@@ -212,6 +212,7 @@ class guia_model extends Model {
                             ep.campos_obrigatorios_pac_nascimento,
                             ep.campos_obrigatorios_pac_telefone,
                             ep.campos_obrigatorios_pac_municipio,
+                            ep.reservar_escolher_proc,
                             ep.orcamento_cadastro,
                             ep.repetir_horarios_agenda,
                             ep.senha_finalizar_laudo,
@@ -14525,6 +14526,56 @@ ORDER BY ae.paciente_credito_id)";
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];
             $this->db->set('valor_total', $valortotal);
             $this->db->set('quantidade', $_POST['qtde1']);
+//            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('empresa_id', $_POST['empresa1']);
+            if (isset($_POST['observacao'])) {
+                $this->db->set('observacao', $_POST['observacao']);
+            }
+
+            $this->db->set('orcamento_id', $ambulatorio_orcamento_id);
+
+            if ($_POST['formapamento'] != '') {
+                $this->db->set('forma_pagamento', $_POST['formapamento']);
+            }
+
+            if ($_POST['txtdata'] != '') {
+                $this->db->set('data_preferencia', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdata']))));
+            }
+//            $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
+            if ($_POST['turno_preferencia'] != '') {
+                $this->db->set('horario_preferencia', $_POST['turno_preferencia']);
+            }
+
+
+            $this->db->set('paciente_id', $paciente_id);
+            $this->db->set('data', $data);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_ambulatorio_orcamento_item');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return -1;
+            }
+            return 1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarorcamentoitemrecepcaoagrupador($ambulatorio_orcamento_id, $paciente_id, $procedimento_convenio_id, $quantidade_agrupador, $valor) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $data = date("Y-m-d");
+            $this->db->set('procedimento_tuss_id', $procedimento_convenio_id);
+            if ($_POST['ajustevalor1'] != '') {
+                $this->db->set('valor_ajustado', $_POST['ajustevalor1']);
+            }
+            $this->db->set('valor', $valor);
+            $valortotal = $valor * $quantidade_agrupador;
+            $this->db->set('valor_total', $valortotal);
+            $this->db->set('quantidade', $quantidade_agrupador);
 //            $empresa_id = $this->session->userdata('empresa_id');
             $this->db->set('empresa_id', $_POST['empresa1']);
             if (isset($_POST['observacao'])) {

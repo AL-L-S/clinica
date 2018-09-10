@@ -213,7 +213,15 @@ class Guia extends BaseController {
 
     function gravarcadastroaso($paciente_id) {
 //        var_dump($_POST);die;
-        $aso_id = $this->guia->gravarcadastroaso($paciente_id);
+                $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
+                    
+                if ($retorno2 == -1) {
+                    $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
+                    $this->session->set_flashdata('message', $data['mensagem']);
+                    redirect(base_url() . "ambulatorio/guia/carregarcadastroaso/$paciente_id/0");
+                } else {
+                    $aso_id = $this->guia->gravarcadastroaso($paciente_id);
+                }
         
         if (!$_POST['cadastro_aso_id'] > 0) {
 
@@ -227,17 +235,7 @@ class Guia extends BaseController {
                     $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
                 } else {
                     $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-                }
-
-                $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
-//                    
-                if ($retorno2 == -1) {
-                    $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
-                    $this->session->set_flashdata('message', $data['mensagem']);
-                    redirect(base_url() . "ambulatorio/guia/carregarcadastroaso/$paciente_id/0");
-                } else {
-                    $aso_id = $this->guia->gravarcadastroaso($paciente_id);
-                }
+                }                
             }
 
             foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {

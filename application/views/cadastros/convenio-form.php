@@ -147,11 +147,7 @@
                 </div>
                 
                 <div id="ajuste-cbhpmfilme"> 
-<<<<<<< HEAD
                     <label>Ajuste CBHPM Filme (Valor)</label>
-=======
-                    <label>Ajuste CBHPM Filme (%)</label>
->>>>>>> 8b238435424b7843e0ea186e9aca3d6d2666526a
                     <input type="number" id="valor_ajuste_cbhpm_filme" class="texto02" name="valor_ajuste_cbhpm_filme" step="0.01" value="<?= @$obj->_valor_ajuste_cbhpm_filme; ?>" />
                 </div>
                 

@@ -1097,6 +1097,7 @@ class Operador_model extends BaseModel {
         $this->db->select('o.nome,
                             o.operador_id,
                             o.rodape,
+                            o.usuario,
                             o.cabecalho,
                             c.descricao as ocupacao,
                             o.conselho

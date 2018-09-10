@@ -90,12 +90,72 @@ class Autocomplete extends Controller {
         }
     }
 
+    function resultadoIntegracaoLabLuz() {
+        header('Access-Control-Allow-Origin: *');
+
+        // A Você que verá o código a seguir, sinto muito, mas era o único jeito.
+
+        $xml_PT1 = "<?xml version='1.0'?>
+        <lote codigoLis='123' identificadorLis='teste' origemLis='TESTE' criacaoLis='2016-08-01T06:56:52-0300'>         
+            <solicitacoes>
+                <solicitacao codigoLis='123'>
+                <solicitacao codigoLis='124'>
+                </solicitacao>
+            </solicitacoes>
+            <parametros acao='VIEW' parcial='S'retorno='PDF'>
+        
+        </lote>";
+                    
+        $xml_final = $xml_PT1;
+
+
+        $postdata = http_build_query(
+            array(
+                'body' => $xml_final,
+                'url' => 'https://labluz.lisnet.com.br/lisnet/APOIO/resultado',
+            )
+        );
+        
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            )
+        );
+        
+        $context  = stream_context_create($opts);
+        
+        $result = file_get_contents(base_url() . 'autocomplete/enviarCurlLabLuz', false, $context);
+        if(!preg_match('/\Erro/', $result)){
+
+            $xml = simplexml_load_string($result);
+            $json = json_encode($xml);
+            $array = json_decode($json,TRUE);
+            echo '<pre>';
+            var_dump($array);
+            // var_dump($result);
+            // var_dump($xml_string);
+            die;
+
+        }else{
+            echo 'erro de conexao'; die;
+        }
+        // var_dump($result); die;
+        
+        
+
+    }
+
     function testandoIntegracaoLabLuz() {
         header('Access-Control-Allow-Origin: *');
         //Lote
+        // $grupo_busca = file_get_contents("https://labluz.lisnet.com.br/lisnetws/APOIO/enviar?body=teste");
+        // var_dump($grupo_busca); die;
+
         $criacaoLis = date("Y-m-d") . 'T' . date("H:i:s") . '-0300';
-        $codigoLis = '1253';
-        $identificadorLis = 'teste';
+        $codigoLis = '112';
+        $identificadorLis = '1253';
         $origemLis = 'teste';
         // Solicitacao
         $solCodigoLis = '9996';
@@ -120,13 +180,13 @@ class Autocomplete extends Controller {
         $conselho = 'CRM';
         $uf = 'BA';
         $numero = '9999999999';
-        $nome_medico = 'MÉDICO';
+        $nome_medico = 'MEDICO';
 
         $teste = array(0 => '', 1 => '');
 
         // A Você que verá o código a seguir, sinto muito, mas era o único jeito.
 
-        $xml_PT1 = "'<lote codigoLis='$codigoLis' identificadorLis='$identificadorLis' origemLis='$origemLis'
+        $xml_PT1 = "<lote codigoLis='$codigoLis' identificadorLis='$identificadorLis' origemLis='$origemLis'
         criacaoLis='$criacaoLis'>
         <solicitacoes>
                 <solicitacao codigoLis='$solCodigoLis' criacaoLis='$criacaoLis'
@@ -138,7 +198,7 @@ class Autocomplete extends Controller {
 
                     <exames>
                     
-                    '";
+                    ";
                     
         $xml_PT2 = '';
 
@@ -163,47 +223,52 @@ class Autocomplete extends Controller {
          
         $xml_final = $xml_PT1 . $xml_PT2 . $xml_PT3;
 
-        $xml_string = '<lote codigoLis="112" identificadorLis="teste" origemLis="TESTE"
-        criacaoLis="2016-08-01T06:56:52-0300">
-        <solicitacoes>
-                <solicitacao codigoLis="9996" criacaoLis="2016-06-30T21:00:00-0300"
-                    codigoConvenio="1" descConvenio="CONVENIO TESTE" codigoPlano="1"
-                    descricaoPlano="PLANO TESTE">
 
-                    <paciente codigoLis="123" nome="PACIENTE TESTE"
-                    nascimento="1955-02-05" sexo="M"/>
-                    <exames>
-                        <exame codigoLis="TR4" amostraLis="5555555" materialLis="4956">
-                                <solicitantes>
-                                    <solicitante conselho="CRM" uf="BA" numero="9999999999"
-                                    nome="MÉDICO"/>
-                                </solicitantes>
-                        </exame>
-                        <exame codigoLis="TR5" amostraLis="5555555" materialLis="4956">
-                                <solicitantes>
-                                    <solicitante conselho="CRM" uf="BA" numero="9999999999"
-                                    nome="MÉDICO"/>
-                                </solicitantes>
-                        </exame>
-                    </exames>
+        $postdata = http_build_query(
+            array(
+                'body' => $xml_final,
+                'url' => 'https://labluz.lisnet.com.br/lisnetws/APOIO/enviar',
+            )
+        );
+        
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            )
+        );
+        
+        $context  = stream_context_create($opts);
+        
+        $result = file_get_contents(base_url() . 'autocomplete/enviarCurlLabLuz', false, $context);
 
-                </solicitacao>
-        </solicitacoes>
-        </lote>';
-
-        $xml = simplexml_load_string($xml_string);
+        // var_dump($result); die;
+        
+        $xml = simplexml_load_string($result);
         $json = json_encode($xml);
         $array = json_decode($json,TRUE);
-        // echo '<pre>';
-        // var_dump($array);
-        var_dump($xml_final);
+        echo '<pre>';
+        var_dump($array);
+        // var_dump($result);
         // var_dump($xml_string);
-
-
-
-
         die;
 
+    }
+
+    function enviarCurlLabLuz(){
+        // var_dump($_POST); die;
+        $fields = array('' => $_POST['body']);
+        $url = $_POST['url'];
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+
+        $result = curl_exec($ch);
+        // var_dump($result);
+        curl_close($ch);
     }
 
     function testarconexaointegracaolaudo() {
