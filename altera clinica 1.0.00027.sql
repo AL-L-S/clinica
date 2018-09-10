@@ -423,5 +423,24 @@ ALTER TABLE ponto.tb_empresa
 ALTER COLUMN celular TYPE character varying(16),
 ALTER COLUMN telefone TYPE character varying(16);
 
---Dia 04/09/2018
+--Dia 06/09/2018
 
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN manter_indicacao boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN fila_impressao boolean DEFAULT false;
+
+--Dia 08/09/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN medico_solicitante boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN uso_salas boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN relatorio_operadora boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN relatorio_demandagrupo boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN relatorio_rm boolean DEFAULT false;
+
+--Dia 10/09/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN relatorio_caixa boolean DEFAULT false;

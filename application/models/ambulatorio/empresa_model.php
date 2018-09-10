@@ -30,7 +30,7 @@ class empresa_model extends Model {
     }
 
     function listar($args = array()) {
-        
+
         $perfil_id = $this->session->userdata('perfil_id');
 //        $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
@@ -526,24 +526,31 @@ class empresa_model extends Model {
     }
 
     function gravarlembrete($empresa_lembretes_id) {
-
-        $this->db->select('operador_id, nome');
+        
+        $this->db->select('operador_id, nome, perfil_id');
         $this->db->from('tb_operador o');
-//        $this->db->where('consulta', 'true');
+        if(!in_array('TODOS', $_POST['perfil_id'])){
+        $this->db->where_in('perfil_id', $_POST['perfil_id']);
+        }
+        if(!in_array('TODOS', $_POST['operador_id'])){
+        $this->db->where_in('operador_id', $_POST['operador_id']);
+        }
         $this->db->where('o.ativo', 't');
         $this->db->where('o.usuario IS NOT NULL');
         $return = $this->db->get()->result();
-
+//
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $empresa_id = $this->session->userdata('empresa_id');
-
-
-        if ($_POST['operador_id'] == 'TODOS') {
+//        
+//        echo'<pre>';
+//        var_dump($return);die;        
+        
             foreach ($return as $value) {
                 if ($empresa_lembretes_id == "" || $empresa_lembretes_id == "0") {// insert
                     $this->db->set('texto', $_POST['descricao']);
                     $this->db->set('operador_destino', $value->operador_id);
+                    $this->db->set('perfil_destino', $value->perfil_id);
                     $this->db->set('empresa_id', $empresa_id);
                     $this->db->set('data_cadastro', $horario);
                     $this->db->set('operador_cadastro', $operador_id);
@@ -551,6 +558,7 @@ class empresa_model extends Model {
                 } else { // update
                     $this->db->set('texto', $_POST['descricao']);
                     $this->db->set('operador_destino', $value->operador_id);
+                    $this->db->set('perfil_destino', $value->perfil_id);
                     $this->db->set('empresa_id', $empresa_id);
                     $this->db->set('data_atualizacao', $horario);
                     $this->db->set('operador_atualizacao', $operador_id);
@@ -558,24 +566,7 @@ class empresa_model extends Model {
                     $this->db->update('tb_empresa_lembretes');
                 }
             }
-        } else {
-            if ($empresa_lembretes_id == "" || $empresa_lembretes_id == "0") {// insert
-                $this->db->set('texto', $_POST['descricao']);
-                $this->db->set('operador_destino', $_POST['operador_id']);
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_empresa_lembretes');
-            } else { // update
-                $this->db->set('texto', $_POST['descricao']);
-                $this->db->set('operador_destino', $_POST['operador_id']);
-                $this->db->set('empresa_id', $empresa_id);
-                $this->db->set('data_atualizacao', $horario);
-                $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->where('empresa_lembretes_id', $empresa_lembretes_id);
-                $this->db->update('tb_empresa_lembretes');
-            }
-        }
+        
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return false;
@@ -1011,7 +1002,9 @@ class empresa_model extends Model {
 
     function gravar() {
         try {
-//            var_dump('d'); die;
+//            echo'<pre>';
+//            var_dump($_POST);
+//            die;
             // Ativando/Desativando o Crédito
             if (isset($_POST['credito'])) {
                 $this->db->set('ativo', 't');
@@ -1133,6 +1126,7 @@ class empresa_model extends Model {
                     $this->db->set('imagem', 'f');
                 }
                 if (isset($_POST['fila_caixa'])) {
+//                var_dump($_POST['fila_caixa']);die;
                     $this->db->set('caixa', 't');
                 } else {
                     $this->db->set('caixa', 'f');
@@ -1420,6 +1414,46 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('relatorios_recepcao', 'f');
                     }
+                    if (isset($_POST['manter_indicacao'])) {
+                        $this->db->set('manter_indicacao', 't');
+                    } else {
+                        $this->db->set('manter_indicacao', 'f');
+                    }
+                    if (isset($_POST['fila_impressao'])) {
+                        $this->db->set('fila_impressao', 't');
+                    } else {
+                        $this->db->set('fila_impressao', 'f');
+                    }
+                    if (isset($_POST['medico_solicitante'])) {
+                        $this->db->set('medico_solicitante', 't');
+                    } else {
+                        $this->db->set('medico_solicitante', 'f');
+                    }
+                    if (isset($_POST['relatorio_operadora'])) {
+                        $this->db->set('relatorio_operadora', 't');
+                    } else {
+                        $this->db->set('relatorio_operadora', 'f');
+                    }
+                    if (isset($_POST['relatorio_rm'])) {
+                        $this->db->set('relatorio_rm', 't');
+                    } else {
+                        $this->db->set('relatorio_rm', 'f');
+                    }
+                    if (isset($_POST['relatorio_caixa'])) {
+                        $this->db->set('relatorio_caixa', 't');
+                    } else {
+                        $this->db->set('relatorio_caixa', 'f');
+                    }
+                    if (isset($_POST['relatorio_demandagrupo'])) {
+                        $this->db->set('relatorio_demandagrupo', 't');
+                    } else {
+                        $this->db->set('relatorio_demandagrupo', 'f');
+                    }
+                    if (isset($_POST['uso_salas'])) {
+                        $this->db->set('uso_salas', 't');
+                    } else {
+                        $this->db->set('uso_salas', 'f');
+                    }
                     if (isset($_POST['financeiro_cadastro'])) {
                         $this->db->set('financeiro_cadastro', 't');
                     } else {
@@ -1527,6 +1561,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('carregar_modelo_receituario', 'f');
                     }
+//                    if (isset($_POST['fila_caixa'])) {
+//                        $this->db->set('caixa', 't');
+//                    } else {
+//                        $this->db->set('caixa', 'f');
+//                    }
 
                     if (isset($_POST['caixa_personalizado'])) {
                         $this->db->set('caixa_personalizado', 't');
@@ -1832,6 +1871,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('botao_arquivos_paciente', 'f');
                     }
+//                    if (isset($_POST['fila_caixa'])) {
+//                        $this->db->set('caixa', 't');
+//                    } else {
+//                        $this->db->set('caixa', 'f');
+//                    }
                     if (isset($_POST['botao_laudo_paciente'])) {
                         $this->db->set('botao_laudo_paciente', 't');
                     } else {
@@ -2158,6 +2202,46 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('botao_ficha_convenio', 'f');
                     }
+                    if (isset($_POST['manter_indicacao'])) {
+                        $this->db->set('manter_indicacao', 't');
+                    } else {
+                        $this->db->set('manter_indicacao', 'f');
+                    }
+                    if (isset($_POST['fila_impressao'])) {
+                        $this->db->set('fila_impressao', 't');
+                    } else {
+                        $this->db->set('fila_impressao', 'f');
+                    }
+                    if (isset($_POST['medico_solicitante'])) {
+                        $this->db->set('medico_solicitante', 't');
+                    } else {
+                        $this->db->set('medico_solicitante', 'f');
+                    }
+                    if (isset($_POST['relatorio_operadora'])) {
+                        $this->db->set('relatorio_operadora', 't');
+                    } else {
+                        $this->db->set('relatorio_operadora', 'f');
+                    }
+                    if (isset($_POST['relatorio_demandagrupo'])) {
+                        $this->db->set('relatorio_demandagrupo', 't');
+                    } else {
+                        $this->db->set('relatorio_demandagrupo', 'f');
+                    }
+                    if (isset($_POST['relatorio_rm'])) {
+                        $this->db->set('relatorio_rm', 't');
+                    } else {
+                        $this->db->set('relatorio_rm', 'f');
+                    }
+                    if (isset($_POST['relatorio_caixa'])) {
+                        $this->db->set('relatorio_caixa', 't');
+                    } else {
+                        $this->db->set('relatorio_caixa', 'f');
+                    }
+                    if (isset($_POST['uso_salas'])) {
+                        $this->db->set('uso_salas', 't');
+                    } else {
+                        $this->db->set('uso_salas', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -2312,6 +2396,14 @@ class empresa_model extends Model {
                                ep.relatorios_clinica_med,
                                ep.impressao_cimetra,
                                ep.gerente_recepcao_top_saude,
+                               ep.manter_indicacao,
+                               ep.fila_impressao,
+                               ep.medico_solicitante,
+                               ep.uso_salas,
+                               ep.relatorio_operadora,
+                               ep.relatorio_demandagrupo,
+                               ep.relatorio_rm,
+                               ep.relatorio_caixa,
                                ep.botao_ficha_convenio
                                ');
             $this->db->from('tb_empresa f');
@@ -2421,7 +2513,6 @@ class empresa_model extends Model {
             $this->_recomendacao_obrigatorio = $return[0]->recomendacao_obrigatorio;
             $this->_botao_ativar_sala = $return[0]->botao_ativar_sala;
             $this->_oftamologia = $return[0]->oftamologia;
-
             $this->_valor_autorizar = $return[0]->valor_autorizar;
             $this->_gerente_contasapagar = $return[0]->gerente_contasapagar;
             $this->_cpf_obrigatorio = $return[0]->cpf_obrigatorio;
@@ -2459,6 +2550,14 @@ class empresa_model extends Model {
             $this->_relatorios_clinica_med = $return[0]->relatorios_clinica_med;
             $this->_botao_ficha_convenio = $return[0]->botao_ficha_convenio;
             $this->_impressao_cimetra = $return[0]->impressao_cimetra;
+            $this->_manter_indicacao = $return[0]->manter_indicacao;
+            $this->_fila_impressao = $return[0]->fila_impressao;
+            $this->_medico_solicitante = $return[0]->medico_solicitante;
+            $this->_uso_salas = $return[0]->uso_salas;
+            $this->_relatorio_operadora = $return[0]->relatorio_operadora;
+            $this->_relatorio_demandagrupo = $return[0]->relatorio_demandagrupo;
+            $this->_relatorio_rm = $return[0]->relatorio_rm;
+            $this->_relatorio_caixa = $return[0]->relatorio_caixa;
         } else {
             $this->_empresa_id = null;
         }

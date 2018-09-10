@@ -1289,6 +1289,12 @@ class Exametemp extends BaseController {
         $this->exametemp->gravarhorarioencaixegeral();
         redirect(base_url() . "ambulatorio/exame/listarmultifuncaogeral");
     }
+    
+    function gravarhorarioexameencaixegeral2($agenda_exames_id) {
+        
+        $this->exametemp->gravarhorarioencaixegeral2($lista[0]->agenda_exames_id);
+        redirect(base_url() . "ambulatorio/exame/listarmultifuncaogeral");
+    }
 
     function gravarpacientefisioterapiaencaixe() {
         if (trim($_POST['txtNomeid']) == "" && trim($_POST['txtNome']) == "") {

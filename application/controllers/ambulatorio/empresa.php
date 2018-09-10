@@ -41,6 +41,7 @@ class Empresa extends BaseController {
 
     function carregarlembrete($empresa_lembretes_id) {
         $data['empresa_lembretes_id'] = $empresa_lembretes_id;
+        $data['perfil'] = $this->operador->listarPerfil();
         $data['operadores'] = $this->operador->listaroperadoreslembrete();
         $this->loadView('ambulatorio/lembrete-form', $data);
     }

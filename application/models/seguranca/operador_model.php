@@ -1738,6 +1738,30 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarautocompleteoperador($parametro = null){
+        
+        $this->db->select(' distinct(o.operador_id),
+                            pe.perfil_id,
+                            o.nome
+                                            ');
+        
+        $this->db->from('tb_operador o');    
+        $this->db->join('tb_perfil pe', 'pe.perfil_id = o.perfil_id', 'left');    
+    
+        $this->db->where('o.ativo', 'true');        
+        
+//        echo'<pre>';
+//        var_dump($parametro);die;
+        if (count($parametro) > 0 && !in_array('TODOS', $parametro)) {
+            $this->db->where_in('pe.perfil_id', $parametro);
+        }
+       
+        $this->db->groupby("o.operador_id, pe.perfil_id, o.nome");
+        $this->db->orderby("o.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function gravarNovaSenha() {
         try {

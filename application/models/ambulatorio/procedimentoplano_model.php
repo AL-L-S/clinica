@@ -4655,7 +4655,7 @@ class procedimentoplano_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            $this->db->select('procedimento_percentual_medico_convenio_id');
+            $this->db->select('procedimento_percentual_medico_convenio_id, pmc.valor');
             $this->db->from('tb_procedimento_percentual_medico_convenio pmc');
             $this->db->join('tb_procedimento_percentual_medico pm', 'pm.procedimento_percentual_medico_id = pmc.procedimento_percentual_medico_id');
             $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = pm.procedimento_tuss_id');
@@ -4674,10 +4674,14 @@ class procedimentoplano_model extends Model {
             $percentuais = $this->db->get()->result();
 
             foreach ($percentuais as $value) {
-
-                $this->db->set('valor', str_replace(",", ".", $_POST['valor']));
-                $percentual = $_POST['percentual'];
-                $this->db->set('percentual', $percentual);
+                
+                $str = (int) str_replace(",", ".", $_POST['ajuste_percentual'])/ 100;
+                $conta = $value->valor + ($value->valor * $str);
+                $this->db->set('valor', $conta);
+                
+//                $this->db->set("perc_medico = perc_medico + (perc_medico * {$vlr} / 100)", str_replace(",", ".", $_POST['valor']));
+//                $percentual = $_POST['percentual'];
+//                $this->db->set('percentual', $percentual);
 //                if ($_POST['dia_recebimento'] != '') {
 //                    $this->db->set('dia_recebimento', $_POST['dia_recebimento']);
 //                }

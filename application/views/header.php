@@ -6,10 +6,12 @@ if ($this->session->userdata('autenticado') != true) {
 $chat = $this->session->userdata('chat');
 $geral = $this->session->userdata('geral');
 $ponto = $this->session->userdata('ponto');
+$caixa = $this->session->userdata('caixa');
 $imagem = $this->session->userdata('imagem');
 $estoque = $this->session->userdata('estoque');
 $consulta = $this->session->userdata('consulta');
 $farmacia = $this->session->userdata('farmacia');
+$uso_salas = $this->session->userdata('uso_salas');
 $perfil_id = $this->session->userdata('perfil_id');
 $marketing = $this->session->userdata('marketing');
 $internacao = $this->session->userdata('internacao');
@@ -21,26 +23,34 @@ $relatoriorm = $this->session->userdata('relatoriorm');
 $odontologia = $this->session->userdata('odontologia');
 $laboratorio = $this->session->userdata('laboratorio');
 $faturamento = $this->session->userdata('faturamento');
+$relatorio_rm = $this->session->userdata('relatorio_rm');
 $logo_clinica = $this->session->userdata('logo_clinica');
 $especialidade = $this->session->userdata('especialidade');
+$endereco_toten = $this->session->userdata('endereco_toten');
+$fila_impressao = $this->session->userdata('fila_impressao');
+$relatorio_caixa = $this->session->userdata('relatorio_caixa');
 $centrocirurgico = $this->session->userdata('centrocirurgico');
 $relatorio_ordem = $this->session->userdata('relatorio_ordem');
+$manter_indicacao = $this->session->userdata('manter_indicacao');
 $calendario_layout = $this->session->userdata('calendario_layout');
 $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
+$medico_solicitante = $this->session->userdata('medico_solicitante');
 $orcamento_recepcao = $this->session->userdata('orcamento_recepcao');
 $relatorio_producao = $this->session->userdata('relatorio_producao');
+$relatorio_operadora = $this->session->userdata('relatorio_operadora');
 $relatorios_recepcao = $this->session->userdata('relatorios_recepcao');
 $financeiro_cadastro = $this->session->userdata('financeiro_cadastro');
 $caixa_personalizado = $this->session->userdata('caixa_personalizado');
 $gerente_contasapagar = $this->session->userdata('gerente_contasapagar');
 $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
 $relatorios_clinica_med = $this->session->userdata('relatorios_clinica_med');
+$relatorio_demandagrupo = $this->session->userdata('relatorio_demandagrupo');
 $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
 $gerente_recepcao_top_saude = $this->session->userdata('gerente_recepcao_top_saude');
 $retirar_preco_procedimento = $this->session->userdata('retirar_preco_procedimento');
 $gerente_relatorio_financeiro = $this->session->userdata('gerente_relatorio_financeiro');
 
-//var_dump($gerente_contasapagar); die;
+//var_dump($endereco_toten); die;
 function alerta($valor) {
     echo "<script>alert('$valor');</script>";
 }
@@ -267,7 +277,7 @@ function debug($object) {
                         chatsAbertos.push(operadorDestino);
                         //retorna o historico de mensagens e faz a pagina se atualizar novamente
                         retorna_historico(operadorDestino);
-                        //                        verifica(0, 0,<? // echo $operador_id                                                    ?>);
+                        //                        verifica(0, 0,<? // echo $operador_id                                                     ?>);
                     }
                 }
 
@@ -295,7 +305,7 @@ function debug($object) {
                             jQuery("#janela_" + idJanela + " .corpo_janela_chat .mensagens_chat").animate({scrollTop: 1000000}, '500');
                         }
                     });
-                    //                    verifica(0, 0,<? // echo $operador_id                                                      ?>);
+                    //                    verifica(0, 0,<? // echo $operador_id                                                       ?>);
                 }
 
 <? } ?>
@@ -388,18 +398,26 @@ function debug($object) {
                                     <? if (($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */$perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 15 || $perfil_id == 19) || ( $financeiro_cadastro == 't' && $perfil_id == 13)) {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/pacientes">Cadastro</a></span></ul> 
-                                        
 
-                                        <? if ($perfil_id != 11 && $perfil_id != 4 && $perfil_id != 15) {
+
+                                        <?
+                                        if ($perfil_id != 11 && $perfil_id != 4 && $perfil_id != 15) {
                                             if ($relatorios_clinica_med != 't') {
-                                                ?>
-                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperacaixa">Fila Caixa</a></span></ul>
-                                            <? }
+                                                if ($caixa == 't') {
+                                                    ?>
+                                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperacaixa">Fila Caixa</a></span></ul>
+                                                <?
+                                                }
+                                            }
                                         }
-                                        ?> 
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperasenhas">Senhas</a></span></ul>
+                                        if ($endereco_toten != '') {
+                                            ?> 
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperasenhas">Senhas</a></span></ul>
 
-                                        <? if ($perfil_id != 4 && $perfil_id != 13) { ?>
+                                        <? }
+
+                                        if ($perfil_id != 4 && $perfil_id != 13) {
+                                            ?>
                                             <? if ($calendario == 't') { ?>
                                                 <?
                                                 if ($geral == 't') {
@@ -413,7 +431,8 @@ function debug($object) {
                                                     }
                                                 }
                                                 ?>
-                                                <? if ($relatorios_clinica_med != 't') {
+                                                <?
+                                                if ($relatorios_clinica_med != 't') {
 
                                                     if ($imagem == 't') {
                                                         ?>
@@ -424,7 +443,8 @@ function debug($object) {
                                                     <? } ?>
                                                     <? if ($especialidade == 't') { ?>
                                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaoespecialidadecalendario" target="_blank">Multifuncao Especialidade </a></span></ul> 
-                    <? }
+                    <?
+                    }
                 }
                 ?>
 
@@ -449,37 +469,43 @@ function debug($object) {
             <? }
             ?>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
-                                                                                                                                                                                                                                                                                                                                                                                                                            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/reagendamentogeral">Reagendamento Geral</a></span></ul>-->   
+                                                                                                                                                                                                                                                                                                                                                                                                                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaragendamentomultiempresa">Agendamento Multiempresa</a></span></ul>-->
 
                                             <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
                                                 <? if ($geral == 't') { ?>
                                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendageral">Medico agenda geral</a></span></ul>
                                                 <? } ?>
                                                 <? if ($relatorios_clinica_med != 't') {
-                                                    if ($imagem == 't') { ?>
+                                                    if ($imagem == 't') {
+                                                        ?>
                                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagenda">Medico agenda exame</a></span></ul>
                                                     <? }
                                                     ?>
                                                     <? if ($consulta == 't') { ?>
                                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendaconsulta">Medico agenda consulta</a></span></ul>
-                    <? } ?>
+                                                    <? } ?>
                     <? if ($especialidade == 't') { ?>
                                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/medicoagendaespecialidade">Medico agenda especialidade</a></span></ul>
-                                                    <? }
+                                                    <?
+                                                    }
                                                 }
                                                 ?>    
 
 
 
-                                            <? } if ($relatorios_clinica_med != 't') { ?>
+                                            <? } if ($relatorios_clinica_med != 't') { 
+                                                if ($uso_salas == 't') {
+                                                ?>
                                                 <ul><span class="file"><a target="_blank" href="<?= base_url() ?>ambulatorio/exame/relatoriousosala">Uso de Salas</a></span></ul>
 
-                                                <? if (($perfil_id != 11 && $perfil_id != 12 && $perfil_id != 5 && $perfil_id != 18 && $perfil_id != 6) || $orcamento_recepcao == 't') {
+                                                <?
+                                            }
+                                                if (($perfil_id != 11 && $perfil_id != 12 && $perfil_id != 5 && $perfil_id != 18 && $perfil_id != 6) || $orcamento_recepcao == 't') {
                                                     if ($retirar_preco_procedimento == "t") {
                                                         ?>
                                                         <ul><span class="file"><a target="_blank" href="<?= base_url() ?>ambulatorio/procedimentoplano/orcamento/0">Orçamento</a></span></ul>
-                                                    <?
+                                                        <?
                                                     }
                                                 } else {
                                                     ?>
@@ -494,23 +520,35 @@ function debug($object) {
 
 
                                             if ($perfil_id != 11 && $perfil_id != 2) {
-                                                if ($this->session->userdata('recomendacao_configuravel') != "t")
-                                                    if ($relatorios_clinica_med != 't') { {
+                                                if ($this->session->userdata('recomendacao_configuravel') != "t") {
+                                                    if ($relatorios_clinica_med != 't') {
+                                                        if ($manter_indicacao == 't') {
                                                             ?>
                                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter indica&ccedil;&atilde;o</a></span></ul>
-                                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Indicação</a></span></ul>
-                                                        <? }
+                                                        <? } ?>
+                                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Indicação</a></span></ul>
+                                                    <?
                                                     }
-                                                ?>
-                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/pesquisarfiladeimpressao">Fila de Impressão</a></span></ul>
-                                                <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/pesquisarmedicosolicitante">Editar Medico Solicitante</a></span></ul>
+                                                }
+                                                if ($fila_impressao == 't') {
+                                                    ?>
+                                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/pesquisarfiladeimpressao">Fila de Impressão</a></span></ul>
+                                                <?
+                                                }
+                                                if ($medico_solicitante == 't') {
+                                                    ?>
+                                                    <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/pesquisarmedicosolicitante">Editar Medico Solicitante</a></span></ul>
+
+
+                                                <? } ?>
             <? } ?>
                                         <? } ?>
                                         <? if ($relatorios_clinica_med != 't') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/pesquisaragendatelefonica">Agenda Telefônica</a></span></ul>
         <? } elseif ($perfil_id == 9) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listaresperacaixa">Fila Caixa</a></span></ul>
-        <? }
+        <?
+        }
     }
     ?>
                                 </li>
@@ -521,11 +559,12 @@ function debug($object) {
         <!--                                    <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendaconsultas">Relatorio agenda Consulta</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendafaltou">Relatorio agenda faltas</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoagendaexame">Relatorio agenda Exames</a></span></ul>-->
-        <? if (($perfil_id != 11 && $perfil_id != 12 && $perfil_id != 5 && $perfil_id != 18 && $perfil_id != 6) || $relatorio_ordem == 't') {
-            if ($relatorios_clinica_med != 't') {
-                ?>
+                                        <?
+                                        if (($perfil_id != 11 && $perfil_id != 12 && $perfil_id != 5 && $perfil_id != 18 && $perfil_id != 6) || $relatorio_ordem == 't') {
+                                            if ($relatorios_clinica_med != 't') {
+                                                ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriomedicoordem">Relatorio ordem atendimento</a></span></ul>
-            <?
+                <?
             }
         }
         if ($relatorios_clinica_med != 't') {
@@ -537,7 +576,9 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioretorno">Relatorio Retorno</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioencaminhamento">Relatorio Encaminhamentos</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriorevisao">Relatorio Revisão</a></span></ul>
+                                       <? if ($relatorio_operadora == 't') { ?> 
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioteleoperadora">Relatorio Operadora</a></span></ul>
+                                       <? } ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatorioorcamentos">Relatorio Orçamentos</a></span></ul>
                                         <? if ($relatorios_clinica_med != 't') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacienteduplicado">Relatorio Pacientes Duplicados</a></span></ul>
@@ -545,30 +586,40 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacientecpfvalido">Relatorio Paciente CPF Válido</a></span></ul>
 
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriosituacaoatendimento">Relatorio Situação de Atendimento</a></span></ul>
+                                            <? if ($relatorio_demandagrupo == 't') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/relatoriodemandagrupo">Relatorio de Demanda Grupo</a></span></ul>
 
-                                        <?
+                                            <?
+                                            }
                                         }
                                     }
+                                    if ($relatorio_caixa == 't') {
+                                            ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
+                                            <?
+                                            }
                                     if ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 15) {
                                         if ($relatorios_clinica_med != 't') {
+                                        if ($relatorio_rm == 't') {
                                             ?>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogruporm">Relatorio Rm</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogruporm">Relatorio RM</a></span></ul>
                                             <?
+                                            }
                                         }
                                     }
                                     if (($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 15 ) && $relatorios_recepcao == 't') {
                                         ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriorecepcaomedicoconvenio">Relatorio Medico Convenio</a></span></ul>
-                            <?
-                        }
-                        if (($perfil_id != 9 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 13) && $relatorios_recepcao == 't') {
-                            if ($relatorios_clinica_med != 't') {
-                                ?>
+        <?
+    }
+    if (($perfil_id != 9 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 13) && $relatorios_recepcao == 't') {
+        if ($relatorios_clinica_med != 't') {
+            ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioatendenteconvenio">Relatorio Atendente Convenio</a></span></ul>
-                                        <? }
-                                    }
-                                    ?>    
+        <?
+        }
+    }
+    ?>    
     <!--                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exametemp">Pacientes temporarios</a></span></ul>
     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/localizapaciente">Loacalizar pacientes</a></span></ul>-->
                                 </li>
@@ -580,8 +631,8 @@ function debug($object) {
                             <ul>
                                 <li><span class="folder">Rotinas</span>
 
-                                                                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>-->
-                                    <? if ($sala_de_espera == 't') { ?>
+                                                                                            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/painelrecepcao">Painel recepcao</a></span></ul>-->
+    <? if ($sala_de_espera == 't') { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalasespera">Salas de Espera</a></span></ul>
                                     <? } ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarsalaspreparo">Salas de Preparo</a></span></ul>
@@ -591,12 +642,12 @@ function debug($object) {
                                 </li>
                             </ul>
                         </li>
-<? } ?>
-                            <? if ($imagem == 't' && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 15 || $perfil_id == 19)) { ?>
+                                <? } ?>
+                                <? if ($imagem == 't' && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 15 || $perfil_id == 19)) { ?>
                         <li><span class="folder">Imagem</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 15 || $perfil_id == 19) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 15 || $perfil_id == 19) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedico">Multifuncao Medico</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo">Manter Laudo</a></span></ul>
                                         <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 10) { ?>
@@ -604,7 +655,7 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarrevisor">Manter Revisor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarlaudoantigo">Manter Antigo</a></span></ul>
                                     <? } ?>
-    <? } ?>     
+                                <? } ?>     
                                 </li>
 
                         <?
@@ -613,7 +664,7 @@ function debug($object) {
                                     <li><span class="folder">Relatorios</span>
         <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 7 && $perfil_id != 15) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
-                                        <? } ?>    
+        <? } ?>    
                                     </li>   
                                         <?
                                     }
@@ -630,126 +681,126 @@ function debug($object) {
                                 <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 19) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicoconsulta">Multifuncao Medico</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarconsulta">Manter Consulta</a></span></ul>
-                                        <? if ($perfil_id == 1 || $perfil_id == 10) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 10) { ?>
 
                                         <? } ?>
-                                    <? if ($perfil_id == 1 || $perfil_id == 10 || $perfil_id == 4) { ?>
+                                        <? if ($perfil_id == 1 || $perfil_id == 10 || $perfil_id == 4) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarconsultaantigo">Histórico de Consultas Antigas</a></span></ul>
-        <? } ?>
+                                    <? } ?>
 
-                        <? } ?>
+    <? } ?>
 
                                 </li> 
-    <?
-    if ($relatorio_producao == 't') {
-        ?>
+                        <?
+                        if ($relatorio_producao == 't') {
+                            ?>
                                     <li><span class="folder">Relatorios</span>
-                                        <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
+        <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                         <? } ?>
                                     </li> 
                                     <? } ?>
                             </ul>
                         </li>
-                            <? } ?>
+                                <? } ?>
                             <? if ($especialidade == 't' && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 19)) { ?>
 
 
                         <li><span class="folder">Especialidade</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 19) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 19) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicofisioterapia">Multifuncao Especialidade</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicofisioterapiareagendar">Reagendar</a></span></ul>
-                            <?
-                        }
-                        ?>
+                                    <?
+                                }
+                                ?>
                                 </li>
-    <?
-    if ($relatorio_producao == 't') {
-        ?>
+                        <?
+                        if ($relatorio_producao == 't') {
+                            ?>
                                     <li><span class="folder">Relatorios</span>
-                                        <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
+        <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                         <? } ?>
                                     </li>  
                                     <? } ?>
                             </ul>
                         </li>
-                            <? } ?>
+                                <? } ?>
                             <? if ($odontologia == 't' && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 19)) { ?>
 
 
                         <li><span class="folder">Odontologia</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 19) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 19) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicoodontologia">Multifuncao Especialidade</a></span></ul>
                                         <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicoodontologiareagendar">Reagendar</a></span></ul>-->
-                            <?
-                        }
-                        ?>
+                                    <?
+                                }
+                                ?>
                                 </li>
-    <?
-    if ($relatorio_producao == 't') {
-        ?>
+                        <?
+                        if ($relatorio_producao == 't') {
+                            ?>
                                     <li><span class="folder">Relatorios</span>
                                         <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                         <? } ?>
                                     </li>  
-                                <? } ?>
+                                    <? } ?>
                             </ul>
                         </li>
-                                <? } ?>
-                                <? if ($laboratorio == 't' && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 19)) { ?>
+                            <? } ?>
+                            <? if ($laboratorio == 't' && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 19)) { ?>
                         <li><span class="folder">Laboratorial</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 15 || $perfil_id == 19) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 7 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 15 || $perfil_id == 19) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicolaboratorial">Multifuncao Laboratorial</a></span></ul>
-                            <?
-                        }
-                        ?>
+                                    <?
+                                }
+                                ?>
                                 </li>
-    <?
-    if ($relatorio_producao == 't') {
-        ?>
+                        <?
+                        if ($relatorio_producao == 't') {
+                            ?>
                                     <li><span class="folder">Relatorios</span>
-                                        <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
+        <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                         <? } ?>
                                     </li>
                                     <? } ?>
                             </ul>
                         </li>
-                            <? } ?>
+                                <? } ?>
                             <? if ($geral == 't' && ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 10 || $perfil_id == 19)) { ?>
 
 
                         <li><span class="folder">Geral</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-                                <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 19) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 19) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicogeral">Multifuncao Geral</a></span></ul>
                                         <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicofisioterapiareagendar">Reagendar</a></span></ul>-->
-                            <?
-                        }
-                        ?>
+                                    <?
+                                }
+                                ?>
                                 </li> 
-    <?
-    if ($relatorio_producao == 't') {
-        ?>
+                        <?
+                        if ($relatorio_producao == 't') {
+                            ?>
                                     <li><span class="folder">Relatorios</span>
-                                        <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
+        <? if ($perfil_id != 9 && $perfil_id != 7 && $perfil_id != 2 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 15) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenio">Relatorio de Produ&ccedil;&atilde;o</a></span></ul>
                                         <? } ?>    
                                     </li> 
-    <? } ?>   
+                                    <? } ?>   
                             </ul>
                         </li>
-                                <? } ?>
-                                <? if ($faturamento == 't' && ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16) || ($gerente_relatorio_financeiro == 't' && ($perfil_id == 18 || $perfil_id == 5))) { ?>
+<? } ?>
+<? if ($faturamento == 't' && ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16) || ($gerente_relatorio_financeiro == 't' && ($perfil_id == 18 || $perfil_id == 5))) { ?>
 
 
                         <li><span class="folder">Faturamento</span>
@@ -757,13 +808,13 @@ function debug($object) {
                                 <li><span class="folder">Rotinas</span>
                                     <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentoexame">Faturar</a></span></ul>
-        <? if ($perfil_id != 10) { ?>
+                                        <? if ($perfil_id != 10) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentomanual">Faturaramento Manual</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/faturamentoexamexml">Gerar xml</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/faturamentolaudoxml">Gerar xml Laudo</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriovalorprocedimento">Ajustar Valores</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/ajustarvalorprocedimentocbhpm">Ajustar Valores CBHPM</a></span></ul>   
-                                        <? } ?>
+        <? } ?>
 
                                     <? } ?>
                                 </li>
@@ -797,15 +848,15 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexamesala">Relatorio Consolidado por sala</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioconveniovalor">Relatorio Convenio atendimento/consultas valor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocomparativomensal">Relatorio Comparativo Mensal</a></span></ul>
-                                        <? } ?>
+        <? } ?>
 
 
-    <? } ?>
+                                    <? } ?>
                                 </li> 
                             </ul>
                         </li>
-                                <? } ?>
-<? if ($estoque == 't') { ?>
+<? } ?>
+                                <? if ($estoque == 't') { ?>
 
 
                         <li><span class="folder">Estoque</span>
@@ -867,7 +918,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>farmacia/entrada/relatoriofornecedores">Relatorio Fornecedores</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/operadorsetor">Listar Operadores</a></span></ul>
                                     </li> 
-                                    <? } ?>
+    <? } ?>
                             </ul>
                         </li>
                                 <? } ?>
@@ -878,15 +929,15 @@ function debug($object) {
                         <li><span class="folder">Financeiro</span>
                             <ul>
                                 <li><span class="folder">Rotinas</span>
-    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa">Manter Entrada</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/pesquisar2">Manter Saida</a></span></ul>
-                                    <? }
-                                    ?>    
+    <? }
+    ?>    
                                     <?
 //                                    var_dump($gerente_contasapagar); die;
                                     ?>
-                                    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || ($perfil_id == 5 && $gerente_contasapagar == 't')) { ?>
+    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10 || ($perfil_id == 5 && $gerente_contasapagar == 't')) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/contaspagar">Manter Contas a pagar</a></span></ul>
                                     <? }
                                     ?> 
@@ -900,9 +951,9 @@ function debug($object) {
     ?>    
                                 </li> 
                                 <li><span class="folder">Relatorios</span>
-                                    <?
-                                    if ($perfil_id == 1 || $perfil_id == 13 || ($gerente_relatorio_financeiro == 'f' && $perfil_id == 18) || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17) {
-                                        ?>
+    <?
+    if ($perfil_id == 1 || $perfil_id == 13 || ($gerente_relatorio_financeiro == 'f' && $perfil_id == 18) || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17) {
+        ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaida">Relatorio Saida</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaidagrupo">Relatorio Saida Tipo</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatoriosaidaclasse">Relatorio Saida Classe</a></span></ul>
@@ -915,17 +966,17 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorionotafiscal">Relatorio Nota</a></span></ul>
 
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/caixa/relatorioacompanhamentodecontas">Relatorio Acompanhamento de contas</a></span></ul>
-                                        <?
-                                    }
-                                    if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || ($gerente_recepcao_top_saude == 't' && $perfil_id == 5)) {
-                                        ?>
+        <?
+    }
+    if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || ($gerente_recepcao_top_saude == 't' && $perfil_id == 5)) {
+        ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioresumogeral">Relatorio Resumo</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocredito">Relatorio Crédito Paciente</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocreditosaldo">Relatorio Crédito Saldo</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocreditoestorno">Relatorio Crédito Estorno</a></span></ul>
-        <? if ($caixa_personalizado == 'f') { ?>
+                                        <? if ($caixa_personalizado == 'f') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
-                                            <? if (($gerente_relatorio_financeiro == 'f' && $perfil_id == 18) || $perfil_id != 18) { ?>
+            <? if (($gerente_relatorio_financeiro == 'f' && $perfil_id == 18) || $perfil_id != 18) { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixapersonalizado">Relatorio Caixa Personalizado</a></span></ul>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixafaturado">Relatorio Caixa Faturamento</a></span></ul>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixacartao">Relatorio Caixa Cartao</a></span></ul>
@@ -939,7 +990,7 @@ function debug($object) {
                                             ?>
                                             <!-- O rel. de caixa faturamento não foi adicionado no padrão do personalizado pq ele possui as mesmas informações do rel. caixa personalizado-->
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixapersonalizado">Relatorio Caixa</a></span></ul>
-                                        <? } ?>
+        <? } ?>
 
                                         <? if ($this->session->userdata('recomendacao_configuravel') != "t" && ($gerente_relatorio_financeiro == 'f' && $perfil_id == 18)) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacao">Relatorio Indicacao Cadastro</a></span></ul>
@@ -953,26 +1004,26 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconveniofinanceiro">Relatorio Produção Médica</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacaoexames">Relatorio Produção Promotor</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriolaboratorioconveniofinanceiro">Relatorio Produção Terceirizado</a></span></ul>
-        <?
-    }
-    ?>
-                        <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || ($gerente_recepcao_top_saude == 't' && $perfil_id == 5)) {
-                            ?>
-                            <? if ($caixa_personalizado == 'f') { ?>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenioprevisaofinanceiro">Relatorio Previs&atilde;o M&eacute;dica</a></span></ul>
-            <? if (($gerente_relatorio_financeiro == 'f' && $perfil_id == 18) || ($perfil_id != 18 && $perfil_id != 5)) { ?>
-                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoatendimentomensal">Relatorio Atendimento Mensal</a></span></ul>
-            <? } ?>
-                                            <?
-                                        }
+                                        <?
                                     }
                                     ?>
+    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 18 || $perfil_id == 10 || $perfil_id == 16 || $perfil_id == 17 || ($gerente_recepcao_top_saude == 't' && $perfil_id == 5)) {
+        ?>
+                            <? if ($caixa_personalizado == 'f') { ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoconvenioprevisaofinanceiro">Relatorio Previs&atilde;o M&eacute;dica</a></span></ul>
+                                <? if (($gerente_relatorio_financeiro == 'f' && $perfil_id == 18) || ($perfil_id != 18 && $perfil_id != 5)) { ?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriomedicoatendimentomensal">Relatorio Atendimento Mensal</a></span></ul>
+            <? } ?>
+            <?
+        }
+    }
+    ?>
                                 </li> 
 
                             </ul>
                         </li>
 <? } ?>
-                                <? if ($marketing == 't' && ($perfil_id == 1 || $perfil_id == 14)) { ?>
+<? if ($marketing == 't' && ($perfil_id == 1 || $perfil_id == 14)) { ?>
 
 
                         <li><span class="folder">Marketing</span>
@@ -1032,10 +1083,10 @@ function debug($object) {
                         </li>
 
 
-                                <?
-                            }
-                            if ($centrocirurgico == 't' && ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7 && $perfil_id != 15)) {
-                                ?>
+    <?
+}
+if ($centrocirurgico == 't' && ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7 && $perfil_id != 15)) {
+    ?>
                         <li><span class="folder">Centro Cirurgico</span>
                             <ul>
 
@@ -1051,13 +1102,13 @@ function debug($object) {
                                 <li><span class="folder">Relatorios</span></li>
                             </ul>
                         </li>
-                                <?
-                            }
-                            if ($relatoriorm == 't' && ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 3)) {
-                                ?>
+    <?
+}
+if ($relatoriorm == 't' && ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 3)) {
+    ?>
                         <li><span class="folder">Relatorios (RM)</span>
                             <ul>
-    <? if ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 3) { ?>
+                        <? if ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 3) { ?>
                                     <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogruporm">Relatorio Caixa</a></span></ul>
         <?
     }
@@ -1097,12 +1148,12 @@ function debug($object) {
                                 </li>
                             </ul>
                         </li>
-<? } ?>
+                                <? } ?>
                                 <? if ($perfil_id != 4 && $perfil_id != 16 && $perfil_id != 17) { ?>
                         <li><span class="folder">Configura&ccedil;&atilde;o</span>
                             <ul>
                                 <li><span class="folder">Recep&ccedil;&atilde;o</span>
-                                    <? if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 10) { ?>
+    <? if ($perfil_id == 1 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 10) { ?>
 
                                         <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador">Listar Profissionais</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupomedico">Grupo Médico</a></span></ul>
@@ -1110,16 +1161,16 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/tipoconsulta">Tipo Agenda</a></span></ul>
                                         <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/horario">Manter Horarios</a></span></ul>-->
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
-        <? if ($this->session->userdata('recomendacao_configuravel') == "t") { ?>
+                                        <? if ($this->session->userdata('recomendacao_configuravel') == "t") { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter Promotor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Promotor</a></span></ul>
-        <? } ?>
+                                        <? } ?>
 
-                                                                                                <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>-->
-                                    <? } ?>
-                                    <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 13 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) { ?>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/sala">Manter Salas</a></span></ul>
+                                                                                                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame">Agenda Manter</a></span></ul>-->
     <? } ?>
+    <? if ($perfil_id != 9 && $perfil_id != 2 && $perfil_id != 13 && $perfil_id != 11 && $perfil_id != 12 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) { ?>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/sala">Manter Salas</a></span></ul>
+                                    <? } ?>
     <? if ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 13 && $perfil_id != 4 && $perfil_id != 7 && $perfil_id != 15) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelodeclaracao">Modelo Declara&ccedil;&atilde;o</a></span></ul>
     <? } ?>
@@ -1144,50 +1195,50 @@ function debug($object) {
         if ($procedimento_multiempresa != 't') {
             ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano">Manter Procedimentos Convenio</a></span></ul>
-        <? } else { ?>
+                                        <? } else { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/pesquisar2">Manter Procedimentos Convenio</a></span></ul>
-                                            <?
-                                        }
-                                        if ($perfil_id != 10) {
-                                            ?> 
+            <?
+        }
+        if ($perfil_id != 10) {
+            ?> 
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimento/relatorioprocedimentoconvenio">Relatorio Procedimentos Convenio</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/medicopercentual">Manter Percentual M&eacute;dico</a></span></ul>
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/procedimentopercentual">Manter Percentual M&eacute;dico</a></span></ul>-->
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/promotorpercentual">Manter Percentual Promotor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/laboratoriopercentual">Manter Percentual Terceirizado</a></span></ul>
-            <? if ($subgrupo_procedimento != 't') { ?>
+                                            <? if ($subgrupo_procedimento != 't') { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao">Manter Grupo Classificação</a></span></ul>
-                                            <? } else { ?>
+            <? } else { ?>
                                                 <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarsubgrupo">Manter Subgrupo</a></span></ul>-->
                                                 <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/grupoclassificacao/pesquisarassociacaosubgrupo">Manter Associação Subgrupo</a></span></ul>-->
-                                            <?
-                                        }
-                                    }
-                                }
-                                ?>
+                <?
+            }
+        }
+    }
+    ?>
                                 </li>
                                 <li><span class="folder">M. Trabalho</span>                    
-                                    <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10) { ?>
+                                <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10) { ?>
 
 
 
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarsetor">Manter Setor</a></span></ul>                                        
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarfuncao">Manter Função</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarrisco">Manter Riscos OE.</a></span></ul>
-                                      
-           
-                                          
-                              <?  } ?>
-                                
+
+
+
+                                    <? } ?>
+
                                 </li>
     <? if ($imagem == 't') { ?>
                                     <li><span class="folder">Imagem</span> 
-                                        <? if ($perfil_id == 1 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 10) { ?>
+        <? if ($perfil_id == 1 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 10) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelolaudo">Manter Modelo Laudo</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelolinha">Manter Modelo Linha</a></span></ul>
                                     <? } ?>
                                     </li>
-    <? } ?>
+                                <? } ?>
     <? if ($centrocirurgico == 't' && ($perfil_id != 11 && $perfil_id != 2 && $perfil_id != 7 && $perfil_id != 15)) { ?>
                                     <li><span class="folder">Centro Cirurgico</span> 
         <? if ($perfil_id == 1 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 10) { ?>
@@ -1198,8 +1249,8 @@ function debug($object) {
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/procedimentoplano/agrupador">Manter Agrupador</a></span></ul>-->
                                     <? } ?>
                                     </li>
-                                    <? } ?>
-    <? if ($internacao == 't') { ?>
+                                <? } ?>
+                                    <? if ($internacao == 't') { ?>
                                     <li><span class="folder">Internação</span>
                                         <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarunidade">Listar Unidades</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarenfermaria">Lista Enfermarias</a></span></ul>
@@ -1210,9 +1261,9 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarinternacaoconfig">Manter Impressões</a></span></ul>
                                     </li>
                                 <? } ?>
-                                    <? if ($consulta == 't') { ?>
+                                <? if ($consulta == 't') { ?>
                                     <li><span class="folder">Consulta</span> 
-        <? if ($perfil_id == 1 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 10) { ?>
+                                        <? if ($perfil_id == 1 || $perfil_id == 3 || /* $perfil_id == 4 || */ $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 10) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloreceita">Manter Modelo Receita</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloatestado">Manter Modelo Atestado</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloreceitaespecial">Manter Modelo R. Especial</a></span></ul>
@@ -1220,12 +1271,12 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelomedicamento">Manter Medicamento</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelomedicamento/pesquisarunidade">Manter Medicamento Unidade</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelooftamologia">Manter Campos Oftamologia</a></span></ul>
-                                        <? } ?>
+        <? } ?>
                                     </li>
-                                <? } ?>
+                                    <? } ?>
                                 <? if ($estoque == 't') { ?>
                                     <li><span class="folder">Estoque</span>
-        <? if ($perfil_id == 1 || $perfil_id == 8) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 8) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/menu">Manter Menu</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/tipo">Manter Tipo</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/classe">Manter Classe</a></span></ul>
@@ -1234,9 +1285,9 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/armazem">Manter Armazem</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/cliente">Manter Setor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>seguranca/operador/operadorsetor">Listar Operadores</a></span></ul>
-                                        <? } ?>
+                                    <? } ?>
                                     </li> 
-    <? } ?>
+                                    <? } ?>
     <? if ($farmacia == 't') { ?>
 
                                     <li><span class="folder">Farmácia</span>
@@ -1245,10 +1296,10 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>farmacia/subclasse">Manter Sub-Classe</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>farmacia/unidade">Manter Medida</a></span></ul>
                                     </li>
-                                <? } ?>
-                                <? if ($financeiro == 't') { ?>
+                                    <? } ?>
+                                    <? if ($financeiro == 't') { ?>
                                     <li><span class="folder">Financeiro</span>
-                                        <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
+                                    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/tipo">Manter Tipo</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>cadastros/classe">Manter Classe</a></span></ul>
                 <!--                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/subclasse">Manter Sub-Classe</a></span></ul>-->
@@ -1261,9 +1312,9 @@ function debug($object) {
         <? } ?>
                                     </li> 
     <? } ?>
-                                    <? if ($perfil_id == 1) { ?>
+    <? if ($perfil_id == 1) { ?>
                                     <li><span class="folder">Impressão</span>
-                                    <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
+                                        <? if ($perfil_id == 1 || $perfil_id == 13 || $perfil_id == 10) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarcabecalho">Config.Cabeçalho</a></span></ul>
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarcabecalho">Config.Recibo</a></span></ul>-->
                 <!--                                <ul><span class="file"><a href="<?= base_url() ?>cadastros/subclasse">Manter Sub-Classe</a></span></ul>-->
@@ -1272,15 +1323,15 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarorcamentoconfig">Config.Orçamento</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarreciboconfig">Config.Recibo</a></span></ul>
 
-            <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarencaminhamentoconfig">Msg Encaminhamento</a></span></ul>-->
-               <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Config.Cabeçalho</a></span></ul>-->
+                        <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarencaminhamentoconfig">Msg Encaminhamento</a></span></ul>-->
+                           <!--<ul><span class="file"><a href="<?= base_url() ?>cadastros/formapagamento/grupospagamento">Config.Cabeçalho</a></span></ul>-->
 
 
-        <? } ?>
+                                        <? } ?>
                                     </li> 
-                        <? } ?>
+    <? } ?>
                                 <li><span class="folder">Administrativas</span>
-    <? if ($perfil_id == 1) { ?>
+                        <? if ($perfil_id == 1) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/pesquisarferiados">Manter Feriados</a></span></ul>
         <? if ($perfil_id == 1) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/pesquisarlembrete">Manter Lembretes</a></span></ul>
@@ -1519,7 +1570,7 @@ function debug($object) {
                 //atualiza status do operador
                 //                setInterval(function () {
                 //                    atualizastatus();
-                //                    verifica(0, 0,<? // echo $operador_id                                      ?>);
+                //                    verifica(0, 0,<? // echo $operador_id                                       ?>);
                 //                }, 10000);
 
                 buscamensagens();

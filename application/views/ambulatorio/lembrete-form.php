@@ -7,18 +7,33 @@
                     <table>
                         <tr>
                             <td>
-                                <label style="font-size: 10pt; color: black">Operador</label>
+                                <label style="font-size: 10pt; color: black">Perfil</label>
                             </td>
                             <td>
-                                <select name="operador_id" id="operador_id" class="size2" required="">
-                                    <option value='' >Selecione</option>
+                                <select name="perfil_id[]" id="perfil_id" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Perfis..." multiple required="">
+                                    
                                     <option value='TODOS'>TODOS</option>
-                                <? foreach ($operadores as $value) : ?>
-                                    <option value="<?= $value->operador_id; ?>" 
-                                        <? // if (@$_GET['operador_id'] == $value->operador_id) echo 'selected' ?>>
+                                <? foreach ($perfil as $value) : ?>
+                                    <option value="<?= $value->perfil_id; ?>" 
+                                        <? // if (@$_GET['perfil_id'] == $value->perfil_id) echo 'selected' ?>>
                                             <?php echo $value->nome; ?>
                                     </option>
                                 <? endforeach; ?>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label style="font-size: 10pt; color: black">Operador</label>
+                            </td>
+                            <td>
+                                <select name="operador_id[]" id="operador_id" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Operadores..." multiple required="">
+                                  <? foreach ($operadores as $value) : ?>
+                                    <option value="<?= $value->operador_id; ?>" 
+                                        <? // if (@$_GET['perfil_id'] == $value->perfil_id) echo 'selected' ?>>
+                                            <?php echo $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?> 
                                 </select>
                             </td>
                         </tr>
@@ -44,7 +59,10 @@
         </div>
     <!--</div>-->
 </div> <!-- Final da DIV content -->
-
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
     $('#rev').change(function () {
@@ -115,5 +133,63 @@
             }
         });
     });
+//    
+//    <? // if (@$config->funcao != '') { ?>
+//
+//                        var funcao = <?= @$config->funcao ?>;
+//                        carregarFuncaoAtualizar();
+//<? // } else { ?>
+//                        var funcao = '';
+//<? // }
+?>//
+//                    function carregarFuncaoAtualizar() {
+////                                console.log(j);
+//                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: $('#setor').val(), empresa: $('#convenio1').val()}, function (j) {
+//                            options = '<option value=""></option>';
+//                            for (var c = 0; c < j.length; c++) {
+//                                if (funcao == j[c].funcao_id) {
+//                                    options += '<option selected value="' + j[c].funcao_id + '">' + j[c].descricao_funcao + '</option>';
+//                                } else {
+//                                    options += '<option value="' + j[c].funcao_id + '">' + j[c].descricao_funcao + '</option>';
+//                                }
+//
+//                            }
+//
+//
+//                            $('#funcao option').remove();
+//                            $('#funcao').append(options);
+//                            $("#funcao").trigger("chosen:updated");
+//                            $('.carregando').hide();
+//                        });
+//                    }
+
+
+                    $(function () {
+                        $('#perfil_id').change(function () {
+
+//                            $('.carregando').show();
+//                            alert('asdsd');
+                            $.getJSON('<?= base_url() ?>autocomplete/perfiloperador', {perfil_id: $(this).val()}, function (j) {
+                                options = '<option value=""></option>';
+                                console.log(j);
+                                for (var c = 0; c < j.length; c++) {
+                                    if (operador_id == j[c].operador_id) {
+                                        options += '<option selected value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+                                    } else {
+                                        options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+                                    }
+
+                                }
+
+
+                                $('#operador_id option').remove();
+                                $('#operador_id').append(options);
+                                $("#operador_id").trigger("chosen:updated");
+                                $('.carregando').hide();
+                            });
+
+                        });
+                    });
+                    
 
 </script>

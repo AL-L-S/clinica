@@ -483,6 +483,19 @@
                                             <td><input type="checkbox" id="encaminhamento_email" name="encaminhamento_email" <? if (@$obj->_encaminhamento_email == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, quando encaminhar um paciente será disparado um email para o médico que recebe (Padrão Citycor).">Encaminhamento Email</label></td>
                                             <td><input type="checkbox" id="relatorio_ordem" name="relatorio_ordem" <? if (@$obj->_relatorio_ordem == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o relatório de ordem de atendimento aparece">Relatório Ordem de Atendimento</label></td>
                                         </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="manter_indicacao" name="manter_indicacao" <? if (@$obj->_manter_indicacao == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o Manter Indicação vai ser ativado na Recepção">Manter Indicação</label></td>
+                                            <td><input type="checkbox" id="fila_impressao" name="fila_impressao" <? if (@$obj->_fila_impressao == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o Fila Impressão vai ser ativado na Recepção">Fila de Impressão</label></td>
+                                            <td><input type="checkbox" id="medico_solicitante" name="medico_solicitante" <? if (@$obj->_medico_solicitante == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a opção de Editar Médico Solicitante vai ser ativada na Recepção">Editar Médico Solicitante</label></td>
+                                            <td><input type="checkbox" id="uso_salas" name="uso_salas" <? if (@$obj->_uso_salas == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a opção de Uso de Salas vai ser ativada na Recepção">Uso de Salas</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="relatorio_operadora" name="relatorio_operadora" <? if (@$obj->_relatorio_operadora == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a opção de Relatório Operadora vai ser ativada na Recepção">Relatório Operadora</label></td>
+                                            <td><input type="checkbox" id="relatorio_demandagrupo" name="relatorio_demandagrupo" <? if (@$obj->_relatorio_demandagrupo == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a opção de Relatório de Demanda Grupo vai ser ativada na Recepção">Relatório de Demanda Grupo</label></td>
+                                            <td><input type="checkbox" id="relatorio_rm" name="relatorio_rm" <? if (@$obj->_relatorio_rm == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a opção de Relatório RM vai ser ativada na Recepção">Relatório RM</label></td>
+                                            <td><input type="checkbox" id="relatorio_caixa" name="relatorio_caixa" <? if (@$obj->_relatorio_caixa == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a opção de Relatório Caixa vai ser ativada na Recepção">Relatório Caixa</label></td>
+                                            
+                                        </tr>
                                     </table>
                                 </fieldset>
                                 <br><br><br>
@@ -535,241 +548,6 @@
                                 </fieldset>
                                 <br><br><br>
 
-
-                                <!--                            <dt>
-                                                                <label title="Ativando essa flag, o cpf fica obrigatório no cadastro">CPF Obrigatório (Paciente)</label>
-                                                            </dt>
-                                                            <dd>
-                                                                <input type="checkbox" id="cpf_obrigatorio" name="cpf_obrigatorio" <? // if (@$obj->_cpf_obrigatorio == 't') echo "checked";   ?>/> 
-                                                            </dd>-->
-
-
-
-                            </fieldset>
-                            <br><br><br>
-                            <fieldset>
-                                <legend><b><u>Configurações Recepção</u></b></legend><br>
-                                <table align="center" style="width:100%">
-                                    <tr>
-                                        <td><input type="checkbox" id="calendario" name="calendario" <? if (@$obj->_calendario == 't') echo "checked"; ?>/></td><td><label title="Habilitar Calendario.">Calendario</label></td>                                                                               
-                                        <td><input type="checkbox" id="conjuge" name="conjuge" <? if (@$obj->_conjuge == 't') echo "checked"; ?>/></td><td><label title="Nome do cônjuge e data de nascimento do mesmo">Nome do cônjuge</label></td>                                                                               
-                                        <td><input type="checkbox" id="gerente_cancelar" name="gerente_cancelar_sala" <? if (@$obj->_gerente_cancelar_sala == 't') echo "checked"; ?>/></td><td><label title="Ao ativar essa flag o gerente de recepção consegue cancelar na sala de espera independente de outra flag">Gerente Cancelar Sala de Espera</label></td>                                                                               
-                                        <td><input type="checkbox" id="gerente_recepcao_top_saude" name="gerente_recepcao_top_saude" <? if (@$obj->_gerente_recepcao_top_saude == 't') echo "checked"; ?>/></td><td><label title="Ao ativar essa flag o gerente de recepção tem acesso a alguns relatórios do Financeiro a pedido da Top Saude">Gerente de Recepção Relatórios Financeiro (Top Saúde)</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" id="gerente_cancelar" name="autorizar_sala_espera" <? if (@$obj->_autorizar_sala_espera == 't') echo "checked"; ?>/></td><td><label title="Ao ativar essa flag o paciente passa para sala de espera ao ser autorizado">Sala de Espera</label></td>
-                                        <td><input type="checkbox" id="gerente_cancelar" name="gerente_cancelar" <? if (@$obj->_gerente_cancelar == 't') echo "checked"; ?>/></td><td><label title="Ao ativar essa flag o Gerente de Recepção e perfil Recepção conseguem cancelar na recepção">Recepção Cancelar (Gerente e Recepção)</label></td>
-                                        <td><input type="checkbox" id="chamar_consulta" name="chamar_consulta" <? if (@$obj->_chamar_consulta == 't') echo "checked"; ?>/></td><td><label title="Chamar Consulta.">Chamar Consulta na sala de espera</label></td>
-                                        <td><input type="checkbox" id="procedimento_excecao" name="ordem_chegada" <? if (@$obj->_ordem_chegada == 't') echo "checked"; ?>/></td><td><label title="Ordem de chegada na sala de espera">Ordem de Chegada</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" id="cancelar_sala_espera" name="cancelar_sala_espera" <? if (@$obj->_cancelar_sala_espera == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o botão de cancelar na sala de espera irá aparecer.">Cancelar Sala de Espera</label></td>
-                                        <td><input type="checkbox" id="administrador_cancelar" name="administrador_cancelar" <? if (@$obj->_administrador_cancelar == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o administrador TOTAL pode cancelar na sala de espera.">Administrador cancelar na sala de espera</label></td>
-                                        <td><input type="checkbox" id="gerente_contasapagar" name="gerente_contasapagar" <? if (@$obj->_gerente_contasapagar == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a gerente de recepção consegue lançar despesas no contas a pagar">Gerente de Recepção Contas a Pagar</label></td>
-                                        <td><input type="checkbox" id="orcamento_recepcao" name="orcamento_recepcao" <? if (@$obj->_orcamento_recepcao == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o preço procedimento aparece para a Recepção">Perfis da recepção Preço Procedimento</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" id="gerente_recepcao_financeiro" name="gerente_relatorio_financeiro" <? if (@$obj->_gerente_relatorio_financeiro == 't') echo "checked"; ?>/></td><td><label title="Ativando essa opção o Gerente de Recepção irá ter acesso á alguns relatórios do financeiro e do faturamento">Gerente de Recepção Rel. Financeiro</label></td>
-                                        <td><input type="checkbox" id="relatorios_recepcao" name="relatorios_recepcao" <? if (@$obj->_relatorios_recepcao == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, os relatórios aparecem para recepção e recepção agendamento">Relatórios para recepção</label></td>
-                                        <td><input type="checkbox" id="tecnica_enviar" name="tecnica_enviar" <? if (@$obj->_tecnica_enviar == 't') echo "checked"; ?>/></td><td><label title="A técnica irá poder chamar na tela de atendimento">Técnica Chamar</label></td>
-                                        <td></td><td></td>
-                                    </tr>
-                                </table>
-                            </fieldset>
-                            <br><br><br>
-                            <fieldset>
-                                <legend><b><u>Configurações do Financeiro</u></b></legend><br>
-                                <table align="center" style="width:100%">
-                                    <tr>
-                                        <td><input type="checkbox" id="calendario" name="botao_faturar_proc" <? if (@$obj->_botao_faturar_proc == 't') echo "checked"; ?>/></td><td><label title="Aparecer o botão de faturar procedimento no cadastro.">Botão Faturar Procedimentos</label></td>                                                                                
-                                        <td><input type="checkbox" id="calendario" name="botao_faturar_guia" <? if (@$obj->_botao_faturar_guia == 't') echo "checked"; ?>/></td><td><label title="Aparecer  o botão de faturar guia no cadastro.">Botão Faturar Guia</label></td>                                                                                
-                                        <td><input type="checkbox" id="producao_medica_saida" name="producao_medica_saida" <? if (@$obj->_producao_medica_saida == 't') echo "checked"; ?>/></td><td><label title="Ao fechar a produção médica, os valores ja irão cair como saida no Financeiro.">Produção Médica ir direto para Saida</label></td>                                                                                
-                                        <td><input type="checkbox" id="financeiro_cadastro" name="financeiro_cadastro" <? if (@$obj->_financeiro_cadastro == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o financeiro tem acesso ao Fila Caixa e ao cadastro de pacientes">Financeiro Cadastro Paciente (Faturar)</label></td>                                                                                
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" id="fila_caixa" name="fila_caixa" <? if (@$obj->_caixa == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a fila de caixa vai ser ativada.">Fila de Caixa</label></td>
-                                        <td><input type="checkbox" id="excluir_transferencia" name="excluir_transferencia" <? if (@$obj->_excluir_transferencia == 't') echo "checked"; ?>/></td><td><label title="Excluir Transferência">Excluir Transferência (Financeiro)</label></td>
-                                        <td><input type="checkbox" id="associa_credito_procedimento" name="associa_credito_procedimento" <? if (@$obj->_associa_credito_procedimento == 't') echo "checked"; ?>/></td><td><label title="Desativando essa flag, na tela de crédito o usuário irá informar apenas o valor do crédito (sem travar o crédito ao valor de procedimentos).">Crédito associado a procedimentos</label></td>
-                                        <td><input type="checkbox" id="credito" name="credito" <? if (@$obj->_credito == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o crédito irá aparecer no sistema.">Aparecer Crédito</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" id="promotor_medico" name="promotor_medico" <? if (@$obj->_promotor_medico == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o valor do promotor vai ser descontado do médico.">Tirar Valor Promotor do médico</label></td>
-                                        <td><input type="checkbox" id="valor_recibo_guia" name="valor_recibo_guia" <? if (@$obj->_valor_recibo_guia == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o valor do recibo sera o da Guia.">Valor do Recibo é o da guia</label></td>
-                                        <td><input type="checkbox" id="odontologia_valor_alterar" name="odontologia_valor_alterar" <? if (@$obj->_odontologia_valor_alterar == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, valor da odontologia poderá ser alterado ao lançar.">Valor da Odontologia Alterável</label></td>
-                                        <td><input type="checkbox" id="valor_autorizar" name="valor_autorizar" <? if (@$obj->_valor_autorizar == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o valor aparece ao autorizar procedimentos.">Valor aparece ao autorizar procedimentos</label></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox" id="valor_laboratorio" name="valor_laboratorio" <? if (@$obj->_valor_laboratorio == 't') echo "checked"; ?>/></td><td><label title="O valor do laboratório é retirado antes do valor do médico no relatório de produção médica">Valor do Laboratório (Produção médica)</label></td>
-                                        <td><input type="checkbox" id="valor_convenio_nao" name="valor_convenio_nao" <? if (@$obj->_valor_convenio_nao == 't') echo "checked"; ?>/></td><td><label title="No lançamento de procedimentos não aparece o valor de procedimentos não particulares.">Valor Convenio não aparecer</label></td>
-                                        <td><input type="checkbox" id="desativar_taxa_administracao" name="desativar_taxa_administracao" <? if (@$obj->_desativar_taxa_administracao == 't') echo "checked"; ?>/></td><td><label title="Ativando essa opção, irá sumir a taxa de administração.">Desativar Taxa Administração</label></td>
-                                        <td><input type="checkbox" id="orcamento_cadastro" name="orcamento_cadastro" <? if (@$obj->_orcamento_cadastro == 't') echo "checked"; ?>/></td><td><label title="Ativando essa opção irá necessitar de cadastro e logicamente, desativando não irá necessitar">Orçamento com cadastro</label></td>
-                                    </tr>
-                                </table>
-                            </fieldset>
-                            <br><br><br>
-                        
-                            
-                            <dt>
-                                <label title="Procedimentos separados por empresa.">Proc. Multiempresa</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="procedimentos_multiempresa" name="procedimentos_multiempresa" <? if (@$obj->_procedimento_multiempresa == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Data manual na produção médica .">Data Manual Produção M.</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="data_contaspagar" name="data_contaspagar" <? if (@$obj->_data_contaspagar == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Médico pode pesquisar por outros médicos no Laudo Digitador .">Medico Laudo Digitador.</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="data_contaspagar" name="medico_laudodigitador" <? if (@$obj->_medico_laudodigitador == 't') echo "checked"; ?>/> 
-                            </dd>
-
-                            <dt>
-                                <label title="Ao asssociar procedimentos aos médicos (CONFIGURAÇÕES - RECEPÇÃO - LISTAR PROFISSIONAIS - CONVÊNIO), estes serão tratados como exceção.">Cadastrar procedimentos como exceção.</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="procedimento_excecao" name="procedimento_excecao" <? if (@$obj->_procedimento_excecao == 't') echo "checked"; ?>/> 
-                            </dd>
-                            
-                            
-                            <dt>
-                                <label title="Ativando essa flag, ao adcionar ou autorizar um(a) novo(a) exame/consulta o campo recomendação é obrigatorio.">Tornar a recomendação Obrigatorio.</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="recomendacao_obrigatorio" name="recomendacao_obrigatorio" <? if (@$obj->_recomendacao_obrigatorio == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Ativando essa flag, o manter indicação irá aparecer nas configurações.">Botão de reativar sala.</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="botao_ativar_sala" name="botao_ativar_sala" <? if (@$obj->_botao_ativar_sala == 't') echo "checked"; ?>/> 
-                            </dd>
-                           
-                            <dt>
-                                <label title="Ativando essa flag, quando o sistema encontrar um procedimento com retorno no sistema, ele irá perguntar se a pessoa deseja associar, se sim, ele irá automáticamente selecionar o procedimento
-                                       Caso isso não esteja ativado, o sistema vai tirar a seleção do procedimento.">Selecionar Retorno Automaticamente</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="selecionar_retorno" name="selecionar_retorno" <? if (@$obj->_selecionar_retorno == 't') echo "checked"; ?>/> 
-                            </dd>
-                           
-<!--                            <dt>
-                                <label title="Ativando essa flag, o cpf fica obrigatório no cadastro">CPF Obrigatório (Paciente)</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="cpf_obrigatorio" name="cpf_obrigatorio" <? if (@$obj->_cpf_obrigatorio == 't') echo "checked"; ?>/> 
-                            </dd>-->
-                            
-                            <dt>
-                                <label title="Ativando essa flag, o relatório de ordem de atendimento aparece">Relatório Ordem de Atendimento</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="relatorio_ordem" name="relatorio_ordem" <? if (@$obj->_relatorio_ordem == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Ativando essa flag, o relatório de produção nas telas de atendimento aparece">Relatório Produção (Nas telas do médico)</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="relatorio_producao" name="relatorio_producao" <? if (@$obj->_relatorio_producao == 't') echo "checked"; ?>/> 
-                            </dd>
-                           
-                            <dt>
-                                <label title="Ativando essa flag, os botões para imprimir a ficha não serão mostrados.">Retirar botões de Ficha</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="retirar_botao_ficha" name="retirar_botao_ficha" <? if (@$obj->_retirar_botao_ficha == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Ativando essa flag, as opçoes de impressao, tais como assinatura e carimbo, deixaram de aparecer na tela do médico.">Desativar personalização da impressao dos medicos</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="desativar_personalizacao_impressao" name="desativar_personalizacao_impressao" <? if (@$obj->_desativar_personalizacao_impressao == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Ativando essa flag, quando encaminhar um paciente será disparado um email para o médico que recebe (Padrão Citycor).">Encaminhamento Email</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="encaminhamento_email" name="encaminhamento_email" <? if (@$obj->_encaminhamento_email == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Ativando essa flag, quando só tiver um modelo de receituario cadastrado ele será carregado automaticamente.">Carregar Modelo Receiturario Automaticamente</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="carregar_modelo_receituario" name="carregar_modelo_receituario" <? if (@$obj->_carregar_modelo_receituario == 't') echo "checked"; ?>/> 
-                            </dd>
-                            
-                            <dt>
-                                <label title="Ativando essa flag, o sistema não irá mais barrar o lançamento de procedimentos do tipo Retorno.">Desabilitar trava no Retorno</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="desabilitar_trava_retorno" name="desabilitar_trava_retorno" <? if (@$obj->_desabilitar_trava_retorno == 't') echo "checked"; ?>/> 
-                            </dd>
-                            
-                            <dt>
-                                <label title="Ativando essa flag, no momento de criar a agenda, aparece uma opçao para o usuario informar quantas vezes ele ira querer repetir os horarios.">Permitir criação de horarios repetidos na agenda.</label>
-
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="repetir_horarios_agenda" name="repetir_horarios_agenda" <? if (@$obj->_repetir_horarios_agenda == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="O laudo só vai ser editado pelo nosso operador">Laudo Sigiloso</label>
-
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="laudo_sigiloso" name="laudo_sigiloso" <? if (@$obj->_laudo_sigiloso == 't') echo "checked"; ?>/> 
-                            </dd>
-                            
-                            
-                            <dt>
-                                <label title="Ao ativar, irá aparecer uma tela para cadastrar subgrupos no sistema (associados aos grupos). Isso pode ser usado no relátorio de conferência.">Subgrupo de Procedimento</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="subgrupo_procedimento" name="subgrupo_procedimento" <? if (@$obj->_subgrupo_procedimento == 't') echo "checked"; ?>/> 
-                            </dd>
-                            
-                            <dt>
-                                <label title="Ativando essa opção, o relatório de produção terá o visual alternativo (Ronaldo).">Relatório Produção M. Alternativo</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="producao_alternativo" name="producao_alternativo" <? if (@$obj->_producao_alternativo == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Ativando essa opção, a tela de cadastrar percentual irá seguir o padrão dos procedimentos multiplos.">Percentual similar ao Proc. Multiplos</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="percentual_multiplo" name="percentual_multiplo" <? if (@$obj->_percentual_multiplo == 't') echo "checked"; ?>/> 
-
-                            </dd>
-                            
-                            <dt>
-                                <label title="Ativando essa opção o botão de Ficha-Convenio irá aparecer na tabela de consultas marcadas">Botão Ficha-Convenio</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="botao_ficha_convenio" name="botao_ficha_convenio" <? if (@$obj->_botao_ficha_convenio == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Ativando essa opção os modelos de Laudo no atendimento serão apenas os do médico que está atendendo">Modelo Laudo Por Médico</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="modelo_laudo_medico" name="modelo_laudo_medico" <? if (@$obj->_modelo_laudo_medico == 't') echo "checked"; ?>/> 
-                            </dd>
-                            <dt>
-                                <label title="Ativando essa opção os modelos de Laudo no atendimento serão apenas os do médico que está atendendo">Modelo Laudo Por Médico</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="modelo_laudo_medico" name="modelo_laudo_medico" <? if (@$obj->_modelo_laudo_medico == 't') echo "checked"; ?>/> 
-                            </dd>
-                            
-                            
-                            
-                            
-                            
-                        </fieldset>
                     <? } ?>
                 </dl>    
                 <hr/>

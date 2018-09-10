@@ -47,6 +47,14 @@ class login_model extends Model {
                            ep.retirar_preco_procedimento,
                            ep.relatorios_clinica_med,
                            ep.autorizar_sala_espera,
+                           ep.manter_indicacao,
+                           ep.fila_impressao,
+                           ep.medico_solicitante,
+                           ep.uso_salas,
+                           ep.relatorio_operadora,
+                           ep.relatorio_rm,
+                           ep.relatorio_demandagrupo,
+                           ep.relatorio_caixa,
                            ep.subgrupo_procedimento');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
@@ -77,6 +85,7 @@ class login_model extends Model {
             $laboratorio = $retorno[0]->laboratorio;
             $ponto = $retorno[0]->ponto;
             $calendario = $retorno[0]->calendario;
+            $caixa = $retorno[0]->caixa;
             $procedimento_multiempresa = $retorno[0]->procedimento_multiempresa;
             $botao_faturar_guia = $retorno[0]->botao_faturar_guia;
             $botao_faturar_proc = $retorno[0]->botao_faturar_procedimento;
@@ -101,6 +110,15 @@ class login_model extends Model {
             $subgrupo_procedimento = $retorno[0]->subgrupo_procedimento;
             $retirar_preco_procedimento = $retorno[0]->retirar_preco_procedimento;
             $relatorios_clinica_med = $retorno[0]->relatorios_clinica_med;
+            $manter_indicacao = $retorno[0]->manter_indicacao;
+            $fila_impressao = $retorno[0]->fila_impressao;
+            $endereco_toten = $retorno[0]->endereco_toten;
+            $medico_solicitante = $retorno[0]->medico_solicitante;
+            $relatorio_operadora = $retorno[0]->relatorio_operadora;
+            $relatorio_rm = $retorno[0]->relatorio_rm;
+            $uso_salas = $retorno[0]->uso_salas;
+            $relatorio_demandagrupo = $retorno[0]->relatorio_demandagrupo;
+            $relatorio_caixa = $retorno[0]->relatorio_caixa;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -147,12 +165,17 @@ class login_model extends Model {
                 'odontologia' => $odontologia,
                 'geral' => $geral,
                 'faturamento' => $faturamento,
+                'endereco_toten' => $endereco_toten,
+                'medico_solicitante' => $medico_solicitante,
                 'estoque' => $estoque,
                 'financeiro' => $financeiro,
                 'marketing' => $marketing,
+                'manter_indicacao' => $manter_indicacao,
                 'laboratorio' => $laboratorio,
                 'ponto' => $ponto,
                 'calendario' => $calendario,
+                'caixa' => $caixa,
+                'fila_impressao' => $fila_impressao,
                 'internacao' => $internacao,
                 'chat' => $chat,
                 'servicosms' => $servicosms,
@@ -173,7 +196,12 @@ class login_model extends Model {
                 'subgrupo_procedimento' => $subgrupo_procedimento,
                 'retirar_preco_procedimento' => $retirar_preco_procedimento,
                 'relatorios_clinica_med' => $relatorios_clinica_med,
-                'empresa' => $empresanome
+                'empresa' => $empresanome,
+                'uso_salas' => $uso_salas,
+                'relatorio_operadora' => $relatorio_operadora,
+                'relatorio_rm' => $relatorio_rm,
+                'relatorio_caixa' => $relatorio_caixa,
+                'relatorio_demandagrupo' => $relatorio_demandagrupo
             );
             $this->session->set_userdata($p);
             return true;

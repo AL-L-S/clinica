@@ -1889,6 +1889,17 @@ class Autocomplete extends Controller {
         
         echo json_encode($result);
     }
+    
+    function perfiloperador() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['perfil_id'])) {
+            $result = $this->operador_m->listarautocompleteoperador($_GET['perfil_id']);
+        } else {
+            $result = $this->operador_m->listarautocompleteoperador(@$_GET['perfil_id']);
+        }
+        
+        echo json_encode($result);
+    }
 
 //    function riscofuncaomt() {
 //        header('Access-Control-Allow-Origin: *');

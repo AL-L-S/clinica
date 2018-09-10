@@ -83,7 +83,7 @@
                             <? endforeach; /* $value->ambulatorio_grupo_id; */ ?>
 
                         </select>
-                    </dd>
+                    </dd><br>
                     <dt>
                         <label>Procedimento</label>
                     </dt>
@@ -98,12 +98,12 @@
 
                     </dd>
                     <dt>
-                        <label>Valor</label>
+                        <label>Ajuste Percentual</label>
                     </dt>
                     <dd>
-                        <input type="text" name="valor" id="valor" class="texto01" required=""/>
+                        <input type="number" name="ajuste_percentual" id="ajuste_percentual" step="0.01" style="width: 6em;" required=""/> %
                     </dd>
-                    <dt>
+<!--                    <dt>
                         <label>Percentual</label>
                     </dt>
                     <dd>
@@ -111,7 +111,7 @@
                             <option value="1"> SIM</option>
                             <option value="0"> NÃO</option>                                   
                         </select>
-                    </dd>
+                    </dd>-->
                     <div id="revisordiv">
                         <dt>
                             <label>Revisor</label>
