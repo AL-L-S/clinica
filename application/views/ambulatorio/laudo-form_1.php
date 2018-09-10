@@ -111,7 +111,7 @@ if (count($pacs) > 0) {
                             <? if (in_array('solicitante', $opc_dadospaciente)) { ?>
                                 <td>Solicitante: <?= @$obj->_solicitante ?></td>
                             <? } ?>
-<!--<td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>-->
+                            
                         </tr>
                         <tr>
                             <? if (in_array('idade', $opc_dadospaciente)) { ?>
@@ -148,14 +148,12 @@ if (count($pacs) > 0) {
                                 <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
                             <? } ?>
 
-<!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
+
                             <? if (in_array('endereco', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                             <? } ?>
                         </tr>
-<!--                        <tr>
-                            <td colspan="2"></td>
-                        </tr>-->
+
 
 
 
@@ -557,8 +555,7 @@ if (count($pacs) > 0) {
                                     <div>
 
 
-                        <!--<input name="textarea" id="textarea"></input>
-                   <!-- <input name="textarea" id="textarea" ></input>-->
+
 
                                         <hr/>
 
@@ -704,7 +701,7 @@ if (count($pacs) > 0) {
                                                         <?
                                                         $this->load->helper('directory');
                                                         $arquivo_pastaimagem = directory_map("./upload/$item->exames_id/");
-//        $data['arquivo_pasta'] = directory_map("/home/vivi/projetos/clinica/upload/$exame_id/");
+
                                                         if ($arquivo_pastaimagem != false) {
                                                             sort($arquivo_pastaimagem);
                                                         }
@@ -919,6 +916,7 @@ if (count($pacs) > 0) {
                                                                 }
                                                             });
                                                         });
+                                                        
                                                         function visualizarModeloLaudo() {
                                                             if($('#exame').val() != ''){
                                                               varWindow = window.open('<?= base_url() ?>ambulatorio/laudo/carregarmodelolaudoselecionado/' + $('#exame').val(), 'popup', "width=800, height=600 ");  
@@ -927,15 +925,15 @@ if (count($pacs) > 0) {
                                                             }
                                                             
                                                         }
-<? if (($endereco != '')) { ?>
-    <?
-    if ($obj->_cpf != '') {
-        $cpf = $obj->_cpf;
-    } else {
-        $cpf = 'null';
-    }
-    $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$obj->_toten_fila_id/$obj->_nome/$cpf/$obj->_medico_parecer1/$obj->_medico_nome/$obj->_toten_sala_id/false";
-    ?>
+                                                            <? if (($endereco != '')) { ?>
+                                                                <?
+                                                                if ($obj->_cpf != '') {
+                                                                    $cpf = $obj->_cpf;
+                                                                } else {
+                                                                    $cpf = 'null';
+                                                                }
+                                                                $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$obj->_toten_fila_id/$obj->_nome/$cpf/$obj->_medico_parecer1/$obj->_medico_nome/$obj->_toten_sala_id/false";
+                                                            ?>
                                                             $("#botaochamar").click(function () {
 //                                                                alert('<?//= $url_enviar_ficha ?>');
                                                                 $.ajax({
@@ -951,7 +949,7 @@ if (count($pacs) > 0) {
                                                                     },
                                                                     error: function (data) {
                                                                         console.log(data);
-                                                                        //                alert('DEU MERDA');
+ 
                                                                     }
                                                                 });
 
@@ -960,7 +958,7 @@ if (count($pacs) > 0) {
                                                                     type: "POST",
                                                                     data: {teste: 'teste'},
                                                                     //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                                                                    url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>/1",
+                                                                    url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>/<?= @$obj->_toten_fila_id ?>/<?= @$obj->_toten_sala_id ?>",
                                                                     success: function (data) {
 
                                                                         alert('Operação efetuada com sucesso');

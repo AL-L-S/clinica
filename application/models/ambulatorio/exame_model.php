@@ -3131,8 +3131,10 @@ class exame_model extends Model {
                             p.nome as paciente,
                             p.celular,
                             p.telefone,
+                            p.whatsapp,
                             p.cpf,
                             ao.data_criacao,
+                            o.nome as operador,
                             aoi.data_preferencia,
                             aoi.autorizado,                           
                             aoi.observacao,                           
@@ -3153,6 +3155,7 @@ class exame_model extends Model {
                             ) as valorcartao");
         $this->db->from('tb_ambulatorio_orcamento ao');
         $this->db->join('tb_paciente p', 'p.paciente_id = ao.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ao.operador_cadastro', 'left');
         $this->db->join('tb_ambulatorio_orcamento_item aoi', 'aoi.orcamento_id  = ao.ambulatorio_orcamento_id', 'left');
         $this->db->join('tb_empresa e', 'e.empresa_id = ao.empresa_id', 'left');
         if ($_POST['empresa'] != "0") {
@@ -3207,8 +3210,10 @@ class exame_model extends Model {
                             p.nome,
                             p.celular,
                             p.telefone,
+                            p.whatsapp,
                             p.cpf,
                             ao.data_criacao,
+                            o.nome,
                             aoi.data_preferencia,
                             aoi.autorizado,                              
                             aoi.observacao,                        

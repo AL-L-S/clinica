@@ -59,8 +59,9 @@
                             <td  width="50px;">
                                 <select  name="empresa1" id="empresa1" class="size1" required="">
                                     <option value="">Selecione</option>
+                                    <? $lastEmp = $exames[count($exames) - 1]->empresa_id; ?>
                                     <? foreach ($empresa as $item) : ?>
-                                        <option value="<?= $item->empresa_id; ?>"><?= $item->nome; ?></option>
+                                        <option <? if ($lastEmp == $item->empresa_id) echo 'selected';?> value="<?= $item->empresa_id; ?>"><?= $item->nome; ?></option>
                                     <? endforeach; ?>
                                 </select>
                             </td>
@@ -70,7 +71,7 @@
                                     <?
                                     $lastConv = $exames[count($exames) - 1]->convenio_id;
                                     foreach ($convenio as $item) :
-                                        ?>
+                                    ?>
                                         <option value="<?= $item->convenio_id; ?>" <? if ($lastConv == $item->convenio_id) echo 'selected'; ?>>
                                             <?= $item->nome; ?>
                                         </option>
@@ -84,7 +85,7 @@
                                     <?
                                     $lastGrupo = $exames[count($exames) - 1]->grupo;
                                     foreach ($grupos as $value) :
-                                        ?>
+                                    ?>
                                         <option value="<?= $value->nome; ?>" <? if ($lastGrupo == $value->nome) echo 'selected'; ?>>
                                             <?= $value->nome; ?>
                                         </option>
@@ -138,8 +139,9 @@
 
                             </tr>    
 
-                        <? }
-                        ?>
+                        <?
+                    }
+                    ?>
 
 
                     </tbody>
@@ -181,10 +183,10 @@
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             $total = $total + $item->valor_total;
                             $totalCartao = $totalCartao + $item->valor_total_ajustado;
-                            
+
                             $orcamento = $item->orcamento_id;
-                            
-                            switch ($item->turno_prefencia){
+
+                            switch ($item->turno_prefencia) {
                                 case 'manha':
                                     $turno = "Manhã";
                                     break;
@@ -198,7 +200,7 @@
                                     $turno = "Não informado";
                                     break;
                             }
-                            
+
                             ?>
                             <tbody>
                                 <tr>
@@ -212,10 +214,10 @@
                                     <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total_ajustado; ?></td>
                                     
                                     <td class="<?php echo $estilo_linha; ?>">
-                                        <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia)); 
-                                           else echo "Não informado";?>
+                                        <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia));
+                                        else echo "Não informado"; ?>
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>"><?=($item->horario_preferencia != '')? date("H:i", strtotime($item->horario_preferencia)) : 'Não-Informado' ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= ($item->horario_preferencia != '') ? date("H:i", strtotime($item->horario_preferencia)) : 'Não-Informado' ?></td>
                                     
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirorcamentorecepcao/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
@@ -226,7 +228,7 @@
                             </tbody>
                             <?
                         }
-                    ?>
+                        ?>
                         <tfoot>
                             <tr>
                                 <th class="tabela_footer" colspan="2" style="vertical-align: top;">
@@ -254,7 +256,8 @@
                                                 <a href="<?= base_url() . "ambulatorio/exame/gravarautorizarorcamento/" . $orcamento; ?>" target='_blank'>Autorizar Orçamento</a>
                                             </div>
                                         </center>
-                                    <? } ?>
+                                    <?
+                                } ?>
                                     <center>
                                         <div class="bt_linkf">
                                             <a href="<?= base_url() . "ambulatorio/guia/transformaorcamentocredito/" . $orcamento; ?>" target='_blank'>Transformar em Crédito</a>
@@ -267,14 +270,14 @@
                 
                     </fieldset>
                     <?
-                    foreach($orcamentos as $value){
-                        
+                    foreach ($orcamentos as $value) {
+
                         $total = 0;
                         $totalCartao = 0;
                         $orcamento = 0;
                         $autorizado = false;
-                    
-                        if($value->qtdeproc == 0) continue;?>
+
+                        if ($value->qtdeproc == 0) continue; ?>
             
                         <fieldset>
                             <table id="table_agente_toxico">
@@ -301,7 +304,7 @@
                             <?
 
                             $estilo_linha = "tabela_content01";
-                            foreach($orcamentoslista as $item){
+                            foreach ($orcamentoslista as $item) {
                                 if ($item->orcamento_id == $value->ambulatorio_orcamento_id) {
 
                                     ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -309,8 +312,8 @@
                                     $totalCartao = $totalCartao + $item->valor_total_ajustado;
 
                                     $orcamento = $item->orcamento_id;
-                                    
-                                    if ($item->autorizado == 't'){
+
+                                    if ($item->autorizado == 't') {
                                         $autorizado = true;
                                     }
 
@@ -339,19 +342,19 @@
                                             <td class="<?php echo $estilo_linha; ?>"><?= $item->valor_total_ajustado; ?></td>
                                             
                                             <td class="<?php echo $estilo_linha; ?>">
-                                                <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia)); 
-                                                   else echo "Não informado";?>
+                                                <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia));
+                                                else echo "Não informado"; ?>
                                             </td>
-                                            <td class="<?php echo $estilo_linha; ?>"><?=($item->horario_preferencia != '')? date("H:i", strtotime($item->horario_preferencia)) : 'Não-Informado' ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= ($item->horario_preferencia != '') ? date("H:i", strtotime($item->horario_preferencia)) : 'Não-Informado' ?></td>
 <!--                                            <td class="<?php echo $estilo_linha; ?>">
                                                 <a href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirorcamentorecepcao/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
                                                 </a>
                                             </td>-->
                                         </tr>
                                 <?
-                                }
                             }
-                            ?>
+                        }
+                        ?>
                                         
 
                             </tbody>
@@ -382,7 +385,8 @@
                                                         <a href="<?= base_url() . "ambulatorio/exame/gravarautorizarorcamento/" . $value->ambulatorio_orcamento_id; ?>" target='_blank'>Autorizar Orçamento</a>
                                                     </div>
                                                 </center>
-                                        <? } ?>
+                                        <?
+                                    } ?>
                                         <center>
                                             <div class="bt_linkf">
                                                 <a href="<?= base_url() . "ambulatorio/guia/transformaorcamentocredito/" . $value->ambulatorio_orcamento_id; ?>" target='_blank'>Transformar em Crédito</a>
@@ -396,7 +400,7 @@
                         <?
                     }
                 }
-            ?>
+                ?>
         </form>
     </div>
 
@@ -633,7 +637,7 @@
                                                             }
                                                         });
 
-<? if (@$obj->_paciente_id == NULL) { ?>
+<? if (@$obj->_paciente_id == null) { ?>
                                                     $(function () {
                                                         $("#txtNome").autocomplete({
                                                             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
@@ -653,7 +657,8 @@
                                                             }
                                                         });
                                                     });
-<? } ?>
+<?
+} ?>
 
 
 
@@ -766,10 +771,11 @@
                                                                     } else {
                                                                         $("#valor1").prop('readonly', true);
                                                                     }
-<? } ?>
+<?
+} ?>
                                                                 document.getElementById("valor1").value = options;
                                                                 
-                                                                <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento != "t") { ?>
+                                                                <? if ($empresaPermissoes[0]->ajuste_pagamento_procedimento != "t") { ?>
                                                                     if ($('#formapamento').val()) {
                                                                         $.getJSON('<?= base_url() ?>autocomplete/formapagamentoorcamento', {formapamento1: $('#formapamento').val(), ajax: true}, function (j) {
                                                                             var ajuste = (j[0].ajuste == null) ? 0 : j[0].ajuste;
@@ -781,12 +787,13 @@
                                                                             $('.carregando').hide();
                                                                         });
                                                                     }
-                                                                <? } ?>
+                                                                <?
+                                                            } ?>
 
                                                                 $('.carregando').hide();
                                                             });
                                                             
-                                                            <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento == "t") { ?>
+                                                            <? if ($empresaPermissoes[0]->ajuste_pagamento_procedimento == "t") { ?>
                                                                 $("#formapamento").prop('required', false);
                                                                 $.getJSON('<?= base_url() ?>autocomplete/formapagamentoporprocedimento1', {procedimento1: $(this).val(), ajax: true}, function (j) {
 
@@ -801,7 +808,8 @@
                                                                     $('.carregando').hide();
 
                                                                 });
-                                                            <? } ?>
+                                                            <?
+                                                        } ?>
                                                         } else {
                                                             $('#valor1').html('value=""');
                                                         }
@@ -820,7 +828,7 @@
                                                     });
                                                 }
 
-                                                <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento != "t") { ?>
+                                                <? if ($empresaPermissoes[0]->ajuste_pagamento_procedimento != "t") { ?>
                                                     $(function () {
                                                         $('#formapamento').change(function () {
                                                             if ($(this).val()) {
@@ -840,17 +848,19 @@
                                                             }
                                                         });
                                                     });
-                                                <? } ?>
+                                                <?
+                                            } ?>
                                                 
                                                 
                                 function verificaAjustePagamentoProcedimento(procedimentoConvenioId){
-                                    <? if($empresaPermissoes[0]->ajuste_pagamento_procedimento == "t") { ?>
+                                    <? if ($empresaPermissoes[0]->ajuste_pagamento_procedimento == "t") { ?>
                                         $.getJSON('<?= base_url() ?>autocomplete/verificaAjustePagamentoProcedimento', {procedimento: procedimentoConvenioId, ajax: true}, function (p) {
                                             if (p.length != 0) {
                                                 $("#formapamento").prop('required', true);
                                             }
                                         });
-                                    <?}?>
+                                    <?
+                                } ?>
                                 }
                                 
                                 function buscaValorAjustePagamentoProcedimento(){                                    

@@ -440,3 +440,7 @@ ALTER COLUMN telefone TYPE character varying(16);
 
 --Dia 04/09/2018
 
+
+--Dia 06/09/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN reservar_escolher_proc boolean DEFAULT false;
+

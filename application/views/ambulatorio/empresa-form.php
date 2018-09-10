@@ -483,6 +483,9 @@
                                             <td><input type="checkbox" id="encaminhamento_email" name="encaminhamento_email" <? if (@$obj->_encaminhamento_email == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, quando encaminhar um paciente será disparado um email para o médico que recebe (Padrão Citycor).">Encaminhamento Email</label></td>
                                             <td><input type="checkbox" id="relatorio_ordem" name="relatorio_ordem" <? if (@$obj->_relatorio_ordem == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o relatório de ordem de atendimento aparece">Relatório Ordem de Atendimento</label></td>
                                         </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="reservar_escolher_proc" name="reservar_escolher_proc" <? if (@$obj->_reservar_escolher_proc == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, você deve escolher o procedimento ao reservar um horário.">Escolher Procedimento Ao Reservar</label></td>
+                                        </tr>
                                     </table>
                                 </fieldset>
                                 <br><br><br>
@@ -758,12 +761,7 @@
                             <dd>
                                 <input type="checkbox" id="modelo_laudo_medico" name="modelo_laudo_medico" <? if (@$obj->_modelo_laudo_medico == 't') echo "checked"; ?>/> 
                             </dd>
-                            <dt>
-                                <label title="Ativando essa opção os modelos de Laudo no atendimento serão apenas os do médico que está atendendo">Modelo Laudo Por Médico</label>
-                            </dt>
-                            <dd>
-                                <input type="checkbox" id="modelo_laudo_medico" name="modelo_laudo_medico" <? if (@$obj->_modelo_laudo_medico == 't') echo "checked"; ?>/> 
-                            </dd>
+                            
                             
                             
                             

@@ -625,7 +625,10 @@ class exametemp_model extends Model {
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
-        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id', 'left');
+        if ($grupo != '') {
+            $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = es.exame_sala_id', 'left');
+            $this->db->where('esg.ativo', 't');
+        }
         $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
         $this->db->where("ae.tipo IN ('EXAME')");
         $this->db->where("ae.data is not null");
@@ -1408,6 +1411,28 @@ class exametemp_model extends Model {
                             emp.nome as empresa');
         $this->db->from('tb_agenda_exames a');
         $this->db->join('tb_empresa emp', 'emp.empresa_id = a.empresa_id', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
+        $this->db->where("a.agenda_exames_id", $agenda_exames_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listaragendasexamepacientereservar($agenda_exames_id) {
+        $this->db->select('a.agenda_exames_id,
+                            a.inicio,
+                            a.fim,
+                            a.data,
+                            a.nome,
+                            pc.convenio_id,
+                            pt.grupo,
+                            es.nome as sala,
+                            a.medico_agenda,
+                            a.observacoes,
+                            emp.nome as empresa');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_empresa emp', 'emp.empresa_id = a.empresa_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = a.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = a.agenda_exames_nome_id', 'left');
         $this->db->where("a.agenda_exames_id", $agenda_exames_id);
         $return = $this->db->get();
@@ -4712,7 +4737,7 @@ class exametemp_model extends Model {
         return $paciente_id;
     }
 
-    function reservarexametemp($agenda_exames_id, $paciente_id, $medico_consulta_id, $data) {
+    function reservarexametemp($agenda_exames_id, $paciente_id, $medico_consulta_id) {
         try {
 
             $this->db->select('procedimento_tuss_id, inicio');
@@ -4731,6 +4756,50 @@ class exametemp_model extends Model {
             if (count($return) > 0) {
 
                 $procedimento_convenio_id = $return1[0]->procedimento_tuss_id;
+                $agenda_exames_novo_id = $return[0]->agenda_exames_id;
+//            var_dump($return); die;
+//            $agenda_exames2 = $agenda_exames_id + 1;
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $empresa_id = $this->session->userdata('empresa_id');
+                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('procedimento_tuss_id', $procedimento_convenio_id);
+                $this->db->set('tipo', 'EXAME');
+                $this->db->set('ativo', 'f');
+                $this->db->set('situacao', 'OK');
+                $this->db->set('observacoes', 'reservado');
+                $this->db->set('paciente_id', $paciente_id);
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('agenda_exames_id', $agenda_exames_novo_id);
+                $this->db->update('tb_agenda_exames');
+            }
+
+            return $paciente_id;
+        } catch (Exception $exc) {
+            return $paciente_id;
+        }
+    }
+
+    function reservarexametempalterarproc($agenda_exames_id, $paciente_id, $medico_consulta_id) {
+        try {
+
+            $this->db->select('procedimento_tuss_id, inicio');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('agenda_exames_id ', $agenda_exames_id);
+            $return1 = $this->db->get()->result();
+//            var_dump($return1); die;
+            $this->db->select('agenda_exames_id');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('data', $_POST['data']);
+            $this->db->where('medico_agenda', $medico_consulta_id);
+            $this->db->where('inicio >', $return1[0]->inicio);
+            $this->db->where('paciente_id is null');
+            $return = $this->db->get()->result();
+            // var_dump($return); die;
+            if (count($return) > 0) {
+
+                $procedimento_convenio_id = $_POST['procedimento1'];
                 $agenda_exames_novo_id = $return[0]->agenda_exames_id;
 //            var_dump($return); die;
 //            $agenda_exames2 = $agenda_exames_id + 1;

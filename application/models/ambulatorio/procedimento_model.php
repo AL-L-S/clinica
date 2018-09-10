@@ -121,6 +121,7 @@ class procedimento_model extends Model {
                             oi.data,
                             oi.orcamento_id,
                             oi.valor_total,
+                            oi.empresa_id,
                             oi.dia_semana_preferencia,
                             oi.data_preferencia,
                             oi.turno_prefencia,

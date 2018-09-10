@@ -3,33 +3,35 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <? if (count($empresa) > 0) { ?>
         <h4><?= $empresa[0]->razao_social; ?></h4>
-    <? } else { ?>
+    <?
+} else { ?>
         <h4>TODAS AS CLINICAS</h4>
-    <? } ?>
+    <?
+} ?>
     <h4>Relatorio Orcamentos</h4>
     <? if ($relatorios_clinica_med != 't') { ?>
         <h4>TIPO DE BUSCA: <?
-            if (isset($_POST['tipo_orcamento'])) {
-                if ($_POST['tipo_orcamento'] == '0') {
-                    echo "PRÉ-CADASTROS";
-                } elseif ($_POST['tipo_orcamento'] == '1') {
-                    echo "CLIENTES";
+                            if (isset($_POST['tipo_orcamento'])) {
+                                if ($_POST['tipo_orcamento'] == '0') {
+                                    echo "PRÉ-CADASTROS";
+                                } elseif ($_POST['tipo_orcamento'] == '1') {
+                                    echo "CLIENTES";
+                                } else {
+                                    echo "TODOS";
+                                }
+                            }
+                        }
+                        ?>
+    </h4>   
+    <h4>STATUS: <?
+                if ($_POST['status'] == '0') {
+                    echo "REALIZADO";
+                } elseif ($_POST['status'] == '1') {
+                    echo "PENDENTE";
                 } else {
                     echo "TODOS";
                 }
-            }
-        }
-        ?>
-    </h4>   
-    <h4>STATUS: <?
-        if ($_POST['status'] == '0') {
-            echo "REALIZADO";
-        } elseif ($_POST['status'] == '1') {
-            echo "PENDENTE";
-        } else {
-            echo "TODOS";
-        }
-        ?>
+                ?>
     </h4>
     <h4>GRUPO: <?= ($grupo != '') ? $grupo : "TODOS" ?></h4>
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> até <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
@@ -39,11 +41,13 @@
         <thead>
             <tr>
                 <th class="tabela_header" >Paciente</th>
-                <th class="tabela_header" width="150px;">Telefone</th>
+                <th class="tabela_header" width="190px;">Telefone</th>
+                <th class="tabela_header" width="190px;">Celular</th>
                 <th class="tabela_header" width="150px;">CPF</th>
                 <th class="tabela_header" width="150px;">Data</th>
                 <th class="tabela_header" width="150px;">Valor (R$)</th>
                 <th class="tabela_header" width="150px;">Valor Cartão(R$)</th>
+                <th class="tabela_header" width="180px;">Operador</th>
                 <th class="tabela_header" width="180px;">Empresa</th>
                 <th class="tabela_header" width="110px;">Status</th>
                 <th class="tabela_header">Ação</th>
@@ -52,9 +56,20 @@
         </thead>
         <tbody>
             <?php
+            $total_relatorio = 0;
+            $total_autorizado = 0;
+            $total_naoAutorizado = 0;
             if (count($relatorio) > 0) {
+
                 $data = $relatorio[0]->data_preferencia;
                 foreach ($relatorio as $item) {
+                    $total_relatorio++;
+                    if ($item->autorizado == 't') {
+                        $total_autorizado++;
+                    } else {
+                        $total_naoAutorizado++;
+                    }
+
                     if ($item->celular != "") {
                         $telefone = $item->celular;
                     } elseif ($item->telefone != "") {
@@ -72,7 +87,8 @@
                                     echo 'NÃO INFORMADO';
                                 ?></b>
                         </td>
-                        <td><?= $telefone ?></td>
+                        <td><?= $item->telefone ?></td>
+                        <td><?= $item->celular ?></td>                                          
                         <td><?= $item->cpf; ?></b></td>
                         <td><?= ($item->data_preferencia != '') ? date("d/m/Y", strtotime($item->data_preferencia)) : date("d/m/Y", strtotime($item->data_criacao)); ?></td>
                         <td style="text-align: right">
@@ -85,6 +101,7 @@
                                 <?= number_format($item->valorcartao, 2, ',', "") ?>
                             </a>
                         </td>
+                        <td><?= $item->operador; ?></td>
                         <td><b><?= $item->empresa_nome; ?></b></td>
                         <td><b><?
                                 if ($item->autorizado == 't') {
@@ -100,10 +117,13 @@
                             <? if ($item->autorizado == 'f') { ?>
                                 <? if ($item->paciente != '') { ?>
                                     <a href="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamentorelatorio/<?= $item->ambulatorio_orcamento_id . "/" . date("Y-m-d", strtotime($item->data_preferencia)) ?>" target="_blank">Autorizar</a>
-                                <? } else { ?>
+                                <?
+                            } else { ?>
                                     <a  href="<?= base_url() ?>ambulatorio/exame/autorizarorcamentonaocadastro/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a>
-                                <? } ?>
-                            <? } ?>
+                                <?
+                            } ?>
+                            <?
+                        } ?>
 
 
                         </td>
@@ -116,10 +136,21 @@
 
                 </tbody>
                 <?php
+
             }
         }
         ?>
-
+                <tr style="font-weight: bold;">
+                    <td colspan="4">
+                        Total: <?= $total_relatorio ?>
+                    </td>
+                    <td colspan="4">
+                        Total Autorizado: <?= $total_autorizado ?>
+                    </td>
+                    <td colspan="4">
+                        Total Não-Autorizado:<?= $total_naoAutorizado ?> 
+                    </td>
+                </tr>
     </table>
     <h3 style="text-align: center;">Demanda Grupos</h3> 
     <?
@@ -153,15 +184,15 @@
                     case 7:
                         $diaSemana = 'domingo';
                         break;
-                    default :
+                    default:
                         $diaSemana = 'indiferente';
                         break;
                 }
             } else {
                 $diaSemana = 'indiferente';
             }
-            @$grupos[$gp][$diaSemana] ++;
-            @$grupos[$gp]['total'] ++;
+            @$grupos[$gp][$diaSemana]++;
+            @$grupos[$gp]['total']++;
         }
         foreach ($grupos as $key => $value) {
             ?>
@@ -177,58 +208,67 @@
                     <? if (@$value['segunda'] != 0) { ?>
                         <tr>
                             <td>Segunda</td>
-                            <td style="text-align: right;"><?= (int) $value['segunda'] ?></td>
+                            <td style="text-align: right;"><?= (int)$value['segunda'] ?></td>
                         </tr>  
-                    <? } ?>
+                    <?
+                } ?>
                     <? if (@$value['terca'] != 0) { ?>
                         <tr>
                             <td>Terça</td>
-                            <td style="text-align: right;"><?= (int) $value['terca'] ?></td>
+                            <td style="text-align: right;"><?= (int)$value['terca'] ?></td>
                         </tr>  
-                    <? } ?>
+                    <?
+                } ?>
                     <? if (@$value['quarta'] != 0) { ?>
                         <tr>
                             <td>Quarta</td>
-                            <td style="text-align: right;"><?= (int) $value['quarta'] ?></td>
+                            <td style="text-align: right;"><?= (int)$value['quarta'] ?></td>
                         </tr>  
-                    <? } ?>
+                    <?
+                } ?>
                     <? if (@$value['quinta'] != 0) { ?>
                         <tr>
                             <td>Quinta</td>
-                            <td style="text-align: right;"><?= (int) $value['quinta'] ?></td>
+                            <td style="text-align: right;"><?= (int)$value['quinta'] ?></td>
                         </tr>  
-                    <? } ?>
+                    <?
+                } ?>
                     <? if (@$value['sexta'] != 0) { ?>
                         <tr>
                             <td>Sexta</td>
-                            <td style="text-align: right;"><?= (int) $value['sexta'] ?></td>
+                            <td style="text-align: right;"><?= (int)$value['sexta'] ?></td>
                         </tr>  
-                    <? } ?>
+                    <?
+                } ?>
                     <? if (@$value['sabado'] != 0) { ?>
                         <tr>
                             <td>Sabado</td>
-                            <td style="text-align: right;"><?= (int) $value['sabado'] ?></td>
+                            <td style="text-align: right;"><?= (int)$value['sabado'] ?></td>
                         </tr>  
-                    <? } ?>
+                    <?
+                } ?>
                     <? if (@$value['domingo'] != 0) { ?>
                         <tr>
                             <td>Domingo</td>
-                            <td style="text-align: right;"><?= (int) $value['domingo'] ?></td>
+                            <td style="text-align: right;"><?= (int)$value['domingo'] ?></td>
                         </tr>  
-                    <? } ?>
+                    <?
+                } ?>
                     <? if (@$value['indiferente'] != 0) { ?>
                         <tr>
                             <td>Indiferente</td>
-                            <td style="text-align: right;"><?= (int) $value['indiferente'] ?></td>
+                            <td style="text-align: right;"><?= (int)$value['indiferente'] ?></td>
                         </tr>  
-                    <? } ?>
+                    <?
+                } ?>
                     <tr>
                         <td colspan="3" rowspan="3" style='text-align: center;'><div id="<?= $key ?>" style="height: 250px; width: 250px;"></div></td>
                     </tr>
                 </tbody>
             </table>
 
-        <? } ?>
+        <?
+    } ?>
         <div id="turnoPreferencia" style="display: none">
             <hr>
             <h3 style="text-align: center">Horário de Preferência</h3>
@@ -306,20 +346,20 @@
                                 return data.formatted;
                             }
                         });
-<? foreach ($grupos as $key => $value) { ?>
+                        <? foreach ($grupos as $key => $value) { ?>
 
                             new Morris.Donut({
                                 element: '<?= $key ?>',
                                 data: [
-    <?
-    foreach ($value as $key2 => $item) {
-        if ($key2 != 'total') {
-            ?>
-                                            {label: "<?= $key2; ?>", value: <?= $item; ?>, formatted: '<?= number_format(($item / $value['total']) * 100, 2, ',', ''); ?>%'},
-            <?
-        }
-    }
-    ?>
+                                <?
+                                foreach ($value as $key2 => $item) {
+                                    if ($key2 != 'total') {
+                                        ?>
+                                    {label: "<?= $key2; ?>", value: <?= $item; ?>, formatted: '<?= number_format(($item / $value['total']) * 100, 2, ',', ''); ?>%'},
+                                        <?
+                                    }
+                                }
+                                ?>
                                 ],
                                 colors: [
                                     '#e74c3c',
@@ -386,7 +426,8 @@
 
                                 });
                             });
-<? } ?>
+                               
+                            <?} ?>
 
 //    $(function () {
 //        $("#accordion").accordion();

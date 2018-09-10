@@ -1355,6 +1355,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('gerente_cancelar', 'f');
                     }
+                    if (isset($_POST['reservar_escolher_proc'])) {
+                        $this->db->set('reservar_escolher_proc', 't');
+                    } else {
+                        $this->db->set('reservar_escolher_proc', 'f');
+                    }
                     if (isset($_POST['valor_laboratorio'])) {
                         $this->db->set('valor_laboratorio', 't');
                     } else {
@@ -1811,6 +1816,11 @@ class empresa_model extends Model {
                         $this->db->set('autorizar_sala_espera', 't');
                     } else {
                         $this->db->set('autorizar_sala_espera', 'f');
+                    }
+                    if (isset($_POST['reservar_escolher_proc'])) {
+                        $this->db->set('reservar_escolher_proc', 't');
+                    } else {
+                        $this->db->set('reservar_escolher_proc', 'f');
                     }
                     if (isset($_POST['gerente_cancelar_sala'])) {
                         $this->db->set('gerente_cancelar_sala', 't');
@@ -2310,6 +2320,7 @@ class empresa_model extends Model {
                                ep.ajuste_pagamento_procedimento,
                                ep.retirar_preco_procedimento,
                                ep.relatorios_clinica_med,
+                               ep.reservar_escolher_proc,
                                ep.impressao_cimetra,
                                ep.gerente_recepcao_top_saude,
                                ep.botao_ficha_convenio
@@ -2332,6 +2343,7 @@ class empresa_model extends Model {
             $this->_cep = $return[0]->cep;
             $this->_subgrupo = $return[0]->subgrupo;
             $this->_botao_imagem_paciente = $return[0]->botao_imagem_paciente;
+            $this->_reservar_escolher_proc = $return[0]->reservar_escolher_proc;
             $this->_botao_arquivos_paciente = $return[0]->botao_arquivos_paciente;
             $this->_gerente_relatorio_financeiro = $return[0]->gerente_relatorio_financeiro;
             $this->_laudo_sigiloso = $return[0]->laudo_sigiloso;
