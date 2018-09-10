@@ -55,6 +55,7 @@ class login_model extends Model {
                            ep.relatorio_rm,
                            ep.relatorio_demandagrupo,
                            ep.relatorio_caixa,
+                           ep.enfermagem,
                            ep.subgrupo_procedimento');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
@@ -119,6 +120,7 @@ class login_model extends Model {
             $uso_salas = $retorno[0]->uso_salas;
             $relatorio_demandagrupo = $retorno[0]->relatorio_demandagrupo;
             $relatorio_caixa = $retorno[0]->relatorio_caixa;
+            $enfermagem = $retorno[0]->enfermagem;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -201,7 +203,8 @@ class login_model extends Model {
                 'relatorio_operadora' => $relatorio_operadora,
                 'relatorio_rm' => $relatorio_rm,
                 'relatorio_caixa' => $relatorio_caixa,
-                'relatorio_demandagrupo' => $relatorio_demandagrupo
+                'relatorio_demandagrupo' => $relatorio_demandagrupo,
+                'enfermagem' => $enfermagem
             );
             $this->session->set_userdata($p);
             return true;

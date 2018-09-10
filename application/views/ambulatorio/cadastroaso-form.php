@@ -6,6 +6,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 }
 
 ?>
+<?$perfil_id = $this->session->userdata('perfil_id'); ?>
 <?php
     $this->load->library('utilitario');
 //    var_dump($this->session->flashdata('message')); die;
@@ -187,8 +188,66 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             </div>
 
         </fieldset>
-
+        <?if ($perfil_id == 4) {?>
         <fieldset>
+            <legend>Aptidões</legend>
+            <div>
+
+                <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
+                <select name="questao_um" id="questao_um" required="" class="texto04" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
+                    <option value="">Selecione</option>
+                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+
+                </select>
+            </div>
+            <div>
+
+                <label title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
+                       NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">NR35, NR 35.4.1.2.1</label>
+                <select name="questao_dois" id="questao_dois" required="" class="texto04" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
+                        NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
+                    <option value="">Selecione</option>
+                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                </select>
+            </div>
+            <div>
+
+                <label title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">NR 33 </label>
+                <select name="questao_tres" id="questao_tres" required="" class="texto04" title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">
+                    <option value="">Selecione</option>
+                    <option value="APTO" <?= (@$config->questao_tres == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="INAPTO" <?= (@$config->questao_tres == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="NÃO MAPEADO" <?= (@$config->questao_tres == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                </select>
+            </div>
+            <div>
+
+                <label>APTIDÃO MÁQUINAS MÓVEIS </label>
+                <select name="questao_quatro" id="questao_quatro" required="" class="texto04">
+                    <option value="">Selecione</option>
+                    <option value="APTO" <?= (@$config->questao_quatro == 'APTO') ? 'selected' : '' ?>>APTO PARA OPERAR MÁQUINAS MÓVEIS</option>
+                    <option value="INAPTO" <?= (@$config->questao_quatro == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA OPERAR MÁQUINAS MÓVEIS</option>
+                    <option value="NÃO MAPEADO" <?= (@$config->questao_quatro == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                </select>
+            </div>
+            <div>
+
+                <label title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">NR 10 </label>
+                <select name="questao_cinco" id="questao_cinco"  required="" class="texto04" title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">
+                    <option value="">Selecione</option>
+                    <option value="APTO" <?= (@$config->questao_cinco == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="INAPTO" <?= (@$config->questao_cinco == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="NÃO MAPEADO" <?= (@$config->questao_cinco == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+
+                </select>
+            </div>          
+
+        </fieldset>
+        <? } else{?>
+            <fieldset>
             <legend>Aptidões</legend>
             <div>
 
@@ -242,10 +301,10 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                     <option value="NÃO MAPEADO" <?= (@$config->questao_cinco == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
 
                 </select>
-            </div>
-           
+            </div>          
 
         </fieldset>
+        <? } ?>
         <fieldset>
             <? if (@$informacao_aso[0]->medico_responsavel != '') { ?>
                 <input type="hidden" name="medico_responsavel" id="medico_responsavel" class="texto04" value="<?= @$informacao_aso[0]->medico_responsavel ?>" />

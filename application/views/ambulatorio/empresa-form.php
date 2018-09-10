@@ -1,3 +1,4 @@
+
 <div class="content"> <!-- Inicio da DIV content -->
     <style>
         #accordion dl dt{
@@ -367,7 +368,8 @@
                                         <td><input type="checkbox" id="internacao" name="farmacia" <? if (@$obj->_farmacia == 't') echo "checked"; ?>/></td><td><label title="Habilitar Internação.">Farmácia</label></td>
                                         <td><input type="checkbox" id="centro_cirurgico" name="centro_cirurgico" <? if (@$obj->_centro_cirurgico == 't') echo "checked"; ?>/></td><td><label title="Habilitar Centro Cirurgico.">Centro Cirurgico</label></td>
                                         <td><input type="checkbox" id="ponto" name="ponto" <? if (@$obj->_ponto == 't') echo "checked"; ?>/></td><td><label title="Habilitar Ponto.">Ponto</label></td>                                        
-                                        <td><input type="checkbox" id="botao_ativar_sala" name="botao_ativar_sala" <? if (@$obj->_botao_ativar_sala == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag o botão de reativar sala aparece.">Botão de reativar sala.</label></td>
+                                        <td><input type="checkbox" id="botao_ativar_sala" name="botao_ativar_sala" <? if (@$obj->_botao_ativar_sala == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag o botão de reativar sala aparece.">Botão de reativar sala</label></td>
+                                        <td><input type="checkbox" id="enfermagem" name="enfermagem" <? if (@$obj->_enfermagem == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag o perfil de Técnico passa a poder dar entrada e solicitar.">Enfermagem</label></td>
                                     </tr>                                    
                                 </table>
                             </fieldset>

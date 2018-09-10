@@ -466,3 +466,5 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN relatorio_rm boolean DEFAULT 
 --Dia 10/09/2018
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN relatorio_caixa boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN enfermagem boolean DEFAULT false;
