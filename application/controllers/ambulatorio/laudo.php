@@ -2757,6 +2757,8 @@ class Laudo extends BaseController {
 
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['empresa'] = $this->guia->listarempresa();
+        $data['empresa_m'] = $this->empresa->listarempresamunicipio();
+        @$municipio_empresa = @$data['empresa_m'][0]->municipio;
         $data['receituario'] = true;
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($data['laudo'][0]->medico_parecer1);
@@ -2805,7 +2807,7 @@ class Laudo extends BaseController {
 
 
 
-        $texto_rodape = "Fortaleza, " . $dia . " de " . $nomemes . " de " . $ano;
+        $texto_rodape = "{$municipio_empresa}, " . $dia . " de " . $nomemes . " de " . $ano;
 
         if ($data['empresa'][0]->ficha_config == 't') {
             if ($data['empresa'][0]->cabecalho_config == 't') {
