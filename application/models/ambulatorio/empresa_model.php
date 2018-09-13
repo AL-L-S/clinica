@@ -368,6 +368,22 @@ class empresa_model extends Model {
         return $return->result();
     }
 
+    function listarempresamunicipio() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('e.razao_social,
+                            e.logradouro,
+                            e.numero,
+                            e.nome,
+                            m.nome as municipio,
+                            e.bairro');
+        $this->db->from('tb_empresa e');
+        $this->db->join('tb_municipio m', 'm.municipio_id = e.municipio_id', 'left');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->orderby('empresa_id');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listaripservidor() {
         $empresa_id = $this->session->userdata('empresa_id');
 
