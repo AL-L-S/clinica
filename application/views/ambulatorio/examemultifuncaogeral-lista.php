@@ -363,7 +363,7 @@
         <? } ?>
 
                         <!-- SALA -->   
-                        <td class="<?php echo $estilo_linha; ?>" width="150px;"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></td>
+                        <td class="<?php echo $estilo_linha; ?>" width="150px;"><a style='color:black;cursor: pointer;' onmouseover="style = 'color:red;cursor: pointer;'" onmouseout="style = 'color:black;cursor: pointer;'" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendamedicocurriculo/<?= $item->medico_agenda; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=800,height=700');"><?= $item->sala . " - " . substr($item->medicoagenda, 0, 15); ?></a></td>
 
                         <!-- OBSERVAÇOES -->
                         <!--<td class="<?php // echo $estilo_linha;  ?>"><?= $item->observacoes; ?></td>-->

@@ -131,16 +131,11 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?= ($item->aprovado == 't' ? 'Aprovado' : 'Não-Aprovado'); ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 80px;">
-                                    <? if ($item->confirmado == 'f') { ?>
-                                        <div class="bt_link">
-                                            <a onclick="javascript:return confirm('Deseja confirmar a ligação?');" href="<?= base_url() ?>internacao/internacao/confirmarligacaofichaquestionario/<?= $item->internacao_ficha_questionario_id; ?>">Ligação</a>
-                                        </div>
-                                    <? } else { ?>
-                                        <div class="bt_link">
-                                            <a onclick="javascript:return confirm('Deseja retirar a confirmação de ligação?');" href="<?= base_url() ?>internacao/internacao/desconfirmarligacaofichaquestionario/<?= $item->internacao_ficha_questionario_id; ?>">Ligação</a>
-                                        </div>
-                                    <? } ?>
+                                    <div class="bt_link">
+                                        <a target="_blank" href="<?= base_url() ?>internacao/internacao/ligacaofichaquestionario/<?= $item->internacao_ficha_questionario_id; ?>">Ligação</a>
+                                    </div>
                                 </td>
+                                
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 80px;">
                                     <? //if($item->aprovado == 'f'){?>
                                     <div class="bt_link">

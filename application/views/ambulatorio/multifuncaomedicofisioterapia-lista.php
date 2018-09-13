@@ -1,14 +1,20 @@
-
+<?
+$profissional_agendar = $this->session->userdata('profissional_agendar');
+$profissional_agendar_o = $this->session->userdata('profissional_agendar_o');
+?>
 <div class="content"> <!-- Inicio da DIV content -->
     <table>
         <tr>
+        <?if ($profissional_agendar == 't' && $profissional_agendar_o == 't') {?>
             <td>
+                
                 <div class="bt_link_new">
                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novopacientefisioterapiaencaixemedico');">
                         Encaixar Especialidade
                     </a>
                 </div>
             </td>
+        <?}?>
             <td>
                 <div class="bt_link_new">
                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/mostrarlembretes', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=700');" >
@@ -309,23 +315,35 @@
                                                                                                                 <!--                                        <td class="<?php echo $estilo_linha; ?>" width="60px;"><font size="-2">
                                                                                                                                                             <a></a></font>
                                                                                                                                                         </td>-->
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                    <?if ($profissional_agendar == 't' && $profissional_agendar_o == 't') {?>
+                                        <div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/bloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Bloquear
-                                        </a></div>
+                                                </a>
+                                        </div>
+                                    <?}?>
                                 </td>
 
 
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                <?if ($profissional_agendar == 't' && $profissional_agendar_o == 't') {?>
+                                    <div class="bt_link">
                                         <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/carregarfisioterapiatempmedico/<?= $item->agenda_exames_id ?>');">Consultas
-                                        </a></div>
+                                            </a>
+                                    </div>
+                                 <?}?>
                                 </td>
 
 
                             <? } elseif ($item->bloqueado == 't') { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"> Bloqueado</td>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                    <?if ($profissional_agendar == 't' && $profissional_agendar_o == 't') {?>
+                                        <div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
-                                        </a></div>
+                                                </a>
+                                        </div>
+                                    <?}?>
                                 </td>
                             <? } else { ?>
                                 <? if ($verifica == 3){?>
@@ -347,16 +365,22 @@
                                 if (($perfil_id == 4) || $perfil_id == 1) {
                                     if ($item->encaixe == 't') {
                                         ?>      <td  class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                            <div class="bt_link">
-                                                <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
-                                                    Cancelar</a></div>
+                                            <?if (($profissional_agendar == 't' && $profissional_agendar_o == 't')) {?>
+                                                <div class="bt_link">
+                                                    <a onclick="javascript: return confirm('Deseja realmente cancelar o encaixe?\n\nObs: Irá excluir também o horário');" href="<?= base_url() ?>ambulatorio/exametemp/examecancelamentoencaixe/<?= $item->agenda_exames_id; ?>">
+                                                        Cancelar</a>
+                                                </div>
+                                            <?}?>
                                         </td>
-                                    <? } elseif (($operador_id == 3 || $perfil_id == 1 || $perfil_id == 4) && $verifica != 3) { ?>
+                                    <? } elseif (($operador_id == 1 || $perfil_id == 1 || $perfil_id == 4) && $verifica != 3) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                            <div class="bt_link">
-                                                <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>">
-                                                    Cancelar</a></div>
-                                        </td>
+                                            <?if (($profissional_agendar == 't' && $profissional_agendar_o == 't')) {?>
+                                                    <div class="bt_link">
+                                                        <a onclick="javascript: return confirm('Deseja realmente cancelar esse horario?');" href="<?= base_url() ?>ambulatorio/exametemp/excluirfisioterapiatempmultifuncaomedico/<?= $item->agenda_exames_id; ?>">
+                                                            Cancelar</a>
+                                                    </div>
+                                                </td>
+                                            <?}?>
                                     <? } ?>
 
                                 <? } ?>

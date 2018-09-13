@@ -1167,6 +1167,7 @@ class empresa_model extends Model {
                 } else {
                     $this->db->set('procedimento_multiempresa', 'f');
                 }
+
                 if (isset($_POST['consulta'])) {
                     $this->db->set('consulta', 't');
                 } else {
@@ -1349,6 +1350,16 @@ class empresa_model extends Model {
                         $this->db->set('autorizar_sala_espera', 't');
                     } else {
                         $this->db->set('autorizar_sala_espera', 'f');
+                    }
+                    if (isset($_POST['profissional_agendar'])) {
+                        $this->db->set('profissional_agendar', 't');
+                    } else {
+                        $this->db->set('profissional_agendar', 'f');
+                    }
+                    if (isset($_POST['profissional_externo'])) {
+                        $this->db->set('profissional_externo', 't');
+                    } else {
+                        $this->db->set('profissional_externo', 'f');
                     }
                     if (isset($_POST['conjuge'])) {
                         $this->db->set('conjuge', 't');
@@ -1851,6 +1862,16 @@ class empresa_model extends Model {
                         $this->db->set('gerente_cancelar', 't');
                     } else {
                         $this->db->set('gerente_cancelar', 'f');
+                    }
+                    if (isset($_POST['profissional_agendar'])) {
+                        $this->db->set('profissional_agendar', 't');
+                    } else {
+                        $this->db->set('profissional_agendar', 'f');
+                    }
+                    if (isset($_POST['profissional_externo'])) {
+                        $this->db->set('profissional_externo', 't');
+                    } else {
+                        $this->db->set('profissional_externo', 'f');
                     }
                     if (count($_POST['opc_telatendimento']) > 0) {
                         $this->db->set('campos_atendimentomed', json_encode($_POST['opc_telatendimento']));
@@ -2438,6 +2459,8 @@ class empresa_model extends Model {
                                ep.medico_solicitante,
                                ep.uso_salas,
                                ep.relatorio_operadora,
+                               ep.profissional_externo,
+                               ep.profissional_agendar,
                                ep.relatorio_demandagrupo,
                                ep.relatorio_rm,
                                ep.relatorio_caixa,
@@ -2457,7 +2480,8 @@ class empresa_model extends Model {
             $this->_celular = $return[0]->celular;
             $this->_farmacia = $return[0]->farmacia;
             $this->_telefone = $return[0]->telefone;
-            $this->_botao_laudo_paciente = $return[0]->botao_laudo_paciente;
+            $this->_profissional_agendar = $return[0]->profissional_agendar;
+            $this->_profissional_externo = $return[0]->profissional_externo;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
             $this->_subgrupo = $return[0]->subgrupo;

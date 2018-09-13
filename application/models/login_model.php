@@ -10,6 +10,7 @@ class login_model extends Model {
     function autenticar($usuario, $senha, $empresa) {
         $this->db->select(' o.operador_id,
                                 o.perfil_id,
+                                o.profissional_agendar_o,
                                 p.nome as perfil,
                                 a.modulo_id,
                                 oe.operador_empresa_id'
@@ -54,6 +55,7 @@ class login_model extends Model {
                            ep.relatorio_operadora,
                            ep.relatorio_rm,
                            ep.relatorio_demandagrupo,
+                           ep.profissional_agendar,
                            ep.relatorio_caixa,
                            ep.enfermagem,
                            ep.subgrupo_procedimento');
@@ -79,6 +81,7 @@ class login_model extends Model {
             $especialidade = $retorno[0]->especialidade;
             $odontologia = $retorno[0]->odontologia;
             $geral = $retorno[0]->geral;
+            $profissional_agendar = $retorno[0]->profissional_agendar;
             $faturamento = $retorno[0]->faturamento;
             $estoque = $retorno[0]->estoque;
             $financeiro = $retorno[0]->financeiro;
@@ -146,6 +149,8 @@ class login_model extends Model {
                 'operador_id' => $return[0]->operador_id,
                 'login' => $usuario,
                 'perfil_id' => $return[0]->perfil_id,
+                'profissional_agendar_o' => $return[0]->profissional_agendar_o,
+                'profissional_agendar' => $profissional_agendar,
                 'perfil' => $return[0]->perfil,
                 'modulo' => $modulo,
                 'laudo_sigiloso' => $laudo_sigiloso,

@@ -550,6 +550,10 @@
                                             <td><input type="checkbox" id="relatorio_producao" name="relatorio_producao" <? if (@$obj->_relatorio_producao == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o relatório de produção nas telas de atendimento aparece">Relatório Produção (Nas telas do médico)</label></td>
                                             <td><input type="checkbox" id="carregar_modelo_receituario" name="carregar_modelo_receituario" <? if (@$obj->_carregar_modelo_receituario == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, quando só tiver um modelo de receituario cadastrado ele será carregado automaticamente.">Carregar Modelo Receiturario Automaticamente</label></td>                                                                                                                      
                                         </tr>                                    
+                                        <tr>
+                                            <td><input type="checkbox" id="profissional_externo" name="profissional_externo" <? if (@$obj->_profissional_externo == 't') echo "checked"; ?>/></td><td><label title="Aparece o campo de endereço externo no profissional para integração do STG com outro STG">Endereço Externo Médico.</label></td>
+                                            <td><input type="checkbox" id="profissional_agendar" name="profissional_agendar" <? if (@$obj->_profissional_agendar == 't') echo "checked"; ?>/></td><td><label title="Ativando essa opção os modelos de Laudo no atendimento serão apenas os do médico que está atendendo">Agendamento Médico (Fisioterapia)</label></td>
+                                        </tr>                                    
                                     </table>
                                 </fieldset>
                                 <br><br><br>

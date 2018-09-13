@@ -345,7 +345,16 @@ class internacao extends BaseController {
             $data['mensagem'] = 'Erro ao efetuar confirmação';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "internacao/internacao/manterfichaquestionario");
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+
+    function ligacaofichaquestionario($internacao_ficha_questionario_id) {
+
+        $data['internacao_ficha_questionario_id'] = $internacao_ficha_questionario_id;
+        $data['observacao'] = $this->internacao_m->observacaoprecadastros($internacao_ficha_questionario_id);
+//        $data['teste'] = 'ISSO E UM TESTE';
+//        var_dump($data['observacao']); die;
+        $this->load->View('internacao/observacaoligacaoprecadastro.php', $data);
     }
 
     function desconfirmarligacaofichaquestionario($internacao_modelo_grupo_id) {

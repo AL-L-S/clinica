@@ -73,6 +73,10 @@
                         <input type="checkbox" name="txtsolicitante" <? if (@$obj->_solicitante == "t") echo 'checked' ?> />Médico Solicitante
                         <input type="checkbox" name="ocupacao_painel" <? if (@$obj->_ocupacao_painel == "t") echo 'checked' ?> />Ocupação no Painel
                     <? } ?>
+
+                    <?if (@$empresapermissao[0]->profissional_agendar == 't') { ?>
+                        <input type="checkbox" name="profissional_agendar_o" <? if (@$obj->_profissional_agendar_o == "t") echo 'checked' ?> />Médico Agendamento
+                    <? } ?>
                 </div>
             </fieldset>
             <fieldset>
@@ -221,17 +225,21 @@
                 </div>
 
             </fieldset>
-            <fieldset>
-                <legend>Sistema Externo</legend>
-                <div>
-                    <label >Endereço (Ex:http://stgclinica.ddns.net/stgsaude)</label>
+            <?
+            if(@$empresapermissao[0]->profissional_externo == 't'){?>
+                <fieldset>
+                    <legend>Sistema Externo</legend>
+                    <div>
+                        <label >Endereço (Ex:http://stgclinica.ddns.net/stgsaude)</label>
 
-                    <input type="text" id="endereco_sistema" name="endereco_sistema"  class="texto08" value="<?= @$obj->_endereco_sistema; ?>" />
-                </div>
-                
-                
+                        <input type="text" id="endereco_sistema" name="endereco_sistema"  class="texto08" value="<?= @$obj->_endereco_sistema; ?>" />
+                    </div>
+                    
+                    
 
-            </fieldset>
+                </fieldset>
+            <?}
+            ?>
             <fieldset>
                 <legend>Financeiro</legend>
 <!--                <div>

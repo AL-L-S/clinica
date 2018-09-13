@@ -519,6 +519,27 @@ class Exame extends BaseController {
         }
     }
 
+
+    function gravarautorizarorcamento($ambulatorio_orcamento_id) {
+
+        $teste = $this->exame->testarautorizarorcamentorelatorio($ambulatorio_orcamento_id);
+//        var_dump($teste);
+//        die;
+        if ($teste[0]->autorizado == 'f') {
+            $paciente_id = $this->exame->gravarautorizacaoorcamento($ambulatorio_orcamento_id);
+            if ($paciente_id == '-1') {
+                $mensagem = 'Erro ao autorizar o Orçamento. Opera&ccedil;&atilde;o cancelada.';
+                $this->session->set_flashdata('message', $mensagem);
+                redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+            } else {
+                redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
+            }
+        } else {
+            $paciente_id = $teste[0]->paciente_id;
+            redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
+        }
+    }
+
     function autorizarorcamento($ambulatorio_orcamento_id) {
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
         $data['medicos'] = $this->operador_m->listarmedicos();
@@ -5631,6 +5652,11 @@ class Exame extends BaseController {
                             } else {
                                 $guianumero = $value->guiaconvenio;
                             }
+                            if ($value->cbo_ocupacao_id == '') {
+                                $cbo_medico = '999999';
+                            } else {
+                                $cbo_medico = $value->cbo_ocupacao_id;
+                            }
                             $corpo = $corpo . "
                     <ans:guiaConsulta>
                         <ans:cabecalhoConsulta>
@@ -6058,6 +6084,11 @@ class Exame extends BaseController {
                                 $guianumero = '0000000';
                             } else {
                                 $guianumero = $value->guiaconvenio;
+                            }
+                            if ($value->cbo_ocupacao_id == '') {
+                                $cbo_medico = '999999';
+                            } else {
+                                $cbo_medico = $value->cbo_ocupacao_id;
                             }
                             $corpo = $corpo . "
                 <ans:guiaConsulta>

@@ -400,13 +400,14 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                     </thead>
 
             </table> 
-            <table>
+            <!-- Comentei essa parte só pra publicar -->
+            <!-- <table>
                 <tr>
                     <th style="padding-left:88%" class="tabela_title">
                         <button value="encaixar" id="encaixar">Encaixar Horário</button>
                     </th>
                 </tr>
-            </table>
+            </table> -->
 
             <table>
                 <tr>
