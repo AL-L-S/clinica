@@ -42,6 +42,8 @@ $relatorio_operadora = $this->session->userdata('relatorio_operadora');
 $relatorios_recepcao = $this->session->userdata('relatorios_recepcao');
 $financeiro_cadastro = $this->session->userdata('financeiro_cadastro');
 $caixa_personalizado = $this->session->userdata('caixa_personalizado');
+$profissional_agendar = $this->session->userdata('profissional_agendar');
+$profissional_agendar_o = $this->session->userdata('profissional_agendar_o');
 $gerente_contasapagar = $this->session->userdata('gerente_contasapagar');
 $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
 $relatorios_clinica_med = $this->session->userdata('relatorios_clinica_med');
@@ -715,7 +717,9 @@ function debug($object) {
                                 <li><span class="folder">Rotinas</span>
                                     <? if ($perfil_id == 1 || $perfil_id == 2 || $perfil_id == 3 || $perfil_id == 4 || $perfil_id == 5 || $perfil_id == 18 || $perfil_id == 6 || $perfil_id == 11 || $perfil_id == 12 || $perfil_id == 19) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicofisioterapia">Multifuncao Especialidade</a></span></ul>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicofisioterapiareagendar">Reagendar</a></span></ul>
+                                        <?if ($profissional_agendar == 't' && $profissional_agendar_o == 't') {?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicofisioterapiareagendar">Reagendar</a></span></ul>
+                                        <?}?>
                                     <?
                                 }
                                 ?>

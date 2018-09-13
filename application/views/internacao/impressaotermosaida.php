@@ -424,16 +424,27 @@
         </td>
     </tr>
     <tr>
-        <td colspan="3" style="font-size: 10pt;text-align: center;">
-            <br><br>____________________________________ <br>
-            ____________________________________ <br>
-            <?=@$paciente[0]->medico?> <br>
-            
-            Médico – Carimbo e Assinatura <br>
-        </td>
+        
     </tr>
 
 
+</table>
+<br>
+<br>
+<table style="font-size: 12pt; width: 100%; font-family: Times New Roman;border-spacing: 10px">
+    <tr>
+        <td colspan="1" style="font-size: 10pt;text-align: center;width: 50%">
+            ____________________________________ <br>
+            Responsável pela Internação <br>
+        </td>
+        <td colspan="1" style="font-size: 10pt;text-align: center;">
+            ____________________________________ <br>
+            Médico – Carimbo e Assinatura <br>
+        </td>
+        <td>
+
+        </td>
+    </tr>
 </table>
 
 

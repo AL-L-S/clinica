@@ -1344,6 +1344,12 @@ class Operador_model extends BaseModel {
             if ($_POST['tipo_logradouro'] != "") {
                 $this->db->set('tipo_logradouro', $_POST['tipo_logradouro']);
             }
+            if ($_POST['profissional_agendar_o'] != "") {
+                $this->db->set('profissional_agendar_o', 't');
+            }else{
+                $this->db->set('profissional_agendar_o', 'f');
+            }
+
             $this->db->set('logradouro', $_POST['endereco']);
             $this->db->set('numero', $_POST['numero']);
             $this->db->set('bairro', $_POST['bairro']);
@@ -1962,6 +1968,7 @@ class Operador_model extends BaseModel {
                                 o.ocupacao_painel,
                                 o.cbo_ocupacao_id,
                                 o.solicitante,
+                                o.profissional_agendar_o,
                                 o.endereco_sistema,
                                 o.cabecalho,
                                 o.rodape,
@@ -1990,6 +1997,7 @@ class Operador_model extends BaseModel {
             $this->_cns = $return[0]->cns;
             $this->_conselho = $return[0]->conselho;
             $this->_email = $return[0]->email;
+            $this->_profissional_agendar_o = $return[0]->profissional_agendar_o;
             $this->_nascimento = $return[0]->nascimento;
             $this->_cpf = $return[0]->cpf;
             $this->_sexo = $return[0]->sexo;

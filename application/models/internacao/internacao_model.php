@@ -87,6 +87,7 @@ class internacao_model extends BaseModel {
             $this->db->set('leito', $_POST['leitoID']);
             $this->db->set('codigo', $_POST['sisreg']);
             $this->db->set('aih', $_POST['aih']);
+            $this->db->set('senha', $_POST['senha']);
             $this->db->set('prelaudo', $_POST['central']);
             $this->db->set('medico_id', $_POST['operadorID']);
             $this->db->set('data_internacao', date("Y-m-d H:i:s", strtotime(str_replace('/', '-', $_POST['data']))));
@@ -354,6 +355,7 @@ class internacao_model extends BaseModel {
 
         $this->db->select('if.internacao_ficha_questionario_id, 
                              if.observacao, 
+                             if.observacao_ligacao, 
                              if.data_cadastro,
                              ');
         $this->db->from('tb_internacao_ficha_questionario if');
@@ -1040,10 +1042,20 @@ class internacao_model extends BaseModel {
             } else {
                 $paciente_id = $_POST['txtPacienteId'];
 //                die;
-//                $this->db->set('sexo', $_POST['sexo']);
-//                $this->db->set('nome', $_POST['nome_paciente']);
-//                $this->db->where('paciente_id', $paciente_id);
-//                $this->db->update('tb_paciente');
+                $this->db->set('idade', $_POST['idade']);
+                if ($_POST['municipio_id'] > 0) {
+                    $this->db->set('municipio_id', $_POST['municipio_id']);
+                }
+                if ($_POST['convenio'] > 0) {
+                    $this->db->set('convenio_id', $_POST['convenio']);
+                }
+                if ($_POST['nascimento'] != '') {
+                    $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
+                }
+                $this->db->set('sexo', $_POST['sexo']);
+                $this->db->set('nome', $_POST['nome_paciente']);
+                $this->db->where('paciente_id', $paciente_id);
+                $this->db->update('tb_paciente');
             }
 
 
@@ -1132,8 +1144,13 @@ class internacao_model extends BaseModel {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 //            $empresa_id = $this->session->userdata('empresa_id');
-
-            $this->db->set('confirmado', 't');
+            // var_dump($_POST); die;
+            if(isset($_POST['btnEnviar'])){
+                $this->db->set('confirmado', 't');
+            }else{
+                $this->db->set('confirmado', 'f');
+            }
+            $this->db->set('observacao_ligacao', $_POST['txtobservacao']);
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->where('internacao_ficha_questionario_id', $internacao_ficha_questionario_id);

@@ -157,6 +157,8 @@ class guia_model extends Model {
                             horario_sab,
                             horario_seg_sex,
                             senha_finalizar_laudo,
+                            profissional_externo,
+                            profissional_agendar,
                             desativar_personalizacao_impressao,
                             desativar_taxa_administracao,
                             retirar_flag_solicitante');

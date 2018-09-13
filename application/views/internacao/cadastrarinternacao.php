@@ -163,6 +163,10 @@
                 <input type="text" id="txtcentral" class="texto06" name="central" value="<?= @$internacao[0]->prelaudo; ?>" />
             </div>
             <div>
+                <label>Senha</label>
+                <input type="text" id="senha" class="texto06" name="senha" value="<?= @$internacao[0]->senha; ?>" />
+            </div>
+            <div>
                 <label>Medico</label>
                 <select name="operadorID" id="txtoperadorID" class="texto08" selected="<?= @$internacao[0]->forma_de_entrada; ?>" required>
                     <option value="">Selecione</option>   
