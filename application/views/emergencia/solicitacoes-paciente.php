@@ -241,6 +241,13 @@
 
                     <input type="text" name="rg"  id="txtDocumento" class="texto04" maxlength="20" value="<?= $paciente['0']->rg; ?>" readonly/>
                 </div>
+                <div>
+                    <label>Observa&ccedil;&otilde;es</label>
+
+
+                    <input type  ="text" name="observacao" id="txtObservacao" class="texto10"  value ="<?= $paciente['0']->observacao; ?>" readonly/>
+
+                </div>
                 <!--                <div>
                                     <label>UF Expedidor</label>
                 
@@ -315,15 +322,9 @@
 
                     <input type="text" id="txtCelular" class="texto02" name="celular" alt="phone" value="<?= $paciente['0']->celular; ?>" readonly/>
                 </div>
-                <div>
-                    <label>Observa&ccedil;&otilde;es</label>
-
-
-                    <input type  ="text" name="observacao" id="txtObservacao" class="texto10"  value ="<?= $paciente['0']->observacao; ?>" readonly/>
-
-                </div>
+                
             </fieldset>
-
+            <br>
     </div>
     <div class="clear"></div>
 </div>

@@ -385,6 +385,7 @@
                                                             Receituario</a>
                                                     </div>
                                                 </td>
+                                                <? } ?>
                                                 <td>
                                                     <? if (in_array('parecercirurgia', $opc_telatendimento)) { ?>
                                                         <div class="bt_link_new">
@@ -392,9 +393,15 @@
                                                                 Parecer C.P</a></div>
                                                     <? } ?>
                                                 </td>
-
-                                            <? } ?>
-
+                                                
+                                                <td>
+                                                    <? if (in_array('laudoapendicite', $opc_telatendimento)) { ?>
+                                                        <div class="bt_link_new">
+                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherlaudoapendicite/<?= $ambulatorio_laudo_id ?>');" >
+                                                                Laudo Apendicite</a></div>
+                                                    <? } ?>
+                                                </td>
+                                              
                                             <td rowspan="5" >
 
                                             </td>

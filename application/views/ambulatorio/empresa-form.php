@@ -307,6 +307,7 @@
                                     <option value="histantigo" <?= (in_array('histantigo', $opc_telatendimento)) ? 'selected' : ''; ?>>Histórico Antigo</option>
                                     <option value="preencherform" <?= (in_array('preencherform', $opc_telatendimento)) ? 'selected' : ''; ?>>Preencher Formulário</option>
                                     <option value="parecercirurgia" <?= (in_array('parecercirurgia', $opc_telatendimento)) ? 'selected' : ''; ?>>Parecer Cirurgia Pediátrica</option>
+                                    <option value="laudoapendicite" <?= (in_array('laudoapendicite', $opc_telatendimento)) ? 'selected' : ''; ?>>Laudo Apendicite</option>
                                 </select>
                             </dd>
                         </div>
