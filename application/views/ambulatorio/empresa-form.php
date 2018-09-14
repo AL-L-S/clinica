@@ -371,6 +371,7 @@
                                         <td><input type="checkbox" id="ponto" name="ponto" <? if (@$obj->_ponto == 't') echo "checked"; ?>/></td><td><label title="Habilitar Ponto.">Ponto</label></td>                                        
                                         <td><input type="checkbox" id="botao_ativar_sala" name="botao_ativar_sala" <? if (@$obj->_botao_ativar_sala == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag o botão de reativar sala aparece.">Botão de reativar sala</label></td>
                                         <td><input type="checkbox" id="enfermagem" name="enfermagem" <? if (@$obj->_enfermagem == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag o perfil de Técnico passa a poder dar entrada e solicitar.">Enfermagem</label></td>
+                                        <td><input type="checkbox" id="integracaosollis" name="integracaosollis" <? if (@$obj->_integracaosollis == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag o sistema fará integração com a API da Sollis para o receituário médico.">Sollis</label></td>
                                     </tr>                                    
                                 </table>
                             </fieldset>

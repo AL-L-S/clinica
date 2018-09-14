@@ -60,7 +60,7 @@
     }
 
 
-
+    $integracaosollis = $this->session->userdata('integracaosollis');
     $laudo_sigiloso = $this->session->userdata('laudo_sigiloso');
     $operador_id = $this->session->userdata('operador_id');
     if (@$obj->_status == 'FINALIZADO' && $laudo_sigiloso == 't' && $operador_id != 1) {
@@ -378,14 +378,24 @@
                                     <table>
                                         <tr><td rowspan="11" >
                                                 <textarea id="laudo" name="laudo" rows="30" cols="80" style="width: 100%"><?= @$obj->_texto; ?></textarea></td>
-                                            <? if (in_array('receituario', $opc_telatendimento)) { ?>
+                                                <? if ($integracaosollis != 't') { ?>
+                                                    <? if (in_array('receituario', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
 
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                             Receituario</a>
                                                     </div>
                                                 </td>
-                                                <? } ?>
+                                                    <? } ?>
+                                                <? }else{ ?>
+                                                    <td width="40px;"><div class="bt_link_new">
+
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituariosollis/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
+                                                            Receituario Sollis</a>
+                                                    </div>
+                                                </td>
+                                                    
+                                             <?   } ?>
                                                 <td>
                                                     <? if (in_array('parecercirurgia', $opc_telatendimento)) { ?>
                                                         <div class="bt_link_new">
