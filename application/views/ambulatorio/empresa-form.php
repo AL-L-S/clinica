@@ -197,6 +197,12 @@
                             <input title="Endereço do sistema de cadastro de pacientes" type="text" id="endereco_externo" class="texto08" name="endereco_externo" value="<?= @$obj->_endereco_externo; ?>" />
                         </dd>
                         <dt>
+                            <label title="Endereço de integração com o sistema de Laboratório">Endereço Integração Lab (https://labluz.lisnet.com.br/lisnetws/APOIO/enviar)</label>
+                        </dt> 
+                        <dd>
+                            <input title="Endereço de integração com o sistema de Laboratório" type="text" id="endereco_integracao_lab" class="texto08" name="endereco_integracao_lab" value="<?= @$obj->_endereco_integracao_lab; ?>" />
+                        </dd>
+                        <dt>
                             <label title="Endereço da pasta de upload do sistema. Padrão Ubuntu: /home/sisprod/projetos/clinica/upload    Padrão no CentOS: /var/www/html/NOME DA PASTA DA CLINICA/upload">Endereço Upload (Mouse em cima para mais inf.)</label>
                         </dt> 
                         <dd>

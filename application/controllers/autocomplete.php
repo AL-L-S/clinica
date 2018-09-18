@@ -150,8 +150,7 @@ class Autocomplete extends Controller {
     function testandoIntegracaoLabLuz() {
         header('Access-Control-Allow-Origin: *');
         //Lote
-        // $grupo_busca = file_get_contents("https://labluz.lisnet.com.br/lisnetws/APOIO/enviar?body=teste");
-        // var_dump($grupo_busca); die;
+
 
         $criacaoLis = date("Y-m-d") . 'T' . date("H:i:s") . '-0300';
         $codigoLis = '112';
@@ -182,58 +181,7 @@ class Autocomplete extends Controller {
         $numero = '9999999999';
         $nome_medico = 'MEDICO';
 
-        $json_exemplo = '{
-            "lote": {
-                "codigoLis": "1",
-                "identificadorLis": "1253",
-                "origemLis": "TESTE POSTMAN",
-                "criacaoLis": "2016-08-01T06:56:52-0300",
-                "solicitacoes": {
-                    "solicitacao": [{
-                            "codigoLis": "33",
-                            "criacaoLis": "2016-06-30T21:00:00-0300",
-                            "paciente": {
-                                "codigoLis": "123",
-                                "nome": "PACIENTE TESTE",
-                                "nascimento": "1955-02-05",
-                                "sexo": "M"
-                            },
-                            "exames": {
-                                "exame": [{
-                                        "codigoLis": "COL1",
-                                        "amostraLis": "5555555",
-                                        "materialLis": "4956",
-                                        "solicitantes": {
-                                            "solicitante": [{
-                                                    "conselho": "CRM",
-                                                    "uf": "SP",
-                                                    "numero": "1",
-                                                    "nome": "MÉDICO"
-                                                }
-                                            ]
-                                        }
-                                    }, {
-                                        "codigoLis": "GLI",
-                                        "amostraLis": "5555555",
-                                        "materialLis": "4956",
-                                        "solicitantes": {
-                                            "solicitante": [{
-                                                    "conselho": "CRM",
-                                                    "uf": "SP",
-                                                    "numero": "1",
-                                                    "nome": "MÉDICO"
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        }';
-
+//////////////////////////// Definição dos Objs ////////////////////////
 
         $geral_obj = new stdClass();
         $lote_obj = new stdClass();
@@ -248,29 +196,23 @@ class Autocomplete extends Controller {
 
 ////////////// Solicitantes ////////////////////////////
         $solicitantes_obj = new stdClass();
-
-
         $solicitante_array = array();
-
-
-
         $solicitante_array[0] = new stdClass();
         $solicitante_array[0]->conselho = 'CRM';
         $solicitante_array[0]->uf = 'SP';
         $solicitante_array[0]->numero = '1';
-        $solicitante_array[0]->nome = 'MÉDICO';
-
+        $solicitante_array[0]->nome = 'MEDICO';
         $solicitantes_obj->solicitante = $solicitante_array;
         // array_push($solicitante_array, $solicitantes_obj);
 
 /////////////// Exames //////////////////      
-        $teste = array(1, 2);
+        $teste = array(1);
         $contador = 0;
 
         foreach ($teste as $item) {
             $exame_array[$contador] = new stdClass();
             $exame_array[$contador]->codigoLis = 'COL1';
-            $exame_array[$contador]->amostraLis = '5555555';
+            $exame_array[$contador]->amostraLis = '';
             $exame_array[$contador]->materialLis = '4956';
             $exame_array[$contador]->solicitantes = $solicitantes_obj;
 
@@ -303,12 +245,6 @@ class Autocomplete extends Controller {
 
 /////////////// Objeto Com o Lote //////////////////
         $geral_obj->lote = $lote_obj;
-
-
-
-
-        // $json_novo_decode = json_decode($json_novo);
-
         $json_geral = json_encode($geral_obj);
 
         // echo '<pre>';
