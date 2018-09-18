@@ -82,129 +82,143 @@
 
         </fieldset>
         <fieldset>
+            <?
+            // 
+            if (count($config) > 0) {
+                @$dependencias = json_decode(@$config[0]->tipo_dependencia);
+
+            } else {
+                @$dependencias = array();
+            }
+           
+            ?>
             <legend>Questionário</legend>
             <? $dependencia = $this->internacao_m->listartipodependenciaquestionario(); ?>
+            <fieldset>
             <div>
-                <label>Tipo de Dependência Química</label>                      
-                <select name="tipo_dependencia" id="tipo_dependencia" class="texto05" required="">
-                    <option value=''>Selecione</option>
+                <label>Tipo de Dependência</label>                      
+                <select name="tipo_dependencia[]" id="tipo_dependencia" class="texto09 chosen-select" data-placeholder="Selecione as Dependências..." multiple required="">
+                    <!-- <option value=''>Selecione</option> -->
                     <?php
                     foreach ($dependencia as $item) {
                         ?>
                         <option value="<?php echo $item->internacao_tipo_dependencia_id; ?>" 
                         <?
-                        if (@$config[0]->tipo_dependencia == $item->internacao_tipo_dependencia_id):echo 'selected';
+                        if (in_array($item->internacao_tipo_dependencia_id, @$dependencias)):echo 'selected';
                         endif;
                         ?>>
-                                    <?php echo $item->nome; ?>
+                         <?php echo $item->nome; ?>
                         </option>
                         <?php
                     }
                     ?> 
                 </select>
             </div>
-            <div>
-                <label>Idade de Inicio</label>                      
-                <input type="number" id="idade_inicio" name="idade_inicio"  class="texto02" value="<?= @$config[0]->idade_inicio ?>"/>
-            </div>
-            <div>
-                <label>O Paciente Tem ficado agressivo?</label>
-                <select id="paciente_agressivo" name="paciente_agressivo"  class="texto05" >
-                    <option value="">
-                        Selecione
-                    </option>
-                    <option value="SIM" <?= (@$config[0]->paciente_agressivo == 'SIM') ? 'selected' : ''; ?>>
-                        Sim
-                    </option>
-                    <option value="NAO" <?= (@$config[0]->paciente_agressivo == 'NAO') ? 'selected' : ''; ?>>
-                        Não
-                    </option>
-                </select>
+            </fieldset>
+                <fieldset>
+                    <div>
+                        <label>Idade de Inicio</label>                      
+                        <input type="number" id="idade_inicio" name="idade_inicio"  class="texto02" value="<?= @$config[0]->idade_inicio ?>"/>
+                    </div>
+                    <div>
+                        <label>O Paciente Tem ficado agressivo?</label>
+                        <select id="paciente_agressivo" name="paciente_agressivo"  class="texto05" >
+                            <option value="">
+                                Selecione
+                            </option>
+                            <option value="SIM" <?= (@$config[0]->paciente_agressivo == 'SIM') ? 'selected' : ''; ?>>
+                                Sim
+                            </option>
+                            <option value="NAO" <?= (@$config[0]->paciente_agressivo == 'NAO') ? 'selected' : ''; ?>>
+                                Não
+                            </option>
+                        </select>
 
-            </div>
-            <div>
-                <label>Aceita o tratamento?</label>
-                <select id="aceita_tratamento" name="aceita_tratamento"  class="texto05" required="">
-                    <option value="">
-                        Selecione
-                    </option>
-                    <option value="SIM" <?= (@$config[0]->aceita_tratamento == 'SIM') ? 'selected' : ''; ?>>
-                        Sim  
-                    </option>     
-                    <option value="NAO" <?= (@$config[0]->aceita_tratamento == 'NAO') ? 'selected' : ''; ?>>
-                        Não
-                    </option>
-                </select>
+                    </div>
+                    <div>
+                        <label>Aceita o tratamento?</label>
+                        <select id="aceita_tratamento" name="aceita_tratamento"  class="texto05" required="">
+                            <option value="">
+                                Selecione
+                            </option>
+                            <option value="SIM" <?= (@$config[0]->aceita_tratamento == 'SIM') ? 'selected' : ''; ?>>
+                                Sim  
+                            </option>     
+                            <option value="NAO" <?= (@$config[0]->aceita_tratamento == 'NAO') ? 'selected' : ''; ?>>
+                                Não
+                            </option>
+                        </select>
 
-            </div>
-            <div>
-                <label>Tomou Conhecimento da Institução Como?</label>
-                <select name="indicacao" id="indicacao" class="size2">
-                    <option value=''>Selecione</option>
-                    <?php
-                    $indicacao = $this->paciente->listaindicacao($_GET);
-                    foreach ($indicacao as $item) {
-                        ?>
-                        <option value="<?php echo $item->paciente_indicacao_id; ?>" 
-                        <?
-                        if (@$config[0]->tomou_conhecimento == $item->paciente_indicacao_id):echo 'selected';
-                        endif;
-                        ?>>
-                                    <?php echo $item->nome; ?>
-                        </option>
-                        <?php
-                    }
-                    ?> 
-                </select>
-            </div>
-            <div>
-                <label>Tem plano de saúde?</label>
-                <select id="plano_saude" name="plano_saude"  class="texto05" required>
-                    <option value="">
-                        Selecione
-                    </option>
-                    <option value="SIM" <?= (@$config[0]->plano_saude == 'SIM') ? 'selected' : ''; ?>>
-                        Sim
-                    </option>
-                    <option value="NAO" <?= (@$config[0]->plano_saude == 'NAO') ? 'selected' : ''; ?>>
-                        Não
-                    </option>
-                </select>
-            </div>
-            <div>
-                <label>Se Sim, qual?</label>
-                <select  name="convenio" id="convenio" class="texto04" required="">
-                    <option value="">Selecione</option>
-                    <?
-                    foreach ($convenio as $item) :
-                        ?>
-                        <option  value="<?= $item->convenio_id; ?>" <? if (@$config[0]->convenio_id == $item->convenio_id) echo 'selected'; ?>>
-                            <?= $item->nome; ?>
-                        </option>
-                    <? endforeach; ?>
-                </select>
-            </div>
-            <div>
-                <label>Tratamentos Anteriores</label>
-                <input type="text" name="tratamento_anterior" id="tratamento_anterior" class="texto09" value="<?= @$config[0]->tratamento_anterior ?>" />
-            </div>
-            <div>
-                <label>Telefone Para Contato</label>
-                <input type="text" name="telefone_contato" id="telefone_contato" class="texto04"  value="<?= @$config[0]->telefone_contato ?>"/>
-            </div>
-            <div>
-                <label>Município</label>
-
-
-                <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$config[0]->municipio_id ?>" readonly="true" />
-                <input required="" type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$config[0]->cidade ?>"  />
-            </div>
-            <!--            <div>
-                            <label>Nome do Paciente</label>
-                            <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  />
-                        </div>-->
+                    </div>
+                    <div>
+                        <label>Tomou Conhecimento da Institução Como?</label>
+                        <select name="indicacao" id="indicacao" class="size2">
+                            <option value=''>Selecione</option>
+                            <?php
+                            $indicacao = $this->paciente->listaindicacao($_GET);
+                            foreach ($indicacao as $item) {
+                                ?>
+                                <option value="<?php echo $item->paciente_indicacao_id; ?>" 
+                                <?
+                                if (@$config[0]->tomou_conhecimento == $item->paciente_indicacao_id):echo 'selected';
+                                endif;
+                                ?>>
+                                            <?php echo $item->nome; ?>
+                                </option>
+                                <?php
+                            }
+                            ?> 
+                        </select>
+                    </div>
+                    <div>
+                        <label>Tem plano de saúde?</label>
+                        <select id="plano_saude" name="plano_saude"  class="texto05" required>
+                            <option value="">
+                                Selecione
+                            </option>
+                            <option value="SIM" <?= (@$config[0]->plano_saude == 'SIM') ? 'selected' : ''; ?>>
+                                Sim
+                            </option>
+                            <option value="NAO" <?= (@$config[0]->plano_saude == 'NAO') ? 'selected' : ''; ?>>
+                                Não
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Se Sim, qual?</label>
+                        <select  name="convenio" id="convenio" class="texto04" required="">
+                            <option value="">Selecione</option>
+                            <?
+                            foreach ($convenio as $item) :
+                                ?>
+                                <option  value="<?= $item->convenio_id; ?>" <? if (@$config[0]->convenio_id == $item->convenio_id) echo 'selected'; ?>>
+                                    <?= $item->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Tratamentos Anteriores</label>
+                        <input type="text" name="tratamento_anterior" id="tratamento_anterior" class="texto09" value="<?= @$config[0]->tratamento_anterior ?>" />
+                    </div>
+                    <div>
+                        <label>Telefone Para Contato</label>
+                        <input type="text" name="telefone_contato" id="telefone_contato" class="texto04"  value="<?= @$config[0]->telefone_contato ?>"/>
+                    </div>
+                    <div>
+                        <label>Município</label>
 
 
+                        <input type="hidden" id="txtCidadeID" class="texto_id" name="municipio_id" value="<?= @$config[0]->municipio_id ?>" readonly="true" />
+                        <input required="" type="text" id="txtCidade" class="texto04" name="txtCidade" value="<?= @$config[0]->cidade ?>"  />
+                    </div>
+                    <!--            <div>
+                                    <label>Nome do Paciente</label>
+                                    <input type="text" name="grau_parentesco" id="grau_parentesco" class="texto04"  />
+                                </div>-->
+
+
+            </fieldset>
         </fieldset>
         <fieldset>
             <legend>Observações</legend>
@@ -255,6 +269,10 @@
         /*height: 50pt;*/
     }
 </style>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>

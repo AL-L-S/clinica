@@ -224,6 +224,76 @@ class Autocomplete extends Controller {
         $xml_final = $xml_PT1 . $xml_PT2 . $xml_PT3;
 
 
+        echo '<pre>';
+        $json_novo = '{
+            "lote": {
+                "codigoLis": "1",
+                "identificadorLis": "1253",
+                "origemLis": "TESTE POSTMAN",
+                "criacaoLis": "2016-08-01T06:56:52-0300",
+                "solicitacoes": {
+                    "solicitacao": [{
+                            "codigoLis": "33",
+                            "criacaoLis": "2016-06-30T21:00:00-0300",
+                            "paciente": {
+                                "codigoLis": "123",
+                                "nome": "PACIENTE TESTE",
+                                "nascimento": "1955-02-05",
+                                "sexo": "M"
+                            },
+                            "exames": {
+                                "exame": [{
+                                        "codigoLis": "COL1",
+                                        "amostraLis": "5555555",
+                                        "materialLis": "4956",
+                                        "solicitantes": {
+                                            "solicitante": [{
+                                                    "conselho": "CRM",
+                                                    "uf": "SP",
+                                                    "numero": "1",
+                                                    "nome": "MÉDICO"
+                                                }
+                                            ]
+                                        }
+                                    }, {
+                                        "codigoLis": "GLI",
+                                        "amostraLis": "5555555",
+                                        "materialLis": "4956",
+                                        "solicitantes": {
+                                            "solicitante": [{
+                                                    "conselho": "CRM",
+                                                    "uf": "SP",
+                                                    "numero": "1",
+                                                    "nome": "MÉDICO"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }';
+        $geral_obj = new stdClass();
+        $lote_obj = new stdClass();
+        $solicitacoes_obj = new stdClass();
+        $solicitacao_obj = new stdClass();
+        $solicitacao_array = array();
+        $solicitacao_obj = new stdClass();
+        $paciente_obj = new stdClass();
+        $exames_obj = new stdClass();
+        $exame_obj = new stdClass();
+        $exame_array = array();
+        $solicitantes_obj = new stdClass();
+
+
+
+        $json_novo_decode = json_decode($json_novo);
+        var_dump($json_novo_decode); die;
+
+
         $postdata = http_build_query(
             array(
                 'body' => $xml_final,
@@ -239,9 +309,9 @@ class Autocomplete extends Controller {
             )
         );
         
-        $context  = stream_context_create($opts);
+        // $context  = stream_context_create($opts);
         
-        $result = file_get_contents(base_url() . 'autocomplete/enviarCurlLabLuz', false, $context);
+        // $result = file_get_contents(base_url() . 'autocomplete/enviarCurlLabLuz', false, $context);
 
         // var_dump($result); die;
         

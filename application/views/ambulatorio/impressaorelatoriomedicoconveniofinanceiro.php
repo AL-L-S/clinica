@@ -829,8 +829,10 @@ switch ($MES) {
                         <input type="hidden" class="texto3" name="nome" value="<?= $medico[0]->credor_devedor_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="conta" value="<?= $medico[0]->conta_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="classe" value="<?= $medico[0]->classe; ?>" readonly/>
+                        <input type="hidden" class="texto3" name="operador_id" value="<?= $medico[0]->operador_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="observacao" value="<?= "Período " . substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) . " até " . substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4) . " médico: " . $medico[0]->operador; ?>" readonly/>
                         <input type="hidden" class="texto3" name="data" value="<?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) ?>" readonly/>
+                        <input type="hidden" class="texto3" name="data_fim" value="<?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4) ?>" readonly/>
                         <input type="hidden" class="texto3" name="valor" value="<?= $resultado; ?>" readonly/>
                         <?
                         $j = 0;

@@ -37,6 +37,9 @@
             $medicos = $this->operador_m->listarmedicos();
             $perfil_id = $this->session->userdata('perfil_id');
             $procedimento = $this->procedimento->listarprocedimento2();
+            $empresa_id = $this->session->userdata('empresa_id');
+            $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
+            @$endereco = $data['empresa'][0]->endereco_toten;
             ?>
 
             <table>
@@ -188,7 +191,27 @@
                             $teste = $diff->format('%H:%I:%S');
 
                             $verifica = 0;
-
+                            if ($item->paciente != '') {
+                                if ($item->cpf != '') {
+                                    $cpf = $item->cpf;
+                                } else {
+                                    $cpf = 'null';
+                                }
+                                if ($item->toten_fila_id != '') {
+                                    $toten_fila_id = $item->toten_fila_id;
+                                } else {
+                                    $toten_fila_id = 'null';
+                                }
+                                if ($item->toten_sala_id != '') {
+                                    $toten_sala_id = $item->toten_sala_id;
+                                } else {
+                                    $toten_sala_id = 'null';
+                                }
+                                $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$toten_fila_id/$item->paciente/$cpf/$item->medico_consulta_id/$item->medicoconsulta/$toten_sala_id/false";
+                            } else {
+                                $url_enviar_ficha = '';
+                            }
+                            
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             if (($item->realizada == 't' && $item->situacaolaudo != 'FINALIZADO') && $item->situacaoexame != 'PENDENTE') {
                                 $situacao = "Aguardando";
@@ -270,9 +293,17 @@
                                 <? } else { ?>
                                     <? if ($verifica == 3) { ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
-                                            <div class="bt_link">
-                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpacientesalaespera/<?= $item->agenda_exames_id ?>');" >Chamar</a>
-                                            </div>
+                                        <? if ($endereco != '') { ?>
+                                                <div class="bt_link">
+                                                    <a onclick="chamarPaciente('<?= $url_enviar_ficha ?>', <?= $toten_fila_id ?>, <?= $item->medico_consulta_id ?>, <?= $toten_sala_id ?>);" >Chamar</a>
+                                                </div>  
+                                            <?
+                                        } else { ?>
+                                                <div class="bt_link">
+                                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/chamarpacientesalaespera/<?= $item->agenda_exames_id ?>');" >Chamar</a>
+                                                </div>  
+                                            <?
+                                        } ?>
                                         </td>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
                                             <div class="bt_link">
@@ -446,6 +477,62 @@
 
                                                     });
 
+<? if (($endereco != '')) { ?>
+  function chamarPaciente(url, toten_fila_id, medico_id, toten_sala_id) {
+    //   alert(url);
+      $.ajax({
+          type: "POST",
+          data: {teste: 'teste'},
+          //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+          url: url,
+          success: function (data) {
+              //                console.log(data);
+              //                    alert(data.id);
+              $("#idChamada").val(data.id);
+
+          },
+          error: function (data) {
+              console.log(data);
+              //                alert('DEU MERDA');
+          }
+      });
+
+
+      $.ajax({
+          type: "POST",
+          data: {teste: 'teste'},
+          //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+          url: "<?= $endereco ?>/webService/telaChamado/proximo/" + medico_id + '/ '+ toten_fila_id +'/' + toten_sala_id,
+          success: function (data) {
+
+              alert('Operação efetuada com sucesso');
+
+
+          },
+          error: function (data) {
+              console.log(data);
+              alert('Erro ao chamar paciente');
+          }
+      });
+      $.ajax({
+          type: "POST",
+          data: {teste: 'teste'},
+          //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+          url: "<?= $endereco ?>/webService/telaChamado/cancelar/" + toten_fila_id,
+          success: function (data) {
+
+              //                            alert('Operação efetuada com sucesso');
+
+
+          },
+          error: function (data) {
+              console.log(data);
+              //                            alert('Erro ao chamar paciente');
+          }
+      });
+  }
+
+<? } ?>
                                                     setInterval(function () {
                                                         window.location.reload();
                                                     }, 60000);
