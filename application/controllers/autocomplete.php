@@ -182,50 +182,7 @@ class Autocomplete extends Controller {
         $numero = '9999999999';
         $nome_medico = 'MEDICO';
 
-        $teste = array(0 => '', 1 => '');
-
-        // A Você que verá o código a seguir, sinto muito, mas era o único jeito.
-
-        $xml_PT1 = "<lote codigoLis='$codigoLis' identificadorLis='$identificadorLis' origemLis='$origemLis'
-        criacaoLis='$criacaoLis'>
-        <solicitacoes>
-                <solicitacao codigoLis='$solCodigoLis' criacaoLis='$criacaoLis'
-                    codigoConvenio='$codigoConvenio' descConvenio='$descConvenio' codigoPlano='$codigoPlano'
-                    descricaoPlano='$descricaoPlano'>
-
-                    <paciente codigoLis='$pacienteCodigoLis' nome='$nome'
-                    nascimento='$nascimento' sexo='$sexo'/>
-
-                    <exames>
-                    
-                    ";
-                    
-        $xml_PT2 = '';
-
-        foreach ($teste as $item){
-
-            $string = "<exame codigoLis='$exameCodigoLis' amostraLis='$amostraLis' materialLis='$materialLis'>
-                                <solicitantes>
-                                    <solicitante conselho='$conselho' uf='$uf' numero='$numero'
-                                    nome='$nome_medico'/>
-                                </solicitantes>
-                        </exame>
-                        
-                        ";
-            $xml_PT2  =$xml_PT2 . $string;
-        }
-
-        $xml_PT3 = '</exames>
-
-                    </solicitacao>
-            </solicitacoes>
-            </lote>';
-         
-        $xml_final = $xml_PT1 . $xml_PT2 . $xml_PT3;
-
-
-        echo '<pre>';
-        $json_novo = '{
+        $json_exemplo = '{
             "lote": {
                 "codigoLis": "1",
                 "identificadorLis": "1253",
@@ -276,6 +233,8 @@ class Autocomplete extends Controller {
                 }
             }
         }';
+
+
         $geral_obj = new stdClass();
         $lote_obj = new stdClass();
         $solicitacoes_obj = new stdClass();
@@ -284,19 +243,83 @@ class Autocomplete extends Controller {
         $solicitacao_obj = new stdClass();
         $paciente_obj = new stdClass();
         $exames_obj = new stdClass();
-        $exame_obj = new stdClass();
+
         $exame_array = array();
+
+////////////// Solicitantes ////////////////////////////
         $solicitantes_obj = new stdClass();
 
 
+        $solicitante_array = array();
 
-        $json_novo_decode = json_decode($json_novo);
-        var_dump($json_novo_decode); die;
+
+
+        $solicitante_array[0] = new stdClass();
+        $solicitante_array[0]->conselho = 'CRM';
+        $solicitante_array[0]->uf = 'SP';
+        $solicitante_array[0]->numero = '1';
+        $solicitante_array[0]->nome = 'MÉDICO';
+
+        $solicitantes_obj->solicitante = $solicitante_array;
+        // array_push($solicitante_array, $solicitantes_obj);
+
+/////////////// Exames //////////////////      
+        $teste = array(1, 2);
+        $contador = 0;
+
+        foreach ($teste as $item) {
+            $exame_array[$contador] = new stdClass();
+            $exame_array[$contador]->codigoLis = 'COL1';
+            $exame_array[$contador]->amostraLis = '5555555';
+            $exame_array[$contador]->materialLis = '4956';
+            $exame_array[$contador]->solicitantes = $solicitantes_obj;
+
+            $contador++;
+        }
+        $exames_obj->exame = $exame_array;
+///////////////// Paciente ////////////////
+
+        $paciente_obj->codigoLis = $pacienteCodigoLis;
+        $paciente_obj->nome = $nome;
+        $paciente_obj->nascimento = $nascimento;
+        $paciente_obj->sexo = $sexo;
+
+///////////////// Solicitacao /////////////////////////
+
+        $solicitacao_array[0] = new stdClass();
+        $solicitacao_array[0]->codigoLis = $solCodigoLis;
+        $solicitacao_array[0]->criacaoLis = $criacaoLis;
+        $solicitacao_array[0]->paciente = $paciente_obj;
+        $solicitacao_array[0]->exames = $exames_obj;
+
+        $solicitacoes_obj->solicitacao = $solicitacao_array;
+////////////////  Lote ////////////////////////
+
+        $lote_obj->codigoLis = $codigoLis;
+        $lote_obj->identificadorLis = $identificadorLis;
+        $lote_obj->origemLis = $origemLis;
+        $lote_obj->criacaoLis = $criacaoLis;
+        $lote_obj->solicitacoes = $solicitacoes_obj;
+
+/////////////// Objeto Com o Lote //////////////////
+        $geral_obj->lote = $lote_obj;
+
+
+
+
+        // $json_novo_decode = json_decode($json_novo);
+
+        $json_geral = json_encode($geral_obj);
+
+        // echo '<pre>';
+        // var_dump($json_geral);
+        // var_dump($json_novo_decode);
+        // die;
 
 
         $postdata = http_build_query(
             array(
-                'body' => $xml_final,
+                'body' => $json_exemplo,
                 'url' => 'https://labluz.lisnet.com.br/lisnetws/APOIO/enviar',
             )
         );
@@ -309,19 +332,19 @@ class Autocomplete extends Controller {
             )
         );
         
-        // $context  = stream_context_create($opts);
+        $context  = stream_context_create($opts);
         
-        // $result = file_get_contents(base_url() . 'autocomplete/enviarCurlLabLuz', false, $context);
+        $result = file_get_contents(base_url() . 'autocomplete/enviarCurlLabLuz', false, $context);
 
         // var_dump($result); die;
         
-        $xml = simplexml_load_string($result);
-        $json = json_encode($xml);
-        $array = json_decode($json,TRUE);
-        echo '<pre>';
-        var_dump($array);
+        // $xml = simplexml_load_string($result);
+        // $json = json_encode($xml);
+        $decode_result = json_decode($result);
+        // echo '<pre>';
+        echo $result;
         // var_dump($result);
-        // var_dump($xml_string);
+        // var_dump($decode_result);
         die;
 
     }
