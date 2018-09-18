@@ -126,6 +126,12 @@
 
                 <input type="text" name="rg" <?= (in_array('rg', $campos_obrigatorios)) ? 'required' : '' ?>  id="txtDocumento" class="texto04" maxlength="20" value="<?= @$obj->_documento; ?>" />
             </div>
+            <div>
+                <label>Observação</label>
+
+
+                <input type="text" name="obs"  id="obs" class="texto09" value="<?= @$obj->_observacao; ?>" />
+            </div>
             <!--            <div>
                             <label>UF Expedidor</label>
             

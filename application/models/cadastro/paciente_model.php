@@ -236,7 +236,7 @@ class paciente_model extends BaseModel {
     private function instanciar($paciente_id) {
         if ($paciente_id != 0) {
 
-            $this->db->select('tp.tipo_logradouro_id as codigo_logradouro,co.convenio_id as convenio,p.escolaridade_id, co.nome as descricaoconvenio,cbo.descricao as cbo_nome, tp.descricao,p.*,c.nome as cidade_desc,c.municipio_id as cidade_cod');
+            $this->db->select('p.observacao, tp.tipo_logradouro_id as codigo_logradouro,co.convenio_id as convenio,p.escolaridade_id, co.nome as descricaoconvenio,cbo.descricao as cbo_nome, tp.descricao,p.*,c.nome as cidade_desc,c.municipio_id as cidade_cod');
             $this->db->from('tb_paciente p');
             $this->db->join('tb_municipio c', 'c.municipio_id = p.municipio_id', 'left');
             $this->db->join('tb_convenio co', 'co.convenio_id = p.convenio_id', 'left');
@@ -413,6 +413,7 @@ class paciente_model extends BaseModel {
                 $this->db->set('escolaridade_id', $_POST['escolaridade']);
             }
             $this->db->set('rg', $_POST['rg']);
+            $this->db->set('observacao', $_POST['obs']);
 //            $this->db->set('uf_rg', $_POST['uf_rg']);
 //            $this->db->set('titulo_eleitor', $_POST['titulo_eleitor']);
             $this->db->set('sexo', $_POST['sexo']);

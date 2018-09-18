@@ -3178,20 +3178,24 @@ class exametemp_model extends Model {
         }
     }
     
-    function gravarhorarioencaixegeral2() {
+    function gravarhorarioencaixegeral2($agenda_exames_id) {
         try {
             
-//            var_dump();die;
-
-            if ($_POST['horarios'] != "") {
+            $this->db->select('ae.agenda_exames_nome_id, ae.data, ae.medico_agenda');
+            $this->db->from('tb_agenda_exames ae');            
+            $this->db->where('agenda_exames_id', $agenda_exames_id);          
+            $return = $this->db->get()->result();                        
+            
+//            var_dump($return);die;
+            
                 $empresa_id = $this->session->userdata('empresa_id');
                 $this->db->set('empresa_id', $empresa_id);
                 if (isset($_POST['tipo'])) {
                     $this->db->set('tipo', $_POST['tipo']);
                 }
-                $_POST['data'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data'])));
+//                $_POST['data'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data'])));
 
-                $this->db->set('agenda_exames_nome_id', $_POST['sala']);
+                $this->db->set('agenda_exames_nome_id', $return[0]->agenda_exames_nome_id);
                 $this->db->set('ativo', 't');
                 $this->db->set('encaixe', 't');
                 $this->db->set('cancelada', 'f');
@@ -3200,20 +3204,20 @@ class exametemp_model extends Model {
                 $this->db->set('observacoes', $_POST['obs']);
                 $data = date("Y-m-d");
                 $hora = date("H:i:s");
-                $this->db->set('medico_consulta_id', $_POST['medico']);
-                $this->db->set('medico_agenda', $_POST['medico']);
+                $this->db->set('medico_consulta_id', $return[0]->medico_agenda);
+                $this->db->set('medico_agenda', $return[0]->medico_agenda);
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
 
-                $this->db->set('data_inicio', $_POST['data_ficha']);
+                $this->db->set('data_inicio', $return[0]->data);
                 $this->db->set('fim', $_POST['horarios']);
                 $this->db->set('inicio', $_POST['horarios']);
-                $this->db->set('data_fim', $_POST['data_ficha']);
-                $this->db->set('data', $_POST['data_ficha']);
+                $this->db->set('data_fim', $return[0]->data);
+                $this->db->set('data', $return[0]->data);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_agenda_exames');
-            }
+            
             return $paciente_id;
         } catch (Exception $exc) {
             return $paciente_id;

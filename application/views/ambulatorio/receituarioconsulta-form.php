@@ -131,6 +131,7 @@
 
                             </tr>-->
                         </table>
+                        
                         <hr>
                         <div>
                             <label id="titulosenha">Senha</label>
@@ -183,7 +184,9 @@
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_receituario_id; ?>');">Editar
                                         </a></div>
                                     </td>
-                                 <? }
+                                 <? } else{ ?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"></td>
+                                <? }
                                 }?>
 
                             </tr>

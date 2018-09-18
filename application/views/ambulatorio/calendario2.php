@@ -167,13 +167,13 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                             </a>
                         </div>
                     </th>
-                    <th>
+<!--                    <th>
                         <div class="bt_link_new">
                             <a class="btnTexto" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exametemp/novohorarioencaixegeral');">
                                 Encaixar Horario
                             </a>
                         </div>
-                    </th>
+                    </th>-->
                 </tr>
 
 
@@ -461,10 +461,10 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                         <tr id="encaixe" height="50px" style="display:none">
                             <td class="<?php echo $estilo_linha; ?>"><div style="font-size: 8pt; margin-left: 2pt"><?= $lista[0]->empresa; ?></div></td> 
 
-                            <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $lista[0]->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">agenda</b></td>
+                            <td class="<?php echo $estilo_linha; ?>"><b>agenda</b></td>
 
                             <td class="<?php echo $estilo_linha; ?>"><?= substr($lista[0]->data, 8, 2) . "/" . substr($lista[0]->data, 5, 2) . "/" . substr($lista[0]->data, 0, 4); ?></td>
-                            <td class="<?php echo $estilo_linha; ?>"><input type="text" id="horarios" alt="time" class="size1" name="horarios" required/></td>
+                            <td class="<?php echo $estilo_linha; ?>"><input type="text" id="horarios" alt="time" class="size1" name="horarios" required=""/></td>
                             <td class="<?php echo $estilo_linha; ?>"><b><?= $lista[0]->paciente; ?></b></td>
 
                             <td class="<?php echo $estilo_linha; ?>"><span class="vermelho">Encaixe H.</span></td> 
@@ -479,176 +479,176 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                             <td class="<?php echo $estilo_linha; ?>" style="color:green"><?= $lista[0]->sala; ?></td> 
                             <td class="<?php echo $estilo_linha; ?>" style="color:green"><?= $lista[0]->medicoagenda; ?></td> 
                             <td colspan="2" class="<?php echo $estilo_linha; ?>"><input type="text" id="obs" class="size2" name="obs"/></td>
-                        
+
                             <td colspan="2" class="<?php echo $estilo_linha; ?>"><button type="submit" id="enviar">Encaixar</button></td>
                         </tr>
                     </form>
-                        <?php
+                    <?php
 //                        var_dump($item->situacaoexame);
 //                        die;
-                        $estilo_linha = "tabela_content01";
-                        foreach ($lista as $item) {
-                            $dataFuturo = date("Y-m-d H:i:s");
-                            $dataAtual = $item->data_atualizacao;
+                    $estilo_linha = "tabela_content01";
+                    foreach ($lista as $item) {
+                        $dataFuturo = date("Y-m-d H:i:s");
+                        $dataAtual = $item->data_atualizacao;
 
-                            if ($item->celular != "") {
-                                $telefone = $item->celular;
-                            } elseif ($item->telefone != "") {
-                                $telefone = $item->telefone;
-                            } else {
-                                $telefone = "";
-                            }
+                        if ($item->celular != "") {
+                            $telefone = $item->celular;
+                        } elseif ($item->telefone != "") {
+                            $telefone = $item->telefone;
+                        } else {
+                            $telefone = "";
+                        }
 
-                            $date_time = new DateTime($dataAtual);
-                            $diff = $date_time->diff(new DateTime($dataFuturo));
-                            $teste = $diff->format('%H:%I:%S');
-                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                        $date_time = new DateTime($dataAtual);
+                        $diff = $date_time->diff(new DateTime($dataFuturo));
+                        $teste = $diff->format('%H:%I:%S');
+                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
 
-                            $faltou = false;
-                            if ($item->paciente == "" && $item->bloqueado == 't') {
-                                $situacao = "Bloqueado";
-                                $paciente = "Bloqueado";
-                                $verifica = 5;
-                            } else {
-                                $paciente = "";
+                        $faltou = false;
+                        if ($item->paciente == "" && $item->bloqueado == 't') {
+                            $situacao = "Bloqueado";
+                            $paciente = "Bloqueado";
+                            $verifica = 5;
+                        } else {
+                            $paciente = "";
 
-                                if ($item->realizada == 't' && $item->situacaoexame == 'EXECUTANDO') {
-                                    $situacao = "Atendendo";
-                                    $verifica = 2;
-                                } elseif ($item->realizada == 't' && $item->situacaoexame == 'FINALIZADO') {
-                                    $situacao = "Finalizado";
-                                    $verifica = 4;
-                                } elseif ($item->confirmado == 'f' && $item->operador_atualizacao == null) {
-                                    $situacao = "agenda";
-                                    $verifica = 1;
-                                } elseif ($item->confirmado == 'f' && $item->operador_atualizacao != null) {
-                                    $verifica = 6;
-                                    date_default_timezone_set('America/Fortaleza');
-                                    $data_atual = date('Y-m-d');
-                                    $hora_atual = date('H:i:s');
-                                    if ($item->data < $data_atual) {
-                                        $situacao = "<font color='gray'>faltou";
-                                        $faltou = true;
-                                    } else {
-                                        $situacao = "agendado";
-                                    }
+                            if ($item->realizada == 't' && $item->situacaoexame == 'EXECUTANDO') {
+                                $situacao = "Atendendo";
+                                $verifica = 2;
+                            } elseif ($item->realizada == 't' && $item->situacaoexame == 'FINALIZADO') {
+                                $situacao = "Finalizado";
+                                $verifica = 4;
+                            } elseif ($item->confirmado == 'f' && $item->operador_atualizacao == null) {
+                                $situacao = "agenda";
+                                $verifica = 1;
+                            } elseif ($item->confirmado == 'f' && $item->operador_atualizacao != null) {
+                                $verifica = 6;
+                                date_default_timezone_set('America/Fortaleza');
+                                $data_atual = date('Y-m-d');
+                                $hora_atual = date('H:i:s');
+                                if ($item->data < $data_atual) {
+                                    $situacao = "<font color='gray'>faltou";
+                                    $faltou = true;
                                 } else {
-                                    $situacao = "espera";
-                                    $verifica = 3;
+                                    $situacao = "agendado";
+                                }
+                            } else {
+                                $situacao = "espera";
+                                $verifica = 3;
+                            }
+                        }
+                        if ($item->paciente == "" && $item->bloqueado == 'f') {
+                            $paciente = "vago";
+                        }
+                        $data = $item->data;
+                        $dia = strftime("%A", strtotime($data));
+
+                        switch ($dia) {
+                            case"Sunday": $dia = "Domingo";
+                                break;
+                            case"Monday": $dia = "Segunda";
+                                break;
+                            case"Tuesday": $dia = "Terça";
+                                break;
+                            case"Wednesday": $dia = "Quarta";
+                                break;
+                            case"Thursday": $dia = "Quinta";
+                                break;
+                            case"Friday": $dia = "Sexta";
+                                break;
+                            case"Saturday": $dia = "Sabado";
+                                break;
+                        }
+                        $cor = '';
+                        if ($verifica == 1) {
+                            $cor = '';
+                        }
+                        if ($verifica == 2) {
+                            $cor = 'green';
+                        }
+                        if ($verifica == 3) {
+                            $cor = 'red';
+                        }
+                        if ($verifica == 4) {
+                            $cor = 'blue';
+                        }
+                        if ($verifica == 5) {
+                            $cor = 'gray';
+                        }
+                        ?>
+
+                        <tr>
+                            <td class="<?php echo $estilo_linha; ?>">
+                                <div style="font-size: 8pt; margin-left: 2pt"><?= $item->empresa; ?></div>
+                            </td>
+                            <?
+                            if ($verifica == 1) {
+                                if ($item->ocupado == 't') {
+                                    ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><b><strike><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></strike></b></td>
+
+                                <? } else {
+                                    ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></b></td>
+
+                                    <?
                                 }
                             }
-                            if ($item->paciente == "" && $item->bloqueado == 'f') {
-                                $paciente = "vago";
-                            }
-                            $data = $item->data;
-                            $dia = strftime("%A", strtotime($data));
 
-                            switch ($dia) {
-                                case"Sunday": $dia = "Domingo";
-                                    break;
-                                case"Monday": $dia = "Segunda";
-                                    break;
-                                case"Tuesday": $dia = "Terça";
-                                    break;
-                                case"Wednesday": $dia = "Quarta";
-                                    break;
-                                case"Thursday": $dia = "Quinta";
-                                    break;
-                                case"Friday": $dia = "Sexta";
-                                    break;
-                                case"Saturday": $dia = "Sabado";
-                                    break;
-                            }
-                            $cor = '';
-                            if ($verifica == 1) {
-                                $cor = '';
-                            }
                             if ($verifica == 2) {
-                                $cor = 'green';
+                                ?>
+
+                                <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
+
+                                <?
                             }
+
+
                             if ($verifica == 3) {
-                                $cor = 'red';
+                                ?>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
+
+                                <?
                             }
+
                             if ($verifica == 4) {
-                                $cor = 'blue';
+                                ?>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
+
+                                <?
                             }
+
                             if ($verifica == 5) {
-                                $cor = 'gray';
+                                ?>
+                                <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
+
+                                <?
+                            }
+
+
+                            if ($verifica == 6) {
+                                if ($item->ocupado == 't') {
+                                    ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><b><strike><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></strike></b></td>
+
+                                <? } else {
+                                    ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></b></td>
+
+                                    <?
+                                }
                             }
                             ?>
-
-                            <tr>
-                                <td class="<?php echo $estilo_linha; ?>">
-                                    <div style="font-size: 8pt; margin-left: 2pt"><?= $item->empresa; ?></div>
-                                </td>
-                                <?
-                                if ($verifica == 1) {
-                                    if ($item->ocupado == 't') {
-                                        ?>
-                                        <td class="<?php echo $estilo_linha; ?>"><b><strike><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></strike></b></td>
-
-                                    <? } else {
-                                        ?>
-                                        <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></b></td>
-
-                                        <?
-                                    }
-                                }
-
-                                if ($verifica == 2) {
-                                    ?>
-
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
-
-                                    <?
-                                }
-
-
-                                if ($verifica == 3) {
-                                    ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
-
-                                    <?
-                                }
-
-                                if ($verifica == 4) {
-                                    ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
-
-                                    <?
-                                }
-
-                                if ($verifica == 5) {
-                                    ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendadoauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');"><?= $situacao; ?></b></td>
-
-                                    <?
-                                }
-
-
-                                if ($verifica == 6) {
-                                    if ($item->ocupado == 't') {
-                                        ?>
-                                        <td class="<?php echo $estilo_linha; ?>"><b><strike><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></strike></b></td>
-
-                                    <? } else {
-                                        ?>
-                                        <td class="<?php echo $estilo_linha; ?>"><b><a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/agendaauditoria/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=200');"><?= $situacao; ?></b></td>
-
-                                        <?
-                                    }
-                                }
-                                ?>
-                                <?
-                                //  echo "<pre>";
+                            <?
+                            //  echo "<pre>";
 //                                    var_dump($lista);die;
-                                ?>
-                                <!-- RESPONSAVEL -->
-                                <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
+                            ?>
+                            <!-- RESPONSAVEL -->
+                            <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
 
-                                <!-- DATA, DIA E AGENDA -->
-                                <? if ($item->ocupado == 't') { ?>
-                                    <td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>
+                            <!-- DATA, DIA E AGENDA -->
+                            <? if ($item->ocupado == 't') { ?>
+                                <td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>
                             <td class="<?php echo $estilo_linha; ?>"><strike><?= $item->inicio; ?></strike></td>
                             <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><?= $item->paciente; ?></b></td>
                         <? } else { ?>
@@ -715,10 +715,10 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
 
                         <? } ?>  
                         <!-- OBSERVAÇOES -->
-                        <!--<td class="<?php // echo $estilo_linha;                            ?>"><?= $item->observacoes; ?></td>-->
+                        <!--<td class="<?php // echo $estilo_linha;                             ?>"><?= $item->observacoes; ?></td>-->
 
                         <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style=" cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                                                                                                                                                width=500,height=400');">=><?= $item->observacoes; ?></td>
+                                                                                                                                                                                                                                                                                                                        width=500,height=400');">=><?= $item->observacoes; ?></td>
                             <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
@@ -794,6 +794,10 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                             }
                         }
                         ?>
+                        <td id="encaixarlateral" class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                <b>Encaixar</b>      </div>
+                        </td>
+
 
                         </tr>
 
@@ -805,7 +809,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="15">
-                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
 
                         </th>
                     </tr>
@@ -839,275 +843,275 @@ if (@$_GET['sala'] != '') {
 
 //alert();
 <? if ($sala_atual != 0) { ?>
-                                var sala_atual = <?= $sala_atual ?>;
+                                                var sala_atual = <?= $sala_atual ?>;
 <? } else { ?>
-                                var sala_atual = '';
+                                                var sala_atual = '';
 <? } ?>
 
-                            if ($('#grupo').val()) {
+                                            if ($('#grupo').val()) {
 
 //        alert($('#grupo').val());
-                                $('.carregando').show();
+                                                $('.carregando').show();
 //                                                        alert('teste_parada');
-                                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
-                                    options = '<option value=""></option>';
+                                                $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+                                                    options = '<option value=""></option>';
 //                    alert(j);
-                                    sala_atual = <?= $sala_atual ?>;
-                                    for (var c = 0; c < j.length; c++) {
-                                        if (sala_atual == j[c].exame_sala_id) {
-                                            options += '<option selected value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                                        } else {
-                                            options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                                        }
+                                                    sala_atual = <?= $sala_atual ?>;
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        if (sala_atual == j[c].exame_sala_id) {
+                                                            options += '<option selected value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                                        } else {
+                                                            options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                                        }
 
-                                    }
+                                                    }
 
-                                    $('#sala').html(options).show();
-                                    $('.carregando').hide();
+                                                    $('#sala').html(options).show();
+                                                    $('.carregando').hide();
 
 
 
-                                });
-                            }
+                                                });
+                                            }
 
-                            if ($('#grupo').val()) {
+                                            if ($('#grupo').val()) {
 
 //        alert($('#grupo').val());
-                                $('.carregando').show();
+                                                $('.carregando').show();
 //                                                        alert('teste_parada');
-                                $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
-                                    options = '<option value=""></option>';
-                                    var empresa_atual = '<?= ($empresa_atual != '' ? $empresa_atual : '') ?>';
-                                    for (var c = 0; c < j.length; c++) {
-                                        if (empresa_atual == j[c].empresa_id) {
-                                            options += '<option selected value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
-                                        } else {
-                                            options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
-                                        }
+                                                $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+                                                    options = '<option value=""></option>';
+                                                    var empresa_atual = '<?= ($empresa_atual != '' ? $empresa_atual : '') ?>';
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        if (empresa_atual == j[c].empresa_id) {
+                                                            options += '<option selected value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                                                        } else {
+                                                            options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                                                        }
 
-                                    }
-                                    $('#empresa').html(options).show();
-                                    $('.carregando').hide();
+                                                    }
+                                                    $('#empresa').html(options).show();
+                                                    $('.carregando').hide();
 
 
 
-                                });
-                            }
+                                                });
+                                            }
 
 //alert($('#medico').val());
-                            $(function () {
-                                $("#accordion").accordion();
-                            });
-                            $("#botaosala").click(function () {
-                                $("#sala-de-espera").toggle("fast", function () {
-                                    // Animation complete.
-                                });
-                            });
+                                            $(function () {
+                                                $("#accordion").accordion();
+                                            });
+                                            $("#botaosala").click(function () {
+                                                $("#sala-de-espera").toggle("fast", function () {
+                                                    // Animation complete.
+                                                });
+                                            });
 
-                            $("#botaosalaesconder").click(function () {
-                                $("#sala-de-espera").hide("fast", function () {
-                                    // Animation complete.
-                                });
-                            });
+                                            $("#botaosalaesconder").click(function () {
+                                                $("#sala-de-espera").hide("fast", function () {
+                                                    // Animation complete.
+                                                });
+                                            });
 
 
 //    function date() {
-                            if ($('#nome').val() != '') {
-                                var paciente = '<?= $nome ?>';
-                            } else {
-                                var paciente = '';
-                            }
+                                            if ($('#nome').val() != '') {
+                                                var paciente = '<?= $nome ?>';
+                                            } else {
+                                                var paciente = '';
+                                            }
 //    alert('<?= $sala_atual ?>');
-                            $('#calendar').fullCalendar({
-                                header: {
-                                    left: 'prev,next',
-                                    center: 'title',
-                                    right: 'today'
-                                },
-                                height: 400,
+                                            $('#calendar').fullCalendar({
+                                                header: {
+                                                    left: 'prev,next',
+                                                    center: 'title',
+                                                    right: 'today'
+                                                },
+                                                height: 400,
 //        theme: true,
-                                dayRender: function (date, cell) {
-                                    var data_escolhida = $('#data').val();
-                                    var today = moment(new Date()).format('YYYY-MM-DD');
-                                    var check = moment(date).format('YYYY-MM-DD');
+                                                dayRender: function (date, cell) {
+                                                    var data_escolhida = $('#data').val();
+                                                    var today = moment(new Date()).format('YYYY-MM-DD');
+                                                    var check = moment(date).format('YYYY-MM-DD');
 //            alert(data_escolhida);
 //            var today = $.fullCalendar.formatDate(new Date(), 'yyyy-MM-dd');
-                                    if (data_escolhida == check && data_escolhida != today) {
-                                        cell.css("background-color", "#BCD2EE");
-                                    }
-                                },
-                                dayClick: function (date, cell) {
-                                    var data = date.format();
+                                                    if (data_escolhida == check && data_escolhida != today) {
+                                                        cell.css("background-color", "#BCD2EE");
+                                                    }
+                                                },
+                                                dayClick: function (date, cell) {
+                                                    var data = date.format();
 //            cell.css("background-color", "#BCD2EE");
-                                    window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario2?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() + '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=' + paciente + '', '_self');
+                                                    window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario2?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() + '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=' + paciente + '', '_self');
 
 
 
-                                },
+                                                },
 //        eventDragStop: function (date, jsEvent, view) {
 ////            alert(date.format());
 //        },
 //        navLinks: true,
-                                showNonCurrentDates: false,
+                                                showNonCurrentDates: false,
 //            weekends: false,
 
 //                navLinks: true, // can click day/week names to navigate views
-                                defaultDate: '<?= $data ?>',
-                                locale: 'pt-br',
-                                editable: false,
-                                eventLimit: false, // allow "more" link when too many events
-                                schedulerLicenseKey: 'CC-Attribution-Commercial-NoDerivatives',
+                                                defaultDate: '<?= $data ?>',
+                                                locale: 'pt-br',
+                                                editable: false,
+                                                eventLimit: false, // allow "more" link when too many events
+                                                schedulerLicenseKey: 'CC-Attribution-Commercial-NoDerivatives',
 //            events: '<?= base_url() ?>autocomplete/listarhorarioscalendario',
 
-                                eventSources: [
-                                    // your event source
+                                                eventSources: [
+                                                    // your event source
 
-                                    {
-                                        url: '<?= base_url() ?>autocomplete/listarhorarioscalendario',
-                                        type: 'POST',
-                                        data: {
-                                            medico: $('#medico').val(),
-                                            tipoagenda: $('#tipoagenda').val(),
-                                            empresa: $('#empresa').val(),
-                                            sala: sala_atual,
-                                            grupo: $('#grupo').val(),
-                                            paciente: paciente
-                                        },
-                                        error: function () {
+                                                    {
+                                                        url: '<?= base_url() ?>autocomplete/listarhorarioscalendario',
+                                                        type: 'POST',
+                                                        data: {
+                                                            medico: $('#medico').val(),
+                                                            tipoagenda: $('#tipoagenda').val(),
+                                                            empresa: $('#empresa').val(),
+                                                            sala: sala_atual,
+                                                            grupo: $('#grupo').val(),
+                                                            paciente: paciente
+                                                        },
+                                                        error: function () {
 //                    alert('Houve !');
-                                        }
+                                                        }
 
-                                    }
+                                                    }
 
-                                    // any other sources...
+                                                    // any other sources...
 
-                                ]
+                                                ]
 
-                            });
+                                            });
 
-                            $(function () {
-                                $('#grupo').change(function () {
+                                            $(function () {
+                                                $('#grupo').change(function () {
 
-                                    if ($(this).val()) {
+                                                    if ($(this).val()) {
 //                alert($(this).val());
-                                        $('.carregando').show();
+                                                        $('.carregando').show();
 //                                                        alert('teste_parada');
-                                        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
-                                            options = '<option value=""></option>';
+                                                        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+                                                            options = '<option value=""></option>';
 //                    alert(j);
-                                            for (var c = 0; c < j.length; c++) {
-                                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                                            }
-                                            $('#sala').html(options).show();
-                                            $('.carregando').hide();
-                                        });
+                                                            for (var c = 0; c < j.length; c++) {
+                                                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                                            }
+                                                            $('#sala').html(options).show();
+                                                            $('.carregando').hide();
+                                                        });
 
-                                    } else {
-                                        $('.carregando').show();
+                                                    } else {
+                                                        $('.carregando').show();
 //                                                        alert('teste_parada');
-                                        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasalatodos', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
-                                            options = '<option value=""></option>';
+                                                        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasalatodos', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+                                                            options = '<option value=""></option>';
 //                    alert(j);
-                                            for (var c = 0; c < j.length; c++) {
-                                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                                            }
-                                            $('#sala').html(options).show();
-                                            $('.carregando').hide();
-                                        });
-                                    }
+                                                            for (var c = 0; c < j.length; c++) {
+                                                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                                            }
+                                                            $('#sala').html(options).show();
+                                                            $('.carregando').hide();
+                                                        });
+                                                    }
 
-                                });
-                            });
+                                                });
+                                            });
 
-                            $(function () {
-                                $('#empresa').change(function () {
+                                            $(function () {
+                                                $('#empresa').change(function () {
 
-                                    if ($(this).val()) {
+                                                    if ($(this).val()) {
 //                alert($(this).val());
-                                        $('.carregando').show();
+                                                        $('.carregando').show();
 //                                                        alert('teste_parada');
-                                        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
-                                            options = '<option value=""></option>';
+                                                        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasala', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+                                                            options = '<option value=""></option>';
 //                    alert(j);
-                                            for (var c = 0; c < j.length; c++) {
-                                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                                            }
-                                            $('#sala').html(options).show();
-                                            $('.carregando').hide();
-                                        });
+                                                            for (var c = 0; c < j.length; c++) {
+                                                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                                            }
+                                                            $('#sala').html(options).show();
+                                                            $('.carregando').hide();
+                                                        });
 
-                                    } else {
-                                        $('.carregando').show();
+                                                    } else {
+                                                        $('.carregando').show();
 //                                                        alert('teste_parada');
-                                        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasalatodos', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
-                                            options = '<option value=""></option>';
+                                                        $.getJSON('<?= base_url() ?>autocomplete/grupoempresasalatodos', {txtgrupo: $('#grupo').val(), txtempresa: $('#empresa').val(), ajax: true}, function (j) {
+                                                            options = '<option value=""></option>';
 //                    alert(j);
-                                            for (var c = 0; c < j.length; c++) {
-                                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
-                                            }
-                                            $('#sala').html(options).show();
-                                            $('.carregando').hide();
-                                        });
-                                    }
+                                                            for (var c = 0; c < j.length; c++) {
+                                                                options += '<option value="' + j[c].exame_sala_id + '">' + j[c].nome + '</option>';
+                                                            }
+                                                            $('#sala').html(options).show();
+                                                            $('.carregando').hide();
+                                                        });
+                                                    }
 
-                                });
-                            });
+                                                });
+                                            });
 
-                            $(function () {
-                                $('#tipoagenda').change(function () {
-                                    $('.carregando').show();
+                                            $(function () {
+                                                $('#tipoagenda').change(function () {
+                                                    $('.carregando').show();
 //            alert('teste_parada');
-                                    $.getJSON('<?= base_url() ?>autocomplete/listarmedicotipoagenda', {tipoagenda: $(this).val(), ajax: true}, function (j) {
-                                        options = '<option value=""></option>';
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-                                        }
+                                                    $.getJSON('<?= base_url() ?>autocomplete/listarmedicotipoagenda', {tipoagenda: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        for (var c = 0; c < j.length; c++) {
+                                                            options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+                                                        }
 //                console.log(options);
-                                        $('#medico').html(options).show();
-                                        $('.carregando').hide();
+                                                        $('#medico').html(options).show();
+                                                        $('.carregando').hide();
 
-                                    });
-                                });
-                            });
+                                                    });
+                                                });
+                                            });
 
 <? if (@$_GET['tipoagenda'] != '') { ?>
-                                $.getJSON('<?= base_url() ?>autocomplete/listarmedicotipoagenda', {tipoagenda: $('#tipoagenda').val(), ajax: true}, function (j) {
-                                    options = '<option value=""></option>';
+                                                $.getJSON('<?= base_url() ?>autocomplete/listarmedicotipoagenda', {tipoagenda: $('#tipoagenda').val(), ajax: true}, function (j) {
+                                                    options = '<option value=""></option>';
 
-                                    for (var c = 0; c < j.length; c++) {
-                                        options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-                                    }
-                                    //                console.log(options);
-                                    $('#medico').html(options).show();
-                                    $('.carregando').hide();
+                                                    for (var c = 0; c < j.length; c++) {
+                                                        options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+                                                    }
+                                                    //                console.log(options);
+                                                    $('#medico').html(options).show();
+                                                    $('.carregando').hide();
 
-                                });
+                                                });
 <? } ?>
 
-                            $(function () {
-                                $('#grupo').change(function () {
+                                            $(function () {
+                                                $('#grupo').change(function () {
 
 //            if ($(this).val()) {
 
 //                alert($(this).val());
-                                    $('.carregando').show();
+                                                    $('.carregando').show();
 //                                                        alert('teste_parada');
-                                    $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $(this).val(), ajax: true}, function (j) {
-                                        options = '<option value=""></option>';
+                                                    $.getJSON('<?= base_url() ?>autocomplete/grupoempresa', {txtgrupo: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
 //                    alert(j);
 
-                                        for (var c = 0; c < j.length; c++) {
-                                            options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
-                                        }
-                                        $('#empresa').html(options).show();
-                                        $('.carregando').hide();
+                                                        for (var c = 0; c < j.length; c++) {
+                                                            options += '<option value="' + j[c].empresa_id + '">' + j[c].nome + '</option>';
+                                                        }
+                                                        $('#empresa').html(options).show();
+                                                        $('.carregando').hide();
 
 
 
-                                    });
+                                                    });
 //            }
-                                });
-                            });
+                                                });
+                                            });
 
 //    var x = document.getElementById("encaixe");
 //            
@@ -1121,12 +1125,12 @@ if (@$_GET['sala'] != '') {
 //            
 //            }
 
-                            $('#encaixar').click(function () {
+                                            $('#encaixar').click(function () {
 
-                                $('#encaixe').toggle();
-                                $('#horarios').mask("99:99");
+                                                $('#encaixe').toggle();
+                                                $('#horarios').mask("99:99");
 
-                            });
+                                            });
 
 
 

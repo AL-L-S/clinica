@@ -4201,6 +4201,103 @@ class laudo_model extends Model {
         }
     }
 
+    function gravarlaudoapendicite() {
+        try {
+            $paciente_id = $this->session->userdata('paciente_id');
+            $guia_id = $this->session->userdata('guia_id');
+
+
+            $simnao_form = array(
+                "comfluido" => (isset($_POST["comfluido"])) ? $_POST["comfluido"] : '',
+                "compressivel" => (isset($_POST["compressivel"])) ? $_POST["compressivel"] : '',
+                "apendicolito" => (isset($_POST["apendicolito"])) ? $_POST["apendicolito"] : '',
+                "hiperemia" => (isset($_POST["hiperemia"])) ? $_POST["hiperemia"] : '',
+                "espessamento" => (isset($_POST["espessamento"])) ? $_POST["espessamento"] : '',
+                "pemural" => (isset($_POST["pemural"])) ? $_POST["pemural"] : '',
+                "fluidolivre" => (isset($_POST["fluidolivre"])) ? $_POST["fluidolivre"] : '',
+                "aegperiapendicular" => (isset($_POST["aegperiapendicular"])) ? $_POST["aegperiapendicular"] : '',
+                "abscesso" => (isset($_POST["abscesso"])) ? $_POST["abscesso"] : ''
+            );
+            $resposta_form = array(
+                "historicoclinico" => (isset($_POST["historicoclinico"])) ? $_POST["historicoclinico"] : '',
+                "estudosanteriores" => (isset($_POST["estudosanteriores"])) ? $_POST["estudosanteriores"] : '',
+                "descobertas" => (isset($_POST["descobertas"])) ? $_POST["descobertas"] : '',
+                "visualizado" => (isset($_POST["visualizado"])) ? $_POST["visualizado"] : '',
+                "diametromax" => (isset($_POST["diametromax"])) ? $_POST["diametromax"] : '',
+                "descobertasadc" => (isset($_POST["descobertasadc"])) ? $_POST["descobertasadc"] : '',
+                "escoreapendicite" => (isset($_POST["escoreapendicite"])) ? $_POST["escoreapendicite"] : '',
+                "diagnosticoadc" => (isset($_POST["diagnosticoadc"])) ? $_POST["diagnosticoadc"] : ''
+                
+            );
+            
+            $this->db->select('lp.guia_id, lp.paciente_id');
+            $this->db->from('tb_laudo_apendicite la');
+            $this->db->where('la.guia_id', $_POST['guia_id']);
+            $this->db->where('la.paciente_id', $_POST['paciente_id']);
+            $return = $this->db->get();
+            $result = $return->result();
+            //  var_dump($result);die;
+
+            if (count($result) > 0) {
+                if (count($simnao_form) > 0) {
+                    $this->db->set('simnao', json_encode($simnao_form));
+                } else {
+                    $this->db->set('simnao', '');
+                }
+                if (count($pergunta_form) > 0) {
+                    $this->db->set('perguntas', json_encode($pergunta_form));
+                } else {
+                    $this->db->set('perguntas', '');
+                }                
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->update('tb_laudo_apendicite');
+            } else {
+                if (count($dados_form) > 0) {
+                    $this->db->set('dados', json_encode($dados_form));
+                } else {
+                    $this->db->set('dados', '');
+                }
+                if (count($exames_form) > 0) {
+                    $this->db->set('exames', json_encode($exames_form));
+                } else {
+                    $this->db->set('exames', '');
+                }
+                if (count($examesc_form) > 0) {
+                    $this->db->set('exames_complementares', json_encode($examesc_form));
+                } else {
+                    $this->db->set('exames_complementares', '');
+                }
+                if (count($hipotese_diagnostica) > 0) {
+                    $this->db->set('hipotese_diagnostica', json_encode($hipotese_diagnostica));
+                } else {
+                    $this->db->set('hipotese_diagnostica', '');
+                }
+                if (isset($_POST['sim'])) {
+                    $this->db->set('antibiotico', "SIM");
+                }
+                if (isset($_POST['nao'])) {
+                    $this->db->set('antibiotico', "NÃO");
+                }
+
+                $this->db->where('guia_id', $_POST['guia_id']);
+                $this->db->where('paciente_id', $_POST['paciente_id']);
+                $this->db->set('paciente_id', $_POST['paciente_id']);
+                $this->db->set('guia_id', $_POST['guia_id']);
+                $this->db->insert('tb_laudo_parecer');
+            }
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
     function gravarparecer() {
         try {
             $paciente_id = $this->session->userdata('paciente_id');

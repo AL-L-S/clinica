@@ -32,6 +32,7 @@ $fila_impressao = $this->session->userdata('fila_impressao');
 $relatorio_caixa = $this->session->userdata('relatorio_caixa');
 $centrocirurgico = $this->session->userdata('centrocirurgico');
 $relatorio_ordem = $this->session->userdata('relatorio_ordem');
+$integracaosollis = $this->session->userdata('integracaosollis');
 $manter_indicacao = $this->session->userdata('manter_indicacao');
 $calendario_layout = $this->session->userdata('calendario_layout');
 $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
@@ -1287,8 +1288,10 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloatestado">Manter Modelo Atestado</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modeloreceitaespecial">Manter Modelo R. Especial</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelosolicitarexames">Manter Modelo S.Exames</a></span></ul>
+                                            <? if ($integracaosollis != 't') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelomedicamento">Manter Medicamento</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelomedicamento/pesquisarunidade">Manter Medicamento Unidade</a></span></ul>
+                                            <? } ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/modelooftamologia">Manter Campos Oftamologia</a></span></ul>
                                     <? } ?>
                                     </li>

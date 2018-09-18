@@ -900,6 +900,24 @@ class Laudo extends BaseController {
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->load->View('ambulatorio/parecer-cirurgia-pediatrica-form', $data);
     }
+    
+    function preencherlaudoapendicite($ambulatorio_laudo_id) {
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+
+        $paciente_id = @$obj_laudo->_paciente_id;
+        $guia_id = @$obj_laudo->_guia_id;
+
+
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+        $data['lista'] = $this->exametemp->listarautocompletemodelosreceita();
+        $data['modelo'] = $this->exametemp->listarmodelosreceitaautomatico();
+        $data['empresapermissao'] = $this->guia->listarempresapermissoes();
+        $data['operadores'] = $this->operador_m->listarmedicos();
+
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->load->View('ambulatorio/laudoapendicite-form', $data);
+    }
 
     function preencheravaliacao($ambulatorio_laudo_id) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
@@ -1067,6 +1085,20 @@ class Laudo extends BaseController {
 
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->load->View('ambulatorio/receituarioconsulta-form', $data);
+    }
+    
+    function carregarreceituariosollis($ambulatorio_laudo_id) {
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+        $data['lista'] = $this->exametemp->listarautocompletemodelosreceita();
+        $data['modelo'] = $this->exametemp->listarmodelosreceitaautomatico();
+        $data['empresapermissao'] = $this->guia->listarempresapermissoes();
+        $data['receita'] = $this->laudo->listarreceita($obj_laudo->_paciente_id);
+        $data['operadores'] = $this->operador_m->listarmedicos();
+
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->load->View('ambulatorio/receituariosollis-form', $data);
     }
 
     function carregaratestado($ambulatorio_laudo_id) {
@@ -4300,6 +4332,15 @@ class Laudo extends BaseController {
     function gravarparecer($ambulatorio_laudo_id) {
 
         $this->laudo->gravarparecer($ambulatorio_laudo_id);
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['mensagem'] = 'Parecer gravado com sucesso';
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/laudo/carregarparecer/$ambulatorio_laudo_id");
+    }
+    
+    function gravarlaudoapendicite($ambulatorio_laudo_id) {
+
+        $this->laudo->gravarlaudoapendicite($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $data['mensagem'] = 'Parecer gravado com sucesso';
         $this->session->set_flashdata('message', $data['mensagem']);

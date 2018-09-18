@@ -1,6 +1,7 @@
 --------------------------------- INICIANDO A VERSÃO 28-----------------------------------------------------
 
--- Dia 11/09/2018
+-- Dia 12/09/2018
+
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN profissional_agendar boolean DEFAULT true;
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN profissional_externo boolean DEFAULT false;
@@ -348,3 +349,14 @@ SELECT insereValor();
 
 
 
+-- Dia 13/09/2018
+
+CREATE TABLE ponto.tb_laudo_apendicite
+(
+  simnao text,
+  perguntas text,
+  
+  guia_id integer,
+  paciente_id integer,
+  laudo_apendicite_id serial not null  
+);
