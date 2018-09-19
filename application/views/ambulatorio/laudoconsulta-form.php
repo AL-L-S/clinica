@@ -378,7 +378,7 @@
                                     <table>
                                         <tr><td rowspan="11" >
                                                 <textarea id="laudo" name="laudo" rows="30" cols="80" style="width: 100%"><?= @$obj->_texto; ?></textarea></td>
-                                                <? if ($integracaosollis != 't') { ?>
+                                                
                                                     <? if (in_array('receituario', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
 
@@ -387,11 +387,11 @@
                                                     </div>
                                                 </td>
                                                     <? } ?>
-                                                <? }else{ ?>
+                                               <? if ($integracaosollis == 't') { ?>
                                                     <td width="40px;"><div class="bt_link_new">
 
-                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituariosollis/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
-                                                            Receituario Sollis</a>
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarprescricao/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>');" >
+                                                            Prescrição</a>
                                                     </div>
                                                 </td>
                                                     

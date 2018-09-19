@@ -1095,7 +1095,9 @@ function debug($object) {
                                 <li><span class="folder">Relatórios</span>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatorioprecadastro">Relatório Pré-Cadastro</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatoriocensodiario">Relatório Censo</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatoriounidadeleito">Relatório Leito</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatoriointernacao">Relatório Pacientes Internados</a></span></ul>
+                                    <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatoriosituacao">Relatório Pacientes Situação</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatoriosaidainternacao">Relatório Pacientes Saída</a></span></ul>
                                     <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/relatoriointernacaofaturamento">Relatório Internação Faturamento</a></span></ul>
                                 </li>

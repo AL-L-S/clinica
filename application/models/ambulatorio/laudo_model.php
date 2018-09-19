@@ -1318,7 +1318,170 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarprescricao($paciente_id, $ambulatorio_laudo_id) {
 
+        $this->db->select(' rs.receituario_sollis_id,
+                            rs.cid_id,
+                            rs.paciente_id,
+                            rs.laudo_id,
+                            rs.frequencia,
+                            rs.frequnit,
+                            rs.qtdmed,
+                            rs.medid,
+                            rs.periodo,
+                            rs.perunit,
+                            rs.observacao,
+                            rs.medico_parecer1,
+                            rs.prescricao_id
+                            
+                            ');
+        $this->db->from('tb_receituario_sollis rs');        
+        $this->db->where('rs.paciente_id', $paciente_id);        
+        $this->db->where('rs.laudo_id', $ambulatorio_laudo_id);        
+        $this->db->where('rs.ativo', 'TRUE');        
+        $this->db->orderby('rs.data_cadastro DESC');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarprescricoes($paciente_id) {
+
+        $this->db->select(' p.paciente_id,
+                            p.laudo_id,
+                            p.prescricao_id,
+                            p.prescricao,
+                            p.data_cadastro,
+                            p.ativo
+                            
+                            ');
+        $this->db->from('tb_prescricao p');        
+        $this->db->where('p.ativo', 'TRUE'); 
+        $this->db->where('p.paciente_id', $paciente_id); 
+        $this->db->orderby('p.data_cadastro DESC');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarprescricoespaciente($paciente_id) {
+
+        $this->db->select(' p.paciente_id,                            
+                            p.ativo,
+                            p.medico_parecer1,
+                            pa.nome,
+                            pa.nascimento,
+                            pa.idade,
+                            o.nome as medico
+                            
+                            
+                            ');
+        $this->db->from('tb_prescricao p');
+        $this->db->join('tb_paciente pa', 'p.paciente_id = pa.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = p.medico_parecer1', 'left');
+//        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('p.ativo', 'TRUE'); 
+        $this->db->where('p.paciente_id', $paciente_id); 
+        $this->db->orderby('p.data_cadastro DESC');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    
+    
+    function gravarprescricao($ambulatorio_laudo_id) {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');  
+            
+            $this->db->select('al.paciente_id, al.medico_parecer1 ');
+            $this->db->from('tb_ambulatorio_laudo al');            
+            $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);          
+            $return = $this->db->get()->result();
+           
+//            var_dump($return);die;          
+
+//            $this->db->select('setor_cadastro_id');
+//            $this->db->from('tb_setor_cadastro');
+//            $this->db->where("ativo", 't');
+//            $this->db->where("setor_id", $setor_id);            
+//            $return = $this->db->get()->result();
+
+//            if (count($return) == 0) {
+                $prescricao = $_POST['prescricao'];
+//                var_dump($prescricao);die;
+                $this->db->set('laudo_id', $ambulatorio_laudo_id);
+                $this->db->set('medico_parecer1', $return[0]->medico_parecer1);
+                $this->db->set('paciente_id', $return[0]->paciente_id);
+                $this->db->set('prescricao', $prescricao);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_prescricao');               
+                
+//            }
+//            else {
+//                $funcao_id = $_POST['txtfuncao_id'];
+//                foreach($funcao_id as $item){
+//                $this->db->select('setor_cadastro_id');
+//                $this->db->from('tb_setor_cadastro');
+//                $this->db->where("ativo", 't');
+//                $this->db->where("setor_id", $setor_id);            
+//                $this->db->where("funcao_id", $item);            
+//                $return2 = $this->db->get()->result();
+//                
+//                    if (count($return2) == 0) {
+//                    $this->db->set('empresa_id', $convenio_id);
+//                    $this->db->set('setor_id', $setor_id);
+//                    $this->db->set('funcao_id', $item);
+//                    $this->db->set('risco_id', $array_risco);
+//                    $this->db->set('data_atualizacao', $horario);
+//                    $this->db->set('operador_atualizacao', $operador_id);
+//                    $this->db->where('setor_id', $setor_id);
+//                    $this->db->insert('tb_setor_cadastro');
+//                    }
+//                }
+//            }
+            return $setor_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function excluirprescricao($prescricao_id) {        
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('prescricao_id', $prescricao_id);
+        $this->db->update('tb_prescricao');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return -1;
+        else
+            return 0;
+    }
+    
+    function excluirmedicamento($receituario_sollis_id) {        
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('receituario_sollis_id', $receituario_sollis_id);
+        $this->db->update('tb_receituario_sollis');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return -1;
+        else
+            return 0;
+    }
+    
     function listareditarreceita($ambulatorio_laudo_id) {
 
         $this->db->select(' ag.ambulatorio_receituario_id ,
@@ -3926,6 +4089,45 @@ class laudo_model extends Model {
             $this->db->set('tipo', 'NORMAL');
 
             $this->db->insert('tb_ambulatorio_receituario');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function gravarreceituariosollis($ambulatorio_laudo_id, $prescricao_id) {
+        try {
+            /* inicia o mapeamento no banco */
+
+            $this->db->select('al.paciente_id, al.medico_parecer1 ');
+            $this->db->from('tb_ambulatorio_laudo al');            
+            $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);          
+            $return = $this->db->get()->result();
+            
+//            var_dump($prescricao_id);die;
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');          
+            $this->db->set('laudo_id', $ambulatorio_laudo_id);
+            $this->db->set('medico_parecer1', $return[0]->medico_parecer1);
+            $this->db->set('paciente_id', $return[0]->paciente_id);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('cid_id', $_POST['cid']);
+            $this->db->set('frequencia', $_POST['freq']);
+            $this->db->set('frequnit', $_POST['frequnit']);
+            $this->db->set('qtdmed', $_POST['qtdmed']);
+            $this->db->set('medid', $_POST['medid']);
+            $this->db->set('periodo', $_POST['periodo']);
+            $this->db->set('perunit', $_POST['perunit']);
+            $this->db->set('observacao', $_POST['observacao']);
+            $this->db->set('prescricao_id', $prescricao_id);
+            $this->db->set('operador_cadastro', $return[0]->medico_parecer1);            
+            $this->db->set('tipo', 'NORMAL');
+
+            $this->db->insert('tb_receituario_sollis');
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;

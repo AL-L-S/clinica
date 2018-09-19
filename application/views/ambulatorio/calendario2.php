@@ -401,13 +401,13 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
 
             </table> 
             <!-- Comentei essa parte só pra publicar -->
-            <!-- <table>
+             <table>
                 <tr>
                     <th style="padding-left:88%" class="tabela_title">
                         <button value="encaixar" id="encaixar">Encaixar Horário</button>
                     </th>
                 </tr>
-            </table> -->
+            </table> 
 
             <table>
                 <tr>
@@ -481,6 +481,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                             <td colspan="2" class="<?php echo $estilo_linha; ?>"><input type="text" id="obs" class="size2" name="obs"/></td>
 
                             <td colspan="2" class="<?php echo $estilo_linha; ?>"><button type="submit" id="enviar">Encaixar</button></td>
+                            <td colspan="2" class="<?php echo $estilo_linha; ?>"></td>
                         </tr>
                     </form>
                     <?php

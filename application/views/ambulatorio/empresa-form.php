@@ -266,7 +266,7 @@
                         </div>
                         <br>
                         <br>
-                        <div>
+                        <div><br><br>
                             <dt>
                                 <label title="Definir os campos visíveis na tela de atendimento médico">Tela de Atendimento Médico</label>
                             </dt>
@@ -313,7 +313,7 @@
                         </div>
                         <br>
                         <br>
-                        <div>
+                        <div><br><br>
                             <dt>
                                 <label title="Definir os dados do paciente visíveis">Dados do Paciente (Atendimento)</label>
                             </dt>
