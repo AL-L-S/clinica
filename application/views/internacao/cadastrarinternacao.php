@@ -111,18 +111,29 @@
 
         </fieldset>
         <fieldset>
+            
             <legend>Dependência</legend>
             <? $dependencia = $this->internacao_m->listartipodependenciaquestionario(); ?>
             <div>
                 <label>Tipo de Dependência Química</label>                      
-                <select name="tipo_dependencia" id="tipo_dependencia" class="texto05">
+                <select name="tipo_dependencia[]" id="tipo_dependencia" class="texto05 chosen-select" data-placeholder="Selecione as Dependências..." multiple required="">
                     <option value=''>Selecione</option>
                     <?php
+                    if(count($precadastro) > 0){
+                        @$tipo_json = json_decode(@$precadastro[0]->tipo_dependencia);
+                    }else{
+                        @$tipo_json = array();
+                    }
+                    if(count($internacao) > 0){
+                        @$tipo_inter_json = json_decode(@$internacao[0]->tipo_dependencia);
+                    }else{
+                        @$tipo_inter_json = array();
+                    }
                     foreach ($dependencia as $item) {
                         ?>
                         <option value="<?php echo $item->internacao_tipo_dependencia_id; ?>" 
                         <?
-                        if (@$precadastro[0]->tipo_dependencia == $item->internacao_tipo_dependencia_id || $item->internacao_tipo_dependencia_id == @$internacao[0]->tipo_dependencia) {
+                        if (in_array($item->internacao_tipo_dependencia_id,$tipo_json) || in_array($item->internacao_tipo_dependencia_id, $tipo_inter_json)) {
                             echo 'selected';
                         }
                         ?>>
@@ -290,6 +301,10 @@
 
 
 </div> <!-- Final da DIV content -->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>

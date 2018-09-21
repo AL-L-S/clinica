@@ -117,6 +117,28 @@ class exame_model extends Model {
         else
             return true;
     }
+    
+    function gravaroperadorguiche() {
+        
+        $guiche = $_POST['guiche'];
+        $operador_id = $_POST['operador_id'];
+        $count = count($operador_id);
+//        var_dump($_POST);die;
+        
+            for($i=0; $i<$count; $i++){            
+      
+                    $this->db->set('guiche', $guiche[$i]); 
+                    $this->db->where('operador_id', $operador_id[$i]);                    
+                    $this->db->update('tb_operador');
+            }
+        
+        
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
 
     function gravarprocedimentosinternacao() {
         try {
@@ -4815,6 +4837,12 @@ class exame_model extends Model {
                             ae.situacao,
                             ae.guia_id,
                             ae.data_atualizacao,
+                            p.toten_fila_id,
+                            p.paciente_id,
+                            p.cpf,
+                            o.nome as medicoconsulta,
+                            an.nome as sala,
+                            an.toten_sala_id,
                             ae.paciente_id,
                             ae.observacoes,
                             ae.realizada,
@@ -5201,6 +5229,12 @@ class exame_model extends Model {
                             ae.paciente_id,
                             ae.observacoes,
                             ae.realizada,
+                            p.toten_fila_id,
+                            p.paciente_id,
+                            p.cpf,
+                            o.nome as medicoconsulta,
+                            an.nome as sala,
+                            an.toten_sala_id,
                             ae.medico_consulta_id,
                             al.medico_parecer1,
                             al.ambulatorio_laudo_id,
@@ -5304,7 +5338,7 @@ class exame_model extends Model {
                             al.exame_id,
                             e.situacao as situacaoexame,
                             al.procedimento_tuss_id,
-                            al.toten_fila_id,
+                            p.toten_fila_id,
                             p.paciente_id,
                             p.cpf,
                             an.nome as sala,
@@ -5887,6 +5921,12 @@ class exame_model extends Model {
                             ae.situacao,
                             ae.encaixe,
                             ae.guia_id,
+                            p.toten_fila_id,
+                            p.paciente_id,
+                            p.cpf,
+                            o.nome as medicoconsulta,
+                            an.nome as sala,
+                            an.toten_sala_id,
                             ae.data_atualizacao,
                             ae.paciente_id,
                             ae.bloqueado,
@@ -6572,6 +6612,9 @@ class exame_model extends Model {
         }
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        if (isset($_POST['paciente']) && $_POST['paciente'] != "") {
+            $this->db->where('p.nome ilike', $_POST['paciente'] . "%");
         }
         $this->db->groupby('ae.paciente_id, convenionumero, p.nome, ambulatorio_guia_id');
         $return = $this->db->get();
@@ -8044,6 +8087,13 @@ class exame_model extends Model {
                 $dataProducao = $data;
             }
 
+            $this->db->select('data_senha, senha, toten_fila_id, toten_senha_id');
+            $this->db->from('tb_paciente p');
+            $this->db->where("p.paciente_id", $paciente_id);
+            $paciente_inf = $this->db->get()->result();
+
+           
+
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('procedimento_tuss_id', $procedimento_tuss_id);
@@ -8061,6 +8111,12 @@ class exame_model extends Model {
             $this->db->insert('tb_exames');
             $exames_id = $this->db->insert_id();
 
+            if (count($paciente_inf) > 0) {
+                $this->db->set('toten_senha_id', $paciente_inf[0]->toten_senha_id);
+                $this->db->set('toten_fila_id', $paciente_inf[0]->toten_fila_id);
+                $this->db->set('senha ', $paciente_inf[0]->senha);
+                $this->db->set('data_senha', $paciente_inf[0]->data_senha);
+            }
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('data', $data);
             $this->db->set('data_producao', $dataProducao);

@@ -795,6 +795,24 @@ class guia_model extends Model {
 
         return $return;
     }
+    
+    function carregarcadastroaso2() {
+                        
+        $this->db->select('
+                            ca.tipo,
+                            ca.impressao_aso,
+                            ca.medico_responsavel,
+                            ca.data_cadastro,
+                            p.nome as paciente
+                            ');
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        
+
+        $this->db->orderby("ca.data_cadastro");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function instanciarguia($guia_id = null) {
 
@@ -5944,11 +5962,12 @@ class guia_model extends Model {
         $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $sql = '';
+        $grupo = $_POST['grupo'];
         if ($_POST['grupo'] == "1") {
             $sql .= " AND pt.grupo != 'RM'";
         }
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
-            $sql .= " AND pt.grupo = " . $_POST['grupo'];
+            $sql .= " AND pt.grupo = " . "'$grupo'";
         }
         if ($_POST['procedimentos'] != "0") {
             $sql .= " AND pt.procedimento_tuss_id = " . $_POST['procedimentos'];

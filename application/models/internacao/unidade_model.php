@@ -99,7 +99,7 @@ class unidade_model extends BaseModel {
         return $return->result();
     }
 
-    function mostrafichapaciente($leito_id) {
+    function mostrafichapaciente($internacao_id) {
 
         $this->db->select('p.nome as paciente,
                            i.internacao_id,
@@ -116,8 +116,8 @@ class unidade_model extends BaseModel {
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->where('i.leito = il.internacao_leito_id');
         $this->db->where('p.paciente_id = i.paciente_id');
-        $this->db->where('i.leito', $leito_id);
-        $this->db->where('il.ativo', 'f');
+        $this->db->where('i.internacao_id', $internacao_id);
+        // $this->db->where('il.ativo', 'f');
         $this->db->where('i.ativo', 't');
 
         $return = $this->db->get();

@@ -207,7 +207,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                                 } else {
                                     $toten_sala_id = 'null';
                                 }
-                                $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$toten_fila_id/$item->paciente/$cpf/$item->medico_parecer1/$item->medicoconsulta/$toten_sala_id/false";
+                                $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$toten_fila_id/$item->paciente/$cpf/$item->medico_consulta_id/$item->medicoconsulta/$toten_sala_id/false";
                             } else {
                                 $url_enviar_ficha = '';
                             }
@@ -367,7 +367,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
                                             <? if ($endereco != '') { ?>
                                                 <div class="bt_link">
-                                                    <a onclick="chamarPaciente('<?= $url_enviar_ficha ?>', <?= $toten_fila_id ?>, <?= $item->medico_parecer1 ?>);" >Chamar</a>
+                                                    <a onclick="chamarPaciente('<?= $url_enviar_ficha ?>', <?= $toten_fila_id ?>, <?= $item->medico_consulta_id ?>, <?=$toten_sala_id?>);" >Chamar</a>
                                                 </div>  
                                             <? } else { ?>
                                                 <div class="bt_link">
@@ -556,8 +556,8 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                                                     });
 
 <? if (($endereco != '')) { ?>
-  function chamarPaciente(url, toten_fila_id, medico_id) {
-      alert(url);
+  function chamarPaciente(url, toten_fila_id, medico_id, toten_sala_id) {
+    //   alert(url);
       $.ajax({
           type: "POST",
           data: {teste: 'teste'},
@@ -580,7 +580,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
           type: "POST",
           data: {teste: 'teste'},
           //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-          url: "<?= $endereco ?>/webService/telaChamado/proximo/" + medico_id + '/1',
+          url: "<?= $endereco ?>/webService/telaChamado/proximo/" + medico_id + '/ '+ toten_fila_id +'/' + toten_sala_id,
           success: function (data) {
 
               alert('Operação efetuada com sucesso');

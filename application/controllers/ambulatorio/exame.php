@@ -75,9 +75,20 @@ class Exame extends BaseController {
     function listaresperasenhas() {
 //        echo '<pre>';
         $empresa_id = $this->session->userdata('empresa_id');
+        $operador_id = $this->session->userdata('operador_id');
+        
         $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
         $endereco = $data['empresa'][0]->endereco_toten;
         $data['endereco'] = $endereco;
+
+        $data['operadorguiche'] = $this->operador_m->listaroperadorguiche2($operador_id);
+        $guiche = $data['operadorguiche'][0]->guiche;
+        if($data['operadorguiche'][0]->guiche != ''){
+        $data['guiche'] = $guiche;
+        } else{
+        $data['guiche'] = "1";    
+        }
+//        var_dump($data['guiche']);die;
         if ($endereco != '') {
 
             $setor_busca = file_get_contents("$endereco/webService/telaAtendimento/setores");
@@ -203,6 +214,26 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $data['salas'] = $this->exame->listartodassalas();
         $this->loadView('ambulatorio/relatoriomedicoagendaexame', $data);
+    }
+    
+    function operadorguiche() { 
+        
+        $data['perfil'] = $this->operador_m->listarPerfil();
+        $data['operadores'] = $this->operador_m->listaroperadoreslembrete();
+        $data['operador'] = $this->operador_m->listaroperadorguiche();
+        $this->loadView('ambulatorio/operadorguiche', $data);
+    }
+    
+    function gravaroperadorguiche() {
+
+        if ($this->exame->gravaroperadorguiche()) {
+            $mensagem = 'Sucesso ao gravar!';
+        } else {
+            $mensagem = 'Erro ao gravar. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/exame/operadorguiche");
     }
 
     function relatoriomedicoagendafaltou() {
@@ -1060,7 +1091,7 @@ class Exame extends BaseController {
     }
 
     function faturamentoexamexml($args = array()) {
-
+        
         $this->loadView('ambulatorio/faturamentoexamexml-form', $args);
     }
 
@@ -3733,12 +3764,14 @@ class Exame extends BaseController {
     }
 
     function gerarxml() {
-
         $total = 0;
 
-        $listarpacienete = $this->exame->listarpacientesxmlfaturamento();
+        $listarpacienete = $this->exame->listarpacientesxmlfaturamento();        
         $listarexame = $this->exame->listargxmlfaturamento();
         $listarexames = $this->exame->listarxmlfaturamentoexames();
+//        $data['internacao'] = $this->internacao_m->relatoriointernacaosituacao();
+//        echo'<pre>';
+//        var_dump($listarexamess);die;
 
         $horario = date("Y-m-d");
         $hora = date("H:i:s");

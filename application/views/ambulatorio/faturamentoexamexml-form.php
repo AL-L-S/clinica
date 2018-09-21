@@ -7,7 +7,7 @@
             $salas = $this->exame->listartodassalas();
             $convenios = $this->convenio->listarconvenionaodinheiro();
             $medicos = $this->operador_m->listarmedicos();
-            $classificacao = $this->guia->listarclassificacao();
+            $classificacao = $this->guia->listarclassificacao();          
             $empresa = $this->guia->listarempresas();
             $guia = "";
             ?>
@@ -24,6 +24,12 @@
                     </dt>
                     <dd>
                         <input type="text"  id="datafim" alt="date" name="datafim" class="size1"/>
+                    </dd>
+                    <dt>
+                        <label>Paciente</label>
+                    </dt>
+                    <dd>
+                        <input type="text"  id="paciente" name="paciente" class="size3"/>
                     </dd>
                     <dt>
                         <label>Convenio</label>
@@ -134,6 +140,15 @@
 
                         </select>
                     </dd>
+<!--                    <dt>
+                        <label>Situação</label>
+                    </dt>
+                    <dd>
+                        <select name="situacao" id="situacao" class="size2">
+                            <option value= 'internado' >INTERNADO</option>
+                            <option value='naointernado' >NÃO INTERNADO</option>
+                        </select>
+                    </dd>-->
 
                     <dt>
                         <label>Empresa</label>

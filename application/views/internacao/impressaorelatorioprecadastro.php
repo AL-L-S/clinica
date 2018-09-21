@@ -62,14 +62,48 @@
                 $internacao_precricao_id = "";
                 $estilo_linha = "tabela_content01";
                 $teste = 0;
+                $total_cadastros = 0;
+                $dependencia = array();
+                $dependencia_id = array();
+                foreach($dependencias as $value){
+
+                    array_push($dependencia, $value->nome);
+                    array_push($dependencia_id, $value->internacao_tipo_dependencia_id);
+
+                }
+                // var_dump($_POST['tipo_dependencia']); die;
                 foreach ($precadastro as $item) {
+
+
+
+                    $dependencia_nomes = '';
+                    $array_dependencia = json_decode($item->dependencia);
+                    if ($_POST['tipo_dependencia'] > 0) {
+                        // Caso não tenha no array algo igual do que foi pesquisado no POST ele pula a linha
+                        if (!in_array($_POST['tipo_dependencia'], $array_dependencia)) {
+                            continue;
+                        }
+
+                    }
+                    $total_cadastros++;
+                    foreach($array_dependencia as $value){
+                        $key = array_search($value, $dependencia_id);
+                        $dependencia_loop = $dependencia[$key];
+                        if($dependencia_nomes == ''){
+                            $dependencia_nomes = $dependencia_nomes . $dependencia_loop;
+                        }else{
+                            $dependencia_nomes = $dependencia_nomes . ', ' . $dependencia_loop;
+                        }
+                    }
+
+
                     ?>
                 <tr>
                     <td ><?= ($item->convenio != '') ? $item->convenio : '<b>Não Tem</b>'; ?></td>
                     <td ><?= $item->paciente; ?></td>
                     <td ><?= $item->responsavel; ?></td>
                     <td ><?= date("d/m/Y", strtotime($item->data_cadastro)); ?></td>
-                    <td ><?= $item->dependencia; ?></td>
+                    <td ><?= $dependencia_nomes; ?></td>
                     <td ><?= ($item->aceita_tratamento == 'SIM') ? 'Sim' : 'Não'; ?></td>
                     <td ><?= $item->indicacao; ?></td>
                     <td ><?= $item->cidade; ?></td>
@@ -80,7 +114,7 @@
                 <?
             }
             ?>
-            <tr><th colspan="12" class="tabela_header">Total de Pré-Cadastros: <?= count($precadastro); ?></th></tr>
+            <tr><th colspan="12" class="tabela_header">Total de Pré-Cadastros: <?= $total_cadastros; ?></th></tr>
         </table>
     <? } else { ?>
         <br> <hr/>

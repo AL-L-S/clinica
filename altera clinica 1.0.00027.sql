@@ -471,6 +471,346 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN enfermagem boolean DEFAULT fa
 
 
 --------------------------------- FECHANDO A VERSAO 27-----------------------------------------------------
+
+-- Versão 27 
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2806');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Em caso de a clinica possuir procedimentos com valor diferente por empresas, o ajuste no Manter Forma de pagamento deixa de existir.',
+            '2806',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2796');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'O cadastro de ASO, Setor e Função é agora relacionado diretamente a Empresa (Convênio). Obs: Apenas para clinicas que trabalham com medicina do trabalho',
+            '2796',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2787');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Criado um botão para excluir o modelo de laudo. Configurações->Imagem->Manter Modelo Laudo',
+            '2787',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2756');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Na opção de Reservar foi criado a possibilidade de escolher o procedimento caso a opção esteja ativa. (É preciso ser ativo pelo suporte para funcionar)',
+            '2756',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2757');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Opção de Reagendar adicionada na multifunção exame',
+            '2757',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2761');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'É possível associar o modelo de laudo diretamente ao médico. Então no laudo só aparecem os modelos para aquele médico. Necessário pedir ativação disso em caso de querer utilizar',
+            '2761',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2762');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Ao marcar carimbo no laudo é adicionado automaticamente o carimbo cadastrado no médico no texto',
+            '2762',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2772');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Antes o agrupador de procedimentos funcionava pegando procedimentos do mesmo grupo do agrupador, ou seja, o agrupador PACOTE necessitava de procedimentos do grupo PACOTE para serem associados a ele. A melhoria consiste na quebra desse requisito e que os procedimentos de diversos grupos possam ser adicionados ao grupo PACOTE.',
+            '2772',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2772');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Antes o agrupador de procedimentos funcionava pegando procedimentos do mesmo grupo do agrupador, ou seja, o agrupador PACOTE necessitava de procedimentos do grupo PACOTE para serem associados a ele. A melhoria consiste na quebra desse requisito e que os procedimentos de diversos grupos possam ser adicionados ao grupo PACOTE.',
+            '2772',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2781');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'É possível adicionar Agrupadores de procedimento no Gasto de Sala',
+            '2781',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2751');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Ao selecionar um modelo de laudo no atendimento médico, você pode clicar para abrir uma tela e mostrar o modelo sem as alterações feitas no laudo',
+            '2751',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2752');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'As informações na tela de atendimento de Imagem (Laudo) são configuráveis, então é possível escolher quais opções aparecerão como nome do paciente, convênio e etc.',
+            '2752',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2752');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'As informações na tela de atendimento de Imagem (Laudo) são configuráveis, então é possível escolher quais opções aparecerão como nome do paciente, convênio e etc.',
+            '2752',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2571');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'No "Mais Opções" na Lista de internação aparecem as informações de Leito, Enfermaria e Unidade, antigamente aparecia apenas unidade',
+            '2571',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2653');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'Adicionadas várias telas com formulários para a consulta (Necessário pedir ativação para as mesmas). Seguem elas: teste ergometrico, mapa, cintilografia, holter 24h, cateterismo cardíaco, ecocardiograma, exames laboratoriais e cirurgias',
+            '2653',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2605');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000027',
+            'No cadastro de pacientes só é permitido o cadastro de CPFs válidos em caso de CPF obrigatório',
+            '2605',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+
+
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
 DECLARE

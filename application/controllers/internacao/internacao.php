@@ -435,8 +435,8 @@ class internacao extends BaseController {
         $this->load->View('internacao/observacaoprecadastro-form', $data);
     }
 
-    function mostrafichapaciente($leito_id) {
-        $data['paciente'] = $this->unidade_m->mostrafichapaciente($leito_id);
+    function mostrafichapaciente($internacao_id) {
+        $data['paciente'] = $this->unidade_m->mostrafichapaciente($internacao_id);
         $this->loadView('internacao/mostrafichapaciente', $data);
     }
 
@@ -872,6 +872,7 @@ class internacao extends BaseController {
         $data['data_inicio'] = $_POST['txtdata_inicio'];
         $data['data_fim'] = $_POST['txtdata_fim'];
         $data['precadastro'] = $this->internacao_m->relatorioprecadastro();
+        $data['dependencias'] = $this->internacao_m->listartipodependenciaquestionario();
 //        var_dump($data['precadastro']);die;
         if ($_POST['indicacao'] != 0) {
             $indicacao = $this->internacao_m->pesquisarindicaco($_POST['indicacao']);

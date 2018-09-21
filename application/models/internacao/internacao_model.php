@@ -123,9 +123,10 @@ class internacao_model extends BaseModel {
             }
 //            echo '<pre>';
 //            var_dump($_POST); die;
-            if ($_POST['tipo_dependencia'] > 0) {
-                $this->db->set('tipo_dependencia', $_POST['tipo_dependencia']);
-            }
+            $tipo_json = json_encode($_POST['tipo_dependencia']);
+            // if ($_POST['tipo_dependencia'] > 0) {
+            $this->db->set('tipo_dependencia', $tipo_json);
+            // }
             if ($_POST['idade_inicio'] > 0) {
                 $this->db->set('idade_inicio', $_POST['idade_inicio']);
             }
@@ -1070,9 +1071,10 @@ class internacao_model extends BaseModel {
             $this->db->set('ocupacao_responsavel', $_POST['ocupacao']);
 //            $this->db->set('grau_parentesco', $empresa_id);
             $this->db->set('paciente_id', $paciente_id);
-            if ($_POST['tipo_dependencia'] > 0) {
-                $this->db->set('tipo_dependencia', $_POST['tipo_dependencia']);
-            }
+            $tipo_dependencia_json = json_encode($_POST['tipo_dependencia']);
+            // if ($_POST['tipo_dependencia'] > 0) {
+                $this->db->set('tipo_dependencia', $tipo_dependencia_json);
+            // }
             if ($_POST['idade_inicio'] > 0) {
 //                echo 'asdad';
                 $this->db->set('idade_inicio', $_POST['idade_inicio']);
@@ -1769,7 +1771,7 @@ class internacao_model extends BaseModel {
                           m.nome as cidade,
                           c.nome as convenio,
                           pi.nome as indicacao,
-                          itd.nome as dependencia,
+                          ifq.tipo_dependencia as dependencia,
                           ifq.confirmado,
                           ifq.aprovado,
                           ');
@@ -1778,7 +1780,7 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_convenio c', 'c.convenio_id = ifq.convenio_id', 'left');
         $this->db->join('tb_municipio m', 'm.municipio_id = ifq.municipio_id', 'left');
         $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = ifq.tomou_conhecimento', 'left');
-        $this->db->join('tb_internacao_tipo_dependencia itd', 'itd.internacao_tipo_dependencia_id = ifq.tipo_dependencia', 'left');
+        // $this->db->join('tb_internacao_tipo_dependencia itd', 'itd.internacao_tipo_dependencia_id = ifq.tipo_dependencia', 'left');
         $this->db->where('ifq.ativo', 't');
         $this->db->where("ifq.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00');
         $this->db->where("ifq.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
@@ -1801,9 +1803,11 @@ class internacao_model extends BaseModel {
 
             $this->db->where('ifq.municipio_id', $_POST['cidade']);
         }
-        if ($_POST['tipo_dependencia'] > 0) {
-            $this->db->where('ifq.tipo_dependencia', $_POST['tipo_dependencia']);
-        }
+        // $post_dependencia = $_POST['tipo_dependencia'];
+        // if ($_POST['tipo_dependencia'] > 0) {
+        //     $this->db->where("position('$post_dependencia' in ifq.tipo_dependencia) > 0");
+        // }
+        // Filtro é feito na view agora porque é mais de um por campo e blá blá blá.
         if ($_POST['confirmado'] != '') {
             $this->db->where('ifq.confirmado', $_POST['confirmado']);
         }

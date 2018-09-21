@@ -1033,12 +1033,14 @@ class empresa_model extends Model {
             }
             $operador_id = $this->session->userdata('operador_id');
             /* inicia o mapeamento no banco */
+            
             $this->db->set('nome', $_POST['txtNome']);
             $this->db->set('razao_social', $_POST['txtrazaosocial']);
             $this->db->set('razao_socialxml', $_POST['txtrazaosocialxml']);
             $this->db->set('cep', $_POST['CEP']);
             $this->db->set('cnes', $_POST['txtCNES']);
             $this->db->set('email', $_POST['email']);
+            $this->db->set('endereco_integracao_lab', $_POST['endereco_integracao_lab']);
 
 
             if ($operador_id == 1) {
@@ -2456,6 +2458,7 @@ class empresa_model extends Model {
                                f.horario_seg_sex_fim,
                                f.horario_sab_inicio,
                                f.horario_sab_fim,
+                               f.endereco_integracao_lab,
                                ep.percentual_multiplo,
                                ep.botao_laudo_paciente,
                                ep.ajuste_pagamento_procedimento,
@@ -2495,6 +2498,7 @@ class empresa_model extends Model {
             $this->_profissional_externo = $return[0]->profissional_externo;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
+            $this->_endereco_integracao_lab = $return[0]->endereco_integracao_lab;
             $this->_subgrupo = $return[0]->subgrupo;
             $this->_botao_imagem_paciente = $return[0]->botao_imagem_paciente;
             $this->_reservar_escolher_proc = $return[0]->reservar_escolher_proc;
