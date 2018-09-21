@@ -117,6 +117,28 @@ class exame_model extends Model {
         else
             return true;
     }
+    
+    function gravaroperadorguiche() {
+        
+        $guiche = $_POST['guiche'];
+        $operador_id = $_POST['operador_id'];
+        $count = count($operador_id);
+//        var_dump($_POST);die;
+        
+            for($i=0; $i<$count; $i++){            
+      
+                    $this->db->set('guiche', $guiche[$i]); 
+                    $this->db->where('operador_id', $operador_id[$i]);                    
+                    $this->db->update('tb_operador');
+            }
+        
+        
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
 
     function gravarprocedimentosinternacao() {
         try {
@@ -6590,6 +6612,9 @@ class exame_model extends Model {
         }
         if (isset($_POST['convenio']) && $_POST['convenio'] != "") {
             $this->db->where('pc.convenio_id', $_POST['convenio']);
+        }
+        if (isset($_POST['paciente']) && $_POST['paciente'] != "") {
+            $this->db->where('p.nome ilike', $_POST['paciente'] . "%");
         }
         $this->db->groupby('ae.paciente_id, convenionumero, p.nome, ambulatorio_guia_id');
         $return = $this->db->get();

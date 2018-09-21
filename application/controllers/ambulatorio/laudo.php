@@ -1096,9 +1096,85 @@ class Laudo extends BaseController {
         $data['empresapermissao'] = $this->guia->listarempresapermissoes();
         $data['receita'] = $this->laudo->listarreceita($obj_laudo->_paciente_id);
         $data['operadores'] = $this->operador_m->listarmedicos();
+        $data['prescricao'] = $this->laudo->listarprescricao($obj_laudo->_paciente_id, $ambulatorio_laudo_id);
 
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->load->View('ambulatorio/receituariosollis-form', $data);
+    }
+    
+    function carregarprescricao($ambulatorio_laudo_id) {
+//        var_dump($obj_laudo->_paciente_id);die;
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+        $data['lista'] = $this->exametemp->listarautocompletemodelosreceita();
+        $data['modelo'] = $this->exametemp->listarmodelosreceitaautomatico();
+        $data['empresapermissao'] = $this->guia->listarempresapermissoes();
+        $data['receita'] = $this->laudo->listarreceita($obj_laudo->_paciente_id);
+        $data['operadores'] = $this->operador_m->listarmedicos();        
+        $data['prescricao'] = $this->laudo->listarprescricoes($obj_laudo->_paciente_id);
+
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->load->View('ambulatorio/prescricao-form', $data);
+    }
+    
+    function editarprescricao($prescricao_id, $ambulatorio_laudo_id, $paciente_id) {
+//        var_dump($paciente_id);die;
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+        $data['lista'] = $this->exametemp->listarautocompletemodelosreceita();
+        $data['modelo'] = $this->exametemp->listarmodelosreceitaautomatico();
+        $data['empresapermissao'] = $this->guia->listarempresapermissoes();
+        $data['receita'] = $this->laudo->listarreceita($paciente_id);
+        $data['operadores'] = $this->operador_m->listarmedicos();        
+        $data['prescricao'] = $this->laudo->listarprescricoes($paciente_id);
+        $data['paciente'] = $this->laudo->listarprescricoespaciente($paciente_id);
+        $data['prescricaosollis'] = $this->laudo->listarprescricao($obj_laudo->_paciente_id, $ambulatorio_laudo_id);
+
+        $data['prescricao_id'] = $prescricao_id;
+        $data['paciente_id'] = $paciente_id;
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->load->View('ambulatorio/receituariosollis-form', $data);
+    }
+    
+    function excluirprescricao($prescricao_id, $ambulatorio_laudo_id, $paciente_id) {       
+        
+                
+        $valida = $this->laudo->excluirprescricao($prescricao_id);
+        if ($valida == 0) {
+            $data['mensagem'] = 'Sucesso ao excluir Prescricao';
+        } else {
+            $data['mensagem'] = 'Erro ao excluir Prescricao. Opera&ccedil;&atilde;o cancelada.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/laudo/carregarprescricao/$ambulatorio_laudo_id/$paciente_id");
+    }
+    
+    function excluirmedicamento($receituario_sollis_id, $prescricao_id, $ambulatorio_laudo_id, $paciente_id) {       
+        
+                
+        $valida = $this->laudo->excluirmedicamento($receituario_sollis_id);
+        if ($valida == 0) {
+            $data['mensagem'] = 'Sucesso ao excluir o item';
+        } else {
+            $data['mensagem'] = 'Erro ao excluir o item. Opera&ccedil;&atilde;o cancelada.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/laudo/editarprescricao/$prescricao_id/$ambulatorio_laudo_id/$paciente_id");
+    }
+    
+    function gravarprescricao($ambulatorio_laudo_id, $paciente_id) {
+        
+        
+        $prescricao_id = $this->laudo->gravarprescricao($ambulatorio_laudo_id);
+        if ($prescricao_id == 'banana') {
+//            $data['mensagem'] = 'Erro ao gravar setor. Setor já cadastrado.';
+        } else {
+//            $data['mensagem'] = 'Sucesso ao gravar setor.';
+        }
+//        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/laudo/carregarprescricao/$ambulatorio_laudo_id/$paciente_id");
     }
 
     function carregaratestado($ambulatorio_laudo_id) {
@@ -4665,6 +4741,15 @@ class Laudo extends BaseController {
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/laudo/carregarreceituario/$ambulatorio_laudo_id");
+    }
+    
+    function gravarreceituariosollis($ambulatorio_laudo_id, $paciente_id, $prescricao_id) {
+        
+//        var_dump($paciente_id);die;
+        $this->laudo->gravarreceituariosollis($ambulatorio_laudo_id, $prescricao_id);
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/laudo/editarprescricao/$prescricao_id/$ambulatorio_laudo_id/$paciente_id");
     }
 
     function gravaratestado($ambulatorio_laudo_id) {

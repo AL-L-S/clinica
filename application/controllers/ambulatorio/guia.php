@@ -557,7 +557,12 @@ class Guia extends BaseController {
     }
 
     function carregarcadastroaso($paciente_id, $cadastro_aso_id) {
+        
+        if($cadastro_aso_id == ''){
+        $data['informacao_aso'] = $this->guia->carregarcadastroaso2();    
+        }else{
         $data['informacao_aso'] = $this->guia->carregarcadastroaso($cadastro_aso_id);
+        }
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['salas'] = $this->guia->listarsalas();

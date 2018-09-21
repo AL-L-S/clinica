@@ -947,6 +947,36 @@ class Operador_model extends BaseModel {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listaroperadorguiche() {
+        $this->db->select('    o.operador_id,
+                               o.guiche, 
+                               o.nome,
+                               o.perfil_id,
+                               p.nome as perfil');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id', 'left');     
+      
+
+        $this->db->orderby('o.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listaroperadorguiche2($operador_id) {
+        
+        $operador_id = $this->session->userdata('operador_id');
+        
+        $this->db->select('    o.operador_id,
+                               o.guiche, 
+                               o.nome');
+        $this->db->from('tb_operador o');
+        $this->db->where('o.operador_id', $operador_id);              
+
+//        $this->db->orderby('o.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listaroperador($operador) {
         $this->db->select('o.operador_id,

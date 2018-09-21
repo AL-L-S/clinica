@@ -911,6 +911,11 @@ class internacao extends BaseController {
         $data['unidade'] = $this->internacao_m->listaunidade();
         $this->loadView('internacao/relatoriocensodiario', $data);
     }
+    
+    function relatoriounidadeleito() {
+        $data['unidade'] = $this->internacao_m->listaunidade();
+        $this->loadView('internacao/relatoriounidadeleito', $data);
+    }
 
     function gerarelatoriocensodiario() {
 //        echo '<pre>';
@@ -948,10 +953,52 @@ class internacao extends BaseController {
             $this->load->View('internacao/impressaorelatoriocensodiario', $data);
         }
     }
+    
+    function gerarelatoriounidadeleito() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $data['unidadeleito'] = $this->internacao_m->relatoriounidadeleito();
+//        echo '<pre>';
+//        var_dump($data['censodiario']);
+//        die;
+        if ($_POST['unidade'] != 0) {
+            $unidade = $this->internacao_m->pesquisarunidade($_POST['unidade']);
+            $data['unidade'] = $unidade[0]->nome;
+        } else {
+            $data['unidade'] = 'TODOS';
+        }
+
+        if ($_POST['enfermaria'] != 0) {
+            $enfermaria = $this->internacao_m->pesquisarenfermaria($_POST['enfermaria']);
+            $data['enfermaria'] = $enfermaria[0]->nome;
+        } else {
+            $data['enfermaria'] = 'TODOS';
+        }
+
+
+
+        if ($_POST['gerar_pdf'] == 'SIM') {
+            $html = $this->load->View('internacao/impressaorelatoriounidadeleito', $data, true);
+            $this->load->plugin('mpdf');
+
+            $cabecalhopdf = '';
+            $rodapepdf = '';
+            $nomepdf = "Relatorio Censo " . date("d/m/Y H:i:s") . ".pdf";
+            pdf($html, $nomepdf, $cabecalhopdf, $rodapepdf);
+        } else {
+            $this->load->View('internacao/impressaorelatoriounidadeleito', $data);
+        }
+    }
 
     function relatoriointernacao() {
         $data['unidade'] = $this->internacao_m->listaunidade();
         $this->loadView('internacao/relatoriointernacao', $data);
+    }
+    
+    function relatoriosituacao() {
+        $data['unidade'] = $this->internacao_m->listaunidade();
+        $this->loadView('internacao/relatoriosituacao', $data);
     }
 
     function relatoriosaidainternacao() {
@@ -981,6 +1028,30 @@ class internacao extends BaseController {
         }
 
         $this->load->View('internacao/impressaorelatoriointernacao', $data);
+    }
+    
+    function gerarelatoriointernacaosituacao() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $data['data_inicio'] = $_POST['txtdata_inicio'];
+        $data['data_fim'] = $_POST['txtdata_fim'];
+        $data['internacao'] = $this->internacao_m->relatoriointernacaosituacao();
+//        echo '<pre>';
+//        var_dump($data['internacao']);
+//        die;
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
+        } else {
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
+            } else {
+                $data['convenio'] = 'TODOS';
+            }
+        }
+
+        $this->load->View('internacao/impressaorelatoriointernacaosituacao', $data);
     }
 
     function gerarelatoriosaidainternacao() {

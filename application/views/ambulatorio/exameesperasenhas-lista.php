@@ -48,12 +48,13 @@
                     </tr>
                 </thead>
                 <?php
+                $operador_id = $this->session->userdata('operador_id');
                 if (count($senhas) > 0) {
                     ?>
                     <tbody>
                         <?php
                         $perfil_id = $this->session->userdata('perfil_id');
-                        $operador_id = $this->session->userdata('operador_id');
+                        
                         $estilo_linha = "tabela_content01";
                         foreach ($senhas as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
@@ -94,7 +95,7 @@
             type: "POST",
             data: {teste: 'teste'},
             //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-            url: "<?= $endereco ?>/webService/telaAtendimento/proximo/<?= $setor_string ?>/Guichê 1/true/false/<?= $operador_id ?>/1",
+            url: "<?= $endereco ?>/webService/telaAtendimento/proximo/<?= $setor_string ?>/Guiche <?= $guiche ?>/true/false/<?= $operador_id ?>/1",
             success: function (data) {
 //                alert('asdsadsd');
 //                console.log(data);
