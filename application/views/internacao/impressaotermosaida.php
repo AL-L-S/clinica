@@ -12,7 +12,31 @@
             page-break-before: always;
         }
     </style>
+<?
+$dependencia = array();
+$dependencia_id = array();
 
+foreach($dependencias as $value){
+
+    array_push($dependencia, $value->nome);
+    array_push($dependencia_id, $value->internacao_tipo_dependencia_id);
+
+}
+
+$dependencia_nomes = '';
+$array_dependencia = json_decode(@$paciente[0]->tipo_dependencia);
+$total_cadastros++;
+foreach ($array_dependencia as $value) {
+    $key = array_search($value, $dependencia_id);
+    $dependencia_loop = $dependencia[$key];
+    if ($dependencia_nomes == '') {
+        $dependencia_nomes = $dependencia_nomes . $dependencia_loop;
+    } else {
+        $dependencia_nomes = $dependencia_nomes . ', ' . $dependencia_loop;
+    }
+}
+
+?>
     <body>
         <? //= $cabecalho_form ?>
         <!--<hr class="hrlegal">-->

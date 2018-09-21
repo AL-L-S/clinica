@@ -147,8 +147,29 @@
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/exame/faturarguiamatmed/" . $guia_id . '/' . $paciente['0']->paciente_id; ?> ', '_blank');">Mat/Med
 
                                         </a></div></th>
-                                <th class="tabela_header" style="width: 100px;"></th>
-                                <th class="tabela_header" colspan="7"></th>                         
+                                <?
+                                if($empresapermissoes[0]->endereco_integracao_lab != ''){?>
+                                    <th class="tabela_header">
+                                        <div class="bt_link">
+                                            <a href='<?= base_url() . "ambulatorio/guia/enviarExamesLabLuz/" . $guia_id . '/' . $paciente['0']->paciente_id; ?>'>
+                                            Importar Lab
+                                            </a>
+                                        </div>
+                                    </th>
+                                    <th class="tabela_header" colspan="6">
+                                        <div class="bt_link">
+                                            <a target="_blank" href='<?= base_url() . "ambulatorio/guia/resultadoExamesLabLuz/" . $guia_id . '/' . $paciente['0']->paciente_id; ?>'>
+                                            Resultado Lab
+                                            </a>
+                                        </div>
+                                    </th>
+                                    <!-- <th class="tabela_header" colspan="5"></th>   -->
+                                <?}else{?>
+                                    <th class="tabela_header" style="width: 100px;"></th>
+                                    <th class="tabela_header" colspan="7"></th>  
+                               <? }
+                                ?>
+                                                       
                             </tr>
                         </thead>
                         <tbody>

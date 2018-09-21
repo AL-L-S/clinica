@@ -5234,7 +5234,7 @@ class laudo_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $_POST['medico']);
             if ($_POST['data'] != "") {
-                $this->db->set('data', $_POST['data']);
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data']))));
             }
             if ($_POST['cid1ID'] != "") {
                 $this->db->set('cid1', $_POST['cid1ID']);

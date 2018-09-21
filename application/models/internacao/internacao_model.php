@@ -433,7 +433,6 @@ class internacao_model extends BaseModel {
                            i.procedimentosolicitado,
                            c.nome as convenio,
                            cbo.descricao as profissao,
-                           itd.nome as dependencia,
                            i.nome_responsavel,
                            i.cep_responsavel,
                            i.logradouro_responsavel,
@@ -449,6 +448,7 @@ class internacao_model extends BaseModel {
                            i.telefone_responsavel,
                            i.grau_parentesco,
                            i.idade_inicio,
+                           i.tipo_dependencia,
                            ocupacao_responsavel,
                            cid.co_cid,
                            cid.no_cid,
@@ -458,7 +458,7 @@ class internacao_model extends BaseModel {
                            p.estado_civil_id,
                            p.nascimento');
         $this->db->from('tb_internacao i');
-        $this->db->join('tb_internacao_tipo_dependencia itd', 'itd.internacao_tipo_dependencia_id = i.tipo_dependencia', 'left');
+        // $this->db->join('tb_internacao_tipo_dependencia itd', 'itd.internacao_tipo_dependencia_id = i.tipo_dependencia', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = i.medico_id', 'left');
         $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');

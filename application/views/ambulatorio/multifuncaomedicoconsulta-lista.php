@@ -479,7 +479,7 @@
 
 <? if (($endereco != '')) { ?>
   function chamarPaciente(url, toten_fila_id, medico_id, toten_sala_id) {
-    //   alert(url);
+     // alert(url);
       $.ajax({
           type: "POST",
           data: {teste: 'teste'},
