@@ -14233,6 +14233,13 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->orderby('e.empresa_id');
             $flags = $this->db->get()->result();
 //            var_dump("<hr>",$flags); die;
+            $endereco_toten = $this->session->userdata('endereco_toten');
+            if($endereco_toten != ''){
+                $this->db->set('toten_fila_id', $_POST['toten_fila_id']);
+                $this->db->where('paciente_id', $_POST['txtpaciente_id']);
+                $this->db->update('tb_paciente');
+            }
+            
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");

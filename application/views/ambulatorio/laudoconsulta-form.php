@@ -1940,7 +1940,7 @@
     $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$obj->_toten_fila_id/$obj->_nome/$cpf/$obj->_medico_parecer1/$obj->_medico_nome/$obj->_toten_sala_id/false";
     ?>
         $("#botaochamar").click(function () {
-//            alert('<?//= $url_enviar_ficha ?>');
+        //    alert('<?//= $url_enviar_ficha ?>');
             $.ajax({
                 type: "POST",
                 data: {teste: 'teste'},

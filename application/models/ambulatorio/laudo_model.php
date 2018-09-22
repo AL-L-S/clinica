@@ -6045,7 +6045,7 @@ class laudo_model extends Model {
                             p.senha,
                             p.estado_civil_id,
                             cbo.descricao as profissao_cbo,
-                            ag.toten_fila_id,
+                            p.toten_fila_id,
                             ag.toten_senha_id,
                             ag.data_senha,
                             o2.nome as medico_nome,
