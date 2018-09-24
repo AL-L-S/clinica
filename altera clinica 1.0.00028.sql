@@ -410,6 +410,7 @@ ALTER TABLE ponto.tb_prescricao ADD COLUMN ativo boolean NOT NULL DEFAULT true;
 
 ALTER TABLE ponto.tb_receituario_sollis ADD COLUMN prescricao_id integer;
 ALTER TABLE ponto.tb_receituario_sollis ADD COLUMN ativo boolean NOT NULL DEFAULT true;
+ALTER TABLE ponto.tb_aso_risco ALTER COLUMN descricao_risco TYPE text;
 
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$

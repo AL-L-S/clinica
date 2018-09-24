@@ -81,3 +81,6 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN endereco_integracao_lab text;
 
 -- Dia 20/09/2018
 ALTER TABLE ponto.tb_operador ADD COLUMN guiche integer;
+
+-- Dia 21/09/2018
+ALTER TABLE ponto.tb_aso_risco ALTER COLUMN descricao_risco TYPE text;

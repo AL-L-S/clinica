@@ -25,9 +25,7 @@
                             <select name="txtsetor_id" id="txtsetor_id" class="size4 chosen-select" tabindex="1" required="">
                                 <option value="">SELECIONE </option>
                                 <? foreach ($setor as $value) : ?>
-                                    <option value="<?= $value->aso_setor_id; ?>">
-
-                                        <?= $value->descricao_setor; ?></option>
+                                    <option value="<?= $value->aso_setor_id; ?>"><?= $value->descricao_setor; ?></option>
                                 <? endforeach; ?>
                             </select>
                         </td>
@@ -39,9 +37,7 @@
                         <td>                   
                             <select name="txtfuncao_id[]" id="txtfuncao_id" style="width: 450px;" class="chosen-select" data-placeholder="Selecione as Funções..." multiple required="">
                                 <? foreach ($funcao as $value) : ?>
-                                    <option value="<?= $value->aso_funcao_id; ?>">
-
-                                        <?= $value->descricao_funcao; ?></option>
+                                    <option value="<?= $value->aso_funcao_id; ?>"><?= $value->descricao_funcao; ?></option>
                                 <? endforeach; ?>
                             </select>
                         </td>    
@@ -53,9 +49,7 @@
                         <td>                  
                             <select name="txtrisco_id[]" id="txtrisco_id" style="width: 450px;" class="chosen-select" data-placeholder="Selecione os Riscos..." multiple required="">
                                 <? foreach ($riscos as $value) : ?>
-                                    <option value="<?= $value->aso_risco_id; ?>">
-
-                                        <?= $value->descricao_risco; ?></option>
+                                    <option value="<?= $value->aso_risco_id; ?>"><?= $value->descricao_risco; ?></option>
                                 <? endforeach; ?>
                             </select>
                         </td>
