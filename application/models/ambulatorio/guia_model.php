@@ -796,18 +796,20 @@ class guia_model extends Model {
         return $return;
     }
     
-    function carregarcadastroaso2() {
+    function carregarcadastroaso2($paciente_id) {
                         
-        $this->db->select('
+        $this->db->select(' ca.ativo,
                             ca.tipo,
                             ca.impressao_aso,
                             ca.medico_responsavel,
                             ca.data_cadastro,
-                            p.nome as paciente
+                            p.nome as paciente,
+                            p.paciente_id
                             ');
         $this->db->from('tb_cadastro_aso ca');
         $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
-        
+        $this->db->where("p.paciente_id", $paciente_id);
+        $this->db->where("ca.ativo", 'TRUE');
 
         $this->db->orderby("ca.data_cadastro");
         $return = $this->db->get();

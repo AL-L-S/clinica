@@ -188,20 +188,24 @@ class Guia extends BaseController {
 
     function carregarcadastroaso($paciente_id, $cadastro_aso_id) {
         
-        if($cadastro_aso_id == ''){
-        $data['informacao_aso'] = $this->guia->carregarcadastroaso2();    
+        if($cadastro_aso_id == 0){
+        $data['informacao_aso'] = $this->guia->carregarcadastroaso2($paciente_id);    
         }else{
         $data['informacao_aso'] = $this->guia->carregarcadastroaso($cadastro_aso_id);
         }
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['salas'] = $this->guia->listarsalas();
+        if($cadastro_aso_id == 0){
+        $data['setor'] = $this->saudeocupacional->carregarsetores2();
+        }else{
         $data['setor'] = $this->saudeocupacional->carregarsetores();
+        }
         $data['convenio'] = $this->convenio->listardados();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
 
-
+//        var_dump($data['informacao_aso']);die;
 
 
         $this->loadView('ambulatorio/cadastroaso-form', $data);

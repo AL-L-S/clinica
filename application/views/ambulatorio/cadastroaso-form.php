@@ -9,7 +9,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 <?$perfil_id = $this->session->userdata('perfil_id'); ?>
 <?php
     $this->load->library('utilitario');
-//    var_dump($this->session->flashdata('message')); die;
+//    var_dump($config); die;
     Utilitario::pmf_mensagem($this->session->flashdata('message'));
     ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->

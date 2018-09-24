@@ -60,6 +60,17 @@ class saudeocupacional_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function carregarsetores2() {
+        $this->db->select('se.aso_setor_id,
+                            se.descricao_setor,
+                            se.aso_funcao_id,
+                            se.convenio_id');
+        $this->db->from('tb_aso_setor se');
+        $this->db->where('se.ativo', 'true');
+        $this->db->where('se.convenio_id IS NOT NULL', null, false );
+        $return = $this->db->get();
+        return $return->result();
+    }
     function carregarexames() {
         $this->db->select('se.aso_setor_id,
                             se.descricao_setor,
