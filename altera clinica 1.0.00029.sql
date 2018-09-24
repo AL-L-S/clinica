@@ -84,3 +84,9 @@ ALTER TABLE ponto.tb_operador ADD COLUMN guiche integer;
 
 -- Dia 21/09/2018
 ALTER TABLE ponto.tb_aso_risco ALTER COLUMN descricao_risco TYPE text;
+
+-- Dia 24/09/2018
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN medicinadotrabalho boolean DEFAULT false;
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN data_realizacao date;
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN data_validade date;
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN convenio_id integer;

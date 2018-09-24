@@ -667,6 +667,31 @@ class Guia extends BaseController {
         }
         redirect(base_url() . "ambulatorio/guia/cadastroaso/$paciente_id/$medico_id");
     }
+    function relatorioaso() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $this->loadView('ambulatorio/relatorioaso', $data);
+    }
+    
+    function gerarelatorioaso() {
+//        echo '<pre>';
+//        var_dump($_POST);
+//        die;
+        $data['data_inicio'] = $_POST['txtdata_inicio'];
+        $data['data_fim'] = $_POST['txtdata_fim'];
+        $data['relatorioaso'] = $this->guia->relatorioaso();
+
+        
+            if ($_POST['tipo'] != 0) {
+                $tipo = $this->guia->listaraso($_POST['tipo']);
+                $data['tipo'] = $tipo[0]->tipo;
+            } else {
+                $data['tipo'] = 'TODOS';
+            }
+        
+
+        $this->load->View('ambulatorio/impressaorelatorioaso', $data);
+    }
 
     function impressaoaso($cadastro_aso_id) {
 

@@ -3,16 +3,16 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
 
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
-    <h4 class="title_relatorio">Relatório Censo Diário</h4>
+    <h4 class="title_relatorio">Relatório Unidade Leito</h4>
     <p></p>
     <h4 class="title_relatorio">Unidade: <?= @$unidade; ?> </h4>
     <h4 class="title_relatorio">Enfermaria: <?= @$enfermaria; ?> </h4>
-<!--    <h4 class="title_relatorio">Status: <?= ($_POST['status_leito'] != '') ? $_POST['status_leito'] : 'TODOS'; ?> </h4>-->
+
 
     <br>
-    <!--<br>-->
+   
     <? if (count($unidadeleito) > 0) { ?>
-        <!--<hr/>-->
+        
         <table border='1' cellspacing=0 cellpadding=5 style="border-collapse: collapse;font-size: 9pt">
 
             <tr>
@@ -28,7 +28,7 @@
                     $unidade_foreach = $item->unidade;
                     $contador0++;
                 }
-//                var_dump($unidade_conta); die;
+
 
                 $vago = 0;
                 $ocupado = 0;

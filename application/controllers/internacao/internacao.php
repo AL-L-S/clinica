@@ -955,13 +955,9 @@ class internacao extends BaseController {
     }
     
     function gerarelatoriounidadeleito() {
-//        echo '<pre>';
-//        var_dump($_POST);
-//        die;
+
         $data['unidadeleito'] = $this->internacao_m->relatoriounidadeleito();
-//        echo '<pre>';
-//        var_dump($data['censodiario']);
-//        die;
+
         if ($_POST['unidade'] != 0) {
             $unidade = $this->internacao_m->pesquisarunidade($_POST['unidade']);
             $data['unidade'] = $unidade[0]->nome;

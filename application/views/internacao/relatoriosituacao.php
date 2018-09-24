@@ -81,20 +81,5 @@
         $("#accordion").accordion();
     });
 
-    $(function () {
-        $("#txtCidade").autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=cidade",
-            minLength: 3,
-            focus: function (event, ui) {
-                $("#txtCidade").val(ui.item.label);
-                return false;
-            },
-            select: function (event, ui) {
-                $("#txtCidade").val(ui.item.value);
-                $("#txtCidadeID").val(ui.item.id);
-                return false;
-            }
-        });
-    });
 
 </script>

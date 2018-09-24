@@ -63,6 +63,57 @@ class guia_model extends Model {
         return 1;
     }
 
+    function listaraso($tipo) {
+        $this->db->select('ca.*            ');
+        $this->db->from('tb_cadastro_aso ca');        
+        $this->db->where('tipo', $tipo);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listaraso2() {
+        $this->db->select('ca.*            ');
+        $this->db->from('tb_cadastro_aso ca');        
+//        $this->db->where('tipo', $tipo);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function relatorioaso() {
+        $data = date("Y-m-d");
+        $this->db->select(' 
+                          ca.*,
+                          p.nome as paciente,                        
+                                                   
+                          ');
+        $this->db->from('cadastro_aso ca');        
+        $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        
+        $this->db->where('ca.ativo = true');
+        
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00';
+//
+//        $this->db->where("(ca.data_realizacao >= '$data_inicio' OR cast(ca.data_realizacao AS date) + 
+//        cast((Select sum(quantidade) from ponto.tb_internacao_procedimentos
+//         where internacao_id = i.internacao_id and ativo = true) as integer) >= '$data_inicio')");
+        $this->db->where("ca.data_realizacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) );
+        $this->db->where("ca.data_realizacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
+        if ($_POST['convenio'] != '') {
+            if ($_POST['convenio'] == '-1') {
+                $this->db->where('c.convenio_id', null);
+            } else {
+                $this->db->where('c.convenio_id', $_POST['convenio']);
+            }
+        }
+
+
+        $this->db->orderby('iu.internacao_unidade_id, ie.internacao_enfermaria_id, il.ativo, il.nome, i.data_internacao desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function impressaoaso($cadastro_aso_id) {
         $this->db->select('ca.*, p.nome as paciente,
                             p.nascimento,
@@ -100,7 +151,7 @@ class guia_model extends Model {
     }
 
     function gravarcadastroaso($paciente_id) {
-
+//        echo'<pre>';var_dump($_POST);die;
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $valores = json_encode($_POST);        
@@ -112,6 +163,9 @@ class guia_model extends Model {
             $this->db->set('medico_responsavel', $_POST['medico']);
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->set('data_atualizacao', $horario);
+            $this->db->set('data_realizacao', $_POST['data_realizacao']);
+            $this->db->set('data_validade', $_POST['validade_exame']);
+            $this->db->set('convenio_id', $_POST['convenio1']);
             $this->db->where('cadastro_aso_id', $_POST['cadastro_aso_id']);
             $this->db->update('tb_cadastro_aso');
             $aso_id = $_POST['cadastro_aso_id'];
@@ -122,6 +176,9 @@ class guia_model extends Model {
             $this->db->set('medico_responsavel', $_POST['medico']);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('data_cadastro', $horario);
+            $this->db->set('data_realizacao', $_POST['data_realizacao']);
+            $this->db->set('data_validade', $_POST['validade_exame']);
+            $this->db->set('convenio_id', $_POST['convenio1']);
             $this->db->insert('tb_cadastro_aso');
             $aso_id = $this->db->insert_id();
         }

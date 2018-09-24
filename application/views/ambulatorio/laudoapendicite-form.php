@@ -43,7 +43,7 @@
     Utilitario::pmf_mensagem($this->session->flashdata('message'));
     ?>
     <div >
-        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarparecer/<?= $ambulatorio_laudo_id ?>" method="post">
+        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarlaudoapendicite/<?= $ambulatorio_laudo_id ?>" method="post">
             <div >
                 <input type="hidden" name="guia_id" id="guia_id" class="texto01"  value="<?= @$obj->_guia_id; ?>"/>
                 <input type="hidden" name="paciente_id" id="paciente_id" class="texto01"  value="<?= @$obj->_paciente_id; ?>"/>

@@ -390,7 +390,10 @@
                                         <td><input type="checkbox" id="botao_ativar_sala" name="botao_ativar_sala" <? if (@$obj->_botao_ativar_sala == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag o botão de reativar sala aparece.">Botão de reativar sala</label></td>
                                         <td><input type="checkbox" id="enfermagem" name="enfermagem" <? if (@$obj->_enfermagem == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag o perfil de Técnico passa a poder dar entrada e solicitar.">Enfermagem</label></td>
                                         <td><input type="checkbox" id="integracaosollis" name="integracaosollis" <? if (@$obj->_integracaosollis == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag o sistema fará integração com a API da Sollis para o receituário médico.">Sollis</label></td>
-                                    </tr>                                    
+                                    </tr>
+                                    <tr>
+                                       <td><input type="checkbox" id="medicinadotrabalho" name="medicinadotrabalho" <? if (@$obj->_medicinadotrabalho == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag todas as funções relacionadas com Medicina do Trabalho estarão disponíveis no sistema.">Medicina do Trabalho</label></td> 
+                                    </tr>
                                 </table>
                             </fieldset>
                             <br><br><br>
