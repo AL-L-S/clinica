@@ -571,7 +571,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
           },
           error: function (data) {
               console.log(data);
-              //                alert('DEU MERDA');
+
           }
       });
 

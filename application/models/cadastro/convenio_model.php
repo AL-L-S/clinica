@@ -310,6 +310,22 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarsetorselecionadotabela($setor_cadastro_id) {
+        $this->db->select('sc.setor_cadastro_id,
+                            sc.setor_id,
+                            sc.funcao_id,
+                            sc.risco_id,
+                            se.descricao_setor,
+                            fu.descricao_funcao
+                                        ');
+        $this->db->from('tb_setor_cadastro sc');
+        $this->db->join('tb_aso_setor se', 'se.aso_setor_id = sc.setor_id', 'left');
+        $this->db->join('tb_aso_funcao fu', 'fu.aso_funcao_id = sc.funcao_id', 'left');        
+        $this->db->where("sc.empresa_id", $setor_cadastro_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listardadoscbhpm() {
         $empresa_id = $this->session->userdata('empresa_id');

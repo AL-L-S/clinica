@@ -376,7 +376,7 @@ class exame_model extends Model {
         $this->db->from('tb_toten_senha');
         $this->db->orderby('toten_senha_id desc');
         $this->db->where('ativo', 'true');
-        $this->db->where('associada', 'false');
+        // $this->db->where('associada', 'false');
 //        $this->db->where('atendida', 'true');
         $this->db->where('operador_cadastro', $operador_id);
         $this->db->where("data_cadastro >=", date("Y-m-d") . ' 00:00:00');

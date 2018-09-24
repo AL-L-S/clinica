@@ -72,7 +72,7 @@ class Convenio extends BaseController {
     
     function setores($convenio_id) {
         
-        $data['cadastro'] = $this->convenio->setorcadastro();
+        $data['cadastro'] = $this->convenio->listarsetorselecionadotabela($convenio_id);
         $data['riscos'] = $this->saudeocupacional->listarriscofuncao();
         $data['funcao'] = $this->saudeocupacional->listarsetorfuncao();
         $data['setor'] = $this->saudeocupacional->listarsetor2();        

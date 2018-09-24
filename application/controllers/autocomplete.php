@@ -150,12 +150,28 @@ class Autocomplete extends Controller {
     function testandoIntegracaoLabLuz() {
         header('Access-Control-Allow-Origin: *');
         //Lote
-
-
+        $empresa = $this->guia->listarempresa();
+        
+        if($empresa[0]->endereco_integracao_lab != ''){
+            $url = $empresa[0]->endereco_integracao_lab;
+        }else{
+            $url = '';
+        }
+        if($empresa[0]->identificador_lis != ''){
+            $identificador_lis = $empresa[0]->identificador_lis;
+        }else{
+            $identificador_lis = '';
+        }
+        if($empresa[0]->origem_lis != ''){
+            $origem_lis = $empresa[0]->origem_lis;
+        }else{
+            $origem_lis = '';
+        }
+        // Lote
         $criacaoLis = date("Y-m-d") . 'T' . date("H:i:s") . '-0300';
-        $codigoLis = '112';
-        $identificadorLis = '1253';
-        $origemLis = 'teste';
+        $codigoLis = '112'; // Ambulatorio_guia_id provavelmente
+        $identificadorLis = $identificador_lis;
+        $origemLis = $origem_lis;
         // Solicitacao
         $solCodigoLis = '9996';
         $codigoConvenio = '1';
@@ -218,7 +234,9 @@ class Autocomplete extends Controller {
 
             $contador++;
         }
-        $exames_obj->exame = $exame_array;
+
+        $exames_obj->exame = $exame_array; // O atributo exame recebe o array de outros objs criados no foreach
+
 ///////////////// Paciente ////////////////
 
         $paciente_obj->codigoLis = $pacienteCodigoLis;
@@ -231,8 +249,8 @@ class Autocomplete extends Controller {
         $solicitacao_array[0] = new stdClass();
         $solicitacao_array[0]->codigoLis = $solCodigoLis;
         $solicitacao_array[0]->criacaoLis = $criacaoLis;
-        $solicitacao_array[0]->paciente = $paciente_obj;
-        $solicitacao_array[0]->exames = $exames_obj;
+        $solicitacao_array[0]->paciente = $paciente_obj; // Obj Paciente
+        $solicitacao_array[0]->exames = $exames_obj; // Obj Exames
 
         $solicitacoes_obj->solicitacao = $solicitacao_array;
 ////////////////  Lote ////////////////////////
@@ -255,8 +273,8 @@ class Autocomplete extends Controller {
 
         $postdata = http_build_query(
             array(
-                'body' => $json_exemplo,
-                'url' => 'https://labluz.lisnet.com.br/lisnetws/APOIO/enviar',
+                'body' => $json_geral,
+                'url' => $url,
             )
         );
         
@@ -277,9 +295,17 @@ class Autocomplete extends Controller {
         // $xml = simplexml_load_string($result);
         // $json = json_encode($xml);
         $decode_result = json_decode($result);
-        // echo '<pre>';
-        echo $result;
-        // var_dump($result);
+
+        if(isset($decode_result)){
+
+            if ($decode_result->lote->solicitacoes[0]->solicitacao->mensagem == 'REJEITADO') {
+                echo 'Errado';
+            }
+
+        }
+        echo '<pre>';
+        // echo $result;
+        var_dump($decode_result);
         // var_dump($decode_result);
         die;
 
@@ -293,7 +319,7 @@ class Autocomplete extends Controller {
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST['body']);
 
         $result = curl_exec($ch);
         // var_dump($result);

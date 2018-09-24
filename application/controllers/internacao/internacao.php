@@ -457,7 +457,7 @@ class internacao extends BaseController {
         }
 
         $data['cabecalho_form'] = $cabecalho;
-
+        $data['dependencias'] = $this->internacao_m->listartipodependenciaquestionario();
         $data['paciente'] = $this->internacao_m->mostrartermoresponsabilidade($internacao_id);
         $paciente_id = $data['paciente'][0]->paciente_id;
         $data['historicoantigo'] = $this->laudo_m->listarlaudohistoricointernacao($paciente_id);

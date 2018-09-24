@@ -1041,6 +1041,8 @@ class empresa_model extends Model {
             $this->db->set('cnes', $_POST['txtCNES']);
             $this->db->set('email', $_POST['email']);
             $this->db->set('endereco_integracao_lab', $_POST['endereco_integracao_lab']);
+            $this->db->set('identificador_lis', $_POST['identificador_lis']);
+            $this->db->set('origem_lis', $_POST['origem_lis']);
 
 
             if ($operador_id == 1) {
@@ -2459,6 +2461,8 @@ class empresa_model extends Model {
                                f.horario_sab_inicio,
                                f.horario_sab_fim,
                                f.endereco_integracao_lab,
+                               f.identificador_lis,
+                               f.origem_lis,
                                ep.percentual_multiplo,
                                ep.botao_laudo_paciente,
                                ep.ajuste_pagamento_procedimento,
@@ -2499,6 +2503,8 @@ class empresa_model extends Model {
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
             $this->_endereco_integracao_lab = $return[0]->endereco_integracao_lab;
+            $this->_identificador_lis = $return[0]->identificador_lis;
+            $this->_origem_lis = $return[0]->origem_lis;
             $this->_subgrupo = $return[0]->subgrupo;
             $this->_botao_imagem_paciente = $return[0]->botao_imagem_paciente;
             $this->_reservar_escolher_proc = $return[0]->reservar_escolher_proc;

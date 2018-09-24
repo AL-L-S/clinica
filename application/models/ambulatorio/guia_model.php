@@ -197,6 +197,8 @@ class guia_model extends Model {
                             oftamologia,
                             carregar_modelo_receituario,
                             retirar_botao_ficha,
+                            endereco_integracao_lab,
+                            identificador_lis,
                             ep.desabilitar_trava_retorno,
                             ep.conjuge,
                             ep.associa_credito_procedimento,
@@ -7734,6 +7736,58 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarexamesguialaboratorio($guia_id) {
+
+        $this->db->select('ae.agenda_exames_id,
+                            pt.procedimento_tuss_id,
+                            ae.data,
+                            ae.mensagem_integracao_lab,
+                            ae.operador_autorizacao,
+                            op.nome as operador,
+                            ae.guia_id,
+                            ae.paciente_id,
+                            ae.data_autorizacao,
+                            p.nome as paciente,
+                            c.nome as convenio,
+                            p.sexo,
+                            p.nascimento,
+                            p.cpf,
+                            o.nome as medicosolicitante,
+                            o.conselho as crm_solicitante,
+                            ae.indicacao as promotor2,
+                            pt.grupo,
+                            pc.convenio_id,
+                            pt.codigo,
+                            ope.conselho,
+                            m.estado,
+                            m.codigo_ibge,
+                            ag.tipo ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_guia ge', 'ge.ambulatorio_guia_id = ae.guia_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_ambulatorio_grupo ag', 'pt.grupo = ag.nome', 'left');
+        $this->db->join('tb_empresa ep', 'ep.empresa_id = ae.empresa_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = o.municipio_id', 'left');
+        $this->db->join('tb_operador ope', 'ope.operador_id = ae.medico_consulta_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->where("ae.guia_id", $guia_id);
+        $this->db->where("pt.grupo", 'LABORATORIAL');
+        // $this->db->where("ae.mensagem_integracao_lab !=", 'IMPORTADO');
+        $this->db->where("ae.cancelada", "f");
+        $this->db->orderby('ae.agenda_exames_id');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+
     function listarexamesrelatorioorcamento($orcamento, $data) {
 
         $this->db->select('oi.ambulatorio_orcamento_item_id,
@@ -9038,6 +9092,30 @@ class guia_model extends Model {
         $this->db->set('operador_checado', $operador_id);
         $this->db->where('ambulatorio_guia_id', $guia_id);
         $this->db->update('tb_ambulatorio_guia');
+    }
+    
+    function gravarguiajsonlaboratorio($guia_id, $json, $mensagem_imp) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+//        $this->db->set('observacoes', $_POST['observacoes']);
+        $this->db->set('mensagem_integracao_lab', $mensagem_imp);
+        $this->db->set('json_integracao_lab', $json);
+        $this->db->set('data_integracao_lab', $horario);
+        $this->db->set('operador_integracao_lab', $operador_id);
+        $this->db->where('guia_id', $guia_id);
+        $this->db->update('tb_agenda_exames');
+    }
+    
+    function gravarguiajsonlaboratorioresultado($guia_id, $json, $mensagem_imp) {
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+//        $this->db->set('observacoes', $_POST['observacoes']);
+        $this->db->set('mensagem_integracao_lab', $mensagem_imp);
+        $this->db->set('json_resultado_lab', $json);
+        $this->db->set('data_resultado_lab', $horario);
+        $this->db->set('operador_resultado_lab', $operador_id);
+        $this->db->where('guia_id', $guia_id);
+        $this->db->update('tb_agenda_exames');
     }
 
     function gravarguiaconvenio($guia_id) {
@@ -12862,6 +12940,9 @@ ORDER BY ae.paciente_credito_id)";
                             atestado_config,
                             celular,
                             bairro,
+                            endereco_integracao_lab,
+                            identificador_lis,
+                            origem_lis,
                             impressao_tipo');
         $this->db->from('tb_empresa');
         $this->db->where('empresa_id', $empresa_id);
@@ -14154,6 +14235,13 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->orderby('e.empresa_id');
             $flags = $this->db->get()->result();
 //            var_dump("<hr>",$flags); die;
+            $endereco_toten = $this->session->userdata('endereco_toten');
+            if($endereco_toten != ''){
+                $this->db->set('toten_fila_id', $_POST['toten_fila_id']);
+                $this->db->where('paciente_id', $_POST['txtpaciente_id']);
+                $this->db->update('tb_paciente');
+            }
+            
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");

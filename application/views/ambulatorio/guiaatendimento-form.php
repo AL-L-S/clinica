@@ -245,6 +245,18 @@ $desabilitar_trava_retorno = $empresa[0]->desabilitar_trava_retorno;
 
                         <input type="text" name="nome_mae" id="txtNomeMae" class="texto09" value="<?= $paciente['0']->nome_mae; ?>" readonly/>
                     </div>
+                    <?
+                    $endereco_toten = $this->session->userdata('endereco_toten');
+                    if($endereco_toten != ''){?>
+                        <div>
+                            <label>Senha Toten</label>
+
+
+                            <input type="text" name="toten_fila_id" id="toten_fila_id" class="texto02" value="<?= $paciente['0']->toten_fila_id; ?>" required/>
+                        </div>
+                   <? }
+                    ?>
+                    
                 </fieldset>
                 <fieldset>
                     <legend>Consultas anteriores</legend>

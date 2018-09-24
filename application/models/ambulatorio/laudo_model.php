@@ -5436,7 +5436,7 @@ class laudo_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $_POST['medico']);
             if ($_POST['data'] != "") {
-                $this->db->set('data', $_POST['data']);
+                $this->db->set('data', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data']))));
             }
             if ($_POST['cid1ID'] != "") {
                 $this->db->set('cid1', $_POST['cid1ID']);
@@ -6045,7 +6045,7 @@ class laudo_model extends Model {
                             p.senha,
                             p.estado_civil_id,
                             cbo.descricao as profissao_cbo,
-                            ag.toten_fila_id,
+                            p.toten_fila_id,
                             ag.toten_senha_id,
                             ag.data_senha,
                             o2.nome as medico_nome,

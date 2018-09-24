@@ -54,6 +54,376 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/guia-lista', $data);
     }
 
+    function enviarExamesLabLuz($guia_id, $paciente_id) {
+        $empresa = $this->guia->listarempresa();
+        $exames_procedimentos = $this->guia->listarexamesguialaboratorio($guia_id);
+        // var_dump($exames_procedimentos);
+        // die;
+        if (count($exames_procedimentos) > 0) {
+
+
+            $url = $empresa[0]->endereco_integracao_lab;
+            $identificador_lis = $empresa[0]->identificador_lis;
+            $origem_lis = $empresa[0]->origem_lis;
+        // Lote
+            $criacaoLis = date("Y-m-d") . 'T' . date("H:i:s") . '-0300';
+            $codigoLis = $exames_procedimentos[0]->guia_id; // Ambulatorio_guia_id provavelmente
+            $identificadorLis = $identificador_lis;
+            $origemLis = $origem_lis;
+        // Solicitacao
+            $solCodigoLis = $exames_procedimentos[0]->guia_id;
+            
+        // Solicitacao->Paciente
+            $pacienteCodigoLis = $exames_procedimentos[0]->paciente_id;
+            $nome = $exames_procedimentos[0]->paciente;
+            $nascimento = $exames_procedimentos[0]->nascimento;
+            $sexo = $exames_procedimentos[0]->sexo;
+        // Solicitacao->Exames
+        // Exames ->Exame
+        // Exame-> Solicitantes
+        // Solicitantes -> Solicitante
+            
+
+//////////////////////////// Definição dos Objs ////////////////////////
+
+            $geral_obj = new stdClass();
+            $lote_obj = new stdClass();
+            $solicitacoes_obj = new stdClass();
+            $solicitacao_obj = new stdClass();
+            $solicitacao_array = array();
+            $solicitacao_obj = new stdClass();
+            $paciente_obj = new stdClass();
+            $exames_obj = new stdClass();
+
+            $exame_array = array();
+            $solicitantes_obj = new stdClass();
+////////////// Solicitantes ////////////////////////////
+            
+        // array_push($solicitante_array, $solicitantes_obj);
+
+/////////////// Exames //////////////////      
+            // $teste = array(1);
+            $contador = 0;
+
+            foreach ($exames_procedimentos as $item) {
+                // var_dump($item->mensagem_integracao_lab); die;
+                // if($item->mensagem_integracao_lab == 'IMPORTADO'){
+                //     continue;
+                // }
+                $codigoUF = $this->utilitario->codigo_uf($item->codigo_ibge);
+
+                
+                $solicitante_array = array();
+                $solicitante_array[0] = new stdClass();
+                $solicitante_array[0]->conselho = 'CRM';
+                $solicitante_array[0]->uf = $codigoUF;
+                $solicitante_array[0]->numero = $item->conselho;
+                $solicitante_array[0]->nome = $item->medicosolicitante;
+                $solicitantes_obj->solicitante = $solicitante_array;
+
+                $exame_array[$contador] = new stdClass();
+                $exame_array[$contador]->codigoLis = $item->codigo;
+                $exame_array[$contador]->amostraLis = '';
+                $exame_array[$contador]->materialLis = $item->procedimento_tuss_id;
+                $exame_array[$contador]->solicitantes = $solicitantes_obj;
+
+                $contador++;
+            }
+            // echo '<pre>';
+            // var_dump($exame_array); die;
+
+            $exames_obj->exame = $exame_array; // O atributo exame recebe o array de outros objs criados no foreach
+
+///////////////// Paciente ////////////////
+
+            $paciente_obj->codigoLis = $pacienteCodigoLis;
+            $paciente_obj->nome = $nome;
+            $paciente_obj->nascimento = $nascimento;
+            $paciente_obj->sexo = $sexo;
+
+///////////////// Solicitacao /////////////////////////
+
+            $solicitacao_array[0] = new stdClass();
+            $solicitacao_array[0]->codigoLis = $solCodigoLis;
+            $solicitacao_array[0]->criacaoLis = $criacaoLis;
+            $solicitacao_array[0]->paciente = $paciente_obj; // Obj Paciente
+            $solicitacao_array[0]->exames = $exames_obj; // Obj Exames
+
+            $solicitacoes_obj->solicitacao = $solicitacao_array;
+////////////////  Lote ////////////////////////
+
+            $lote_obj->codigoLis = $codigoLis;
+            $lote_obj->identificadorLis = $identificadorLis;
+            $lote_obj->origemLis = $origemLis;
+            $lote_obj->criacaoLis = $criacaoLis;
+            $lote_obj->solicitacoes = $solicitacoes_obj;
+
+/////////////// Objeto Com o Lote //////////////////
+            $geral_obj->lote = $lote_obj;
+            $json_geral = json_encode($geral_obj);
+
+        //     echo '<pre>';
+        //     var_dump($url);
+        // // var_dump($json_novo_decode);
+        //     die;
+
+            // Aqui defino o envio que irá ser feito para a função no nosso sistema que manda o Curl pro LabLuz
+            $postdata = http_build_query(
+                array(
+                    'body' => $json_geral,
+                    'url' => "$url/enviar",
+                )
+            );
+
+            $opts = array('http' =>
+                array(
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            ));
+
+            $context = stream_context_create($opts);
+
+            $result = file_get_contents(base_url() . 'ambulatorio/guia/enviarCurlLabLuz', false, $context);
+
+        // var_dump($result); die;
+        
+        // $xml = simplexml_load_string($result);
+        // $json = json_encode($xml);
+            $decode_result = json_decode($result);
+            // To encodando de novo só pra não ter o risco de ir um espaço vazio ou alguma besteira
+            // E depois atrapalhar na hora de refazer o Objeto.
+            $encode_result_again = json_encode($decode_result);
+
+            if (isset($decode_result)) {
+                $mensagem_imp = $decode_result->lote->solicitacoes[0]->solicitacao->mensagem;
+                $this->guia->gravarguiajsonlaboratorio($guia_id, $encode_result_again, $mensagem_imp);
+                $obj_foreach = $decode_result->lote->solicitacoes[0]->solicitacao->exames->exame;
+                $mensagem_data = '';
+                $mensagem_anterior = '';
+                $codigo_anterior = '';
+                foreach ($obj_foreach as $item) {
+                    // Gerando a mensagem que vai pra tala de Guias
+                    // Você pode achar que deveria ser simples, mas tem uma limitação no número de linhas que o 
+                    // script_alert aceita, então é preciso diminuir isso
+                    // Quando as mensagens são "ok" ele faz a mesma lógica pra quando dá erro, a diferença é só o fato
+                    // de que as mensagens de Ok eu coloco o nome Exame 4Head
+                    // Dentro do IF eu só checo se a mensagem anterior é igual a atual
+                    // Se sim, ele só bota o nome do exame do lado ao invés de criar uma nova linha
+                    if (str_replace($codigo_anterior, '', $mensagem_anterior) == str_replace($item->codigoLis, '', $item->mensagem)) {
+                        if ($item->mensagem == 'OK' || $item->mensagem == 'Ok') {
+                            $mensagem_data = $mensagem_data . ' Exame: ' . $item->codigoLis . ' - ' . $item->mensagem;
+                        } else {
+                            $mensagem_data = $mensagem_data . ", " . $item->codigoLis;
+                        }
+
+                    } else {
+                        $mensagem_data = $mensagem_data . " " . $item->mensagem . "<br>";
+                    }
+                    
+
+                    $mensagem_anterior = $item->mensagem;
+                    $codigo_anterior = $item->codigoLis;
+                }
+            }
+
+            // echo '<pre>';
+            // echo $mensagem_data;
+            // var_dump($decode_result);
+            // die;
+
+            // $mensagem_completa = '';
+            $mensagem_completa = '<p>' . $mensagem_data . '</p>';
+            $this->session->set_flashdata('message', $mensagem_completa);
+            // echo(utf8_decode($mensagem_data)); die;
+            redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
+     
+           
+        
+        }else{
+            $mensagem_data = 'Sem exames Laboratoriais na Guia';
+            $this->session->set_flashdata('message', $mensagem_completa);
+            // echo(utf8_decode($mensagem_data)); die;
+            redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
+            
+        }
+       
+        
+    }
+
+    function resultadoExamesLabLuz($guia_id, $paciente_id) {
+        $empresa = $this->guia->listarempresa();
+
+        $exames_procedimentos = $this->guia->listarexamesguialaboratorio($guia_id);    
+        // var_dump($exames_procedimentos);
+        // die;
+        // if (count($exames_procedimentos) > 0) {
+
+
+        $url = $empresa[0]->endereco_integracao_lab;
+        $identificador_lis = $empresa[0]->identificador_lis;
+        $origem_lis = $empresa[0]->origem_lis;
+        // Lote
+        $criacaoLis = date("Y-m-d") . 'T' . date("H:i:s") . '-0300';
+        $codigoLis = $exames_procedimentos[0]->guia_id; // Ambulatorio_guia_id provavelmente
+        $identificadorLis = $identificador_lis;
+        $origemLis = $origem_lis;
+        // Solicitacao
+        $solCodigoLis = $exames_procedimentos[0]->guia_id;
+            
+        // Solicitacao->Paciente
+        $pacienteCodigoLis = $exames_procedimentos[0]->paciente_id;
+        $nome = $exames_procedimentos[0]->paciente;
+        $nascimento = $exames_procedimentos[0]->nascimento;
+        $sexo = $exames_procedimentos[0]->sexo;
+        // Solicitacao->Exames
+        // Exames ->Exame
+        // Exame-> Solicitantes
+        // Solicitantes -> Solicitante
+        $resultado_json = '{
+            "lote": {
+              "codigoLis": "1001",
+              "identificadorLis": "teste",
+              "origemLis": "TESTE",
+              "criacaoLis": "2018-09-20T11:15:20-0300",
+              "solicitacao": { "codigoLis": "26" },
+              "parametros": {
+                "marcaLido": "N",
+                "parcial": "S",
+                "retorno": "LINK"
+              }
+            }
+          }';
+
+          // Exemplo ^
+          
+
+//////////////////////////// Definição dos Objs ////////////////////////
+
+        $geral_obj = new stdClass();
+        $lote_obj = new stdClass();
+        $solicitacao_obj = new stdClass();
+        $parametros_obj = new stdClass();
+        $dataCadastro_obj = new stdClass();
+
+
+////////////////// Parametros ////////////////////////////
+        $parametros_obj->marcaLido = 'N';
+        $parametros_obj->parcial = 'S';
+        $parametros_obj->retorno = 'LINK';
+
+////////////////// Data Cadastro ////////////////////////////
+        $dataCadastro_obj->inicial = '2018-09-10T11:23:35-0300';
+        $dataCadastro_obj->retorno = '2018-09-20T11:23:35-0300';
+
+////////////////// Solicitação //////////////////////////
+        $solicitacao_obj->codigoLis = $codigoLis;
+
+////////////////// Lote /////////////////////////////////////
+        $lote_obj->codigoLis = $identificadorLis;
+        $lote_obj->identificadorLis = $identificadorLis;
+        $lote_obj->origemLis = $origemLis;
+        $lote_obj->criacaoLis = $criacaoLis;
+        $lote_obj->solicitacao = $solicitacao_obj;
+        // $lote_obj->dataCadastro = $dataCadastro_obj;
+        $lote_obj->parametros = $parametros_obj;
+
+        $geral_obj->lote = $lote_obj;
+
+////////////// Solicitantes ////////////////////////////
+        // echo '<pre>';
+        // // var_dump(json_decode($resultado_json));
+        // var_dump($geral_obj);
+        // die;      
+        // $json_geral = json_encode($resultado_json);
+        $json_geral = json_encode($geral_obj);
+        // array_push($solicitante_array, $solicitantes_obj);
+
+            // Aqui defino o envio que irá ser feito para a função no nosso sistema que manda o Curl pro LabLuz
+        $postdata = http_build_query(
+            array(
+                'body' => $json_geral,
+                'url' => "$url/resultado",
+            )
+        );
+
+        $opts = array('http' =>
+            array(
+            'method' => 'POST',
+            'header' => 'Content-type: application/x-www-form-urlencoded',
+            'content' => $postdata
+        ));
+
+        $context = stream_context_create($opts);
+
+        $result = file_get_contents(base_url() . 'ambulatorio/guia/enviarCurlLabLuz', false, $context);
+        
+        
+        // $xml = simplexml_load_string($result);
+        // $json = json_encode($xml);
+        $decode_result = json_decode($result);
+        // echo '<pre>';
+        // // var_dump($geral_obj); 
+        // var_dump($decode_result->lote->solicitacoes->solicitacao[0]->link); 
+        // die;
+        
+            // To encodando de novo só pra não ter o risco de ir um espaço vazio ou alguma besteira
+            // E depois atrapalhar na hora de refazer o Objeto.
+        $encode_result_again = json_encode($decode_result);
+
+        if (isset($decode_result)) {
+            $mensagem_imp = $decode_result->lote->solicitacoes->solicitacao[0]->mensagem;
+            $this->guia->gravarguiajsonlaboratorioresultado($guia_id, $encode_result_again, $mensagem_imp);
+            $mensagem_data = $mensagem_imp;
+            $mensagem_anterior = '';
+            $codigo_anterior = '';
+            if(isset($decode_result->lote->solicitacoes->solicitacao[0]->link)){
+                redirect($decode_result->lote->solicitacoes->solicitacao[0]->link);
+            }else{
+                $mensagem_data = 'Não foram encontrados resultados para a guia selecionada';
+            }
+           
+            
+        }else{
+            $mensagem_data = 'Não foram encontrados resultados para a guia selecionada';
+        }
+
+            // echo '<pre>';
+            // echo $mensagem_data;
+            // var_dump($decode_result);
+            // die;
+
+            // $mensagem_completa = '';
+        // $mensagem_completa = '<p>' . $mensagem_data . '</p>';
+        $this->session->set_flashdata('message', $mensagem_data);
+            // echo(utf8_decode($mensagem_data)); die;
+        redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
+
+        // }else{
+        //     $mensagem_data = 'Sem exames Laboratoriais na Guia';
+            
+        // }
+       
+        
+    }
+
+
+    function enviarCurlLabLuz() {
+    
+        // var_dump($_POST); die;
+        $fields = array('' => $_POST['body']);
+        $url = $_POST['url'];
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $_POST['body']);
+
+        $result = curl_exec($ch);
+        // var_dump($result);
+        curl_close($ch);
+    }
+
     function pesquisarsolicitacaosadt($paciente_id, $convenio_id = null, $solicitante_id = null) {
 
         $data['convenio_id'] = $convenio_id;

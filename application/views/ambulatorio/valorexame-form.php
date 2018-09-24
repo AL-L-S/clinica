@@ -74,7 +74,7 @@
                                     <option value="-1">Selecione</option>
                                     <? foreach ($convenio as $item) : ?>
                                         <option value="<?= $item->convenio_id; ?>" <?
-                                        if ($exame[0]->convenio_id == $item->convenio_id) {
+                                        if (@$exame[0]->convenio_id == $item->convenio_id) {
                                             echo 'selected';
                                         }
                                         ?>><?= $item->nome; ?></option>

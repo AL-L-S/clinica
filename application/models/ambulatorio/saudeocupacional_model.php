@@ -16,13 +16,17 @@ class saudeocupacional_model extends Model {
         }
     }
 
-    function listarsetor() {
+    function listarsetor($args = array()) {
         $this->db->select('se.aso_setor_id,
                             se.descricao_setor');
         $this->db->from('tb_aso_setor se');
         $this->db->where('se.ativo', 'true');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('se.descricao_setor ilike', "%" . $args['nome'] . "%");
+        }
         return $this->db;
     }
+
     function listarsetor2() {
         $this->db->select('se.aso_setor_id,
                             se.descricao_setor');
@@ -80,13 +84,15 @@ class saudeocupacional_model extends Model {
         return $return->result();
     }
 
-    function listarfuncao() {
+    function listarfuncao($args = array()) {
         $this->db->select('fu.aso_funcao_id,
                             fu.descricao_funcao
                             ');
         $this->db->from('tb_aso_funcao fu');
         $this->db->where('fu.ativo', 'true');
-        
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('fu.descricao_funcao ilike', "%" . $args['nome'] . "%");
+        }
         return $this->db;
     }
 
@@ -101,11 +107,14 @@ class saudeocupacional_model extends Model {
         return $return->result();
     }
 
-    function listarrisco() {
+    function listarrisco($args = array()) {
         $this->db->select('r.aso_risco_id,
                             r.descricao_risco');
         $this->db->from('tb_aso_risco r');
         $this->db->where('r.ativo', 'true');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('r.descricao_risco ilike', "%" . $args['nome'] . "%");
+        }
         return $this->db;
     }
     

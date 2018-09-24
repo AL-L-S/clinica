@@ -6858,6 +6858,13 @@ class exametemp_model extends Model {
             $this->db->orderby('e.empresa_id');
             $flags = $this->db->get()->result();
 
+            $endereco_toten = $this->session->userdata('endereco_toten');
+            if($endereco_toten != ''){
+                $this->db->set('toten_fila_id', $_POST['toten_fila_id']);
+                $this->db->where('paciente_id', $paciente_id);
+                $this->db->update('tb_paciente');
+            }
+
             $i = 0;
             $confimado = "";
             $horario = date("Y-m-d H:i:s");
