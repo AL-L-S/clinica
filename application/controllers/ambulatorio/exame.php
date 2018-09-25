@@ -94,6 +94,14 @@ class Exame extends BaseController {
             $setor_busca = file_get_contents("$endereco/webService/telaAtendimento/setores");
             $data['setores'] = json_decode($setor_busca);
 
+            // Apenas testando na inexistência do Toten
+            // for($i = 0; $i < 20; $i++){
+            //     $data['setores'][$i] =  new stdClass();
+            //     $data['setores'][$i]->nome = 'Teste';
+            //     $data['setores'][$i]->id = 25;
+            // }
+            
+
             $setor_string = '';
             foreach ($data['setores'] as $item) {
                 if ($setor_string == '') {
