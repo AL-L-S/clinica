@@ -7,14 +7,20 @@
     <p></p>
     <h4 class="title_relatorio">Inicio: <?= $data_inicio; ?> - Fim: <?= $data_fim; ?> </h4>
 
-    <h4 class="title_relatorio">Tipo: <?= @$tipo ?> </h4>
+    <h4 class="title_relatorio">Tipo: <?= $tipo ?> </h4>
+    <h4 class="title_relatorio">Convênio: <?= $convenio ?> </h4>
+<?
+//        echo '<pre>';
+//        var_dump($relatorioaso);
+//        die; ?>
 
-
-
-    <? if (count($cadastroaso) > 0) { ?>
+    <? if (count($relatorioaso) > 0) { ?>
         <hr/>
-        <table border='1' cellspacing=0 cellpadding=5 style="border-collapse: collapse" width="100%">
+        <table border='1' cellspacing=0 cellpadding=5 style="border-collapse: collapse; text-align: center" width="100%">
             <tr>
+                <th class="tabela_header">
+                    TIPO ASO
+                </th>
                 <th class="tabela_header">
                     Nº ASO
                 </th>
@@ -43,64 +49,41 @@
             </tr>
             <tr>
                 <?
-//                $totaletapas = 0;
-//                $totalpacientes = 0;
-//                $paciente = "";
-//                $etapas = "";
-//                $internacao_precricao_id = "";
-//                $estilo_linha = "tabela_content01";
-//                $teste = 0;
 
 
-
-//                foreach ($internacao as $item) {
-////                    var_dump($item);die;
-//                    $nascimento = new DateTime($item->nascimento);
-//                    $atual = new DateTime(date("Y-m-d"));
-//
-//                    // Resgata diferença entre as datas
-//                    $dateInterval = $nascimento->diff($atual);
-//
-//                    $data_inicio = new DateTime($item->data_internacao);
-//                    $data_fim = new DateTime(date("Y-m-d H:i:s"));
-//
-//                    // Resgata diferença entre as datas
-//                    $dateInterval2 = $data_inicio->diff($data_fim);
+                foreach ($relatorioaso as $item) {
+       
+//                var_dump($item->impressao_aso);die;
+                $impressao_aso = json_decode($item->impressao_aso);
+                $funcao = $this->guia->listarfuncaoaso($impressao_aso->funcao);
+//                var_dump($funcao);die;
                     ?>
-<!--                <tr>
-                    <td ><?= ($item->convenio != '') ? $item->convenio : '<b>Não Tem</b>'; ?></td>
-                    <td ><?= $item->unidade; ?></td>
-                    <td ><?= $item->enfermaria; ?></td>
-                    <td ><?= $item->leito; ?></td>
-                    <td ><?= $item->paciente; ?></td>
-                    <td ><?= $item->sexo; ?></td>
-                    <td ><?= ($item->nascimento != '') ? $dateInterval->y : $item->idade; ?> Anos</td>
-                    <td ><?= $item->procedimento; ?></td>
-                    <td ><?= $item->cid1; ?></td>
-                    <td ><?= date("d/m/Y H:i:s", strtotime($item->data_internacao)); ?></td>
-                    <td ><?= $dateInterval2->days; ?> Dias</td>
-                    <? if ($item->situacao == 't') { ?>
-                    <td style="color:green">INTERNADO</td>
-                    <? } ?>
-                    <? if ($item->situacao == 'f') { ?>
-                    <td style="color:red">NÃO INTERNADO</td>
-                    <? } ?>
-                </tr>-->
+                <tr>
+                    <td ><?= $item->tipo ?></td>
+                    <td ><?= $item->cadastro_aso_id ?></td>
+                    <td ><?= $item->convenio ?></td>
+                    <td ><?= $item->paciente_id ?></td>
+                    <td ><?= $item->paciente ?></td>
+                    <td ><?= $funcao[0]->descricao_funcao ?></td>
+                    <td ><?= date("d/m/Y", strtotime($item->data_realizacao)); ?></td>
+                    <td ><?= date("d/m/Y", strtotime($item->data_validade)); ?></td>
+                    
+                </tr>
                 <?
             }
             ?>
-            <!--<tr><th colspan="12" class="tabela_header">Total de Internações: <?= count($tipo); ?></th></tr>-->
+            <tr><th colspan="12" class="tabela_header">Total de Internações: <?= count($relatorioaso); ?></th></tr>
         </table>
-    <? // } else { ?>
-<!--        <br> <hr/>
-        <h2 class="title_relatorio">Sem Registros </h2>-->
-    <? // } ?>
+    <? } else { ?>
+        <br> <hr/>
+        <h2 class="title_relatorio">Sem Registros </h2>
+    <? } ?>
 
 
 </div> 
 
 <!-- Reset de CSS para garantir o funcionamento do layout em todos os brownsers -->
-
+<!--<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">-->
 <script type="text/javascript">
 
 </script>

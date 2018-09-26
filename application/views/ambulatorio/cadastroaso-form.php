@@ -63,6 +63,24 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <label>RG</label>
                 <input readonly="" type="text" name="rg" id="rg" class="texto04" value="<?= @$paciente[0]->rg ?>" />
             </div>
+            <div>
+                <label>Consulta</label>
+                <select name="consulta" id="consulta" class="size2" required="">
+                    <option value="" <?
+//                    if (@$paciente[0]->sexo == ""):echo 'selected';
+//                    endif;
+                    ?>>SELECIONE</option>
+                    <option value="particular" <?
+//                    if (@$paciente[0]->sexo == ""):echo 'selected';
+//                    endif;
+                    ?>>Particular</option>
+                    <option value="conveniado" <?
+//                    if (@$paciente[0]->sexo == "M"):echo 'selected';
+//                    endif;
+                    ?>>Conveniado</option>                    
+                </select>
+
+            </div>
 
 
         </fieldset>
@@ -96,7 +114,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
 
 
-            <div>
+            <div id="convenio">
                 <label>Empresa</label>
 
                 <select  name="convenio1" id="convenio1" class="size2" required="" >      
@@ -109,25 +127,27 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                         </option>
                     <? endforeach; ?>
                 </select>
+                <input type="text" id="convenio2" name="convenio2"  class="texto04" value="" />
             </div>
 
-            <div>
-
+            <div id="setor1">
                 <label>Setor</label>
                 <select name="setor" id="setor" class="size2" required="">
                     
                 </select>
+                <input type="text" id="setor2" name="setor2"  class="texto04" value="" />
             </div>
-            <div>
+            <div id="funcao1">
                 <label>Função</label>
                 <select name="funcao" id="funcao" class="size2" required="">
 
 
                 </select>
+                <input type="text" id="funcao2" name="funcao2"  class="texto04" value="" />
             </div>
             <div>
                 <label>Data De Realização</label>
-                <input type="text" name="data_realizacao" id="data_realizacao" class="texto04" value="<?= @$config->data_realizacao ?>" />
+                <input type="text" name="data_realizacao" id="data_realizacao" class="texto04" value="<?= @$config->data_realizacao ?>" required=""/>
             </div>
             <div>
                 <label>Médico</label>
@@ -142,7 +162,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             </div>
             <div>
                 <label>Validade do Exame</label>
-                <input type="text" name="validade_exame" id="validade_exame" class="texto04" value="<?= @$config->validade_exame ?>" />
+                <input type="text" name="validade_exame" id="validade_exame" class="texto04" value="<?= @$config->validade_exame ?>" required="" />
             </div>
             <div>
                 <label>Sala</label>
@@ -349,7 +369,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
     .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 330px; }
 </style>
-<? // var_dump(@$config->funcao);die;?>
+<? // var_dump(@$config->riscos);die;?>
 <script type="text/javascript">
 
                     $(function () {
@@ -553,6 +573,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                         });
                     });
+                    
+                    
                                         <? if (@$config->procedimento1 != '') { ?>
 //                       
                         var exame = [<?= implode(', ',@$config->procedimento1); ?>]; 
@@ -563,16 +585,16 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 ?>
                     
                     function carregarProcedimentoAtualizar() {
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $('#convenio1').val()}, function (j) {
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                 options = '<option value=""></option>';
 
                                 for (var c = 0; c < j.length; c++) {
 //                                    alert(exame.indexOf(parseInt(j[c].procedimento_convenio_id)));
 //                                    alert(j[c].procedimento_convenio_id);
-                                    if (exame.indexOf(parseInt(j[c].procedimento_convenio_id)) > -1) {
-                                        options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    if (exame.indexOf(parseInt(j[c].procedimento_tuss_id)) > -1) {
+                                        options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
                                     } else {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                        options += '<option value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
                                     }
                                     
                                 }
@@ -588,12 +610,12 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                         $('#convenio1').change(function () {
                             if ($(this).val()) {
 //                                $('.carregando').show();
-
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val()}, function (j) {
+//                                alert('hello');
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $(this).val(), setor: $('#setor').val()}, function (j) {
                                     options = '<option value=""></option>';
 //                                    console.log(j);
                                     for (var c = 0; c < j.length; c++) {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                        options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
                                     }
 //                            $('#procedimento1').html(options).show();
                                     $('#procedimento1 option').remove();
@@ -665,6 +687,77 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                         }
                     }
-                    calculoIdade();
+                    calculoIdade(); 
+                    
+                $('#convenio2').hide();
+                $('#convenio1').show();
+                $('#setor2').hide();
+                $('#setor').show();
+                $('#funcao2').hide();
+                $('#funcao').show();
+                
+                
+            $('#consulta').change(function () {
 
+            if ($('#consulta :selected').val() === "particular") {
+                $('#convenio1').hide();
+                $('#convenio2').show();
+                $('#setor').hide();
+                $('#setor2').show();
+                $('#funcao').hide();
+                $('#funcao2').show();
+                
+                $.getJSON('<?= base_url() ?>ambulatorio/guia/listarriscos', {setor: $('#setor').val()}, function (j) {
+                                options = '<option value=""></option>';
+//                                alert('ola');
+                                for (var c = 0; c < j.length; c++) {
+                                  
+                                        options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                   
+                                    
+                                }
+
+
+                                $('#riscos option').remove();
+                                $('#riscos').append(options);
+                                $("#riscos").trigger("chosen:updated");
+
+                            });
+                
+                              
+            } else {
+                $('#convenio2').hide();
+                $('#convenio1').show();
+                $('#setor2').hide();
+                $('#setor').show();
+                $('#funcao2').hide();
+                $('#funcao').show(); 
+                
+                $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+                                options = '<option value=""></option>';
+//                                console.log(j);
+                                for (var c = 0; c < j.length; c++) {
+//                                    alert(risco.indexOf(parseInt(j[c].aso_risco_id)));
+//                                    alert(j[c].aso_risco_id);
+                                    if (risco.indexOf(parseInt(j[c].aso_risco_id)) > -1) {
+                                        options += '<option selected value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                    } else {
+                                        options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                    }
+                                    
+                                }
+
+
+                                $('#riscos option').remove();
+                                $('#riscos').append(options);
+//                                $("#riscos_teste").trigger("listz:updated");
+                                $("#riscos").trigger("chosen:updated");
+//                                $('.carregando').hide();
+                            });
+                                    
+                
+            }
+        });
+            
+        
 </script>

@@ -81,23 +81,36 @@ class guia_model extends Model {
         return $return->result();
     }
     
+    function listarfuncaoaso($nomefuncao) {
+        $this->db->select('fu.descricao_funcao');
+        $this->db->from('tb_aso_funcao fu');        
+        $this->db->where('aso_funcao_id', $nomefuncao);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function relatorioaso() {
+//        var_dump($_POST);die;
         $data = date("Y-m-d");
         $this->db->select(' 
                           ca.*,
-                          p.nome as paciente,                        
+                          p.nome as paciente,
+                          c.nome as convenio
                                                    
                           ');
-        $this->db->from('cadastro_aso ca');        
+        $this->db->from('tb_cadastro_aso ca');        
         $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        $this->db->join('tb_convenio c', 'ca.convenio_id = c.convenio_id', 'left');
         
         $this->db->where('ca.ativo = true');
         
+        if ($_POST['tipo'] != '') {
+        $this->db->where('ca.tipo', $_POST['tipo']);
+        }
+        
         $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00';
-//
-//        $this->db->where("(ca.data_realizacao >= '$data_inicio' OR cast(ca.data_realizacao AS date) + 
-//        cast((Select sum(quantidade) from ponto.tb_internacao_procedimentos
-//         where internacao_id = i.internacao_id and ativo = true) as integer) >= '$data_inicio')");
+
         $this->db->where("ca.data_realizacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) );
         $this->db->where("ca.data_realizacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
         if ($_POST['convenio'] != '') {
@@ -107,9 +120,7 @@ class guia_model extends Model {
                 $this->db->where('c.convenio_id', $_POST['convenio']);
             }
         }
-
-
-        $this->db->orderby('iu.internacao_unidade_id, ie.internacao_enfermaria_id, il.ativo, il.nome, i.data_internacao desc');
+        $this->db->orderby("ca.tipo, ca.data_realizacao");
         $return = $this->db->get();
         return $return->result();
     }
@@ -149,14 +160,26 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarriscos(){
+        $this->db->select('r.aso_risco_id,
+                           r.descricao_risco
+                                     ');
+        $this->db->from('tb_aso_risco r');
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function gravarcadastroaso($paciente_id) {
-//        echo'<pre>';var_dump($_POST);die;
+        
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $valores = json_encode($_POST);        
+//            echo'<pre>';var_dump($_POST);die;
 
         if ($_POST['cadastro_aso_id'] > 0) {
+            $aso_id = $_POST['cadastro_aso_id'];
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('impressao_aso', $valores);
             $this->db->set('tipo', $_POST['tipo']);
@@ -165,10 +188,14 @@ class guia_model extends Model {
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('data_realizacao', $_POST['data_realizacao']);
             $this->db->set('data_validade', $_POST['validade_exame']);
-            $this->db->set('convenio_id', $_POST['convenio1']);
-            $this->db->where('cadastro_aso_id', $_POST['cadastro_aso_id']);
+            $this->db->set('consulta', $_POST['consulta']);
+            if ($_POST['consulta'] == "particular") {
+            $this->db->set('convenio2', $_POST['convenio2']);
+            }else{
+            $this->db->set('convenio_id', $_POST['convenio1']);    
+            }
+            $this->db->where('cadastro_aso_id', $aso_id);
             $this->db->update('tb_cadastro_aso');
-            $aso_id = $_POST['cadastro_aso_id'];
         } else {
             $this->db->set('paciente_id', $paciente_id);
             $this->db->set('impressao_aso', $valores);
@@ -178,7 +205,12 @@ class guia_model extends Model {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('data_realizacao', $_POST['data_realizacao']);
             $this->db->set('data_validade', $_POST['validade_exame']);
-            $this->db->set('convenio_id', $_POST['convenio1']);
+            $this->db->set('consulta', $_POST['consulta']);
+            if ($_POST['consulta'] == "particular") {
+            $this->db->set('convenio2', $_POST['convenio2']);
+            }else{
+            $this->db->set('convenio_id', $_POST['convenio1']);    
+            }
             $this->db->insert('tb_cadastro_aso');
             $aso_id = $this->db->insert_id();
         }
@@ -15138,7 +15170,7 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('procedimento_tuss_id', $procedimento_convenio_id); //procedimento_tuss_id na tabela de agenda exames é o procedimento_convenio_id
-//            var_dump($percentual[0]->percentual);die;
+
             $percentual_laboratorio = $this->percentuallaboratorioconvenioexames($procedimento_convenio_id);
 
             if (count($percentual_laboratorio) > 0) {
@@ -15151,12 +15183,16 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('medico_consulta_id', $_POST['medico']);
                 $this->db->set('medico_agenda', $_POST['medico']);
             }
+            
+            $this->db->select('ae.guia_id');
+            $this->db->from('tb_agenda_exames ae');
+            $this->db->where('ae.guia_id', $ambulatorio_guia_id);            
+            $pesquisa = $this->db->get()->result();
+            
+//            var_dump($pesquisa[0]->guia_id);die;
 
-
-
+            if($ambulatorio_guia_id != $pesquisa[0]->guia_id){
             $this->db->set('quantidade', 1);
-//            $this->db->set('autorizacao', $_POST['autorizacao1']);
-
             $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
             $this->db->set('inicio', $hora);
             $this->db->set('fim', $hora);
@@ -15178,6 +15214,31 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->set('operador_autorizacao', $operador_id);
             $this->db->insert('tb_agenda_exames');
+            }else{
+            $this->db->set('quantidade', 1);
+            $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
+            $this->db->set('inicio', $hora);
+            $this->db->set('fim', $hora);
+            $this->db->set('ordenador', 1);
+            $empresa_id = $this->session->userdata('empresa_id');
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('confirmado', 't');
+            $this->db->set('tipo', 'EXAME');
+            $this->db->set('ativo', 'f');
+            $this->db->set('situacao', 'OK');
+            $this->db->set('guia_id', $ambulatorio_guia_id);
+
+            $this->db->set('paciente_id', $_POST['txtPacienteId']);
+
+            $this->db->set('data_faturar', $data);
+            $this->db->set('data', $data);
+            $this->db->set('data_autorizacao', $horario);
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->set('operador_autorizacao', $operador_id);
+            $this->db->where('guia_id', $ambulatorio_guia_id);
+            $this->db->update('tb_agenda_exames');
+            }
             $erro = $this->db->_error_message();
             if (trim($erro) != "") { // erro de banco
                 return -1;

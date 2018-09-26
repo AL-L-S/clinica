@@ -1829,6 +1829,21 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function procedimentoconvenioaso() {
+        header('Access-Control-Allow-Origin: *');
+
+        if (isset($_GET['empresa'])) {
+            $result = $this->exametemp->listarautocompleteprocedimentos2($_GET['funcao'], $_GET['setor'], $_GET['empresa']);
+        } else {
+            $result = $this->exametemp->listarautocompleteprocedimentos2();
+        }
+        $json_exames = json_decode($result[0]->exames_id);
+
+        $result2 = $this->saudeocupacional->listarautocompleteexamesjson2($json_exames);
+
+        echo json_encode($result2);
+    }
 
     function procedimentoconvenioatendimento() {
 

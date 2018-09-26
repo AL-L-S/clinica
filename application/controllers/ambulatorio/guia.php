@@ -34,6 +34,7 @@ class Guia extends BaseController {
         $this->load->model('cadastro/grupomedico_model', 'grupomedico');
         $this->load->model('cadastro/grupoclassificacao_model', 'grupoclassificacao');
         $this->load->model('seguranca/operador_model', 'operador_m');
+        $this->load->model('internacao/internacao_model', 'internacao_m');
         $this->load->model('ambulatorio/GExtenso', 'GExtenso');
         $this->load->model('ambulatorio/saudeocupacional_model', 'saudeocupacional');
         $this->load->library('mensagem');
@@ -65,25 +66,23 @@ class Guia extends BaseController {
             $url = $empresa[0]->endereco_integracao_lab;
             $identificador_lis = $empresa[0]->identificador_lis;
             $origem_lis = $empresa[0]->origem_lis;
-        // Lote
+            // Lote
             $criacaoLis = date("Y-m-d") . 'T' . date("H:i:s") . '-0300';
             $codigoLis = $exames_procedimentos[0]->guia_id; // Ambulatorio_guia_id provavelmente
             $identificadorLis = $identificador_lis;
             $origemLis = $origem_lis;
-        // Solicitacao
+            // Solicitacao
             $solCodigoLis = $exames_procedimentos[0]->guia_id;
-            
-        // Solicitacao->Paciente
+
+            // Solicitacao->Paciente
             $pacienteCodigoLis = $exames_procedimentos[0]->paciente_id;
             $nome = $exames_procedimentos[0]->paciente;
             $nascimento = $exames_procedimentos[0]->nascimento;
             $sexo = $exames_procedimentos[0]->sexo;
-        // Solicitacao->Exames
-        // Exames ->Exame
-        // Exame-> Solicitantes
-        // Solicitantes -> Solicitante
-            
-
+            // Solicitacao->Exames
+            // Exames ->Exame
+            // Exame-> Solicitantes
+            // Solicitantes -> Solicitante
 //////////////////////////// Definição dos Objs ////////////////////////
 
             $geral_obj = new stdClass();
@@ -98,9 +97,7 @@ class Guia extends BaseController {
             $exame_array = array();
             $solicitantes_obj = new stdClass();
 ////////////// Solicitantes ////////////////////////////
-            
-        // array_push($solicitante_array, $solicitantes_obj);
-
+            // array_push($solicitante_array, $solicitantes_obj);
 /////////////// Exames //////////////////      
             // $teste = array(1);
             $contador = 0;
@@ -112,7 +109,7 @@ class Guia extends BaseController {
                 // }
                 $codigoUF = $this->utilitario->codigo_uf($item->codigo_ibge);
 
-                
+
                 $solicitante_array = array();
                 $solicitante_array[0] = new stdClass();
                 $solicitante_array[0]->conselho = 'CRM';
@@ -133,7 +130,6 @@ class Guia extends BaseController {
             // var_dump($exame_array); die;
 
             $exames_obj->exame = $exame_array; // O atributo exame recebe o array de outros objs criados no foreach
-
 ///////////////// Paciente ////////////////
 
             $paciente_obj->codigoLis = $pacienteCodigoLis;
@@ -162,34 +158,32 @@ class Guia extends BaseController {
             $geral_obj->lote = $lote_obj;
             $json_geral = json_encode($geral_obj);
 
-        //     echo '<pre>';
-        //     var_dump($url);
-        // // var_dump($json_novo_decode);
-        //     die;
-
+            //     echo '<pre>';
+            //     var_dump($url);
+            // // var_dump($json_novo_decode);
+            //     die;
             // Aqui defino o envio que irá ser feito para a função no nosso sistema que manda o Curl pro LabLuz
             $postdata = http_build_query(
-                array(
-                    'body' => $json_geral,
-                    'url' => "$url/enviar",
-                )
+                    array(
+                        'body' => $json_geral,
+                        'url' => "$url/enviar",
+                    )
             );
 
             $opts = array('http' =>
                 array(
-                'method' => 'POST',
-                'header' => 'Content-type: application/x-www-form-urlencoded',
-                'content' => $postdata
+                    'method' => 'POST',
+                    'header' => 'Content-type: application/x-www-form-urlencoded',
+                    'content' => $postdata
             ));
 
             $context = stream_context_create($opts);
 
             $result = file_get_contents(base_url() . 'ambulatorio/guia/enviarCurlLabLuz', false, $context);
 
-        // var_dump($result); die;
-        
-        // $xml = simplexml_load_string($result);
-        // $json = json_encode($xml);
+            // var_dump($result); die;
+            // $xml = simplexml_load_string($result);
+            // $json = json_encode($xml);
             $decode_result = json_decode($result);
             // To encodando de novo só pra não ter o risco de ir um espaço vazio ou alguma besteira
             // E depois atrapalhar na hora de refazer o Objeto.
@@ -216,11 +210,10 @@ class Guia extends BaseController {
                         } else {
                             $mensagem_data = $mensagem_data . ", " . $item->codigoLis;
                         }
-
                     } else {
                         $mensagem_data = $mensagem_data . " " . $item->mensagem . "<br>";
                     }
-                    
+
 
                     $mensagem_anterior = $item->mensagem;
                     $codigo_anterior = $item->codigoLis;
@@ -231,30 +224,23 @@ class Guia extends BaseController {
             // echo $mensagem_data;
             // var_dump($decode_result);
             // die;
-
             // $mensagem_completa = '';
             $mensagem_completa = '<p>' . $mensagem_data . '</p>';
             $this->session->set_flashdata('message', $mensagem_completa);
             // echo(utf8_decode($mensagem_data)); die;
             redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
-     
-           
-        
-        }else{
+        } else {
             $mensagem_data = 'Sem exames Laboratoriais na Guia';
             $this->session->set_flashdata('message', $mensagem_completa);
             // echo(utf8_decode($mensagem_data)); die;
             redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
-            
         }
-       
-        
     }
 
     function resultadoExamesLabLuz($guia_id, $paciente_id) {
         $empresa = $this->guia->listarempresa();
 
-        $exames_procedimentos = $this->guia->listarexamesguialaboratorio($guia_id);    
+        $exames_procedimentos = $this->guia->listarexamesguialaboratorio($guia_id);
         // var_dump($exames_procedimentos);
         // die;
         // if (count($exames_procedimentos) > 0) {
@@ -270,7 +256,7 @@ class Guia extends BaseController {
         $origemLis = $origem_lis;
         // Solicitacao
         $solCodigoLis = $exames_procedimentos[0]->guia_id;
-            
+
         // Solicitacao->Paciente
         $pacienteCodigoLis = $exames_procedimentos[0]->paciente_id;
         $nome = $exames_procedimentos[0]->paciente;
@@ -295,9 +281,7 @@ class Guia extends BaseController {
             }
           }';
 
-          // Exemplo ^
-          
-
+        // Exemplo ^
 //////////////////////////// Definição dos Objs ////////////////////////
 
         $geral_obj = new stdClass();
@@ -338,27 +322,26 @@ class Guia extends BaseController {
         // $json_geral = json_encode($resultado_json);
         $json_geral = json_encode($geral_obj);
         // array_push($solicitante_array, $solicitantes_obj);
-
-            // Aqui defino o envio que irá ser feito para a função no nosso sistema que manda o Curl pro LabLuz
+        // Aqui defino o envio que irá ser feito para a função no nosso sistema que manda o Curl pro LabLuz
         $postdata = http_build_query(
-            array(
-                'body' => $json_geral,
-                'url' => "$url/resultado",
-            )
+                array(
+                    'body' => $json_geral,
+                    'url' => "$url/resultado",
+                )
         );
 
         $opts = array('http' =>
             array(
-            'method' => 'POST',
-            'header' => 'Content-type: application/x-www-form-urlencoded',
-            'content' => $postdata
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
         ));
 
         $context = stream_context_create($opts);
 
         $result = file_get_contents(base_url() . 'ambulatorio/guia/enviarCurlLabLuz', false, $context);
-        
-        
+
+
         // $xml = simplexml_load_string($result);
         // $json = json_encode($xml);
         $decode_result = json_decode($result);
@@ -366,9 +349,8 @@ class Guia extends BaseController {
         // // var_dump($geral_obj); 
         // var_dump($decode_result->lote->solicitacoes->solicitacao[0]->link); 
         // die;
-        
-            // To encodando de novo só pra não ter o risco de ir um espaço vazio ou alguma besteira
-            // E depois atrapalhar na hora de refazer o Objeto.
+        // To encodando de novo só pra não ter o risco de ir um espaço vazio ou alguma besteira
+        // E depois atrapalhar na hora de refazer o Objeto.
         $encode_result_again = json_encode($decode_result);
 
         if (isset($decode_result)) {
@@ -377,39 +359,32 @@ class Guia extends BaseController {
             $mensagem_data = $mensagem_imp;
             $mensagem_anterior = '';
             $codigo_anterior = '';
-            if(isset($decode_result->lote->solicitacoes->solicitacao[0]->link)){
+            if (isset($decode_result->lote->solicitacoes->solicitacao[0]->link)) {
                 redirect($decode_result->lote->solicitacoes->solicitacao[0]->link);
-            }else{
+            } else {
                 $mensagem_data = 'Não foram encontrados resultados para a guia selecionada';
             }
-           
-            
-        }else{
+        } else {
             $mensagem_data = 'Não foram encontrados resultados para a guia selecionada';
         }
 
-            // echo '<pre>';
-            // echo $mensagem_data;
-            // var_dump($decode_result);
-            // die;
-
-            // $mensagem_completa = '';
+        // echo '<pre>';
+        // echo $mensagem_data;
+        // var_dump($decode_result);
+        // die;
+        // $mensagem_completa = '';
         // $mensagem_completa = '<p>' . $mensagem_data . '</p>';
         $this->session->set_flashdata('message', $mensagem_data);
-            // echo(utf8_decode($mensagem_data)); die;
+        // echo(utf8_decode($mensagem_data)); die;
         redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
 
         // }else{
         //     $mensagem_data = 'Sem exames Laboratoriais na Guia';
-            
         // }
-       
-        
     }
 
-
     function enviarCurlLabLuz() {
-    
+
         // var_dump($_POST); die;
         $fields = array('' => $_POST['body']);
         $url = $_POST['url'];
@@ -555,23 +530,30 @@ class Guia extends BaseController {
 
         $this->load->View('ambulatorio/impressaoguiasolicitacaospsadt', $data);
     }
+    function listarriscos(){
+        
+      $result = $this->guia->listarriscos();
+      echo json_encode($result);
+      
+    }
 
     function carregarcadastroaso($paciente_id, $cadastro_aso_id) {
-        
-        if($cadastro_aso_id == 0){
-        $data['informacao_aso'] = $this->guia->carregarcadastroaso2($paciente_id);    
-        }else{
-        $data['informacao_aso'] = $this->guia->carregarcadastroaso($cadastro_aso_id);
+
+        if ($cadastro_aso_id == 0) {
+            $data['informacao_aso'] = $this->guia->carregarcadastroaso2($paciente_id);
+        } else {
+            $data['informacao_aso'] = $this->guia->carregarcadastroaso($cadastro_aso_id);
         }
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['salas'] = $this->guia->listarsalas();
-        if($cadastro_aso_id == 0){
-        $data['setor'] = $this->saudeocupacional->carregarsetores2();
-        }else{
-        $data['setor'] = $this->saudeocupacional->carregarsetores();
+        if ($cadastro_aso_id == 0) {
+            $data['setor'] = $this->saudeocupacional->carregarsetores2();
+        } else {
+            $data['setor'] = $this->saudeocupacional->carregarsetores();
         }
         $data['convenio'] = $this->convenio->listardados();
+        $data['risco'] = $this->guia->listarriscos();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
 
@@ -591,31 +573,33 @@ class Guia extends BaseController {
     }
 
     function gravarcadastroaso($paciente_id) {
-//        var_dump($_POST);die;
-                $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
-                    
-                if ($retorno2 == -1) {
-                    $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
-                    $this->session->set_flashdata('message', $data['mensagem']);
-                    redirect(base_url() . "ambulatorio/guia/carregarcadastroaso/$paciente_id/0");
-                } else {
-                    $aso_id = $this->guia->gravarcadastroaso($paciente_id);
-                }
-        
-        if (!$_POST['cadastro_aso_id'] > 0) {
+//        var_dump($_POST);
+//        die;
+        $paciente_id = $_POST['txtPacienteId'];
 
-            $paciente_id = $_POST['txtPacienteId'];
+        $resultadoguia = $this->guia->listarguia($paciente_id);
 
-            $resultadoguia = $this->guia->listarguia($paciente_id);
+//        if ($_POST['medico'] != '') {
 
-            if ($_POST['medico'] != '') {
-
-                if ($resultadoguia == null) {
-                    $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
-                } else {
-                    $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-                }                
+            if ($resultadoguia == null) {
+                $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+            } else {
+                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
             }
+//        }
+        
+        $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
+
+        if ($retorno2 == -1) {
+            $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/carregarcadastroaso/$paciente_id/0");
+        } else {
+            $aso_id = $this->guia->gravarcadastroaso($paciente_id);
+
+        }
+
+        if (!$_POST['cadastro_aso_id'] > 0) {            
 
             foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
 
@@ -667,28 +651,40 @@ class Guia extends BaseController {
         }
         redirect(base_url() . "ambulatorio/guia/cadastroaso/$paciente_id/$medico_id");
     }
+
     function relatorioaso() {
         $empresa_id = $this->session->userdata('empresa_id');
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $this->loadView('ambulatorio/relatorioaso', $data);
     }
-    
+
     function gerarelatorioaso() {
 //        echo '<pre>';
-//        var_dump($_POST);
+//        var_dump($_POST['tipo']);
 //        die;
         $data['data_inicio'] = $_POST['txtdata_inicio'];
         $data['data_fim'] = $_POST['txtdata_fim'];
         $data['relatorioaso'] = $this->guia->relatorioaso();
 
-        
-            if ($_POST['tipo'] != 0) {
-                $tipo = $this->guia->listaraso($_POST['tipo']);
-                $data['tipo'] = $tipo[0]->tipo;
+
+        if ($_POST['tipo'] != '') {
+            $tipo = $this->guia->listaraso($_POST['tipo']);
+            $data['tipo'] = $tipo[0]->tipo;
+        } else {
+            $data['tipo'] = 'TODOS';
+        }
+
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
+        } else {
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
             } else {
-                $data['tipo'] = 'TODOS';
+                $data['convenio'] = 'TODOS';
             }
-        
+        }
+
 
         $this->load->View('ambulatorio/impressaorelatorioaso', $data);
     }

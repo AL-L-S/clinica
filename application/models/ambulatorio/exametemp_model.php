@@ -7836,6 +7836,29 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarautocompleteprocedimentos2($parametro = null, $setor = null, $empresa = null) {    
+        
+        $this->db->select(' sc.funcao_id,
+                            sc.empresa_id,
+                            sc.setor_id,                            
+                            sc.exames_id
+                                            ');
+        
+        $this->db->from('tb_setor_cadastro sc');
+        $this->db->where('sc.ativo', 'true');        
+        
+
+        if ($parametro != null) {
+            $this->db->where('sc.funcao_id', $parametro);
+            $this->db->where('sc.empresa_id', $empresa);
+            $this->db->where('sc.setor_id', $setor);
+        }
+
+        $return = $this->db->get();
+        return $return->result();
+        
+    }
 
     function listarautocompleteprocedimentosatendimento($parametro, $grupo = null) {
         $this->db->select(' pc.procedimento_convenio_id,

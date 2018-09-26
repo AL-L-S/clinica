@@ -201,6 +201,22 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarprocedimentossetor($item) {
+        $this->db->select('procedimento_tuss_id,
+                            nome,
+                            codigo,
+                            descricao,
+                            tipo_aso');
+        $this->db->from('tb_procedimento_tuss');
+        $this->db->where("ativo", 't');
+        
+        $this->db->where("procedimento_tuss_id", $item);
+        
+        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarprocedimento2() {
         $this->db->select('procedimento_tuss_id,

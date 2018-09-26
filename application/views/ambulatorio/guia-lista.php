@@ -75,6 +75,7 @@
                 $cancelado = 0;
                 $empresa = 0;
                 if ($test->empresa_id == $empresa_id) {
+//                    echo'<pre>';var_dump($guia);die;
                     ?>
                     <table >
                         <thead>

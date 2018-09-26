@@ -90,3 +90,10 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN medicinadotrabalho boolean DE
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN data_realizacao date;
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN data_validade date;
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN convenio_id integer;
+
+-- Dia 25/09/2018
+ALTER TABLE ponto.tb_setor_cadastro ADD COLUMN exames_id text;
+
+-- Dia 26/09/2018
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN consulta text;
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN convenio2 text;

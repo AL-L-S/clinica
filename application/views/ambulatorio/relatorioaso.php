@@ -43,6 +43,27 @@
                     </option>
                 </select>
                     </dd>
+                    <dt>
+                        <label>Convênio</label>
+                    </dt>
+
+                    <dd>
+                        <select name="convenio" id="convenio" class="size2" >
+                            <option value='' >TODOS</option>
+                            <option value='-1' >Não Tem</option>
+                            <?php
+                            $listaconvenio = $this->paciente->listaconvenio();
+                            foreach ($listaconvenio as $item) {
+                                ?>
+
+                                <option   value =<?php echo $item->convenio_id; ?> >
+                                    <?php echo $item->nome; ?>
+                                </option>
+
+                            <? } ?> 
+
+                        </select>
+                    </dd>
 
                 </dl>
                 <button type="submit" >Pesquisar</button>
