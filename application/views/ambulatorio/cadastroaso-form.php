@@ -68,8 +68,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <label>Consulta</label>
                 <select name="consulta" id="consulta" class="size2" required="">
                     <option value="">SELECIONE</option>
-                    <option value="particular" <?= ($config->consulta == 'particular') ? 'selected' : ''; ?>>Particular</option>
-                    <option value="conveniado" <?= ($config->consulta == 'conveniado') ? 'selected' : ''; ?>>Conveniado</option>                    
+                    <option value="particular" <?= (@$config->consulta == 'particular') ? 'selected' : ''; ?>>Particular</option>
+                    <option value="conveniado" <?= (@$config->consulta == 'conveniado') ? 'selected' : ''; ?>>Conveniado</option>                    
                 </select>
 
             </div>
@@ -119,7 +119,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                         </option>
                     <? endforeach; ?>
                 </select>
-                <input type="text" id="convenio2" name="convenio2"  class="texto04" value="" />
+                <input type="text" id="convenio2" name="convenio2"  class="texto04" value="<?= @$config->convenio2 ?>" />
             </div>
 
             <div id="setor1">
@@ -127,7 +127,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <select name="setor" id="setor" class="size2" required="">
                     
                 </select>
-                <input type="text" id="setor2" name="setor2"  class="texto04" value="" />
+                <input type="text" id="setor2" name="setor2"  class="texto04" value="<?= @$config->setor2 ?>" />
             </div>
             <div id="funcao1">
                 <label>Função</label>
@@ -135,7 +135,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
 
                 </select>
-                <input type="text" id="funcao2" name="funcao2"  class="texto04" value="" />
+                <input type="text" id="funcao2" name="funcao2"  class="texto04" value="<?= @$config->funcao2 ?>" />
             </div>
             <div>
                 <label>Data De Realização</label>
@@ -365,7 +365,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
     .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 330px; }
 </style>
-<? // var_dump(@$config->funcao);die;?>
+<? // var_dump(@$config);die; ?>
 <script type="text/javascript">
 
                     $(function () {
@@ -452,13 +452,16 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                         });
                     });
-<? if (@$config->funcao != '') { ?>
+                    
+
+    <? if (@$config->funcao != '') { ?>
 
                         var funcao = <?= @$config->funcao ?>;
                         carregarFuncaoAtualizar();
 <? } else { ?>
                         var funcao = '';
-<? }
+<? }   
+
 ?>
                     function carregarFuncaoAtualizar() {
 //                        alert(setor);
@@ -481,6 +484,15 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             $('.carregando').hide();
                         });
                     }
+                    
+//                    function carregarFuncaoAtualizar2() {
+////                        alert(funcao);
+//                            $('#funcao2 option').remove();
+//                            $('#funcao2').append(funcao);
+////                            $("#funcao2").trigger("chosen:updated");
+//                            $('.carregando').hide();
+//                        });
+//                    }
 
 
                     $(function () {
@@ -572,7 +584,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                     });
                     
                     
-                                        <? if (@$config->procedimento1 != '') { ?>
+     <? if (@$config->procedimento1 != '') { ?>
 //                       
                         var exame = [<?= implode(', ',@$config->procedimento1); ?>]; 
                         carregarProcedimentoAtualizar();
@@ -583,7 +595,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                     
                     function carregarProcedimentoAtualizar() {
                         
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: setor}, function (j) {
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: funcao, empresa: $('#convenio1').val(), setor: setor}, function (j) {
                                 options = '<option value=""></option>';
 
                                 for (var c = 0; c < j.length; c++) {
@@ -605,13 +617,13 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                     }
 
                     $(function () {
-                        $('#convenio1').change(function () {
+                        $('#funcao').change(function () {
                             if ($(this).val()) {
 //                                $('.carregando').show();
 //                                alert('hello');
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $(this).val(), setor: $('#setor').val()}, function (j) {
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                     options = '<option value=""></option>';
-//                                    console.log(j);
+                                    console.log(j);
                                     for (var c = 0; c < j.length; c++) {
                                         options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
                                     }
@@ -685,15 +697,32 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                         }
                     }
-                    calculoIdade(); 
+                    calculoIdade();
                     
-                $('#convenio2').hide();
-                $('#convenio1').show();
-                $('#setor2').hide();
-                $('#setor').show();
-                $('#funcao2').hide();
-                $('#funcao').show();
-                
+                    
+//                    $(document).ready(function() {
+                        <? if(@$config->consulta=="particular"){?>          
+//                      alert('asdasd');
+                        $('#convenio1').hide();
+                        $('#convenio2').show();
+                        $('#setor').hide();
+                        $('#setor2').show();
+                        $('#funcao').hide();
+                        $('#funcao2').show();
+                        <?}
+                        else{ ?>
+//                            alert('eeee');
+                        $('#convenio2').hide();
+                        $('#convenio1').show();
+                        $('#setor2').hide();
+                        $('#setor').show();
+                        $('#funcao2').hide();
+                        $('#funcao').show();   
+               <? } ?>
+               
+//                 });
+               
+
                 
             $('#consulta').change(function () {
 
@@ -720,7 +749,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                 $('#riscos').append(options);
                                 $("#riscos").trigger("chosen:updated");
 
-                            });
+                            });              
+//             
                 
                               
             } else {
@@ -733,10 +763,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 
                 $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                 options = '<option value=""></option>';
-//                                console.log(j);
+//                                alert('ola');
                                 for (var c = 0; c < j.length; c++) {
-//                                    alert(risco.indexOf(parseInt(j[c].aso_risco_id)));
-//                                    alert(j[c].aso_risco_id);
+                         
                                     if (risco.indexOf(parseInt(j[c].aso_risco_id)) > -1) {
                                         options += '<option selected value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
                                     } else {
@@ -752,6 +781,21 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                 $("#riscos").trigger("chosen:updated");
 //                                $('.carregando').hide();
                             });
+                            
+                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+                                    options = '<option value=""></option>';
+//                                    console.log(j);
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
+                                    }
+//                            $('#procedimento1').html(options).show();
+                                    $('#procedimento1 option').remove();
+                                    $('#procedimento1').append(options);
+                                    $("#procedimento1").trigger("chosen:updated");
+//                                    $('.carregando').hide();
+                                });
+                            
+                            
                                     
                 
             }

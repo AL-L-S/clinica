@@ -87,6 +87,7 @@
                         <th class="tabela_header">Setor</th>
                         <th class="tabela_header">Função</th>
                         <th class="tabela_header">Risco</th>
+                        <th class="tabela_header">Exames Complementares</th>
                         <th class="tabela_header" colspan="4">&nbsp;</th>
                     </tr>
                 </thead>
