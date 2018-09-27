@@ -176,7 +176,6 @@ class guia_model extends Model {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $valores = json_encode($_POST);
-//            echo'<pre>';var_dump($_POST);die;
 
         $this->db->select('pc.valortotal, pc.procedimento_convenio_id');
         $this->db->from('tb_procedimento_convenio pc');
@@ -187,6 +186,8 @@ class guia_model extends Model {
         $this->db->where('pt.grupo', 'ASO');
         $result = $this->db->get()->result();
 
+            echo'<pre>';var_dump($_POST);die;
+            
         if (count($result) > 0) {
 
 
@@ -15198,7 +15199,7 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('medico_agenda', $_POST['medico']);
             }
 
-//            var_dump($_POST['cadastro_aso_id']);die;
+            var_dump($_POST['cadastro_aso_id']);die;
             if (!$_POST['cadastro_aso_id'] > 0) {
                 $this->db->set('quantidade', 1);
                 $this->db->set('agenda_exames_nome_id', $_POST['sala1']);

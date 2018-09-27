@@ -154,7 +154,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             </div>
             <div>
                 <label>Validade do Exame</label>
-                <input type="text" name="validade_exame" id="validade_exame" class="texto04" value="<?= @$config->validade_exame ?>" required="" />
+                <input type="text" name="validade_exame" id="validade_exame" class="texto04" value="<?= @$config->validade_exame ?>" readonly="" />
             </div>
             <div>
                 <label>Sala</label>
@@ -377,21 +377,26 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
                             buttonImage: '<?= base_url() ?>img/form/date.png',
                             dateFormat: 'dd/mm/yy'
+                    
+                            
                         });
                     });
-
+                    
                     $(function () {
-                        $("#validade_exame").datepicker({
-                            autosize: true,
-                            changeYear: true,
-                            changeMonth: true,
-                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                            dateFormat: 'dd/mm/yy'
+                        $('#data_realizacao').change(function () {
+                          $.getJSON('<?= base_url() ?>autocomplete/datavalidade356', {data_realizacao: $(this).val()}, function (j) {
+                      
+//                                console.log(j);
+                                validade = j;                          
+                                
+                                $('#validade_exame').val(validade);
+                                
+                            });
+                            
+
                         });
                     });
-
+                     
 
 
 
@@ -623,10 +628,11 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 //                                alert('hello');
                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                     options = '<option value=""></option>';
-                                    console.log(j);
+//                                    console.log(j);
                                     for (var c = 0; c < j.length; c++) {
                                         options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
                                     }
+//                                    alert(options);
 //                            $('#procedimento1').html(options).show();
                                     $('#procedimento1 option').remove();
                                     $('#procedimento1').append(options);
@@ -784,9 +790,10 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             
                             $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                     options = '<option value=""></option>';
-//                                    console.log(j);
+//                                     console.log(j);
                                     for (var c = 0; c < j.length; c++) {
                                         options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
+                                   
                                     }
 //                            $('#procedimento1').html(options).show();
                                     $('#procedimento1 option').remove();

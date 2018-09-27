@@ -58,7 +58,7 @@
 
                         <th class="tabela_title">Exames Complementares</th>
                         <td>                  
-                            <select name="procedimentos[]" id="procedimentos" style="width: 450px;" class="chosen-select" data-placeholder="Selecione os Exames..." multiple required="">
+                            <select name="procedimentos[]" id="procedimentos" style="width: 450px;" class="chosen-select" data-placeholder="Selecione os Exames..." multiple >
                                 <? foreach ($procedimento as $value) : ?>
                                     <option value="<?= $value->procedimento_tuss_id; ?>"><?= $value->nome; ?></option>
                                 <? endforeach; ?>
