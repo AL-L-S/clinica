@@ -579,15 +579,17 @@ class Guia extends BaseController {
 
         $resultadoguia = $this->guia->listarguia($paciente_id);
 
-//        if ($_POST['medico'] != '') {
+
 
             if ($resultadoguia == null) {
                 $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
             } else {
                 $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
             }
-//        }
         
+//            var_dump($_POST['procedimento1']);
+//        die;
+//        
             
             $retorno = $this->guia->gravarcadastroaso($paciente_id);
             
@@ -598,8 +600,9 @@ class Guia extends BaseController {
         }
         
         $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia, $retorno);
-
-        if (!$_POST['cadastro_aso_id'] > 0) {            
+//            var_dump($retorno2);
+//        die;
+        if ($_POST['cadastro_aso_id'] == '') {            
 
             foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
 
@@ -607,9 +610,10 @@ class Guia extends BaseController {
                 $procedimentopercentual = $procedimento_convenio_id;
                 $medicopercentual = $_POST['medico'];
                 $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
-
                 if (count($percentual) == 0) {
                     $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+//                var_dump($percentual);
+//        die;
                 }
 
                 $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimento_convenio_id);
@@ -617,7 +621,8 @@ class Guia extends BaseController {
                 $paciente_id = $_POST['txtPacienteId'];
 
                 $resultadoguia = $this->guia->listarguia($paciente_id);
-
+//                   var_dump($procedimento_convenio_id);
+//        die;
                 if ($_POST['medico'] != '') {
 
                     if ($resultadoguia == null) {

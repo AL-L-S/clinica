@@ -186,7 +186,7 @@ class guia_model extends Model {
         $this->db->where('pt.grupo', 'ASO');
         $result = $this->db->get()->result();
 
-            echo'<pre>';var_dump($_POST);die;
+//            echo'<pre>';var_dump($_POST);die;
             
         if (count($result) > 0) {
 
@@ -4528,7 +4528,19 @@ class guia_model extends Model {
 
     function percentualmedicoprocedimento($procedimentopercentual) {
 
-        $this->db->select('pt.perc_medico, pt.percentual');
+        $this->db->select('pt.perc_medico, pt.percentual, pc.procedimento_convenio_id');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+        $this->db->where('pc.procedimento_tuss_id', $procedimentopercentual);
+//        $this->db->where('pc.ativo', 'true');
+//        $this->db->where('pt.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function percentualmedicoprocedimento2($procedimentopercentual) {
+
+        $this->db->select('pt.perc_medico, pt.percentual, pc.procedimento_convenio_id');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
         $this->db->where('pc.procedimento_convenio_id', $procedimentopercentual);
@@ -15149,7 +15161,7 @@ ORDER BY ae.paciente_credito_id)";
             $flags = $this->db->get()->result();
 
 
-            $this->db->select('pc.valortotal, pc.procedimento_convenio_id');
+            $this->db->select('pc.valortotal, pc.procedimento_tuss_id');
             $this->db->from('tb_procedimento_convenio pc');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
@@ -15157,10 +15169,10 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->where('pc.convenio_id', $_POST['convenio1']);
             $this->db->where('pt.grupo', 'ASO');
             $result = $this->db->get()->result();
-
+//            var_dump($result);die; 
             if (count($result) > 0) {
                 $valoraso = $result[0]->valortotal;
-                $procedimento_convenio_id = $result[0]->procedimento_convenio_id;
+                $procedimento_convenio_id = $result[0]->procedimento_tuss_id;
                 $valortotal = $valoraso;
             }
 
@@ -15175,6 +15187,7 @@ ORDER BY ae.paciente_credito_id)";
                 $percentual = $this->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
                 if (count($percentual) == 0) {
                     $percentual = $this->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
+//                var_dump($percentual);die;
                 }
             }
 
@@ -15199,7 +15212,7 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('medico_agenda', $_POST['medico']);
             }
 
-            var_dump($_POST['cadastro_aso_id']);die;
+//            var_dump($_POST['cadastro_aso_id']);die;
             if (!$_POST['cadastro_aso_id'] > 0) {
                 $this->db->set('quantidade', 1);
                 $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
@@ -15229,7 +15242,7 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->from('tb_agenda_exames ae');
                 $this->db->where('ae.aso_id', $_POST['cadastro_aso_id']);
                 $pesquisa = $this->db->get()->result();
-
+//                var_dump($pesquisa[0]->agenda_exames_id);die;
                 $this->db->set('quantidade', 1);
                 $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
                 $this->db->set('inicio', $hora);
@@ -15241,10 +15254,8 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('tipo', 'EXAME');
                 $this->db->set('ativo', 'f');
                 $this->db->set('situacao', 'OK');
-                $this->db->set('guia_id', $ambulatorio_guia_id);
-
+//                $this->db->set('guia_id', $ambulatorio_guia_id);
                 $this->db->set('paciente_id', $_POST['txtPacienteId']);
-
                 $this->db->set('data_faturar', $data);
                 $this->db->set('data', $data);
                 $this->db->set('data_autorizacao', $horario);
@@ -15253,19 +15264,19 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('operador_autorizacao', $operador_id);
                 $this->db->set('aso_id', $aso_id);
                 $this->db->where('guia_id', $ambulatorio_guia_id);
-                $this->db->where('agenda_exames_id', $pesquisa->agenda_exames_id);
+                $this->db->where('agenda_exames_id', $pesquisa[0]->agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
             }
             $erro = $this->db->_error_message();
             if (trim($erro) != "") { // erro de banco
                 return -1;
             } else {
-//                $agenda_exames_id = $this->db->insert_id();
-//
-//
-//                $this->db->set('senha', md5($agenda_exames_id));
-//                $this->db->where('agenda_exames_id', $agenda_exames_id);
-//                $this->db->update('tb_agenda_exames');
+                $agenda_exames_id = $this->db->insert_id();
+
+
+                $this->db->set('senha', md5($agenda_exames_id));
+                $this->db->where('agenda_exames_id', $agenda_exames_id);
+                $this->db->update('tb_agenda_exames');
 
 
                 $this->db->select('ep.autorizar_sala_espera');
@@ -15312,9 +15323,11 @@ ORDER BY ae.paciente_credito_id)";
 
             $this->db->select('pc.valortotal');
             $this->db->from('tb_procedimento_convenio pc');
-            $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);
+            $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+            $this->db->where('pc.procedimento_tuss_id', $procedimento_convenio_id);
             $valorproc = $this->db->get()->result();
-
+            
+//            var_dump($valorproc);die;
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");
