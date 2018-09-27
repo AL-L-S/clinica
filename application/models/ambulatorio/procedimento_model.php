@@ -252,7 +252,7 @@ class procedimento_model extends Model {
 
         $this->db->orderby('nome');
         $this->db->where("pt.ativo", 't');
-        $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->where('pt.procedimento_tuss_id', $procedimento_convenio_id);
         $return = $this->db->get();
         return $return->result();
     }

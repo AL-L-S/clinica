@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>ambulatorio/guia/carregarcadastroaso/<?=$paciente_id?>/0/">
+        <a href="<?php echo base_url() ?>ambulatorio/guia/carregarcadastroaso/<?= $paciente_id ?>/0/">
             Novo Cadastro ASO
         </a>
     </div>
@@ -25,8 +25,6 @@
                     </thead>
                 </form>
                 <?php
-                
-                
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $consulta = $this->guia->listarcadastroaso($paciente_id);
                 $total = $consulta->count_all_results();
@@ -35,12 +33,13 @@
                 if ($total > 0) {
                     ?>
                     <tbody>
-                        <?php
-                        $lista = $this->guia->listarcadastroaso($paciente_id)->limit($limit, $pagina)->orderby("cadastro_aso_id desc")->get()->result();
-                        $estilo_linha = "tabela_content01";
-                        foreach ($lista as $item) {
-                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            ?>
+                    <?php
+                    $lista = $this->guia->listarcadastroaso($paciente_id)->limit($limit, $pagina)->orderby("cadastro_aso_id desc")->get()->result();
+                    $estilo_linha = "tabela_content01";
+                    foreach ($lista as $item) {
+//                            echo'<pre>';var_dump($item->consulta);die;
+                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                        ?>
                             <tr>
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
@@ -54,47 +53,59 @@
                                     </div>
 
                                 </td>
-                               
-                                <?if ($permissoes[0]->impressao_cimetra == 't') {?>
+
+        <? if ($permissoes[0]->impressao_cimetra == 't') { ?>
+                                    <? if ($item->consulta == "conveniado") { ?>
+                                        <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
+
+                                            <div class="bt_link">
+                                                <a href="<?= base_url() ?>ambulatorio/guia/impressaoaso2/<?= $item->cadastro_aso_id; ?>">Imprimir</a>
+                                            </div>
+
+                                        </td>
+            <? } else { ?>
+
+                                        <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
+
+                                            <div class="bt_link">
+                                                <a href="<?= base_url() ?>ambulatorio/guia/impressaoaso/<?= $item->cadastro_aso_id; ?>">Imprimir</a>
+                                            </div>
+
+                                        </td>
+
+            <? } ?>
+                                <? } else { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
+
+                                        <div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/guia/impressaoaso/<?= $item->cadastro_aso_id; ?>">Imprimir</a>
+                                        </div>
+
+                                    </td>
+
+        <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
-
-                                    <div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/guia/impressaoaso2/<?= $item->cadastro_aso_id; ?>">Imprimir</a>
-                                    </div>
-
-                                </td>
-                                <? } else{ ?>
-                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
-
-                                    <div class="bt_link">
-                                        <a href="<?= base_url() ?>ambulatorio/guia/impressaoaso/<?= $item->cadastro_aso_id; ?>">Imprimir</a>
-                                    </div>
-
-                                </td>
-                                
-                                <? } ?>
-                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
-                                    <? //if($item->aprovado == 'f'){?>
+                                <? //if($item->aprovado == 'f'){?>
                                     <div class="bt_link">
                                         <a onclick="javascript: return confirm('Deseja realmente excluir esse ASO?');" href="<?= base_url() ?>ambulatorio/guia/excluircadastroaso/<?= $item->cadastro_aso_id; ?>/<?= $item->paciente_id; ?>">Excluir</a>
                                     </div>
-                                    <? //}?>
+        <? //} ?>
                                 </td>
-                                <?
-                                $perfil_id = $this->session->userdata('perfil_id');
-                                $operador_id = $this->session->userdata('operador_id');
-                                ?>
+                                    <?
+                                    $perfil_id = $this->session->userdata('perfil_id');
+                                    $operador_id = $this->session->userdata('operador_id');
+                                    ?>
                             </tr>
 
                         </tbody>
-                        <?php
-                    }
-                }
-                ?>
+        <?php
+    }
+}
+?>
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="10">
-                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>

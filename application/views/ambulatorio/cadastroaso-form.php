@@ -9,7 +9,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 <?$perfil_id = $this->session->userdata('perfil_id'); ?>
 <?php
     $this->load->library('utilitario');
-//    var_dump($config); die;
+//    echo'<pre>';
+//    var_dump($config->consulta); die;
     Utilitario::pmf_mensagem($this->session->flashdata('message'));
     ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
@@ -66,18 +67,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             <div>
                 <label>Consulta</label>
                 <select name="consulta" id="consulta" class="size2" required="">
-                    <option value="" <?
-//                    if (@$paciente[0]->sexo == ""):echo 'selected';
-//                    endif;
-                    ?>>SELECIONE</option>
-                    <option value="particular" <?
-//                    if (@$paciente[0]->sexo == ""):echo 'selected';
-//                    endif;
-                    ?>>Particular</option>
-                    <option value="conveniado" <?
-//                    if (@$paciente[0]->sexo == "M"):echo 'selected';
-//                    endif;
-                    ?>>Conveniado</option>                    
+                    <option value="">SELECIONE</option>
+                    <option value="particular" <?= ($config->consulta == 'particular') ? 'selected' : ''; ?>>Particular</option>
+                    <option value="conveniado" <?= ($config->consulta == 'conveniado') ? 'selected' : ''; ?>>Conveniado</option>                    
                 </select>
 
             </div>
@@ -216,7 +208,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
                 <select name="questao_um" id="questao_um" required="" class="texto04" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
                     <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCE</option>
+                    <option value="APTO2" <?= (@$config->questao_um == 'APTO2') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE IRÁ EXERCER</option>
+                    <option value="APTO3" <?= (@$config->questao_um == 'APTO3') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCEU</option>
                     <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
 
                 </select>
@@ -228,8 +222,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <select name="questao_dois" id="questao_dois" required="" class="texto04" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
                         NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
                     <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO</option>
-                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO PARA TRABALHO EM ALTURA</option>
+                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA TRABALHO EM ALTURA</option>
                     <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
                 </select>
             </div>
@@ -274,7 +268,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
                 <select name="questao_um" id="questao_um" class="texto04" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
                     <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCE</option>
+                    <option value="APTO2" <?= (@$config->questao_um == 'APTO2') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE IRÁ EXERCER</option>
+                    <option value="APTO3" <?= (@$config->questao_um == 'APTO3') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCEU</option>
                     <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
 
                 </select>
@@ -286,8 +282,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <select name="questao_dois" id="questao_dois" class="texto04" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
                         NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
                     <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO</option>
-                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO PARA TRABALHO EM ALTURA</option>
+                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA TRABALHO EM ALTURA</option>
                     <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
                 </select>
             </div>
@@ -369,7 +365,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
     .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 330px; }
 </style>
-<? // var_dump(@$config->riscos);die;?>
+<? // var_dump(@$config->funcao);die;?>
 <script type="text/javascript">
 
                     $(function () {
@@ -465,8 +461,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 <? }
 ?>
                     function carregarFuncaoAtualizar() {
+//                        alert(setor);
 //                                console.log(j);
-                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: $('#setor').val(), empresa: $('#convenio1').val()}, function (j) {
+                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: setor, empresa: $('#convenio1').val()}, function (j) {
                             options = '<option value=""></option>';
                             for (var c = 0; c < j.length; c++) {
                                 if (funcao == j[c].funcao_id) {
@@ -524,7 +521,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                     
                     function carregarRiscoAtualizar() {
                   
-                        $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+                        $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: funcao, empresa: $('#convenio1').val(), setor: setor}, function (j) {
                                 options = '<option value=""></option>';
 //                                console.log(j);
                                 for (var c = 0; c < j.length; c++) {
@@ -585,7 +582,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 ?>
                     
                     function carregarProcedimentoAtualizar() {
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+                        
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: setor}, function (j) {
                                 options = '<option value=""></option>';
 
                                 for (var c = 0; c < j.length; c++) {

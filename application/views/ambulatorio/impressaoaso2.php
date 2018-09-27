@@ -21,7 +21,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
             <?= $relatorio[0]->rg ?> 
         </td>
     </tr>
-    <tr>
+    <tr height="35px">
         <td>
             <? $funcao = $this->saudeocupacional->carregarfuncao($impressao_aso->funcao); ?>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<?= $funcao[0]->descricao_funcao ?>
@@ -62,8 +62,9 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
                                 if (isset($impressao_aso->procedimento1)) {
                                     foreach ($impressao_aso->procedimento1 as $key => $item) :
                                         $procedimentos = $this->procedimento->listarprocedimentoaso($item);
+//                                        var_dump($procedimentos);die;
                                         ?>
-                                        <?
+                                        <?                                        
                                         if ($key == count($impressao_aso->procedimento1) - 1) {
                                             echo $procedimentos[0]->nome;
                                         } else {
@@ -134,7 +135,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
             <?= $relatorio[0]->rg ?> 
         </td>
     </tr>
-    <tr>
+    <tr height="35px">
         <td>
             <? $funcao = $this->saudeocupacional->carregarfuncao($impressao_aso->funcao); ?>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<?= $funcao[0]->descricao_funcao ?>

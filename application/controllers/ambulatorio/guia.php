@@ -588,16 +588,16 @@ class Guia extends BaseController {
             }
 //        }
         
-        $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
-
-        if ($retorno2 == -1) {
+            
+            $retorno = $this->guia->gravarcadastroaso($paciente_id);
+            
+        if ($retorno == -1) {
             $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/guia/carregarcadastroaso/$paciente_id/0");
-        } else {
-            $aso_id = $this->guia->gravarcadastroaso($paciente_id);
-
         }
+        
+        $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia, $retorno);
 
         if (!$_POST['cadastro_aso_id'] > 0) {            
 

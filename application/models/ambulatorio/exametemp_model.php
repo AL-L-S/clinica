@@ -7837,7 +7837,7 @@ class exametemp_model extends Model {
         return $return->result();
     }
     
-    function listarautocompleteprocedimentos2($parametro = null, $setor = null, $empresa = null) {    
+    function listarautocompleteprocedimentos2($parametro = null, $empresa = null, $setor = null) {    
         
         $this->db->select(' sc.funcao_id,
                             sc.empresa_id,

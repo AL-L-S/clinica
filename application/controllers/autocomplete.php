@@ -1834,7 +1834,7 @@ class Autocomplete extends Controller {
         header('Access-Control-Allow-Origin: *');
 
         if (isset($_GET['empresa'])) {
-            $result = $this->exametemp->listarautocompleteprocedimentos2($_GET['funcao'], $_GET['setor'], $_GET['empresa']);
+            $result = $this->exametemp->listarautocompleteprocedimentos2($_GET['funcao'], $_GET['empresa'],  $_GET['setor'] );
         } else {
             $result = $this->exametemp->listarautocompleteprocedimentos2();
         }
