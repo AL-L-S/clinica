@@ -437,18 +437,19 @@ class saudeocupacional_model extends Model {
         
 
         
-        $this->db->select(' pt.procedimento_tuss_id,
+        $this->db->select(' pc.procedimento_convenio_id,
                             pt.codigo,
                             pt.nome as procedimento
                             ');
         
-        $this->db->from('tb_procedimento_tuss pt');  
+        $this->db->from('tb_procedimento_convenio pc');  
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');  
         $this->db->where('pt.ativo', 'true');      
                        
         
 
         if ($parametro != null) {
-            $this->db->where_in('pt.procedimento_tuss_id', $parametro);
+            $this->db->where_in('pc.procedimento_convenio_id', $parametro);
         }
        
         $this->db->orderby("pt.nome");

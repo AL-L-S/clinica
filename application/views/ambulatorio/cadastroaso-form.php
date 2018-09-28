@@ -606,10 +606,10 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                 for (var c = 0; c < j.length; c++) {
 //                                    alert(exame.indexOf(parseInt(j[c].procedimento_convenio_id)));
 //                                    alert(j[c].procedimento_convenio_id);
-                                    if (exame.indexOf(parseInt(j[c].procedimento_tuss_id)) > -1) {
-                                        options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
+                                    if (exame.indexOf(parseInt(j[c].procedimento_convenio_id)) > -1) {
+                                        options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                                     } else {
-                                        options += '<option value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                                     }
                                     
                                 }
@@ -630,7 +630,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                     options = '<option value=""></option>';
 //                                    console.log(j);
                                     for (var c = 0; c < j.length; c++) {
-                                        options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
+                                        options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                                     }
 //                                    alert(options);
 //                            $('#procedimento1').html(options).show();
@@ -755,7 +755,24 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                 $('#riscos').append(options);
                                 $("#riscos").trigger("chosen:updated");
 
-                            });              
+                            });
+                            
+                            $.getJSON('<?= base_url() ?>cadastros/convenio/listarprocedimentossetores', {empresa: 137}, function (j) {
+                                options = '<option value=""></option>';
+//                                alert('ola');
+                                for (var c = 0; c < j.length; c++) {
+                                  
+                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].nome + '</option>';
+                                   
+                                    
+                                }
+
+
+                                $('#procedimento1 option').remove();
+                                $('#procedimento1').append(options);
+                                $("#procedimento1").trigger("chosen:updated");
+
+                            });
 //             
                 
                               
@@ -792,7 +809,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                     options = '<option value=""></option>';
 //                                     console.log(j);
                                     for (var c = 0; c < j.length; c++) {
-                                        options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
+                                        options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                                    
                                     }
 //                            $('#procedimento1').html(options).show();

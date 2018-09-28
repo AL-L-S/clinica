@@ -1886,8 +1886,10 @@ class Convenio_model extends Model {
             $this->db->from('tb_setor_cadastro');
             $this->db->where("ativo", 't');
             $this->db->where("setor_id", $setor_id);            
+            $this->db->where("empresa_id", $convenio_id);            
             $return = $this->db->get()->result();
-
+//            var_dump($return);
+//            die;
             if (count($return) == 0) {
                 $funcao_id = $_POST['txtfuncao_id'];
                 foreach($funcao_id as $item){

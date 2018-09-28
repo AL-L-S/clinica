@@ -78,8 +78,15 @@ class Convenio extends BaseController {
         $data['setor'] = $this->saudeocupacional->listarsetor2();        
         $data['convenio_selecionado'] = $this->convenio->listarconvenioselecionado2($convenio_id);
         $data['convenioid'] = $convenio_id;
-        $data['procedimento'] = $this->procedimento->listarprocedimentos();
+        $data['procedimento'] = $this->procedimento->listarprocedimentossetores($convenio_id);
         $this->loadView('cadastros/convenio-setores', $data);
+    }
+    
+    function listarprocedimentossetores(){
+        
+      $result = $this->procedimento->listarprocedimentossetores($_GET['empresa']);
+      echo json_encode($result);
+      
     }
     
     function excluirsetor($setor_cadastro_id, $convenio_id) {       
@@ -231,6 +238,7 @@ class Convenio extends BaseController {
     
     function gravarsetorempresa() {
         $convenio_id = $_POST['txtconvenioid'];
+//        var_dump($convenio_id);die;
         $setor_id = $this->convenio->gravarsetorempresa();
         if ($setor_id == 'banana') {
 //            $data['mensagem'] = 'Erro ao gravar setor. Setor já cadastrado.';

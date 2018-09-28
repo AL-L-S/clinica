@@ -202,18 +202,34 @@ class procedimento_model extends Model {
         return $return->result();
     }
     
+    function listarprocedimentossetores($convenio_id) {
+        
+        $this->db->select('pc.procedimento_convenio_id,
+                            pt.nome,
+                            pt.codigo,
+                            pt.descricao,
+                            pt.tipo_aso');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("pc.convenio_id", $convenio_id);
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarprocedimentossetor($item) {
-        $this->db->select('procedimento_tuss_id,
-                            nome,
-                            codigo,
-                            descricao,
-                            tipo_aso');
-        $this->db->from('tb_procedimento_tuss');
-        $this->db->where("ativo", 't');
+        $this->db->select('pc.procedimento_convenio_id,
+                            pt.nome,
+                            pt.codigo,
+                            pt.descricao,
+                            pt.tipo_aso');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.ativo", 't');        
+        $this->db->where("procedimento_convenio_id", $item);
         
-        $this->db->where("procedimento_tuss_id", $item);
-        
-        $this->db->orderby("nome");
+        $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
     }
@@ -242,17 +258,17 @@ class procedimento_model extends Model {
     }
 
     function listarprocedimentoaso($procedimento_convenio_id) {
-        $this->db->select(' pt.procedimento_tuss_id,
+        $this->db->select(' pc.procedimento_convenio_id,
                             pt.nome,
                             pt.grupo,
                             pt.codigo                           
                             ');
-        $this->db->from('tb_procedimento_tuss pt');
-        $this->db->join('tb_procedimento_convenio pc', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
 
         $this->db->orderby('nome');
-        $this->db->where("pt.ativo", 't');
-        $this->db->where('pt.procedimento_tuss_id', $procedimento_convenio_id);
+        $this->db->where("pc.ativo", 't');
+        $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);
         $return = $this->db->get();
         return $return->result();
     }

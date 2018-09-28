@@ -50,6 +50,8 @@ class Guia extends BaseController {
     function pesquisar($paciente_id) {
         $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
         $data['exames'] = $this->guia->listarexames($paciente_id);
+//        echo '<pre>';
+//        var_dump($data['exames']); die;
         $data['guia'] = $this->guia->listar($paciente_id);
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $this->loadView('ambulatorio/guia-lista', $data);
@@ -612,7 +614,7 @@ class Guia extends BaseController {
                 $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
                 if (count($percentual) == 0) {
                     $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
-//                var_dump($percentual);
+//                var_dump($procedimentopercentual);
 //        die;
                 }
 
