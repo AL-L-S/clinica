@@ -511,9 +511,12 @@ class Exame extends BaseController {
     }
 
     function gravarautorizarorcamentorelatorio($ambulatorio_orcamento_id, $dataSelecionada) {
+        $dataSelecionada = date("Y-m-d", strtotime(str_replace('/', '-', $dataSelecionada)));
+
         $teste = $this->exame->testarautorizarorcamentorelatorio($ambulatorio_orcamento_id, $dataSelecionada);
     //    var_dump($teste);
     //    die;
+       
         if ($teste[0]->autorizado == 'f') {
             $paciente_id = $this->exame->gravarautorizacaoorcamentorelatorio($ambulatorio_orcamento_id, $dataSelecionada);
             if ($paciente_id == '-1') {

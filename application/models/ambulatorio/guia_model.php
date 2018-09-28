@@ -8007,6 +8007,7 @@ class guia_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = oi.operador_cadastro', 'left');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = oi.forma_pagamento', 'left');
         $this->db->where("oi.orcamento_id", $orcamento);
+        $data = date("Y-m-d", strtotime(str_replace('/', '-', $data)));
         $this->db->where("(oi.data_preferencia = '$data' OR (oi.orcamento_id = $orcamento AND oi.data_preferencia is null))");
         $this->db->where("oi.ativo", 't');
         $this->db->orderby('oi.ambulatorio_orcamento_item_id');
