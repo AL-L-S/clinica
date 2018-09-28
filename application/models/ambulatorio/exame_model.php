@@ -123,11 +123,15 @@ class exame_model extends Model {
         $guiche = $_POST['guiche'];
         $operador_id = $_POST['operador_id'];
         $count = count($operador_id);
-//        var_dump($_POST);die;
         
             for($i=0; $i<$count; $i++){            
       
-                    $this->db->set('guiche', $guiche[$i]); 
+//        var_dump($guiche[$i]);die;
+                    if($guiche[$i] != ''){
+                    $this->db->set('guiche', $guiche[$i]);
+                    }else{
+                    $this->db->set('guiche', 0);    
+                    }
                     $this->db->where('operador_id', $operador_id[$i]);                    
                     $this->db->update('tb_operador');
             }
