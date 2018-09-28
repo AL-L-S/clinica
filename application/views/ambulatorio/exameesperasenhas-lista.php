@@ -11,20 +11,44 @@
             ?>
             <table>
                 <tr>
-                    <td style="width: 100px;">
+                    <td style="width: 80px;">
                         <div class="bt_link_new">
                             <a href="#" id="botaochamar">
                                 Chamar Senha
                             </a>
                         </div>
                     </td>
-                    <td>
+                    <td style="width: 80px;">
                         <div class="bt_link_new">
                             <a href="#" id="botaoatender">
                                 Atender
                             </a>
                         </div>
                     </td>  
+                </tr>
+                <tr>
+                    <?$contador_td = 0;?>
+                    <?if(count($setores) > 0){?>
+                        <?foreach ($setores as $key => $value) {?>
+                            <td style="width: 70px;">
+                                <div class="bt_link_new" >
+                                    <a href="#" id="botaochamarunico" onclick="chamarSetor(<?=$value->id;?>);">
+                                    <?=$value->nome;?>
+                                    </a>
+                                </div>
+                            </td> 
+                            <?
+                            $contador_td++;
+                            if($contador_td > 5){
+                                // Fecha o tr e abre de novo pra poder criar uma nova linha caso tenha mais de 5 botões
+                                echo '</tr><tr>';
+                                $contador_td = 0;
+                            }
+                            ?>
+                        <?}?>
+
+                    <?}?>
+
                 </tr>
             </table>
             <form id="formIdFila">
@@ -89,6 +113,30 @@
         $("#accordion").accordion();
     });
 
+    function chamarSetor(setor_id) {
+        
+        $.ajax({
+            type: "POST",
+            data: {teste: 'teste'},
+            //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+            url: "<?= $endereco ?>/webService/telaAtendimento/proximo/"+ setor_id +"/Guichê <?= $guiche ?>/true/false/<?= $operador_id ?>/1",
+            success: function (data) {
+//                alert('asdsadsd');
+//                console.log(data);
+//                console.log(data.filaDeEspera.data);
+                alert('Senha chamada: ' + data.filaDeEspera.senha + '');
+                $('#IdFila').val(data.filaDeEspera.id);
+                $('#SenhaFila').val(data.filaDeEspera.senha);
+                gravarSenha(data.filaDeEspera.senha, data.filaDeEspera.id, data.filaDeEspera.data);
+                
+            },
+            error: function (data) {
+//                console.log(data);
+
+            }
+        });
+    }
+
     $("#botaochamar").click(function () {
 //        alert('asadasdadad');
         $.ajax({
@@ -108,7 +156,7 @@
             },
             error: function (data) {
 //                console.log(data);
-//                alert('DEU MERDA');
+
             }
         });
     });
@@ -179,7 +227,7 @@
             },
             error: function (data) {
 //                console.log(data);
-//                alert('DEU MERDA');
+
             }
         });
     

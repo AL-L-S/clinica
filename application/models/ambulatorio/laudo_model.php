@@ -502,7 +502,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', $args['data']);
+            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);
@@ -557,7 +557,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', $args['data']);
+            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);
@@ -624,7 +624,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', $args['data']);
+            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('age.agenda_exames_nome_id', $args['sala']);
@@ -1082,6 +1082,7 @@ class laudo_model extends Model {
     }
 
     function editaranaminesehistorico() {
+        // var_dump($_POST['laudoantigo_id']); die;
         $this->db->set('laudo', $_POST['laudo']);
         $this->db->where('laudoantigo_id', $_POST['laudoantigo_id']);
         $this->db->update('tb_laudoantigo');
@@ -1915,7 +1916,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', $args['data']);
+            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
             $this->db->where('p.paciente_id', $args['prontuario']);
@@ -1976,7 +1977,7 @@ class laudo_model extends Model {
             $this->db->where('p.nome ilike', "%" . $args['nome'] . "%");
         }
         if (isset($args['data']) && strlen($args['data']) > 0) {
-            $this->db->where('ag.data', $args['data']);
+            $this->db->where('ag.data', date("Y-m-d", strtotime(str_replace('/', '-', $args['data']))));
         }
         if (isset($args['prontuario']) && strlen($args['prontuario']) > 0) {
             $this->db->where('p.paciente_id', $args['prontuario']);

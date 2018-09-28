@@ -1848,9 +1848,9 @@ class internacao_model extends BaseModel {
         $this->db->where('il.excluido', 'f');
         $this->db->where('ie.ativo', 't');
         $this->db->where('iu.ativo', 't');
-        $this->db->where('i.excluido', 'f');
+        $this->db->where('(i.excluido = false OR i.excluido is null)');
         $this->db->where('(i.ativo = true OR i.ativo is null)');
-
+        // Não dá pra fazer a verificação da existência da internação aqui, deve ser feito na view
         if ($_POST['unidade'] != '') {
             $this->db->where('ie.unidade_id', $_POST['unidade']);
         }
@@ -1868,7 +1868,7 @@ class internacao_model extends BaseModel {
             }
         }
 
-        $this->db->orderby('iu.internacao_unidade_id, ie.internacao_enfermaria_id, il.ativo, il.nome, i.data_internacao desc');
+        $this->db->orderby('iu.internacao_unidade_id, ie.internacao_enfermaria_id, il.ativo, il.nome, p.paciente_id, i.data_internacao desc');
         $return = $this->db->get();
         return $return->result();
     }
@@ -1893,7 +1893,7 @@ class internacao_model extends BaseModel {
         $this->db->where('il.excluido', 'f');
         $this->db->where('ie.ativo', 't');
         $this->db->where('iu.ativo', 't');
-        $this->db->where('i.excluido', 'f');
+        $this->db->where('(i.excluido = false OR i.excluido is null)');
         $this->db->where('(i.ativo = true OR i.ativo is null)');
 
         if ($_POST['unidade'] != '') {
