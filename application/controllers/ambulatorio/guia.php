@@ -592,7 +592,17 @@ class Guia extends BaseController {
 
     function gravarcadastroaso($paciente_id) {
 //        var_dump($_POST);die;
-                $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
+
+        $paciente_id = $_POST['txtPacienteId'];
+
+        $resultadoguia = $this->guia->listarguia($paciente_id);
+        if ($resultadoguia == null) {
+            $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+        } else {
+            $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+        } 
+        
+        $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia);
                     
                 if ($retorno2 == -1) {
                     $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
@@ -4846,12 +4856,18 @@ class Guia extends BaseController {
         $data['cabecalhoconfig'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['cabecalho'] = @$data['cabecalhoconfig'][0]->cabecalho;
         $data['rodape'] = @$data['cabecalhoconfig'][0]->rodape;
-
-        if ($data['permissoes'][0]->orcamento_config == 't') {
-            $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);
-        } else {
-            $this->load->View('ambulatorio/impressaorelatorioorcamentoprocedimento', $data);
+        // var_dump($data['exames']); die;
+        if(count($data['exames']) > 0){
+            if ($data['permissoes'][0]->orcamento_config == 't') {
+                $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);
+            } else {
+                $this->load->View('ambulatorio/impressaorelatorioorcamentoprocedimento', $data);
+            }
+        }else{
+            echo '<meta charset="UTF-8">';
+            echo '<h3>Sem procedimentos no orçamento';
         }
+       
     }
 
     function procedimentoguianotaform($ambulatorio_guia_id, $valorguia, $valor = 0.00) {

@@ -92,12 +92,15 @@
                         <td><?= $item->cpf; ?></b></td>
                         <td><?= ($item->data_preferencia != '') ? date("d/m/Y", strtotime($item->data_preferencia)) : date("d/m/Y", strtotime($item->data_criacao)); ?></td>
                         <td style="text-align: right">
-                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}/" . date("Y-m-d", strtotime($item->data_preferencia)) ?>', '_blank', 'width=800,height=800');">
+                        <?
+                        $data_enviar = ($item->data_preferencia != '') ? date("d-m-Y", strtotime($item->data_preferencia)) : date("d-m-Y", strtotime($item->data_criacao));
+                        ?>
+                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}/" . $data_enviar ?>', '_blank', 'width=800,height=800');">
                                 <?= number_format($item->valor, 2, ',', "") ?>
                             </a>
                         </td>
                         <td style="text-align: right">
-                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}/" . date("Y-m-d", strtotime($item->data_preferencia)) ?>', '_blank', 'width=800,height=800');">
+                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/listarprocedimentosorcamento/{$item->ambulatorio_orcamento_id}/{$empresa_id}/" . $data_enviar ?>', '_blank', 'width=800,height=800');">
                                 <?= number_format($item->valorcartao, 2, ',', "") ?>
                             </a>
                         </td>
@@ -116,7 +119,7 @@
 
                             <? if ($item->autorizado == 'f') { ?>
                                 <? if ($item->paciente != '') { ?>
-                                    <a href="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamentorelatorio/<?= $item->ambulatorio_orcamento_id . "/" . date("Y-m-d", strtotime($item->data_preferencia)) ?>" target="_blank">Autorizar</a>
+                                    <a href="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamentorelatorio/<?= $item->ambulatorio_orcamento_id . "/" . $data_enviar ?>" target="_blank">Autorizar</a>
                                 <?
                             } else { ?>
                                     <a  href="<?= base_url() ?>ambulatorio/exame/autorizarorcamentonaocadastro/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Autorizar</a>
@@ -128,7 +131,7 @@
 
                         </td>
                         <td style="text-align: left">
-                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterardescricao/<?= $item->ambulatorio_orcamento_id ?>/<?= date("Y-m-d", strtotime($item->data_preferencia)) ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\
+                            <a style="cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterardescricao/<?= $item->ambulatorio_orcamento_id ?>/<?= $data_enviar ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\
                                                              width=500,height=400');">=> <?= $item->observacao; ?></td>
                         </a> 
                         </td>    

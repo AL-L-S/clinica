@@ -82,5 +82,26 @@ ALTER TABLE ponto.tb_empresa ADD COLUMN endereco_integracao_lab text;
 -- Dia 20/09/2018
 ALTER TABLE ponto.tb_operador ADD COLUMN guiche integer;
 
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2965');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000029',
+            'No caso de existir chamada de Painel via Toten, é obrigatório o cadastro da senha no atendimento do paciente. (Novo atendimento e Autorizar Atendimento)',
+            '2965',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
 -- Dia 21/09/2018
 ALTER TABLE ponto.tb_aso_risco ALTER COLUMN descricao_risco TYPE text;

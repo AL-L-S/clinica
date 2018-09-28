@@ -7452,6 +7452,24 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function testandoConversaoArquivosRTF() {
+        $this->db->select('a.*,
+                            ');
+        $this->db->from('tb_consultas_sim a');
+        // $this->db->limit(100);
+        $this->db->orderby('consultas_sim_id', 'asc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function convertendoArquivoRtfHTML($consulta_id, $html) {
+        
+        $this->db->set('texto_html', $html);
+        $this->db->where('consultas_sim_id', $consulta_id);
+        $this->db->update('tb_consultas_sim');
+        
+        
+    }
+
     function listarprocedimentoconveniosessao($convenio_id, $sessao) {
 
         //verifica se esse medico já está cadastrado nesse procedimento 

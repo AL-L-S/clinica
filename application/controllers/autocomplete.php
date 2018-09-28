@@ -67,6 +67,38 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function conversaoRtfAlberto(){
+        
+        $this->load->library('RtfReader');
+        $result = $this->exametemp->testandoConversaoArquivosRTF();
+        // echo '<pre>';
+        // var_dump($result); die;
+        echo '<meta charset="UTF-8">';
+        foreach ($result as $key => $value) {
+            if(strlen($value->texto) > 10){
+                $reader = new RtfReader();
+                $rtf =  str_replace(';','',$value->texto);
+                $reader->Parse($rtf);
+                // $reader->root->dump();
+                
+                $formatter = new RtfHtml();
+                
+                $html = $formatter->Format($reader->root);
+                $result = $this->exametemp->convertendoArquivoRtfHTML($value->consultas_sim_id, $html);
+                echo $value->consultas_sim_id . '<br> <hr>';
+                // echo $html . "<br>";
+
+            }
+           
+            // die;
+        }
+        
+
+        // $data = '4201388889';
+        // echo date("Y-m-d H:i",$data);
+
+    }
+
     function gravarhorarioagendawebconvenio() {
         header('Access-Control-Allow-Origin: *');
         $paciente_id = $this->exametemp->crianovopacientefidelidade();

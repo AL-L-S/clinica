@@ -3165,14 +3165,14 @@ class exame_model extends Model {
                                 SELECT SUM(valor_total)
                                 FROM ponto.tb_ambulatorio_orcamento_item
                                 WHERE ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id
-                                AND ponto.tb_ambulatorio_orcamento_item.data_preferencia = aoi.data_preferencia
+                                AND (ponto.tb_ambulatorio_orcamento_item.data_preferencia = aoi.data_preferencia OR (ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id AND aoi.data_preferencia is null))
                                 AND ativo = 't'
                             ) as valor,
                             (
                                 SELECT SUM(valor_ajustado * quantidade)
                                 FROM ponto.tb_ambulatorio_orcamento_item
                                 WHERE ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id
-                                AND ponto.tb_ambulatorio_orcamento_item.data_preferencia = aoi.data_preferencia
+                                AND (ponto.tb_ambulatorio_orcamento_item.data_preferencia = aoi.data_preferencia OR (ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id AND aoi.data_preferencia is null))
                                 AND ativo = 't'
                             ) as valorcartao");
         $this->db->from('tb_ambulatorio_orcamento ao');
@@ -3244,14 +3244,14 @@ class exame_model extends Model {
                                 SELECT SUM(valor_total)
                                 FROM ponto.tb_ambulatorio_orcamento_item
                                 WHERE ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id
-                                AND ponto.tb_ambulatorio_orcamento_item.data_preferencia = aoi.data_preferencia
+                                AND (ponto.tb_ambulatorio_orcamento_item.data_preferencia = aoi.data_preferencia OR (ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id AND aoi.data_preferencia is null))
                                 AND ativo = 't'
                             ),
                             (
                                 SELECT SUM(valor_ajustado * quantidade)
                                 FROM ponto.tb_ambulatorio_orcamento_item
                                 WHERE ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id
-                                AND ponto.tb_ambulatorio_orcamento_item.data_preferencia = aoi.data_preferencia
+                                AND (ponto.tb_ambulatorio_orcamento_item.data_preferencia = aoi.data_preferencia OR (ponto.tb_ambulatorio_orcamento_item.orcamento_id = ao.ambulatorio_orcamento_id AND aoi.data_preferencia is null))
                                 AND ativo = 't'
                             )");
         $return = $this->db->get();
@@ -3539,7 +3539,7 @@ class exame_model extends Model {
             $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
             $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = aoi.orcamento_id', 'left');
             $this->db->where('aoi.orcamento_id', $ambulatorio_orcamento_id);
-            $this->db->where('aoi.data_preferencia', $dataSelecionada);
+            $this->db->where("(aoi.data_preferencia = '$dataSelecionada' OR aoi.data_preferencia is null)");
             $this->db->where('ao.paciente_id IS NOT NULL');
             $this->db->where('aoi.ativo', 't');
             $this->db->where('aoi.autorizado', 'f');
@@ -3548,11 +3548,13 @@ class exame_model extends Model {
 //            $this->db->set('autorizado', 't');
 //            $this->db->where('ambulatorio_orcamento_id', $ambulatorio_orcamento_id);
 //            $this->db->update('tb_ambulatorio_orcamento');
-
-            $this->db->set('autorizado', 't');
-            $this->db->where('orcamento_id', $ambulatorio_orcamento_id);
-            $this->db->where('data_preferencia', $dataSelecionada);
-            $this->db->update('tb_ambulatorio_orcamento_item');
+            foreach($return as $item){
+                $this->db->set('autorizado', 't');
+                $this->db->where('ambulatorio_orcamento_item_id', $item->ambulatorio_orcamento_item_id);
+                // $this->db->where('data_preferencia', $dataSelecionada);
+                $this->db->update('tb_ambulatorio_orcamento_item');
+            }
+            
 
             if (count($return) > 0) {
 
@@ -3920,7 +3922,7 @@ class exame_model extends Model {
         $this->db->select('autorizado, paciente_id');
         $this->db->from('tb_ambulatorio_orcamento_item ao');
         $this->db->where('ao.orcamento_id', $ambulatorio_orcamento_id);
-        $this->db->where('ao.data_preferencia', $dataSelecionada);
+        $this->db->where("(ao.data_preferencia = '$dataSelecionada' OR ao.data_preferencia is null)");
         $this->db->orderby('ao.autorizado');
         $return = $this->db->get();
         return $return->result();
@@ -8471,7 +8473,7 @@ class exame_model extends Model {
 
             $this->db->set('observacao', utf8_encode($_POST['txtdescricao']));
             $this->db->where('orcamento_id', $ambulatorio_orcamento_id);
-            $this->db->where('data_preferencia', $dataSelecionada);
+            // $this->db->where('data_preferencia', $dataSelecionada);
             $this->db->update('tb_ambulatorio_orcamento_item');
             return 0;
         } catch (Exception $exc) {

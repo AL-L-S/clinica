@@ -323,6 +323,7 @@ class Convenio_model extends Model {
         $this->db->join('tb_aso_setor se', 'se.aso_setor_id = sc.setor_id', 'left');
         $this->db->join('tb_aso_funcao fu', 'fu.aso_funcao_id = sc.funcao_id', 'left');        
         $this->db->where("sc.empresa_id", $setor_cadastro_id);
+        $this->db->where("sc.ativo", 't');
         $return = $this->db->get();
         return $return->result();
     }
