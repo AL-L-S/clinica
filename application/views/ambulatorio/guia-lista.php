@@ -180,6 +180,7 @@
                         }
                         $estilo_linha = "tabela_content01";
                         foreach ($exames as $item) :
+//                            echo '<pre>';var_dump($item);die;
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
 
 
