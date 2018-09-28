@@ -36,6 +36,7 @@ $integracaosollis = $this->session->userdata('integracaosollis');
 $manter_indicacao = $this->session->userdata('manter_indicacao');
 $calendario_layout = $this->session->userdata('calendario_layout');
 $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
+$medicinadotrabalho = $this->session->userdata('medicinadotrabalho');
 $medico_solicitante = $this->session->userdata('medico_solicitante');
 $orcamento_recepcao = $this->session->userdata('orcamento_recepcao');
 $relatorio_producao = $this->session->userdata('relatorio_producao');
@@ -834,6 +835,9 @@ function debug($object) {
 
         <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexame">Relatorio Conferencia</a></span></ul>
+                                            <? if ($medicinadotrabalho == 't') { ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioaso">Relatorio ASO</a></span></ul>
+                                            <? } ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriorecolhimento">Relatorio Recolhimento</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogastosala">Relatorio Gasto de Sala</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogeralsintetico">Relatorio Sintetico Geral</a></span></ul>
@@ -1241,7 +1245,8 @@ function debug($object) {
                                     }
                                     ?>
                                 </li>
-                                <li><span class="folder">M. Trabalho</span>                    
+                                <? if ($medicinadotrabalho == 't') { ?>
+                                <li><span class="folder">M. Trabalho</span>
     <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10) { ?>
 
 
@@ -1254,6 +1259,7 @@ function debug($object) {
 
                                 <? } ?>
 
+                                <? } ?>
                                 </li>
     <? if ($imagem == 't') { ?>
                                     <li><span class="folder">Imagem</span> 

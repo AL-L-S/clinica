@@ -317,13 +317,16 @@ class Convenio_model extends Model {
                             sc.funcao_id,
                             sc.risco_id,
                             se.descricao_setor,
-                            fu.descricao_funcao
+                            fu.descricao_funcao,
+                            sc.ativo,
+                            sc.exames_id
                                         ');
         $this->db->from('tb_setor_cadastro sc');
         $this->db->join('tb_aso_setor se', 'se.aso_setor_id = sc.setor_id', 'left');
         $this->db->join('tb_aso_funcao fu', 'fu.aso_funcao_id = sc.funcao_id', 'left');        
         $this->db->where("sc.empresa_id", $setor_cadastro_id);
-        $this->db->where("sc.ativo", 't');
+        $this->db->where("sc.ativo", 'TRUE');
+        $this->db->orderby("sc.setor_id");
         $return = $this->db->get();
         return $return->result();
     }
@@ -1877,6 +1880,7 @@ class Convenio_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
                         
             $array_risco = json_encode($_POST['txtrisco_id']);
+            $array_exames = json_encode($_POST['procedimentos']);
 
             $this->db->select('setor_cadastro_id');
             $this->db->from('tb_setor_cadastro');
@@ -1891,6 +1895,7 @@ class Convenio_model extends Model {
                 $this->db->set('setor_id', $setor_id);
                 $this->db->set('funcao_id', $item);
                 $this->db->set('risco_id', $array_risco);
+                $this->db->set('exames_id', $array_exames);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_setor_cadastro');               
@@ -1911,6 +1916,7 @@ class Convenio_model extends Model {
                     $this->db->set('setor_id', $setor_id);
                     $this->db->set('funcao_id', $item);
                     $this->db->set('risco_id', $array_risco);
+                    $this->db->set('exames_id', $array_exames);
                     $this->db->set('data_atualizacao', $horario);
                     $this->db->set('operador_atualizacao', $operador_id);
                     $this->db->where('setor_id', $setor_id);

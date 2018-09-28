@@ -9,7 +9,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 <?$perfil_id = $this->session->userdata('perfil_id'); ?>
 <?php
     $this->load->library('utilitario');
-//    var_dump($config); die;
+//    echo'<pre>';
+//    var_dump($config->consulta); die;
     Utilitario::pmf_mensagem($this->session->flashdata('message'));
     ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
@@ -63,6 +64,15 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <label>RG</label>
                 <input readonly="" type="text" name="rg" id="rg" class="texto04" value="<?= @$paciente[0]->rg ?>" />
             </div>
+            <div>
+                <label>Consulta</label>
+                <select name="consulta" id="consulta" class="size2" required="">
+                    <option value="">SELECIONE</option>
+                    <option value="particular" <?= (@$config->consulta == 'particular') ? 'selected' : ''; ?>>Particular</option>
+                    <option value="conveniado" <?= (@$config->consulta == 'conveniado') ? 'selected' : ''; ?>>Conveniado</option>                    
+                </select>
+
+            </div>
 
 
         </fieldset>
@@ -96,7 +106,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
 
 
-            <div>
+            <div id="convenio">
                 <label>Empresa</label>
 
                 <select  name="convenio1" id="convenio1" class="size2" required="" >      
@@ -109,25 +119,27 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                         </option>
                     <? endforeach; ?>
                 </select>
+                <input type="text" id="convenio2" name="convenio2"  class="texto04" value="<?= @$config->convenio2 ?>" />
             </div>
 
-            <div>
-
+            <div id="setor1">
                 <label>Setor</label>
                 <select name="setor" id="setor" class="size2" required="">
                     
                 </select>
+                <input type="text" id="setor2" name="setor2"  class="texto04" value="<?= @$config->setor2 ?>" />
             </div>
-            <div>
+            <div id="funcao1">
                 <label>Função</label>
                 <select name="funcao" id="funcao" class="size2" required="">
 
 
                 </select>
+                <input type="text" id="funcao2" name="funcao2"  class="texto04" value="<?= @$config->funcao2 ?>" />
             </div>
             <div>
                 <label>Data De Realização</label>
-                <input type="text" name="data_realizacao" id="data_realizacao" class="texto04" value="<?= @$config->data_realizacao ?>" />
+                <input type="text" name="data_realizacao" id="data_realizacao" class="texto04" value="<?= @$config->data_realizacao ?>" required=""/>
             </div>
             <div>
                 <label>Médico</label>
@@ -142,7 +154,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             </div>
             <div>
                 <label>Validade do Exame</label>
-                <input type="text" name="validade_exame" id="validade_exame" class="texto04" value="<?= @$config->validade_exame ?>" />
+                <input type="text" name="validade_exame" id="validade_exame" class="texto04" value="<?= @$config->validade_exame ?>" readonly="" />
             </div>
             <div>
                 <label>Sala</label>
@@ -196,7 +208,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
                 <select name="questao_um" id="questao_um" required="" class="texto04" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
                     <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCE</option>
+                    <option value="APTO2" <?= (@$config->questao_um == 'APTO2') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE IRÁ EXERCER</option>
+                    <option value="APTO3" <?= (@$config->questao_um == 'APTO3') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCEU</option>
                     <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
 
                 </select>
@@ -208,8 +222,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <select name="questao_dois" id="questao_dois" required="" class="texto04" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
                         NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
                     <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO</option>
-                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO PARA TRABALHO EM ALTURA</option>
+                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA TRABALHO EM ALTURA</option>
                     <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
                 </select>
             </div>
@@ -254,7 +268,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
                 <select name="questao_um" id="questao_um" class="texto04" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
                     <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCE</option>
+                    <option value="APTO2" <?= (@$config->questao_um == 'APTO2') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE IRÁ EXERCER</option>
+                    <option value="APTO3" <?= (@$config->questao_um == 'APTO3') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCEU</option>
                     <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
 
                 </select>
@@ -266,8 +282,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <select name="questao_dois" id="questao_dois" class="texto04" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
                         NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
                     <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO</option>
-                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO PARA TRABALHO EM ALTURA</option>
+                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA TRABALHO EM ALTURA</option>
                     <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
                 </select>
             </div>
@@ -349,7 +365,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
     .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 330px; }
 </style>
-<? // var_dump(@$config->funcao);die;?>
+<? // var_dump(@$config);die; ?>
 <script type="text/javascript">
 
                     $(function () {
@@ -361,21 +377,26 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
                             buttonImage: '<?= base_url() ?>img/form/date.png',
                             dateFormat: 'dd/mm/yy'
+                    
+                            
                         });
                     });
-
+                    
                     $(function () {
-                        $("#validade_exame").datepicker({
-                            autosize: true,
-                            changeYear: true,
-                            changeMonth: true,
-                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                            buttonImage: '<?= base_url() ?>img/form/date.png',
-                            dateFormat: 'dd/mm/yy'
+                        $('#data_realizacao').change(function () {
+                          $.getJSON('<?= base_url() ?>autocomplete/datavalidade356', {data_realizacao: $(this).val()}, function (j) {
+                      
+//                                console.log(j);
+                                validade = j;                          
+                                
+                                $('#validade_exame').val(validade);
+                                
+                            });
+                            
+
                         });
                     });
-
+                     
 
 
 
@@ -436,17 +457,21 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                         });
                     });
-<? if (@$config->funcao != '') { ?>
+                    
+
+    <? if (@$config->funcao != '') { ?>
 
                         var funcao = <?= @$config->funcao ?>;
                         carregarFuncaoAtualizar();
 <? } else { ?>
                         var funcao = '';
-<? }
+<? }   
+
 ?>
                     function carregarFuncaoAtualizar() {
+//                        alert(setor);
 //                                console.log(j);
-                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: $('#setor').val(), empresa: $('#convenio1').val()}, function (j) {
+                        $.getJSON('<?= base_url() ?>autocomplete/funcaosetormt2', {setor: setor, empresa: $('#convenio1').val()}, function (j) {
                             options = '<option value=""></option>';
                             for (var c = 0; c < j.length; c++) {
                                 if (funcao == j[c].funcao_id) {
@@ -464,6 +489,15 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             $('.carregando').hide();
                         });
                     }
+                    
+//                    function carregarFuncaoAtualizar2() {
+////                        alert(funcao);
+//                            $('#funcao2 option').remove();
+//                            $('#funcao2').append(funcao);
+////                            $("#funcao2").trigger("chosen:updated");
+//                            $('.carregando').hide();
+//                        });
+//                    }
 
 
                     $(function () {
@@ -504,7 +538,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                     
                     function carregarRiscoAtualizar() {
                   
-                        $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+                        $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: funcao, empresa: $('#convenio1').val(), setor: setor}, function (j) {
                                 options = '<option value=""></option>';
 //                                console.log(j);
                                 for (var c = 0; c < j.length; c++) {
@@ -553,7 +587,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                         });
                     });
-                                        <? if (@$config->procedimento1 != '') { ?>
+                    
+                    
+     <? if (@$config->procedimento1 != '') { ?>
 //                       
                         var exame = [<?= implode(', ',@$config->procedimento1); ?>]; 
                         carregarProcedimentoAtualizar();
@@ -563,16 +599,17 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 ?>
                     
                     function carregarProcedimentoAtualizar() {
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $('#convenio1').val()}, function (j) {
+                        
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: funcao, empresa: $('#convenio1').val(), setor: setor}, function (j) {
                                 options = '<option value=""></option>';
 
                                 for (var c = 0; c < j.length; c++) {
 //                                    alert(exame.indexOf(parseInt(j[c].procedimento_convenio_id)));
 //                                    alert(j[c].procedimento_convenio_id);
-                                    if (exame.indexOf(parseInt(j[c].procedimento_convenio_id)) > -1) {
-                                        options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                    if (exame.indexOf(parseInt(j[c].procedimento_tuss_id)) > -1) {
+                                        options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
                                     } else {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                        options += '<option value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
                                     }
                                     
                                 }
@@ -585,16 +622,17 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                     }
 
                     $(function () {
-                        $('#convenio1').change(function () {
+                        $('#funcao').change(function () {
                             if ($(this).val()) {
 //                                $('.carregando').show();
-
-                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val()}, function (j) {
+//                                alert('hello');
+                                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                     options = '<option value=""></option>';
 //                                    console.log(j);
                                     for (var c = 0; c < j.length; c++) {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                        options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
                                     }
+//                                    alert(options);
 //                            $('#procedimento1').html(options).show();
                                     $('#procedimento1 option').remove();
                                     $('#procedimento1').append(options);
@@ -666,5 +704,109 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                         }
                     }
                     calculoIdade();
+                    
+                    
+//                    $(document).ready(function() {
+                        <? if(@$config->consulta=="particular"){?>          
+//                      alert('asdasd');
+                        $('#convenio1').hide();
+                        $('#convenio2').show();
+                        $('#setor').hide();
+                        $('#setor2').show();
+                        $('#funcao').hide();
+                        $('#funcao2').show();
+                        <?}
+                        else{ ?>
+//                            alert('eeee');
+                        $('#convenio2').hide();
+                        $('#convenio1').show();
+                        $('#setor2').hide();
+                        $('#setor').show();
+                        $('#funcao2').hide();
+                        $('#funcao').show();   
+               <? } ?>
+               
+//                 });
+               
 
+                
+            $('#consulta').change(function () {
+
+            if ($('#consulta :selected').val() === "particular") {
+                $('#convenio1').hide();
+                $('#convenio2').show();
+                $('#setor').hide();
+                $('#setor2').show();
+                $('#funcao').hide();
+                $('#funcao2').show();
+                
+                $.getJSON('<?= base_url() ?>ambulatorio/guia/listarriscos', {setor: $('#setor').val()}, function (j) {
+                                options = '<option value=""></option>';
+//                                alert('ola');
+                                for (var c = 0; c < j.length; c++) {
+                                  
+                                        options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                   
+                                    
+                                }
+
+
+                                $('#riscos option').remove();
+                                $('#riscos').append(options);
+                                $("#riscos").trigger("chosen:updated");
+
+                            });              
+//             
+                
+                              
+            } else {
+                $('#convenio2').hide();
+                $('#convenio1').show();
+                $('#setor2').hide();
+                $('#setor').show();
+                $('#funcao2').hide();
+                $('#funcao').show(); 
+                
+                $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+                                options = '<option value=""></option>';
+//                                alert('ola');
+                                for (var c = 0; c < j.length; c++) {
+                         
+                                    if (risco.indexOf(parseInt(j[c].aso_risco_id)) > -1) {
+                                        options += '<option selected value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                    } else {
+                                        options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                    }
+                                    
+                                }
+
+
+                                $('#riscos option').remove();
+                                $('#riscos').append(options);
+//                                $("#riscos_teste").trigger("listz:updated");
+                                $("#riscos").trigger("chosen:updated");
+//                                $('.carregando').hide();
+                            });
+                            
+                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+                                    options = '<option value=""></option>';
+//                                     console.log(j);
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option selected value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + '</option>';
+                                   
+                                    }
+//                            $('#procedimento1').html(options).show();
+                                    $('#procedimento1 option').remove();
+                                    $('#procedimento1').append(options);
+                                    $("#procedimento1").trigger("chosen:updated");
+//                                    $('.carregando').hide();
+                                });
+                            
+                            
+                                    
+                
+            }
+        });
+            
+        
 </script>

@@ -432,6 +432,30 @@ class saudeocupacional_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarautocompleteexamesjson2($parametro = array()) {
+        
+
+        
+        $this->db->select(' pt.procedimento_tuss_id,
+                            pt.codigo,
+                            pt.nome as procedimento
+                            ');
+        
+        $this->db->from('tb_procedimento_tuss pt');  
+        $this->db->where('pt.ativo', 'true');      
+                       
+        
+
+        if ($parametro != null) {
+            $this->db->where_in('pt.procedimento_tuss_id', $parametro);
+        }
+       
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
 
 }
 

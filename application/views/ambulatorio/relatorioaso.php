@@ -1,8 +1,8 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3><a href="#">Gerar Relatório Situação Paciente</a></h3>
+        <h3><a href="#">Gerar Relatório ASO</a></h3>
         <div>
-            <form method="post" action="<?= base_url() ?>internacao/internacao/gerarelatoriointernacaosituacao">
+            <form method="post" action="<?= base_url() ?>ambulatorio/guia/gerarelatorioaso">
                 <dl>
                     <dt>
                         <label>Data inicio</label>
@@ -17,6 +17,32 @@
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
                     </dd>
 
+                    <dt>
+                        <label>Tipo</label>
+                    </dt>
+                    
+                    <dd>
+                        <select id="tipo" name="tipo"  class="size02" >
+                    <option value="">
+                        TODOS
+                    </option>                    
+                    <option value="ADMISSIONAL" <?= (@$informacao_aso[0]->tipo == 'ADMISSIONAL') ? 'selected' : ''; ?>>
+                        ADMISSIONAL
+                    </option>
+                    <option value="PERÍODICO" <?= (@$informacao_aso[0]->tipo == 'PERÍODICO') ? 'selected' : ''; ?>>
+                        PERÍODICO
+                    </option>
+                    <option value="RETORNO AO TRABALHO" <?= (@$informacao_aso[0]->tipo == 'RETORNO AO TRABALHO') ? 'selected' : ''; ?>>
+                        RETORNO AO TRABALHO
+                    </option>
+                    <option value="MUDANÇA DE FUNÇÃO" <?= (@$informacao_aso[0]->tipo == 'MUDANÇA DE FUNÇÃO') ? 'selected' : ''; ?>>
+                        MUDANÇA DE FUNÇÃO
+                    </option>
+                    <option value="DEMISSIONAL" <?= (@$informacao_aso[0]->tipo == 'DEMISSIONAL') ? 'selected' : ''; ?>>
+                        DEMISSIONAL
+                    </option>
+                </select>
+                    </dd>
                     <dt>
                         <label>Convênio</label>
                     </dt>
@@ -38,8 +64,7 @@
 
                         </select>
                     </dd>
-                   
-                  
+
                 </dl>
                 <button type="submit" >Pesquisar</button>
 
@@ -82,4 +107,34 @@
     });
 
 
+
+
+    $(function () {
+        $('#unidade').change(function () {
+//            alert('adsdasd');
+            if ($(this).val()) {
+                $('.carregando').show();
+                $.getJSON('<?= base_url() ?>autocomplete/enfermariaunidade', {id: $(this).val(), ajax: true}, function (j) {
+                    options = '<option value=""></option>';
+                    console.log(j);
+
+                    for (var c = 0; c < j.length; c++) {
+
+                        options += '<option value="' + j[c].id + '">' + j[c].value + '</option>';
+
+                    }
+                    $('#enfermaria').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('.carregando').show();
+                options = '';
+                $('#enfermaria').html(options).show();
+            }
+        });
+    });
+
+
+
 </script>
+

@@ -54,6 +54,17 @@
                             </select>
                         </td>
                     </tr>                    
+                    <tr height="80px">
+
+                        <th class="tabela_title">Exames Complementares</th>
+                        <td>                  
+                            <select name="procedimentos[]" id="procedimentos" style="width: 450px;" class="chosen-select" data-placeholder="Selecione os Exames..." multiple >
+                                <? foreach ($procedimento as $value) : ?>
+                                    <option value="<?= $value->procedimento_tuss_id; ?>"><?= $value->nome; ?></option>
+                                <? endforeach; ?>
+                            </select>
+                        </td>
+                    </tr>                    
 
                     <!--                    <br>-->
                 </table>
@@ -76,6 +87,7 @@
                         <th class="tabela_header">Setor</th>
                         <th class="tabela_header">Função</th>
                         <th class="tabela_header">Risco</th>
+                        <th class="tabela_header">Exames Complementares</th>
                         <th class="tabela_header" colspan="4">&nbsp;</th>
                     </tr>
                 </thead>
@@ -109,6 +121,26 @@
 
                                     <?
                                 endforeach;
+                                ?>
+                            </td>
+                            <td class="<?php echo $estilo_linha; ?>">
+                                <?
+                                $array_exames = json_decode($value->exames_id);
+                                if(count($array_exames)>0){
+                                foreach ($array_exames as $key => $item) :
+                                    $exames = $this->procedimento->listarprocedimentossetor($item);
+                                    ?>
+                                    <?
+                                    if ($key == count($array_exames) - 1) {
+                                        echo $exames[0]->nome;
+                                    } else {
+                                        echo $exames[0]->nome . ", ";
+                                    }
+                                    ?>                
+
+                                    <?
+                                endforeach;
+                                }
                                 ?>
                             </td>
                             <td class="<?php echo $estilo_linha; ?>">

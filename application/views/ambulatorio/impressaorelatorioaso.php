@@ -1,0 +1,89 @@
+
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
+    <h4 class="title_relatorio">Relatório ASO</h4>
+    <p></p>
+    <h4 class="title_relatorio">Inicio: <?= $data_inicio; ?> - Fim: <?= $data_fim; ?> </h4>
+
+    <h4 class="title_relatorio">Tipo: <?= $tipo ?> </h4>
+    <h4 class="title_relatorio">Convênio: <?= $convenio ?> </h4>
+<?
+//        echo '<pre>';
+//        var_dump($relatorioaso);
+//        die; ?>
+
+    <? if (count($relatorioaso) > 0) { ?>
+        <hr/>
+        <table border='1' cellspacing=0 cellpadding=5 style="border-collapse: collapse; text-align: center" width="100%">
+            <tr>
+                <th class="tabela_header">
+                    TIPO ASO
+                </th>
+                <th class="tabela_header">
+                    Nº ASO
+                </th>
+                <th class="tabela_header">
+                    Empresa
+                </th>
+                <th class="tabela_header">
+                    ID Funcionário
+                </th>
+                <th class="tabela_header">
+                    Nome do Funcionário
+                </th>
+
+                <th class="tabela_header">
+                    Função
+                </th>
+
+                <th class="tabela_header">
+                    Data ASO
+                </th>
+                <th class="tabela_header">
+                    Validade ASO
+                </th>
+                
+
+            </tr>
+            <tr>
+                <?
+
+
+                foreach ($relatorioaso as $item) {
+       
+//                var_dump($item->impressao_aso);die;
+                $impressao_aso = json_decode($item->impressao_aso);
+                $funcao = $this->guia->listarfuncaoaso($impressao_aso->funcao);
+//                var_dump($funcao);die;
+                    ?>
+                <tr>
+                    <td ><?= $item->tipo ?></td>
+                    <td ><?= $item->cadastro_aso_id ?></td>
+                    <td ><?= $item->convenio ?></td>
+                    <td ><?= $item->paciente_id ?></td>
+                    <td ><?= $item->paciente ?></td>
+                    <td ><?= $funcao[0]->descricao_funcao ?></td>
+                    <td ><?= date("d/m/Y", strtotime($item->data_realizacao)); ?></td>
+                    <td ><?= date("d/m/Y", strtotime($item->data_validade)); ?></td>
+                    
+                </tr>
+                <?
+            }
+            ?>
+            <tr><th colspan="12" class="tabela_header">Total de Internações: <?= count($relatorioaso); ?></th></tr>
+        </table>
+    <? } else { ?>
+        <br> <hr/>
+        <h2 class="title_relatorio">Sem Registros </h2>
+    <? } ?>
+
+
+</div> 
+
+<!-- Reset de CSS para garantir o funcionamento do layout em todos os brownsers -->
+<!--<link rel="stylesheet" href="<?php base_url() ?>css/jquery-ui-1.8.5.custom.css">-->
+<script type="text/javascript">
+
+</script>

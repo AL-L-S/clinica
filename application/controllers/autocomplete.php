@@ -137,66 +137,63 @@ class Autocomplete extends Controller {
             <parametros acao='VIEW' parcial='S'retorno='PDF'>
         
         </lote>";
-                    
+
         $xml_final = $xml_PT1;
 
 
         $postdata = http_build_query(
-            array(
-                'body' => $xml_final,
-                'url' => 'https://labluz.lisnet.com.br/lisnet/APOIO/resultado',
-            )
+                array(
+                    'body' => $xml_final,
+                    'url' => 'https://labluz.lisnet.com.br/lisnet/APOIO/resultado',
+                )
         );
-        
+
         $opts = array('http' =>
             array(
-                'method'  => 'POST',
-                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
                 'content' => $postdata
             )
         );
-        
-        $context  = stream_context_create($opts);
-        
+
+        $context = stream_context_create($opts);
+
         $result = file_get_contents(base_url() . 'autocomplete/enviarCurlLabLuz', false, $context);
-        if(!preg_match('/\Erro/', $result)){
+        if (!preg_match('/\Erro/', $result)) {
 
             $xml = simplexml_load_string($result);
             $json = json_encode($xml);
-            $array = json_decode($json,TRUE);
+            $array = json_decode($json, TRUE);
             echo '<pre>';
             var_dump($array);
             // var_dump($result);
             // var_dump($xml_string);
             die;
-
-        }else{
-            echo 'erro de conexao'; die;
+        } else {
+            echo 'erro de conexao';
+            die;
         }
         // var_dump($result); die;
-        
-        
-
     }
 
     function testandoIntegracaoLabLuz() {
         header('Access-Control-Allow-Origin: *');
         //Lote
         $empresa = $this->guia->listarempresa();
-        
-        if($empresa[0]->endereco_integracao_lab != ''){
+
+        if ($empresa[0]->endereco_integracao_lab != '') {
             $url = $empresa[0]->endereco_integracao_lab;
-        }else{
+        } else {
             $url = '';
         }
-        if($empresa[0]->identificador_lis != ''){
+        if ($empresa[0]->identificador_lis != '') {
             $identificador_lis = $empresa[0]->identificador_lis;
-        }else{
+        } else {
             $identificador_lis = '';
         }
-        if($empresa[0]->origem_lis != ''){
+        if ($empresa[0]->origem_lis != '') {
             $origem_lis = $empresa[0]->origem_lis;
-        }else{
+        } else {
             $origem_lis = '';
         }
         // Lote
@@ -217,7 +214,6 @@ class Autocomplete extends Controller {
         $nascimento = '1955-02-05';
         $sexo = 'M';
         // Solicitacao->Exames
-       
         // Exames ->Exame
         $exameCodigoLis = 'TR4';
         $amostraLis = '5555555';
@@ -252,7 +248,6 @@ class Autocomplete extends Controller {
         $solicitante_array[0]->nome = 'MEDICO';
         $solicitantes_obj->solicitante = $solicitante_array;
         // array_push($solicitante_array, $solicitantes_obj);
-
 /////////////// Exames //////////////////      
         $teste = array(1);
         $contador = 0;
@@ -268,7 +263,6 @@ class Autocomplete extends Controller {
         }
 
         $exames_obj->exame = $exame_array; // O atributo exame recebe o array de outros objs criados no foreach
-
 ///////////////// Paciente ////////////////
 
         $paciente_obj->codigoLis = $pacienteCodigoLis;
@@ -304,46 +298,43 @@ class Autocomplete extends Controller {
 
 
         $postdata = http_build_query(
-            array(
-                'body' => $json_geral,
-                'url' => $url,
-            )
+                array(
+                    'body' => $json_geral,
+                    'url' => $url,
+                )
         );
-        
+
         $opts = array('http' =>
             array(
-                'method'  => 'POST',
-                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'method' => 'POST',
+                'header' => 'Content-type: application/x-www-form-urlencoded',
                 'content' => $postdata
             )
         );
-        
-        $context  = stream_context_create($opts);
-        
+
+        $context = stream_context_create($opts);
+
         $result = file_get_contents(base_url() . 'autocomplete/enviarCurlLabLuz', false, $context);
 
         // var_dump($result); die;
-        
         // $xml = simplexml_load_string($result);
         // $json = json_encode($xml);
         $decode_result = json_decode($result);
 
-        if(isset($decode_result)){
+        if (isset($decode_result)) {
 
             if ($decode_result->lote->solicitacoes[0]->solicitacao->mensagem == 'REJEITADO') {
                 echo 'Errado';
             }
-
         }
         echo '<pre>';
         // echo $result;
         var_dump($decode_result);
         // var_dump($decode_result);
         die;
-
     }
 
-    function enviarCurlLabLuz(){
+    function enviarCurlLabLuz() {
         // var_dump($_POST); die;
         $fields = array('' => $_POST['body']);
         $url = $_POST['url'];
@@ -1862,6 +1853,37 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoconvenioaso() {
+        header('Access-Control-Allow-Origin: *');
+
+        if ($_GET['funcao'] != '') {
+            $result = $this->exametemp->listarautocompleteprocedimentos2($_GET['funcao'], $_GET['empresa'], $_GET['setor']);
+            
+            $json_exames = json_decode($result[0]->exames_id);
+            if($result[0]->exames_id != null){
+            $result2 = $this->saudeocupacional->listarautocompleteexamesjson2($json_exames);
+            echo json_encode($result2);            
+            }else{
+            $result2 = array();   
+            echo json_encode($result2);
+            }
+        } else {            
+            $result2 = array();
+            echo json_encode($result2);
+        }      
+
+        
+    }
+
+    function datavalidade356() {
+        
+        if (isset($_GET['data_realizacao'])) {
+            $data = date("Y-m-d", strtotime(str_replace('/', '-', $_GET['data_realizacao'])));
+            $result = date('d/m/Y', strtotime("+365 days", strtotime($data)));
+        }
+        echo json_encode($result);
+    }
+
     function procedimentoconvenioatendimento() {
 
         if (isset($_GET['convenio1'])) {
@@ -2005,7 +2027,7 @@ class Autocomplete extends Controller {
 //
 //        echo json_encode($result2);
 //    }
-    
+
     function funcaosetormt2() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['setor'])) {
@@ -2020,6 +2042,7 @@ class Autocomplete extends Controller {
 
         echo json_encode($result);
     }
+
 //    function setorempresamt() {
 //        header('Access-Control-Allow-Origin: *');
 //        if (isset($_GET['convenio1'])) {
@@ -2030,7 +2053,7 @@ class Autocomplete extends Controller {
 //
 //        echo json_encode($result);
 //    }
-    
+
     function setorempresamt2() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['convenio1'])) {
@@ -2038,10 +2061,10 @@ class Autocomplete extends Controller {
         } else {
             $result = $this->convenio->listarautocompletesetor(@$_GET['convenio1']);
         }
-        
+
         echo json_encode($result);
     }
-    
+
     function perfiloperador() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['perfil_id'])) {
@@ -2049,7 +2072,7 @@ class Autocomplete extends Controller {
         } else {
             $result = $this->operador_m->listarautocompleteoperador(@$_GET['perfil_id']);
         }
-        
+
         echo json_encode($result);
     }
 
@@ -2067,17 +2090,17 @@ class Autocomplete extends Controller {
 //
 //        echo json_encode($result2);
 //    }
-    
+
     function riscofuncaomt2() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['funcao'])) {
             $result = $this->convenio->listarautocompleteriscos($_GET['funcao'], $_GET['setor'], $_GET['empresa']);
-            
+
 //            var_dump($result);die;
         } else {
-            $result = $this->convenio->listarautocompleteriscos(@$_GET['funcao']);            
+            $result = $this->convenio->listarautocompleteriscos(@$_GET['funcao']);
         }
-        
+
         $json_riscos = json_decode($result[0]->risco_id);
 
         $result2 = $this->saudeocupacional->listarautocompletefuncaojson2($json_riscos);

@@ -78,6 +78,7 @@ class Convenio extends BaseController {
         $data['setor'] = $this->saudeocupacional->listarsetor2();        
         $data['convenio_selecionado'] = $this->convenio->listarconvenioselecionado2($convenio_id);
         $data['convenioid'] = $convenio_id;
+        $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $this->loadView('cadastros/convenio-setores', $data);
     }
     

@@ -61,8 +61,8 @@
     </style>
     <?
     $impressao_aso = json_decode($relatorio[0]->impressao_aso);
-//    echo '<pre>';
-//    var_dump($impressao_aso); die;
+    echo '<pre>';
+//    var_dump($relatorio[0]->consulta); die;
     ?>
     <body>
         <div style="width: 100%">
@@ -141,8 +141,12 @@
                         </tr>
                         <tr>
                             <td>
+                               <? if($relatorio[0]->consulta == "particular"){?>
+                                <?= $relatorio[0]->convenio2 ?> 
+                               <? }else{ ?>
                                 <? $convenio = $this->convenio->listarconvenioselecionado($impressao_aso->convenio1); ?>
                                 <?= $convenio[0]->nome ?> 
+                              <? } ?>
                             </td>
 
                         </tr>
@@ -181,12 +185,20 @@
                         </tr>
                         <tr>
                             <td>
+                                <? if($relatorio[0]->consulta == "particular"){?>
+                                <?= $impressao_aso->setor2 ?>                                
+                                <? }else{ ?>
                                 <? $setor = $this->saudeocupacional->carregarsetor($impressao_aso->setor); ?>
-                                <?= $setor[0]->descricao_setor ?>  
+                                <?= $setor[0]->descricao_setor ?>
+                                <? } ?>
                             </td>
                             <td>
+                                <? if($relatorio[0]->consulta == "particular"){?>
+                                <?= $impressao_aso->funcao2 ?>
+                                <? }else{ ?>
                                 <? $funcao = $this->saudeocupacional->carregarfuncao($impressao_aso->funcao); ?>
                                 <?= $funcao[0]->descricao_funcao ?>
+                                <? } ?>
                             </td>
 
                         </tr>

@@ -1500,6 +1500,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('integracaosollis', 'f');
                     }
+                    if (isset($_POST['medicinadotrabalho'])) {
+                        $this->db->set('medicinadotrabalho', 't');
+                    } else {
+                        $this->db->set('medicinadotrabalho', 'f');
+                    }
                     if (isset($_POST['financeiro_cadastro'])) {
                         $this->db->set('financeiro_cadastro', 't');
                     } else {
@@ -2313,6 +2318,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('integracaosollis', 'f');
                     }
+                    if (isset($_POST['medicinadotrabalho'])) {
+                        $this->db->set('medicinadotrabalho', 't');
+                    } else {
+                        $this->db->set('medicinadotrabalho', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -2483,6 +2493,7 @@ class empresa_model extends Model {
                                ep.relatorio_caixa,
                                ep.enfermagem,
                                ep.integracaosollis,
+                               ep.medicinadotrabalho,
                                ep.botao_ficha_convenio
                                ');
             $this->db->from('tb_empresa f');
@@ -2644,6 +2655,7 @@ class empresa_model extends Model {
             $this->_relatorio_caixa = $return[0]->relatorio_caixa;
             $this->_enfermagem = $return[0]->enfermagem;
             $this->_integracaosollis = $return[0]->integracaosollis;
+            $this->_medicinadotrabalho = $return[0]->medicinadotrabalho;
         } else {
             $this->_empresa_id = null;
         }

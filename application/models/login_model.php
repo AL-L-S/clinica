@@ -59,6 +59,7 @@ class login_model extends Model {
                            ep.relatorio_caixa,
                            ep.enfermagem,
                            ep.integracaosollis,
+                           ep.medicinadotrabalho,
                            ep.subgrupo_procedimento');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
@@ -126,6 +127,7 @@ class login_model extends Model {
             $relatorio_caixa = $retorno[0]->relatorio_caixa;
             $enfermagem = $retorno[0]->enfermagem;
             $integracaosollis = $retorno[0]->integracaosollis;
+            $medicinadotrabalho = $retorno[0]->medicinadotrabalho;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -183,6 +185,7 @@ class login_model extends Model {
                 'laboratorio' => $laboratorio,
                 'ponto' => $ponto,
                 'calendario' => $calendario,
+                'medicinadotrabalho' => $medicinadotrabalho,
                 'caixa' => $caixa,
                 'fila_impressao' => $fila_impressao,
                 'internacao' => $internacao,
