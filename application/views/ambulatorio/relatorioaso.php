@@ -50,7 +50,7 @@
                     <dd>
                         <select name="convenio" id="convenio" class="size2" >
                             <option value='' >TODOS</option>
-                            <option value='-1' >Não Tem</option>
+<!--                            <option value='-1' >Não Tem</option>-->
                             <?php
                             $listaconvenio = $this->paciente->listaconvenio();
                             foreach ($listaconvenio as $item) {

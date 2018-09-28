@@ -757,7 +757,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                             });
                             
-                            $.getJSON('<?= base_url() ?>cadastros/convenio/listarprocedimentossetores', {empresa: 137}, function (j) {
+                            $.getJSON('<?= base_url() ?>cadastros/convenio/listarprocedimentossetores', {empresa: 4}, function (j) {
                                 options = '<option value=""></option>';
 //                                alert('ola');
                                 for (var c = 0; c < j.length; c++) {

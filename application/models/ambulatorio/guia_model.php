@@ -199,8 +199,8 @@ class guia_model extends Model {
                 $this->db->set('medico_responsavel', $_POST['medico']);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->set('data_atualizacao', $horario);
-                $this->db->set('data_realizacao', $_POST['data_realizacao']);
-                $this->db->set('data_validade', $_POST['validade_exame']);
+                $this->db->set('data_realizacao', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
+                $this->db->set('data_validade', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['validade_exame']))));
                 $this->db->set('consulta', $_POST['consulta']);
                 if ($_POST['consulta'] == "particular") {
                     $this->db->set('convenio2', $_POST['convenio2']);
@@ -216,8 +216,8 @@ class guia_model extends Model {
                 $this->db->set('medico_responsavel', $_POST['medico']);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->set('data_cadastro', $horario);
-                $this->db->set('data_realizacao', $_POST['data_realizacao']);
-                $this->db->set('data_validade', $_POST['validade_exame']);
+                $this->db->set('data_realizacao', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
+                $this->db->set('data_validade', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['validade_exame']))));
                 $this->db->set('consulta', $_POST['consulta']);
                 if ($_POST['consulta'] == "particular") {
                     $this->db->set('convenio2', $_POST['convenio2']);

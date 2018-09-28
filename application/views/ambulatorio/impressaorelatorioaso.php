@@ -53,15 +53,19 @@
 
                 foreach ($relatorioaso as $item) {
        
-//                var_dump($item->impressao_aso);die;
                 $impressao_aso = json_decode($item->impressao_aso);
                 $funcao = $this->guia->listarfuncaoaso($impressao_aso->funcao);
+//                var_dump($item);die;
 //                var_dump($funcao);die;
                     ?>
                 <tr>
                     <td ><?= $item->tipo ?></td>
                     <td ><?= $item->cadastro_aso_id ?></td>
+                    <?if($item->consulta == "particular"){?>
+                    <td ><?= $item->convenio2 ?></td>
+                    <? }else{ ?>
                     <td ><?= $item->convenio ?></td>
+                    <? } ?>
                     <td ><?= $item->paciente_id ?></td>
                     <td ><?= $item->paciente ?></td>
                     <td ><?= $funcao[0]->descricao_funcao ?></td>
