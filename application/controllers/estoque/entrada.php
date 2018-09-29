@@ -44,6 +44,14 @@ class Entrada extends BaseController {
         $this->loadView('estoque/entrada-form', $data);
     }
 
+    function carregarfracionamento($estoque_entrada_id) {
+        // $data['obj'] = $obj_entrada;
+        $data['sub'] = $this->entrada->listararmazem();
+        $data['produtos'] = $this->entrada->listarprodutosfracionamento();
+        //$this->carregarView($data, 'giah/servidor-form');
+        $this->loadView('estoque/fracionamento-form', $data);
+    }
+
     function relatoriosaldoarmazem() {
         $data['armazem'] = $this->entrada->listararmazem();
         $data['empresa'] = $this->guia->listarempresas();

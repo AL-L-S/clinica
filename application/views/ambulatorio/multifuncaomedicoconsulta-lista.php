@@ -207,7 +207,7 @@
                                 } else {
                                     $toten_sala_id = 'null';
                                 }
-                                $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$toten_fila_id/$item->paciente/$cpf/$item->medico_consulta_id/$item->medicoconsulta/$toten_sala_id/false";
+                                $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/755/$item->paciente/$cpf/$item->medico_consulta_id/$item->medicoconsulta/$toten_sala_id/false";
                             } else {
                                 $url_enviar_ficha = '';
                             }
@@ -479,16 +479,16 @@
 
 <? if (($endereco != '')) { ?>
   function chamarPaciente(url, toten_fila_id, medico_id, toten_sala_id) {
-     // alert(url);
+     alert(url);
       $.ajax({
           type: "POST",
           data: {teste: 'teste'},
           //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
           url: url,
           success: function (data) {
-              //                console.log(data);
-              //                    alert(data.id);
-              $("#idChamada").val(data.id);
+            console.log(data);
+            //   alert('Teste');
+            $("#idChamada").val(data.id);
 
           },
           error: function (data) {
