@@ -83,7 +83,7 @@ class Exame extends BaseController {
 
         $data['operadorguiche'] = $this->operador_m->listaroperadorguiche2($operador_id);
         $guiche = $data['operadorguiche'][0]->guiche;
-        if($data['operadorguiche'][0]->guiche != ''){
+        if($data['operadorguiche'][0]->guiche != 0){
         $data['guiche'] = $guiche;
         } else{
         $data['guiche'] = "1";    
