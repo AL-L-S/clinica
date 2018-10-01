@@ -675,6 +675,161 @@ class entrada_model extends Model {
             return 0;
     }
 
+    function gravarfracionamento() {
+        try {
+            $horario = date('Y-m-d');
+            $operador_id = $this->session->userdata('operador_id');
+
+// ESTOQUE SAIDA E SALDO
+//   SELECIONA
+            $this->db->select('
+                                sum(es.quantidade) as total,
+                                ep.descricao as produto');
+            $this->db->from('tb_estoque_saldo es');
+            // $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
+//        $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
+            $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = es.produto_id', 'left');
+            $this->db->where('es.ativo', 'true');
+            // $this->db->where('es.armazem_id', $_POST['armazem_id']);
+            $this->db->where('es.produto_id', $_POST['produto_id']);
+            $this->db->groupby('ep.descricao');
+            $this->db->orderby('ep.descricao');
+            $saldo = $this->db->get()->result();
+
+            $this->db->select('e.estoque_entrada_id,
+                            e.produto_id,
+                            e.fornecedor_id,
+                            e.armazem_id,
+                            e.valor_compra,
+                            sum(s.quantidade) as quantidade,
+                            e.nota_fiscal,
+                            e.validade');
+            $this->db->from('tb_estoque_saldo s');
+            $this->db->join('tb_estoque_entrada e', 'e.estoque_entrada_id = s.estoque_entrada_id', 'left');
+            $this->db->where('e.produto_id', $_POST['produto_id']);
+            // $this->db->where('e.armazem_id', $_POST['armazem_id']);
+            $this->db->where('e.ativo', 't');
+            $this->db->where('s.ativo', 't');
+//        $this->db->where('quantidade >', '0');
+            $this->db->groupby("e.estoque_entrada_id,
+                            e.produto_id,
+                            e.fornecedor_id,
+                            e.armazem_id,
+                            e.valor_compra,
+                            e.nota_fiscal,
+                            e.validade");
+            $this->db->orderby("sum(s.quantidade) desc");
+
+            $return = $this->db->get()->result();
+            // echo '<pre>';
+            // var_dump($return); die;
+
+
+            // if ($_POST['descricao'] != '') {
+            //     $this->db->set('descricao', $_POST['descricao']);
+            // }
+            $this->db->set('produto_id', $_POST['produto_id']);
+            $this->db->set('quantidade', $_POST['quantidade']);
+            $this->db->set('produto_entrada', $_POST['produto_entrada']);
+            $this->db->set('quantidade_entrada', $_POST['quantidade_entrada']);
+            $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
+            $this->db->set('armazem_id', $_POST['txtarmazem']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_estoque_fracionamento');
+            $estoque_fracionamento_id = $this->db->insert_id();
+
+        //GRAVA SAIDA 
+//        echo '<pre>';
+//        var_dump($return);die;
+
+            $qtdeProduto = $_POST['quantidade'];
+            $qtdeProdutoSaldo = $saldo[0]->total;
+            $i = 0;
+            while ($qtdeProduto > 0) {
+                if ($qtdeProduto > $return[$i]->quantidade) {
+                    $qtdeProduto = $qtdeProduto - $return[$i]->quantidade;
+                    $qtde = $return[$i]->quantidade;
+                } else {
+                    $qtde = $qtdeProduto;
+                    $qtdeProduto = 0;
+                }
+
+                $this->db->set('estoque_entrada_id', $return[$i]->estoque_entrada_id);
+            //        $this->db->set('solicitacao_cliente_id', $_POST['txtestoque_solicitacao_id']);
+                // if ($_POST['txtexame'] != '') {
+                //     $this->db->set('exames_id', $_POST['txtexame']);
+                // }
+                $this->db->set('produto_id', $return[$i]->produto_id);
+                $this->db->set('fornecedor_id', $return[$i]->fornecedor_id);
+                $this->db->set('armazem_id', $return[$i]->armazem_id);
+                $this->db->set('valor_venda', $return[$i]->valor_compra);
+                // $this->db->set('fracionamento_id', $estoque_fracionamento_id);
+                $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $qtde)));
+                $this->db->set('nota_fiscal', $return[$i]->nota_fiscal);
+                if ($return[$i]->validade != "") {
+                    $this->db->set('validade', $return[$i]->validade);
+                }
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_estoque_saida');
+                $estoque_saida_id = $this->db->insert_id();
+
+            // SALDO 
+                $this->db->set('estoque_entrada_id', $return[$i]->estoque_entrada_id);
+                $this->db->set('estoque_saida_id', $estoque_saida_id);
+                $this->db->set('produto_id', $return[$i]->produto_id);
+                $this->db->set('fornecedor_id', $return[$i]->fornecedor_id);
+                $this->db->set('armazem_id', $return[$i]->armazem_id);
+                $this->db->set('valor_compra', $return[$i]->valor_compra);
+                // $this->db->set('ambulatorio_gasto_sala_id', $ambulatorio_gasto_sala_id);
+                $quantidade = -(str_replace(",", ".", str_replace(".", "", $qtde)));
+                $this->db->set('quantidade', $quantidade);
+                $this->db->set('nota_fiscal', $return[$i]->nota_fiscal);
+                if ($return[$i]->validade != "") {
+                    $this->db->set('validade', $return[$i]->validade);
+                }
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_estoque_saldo');
+
+                $i++;
+            }
+
+
+            $this->db->set('produto_id', $_POST['produto_entrada']);
+            $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
+            $this->db->set('armazem_id', $_POST['txtarmazem']);
+            $this->db->set('fracionamento_id', $estoque_fracionamento_id);
+            $this->db->set('quantidade', str_replace(",", ".", str_replace(".", "", $_POST['quantidade_entrada'])));
+            
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_estoque_entrada');
+            $estoque_entrada_id = $this->db->insert_id();
+
+            $this->db->set('estoque_entrada_id', $return[$i]->estoque_entrada_id);
+            $this->db->set('produto_id', $_POST['produto_entrada']);
+            $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
+            $this->db->set('armazem_id', $_POST['txtarmazem']);
+            // $this->db->set('valor_compra', $return[$i]->valor_compra);
+            // $this->db->set('ambulatorio_gasto_sala_id', $ambulatorio_gasto_sala_id);
+            $quantidade = (str_replace(",", ".", str_replace(".", "", $_POST['quantidade_entrada'])));
+            $this->db->set('quantidade', $quantidade);
+            // $this->db->set('nota_fiscal', $return[$i]->nota_fiscal);
+            // if ($return[$i]->validade != "") {
+            //     $this->db->set('validade', $return[$i]->validade);
+            // }
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_estoque_saldo');
+            // die;
+            return $estoque_entrada_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
     function gravar() {
         try {
             /* inicia o mapeamento no banco */

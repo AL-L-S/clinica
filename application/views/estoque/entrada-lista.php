@@ -12,7 +12,7 @@
                     ?>
                 </div> 
             </td>
-            <!-- <td>
+            <td>
                 <div class="bt_link_new">
                     <a href="<?php echo base_url() ?>estoque/entrada/carregarfracionamento/0">
                         Fracionamento
@@ -21,7 +21,7 @@
                     $perfil_id = $this->session->userdata('perfil_id');
                     ?>
                 </div>
-            </td> -->
+            </td>
         </tr>
     </table>
     

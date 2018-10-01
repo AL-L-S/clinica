@@ -33,7 +33,7 @@
                             <td style="width: 70px;">
                                 <div class="bt_link_new" >
                                     <a href="#" id="botaochamarunico" onclick="chamarSetor(<?=$value->id;?>);">
-                                    <?=$value->nome;?>
+                                    <?=str_replace('-', '', $value->nome);?>
                                     </a>
                                 </div>
                             </td> 

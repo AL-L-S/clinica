@@ -207,7 +207,7 @@
                                 } else {
                                     $toten_sala_id = 'null';
                                 }
-                                $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/755/$item->paciente/$cpf/$item->medico_consulta_id/$item->medicoconsulta/$toten_sala_id/false";
+                                $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$toten_fila_id/$item->paciente/$cpf/$item->medico_consulta_id/$item->medicoconsulta/$toten_sala_id/false";
                             } else {
                                 $url_enviar_ficha = '';
                             }
@@ -295,7 +295,7 @@
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
                                         <? if ($endereco != '') { ?>
                                                 <div class="bt_link">
-                                                    <a onclick="chamarPaciente('<?= $url_enviar_ficha ?>', <?= $toten_fila_id ?>, <?= $item->medico_consulta_id ?>, <?= $toten_sala_id ?>);" >Chamar</a>
+                                                    <a onclick="chamarPaciente('<?= $url_enviar_ficha ?>', <?=$toten_fila_id?>, <?= $item->medico_consulta_id ?>, <?= $toten_sala_id ?>);" >Chamar</a>
                                                 </div>  
                                             <?
                                         } else { ?>
@@ -479,7 +479,7 @@
 
 <? if (($endereco != '')) { ?>
   function chamarPaciente(url, toten_fila_id, medico_id, toten_sala_id) {
-     alert(url);
+    //  alert(url);
       $.ajax({
           type: "POST",
           data: {teste: 'teste'},

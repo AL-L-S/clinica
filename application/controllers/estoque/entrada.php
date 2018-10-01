@@ -283,6 +283,30 @@ class Entrada extends BaseController {
         redirect(base_url() . "estoque/entrada");
     }
 
+    function gravarfracionamento() {
+        if($_POST['quantidade'] > 0 || $_POST['quantidade_entrada'] > 0){
+            $exame_entrada_id = $this->entrada->gravarfracionamento();
+            if ($exame_entrada_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar a Entrada. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao gravar a Entrada.';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "estoque/entrada");  
+        }else{
+            if($_POST['quantidade'] > 0){
+                $data['mensagem'] = 'A quantidade a ser fracionada deve ser maior que zero';
+            }else{
+                $data['mensagem'] = 'A quantidade de entrada deve ser maior que zero';
+            }
+            
+
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "estoque/entrada/carregarfracionamento/0");  
+        }
+        
+    }
+
     private function carregarView($data = null, $view = null) {
         if (!isset($data)) {
             $data['mensagem'] = '';

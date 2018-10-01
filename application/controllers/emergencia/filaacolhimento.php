@@ -28,7 +28,7 @@ class filaacolhimento extends BaseController {
     function novo($paciente_id) {
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $operador_id = $this->session->userdata('operador_id');
-        $senha = $this->exame->listarsenhatotenassociarpaciente($operador_id, $paciente_id);
+        // $senha = $this->exame->listarsenhatotenassociarpaciente($operador_id, $paciente_id);
 //        echo '<pre>';
 //        $data_deAlgumaForma = strtotime($senha[0]->data);
 //        var_dump($senha);

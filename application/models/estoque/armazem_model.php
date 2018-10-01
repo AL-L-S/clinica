@@ -151,6 +151,32 @@ class armazem_model extends Model {
         return $return->result();
     }
 
+    function produtofracionamentounidade($produto_id = null) {
+
+
+        $this->db->select('
+                        ep.estoque_produto_id,
+                        ep.unidade_id,
+                        ep.descricao as produto');
+        $this->db->from('tb_estoque_produto ep');
+        $this->db->where('ep.estoque_produto_id', $produto_id);
+        $this->db->orderby('ep.descricao');
+        $result = $this->db->get()->result();
+
+        // var_dump($result); die;
+        $this->db->select('
+            ep.estoque_produto_id,
+            u.descricao as unidade,
+            ep.descricao as produto');
+        $this->db->from('tb_estoque_produto ep');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = ep.unidade_id', 'left');
+        $this->db->where('ep.ativo', 'true');
+        $this->db->where('ep.unidade_id !=', $result[0]->unidade_id);
+        $this->db->orderby('ep.descricao');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function excluir($estoque_armazem_id) {
 
         $horario = date("Y-m-d H:i:s");
