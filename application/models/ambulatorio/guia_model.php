@@ -125,6 +125,24 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function impressaoasoparticular($cadastro_aso_id) {
+        $this->db->select('ca.*, p.nome as paciente,
+                            p.nascimento,
+                            p.rg,
+                            o.nome as medico,
+                            o.conselho,
+                            o.telefone,
+                            o.celular,
+                             ');
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ca.medico_responsavel', 'left');
+        $this->db->where('cadastro_aso_id', $cadastro_aso_id);
+//        $this->db->orderby("nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function impressaoaso($cadastro_aso_id) {
         $this->db->select('ca.*, p.nome as paciente,
                             p.nascimento,
@@ -210,6 +228,7 @@ class guia_model extends Model {
                 $this->db->where('cadastro_aso_id', $aso_id);
                 $this->db->update('tb_cadastro_aso');
             } else {
+                var_dump($_POST['consulta']);die;
                 $this->db->set('paciente_id', $paciente_id);
                 $this->db->set('impressao_aso', $valores);
                 $this->db->set('tipo', $_POST['tipo']);
@@ -13458,7 +13477,7 @@ ORDER BY ae.paciente_credito_id)";
     }
 
     function gravarguia($paciente_id) {
-//        var_dump($paciente_id);die;
+//        var_dump($_POST);die;
         $horario = date("Y-m-d H:i:s");
         $data = date("Y-m-d");
         $operador_id = $this->session->userdata('operador_id');
@@ -13466,7 +13485,9 @@ ORDER BY ae.paciente_credito_id)";
         $this->db->set('empresa_id', $empresa_id);
         $this->db->set('tipo', 'EXAME');
         $this->db->set('data_criacao', $data);
+        if($_POST['consulta'] != "particular"){
         $this->db->set('convenio_id', @$_POST['convenio1']);
+        }
         $this->db->set('paciente_id', $paciente_id);
         $this->db->set('data_cadastro', $horario);
         $this->db->set('operador_cadastro', $operador_id);

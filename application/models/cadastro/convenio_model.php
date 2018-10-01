@@ -84,6 +84,26 @@ class Convenio_model extends Model {
 
         return $return;
     }
+    
+//    function listarconvenioid($convenio2){
+//        $this->db->select(' c.convenio_id,
+//                            c.nome,
+//                            c.dinheiro,
+//                            c.conta_id');
+//        $this->db->from('tb_convenio c');
+//        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+//        $this->db->where("c.ativo", 'true');
+//        $this->db->where("c.nome", $convenio2);
+//        $this->db->orderby("c.nome");
+//        $this->db->groupby("c.convenio_id,
+//                            c.nome,
+//                            c.dinheiro,
+//                            c.conta_id");
+//        $query = $this->db->get();
+//        $return = $query->result();
+//
+//        return $return;
+//    }
 
     function listarconveniolog() {
 
@@ -102,7 +122,7 @@ class Convenio_model extends Model {
 
         return $this->db;
     }
-    
+
     function setorcadastro() {
 
 
@@ -118,85 +138,84 @@ class Convenio_model extends Model {
         $this->db->join('tb_aso_funcao fu', 'sc.funcao_id = fu.aso_funcao_id', 'left');
         $this->db->join('tb_aso_setor se', 'sc.setor_id = se.aso_setor_id', 'left');
         $this->db->where("sc.ativo", 'true');
-        
+
 
         $return = $this->db->get();
         return $return->result();
     }
-    
-    function listarautocompletesetor($parametro = null){
-        
+
+    function listarautocompletesetor($parametro = null) {
+
         $this->db->select(' distinct(sc.setor_id),
                             sc.empresa_id,
                             se.descricao_setor
                                             ');
-        
-        $this->db->from('tb_setor_cadastro sc');    
-        $this->db->join('tb_aso_setor se', 'sc.setor_id = se.aso_setor_id', 'left');    
-    
-        $this->db->where('sc.ativo', 'true');        
-        
-        
+
+        $this->db->from('tb_setor_cadastro sc');
+        $this->db->join('tb_aso_setor se', 'sc.setor_id = se.aso_setor_id', 'left');
+
+        $this->db->where('sc.ativo', 'true');
+
+
 
         if ($parametro != null) {
             $this->db->where('sc.empresa_id', $parametro);
         }
-       
+
         $this->db->groupby("sc.setor_id, sc.empresa_id, se.descricao_setor");
         $this->db->orderby("se.descricao_setor");
         $return = $this->db->get();
         return $return->result();
     }
-    
-    function listarautocompletefuncao($parametro = null, $empresa = null){
-        
+
+    function listarautocompletefuncao($parametro = null, $empresa = null) {
+
         $this->db->select(' distinct(sc.funcao_id),
                             sc.empresa_id,
                             sc.setor_id,
                             fu.descricao_funcao
                                             ');
-        
-        $this->db->from('tb_setor_cadastro sc');    
+
+        $this->db->from('tb_setor_cadastro sc');
         $this->db->join('tb_aso_funcao fu', 'sc.funcao_id = fu.aso_funcao_id', 'left');
-        $this->db->where('sc.ativo', 'true');        
-        
+        $this->db->where('sc.ativo', 'true');
+
 
         if ($parametro != null) {
             $this->db->where('sc.setor_id', $parametro);
             $this->db->where('sc.empresa_id', $empresa);
         }
-       
+
         $this->db->groupby("sc.funcao_id, sc.empresa_id, sc.setor_id, fu.descricao_funcao");
         $this->db->orderby("fu.descricao_funcao");
         $return = $this->db->get();
         return $return->result();
-        
     }
-    
-    function listarautocompleteriscos($parametro = null, $setor = null, $empresa = null ){
-        
+
+    function listarautocompleteriscos($parametro = null, $setor = null, $empresa = null) {
+
         $this->db->select(' sc.funcao_id,
                             sc.empresa_id,
                             sc.setor_id,
                             sc.risco_id
                                             ');
-        
-        $this->db->from('tb_setor_cadastro sc');  
+
+        $this->db->from('tb_setor_cadastro sc');
 //        $this->db->join('tb_aso_risco r', 'sc.risco_id = r.aso_risco_id', 'left');
-        $this->db->where('sc.ativo', 'true');        
-        
+        $this->db->where('sc.ativo', 'true');
+
 
         if ($parametro != null) {
             $this->db->where('sc.funcao_id', $parametro);
             $this->db->where('sc.empresa_id', $empresa);
             $this->db->where('sc.setor_id', $setor);
         }
-       
+
 //        $this->db->orderby("r.descricao_risco");
         $return = $this->db->get();
         return $return->result();
-        
     }
+
     function listarconveniosprimarios() {
         $empresa_id = $this->session->userdata('empresa_id');
 
@@ -294,7 +313,7 @@ class Convenio_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarsetorselecionado($setor_cadastro_id) {
         $this->db->select('sc.setor_cadastro_id,
                             sc.setor_id,
@@ -305,12 +324,12 @@ class Convenio_model extends Model {
                                         ');
         $this->db->from('tb_setor_cadastro sc');
         $this->db->join('tb_aso_setor se', 'se.aso_setor_id = sc.setor_id', 'left');
-        $this->db->join('tb_aso_funcao fu', 'fu.aso_funcao_id = sc.funcao_id', 'left');        
+        $this->db->join('tb_aso_funcao fu', 'fu.aso_funcao_id = sc.funcao_id', 'left');
         $this->db->where("sc.setor_cadastro_id", $setor_cadastro_id);
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarsetorselecionadotabela($setor_cadastro_id) {
         $this->db->select('sc.setor_cadastro_id,
                             sc.setor_id,
@@ -323,7 +342,7 @@ class Convenio_model extends Model {
                                         ');
         $this->db->from('tb_setor_cadastro sc');
         $this->db->join('tb_aso_setor se', 'se.aso_setor_id = sc.setor_id', 'left');
-        $this->db->join('tb_aso_funcao fu', 'fu.aso_funcao_id = sc.funcao_id', 'left');        
+        $this->db->join('tb_aso_funcao fu', 'fu.aso_funcao_id = sc.funcao_id', 'left');
         $this->db->where("sc.empresa_id", $setor_cadastro_id);
         $this->db->where("sc.ativo", 'TRUE');
         $this->db->orderby("sc.setor_id");
@@ -469,7 +488,8 @@ class Convenio_model extends Model {
 //        $return = $this->db->get();
 //        return $return->result();
     }
-    function excluirsetor($setor_cadastro_id) {        
+
+    function excluirsetor($setor_cadastro_id) {
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
@@ -1606,11 +1626,7 @@ class Convenio_model extends Model {
                     }
                 }
             }
-//            echo '<pre>';
-//            var_dump($alteracao);
-//            var_dump($informacao_antiga);
-//            var_dump($informacao_nova);
-//            die;
+
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -1639,6 +1655,81 @@ class Convenio_model extends Model {
             return -1;
         }
     }
+
+    function gravarempresa($convenio2, $modalidade) {
+        try {
+            
+            if($modalidade == "particular"){
+            
+                $this->db->set('razao_social', $convenio2);
+                
+                $horario = date("Y-m-d H:i:s");
+                $operador_id = $this->session->userdata('operador_id');
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_credor_devedor');
+                $financeiro_credor_devedor_id = $this->db->insert_id();
+            
+
+            /* inicia o mapeamento no banco */
+//            $convenio_id = $_POST['txtconvenio_id'];
+            $this->db->set('nome', $convenio2);
+           
+            if ($financeiro_credor_devedor_id != "") {
+                $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);
+            }
+
+                $this->db->set('dinheiro', 't');
+            
+            
+            if ($_POST['convenioid'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_convenio');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $exame_sala_id = $this->db->insert_id();
+
+
+                $convenio_id = $exame_sala_id;
+                $this->db->select('empresa_id');
+
+                $this->db->from('tb_empresa');
+                $this->db->where("ativo", 't');
+                $this->db->orderby('empresa_id');
+                $empresas = $this->db->get()->result();
+                foreach ($empresas as $item) {
+
+                    $this->db->set('empresa_id', $item->empresa_id);
+                    $this->db->set('convenio_id', $convenio_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_convenio_empresa');
+                }
+            } else { // update
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $exame_sala_id = $_POST['txtconvenio_id'];
+                $this->db->where('convenio_id', $convenio_id);
+                $this->db->update('tb_convenio');
+            }
+
+            /* Atualiza os valores no procedimento convenio baseado no valor de ajuste informado
+              e no valor do porte que está la no cadastro do TUSS. */
+            if ($_POST['tipo'] == 'CBHPM') {
+                // Só ira recalcular os valores, se o usuario informar que o convenio usa CBHPM
+                $this->atualizarValoresProcedimentosCBHPM($exame_sala_id);
+            }
+
+            return $exame_sala_id;
+        } 
+        }catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
 
     function gravar() {
         try {
@@ -1875,54 +1966,53 @@ class Convenio_model extends Model {
 //            die;
             /* inicia o mapeamento no banco */
             $convenio_id = $_POST['txtconvenioid'];
-            $setor_id = ($_POST['txtsetor_id']);            
+            $setor_id = ($_POST['txtsetor_id']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-                        
+
             $array_risco = json_encode($_POST['txtrisco_id']);
             $array_exames = json_encode($_POST['procedimentos']);
 
             $this->db->select('setor_cadastro_id');
             $this->db->from('tb_setor_cadastro');
             $this->db->where("ativo", 't');
-            $this->db->where("setor_id", $setor_id);            
-            $this->db->where("empresa_id", $convenio_id);            
+            $this->db->where("setor_id", $setor_id);
+            $this->db->where("empresa_id", $convenio_id);
             $return = $this->db->get()->result();
 //            var_dump($return);
 //            die;
             if (count($return) == 0) {
                 $funcao_id = $_POST['txtfuncao_id'];
-                foreach($funcao_id as $item){
-                $this->db->set('empresa_id', $convenio_id);
-                $this->db->set('setor_id', $setor_id);
-                $this->db->set('funcao_id', $item);
-                $this->db->set('risco_id', $array_risco);
-                $this->db->set('exames_id', $array_exames);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_setor_cadastro');               
-                }
-            }
-            else {
-                $funcao_id = $_POST['txtfuncao_id'];
-                foreach($funcao_id as $item){
-                $this->db->select('setor_cadastro_id');
-                $this->db->from('tb_setor_cadastro');
-                $this->db->where("ativo", 't');
-                $this->db->where("setor_id", $setor_id);            
-                $this->db->where("funcao_id", $item);            
-                $return2 = $this->db->get()->result();
-                
-                    if (count($return2) == 0) {
+                foreach ($funcao_id as $item) {
                     $this->db->set('empresa_id', $convenio_id);
                     $this->db->set('setor_id', $setor_id);
                     $this->db->set('funcao_id', $item);
                     $this->db->set('risco_id', $array_risco);
                     $this->db->set('exames_id', $array_exames);
-                    $this->db->set('data_atualizacao', $horario);
-                    $this->db->set('operador_atualizacao', $operador_id);
-                    $this->db->where('setor_id', $setor_id);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
                     $this->db->insert('tb_setor_cadastro');
+                }
+            } else {
+                $funcao_id = $_POST['txtfuncao_id'];
+                foreach ($funcao_id as $item) {
+                    $this->db->select('setor_cadastro_id');
+                    $this->db->from('tb_setor_cadastro');
+                    $this->db->where("ativo", 't');
+                    $this->db->where("setor_id", $setor_id);
+                    $this->db->where("funcao_id", $item);
+                    $return2 = $this->db->get()->result();
+
+                    if (count($return2) == 0) {
+                        $this->db->set('empresa_id', $convenio_id);
+                        $this->db->set('setor_id', $setor_id);
+                        $this->db->set('funcao_id', $item);
+                        $this->db->set('risco_id', $array_risco);
+                        $this->db->set('exames_id', $array_exames);
+                        $this->db->set('data_atualizacao', $horario);
+                        $this->db->set('operador_atualizacao', $operador_id);
+                        $this->db->where('setor_id', $setor_id);
+                        $this->db->insert('tb_setor_cadastro');
                     }
                 }
             }
@@ -1931,14 +2021,14 @@ class Convenio_model extends Model {
             return -1;
         }
     }
-    
+
     function editarsetorempresa($setor_cadastro_id) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 //            var_dump($_POST);die;
             $array_risco = json_encode($_POST['txtrisco_id']);
-           
+
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->set('risco_id', $array_risco);
@@ -1949,8 +2039,7 @@ class Convenio_model extends Model {
             if (trim($erro) != "") // erro de banco
                 return -1;
             else
-                return 0;          
-            
+                return 0;
         } catch (Exception $exc) {
             return -1;
         }
@@ -1985,6 +2074,68 @@ class Convenio_model extends Model {
     }
 
     function gravarcopia() {
+        try {
+            var_dump($_POST['txtconvenio']);
+                die;
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $convenio = $_POST['txtconvenio'];
+            $grupo = $_POST['grupo'];
+//            var_dump($convenio); die;
+            $convenioidnovo = $_POST['txtconvenio_id'];
+            if ($grupo != '') {
+//                var_dump($grupo);
+//                die;
+                $sql = "INSERT INTO ponto.tb_procedimento_convenio(
+                        convenio_id, procedimento_tuss_id, 
+                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+                        qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
+                        data_atualizacao, operador_atualizacao)
+                        SELECT $convenioidnovo, pc.procedimento_tuss_id, 
+                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+                        qtdeuco, valoruco, valortotal, pc.ativo, '$horario', $operador_id, 
+                        pc.data_atualizacao, pc.operador_atualizacao
+                        FROM ponto.tb_procedimento_convenio pc
+                        LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
+                        WHERE pt.grupo = '$grupo'
+                        AND convenio_id = $convenio
+                        AND pc.ativo = 't'
+                        AND pc.procedimento_tuss_id NOT IN (
+                            SELECT DISTINCT(pc2.procedimento_tuss_id) FROM ponto.tb_procedimento_convenio pc2
+                            LEFT JOIN ponto.tb_procedimento_tuss pt2 ON pc2.procedimento_tuss_id = pt2.procedimento_tuss_id
+                            WHERE pc2.convenio_id = $convenioidnovo
+                            AND pt2.grupo = '$grupo'
+                            AND pc2.ativo = 't'
+                        )";
+            } else {
+                $sql = "INSERT INTO ponto.tb_procedimento_convenio(
+                        convenio_id, procedimento_tuss_id, 
+                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+                        qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
+                        data_atualizacao, operador_atualizacao)
+                        SELECT $convenioidnovo, procedimento_tuss_id, 
+                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
+                        qtdeuco, valoruco, valortotal, ativo, '$horario', $operador_id, 
+                        data_atualizacao, operador_atualizacao
+                        FROM ponto.tb_procedimento_convenio pc
+                        WHERE convenio_id = $convenio
+                        AND pc.ativo = 't'
+                        AND pc.procedimento_tuss_id NOT IN (
+                            SELECT DISTINCT(procedimento_tuss_id) FROM ponto.tb_procedimento_convenio
+                            WHERE convenio_id = $convenioidnovo
+                            AND ativo = 't'
+                        )";
+            }
+
+            $this->db->query($sql);
+
+            return $convenioidnovo;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function gravarcopiaconvenio() {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');

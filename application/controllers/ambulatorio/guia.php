@@ -555,6 +555,8 @@ class Guia extends BaseController {
             $data['setor'] = $this->saudeocupacional->carregarsetores();
         }
         $data['convenio'] = $this->convenio->listardados();
+        
+//        $data['convenioid'] = $this->convenio->listarconvenioid();
         $data['risco'] = $this->guia->listarriscos();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
@@ -577,6 +579,10 @@ class Guia extends BaseController {
     function gravarcadastroaso($paciente_id) {
 //        var_dump($_POST);
 //        die;
+        $convenio2 = $_POST['convenio2'];
+        $modalidade = $_POST['consulta'];
+        $gravarempresa = $this->convenio->gravarempresa($convenio2,$modalidade);
+        $gravarconvenio = $this->convenio->gravarcopiaconvenio($convenio2,$modalidade);
         $paciente_id = $_POST['txtPacienteId'];
 
         $resultadoguia = $this->guia->listarguia($paciente_id);
@@ -696,6 +702,18 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/impressaorelatorioaso', $data);
     }
 
+    function impressaoasoparticular($cadastro_aso_id) {
+
+        $data['relatorio'] = $this->guia->impressaoasoparticular($cadastro_aso_id);
+        $medico_id = $data['relatorio'][0]->medico_responsavel;
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($medico_id);
+
+
+        $this->load->View('ambulatorio/impressaoasoparticular', $data);
+    }
     function impressaoaso($cadastro_aso_id) {
 
         $data['relatorio'] = $this->guia->impressaoaso($cadastro_aso_id);

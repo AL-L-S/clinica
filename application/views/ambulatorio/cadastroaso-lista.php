@@ -68,7 +68,7 @@
                                         <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
 
                                             <div class="bt_link">
-                                                <a href="<?= base_url() ?>ambulatorio/guia/impressaoaso/<?= $item->cadastro_aso_id; ?>">Imprimir</a>
+                                                <a href="<?= base_url() ?>ambulatorio/guia/impressaoasoparticular/<?= $item->cadastro_aso_id; ?>">Imprimir</a>
                                             </div>
 
                                         </td>
