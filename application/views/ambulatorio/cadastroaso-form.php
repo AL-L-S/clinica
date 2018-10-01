@@ -65,7 +65,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <input readonly="" type="text" name="rg" id="rg" class="texto04" value="<?= @$paciente[0]->rg ?>" />
             </div>
             <div>
-                <label>Consulta</label>
+                <label>Modalidade</label>
                 <select name="consulta" id="consulta" class="size2" required="">
                     <option value="">SELECIONE</option>
                     <option value="particular" <?= (@$config->consulta == 'particular') ? 'selected' : ''; ?>>Particular</option>
@@ -118,7 +118,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             <?= $item->nome; ?>
                         </option>
                     <? endforeach; ?>
-                </select>
+                </select>                
                 <input type="text" id="convenio2" name="convenio2"  class="texto04" value="<?= @$config->convenio2 ?>" />
             </div>
 
@@ -715,6 +715,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                         $('#setor2').show();
                         $('#funcao').hide();
                         $('#funcao2').show();
+                        
                         <?}
                         else{ ?>
 //                            alert('eeee');
@@ -739,6 +740,9 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 $('#setor2').show();
                 $('#funcao').hide();
                 $('#funcao2').show();
+                $("#convenio1").prop('required', false);
+                        $("#setor").prop('required', false);
+                        $("#funcao").prop('required', false);
                 
                 $.getJSON('<?= base_url() ?>ambulatorio/guia/listarriscos', {setor: $('#setor').val()}, function (j) {
                                 options = '<option value=""></option>';
