@@ -100,7 +100,7 @@
                 <input type="text" id="telefone_responsavel" class="texto02" name="telefone_responsavel"  value="<?= @$internacao[0]->telefone_responsavel; ?>"/>
             </div>
             <div>
-                <label>Celular </label>
+                <label>Celular</label>
                 <input type="text" id="celular_responsavel" class="texto02" name="celular_responsavel" value="<?= @$internacao[0]->celular_responsavel; ?>"/>
             </div>
             <div>
