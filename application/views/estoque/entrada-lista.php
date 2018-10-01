@@ -1,13 +1,31 @@
 
 <div class="content"> <!-- Inicio da DIV content -->
-    <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>estoque/entrada/carregarentrada/0">
-            Novo Entrada
-        </a>
-        <?
-        $perfil_id = $this->session->userdata('perfil_id');
-        ?>
-    </div>
+    <table>
+        <tr>
+            <td style="width: 200px;">
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>estoque/entrada/carregarentrada/0">
+                        Novo Entrada
+                    </a>
+                    <?
+                    $perfil_id = $this->session->userdata('perfil_id');
+                    ?>
+                </div> 
+            </td>
+            <!-- <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>estoque/entrada/carregarfracionamento/0">
+                        Fracionamento
+                    </a>
+                    <?
+                    $perfil_id = $this->session->userdata('perfil_id');
+                    ?>
+                </div>
+            </td> -->
+        </tr>
+    </table>
+    
+    
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Entrada</a></h3>
         <div>

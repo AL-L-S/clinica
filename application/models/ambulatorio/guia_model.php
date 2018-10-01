@@ -14446,6 +14446,7 @@ ORDER BY ae.paciente_credito_id)";
 //            var_dump("<hr>",$flags); die;
             $endereco_toten = $this->session->userdata('endereco_toten');
             if ($endereco_toten != '') {
+                // echo $_POST['txtpaciente_id']; die;
                 $this->db->set('toten_fila_id', $_POST['toten_fila_id']);
                 $this->db->where('paciente_id', $_POST['txtpaciente_id']);
                 $this->db->update('tb_paciente');

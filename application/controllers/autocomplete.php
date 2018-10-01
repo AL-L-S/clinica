@@ -1016,6 +1016,16 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function produtosaldofracionamento() {
+//    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
+        if (isset($_GET['produto'])) {
+            $result = $this->armazem->produtosaldofracionamento($_GET['produto']);
+        } else {
+            $result = $this->armazem->produtosaldofracionamento();
+        }
+        echo json_encode($result);
+    }
+
     function horariosambulatoriogeral() {
 
         if (isset($_GET['exame'])) {

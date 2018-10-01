@@ -113,6 +113,17 @@ class entrada_model extends Model {
         return $return->result();
     }
 
+    function listarprodutosfracionamento() {
+        $this->db->select('p.estoque_produto_id,
+                            u.descricao as unidade,
+                            p.descricao');
+        $this->db->from('tb_estoque_produto p');
+        $this->db->join('tb_estoque_unidade u', 'u.estoque_unidade_id = p.unidade_id', 'left');
+        $this->db->where('p.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarunidade() {
         $this->db->select('estoque_unidade_id,
                             descricao');

@@ -138,7 +138,7 @@
     }
 
     $("#botaochamar").click(function () {
-//        alert('asadasdadad');
+    //    alert('<?= $endereco ?>/webService/telaAtendimento/proximo/<?= $setor_string ?>/Guiche <?= $guiche ?>/true/false/<?= $operador_id ?>/1');
         $.ajax({
             type: "POST",
             data: {teste: 'teste'},
