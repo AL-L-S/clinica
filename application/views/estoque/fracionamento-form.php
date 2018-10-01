@@ -47,7 +47,8 @@
                     <label>Armazem de Entrada</label>
                     </dt>
                     <dd>
-                        <select name="txtarmazem" id="txtarmazem" class="size4">
+                        <select name="txtarmazem" id="txtarmazem" class="size4" required>
+                            <option value="">Selecione</option>
                             <? foreach ($sub as $value) : ?>
                                 <option value="<?= $value->estoque_armazem_id; ?>"><?php echo $value->descricao; ?></option>
                             <? endforeach; ?>

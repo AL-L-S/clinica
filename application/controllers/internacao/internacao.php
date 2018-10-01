@@ -453,7 +453,7 @@ class internacao extends BaseController {
         if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
             $cabecalho = "$cabecalho_config";
         } else {
-            $cabecalho = "<table><tr><td><img width='1000px' height='180px' src='img/cabecalho.jpg'></td></tr></table>";
+            $cabecalho = "<table><tr><td><img src='img/cabecalho.jpg'></td></tr></table>";
         }
 
         $data['cabecalho_form'] = $cabecalho;

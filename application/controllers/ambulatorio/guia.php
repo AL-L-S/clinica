@@ -577,26 +577,28 @@ class Guia extends BaseController {
     }
 
     function gravarcadastroaso($paciente_id) {
-//        var_dump($_POST);
-//        die;
+    //    var_dump($_POST);
+    //    die;
         $convenio2 = $_POST['convenio2'];
         $modalidade = $_POST['consulta'];
-        $gravarempresa = $this->convenio->gravarempresa($convenio2,$modalidade);
-        $gravarconvenio = $this->convenio->gravarcopiaconvenio($convenio2,$modalidade);
+        // $gravarempresa = $this->convenio->gravarempresa($convenio2,$modalidade);
+        // $gravarconvenio = $this->convenio->gravarcopiaconvenio($convenio2,$modalidade);
         $paciente_id = $_POST['txtPacienteId'];
 
         $resultadoguia = $this->guia->listarguia($paciente_id);
+        if (!$_POST['convenio1'] > 0) {
+            $_POST['convenio1'] = 134;
+        }
 
 
-
-            if ($resultadoguia == null) {
-                $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
-            } else {
-                $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
-            }
+        if ($resultadoguia == null) {
+            $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
+        } else {
+            $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
+        }
         
-//            var_dump($_POST['procedimento1']);
-//        die;
+        //    var_dump($ambulatorio_guia);
+            // die;
 //        
             
             $retorno = $this->guia->gravarcadastroaso($paciente_id);

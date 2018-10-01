@@ -29,6 +29,7 @@ class entrada_model extends Model {
                             e.fornecedor_id,
                             f.razao_social as fornecedor,
                             e.armazem_id,
+                            e.fracionamento_id,
                             e.transferencia,
                             a.descricao as armazem,
                             at.descricao as armazem_transferencia,

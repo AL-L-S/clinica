@@ -2075,8 +2075,8 @@ class Convenio_model extends Model {
 
     function gravarcopia() {
         try {
-            var_dump($_POST['txtconvenio']);
-                die;
+            // var_dump($_POST['txtconvenio']);
+            //     die;
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $convenio = $_POST['txtconvenio'];

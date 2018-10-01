@@ -204,7 +204,7 @@ class guia_model extends Model {
         $this->db->where('pt.grupo', 'ASO');
         $result = $this->db->get()->result();
 
-//            echo'<pre>';var_dump($_POST);die;
+        //    echo'<pre>';var_dump($result);die;
             
         if (count($result) > 0) {
 
@@ -228,7 +228,7 @@ class guia_model extends Model {
                 $this->db->where('cadastro_aso_id', $aso_id);
                 $this->db->update('tb_cadastro_aso');
             } else {
-                var_dump($_POST['consulta']);die;
+                // var_dump($_POST['consulta']);die;
                 $this->db->set('paciente_id', $paciente_id);
                 $this->db->set('impressao_aso', $valores);
                 $this->db->set('tipo', $_POST['tipo']);

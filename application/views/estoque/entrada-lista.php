@@ -67,7 +67,7 @@
                     <th class="tabela_header">Fornecedor</th>
                     <th class="tabela_header">Armazem</th>
                     <th class="tabela_header">Armazem de Saida</th>
-                    <th class="tabela_header">Quantidade</th>
+                    <th class="tabela_header">Qtde</th>
                     <th class="tabela_header">Nota</th>
                     <th class="tabela_header" width="70px;" colspan="3"><center>Detalhes</center></th>
                 </tr>
@@ -90,7 +90,10 @@
                             ?>
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->produto; ?> <?if($item->transferencia == 't'){
-                                    echo "<span style='color:red;'>(Transferência)</span>";
+                                    echo " <span style='color:red;'>(Transferência)</span>";
+                                    
+                                }?><?if($item->fracionamento_id > 0){
+                                    echo " <span style='color:red;'>(Fracionamento)</span>";
                                     
                                 }?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y",strtotime($item->data_cadastro)); ?></td>

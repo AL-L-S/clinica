@@ -178,13 +178,13 @@
 
 //                $('#entrada').hide();
 //                $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaquantidade', {produto: $(this).val()}, function (j) {
+                $.getJSON('<?= base_url() ?>autocomplete/armazemtransferenciaentradaquantidade', {produto: $(this).val(), armazem: $("#armazem").val()}, function (j) {
                     var options = '<option value=""></option>';
                     for (var i = 0; i < j.length; i++) {
                         options += '<option value="' + j[i].estoque_entrada_id + '">QTDE: ' + j[i].total + '  Produto:  ' + j[i].descricao + ' Armazem:' + j[i].armazem + '  </option>';
                     }
                     $("#quantidade").prop('max', j[0].total);
-//                    alert(j[0].total);
+                //    alert(j[0].total);
 //                    if(){
 //                        
 //                    }

@@ -999,7 +999,7 @@ class Autocomplete extends Controller {
     function armazemtransferenciaentradaquantidade() {
 //    $_GET['teste'] = date('Y-m-d',$_GET['teste'] );
         if (isset($_GET['produto'])) {
-            $result = $this->armazem->armazemtransferenciaentradajsonquantidade($_GET['produto']);
+            $result = $this->armazem->armazemtransferenciaentradajsonquantidade($_GET['produto'], $_GET['armazem']);
         } else {
             $result = $this->armazem->armazemtransferenciaentradajsonquantidade();
         }

@@ -465,9 +465,11 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
         $this->db->join('tb_cid cid2', 'cid2.co_cid = i.cid2solicitado', 'left');
         $this->db->join('tb_municipio mr', 'mr.municipio_id = i.municipio_responsavel_id', 'left');
-        $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id', 'left');
+        
         $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = p.profissao', 'left');
-        $this->db->join('tb_procedimento_tuss pt', 'i.procedimentosolicitado = pt.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'i.procedimento_convenio_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
         $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
         $this->db->where('i.internacao_id', $internacao_id);
         $return = $this->db->get();
