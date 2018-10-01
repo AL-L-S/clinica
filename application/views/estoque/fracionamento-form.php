@@ -103,25 +103,6 @@
         });
     });
 
-    $(function() {
-        $( "#txtprodutolabel" ).autocomplete({
-            source: "<?= base_url() ?>index.php?c=autocomplete&m=produto",
-            minLength: 2,
-            focus: function( event, ui ) {
-                $( "#txtprodutolabel" ).val( ui.item.label );
-                return false;
-            },
-            select: function( event, ui ) {
-                $( "#txtprodutolabel" ).val( ui.item.value );
-                $( "#txtproduto" ).val( ui.item.id );
-                return false;
-            }
-        });
-    });
-
-
-    
-    
     $(function () {
         $('#produto_id').change(function () {
             if ($(this).val()) {

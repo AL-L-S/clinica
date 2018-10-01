@@ -116,7 +116,7 @@
             <? $dependencia = $this->internacao_m->listartipodependenciaquestionario(); ?>
             <div>
                 <label>Tipo de Dependência Química</label>                      
-                <select name="tipo_dependencia[]" id="tipo_dependencia" class="texto05 chosen-select" data-placeholder="Selecione as Dependências..." multiple >
+                <select name="tipo_dependencia[]" id="tipo_dependencia" class="texto05 chosen-select" data-placeholder="Selecione as Dependências..." multiple required>
                     <option value=''>Selecione</option>
                     <?php
                     if(count($precadastro) > 0){
