@@ -26,7 +26,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <input readonly="" type="text" id="txtNome" name="nome_paciente"  class="texto09" value="<?= $paciente[0]->nome ?>" />
                 <input type="hidden" id="txtPacienteId" name="txtPacienteId"  class="texto09" value="<?= @$paciente[0]->paciente_id ?>"/>
                 <input type="hidden" id="cadastro_aso_id" name="cadastro_aso_id"  class="texto09" value="<?= @$informacao_aso[0]->cadastro_aso_id ?>"/>
-
+                <input type="hidden" id="conveniobase_id" name="conveniobase_id"  class="texto09" value="<?= @$convenioid[0]->convenio_id ?>"/>
+                <? // var_dump($convenioid[0]->convenio_id);die;?>
             </div>
             <div>
                 <label>Sexo</label>
@@ -760,8 +761,13 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                 $("#riscos").trigger("chosen:updated");
 
                             });
-                            
-                            $.getJSON('<?= base_url() ?>cadastros/convenio/listarprocedimentossetores', {empresa: 4}, function (j) {
+                            <? if(count($convenioid) > 0){ ?>
+                            var aso = <?= $convenioid[0]->convenio_id ?>;
+                            <? } else { ?>
+                        var aso = '';
+<? }
+?>
+                            $.getJSON('<?= base_url() ?>cadastros/convenio/listarprocedimentossetores', {empresa: aso}, function (j) {
                                 options = '<option value=""></option>';
 //                                alert('ola');
                                 for (var c = 0; c < j.length; c++) {
