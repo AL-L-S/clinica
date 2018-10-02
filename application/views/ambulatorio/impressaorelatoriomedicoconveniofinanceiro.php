@@ -159,6 +159,7 @@ switch ($MES) {
                     $valor_total = 0;
                     $valor_total_calculo = 0;
                     $valor_credito = 0;
+                    $producao_paga = 'f';
                     foreach ($relatorio as $item) :
                         $i++;
                         $procedimentopercentual = $item->procedimento_convenio_id;
@@ -169,6 +170,11 @@ switch ($MES) {
                         } else {
                             $totalretorno++;
                         }
+
+                        if($item->producao_paga == 't'){
+                            $producao_paga = 't';
+                        }
+
                         $valor_total = $item->valor_total;
 //                        $valor_total_formas = $item->valor1 + $item->valor2 + $item->valor3 + $item->valor4;
 //                        $valor_total = $valor_total_formas + $item->desconto_ajuste1 + $item->desconto_ajuste2 + $item->desconto_ajuste3 + $item->desconto_ajuste4;
@@ -829,6 +835,7 @@ switch ($MES) {
                         <input type="hidden" class="texto3" name="nome" value="<?= $medico[0]->credor_devedor_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="conta" value="<?= $medico[0]->conta_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="classe" value="<?= $medico[0]->classe; ?>" readonly/>
+                        <input type="hidden" class="texto3" name="empresa_id" value="<?= $_POST['empresa']; ?>" readonly/>
                         <input type="hidden" class="texto3" name="operador_id" value="<?= $medico[0]->operador_id; ?>" readonly/>
                         <input type="hidden" class="texto3" name="observacao" value="<?= "Período " . substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) . " até " . substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4) . " médico: " . $medico[0]->operador; ?>" readonly/>
                         <input type="hidden" class="texto3" name="data" value="<?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4) ?>" readonly/>
@@ -997,49 +1004,45 @@ switch ($MES) {
                 /*.pagebreak { page-break-before: always; }*/
                                                                                                             </style>
             <? if ($medico != 0 && $recibo == 'SIM') { ?>
-                                                                                                                                                                                                                <div>
+    <div>
+            <div>
+                <p style="text-align: center;font-size: 14pt"> <strong>RECIBO</strong> <span style="color:red;"><?=($producao_paga == 't')? '(Pago)': ''; ?></span></p>
+            <?
+            $valor = number_format($totalperc, 2, ",", ".");
+            $valoreditado = str_replace(",", "", str_replace(".", "", $valor));
+            $extenso = GExtenso::moeda($valoreditado);
+            ?>
+                <p style="text-align: center;">EU   <u><b><?= $medico[0]->operador ?></b></u>, RECEBI DA CLÍNICA,</p>
+                <p style="text-align: center;">  A QUANTIA DE R$ <?= number_format($totalperc, 2, ",", "."); ?> (<?= strtoupper($extenso) ?>)
 
-                                                                                                                                                                                                                    <!--                    <div>
-                                                                                                                                                                                                                                            <p><center><img align = 'center'  width='400px' height='200px' src="<?= base_url() . "img/cabecalho.jpg" ?>"></center></p>
-                                                                                                                                                                                                                                        </div>-->
-                                                                                                                                                                                                                    <div>
-                                                                                                                                                                                                                        <p style="text-align: center;font-size: 14pt"> <strong>RECIBO</strong></p>
-                        <?
-                        $valor = number_format($totalperc, 2, ",", ".");
-                        $valoreditado = str_replace(",", "", str_replace(".", "", $valor));
-                        $extenso = GExtenso::moeda($valoreditado);
-                        ?>
-                                                                                                                                                                                                                        <p style="text-align: center;">EU   <u><b><?= $medico[0]->operador ?></b></u>, RECEBI DA CLÍNICA,</p>
-                                                                                                                                                                                                                        <p style="text-align: center;">  A QUANTIA DE R$ <?= number_format($totalperc, 2, ",", "."); ?> (<?= strtoupper($extenso) ?>)
+                <p style="text-align: center;">REFERENTE AOS ATENDIMENTOS 
+                    CLÍNICOS DO PERÍODO DE <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> a <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?> </p>
+                <!--<p><?= $empresamunicipio[0]->municipio ?> </p>-->
+                <p style="text-align: center"><?= $empresamunicipio[0]->municipio ?>,
+                <?= date("d") . " de " . $MES . " de " . date("Y"); ?> -
 
-                                                                                                                                                                                                                        <p style="text-align: center;">REFERENTE AOS ATENDIMENTOS 
-                                                                                                                                                                                                                            CLÍNICOS DO PERÍODO DE <?= substr($txtdata_inicio, 8, 2) . "/" . substr($txtdata_inicio, 5, 2) . "/" . substr($txtdata_inicio, 0, 4); ?> a <?= substr($txtdata_fim, 8, 2) . "/" . substr($txtdata_fim, 5, 2) . "/" . substr($txtdata_fim, 0, 4); ?> </p>
-                                                                                                                                                                                                                        <!--<p><?= $empresamunicipio[0]->municipio ?> </p>-->
-                                                                                                                                                                                                                        <p style="text-align: center"><?= $empresamunicipio[0]->municipio ?>,
-                            <?= date("d") . " de " . $MES . " de " . date("Y"); ?> -
-
-                            <?= date("H:i") ?>
-                                                                                                                                                                                                                        </p>
-                                                                                                                                                                                                                    <!--<p><center><font size = 4><b>DECLARA&Ccedil;&Atilde;O</b></font></center></p>-->
-                                                                                                                                                                                                                        <br>
+                <?= date("H:i") ?>
+                </p>
+                <!--<p><center><font size = 4><b>DECLARA&Ccedil;&Atilde;O</b></font></center></p>-->
+                <br>
 
 
-                                                                                                                                                                                                                        <h4><center>______________________________________________________________</center></h4>
-                                                                                                                                                                                                                        <h4><center>Assinatura do Profissional</center></h4>
-                                                                                                                                                                                                                        <h4><center>Carimbo</center></h4>
-                                                                                                                                                                                                                        <br>
-                                                                                                                                                                                                                        <br>
-                                                                                                                                                                                                                        <p style="text-align: center"><b>AVISO:</b> CARO PROFISSIONAL, INFORMAMOS QUE QUSQUER RECLAMAÇÃO DAREMOS UM 
-                                                                                                                                                                                                                            PRAZO DE 05(CINCO DIAS) A CONTAR DA DATA DE RECEBIMENTO PARA REINVIDICAR SEUS 
-                                                                                                                                                                                                                            DIREITOS. A CLINICA NÃO RECEBERÁ CONTESTAÇÃO SOB HIPÓTESE ALGUMA FORA DO PRAZO DETERMINADO ACIMA
-                                                                                                                                                                                                                        </p>
-                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                </div>
+                <h4><center>______________________________________________________________</center></h4>
+                <h4><center>Assinatura do Profissional</center></h4>
+                <h4><center>Carimbo</center></h4>
+                <br>
+                <br>
+                <p style="text-align: center"><b>AVISO:</b> CARO PROFISSIONAL, INFORMAMOS QUE QUALQUER RECLAMAÇÃO DAREMOS UM 
+                    PRAZO DE 05(CINCO DIAS) A CONTAR DA DATA DE RECEBIMENTO PARA REINVIDICAR SEUS 
+                    DIREITOS. A CLINICA NÃO RECEBERÁ CONTESTAÇÃO SOB HIPÓTESE ALGUMA FORA DO PRAZO DETERMINADO ACIMA
+                </p>
+            </div>
+    </div>
             <? } ?>
             <?
         } else {
             ?>
-                                                                                                            <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
+                <h4>N&atilde;o h&aacute; resultados para esta consulta.</h4>
             <?
         }
         ?>

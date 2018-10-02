@@ -125,7 +125,12 @@
                         @$tipo_json = array();
                     }
                     if(count($internacao) > 0){
-                        @$tipo_inter_json = json_decode(@$internacao[0]->tipo_dependencia);
+                        if($internacao[0]->tipo_dependencia != '' && $internacao[0]->tipo_dependencia != 'null'){
+                            @$tipo_inter_json = json_decode(@$internacao[0]->tipo_dependencia);
+                        }else{
+                            @$tipo_inter_json = array();
+                        }
+                        
                     }else{
                         @$tipo_inter_json = array();
                     }
