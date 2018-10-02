@@ -67,4 +67,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
 ALTER TABLE ponto.tb_convenio ADD COLUMN padrao_particular boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_operador ALTER COLUMN conselho character varying(20);
+

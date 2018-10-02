@@ -17,7 +17,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         <td colspan="2" width="500px">
            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <?= $relatorio[0]->paciente ?>
         </td>
-        <td>
+        <td style="text-align: center">
             <?= $relatorio[0]->rg ?> 
         </td>
     </tr>
@@ -26,7 +26,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
             <? $funcao = $this->saudeocupacional->carregarfuncao($impressao_aso->funcao); ?>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<?= $funcao[0]->descricao_funcao ?>
         </td>
-        <td width="350px" style="text-align: center">
+        <td width="400px" style="text-align: right">
             <?= ($relatorio[0]->nascimento != '') ? date("d/m/Y", strtotime($relatorio[0]->nascimento)) : '' ?>
         </td>
         
@@ -54,7 +54,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         ?>
         </td>    
     </tr>
-    <tr height="70px">
+    <tr height="130px">
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             
@@ -94,7 +94,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
 
 
 <table style="width: 100%">
-    <tr height="55px">
+    <tr height="110px">
         <td colspan="2" width="400px">
             &nbsp;&nbsp;&nbsp;
             <?= $impressao_aso->validade_exame ?> 
@@ -112,13 +112,15 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         </td>
         <td colspan="2" width="400px">
             &nbsp;&nbsp;&nbsp;
-            <?= $relatorio[0]->medico ?><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;MEDICO COORDENADOR CRM: <?=@$relatorio[0]->conselho?>
+            IVANISE MARIA CAVALCANTE SALES <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;MEDICO COORDENADOR CRM: 3655 
+            
         </td>
     </tr>
 
 </table>
-<br><br><br>
+<br><br><br><br><br>
+<br><br><br><br><br>
 
 <table style="width: 100%">
     <tr height="100px">
@@ -225,8 +227,9 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         </td>
         <td colspan="2" width="400px">
             &nbsp;&nbsp;&nbsp;
-            <?= $relatorio[0]->medico ?><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;MEDICO COORDENADOR CRM: <?=@$relatorio[0]->conselho?>
+            IVANISE MARIA CAVALCANTE SALES <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;MEDICO COORDENADOR CRM: 3655 
+            
         </td>
     </tr>
 
