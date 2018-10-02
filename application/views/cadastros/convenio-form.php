@@ -1,4 +1,4 @@
-
+<? $medicinadotrabalho = $this->session->userdata('medicinadotrabalho'); ?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <div>
         <form name="form_convenio" id="form_convenio" action="<?= base_url() ?>cadastros/convenio/gravar" method="post">
@@ -276,6 +276,23 @@
                                   ?> 
                     </select>
                 </div>
+                <?
+                    if ($medicinadotrabalho == "t") {
+                        ?>
+                <div>
+                    <?php
+                    if (@$obj->_padrao_particular == "t") {
+                        ?>
+                        <input type="checkbox" name="padrao_particular" checked ="true" />Padrão Particular
+                        <?php
+                    } else {
+                        ?>
+                        <input type="checkbox" name="padrao_particular"  />Padrão Particular
+                        <?php
+                    }
+                    ?>
+                </div>
+                <? } ?>
             </fieldset>
             <fieldset>
                 <legend>Associaçao de Convenio</legend>

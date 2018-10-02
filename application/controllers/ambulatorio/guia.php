@@ -556,7 +556,7 @@ class Guia extends BaseController {
         }
         $data['convenio'] = $this->convenio->listardados();
         
-//        $data['convenioid'] = $this->convenio->listarconvenioid();
+        $data['convenioid'] = $this->convenio->listarconvenioid();
         $data['risco'] = $this->guia->listarriscos();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
@@ -577,18 +577,20 @@ class Guia extends BaseController {
     }
 
     function gravarcadastroaso($paciente_id) {
-    //    var_dump($_POST);
-    //    die;
-        $convenio2 = $_POST['convenio2'];
+//        var_dump($_POST);
+//        die;
+        $convenio2 = $_POST['convenio2'];        
         $modalidade = $_POST['consulta'];
-        // $gravarempresa = $this->convenio->gravarempresa($convenio2,$modalidade);
-        // $gravarconvenio = $this->convenio->gravarcopiaconvenio($convenio2,$modalidade);
+        
+        if($modalidade == "particular"){
+         $gravarempresa = $this->convenio->gravarempresa($convenio2,$modalidade);
+         $gravarconvenio = $this->convenio->gravarcopiaconvenio($gravarempresa, $convenio2,$modalidade);
+        }
+        
         $paciente_id = $_POST['txtPacienteId'];
 
         $resultadoguia = $this->guia->listarguia($paciente_id);
-        if (!$_POST['convenio1'] > 0) {
-            $_POST['convenio1'] = 134;
-        }
+
 
 
         if ($resultadoguia == null) {
@@ -601,7 +603,7 @@ class Guia extends BaseController {
             // die;
 //        
             
-            $retorno = $this->guia->gravarcadastroaso($paciente_id);
+            $retorno = $this->guia->gravarcadastroaso($gravarempresa, $paciente_id);
             
         if ($retorno == -1) {
             $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
@@ -609,7 +611,7 @@ class Guia extends BaseController {
             redirect(base_url() . "ambulatorio/guia/carregarcadastroaso/$paciente_id/0");
         }
         
-        $retorno2 = $this->guia->gravarprocedimentoaso($ambulatorio_guia, $retorno);
+        $retorno2 = $this->guia->gravarprocedimentoaso($gravarempresa, $ambulatorio_guia, $retorno);
 //            var_dump($retorno2);
 //        die;
         if ($_POST['cadastro_aso_id'] == '') {            

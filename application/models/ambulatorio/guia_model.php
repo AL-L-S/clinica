@@ -189,7 +189,7 @@ class guia_model extends Model {
         return $return->result();
     }
 
-    function gravarcadastroaso($paciente_id) {
+    function gravarcadastroaso($gravarempresa, $paciente_id) {
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
@@ -200,7 +200,11 @@ class guia_model extends Model {
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
         $this->db->where('pt.tipo_aso', $_POST['tipo']);
+        if($_POST['consulta'] == "particular"){
+        $this->db->where('pc.convenio_id', $gravarempresa);
+        }else{
         $this->db->where('pc.convenio_id', $_POST['convenio1']);
+        }
         $this->db->where('pt.grupo', 'ASO');
         $result = $this->db->get()->result();
 
@@ -15238,7 +15242,7 @@ ORDER BY ae.paciente_credito_id)";
         }
     }
 
-    function gravarprocedimentoaso($ambulatorio_guia_id, $aso_id) {
+    function gravarprocedimentoaso($gravarempresa, $ambulatorio_guia_id, $aso_id) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
@@ -15257,7 +15261,11 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
             $this->db->where('pt.tipo_aso', $_POST['tipo']);
+            if($_POST['consulta'] == "particular"){
+            $this->db->where('pc.convenio_id', $gravarempresa);
+            }else{
             $this->db->where('pc.convenio_id', $_POST['convenio1']);
+            }
             $this->db->where('pt.grupo', 'ASO');
             $result = $this->db->get()->result();
 //            var_dump($result);die; 

@@ -85,25 +85,26 @@ class Convenio_model extends Model {
         return $return;
     }
     
-//    function listarconvenioid($convenio2){
-//        $this->db->select(' c.convenio_id,
-//                            c.nome,
-//                            c.dinheiro,
-//                            c.conta_id');
-//        $this->db->from('tb_convenio c');
-//        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
-//        $this->db->where("c.ativo", 'true');
-//        $this->db->where("c.nome", $convenio2);
-//        $this->db->orderby("c.nome");
-//        $this->db->groupby("c.convenio_id,
-//                            c.nome,
-//                            c.dinheiro,
-//                            c.conta_id");
-//        $query = $this->db->get();
-//        $return = $query->result();
-//
-//        return $return;
-//    }
+    function listarconvenioid(){
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.padrao_particular,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("c.padrao_particular", 'true');
+        $this->db->orderby("c.nome");
+        $this->db->groupby("c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
+    }
 
     function listarconveniolog() {
 
@@ -1681,7 +1682,7 @@ class Convenio_model extends Model {
 
                 $this->db->set('dinheiro', 't');
             
-            
+//                var_dump($_POST['convenioid']);die;
             if ($_POST['convenioid'] == "") {// insert
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -2135,45 +2136,21 @@ class Convenio_model extends Model {
         }
     }
     
-    function gravarcopiaconvenio() {
+    function gravarcopiaconvenio($gravarempresa) {
         try {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $convenio = $_POST['txtconvenio'];
-            $grupo = $_POST['grupo'];
-//            var_dump($convenio); die;
-            $convenioidnovo = $_POST['txtconvenio_id'];
-            if ($grupo != '') {
-//                var_dump($grupo);
-//                die;
+            $convenio = $_POST['conveniobase_id'];
+            
+
+
+
                 $sql = "INSERT INTO ponto.tb_procedimento_convenio(
                         convenio_id, procedimento_tuss_id, 
                         qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
                         qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
                         data_atualizacao, operador_atualizacao)
-                        SELECT $convenioidnovo, pc.procedimento_tuss_id, 
-                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
-                        qtdeuco, valoruco, valortotal, pc.ativo, '$horario', $operador_id, 
-                        pc.data_atualizacao, pc.operador_atualizacao
-                        FROM ponto.tb_procedimento_convenio pc
-                        LEFT JOIN ponto.tb_procedimento_tuss pt ON pc.procedimento_tuss_id = pt.procedimento_tuss_id
-                        WHERE pt.grupo = '$grupo'
-                        AND convenio_id = $convenio
-                        AND pc.ativo = 't'
-                        AND pc.procedimento_tuss_id NOT IN (
-                            SELECT DISTINCT(pc2.procedimento_tuss_id) FROM ponto.tb_procedimento_convenio pc2
-                            LEFT JOIN ponto.tb_procedimento_tuss pt2 ON pc2.procedimento_tuss_id = pt2.procedimento_tuss_id
-                            WHERE pc2.convenio_id = $convenioidnovo
-                            AND pt2.grupo = '$grupo'
-                            AND pc2.ativo = 't'
-                        )";
-            } else {
-                $sql = "INSERT INTO ponto.tb_procedimento_convenio(
-                        convenio_id, procedimento_tuss_id, 
-                        qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
-                        qtdeuco, valoruco, valortotal, ativo, data_cadastro, operador_cadastro, 
-                        data_atualizacao, operador_atualizacao)
-                        SELECT $convenioidnovo, procedimento_tuss_id, 
+                        SELECT $gravarempresa, procedimento_tuss_id, 
                         qtdech, valorch, qtdefilme, valorfilme, qtdeporte, valorporte, 
                         qtdeuco, valoruco, valortotal, ativo, '$horario', $operador_id, 
                         data_atualizacao, operador_atualizacao
@@ -2182,10 +2159,10 @@ class Convenio_model extends Model {
                         AND pc.ativo = 't'
                         AND pc.procedimento_tuss_id NOT IN (
                             SELECT DISTINCT(procedimento_tuss_id) FROM ponto.tb_procedimento_convenio
-                            WHERE convenio_id = $convenioidnovo
+                            WHERE convenio_id = $gravarempresa
                             AND ativo = 't'
                         )";
-            }
+            
 
             $this->db->query($sql);
 
