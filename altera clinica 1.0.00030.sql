@@ -19,3 +19,5 @@ CREATE TABLE ponto.tb_estoque_fracionamento
 );
 
 ALTER TABLE ponto.tb_estoque_entrada ADD COLUMN fracionamento_id integer;
+
+ALTER TABLE ponto.tb_convenio ADD COLUMN padrao_particular boolean DEFAULT false;
