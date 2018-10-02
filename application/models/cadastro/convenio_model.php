@@ -105,6 +105,27 @@ class Convenio_model extends Model {
 
         return $return;
     }
+    
+    function listarconvenionovoid($convenio2){
+        $this->db->select(' c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.padrao_particular,
+                            c.conta_id');
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+        $this->db->where("c.ativo", 'true');
+        $this->db->where("c.nome", $convenio2);
+        $this->db->orderby("c.nome");
+        $this->db->groupby("c.convenio_id,
+                            c.nome,
+                            c.dinheiro,
+                            c.conta_id");
+        $query = $this->db->get();
+        $return = $query->result();
+
+        return $return;
+    }
 
     function listarconveniolog() {
 
@@ -1657,8 +1678,9 @@ class Convenio_model extends Model {
         }
     }
 
-    function gravarempresa($convenio2, $modalidade) {
+    function gravarempresa($convenionovo_id, $convenio2, $modalidade) {
         try {
+//            var_dump($convenionovo_id);die;
             
             if($modalidade == "particular"){
             
@@ -1683,7 +1705,7 @@ class Convenio_model extends Model {
                 $this->db->set('dinheiro', 't');
             
 //                var_dump($_POST['cadastro_aso_id']);die;
-            if ($_POST['convenioid'] == "") {// insert
+            if (!count($convenionovo_id) > 0) {// insert
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_convenio');
@@ -1712,8 +1734,8 @@ class Convenio_model extends Model {
             } else { // update
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
-                $exame_sala_id = $_POST['txtconvenio_id'];
-                $this->db->where('convenio_id', $convenio_id);
+                $exame_sala_id = $convenionovo_id[0]->convenio_id;
+                $this->db->where('convenio_id', $convenionovo_id[0]->convenio_id);
                 $this->db->update('tb_convenio');
             }
 

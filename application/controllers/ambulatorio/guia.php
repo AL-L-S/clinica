@@ -581,9 +581,10 @@ class Guia extends BaseController {
 //        die;
         $convenio2 = $_POST['convenio2'];        
         $modalidade = $_POST['consulta'];
+        $convenionovo_id = $this->convenio->listarconvenionovoid($convenio2);
         
         if($modalidade == "particular"){
-         $gravarempresa = $this->convenio->gravarempresa($convenio2,$modalidade);
+         $gravarempresa = $this->convenio->gravarempresa($convenionovo_id, $convenio2,$modalidade);
          $gravarconvenio = $this->convenio->gravarcopiaconvenio($gravarempresa, $convenio2,$modalidade);
         }
         
