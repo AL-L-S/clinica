@@ -99,6 +99,16 @@ class Autocomplete extends Controller {
 
     }
 
+    function testandoPrintPHP(){
+        
+        // $teste = new login();
+        // require __DIR__ . '/impressaoViaNavegador.php';
+        // $result = $this->exametemp->testandoConversaoArquivosRTF();
+        // echo '<pre>';
+        // var_dump($result); die;
+
+    }
+
     function gravarhorarioagendawebconvenio() {
         header('Access-Control-Allow-Origin: *');
         $paciente_id = $this->exametemp->crianovopacientefidelidade();
