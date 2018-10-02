@@ -761,8 +761,13 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                 $("#riscos").trigger("chosen:updated");
 
                             });
-                            
-                            $.getJSON('<?= base_url() ?>cadastros/convenio/listarprocedimentossetores', {empresa: 4}, function (j) {
+                            <? if(count($convenioid) > 0){ ?>
+                            var aso = <?= $convenioid[0]->convenio_id ?>;
+                            <? } else { ?>
+                        var aso = '';
+<? }
+?>
+                            $.getJSON('<?= base_url() ?>cadastros/convenio/listarprocedimentossetores', {empresa: aso}, function (j) {
                                 options = '<option value=""></option>';
 //                                alert('ola');
                                 for (var c = 0; c < j.length; c++) {

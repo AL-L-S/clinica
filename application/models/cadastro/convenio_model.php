@@ -1682,7 +1682,7 @@ class Convenio_model extends Model {
 
                 $this->db->set('dinheiro', 't');
             
-//                var_dump($_POST['convenioid']);die;
+//                var_dump($_POST['cadastro_aso_id']);die;
             if ($_POST['convenioid'] == "") {// insert
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -1876,6 +1876,11 @@ class Convenio_model extends Model {
                 $this->db->set('dinheiro', $_POST['txtdinheiro']);
             } else {
                 $this->db->set('dinheiro', 'f');
+            }
+            if (isset($_POST['padrao_particular'])) {
+                $this->db->set('padrao_particular', $_POST['padrao_particular']);
+            } else {
+                $this->db->set('padrao_particular', 'f');
             }
             if (isset($_POST['txtcarteira'])) {
                 $this->db->set('carteira_obrigatoria', $_POST['txtcarteira']);
@@ -2141,7 +2146,7 @@ class Convenio_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $convenio = $_POST['conveniobase_id'];
-            
+//            var_dump($convenio);die;
 
 
 
@@ -2224,6 +2229,7 @@ class Convenio_model extends Model {
                                 c.nome as cidade_nome,
                                 c.municipio_id,
                                 co.dia_aquisicao,
+                                co.padrao_particular,
                                 co.valor_ajuste_cbhpm,
                                 fcd.razao_social as credor');
             $this->db->from('tb_convenio co');
@@ -2265,6 +2271,7 @@ class Convenio_model extends Model {
             $this->_cep = $return[0]->cep;
             $this->_observacao = $return[0]->observacao;
             $this->_dinheiro = $return[0]->dinheiro;
+            $this->_padrao_particular = $return[0]->padrao_particular;
             $this->_procedimento1 = $return[0]->procedimento1;
             $this->_procedimento2 = $return[0]->procedimento2;
             $this->_tabela = $return[0]->tabela;
