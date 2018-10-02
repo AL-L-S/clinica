@@ -19,3 +19,51 @@ CREATE TABLE ponto.tb_estoque_fracionamento
 );
 
 ALTER TABLE ponto.tb_estoque_entrada ADD COLUMN fracionamento_id integer;
+
+-- 02/10/2018
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN producao_paga boolean NOT NULL DEFAULT false;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_producao integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_producao timestamp without time zone;
+
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '2871');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000030',
+            'Ao fechar a produção do médico em Produção Médica o sistema deixa marcado no recibo que foi pago.',
+            '2871',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3007');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000030',
+            'Agora no Manter Entrada é possível Fracionar uma entrada em outra unidade. Ex: Entrada de 30 caixas de comprimidos podem ser fracionadas para 300 comprimidos. Obs: Não é possível fracionar uma caixa para uma caixa',
+            '3007',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();

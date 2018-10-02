@@ -4857,6 +4857,7 @@ class guia_model extends Model {
                             ae.desconto_ajuste3,
                             ae.desconto_ajuste4,
                             ae.data,
+                            ae.producao_paga,
                             al.data as data_laudo,
                             al.data_producao,
                             al.ambulatorio_laudo_id,
@@ -13001,7 +13002,33 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_saldo');
+
         }
+
+                    
+        $empresa = ($_POST['empresa'] > 0 ? ' AND ae.empresa_id = ' . $_POST['empresa'] : '');
+
+        $data_inicio = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data'])));
+        $data_fim = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data_fim'])));
+        $medico_id = $_POST['operador_id'];
+        $sql = "UPDATE ponto.tb_agenda_exames
+                SET operador_producao = $operador_id, data_producao = '$horario', producao_paga = 't'
+                where agenda_exames_id in (SELECT ae.agenda_exames_id
+                FROM ponto.tb_agenda_exames ae 
+                LEFT JOIN ponto.tb_procedimento_convenio pc ON pc.procedimento_convenio_id = ae.procedimento_tuss_id 
+                LEFT JOIN ponto.tb_procedimento_tuss pt ON pt.procedimento_tuss_id = pc.procedimento_tuss_id 
+                LEFT JOIN ponto.tb_exames e ON e.agenda_exames_id = ae.agenda_exames_id 
+                LEFT JOIN ponto.tb_ambulatorio_laudo al ON al.exame_id = e.exames_id 
+                LEFT JOIN ponto.tb_convenio c ON c.convenio_id = pc.convenio_id 
+                WHERE e.cancelada = 'false' 
+                AND al.data_producao >= '$data_inicio' 
+                AND al.data_producao <= '$data_fim' 
+                AND al.medico_parecer1 = $medico_id
+                $empresa
+                ORDER BY ae.agenda_exames_id)";
+                
+
+        $this->db->query($sql);
     }
 
     function fecharlaboratorio($data_contaspagar) {

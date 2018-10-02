@@ -187,6 +187,8 @@ class Guia extends BaseController {
             // $xml = simplexml_load_string($result);
             // $json = json_encode($xml);
             $decode_result = json_decode($result);
+            // echo '<pre>';
+            // var_dump($decode_result); die;
             // To encodando de novo só pra não ter o risco de ir um espaço vazio ou alguma besteira
             // E depois atrapalhar na hora de refazer o Objeto.
             $encode_result_again = json_encode($decode_result);
@@ -4779,12 +4781,17 @@ class Guia extends BaseController {
             $data['sala'] = array();
         }
 //        var_dump($data['sala']); die;
-
+        if(!$_POST['empresa'] > 0){
+            $empresa_id = $this->session->userdata('empresa_id');
+        }else{
+            $empresa_id = $_POST['empresa'];
+        }
+       
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
-        $data['empresa_permissao'] = $this->guia->listarempresapermissoes($_POST['empresa']);
-        $data['empresamunicipio'] = $this->guia->listarempresamunicipio($_POST['empresa']);
+        $data['empresa_permissao'] = $this->guia->listarempresapermissoes($empresa_id);
+        $data['empresamunicipio'] = $this->guia->listarempresamunicipio($empresa_id);
         $data['contador'] = $this->guia->relatoriomedicoconveniocontadorfinanceiro();
         $data['relatorio'] = $this->guia->relatoriomedicoconveniofinanceiro();
 
