@@ -71,9 +71,10 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                 <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/pesquisar2">
                     <tr>
                         <th class="tabela_title">Plano</th>
-                        <th class="tabela_title">Grupo</th>
                         <th class="tabela_title">Procedimento</th>
-                        <th colspan="2" class="tabela_title">Codigo</th>
+                        <th class="tabela_title">Grupo</th>
+                        <th class="tabela_title">Subgrupo</th>
+                        <th colspan="1" class="tabela_title">Codigo</th>
                         <th class="tabela_title"></th>
                         <th class="tabela_title">Legenda</th>
                     </tr>
@@ -92,6 +93,17 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                             </select>
                         </th>
                         <th class="tabela_title">
+                            <select name="procedimento" id="procedimento" class="size2 chosen-select" tabindex="1">
+                                <option value="">Selecione</option>
+                                <? foreach ($procedimento as $value) : ?>
+                                    <option value="<?= $value->nome; ?>"<?
+                                    if (@$_GET['procedimento'] == $value->nome):echo'selected';
+                                    endif;
+                                    ?>><?php echo $value->nome; ?></option>
+                                <? endforeach; ?>
+                            </select>
+                        </th>
+                        <th class="tabela_title">
                             <select name="grupo" id="grupo" class="size2">
                                 <option value="">Selecione</option>
                                 <? foreach ($grupo as $value) : ?>
@@ -104,24 +116,26 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                             </select>
                         </th>
                         <th class="tabela_title">
-                            <select name="procedimento" id="procedimento" class="size4 chosen-select" tabindex="1">
+                            <select name="subgrupo" id="subgrupo" class="size2">
                                 <option value="">Selecione</option>
-                                <? foreach ($procedimento as $value) : ?>
-                                    <option value="<?= $value->nome; ?>"<?
-                                    if (@$_GET['procedimento'] == $value->nome):echo'selected';
-                                    endif;
-                                    ?>><?php echo $value->nome; ?></option>
+                                <? foreach ($subgrupos as $value) : ?>
+                                    <option value="<?= $value->ambulatorio_subgrupo_id; ?>"
+                                        <? if (@$_GET['subgrupo'] == $value->ambulatorio_subgrupo_id) echo 'selected'?>>
+                                    <?= $value->nome; ?>
+                                    </option>
                                 <? endforeach; ?>
+
                             </select>
                         </th>
+                        
                         <th class="tabela_title">
                             <input type="text" name="codigo" class="texto04" value="<?php echo @$_GET['codigo']; ?>" />
                         </th>
                         <th class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
                         </th>
-                        <th>
-                        </th>
+                        <!-- <th>
+                        </th> -->
                         <th>
                             <div>
                                 <div id="circulo" style="background-color: black"></div> Normal
@@ -143,8 +157,10 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                 <thead>
                     <tr>
                         <th class="tabela_header">Plano</th>
-                        <th class="tabela_header">Grupo</th>
                         <th class="tabela_header">Procedimento</th>
+                        <th class="tabela_header">Grupo</th>
+                        <th class="tabela_header">SubGrupo</th>
+                        
                         <th class="tabela_header">Código</th>
                         <th class="tabela_header">Valor</th>
                         <th class="tabela_header" colspan="4"><center>Detalhes</center></th>
@@ -185,9 +201,11 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->convenio; ?></td>                               
+                                <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->convenio; ?></td>  
+                                <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->procedimento; ?></td>                             
                                 <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->grupo; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->procedimento; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->subgrupo; ?></td>
+                                
                                 <td class="<?php echo $estilo_linha; ?>"width="100px;"><?= $item->codigo; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"width="10px;">
                                     <?
@@ -209,6 +227,11 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                                 <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
                                     <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/listaprocedimentomultiempresa/<?= $item->procedimento_tuss_id ?>/<?=$item->convenio_id ?>">
                                         Detalhes
+                                    </a>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                    <a target="_blank" onclick="javascript:return confirm('Deseja realmente excluir esse procedimento?');" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/excluirprocedimentomultiempresa/<?= $item->procedimento_tuss_id ?>/<?=$item->convenio_id ?>">
+                                        Excluir
                                     </a>
                                 </td>
                             </tr>

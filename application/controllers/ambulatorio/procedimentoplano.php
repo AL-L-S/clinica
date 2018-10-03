@@ -24,6 +24,7 @@ class Procedimentoplano extends BaseController {
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('cadastro/laboratorio_model', 'laboratorio');
         $this->load->model('seguranca/operador_model', 'operador_m');
+        $this->load->model('cadastro/grupoclassificacao_model', 'grupoclassificacao');
         $this->load->model('ponto/Competencia_model', 'competencia');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
@@ -48,6 +49,7 @@ class Procedimentoplano extends BaseController {
 
     function pesquisar2($limite = 50) {
         $data["limite_paginacao"] = $limite;
+        $data['subgrupos'] = $this->grupoclassificacao->listarsubgrupo2();
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento4();
         $this->loadView('ambulatorio/procedimentoplano2-lista', $data);
     }
@@ -189,6 +191,7 @@ class Procedimentoplano extends BaseController {
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
+        $data['subgrupos'] = $this->grupoclassificacao->listarsubgrupo2();
 
         $this->loadView('ambulatorio/multiplosprocedimentoplano-form', $data);
     }
@@ -198,6 +201,19 @@ class Procedimentoplano extends BaseController {
 //        echo "<pre>";
 //        var_dump($data['procedimentos']); die;
         $this->loadView('ambulatorio/listaprocedimentomultiempresa-form', $data);
+    }
+
+    function excluirprocedimentomultiempresa($procedimento_tuss_id, $convenio_id) {
+        $this->procedimentoplano->excluirprocedimentomultiempresa($procedimento_tuss_id, $convenio_id);
+//        echo "<pre>";
+//        var_dump($data['procedimentos']); die;
+        if ($verifica) {
+            $data['mensagem'] = 'Erro ao excluir o procedimento. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao excluir o procedimento.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function carregarprocedimentoplanoagrupador($procedimentoplano_tuss_id) {
@@ -516,6 +532,7 @@ class Procedimentoplano extends BaseController {
         $data['procedimentoLista'] = $this->procedimentoplano->listarprocedimento2();
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimentoplano->listargrupo();
+        $data['subgrupos'] = $this->grupoclassificacao->listarsubgrupo2();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['convenio_id'] = $convenio_id;
         $data['medico_id'] = $medico_id;

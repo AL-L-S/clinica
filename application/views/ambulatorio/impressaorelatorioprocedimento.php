@@ -10,16 +10,23 @@
     <? } else { ?>             
         <h3>GRUPO: <?= $grupo; ?></h3>
     <? } ?>
+    <? if (count($subgrupo_selec) > 0) { ?>
+        <h3>SUBGRUPO: TODOS</h3>
+    <? } else { ?>             
+        <h3>SUBGRUPO: <?= $subgrupos[0]->subgrupo; ?></h3>
+    <? } ?>
 
     <? if (count($relatorio) > 0) {
         ?>
         <table border="1" cellpadding="3" cellspacing="0">
             <thead>
                 <tr>
-                    <th class="tabela_teste" >Codigo</th>
+                    
                     <th class="tabela_teste" >Nome</th>
-                    <th class="tabela_teste" >Descricao</th>
                     <th class="tabela_teste" >Grupo</th>
+                    <th class="tabela_teste" >Subgrupo</th>
+                    <th class="tabela_teste" >Codigo</th>
+                    <th class="tabela_teste" >Descricao</th>
                     <th class="tabela_teste" >Perc. Medico</th>
                     <th class="tabela_teste" >Perc. Revisor</th>
                     <th class="tabela_teste" >Qtde</th>
@@ -32,10 +39,11 @@
                 foreach ($relatorio as $item) :
                     ?>
                     <tr>
-                        <td><?= $item->codigo; ?></td>
                         <td><?= $item->nome; ?></td>
-                        <td><?= $item->descricao; ?></td>
                         <td><?= $item->grupo; ?></td>
+                        <td><?= $item->subgrupo; ?></td>
+                        <td><?= $item->codigo; ?></td>
+                        <td><?= $item->descricao; ?></td>
                         <td style="text-align: right"><? 
                             if($item->perc_medico != ''){
                                 if($item->percentual == 't'){

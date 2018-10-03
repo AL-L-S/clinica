@@ -22,6 +22,7 @@
                         <th class="tabela_header">Plano</th>
                         <th class="tabela_header">Procedimento</th>
                         <th class="tabela_header">Grupo</th>
+                        <th class="tabela_header">Subgrupo</th>
                         <th class="tabela_header">Valor</th>
                         <th class="tabela_header" colspan="4"><center>Detalhes</center></th>
                 </tr>
@@ -37,6 +38,7 @@
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio; ?></td>                               
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->grupo; ?></td>
+                            <td class="<?php echo $estilo_linha; ?>"><?= $item->subgrupo; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->valortotal; ?></td>
                             <? 
                             if ($perfil_id != 10) { 

@@ -83,7 +83,7 @@ class centrocirurgico_model extends BaseModel {
         $this->db->where('solicitacao_cirurgia_id', $solicitacao_id);
         $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = sc.medico_agendado', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = sc.medico_solicitante', 'left');
 
         return $this->db->get()->result();
     }

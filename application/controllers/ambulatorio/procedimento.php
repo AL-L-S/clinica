@@ -143,6 +143,7 @@ class Procedimento extends BaseController {
 
     function relatorioprocedimento() {
         $data['grupos'] = $this->procedimento->listargrupos();
+        $data['subgrupos'] = $this->grupoclassificacao->listarsubgrupo2();
         $this->loadView('ambulatorio/relatorioprocedimento', $data);
     }
 
@@ -157,6 +158,7 @@ class Procedimento extends BaseController {
     function gerarelatorioprocedimento() {
         $data['grupo'] = $_POST['grupo'];
         $data['relatorio'] = $this->procedimento->relatorioprocedimentos();
+        $data['subgrupo_selec'] = $this->procedimento->relatorioprocedimentos();
         $data['empresa'] = $this->procedimento->listarempresas();
         $this->load->View('ambulatorio/impressaorelatorioprocedimento', $data);
     }
