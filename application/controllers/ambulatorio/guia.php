@@ -540,6 +540,19 @@ class Guia extends BaseController {
       echo json_encode($result);
       
     }
+    
+    function listarriscosparticular(){
+        
+      if (isset($_GET['aso'])) {  
+      $result = $this->guia->listarriscosparticular($_GET['aso']);
+      $json_riscos = json_encode($result[0]->risco_id);
+      
+      $result2 = $this->saudeocupacional->listarautocompleteparticular($json_riscos);
+
+        echo json_encode($result2);
+      }
+      
+    }
 
     function carregarcadastroaso($paciente_id, $cadastro_aso_id) {
 
@@ -558,7 +571,7 @@ class Guia extends BaseController {
         }
         $data['convenio'] = $this->convenio->listardados();
         
-        $data['convenioid'] = $this->convenio->listarconvenioid();
+        $data['convenioid'] = $this->convenio->listarconvenioid();        
         $data['risco'] = $this->guia->listarriscos();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
@@ -581,15 +594,6 @@ class Guia extends BaseController {
     function gravarcadastroaso($paciente_id) {
 //        var_dump($_POST);
 //        die;
-        $convenio2 = $_POST['convenio2'];        
-        $modalidade = $_POST['consulta'];
-        $convenionovo_id = $this->convenio->listarconvenionovoid($convenio2);
-        
-        if($modalidade == "particular"){
-         $gravarempresa = $this->convenio->gravarempresa($convenionovo_id, $convenio2,$modalidade);
-         $gravarconvenio = $this->convenio->gravarcopiaconvenio($gravarempresa, $convenio2,$modalidade);
-        }
-        
         $paciente_id = $_POST['txtPacienteId'];
 
         $resultadoguia = $this->guia->listarguia($paciente_id);
@@ -602,11 +606,18 @@ class Guia extends BaseController {
             $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
         }
         
-        //    var_dump($ambulatorio_guia);
-            // die;
-//        
-            
-            $retorno = $this->guia->gravarcadastroaso($gravarempresa, $paciente_id);
+        $convenio2 = $_POST['convenio2'];        
+        $modalidade = $_POST['consulta'];
+        $convenionovo_id = $this->convenio->listarconvenionovoid($convenio2);
+        
+        if($modalidade == "particular"){
+         $gravarempresa = $this->convenio->gravarempresa($convenionovo_id, $convenio2,$modalidade);
+         $gravarconvenio = $this->convenio->gravarcopiaconvenio($gravarempresa, $convenio2,$modalidade);
+        }else{
+            $gravarempresa = $_POST['convenio1'];
+        }
+  
+            $retorno = $this->guia->gravarcadastroaso($gravarempresa, $paciente_id, $ambulatorio_guia);
             
         if ($retorno == -1) {
             $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
@@ -656,6 +667,9 @@ class Guia extends BaseController {
         } else {
             $data['mensagem'] = 'Sucesso ao gravar ASO.';
         }
+//        if($_POST['consulta'] == "particular"){
+//            $this->load->View('ambulatorio/faturarprocedimentospersonalizado-form', $data);
+//        }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/guia/cadastroaso/$paciente_id");
     }

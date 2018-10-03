@@ -145,17 +145,17 @@
                     <label>Ajuste CBHPM Porte (%)</label>
                     <input type="number" id="valor_ajuste_cbhpm" class="texto02" name="valor_ajuste_cbhpm" step="0.01" value="<?= @$obj->_valor_ajuste_cbhpm; ?>" />
                 </div>
-                
+
                 <div id="ajuste-cbhpmfilme"> 
                     <label>Ajuste CBHPM Filme (Valor)</label>
                     <input type="number" id="valor_ajuste_cbhpm_filme" class="texto02" name="valor_ajuste_cbhpm_filme" step="0.01" value="<?= @$obj->_valor_ajuste_cbhpm_filme; ?>" />
                 </div>
-                
+
                 <div id="ajuste-cbhpmuco"> 
                     <label>Ajuste CBHPM Uco (%)</label>
                     <input type="number" id="valor_ajuste_cbhpm_uco" class="texto02" name="valor_ajuste_cbhpm_uco" step="0.01" value="<?= @$obj->_valor_ajuste_cbhpm_uco; ?>" />
                 </div>
-                
+
                 <div>
                     <label>Grupo convenio</label>
                     <select name="grupoconvenio" id="grupoconvenio" class="size2" >
@@ -221,6 +221,38 @@
                 </div>
 
             </fieldset>
+
+            <? if ($medicinadotrabalho == "t") { ?>
+
+                <fieldset>
+                    <legend>Medicina do Trabalho</legend>
+                    <div id="divcoordenador">
+                        <label>Médico Coordenador</label>
+                        <select name="coordenador" id="coordenador" class="size2">
+                            <option value="">Selecione</option>
+                            <? foreach ($medicos as $item) : ?>
+                                <option value="<?= $item->operador_id; ?>" <?= (@$obj->_coordenador == $item->operador_id) ? 'selected' : '' ?>>
+                                    <?= $item->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
+                    </div>
+                    <div>
+                        <?php
+                        if (@$obj->_padrao_particular == "t") {
+                            ?>
+                            <input type="checkbox" name="padrao_particular" checked ="true" />Padrão Particular
+                            <?php
+                        } else {
+                            ?>
+                            <input type="checkbox" name="padrao_particular"  />Padrão Particular
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </fieldset>
+
+            <? } ?>
             <fieldset>
                 <legend>Condi&ccedil;&atilde;o de recebimento</legend>
                 <div>
@@ -241,18 +273,18 @@
                     <input type="text" id="credor_devedor" class="texto08" name="credor_devedor" value="<?= @$obj->_credor; ?>" readonly=""/>
 <!--                    <select name="credor_devedor" id="credor_devedor" class="size4" disabled="">
                         <option value='' >selecione</option>
-                        <?php
+                    <?php
 //                        $credor_devedor = $this->convenio->listarcredordevedor();
 //                        foreach ($credor_devedor as $item) {
-                            ?>
+                    ?>
 
                             <option   value =<?php echo $item->financeiro_credor_devedor_id; ?> <?
 //                            if (@$obj->_credor_devedor_id == $item->financeiro_credor_devedor_id):echo 'selected';
 //                            endif;
-                            ?>><?php // echo $item->razao_social; ?></option>
-                                      <?php
+                    ?>><?php // echo $item->razao_social; ?></option>
+                    <?php
 //                                  }
-                                  ?> 
+                    ?> 
                     </select>-->
                 </div>
                 <div>
@@ -276,47 +308,33 @@
                                   ?> 
                     </select>
                 </div>
-                <?
-                    if ($medicinadotrabalho == "t") {
-                        ?>
-                <div>
-                    <?php
-                    if (@$obj->_padrao_particular == "t") {
-                        ?>
-                        <input type="checkbox" name="padrao_particular" checked ="true" />Padrão Particular
-                        <?php
-                    } else {
-                        ?>
-                        <input type="checkbox" name="padrao_particular"  />Padrão Particular
-                        <?php
-                    }
-                    ?>
-                </div>
-                <? } ?>
+
+
+
             </fieldset>
             <fieldset>
                 <legend>Associaçao de Convenio</legend>
                 <div>
-                    <input type="checkbox" name="associaconvenio" id="associaconvenio" <?= (@$obj->_associado == 't')? 'checked':""; ?>/> Associar a outro convenio
+                    <input type="checkbox" name="associaconvenio" id="associaconvenio" <?= (@$obj->_associado == 't') ? 'checked' : ""; ?>/> Associar a outro convenio
                 </div>
-                
-<!--                <div id="div_associacao">
-                    <div>
-                        <label>Convenio Principal</label>
-                        <select name="convenio_associacao" id="convenio_associacao" class="size2" >
-                            <option value=''>Selecione</option>
-                            <?php
-                            foreach ($convenio as $item) {
-                                ?>
-                                <option value =<?php echo $item->convenio_id; ?> <?= (@$obj->_associacao_convenio_id == $item->convenio_id)? 'selected':""; ?>><?php echo $item->nome; ?></option>
-                            <?php } ?> 
-                        </select>
-                    </div>
-                    <div>
-                        <label>Valor Percentual</label>
-                        <input type="number" step="0.01" name="valorpercentual"  id="valorpercentual" class="texto02" value="<?= @$obj->_associacao_percentual; ?>" /> %
-                    </div>
-                </div>-->
+
+                <!--                <div id="div_associacao">
+                                    <div>
+                                        <label>Convenio Principal</label>
+                                        <select name="convenio_associacao" id="convenio_associacao" class="size2" >
+                                            <option value=''>Selecione</option>
+                <?php
+                foreach ($convenio as $item) {
+                    ?>
+                                                        <option value =<?php echo $item->convenio_id; ?> <?= (@$obj->_associacao_convenio_id == $item->convenio_id) ? 'selected' : ""; ?>><?php echo $item->nome; ?></option>
+                <?php } ?> 
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Valor Percentual</label>
+                                        <input type="number" step="0.01" name="valorpercentual"  id="valorpercentual" class="texto02" value="<?= @$obj->_associacao_percentual; ?>" /> %
+                                    </div>
+                                </div>-->
             </fieldset>
             <fieldset>
                 <legend>Fidelidade</legend>
@@ -328,8 +346,8 @@
                     <label>Parceiro ID</label>
                     <input type="number" name="fidelidade_parceiro_id" class="texto02" value="<?= @$obj->_fidelidade_parceiro_id; ?>" />
                 </div>
-                
-               
+
+
             </fieldset>
             <fieldset>
                 <legend>Pasta De Laudos</legend>
@@ -337,9 +355,9 @@
                     <label>Nome da Pasta</label>
                     <input type="text" name="convenio_pasta" class="texto06 bestupper" value="<?= @$obj->_convenio_pasta; ?>" />
                 </div>
-                
-                
-               
+
+
+
             </fieldset>
             <fieldset>
                 <legend>Observa&ccedil;&atilde;o</legend>
@@ -364,20 +382,22 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    <? if(@$obj->_associado != 't'){ ?>
+<? if (@$obj->_associado != 't') { ?>
         $("#div_associacao").hide();
-    <? }
-    if (@$obj->_tabela != "CBHPM"){ ?>
-       $("#ajuste-cbhpm").hide(); 
-       $("#ajuste-cbhpmuco").hide(); 
-       $("#ajuste-cbhpmfilme").hide(); 
-    <? } ?>
+<?
+}
+if (@$obj->_tabela != "CBHPM") {
+    ?>
+        $("#ajuste-cbhpm").hide();
+        $("#ajuste-cbhpmuco").hide();
+        $("#ajuste-cbhpmfilme").hide();
+<? } ?>
     $('#associaconvenio').change(function () {
         if ($(this).is(":checked")) {
             $("#div_associacao").show();
             $("#convenio_associacao").prop('required', true);
             $("#valorpercentual").prop('required', true);
-            
+
         } else {
             $("#div_associacao").hide();
             $("#convenio_associacao").prop('required', false);
@@ -395,16 +415,16 @@
 
     $(function () {
         $('#tipo').change(function () {
-            if($(this).val() == 'CBHPM'){
+            if ($(this).val() == 'CBHPM') {
                 $("#ajuste-cbhpm").show();
                 $("#ajuste-cbhpmuco").show();
                 $("#ajuste-cbhpmfilme").show();
-            }else{
+            } else {
                 $("#ajuste-cbhpm").hide();
                 $("#ajuste-cbhpmuco").hide();
                 $("#ajuste-cbhpmfilme").hide();
             }
-            
+
             if ($(this).val() == 'PROPRIA' || $(this).val() == 'CBHPM') {
                 $("#procedimento1").prop('required', true);
                 $("#procedimento2").prop('required', true);

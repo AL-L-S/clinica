@@ -72,3 +72,9 @@ ALTER TABLE ponto.tb_convenio ADD COLUMN padrao_particular boolean DEFAULT false
 
 ALTER TABLE ponto.tb_operador ALTER COLUMN conselho character varying(20);
 
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN coordenador_id integer;
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN guia_id integer;
+
+-- 03/10/2018
+
+ALTER TABLE ponto.tb_convenio ADD COLUMN coordenador_id integer;

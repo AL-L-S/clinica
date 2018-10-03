@@ -1,18 +1,17 @@
 <?
-if (count(@$informacao_aso[0]->impressao_aso) > 0) {    
+if (count(@$informacao_aso[0]->impressao_aso) > 0) {
     $config = json_decode(@$informacao_aso[0]->impressao_aso);
 } else {
     $config = '';
 }
-
 ?>
-<?$perfil_id = $this->session->userdata('perfil_id'); ?>
+<? $perfil_id = $this->session->userdata('perfil_id'); ?>
 <?php
-    $this->load->library('utilitario');
+$this->load->library('utilitario');
 //    echo'<pre>';
-//    var_dump($config->consulta); die;
-    Utilitario::pmf_mensagem($this->session->flashdata('message'));
-    ?>
+//    var_dump($config); die;
+Utilitario::pmf_mensagem($this->session->flashdata('message'));
+?>
 <div class="content ficha_ceatox"> <!-- Inicio da DIV content -->
     <h3>Cadastro ASO</h3>
 
@@ -27,7 +26,8 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <input type="hidden" id="txtPacienteId" name="txtPacienteId"  class="texto09" value="<?= @$paciente[0]->paciente_id ?>"/>
                 <input type="hidden" id="cadastro_aso_id" name="cadastro_aso_id"  class="texto09" value="<?= @$informacao_aso[0]->cadastro_aso_id ?>"/>
                 <input type="hidden" id="conveniobase_id" name="conveniobase_id"  class="texto09" value="<?= @$convenioid[0]->convenio_id ?>"/>
-                <? // var_dump($convenioid[0]->convenio_id);die;?>
+                <!--<input type="hidden" id="coordenador_id" name="coordenador_id"  class="texto09" value="<?= @$coordenador_id[0]->coordenador_id ?>"/>-->
+                <? // var_dump($convenioid[0]->convenio_id);die; ?>
             </div>
             <div>
                 <label>Sexo</label>
@@ -126,7 +126,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             <div id="setor1">
                 <label>Setor</label>
                 <select name="setor" id="setor" class="size2" required="">
-                    
+
                 </select>
                 <input type="text" id="setor2" name="setor2"  class="texto04" value="<?= @$config->setor2 ?>" />
             </div>
@@ -153,6 +153,17 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                     <? endforeach; ?>
                 </select>
             </div>
+            <div id="divcoordenador">
+                <label>Médico Coordenador</label>
+                <select name="coordenador" id="coordenador" class="size2">
+                    <option value="">Selecione</option>
+                    <? foreach ($medicos as $item) : ?>
+                        <option value="<?= $item->operador_id; ?>" <?= (@$config->coordenador == $item->operador_id) ? 'selected' : '' ?>>
+                            <?= $item->nome; ?>
+                        </option>
+                    <? endforeach; ?>
+                </select>
+            </div>
             <div>
                 <label>Validade do Exame</label>
                 <input type="text" name="validade_exame" id="validade_exame" class="texto04" value="<?= @$config->validade_exame ?>" readonly="" />
@@ -162,7 +173,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                 <select  name="sala1" id="sala1" class="size2" required="">
                     <option value="">Selecione</option>
                     <? foreach ($salas as $item) : ?>
-                        <option value="<?= $item->exame_sala_id; ?>"<?= (@$config->sala1 == $item->exame_sala_id) ? 'selected': '' ?>>
+                        <option value="<?= $item->exame_sala_id; ?>"<?= (@$config->sala1 == $item->exame_sala_id) ? 'selected' : '' ?>>
                             <?= $item->nome; ?>
                         </option>
                     <? endforeach; ?>
@@ -201,126 +212,126 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
             </div>
 
         </fieldset>
-        <?if ($perfil_id == 4) {?>
-        <fieldset>
-            <legend>Aptidões</legend>
-            <div>
-
-                <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
-                <select name="questao_um" id="questao_um" required="" class="texto04" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCE</option>
-                    <option value="APTO2" <?= (@$config->questao_um == 'APTO2') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE IRÁ EXERCER</option>
-                    <option value="APTO3" <?= (@$config->questao_um == 'APTO3') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCEU</option>
-                    <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
-
-                </select>
-            </div>
-            <div>
-
-                <label title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
-                       NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">NR35, NR 35.4.1.2.1</label>
-                <select name="questao_dois" id="questao_dois" required="" class="texto04" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
-                        NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO PARA TRABALHO EM ALTURA</option>
-                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA TRABALHO EM ALTURA</option>
-                    <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
-                </select>
-            </div>
-            <div>
-
-                <label title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">NR 33 </label>
-                <select name="questao_tres" id="questao_tres" required="" class="texto04" title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_tres == 'APTO') ? 'selected' : '' ?>>APTO</option>
-                    <option value="INAPTO" <?= (@$config->questao_tres == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
-                    <option value="NÃO MAPEADO" <?= (@$config->questao_tres == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
-                </select>
-            </div>
-            <div>
-
-                <label>APTIDÃO MÁQUINAS MÓVEIS </label>
-                <select name="questao_quatro" id="questao_quatro" required="" class="texto04">
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_quatro == 'APTO') ? 'selected' : '' ?>>APTO PARA OPERAR MÁQUINAS MÓVEIS</option>
-                    <option value="INAPTO" <?= (@$config->questao_quatro == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA OPERAR MÁQUINAS MÓVEIS</option>
-                    <option value="NÃO MAPEADO" <?= (@$config->questao_quatro == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
-                </select>
-            </div>
-            <div>
-
-                <label title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">NR 10 </label>
-                <select name="questao_cinco" id="questao_cinco"  required="" class="texto04" title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_cinco == 'APTO') ? 'selected' : '' ?>>APTO</option>
-                    <option value="INAPTO" <?= (@$config->questao_cinco == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
-                    <option value="NÃO MAPEADO" <?= (@$config->questao_cinco == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
-
-                </select>
-            </div>          
-
-        </fieldset>
-        <? } else{?>
+        <? if ($perfil_id == 4) { ?>
             <fieldset>
-            <legend>Aptidões</legend>
-            <div>
+                <legend>Aptidões</legend>
+                <div>
 
-                <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
-                <select name="questao_um" id="questao_um" class="texto04" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCE</option>
-                    <option value="APTO2" <?= (@$config->questao_um == 'APTO2') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE IRÁ EXERCER</option>
-                    <option value="APTO3" <?= (@$config->questao_um == 'APTO3') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCEU</option>
-                    <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                    <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
+                    <select name="questao_um" id="questao_um" required="" class="texto04" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCE</option>
+                        <option value="APTO2" <?= (@$config->questao_um == 'APTO2') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE IRÁ EXERCER</option>
+                        <option value="APTO3" <?= (@$config->questao_um == 'APTO3') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCEU</option>
+                        <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
 
-                </select>
-            </div>
-            <div>
+                    </select>
+                </div>
+                <div>
 
-                <label title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
-                       NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">NR35, NR 35.4.1.2.1</label>
-                <select name="questao_dois" id="questao_dois" class="texto04" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
-                        NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO PARA TRABALHO EM ALTURA</option>
-                    <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA TRABALHO EM ALTURA</option>
-                    <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
-                </select>
-            </div>
-            <div>
+                    <label title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
+                           NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">NR35, NR 35.4.1.2.1</label>
+                    <select name="questao_dois" id="questao_dois" required="" class="texto04" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
+                            NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO PARA TRABALHO EM ALTURA</option>
+                        <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA TRABALHO EM ALTURA</option>
+                        <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                    </select>
+                </div>
+                <div>
 
-                <label title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">NR 33 </label>
-                <select name="questao_tres" id="questao_tres" class="texto04" title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_tres == 'APTO') ? 'selected' : '' ?>>APTO</option>
-                    <option value="INAPTO" <?= (@$config->questao_tres == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
-                    <option value="NÃO MAPEADO" <?= (@$config->questao_tres == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
-                </select>
-            </div>
-            <div>
+                    <label title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">NR 33 </label>
+                    <select name="questao_tres" id="questao_tres" required="" class="texto04" title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_tres == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                        <option value="INAPTO" <?= (@$config->questao_tres == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                        <option value="NÃO MAPEADO" <?= (@$config->questao_tres == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                    </select>
+                </div>
+                <div>
 
-                <label>APTIDÃO MÁQUINAS MÓVEIS </label>
-                <select name="questao_quatro" id="questao_quatro" class="texto04">
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_quatro == 'APTO') ? 'selected' : '' ?>>APTO PARA OPERAR MÁQUINAS MÓVEIS</option>
-                    <option value="INAPTO" <?= (@$config->questao_quatro == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA OPERAR MÁQUINAS MÓVEIS</option>
-                    <option value="NÃO MAPEADO" <?= (@$config->questao_quatro == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
-                </select>
-            </div>
-            <div>
+                    <label>APTIDÃO MÁQUINAS MÓVEIS </label>
+                    <select name="questao_quatro" id="questao_quatro" required="" class="texto04">
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_quatro == 'APTO') ? 'selected' : '' ?>>APTO PARA OPERAR MÁQUINAS MÓVEIS</option>
+                        <option value="INAPTO" <?= (@$config->questao_quatro == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA OPERAR MÁQUINAS MÓVEIS</option>
+                        <option value="NÃO MAPEADO" <?= (@$config->questao_quatro == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                    </select>
+                </div>
+                <div>
 
-                <label title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">NR 10 </label>
-                <select name="questao_cinco" id="questao_cinco" class="texto04" title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">
-                    <option value="">Selecione</option>
-                    <option value="APTO" <?= (@$config->questao_cinco == 'APTO') ? 'selected' : '' ?>>APTO</option>
-                    <option value="INAPTO" <?= (@$config->questao_cinco == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
-                    <option value="NÃO MAPEADO" <?= (@$config->questao_cinco == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                    <label title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">NR 10 </label>
+                    <select name="questao_cinco" id="questao_cinco"  required="" class="texto04" title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_cinco == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                        <option value="INAPTO" <?= (@$config->questao_cinco == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                        <option value="NÃO MAPEADO" <?= (@$config->questao_cinco == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
 
-                </select>
-            </div>          
+                    </select>
+                </div>          
 
-        </fieldset>
+            </fieldset>
+        <? } else { ?>
+            <fieldset>
+                <legend>Aptidões</legend>
+                <div>
+
+                    <label title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:">NR7 (?) </label>
+                    <select name="questao_um" id="questao_um" class="texto04" title="O funcionário acima, foi submetido(a) a exame médico, conforme a NR 07, sendo considerado:" >
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_um == 'APTO') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCE</option>
+                        <option value="APTO2" <?= (@$config->questao_um == 'APTO2') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE IRÁ EXERCER</option>
+                        <option value="APTO3" <?= (@$config->questao_um == 'APTO3') ? 'selected' : '' ?>>APTO PARA O TRABALHO QUE EXERCEU</option>
+                        <option value="INAPTO" <?= (@$config->questao_um == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+
+                    </select>
+                </div>
+                <div>
+
+                    <label title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
+                           NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">NR35, NR 35.4.1.2.1</label>
+                    <select name="questao_dois" id="questao_dois" class="texto04" title="NR 35 - Quanto a obrigatoriedade de constar no ASO do funcionário se ele é mapeado para Trabalho em Altura
+                            NR 35.4.1.2.1 - A Aptidão para Trabalho em Altura deve ser consignada no atestado de saúde ocupacional do trabalhador ">
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_dois == 'APTO') ? 'selected' : '' ?>>APTO PARA TRABALHO EM ALTURA</option>
+                        <option value="INAPTO" <?= (@$config->questao_dois == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA TRABALHO EM ALTURA</option>
+                        <option value="NÃO MAPEADO" <?= (@$config->questao_dois == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                    </select>
+                </div>
+                <div>
+
+                    <label title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">NR 33 </label>
+                    <select name="questao_tres" id="questao_tres" class="texto04" title="NR 33 - Segurança e Saúde nos Trabalhos em Espaços Confinados conforme item 33.3.4.1">
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_tres == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                        <option value="INAPTO" <?= (@$config->questao_tres == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                        <option value="NÃO MAPEADO" <?= (@$config->questao_tres == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                    </select>
+                </div>
+                <div>
+
+                    <label>APTIDÃO MÁQUINAS MÓVEIS </label>
+                    <select name="questao_quatro" id="questao_quatro" class="texto04">
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_quatro == 'APTO') ? 'selected' : '' ?>>APTO PARA OPERAR MÁQUINAS MÓVEIS</option>
+                        <option value="INAPTO" <?= (@$config->questao_quatro == 'INAPTO') ? 'selected' : '' ?>>INAPTO PARA OPERAR MÁQUINAS MÓVEIS</option>
+                        <option value="NÃO MAPEADO" <?= (@$config->questao_quatro == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+                    </select>
+                </div>
+                <div>
+
+                    <label title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">NR 10 </label>
+                    <select name="questao_cinco" id="questao_cinco" class="texto04" title="NR 10 - Segurança em Instalações e Serviços em Eletricidade conforme item 10.8.7">
+                        <option value="">Selecione</option>
+                        <option value="APTO" <?= (@$config->questao_cinco == 'APTO') ? 'selected' : '' ?>>APTO</option>
+                        <option value="INAPTO" <?= (@$config->questao_cinco == 'INAPTO') ? 'selected' : '' ?>>INAPTO</option>
+                        <option value="NÃO MAPEADO" <?= (@$config->questao_cinco == 'NÃO MAPEADO') ? 'selected' : '' ?>>NÃO MAPEADO</option>
+
+                    </select>
+                </div>          
+
+            </fieldset>
         <? } ?>
         <fieldset>
             <? if (@$informacao_aso[0]->medico_responsavel != '') { ?>
@@ -366,7 +377,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
     .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 330px; }
 </style>
-<? // var_dump(@$config);die; ?>
+<? // var_dump(@$config);die;  ?>
 <script type="text/javascript">
 
                     $(function () {
@@ -378,26 +389,26 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
                             buttonImage: '<?= base_url() ?>img/form/date.png',
                             dateFormat: 'dd/mm/yy'
-                    
-                            
-                        });
-                    });
-                    
-                    $(function () {
-                        $('#data_realizacao').change(function () {
-                          $.getJSON('<?= base_url() ?>autocomplete/datavalidade356', {data_realizacao: $(this).val()}, function (j) {
-                      
-//                                console.log(j);
-                                validade = j;                          
-                                
-                                $('#validade_exame').val(validade);
-                                
-                            });
-                            
+
 
                         });
                     });
-                     
+
+                    $(function () {
+                        $('#data_realizacao').change(function () {
+                            $.getJSON('<?= base_url() ?>autocomplete/datavalidade356', {data_realizacao: $(this).val()}, function (j) {
+
+//                                console.log(j);
+                                validade = j;
+
+                                $('#validade_exame').val(validade);
+
+                            });
+
+
+                        });
+                    });
+
 
 
 
@@ -439,7 +450,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             $.getJSON('<?= base_url() ?>autocomplete/setorempresamt2', {convenio1: $(this).val()}, function (j) {
                                 options = '<option value=""></option>';
 //                                console.log(j);
-                                
+
                                 for (var c = 0; c < j.length; c++) {
                                     if (setor == j[c].setor_id) {
                                         options += '<option selected value="' + j[c].setor_id + '">' + j[c].descricao_setor + '</option>';
@@ -455,19 +466,38 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                 $("#setor").trigger("chosen:updated");
                                 $('.carregando').hide();
                             });
+//                            if(){}
+//                            $.getJSON('<?= base_url() ?>autocomplete/medcoordenador', {convenio1: $('#convenio1').val()}, function (j) {
+//                                        options = '<option value=""></option>';
+////                                console.log(j);
+//
+//                                        for (var c = 0; c < j.length; c++) {
+//                                            if (coordenador == j[c].coordenador_id) {
+//                                                options += '<option selected value="' + j[c].coordenador_id + '">' + j[c].nome + '</option>';
+//                                            } else {
+//                                                options += '<option selected value="' + j[c].coordenador_id + '">' + j[c].nome + '</option>';
+//                                            }
+//
+//                                        }
+//
+//
+//                                        $('#coordenador option').remove();
+//                                        $('#coordenador').append(options);
+//                                        $("#coordenador").trigger("chosen:updated");
+//                                        $('.carregando').hide();
+//                                    });
 
+                            });
                         });
-                    });
-                    
 
-    <? if (@$config->funcao != '') { ?>
+
+<? if (@$config->funcao != '') { ?>
 
                         var funcao = <?= @$config->funcao ?>;
                         carregarFuncaoAtualizar();
 <? } else { ?>
                         var funcao = '';
-<? }   
-
+<? }
 ?>
                     function carregarFuncaoAtualizar() {
 //                        alert(setor);
@@ -490,7 +520,7 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                             $('.carregando').hide();
                         });
                     }
-                    
+
 //                    function carregarFuncaoAtualizar2() {
 ////                        alert(funcao);
 //                            $('#funcao2 option').remove();
@@ -527,55 +557,55 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                         });
                     });
-                    
-                    <? if (@$config->riscos != '') { ?>
-//                        var risco = []
-                        var risco = [<?= implode(', ',@$config->riscos); ?>]; 
+
+<? if (@$config->riscos != '') { ?>
+
+                        var risco = [<?= implode(', ', @$config->riscos); ?>];
                         carregarRiscoAtualizar();
 <? } else { ?>
                         var risco = '';
-<? }
+    <?
+}
 ?>
-                    
+
                     function carregarRiscoAtualizar() {
-                  
+
                         $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: funcao, empresa: $('#convenio1').val(), setor: setor}, function (j) {
-                                options = '<option value=""></option>';
+                            options = '<option value=""></option>';
 //                                console.log(j);
-                                for (var c = 0; c < j.length; c++) {
+                            for (var c = 0; c < j.length; c++) {
 //                                    alert(risco.indexOf(parseInt(j[c].aso_risco_id)));
 //                                    alert(j[c].aso_risco_id);
-                                    if (risco.indexOf(parseInt(j[c].aso_risco_id)) > -1) {
-                                        options += '<option selected value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
-                                    } else {
-                                        options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
-                                    }
-                                    
+                                if (risco.indexOf(parseInt(j[c].aso_risco_id)) > -1) {
+                                    options += '<option selected value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+                                } else {
+                                    options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
                                 }
 
+                            }
 
-                                $('#riscos option').remove();
-                                $('#riscos').append(options);
+
+                            $('#riscos option').remove();
+                            $('#riscos').append(options);
 //                                $("#riscos_teste").trigger("listz:updated");
-                                $("#riscos").trigger("chosen:updated");
+                            $("#riscos").trigger("chosen:updated");
 //                                $('.carregando').hide();
-                            });
+                        });
                     }
-
 
                     $(function () {
                         $('#funcao').change(function () {
-                            
+
 //                            
 
                             $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $(this).val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                 options = '<option value=""></option>';
 //                                console.log(j);
                                 for (var c = 0; c < j.length; c++) {
-                                  
-                                        options += '<option selected value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
-                                   
-                                    
+
+                                    options += '<option selected value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+
+
                                 }
 
 
@@ -588,38 +618,38 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                         });
                     });
-                    
-                    
-     <? if (@$config->procedimento1 != '') { ?>
-//                       
-                        var exame = [<?= implode(', ',@$config->procedimento1); ?>]; 
+
+
+<? if (@$config->procedimento1 != '') { ?>
+                        //                       
+                        var exame = [<?= implode(', ', @$config->procedimento1); ?>];
                         carregarProcedimentoAtualizar();
 <? } else { ?>
                         var exame = '';
 <? }
 ?>
-                    
-                    function carregarProcedimentoAtualizar() {
-                        
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: funcao, empresa: $('#convenio1').val(), setor: setor}, function (j) {
-                                options = '<option value=""></option>';
 
-                                for (var c = 0; c < j.length; c++) {
+                    function carregarProcedimentoAtualizar() {
+
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: funcao, empresa: $('#convenio1').val(), setor: setor}, function (j) {
+                            options = '<option value=""></option>';
+
+                            for (var c = 0; c < j.length; c++) {
 //                                    alert(exame.indexOf(parseInt(j[c].procedimento_convenio_id)));
 //                                    alert(j[c].procedimento_convenio_id);
-                                    if (exame.indexOf(parseInt(j[c].procedimento_convenio_id)) > -1) {
-                                        options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                    } else {
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                    }
-                                    
+                                if (exame.indexOf(parseInt(j[c].procedimento_convenio_id)) > -1) {
+                                    options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+                                } else {
+                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                                 }
 
+                            }
 
-                                $('#procedimento1 option').remove();
-                                    $('#procedimento1').append(options);
-                                    $("#procedimento1").trigger("chosen:updated");
-                            });
+
+                            $('#procedimento1 option').remove();
+                            $('#procedimento1').append(options);
+                            $("#procedimento1").trigger("chosen:updated");
+                        });
                     }
 
                     $(function () {
@@ -704,55 +734,115 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                         }
                     }
-                    calculoIdade();
+                    calculoIdade();                   
+  
                     
-                    
+                    function coordenador() {
+
+                                    $.getJSON('<?= base_url() ?>autocomplete/medcoordenador', {convenio1: $('#convenio1').val()}, function (j) {
+                                        options = '<option value=""></option>';
+//                                console.log(j);
+
+                                        for (var c = 0; c < j.length; c++) {
+                                            if (coordenador == j[c].coordenador_id) {
+                                                options += '<option selected value="' + j[c].coordenador_id + '">' + j[c].nome + '</option>';
+                                            } else {
+                                                options += '<option selected value="' + j[c].coordenador_id + '">' + j[c].nome + '</option>';
+                                            }
+
+                                        }
+
+
+                                        $('#coordenador option').remove();
+                                        $('#coordenador').append(options);
+                                        $("#coordenador").trigger("chosen:updated");
+                                        $('.carregando').hide();
+                                    });
+
+                            };
+                            
+                    function coordenadorparticular() {
+//                    alert('asdsd');
+
+                                
+                                    $.getJSON('<?= base_url() ?>autocomplete/medcoordenadorparticular', {convenio1: $('convenio1').val()}, function (j) {
+                                        options = '<option value=""></option>';
+//                                console.log(j);
+
+                                        for (var c = 0; c < j.length; c++) {
+                                            if (coordenador == j[c].coordenador_id) {
+                                                options += '<option selected value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+                                            } else {
+                                                options += '<option  value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+                                            }
+
+                                        }
+
+
+                                        $('#coordenador option').remove();
+                                        $('#coordenador').append(options);
+                                        $("#coordenador").trigger("chosen:updated");
+                                        $('.carregando').hide();
+                                    });
+
+
+                            };
+
+
 //                    $(document).ready(function() {
-                        <? if(@$config->consulta=="particular"){?>          
-//                      alert('asdasd');
+<? if (@$config->consulta == "particular") { ?>
+                        //                      alert('asdasd');
                         $('#convenio1').hide();
                         $('#convenio2').show();
                         $('#setor').hide();
                         $('#setor2').show();
                         $('#funcao').hide();
                         $('#funcao2').show();
-                        
-                        <?}
-                        else{ ?>
-//                            alert('eeee');
+                        $('#divcoordenador').show();
+
+<? } else {
+    ?>
+                        //                            alert('eeee');
+//                        coordenador();
                         $('#convenio2').hide();
                         $('#convenio1').show();
                         $('#setor2').hide();
                         $('#setor').show();
                         $('#funcao2').hide();
-                        $('#funcao').show();   
-               <? } ?>
-               
+                        $('#funcao').show();
+                        $('#divcoordenador').hide();
+<? } ?>
+
 //                 });
-               
 
-                
-            $('#consulta').change(function () {
 
-            if ($('#consulta :selected').val() === "particular") {
-                $('#convenio1').hide();
-                $('#convenio2').show();
-                $('#setor').hide();
-                $('#setor2').show();
-                $('#funcao').hide();
-                $('#funcao2').show();
-                $("#convenio1").prop('required', false);
-                        $("#setor").prop('required', false);
-                        $("#funcao").prop('required', false);
-                
-                $.getJSON('<?= base_url() ?>ambulatorio/guia/listarriscos', {setor: $('#setor').val()}, function (j) {
+
+                    $('#consulta').change(function () {
+
+                        if ($('#consulta :selected').val() === "particular") {
+                            
+                            coordenadorparticular();
+                            
+                            $('#divcoordenador').show();
+                            $('#convenio1').hide();
+                            $('#convenio2').show();
+                            $('#setor').hide();
+                            $('#setor2').show();
+                            $('#funcao').hide();
+                            $('#funcao2').show();
+                            $("#convenio1").prop('required', false);
+                            $("#setor").prop('required', false);
+                            $("#funcao").prop('required', false);
+
+
+                            $.getJSON('<?= base_url() ?>ambulatorio/guia/listarriscos', {setor: $('#setor').val()}, function (j) {
                                 options = '<option value=""></option>';
 //                                alert('ola');
                                 for (var c = 0; c < j.length; c++) {
-                                  
-                                        options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
-                                   
-                                    
+
+                                    options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+
+
                                 }
 
 
@@ -761,20 +851,20 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                 $("#riscos").trigger("chosen:updated");
 
                             });
-                            <? if(count($convenioid) > 0){ ?>
-                            var aso = <?= $convenioid[0]->convenio_id ?>;
-                            <? } else { ?>
-                        var aso = '';
+<? if (count($convenioid) > 0) { ?>
+                                var aso = <?= $convenioid[0]->convenio_id ?>;
+<? } else { ?>
+                                var aso = '';
 <? }
 ?>
                             $.getJSON('<?= base_url() ?>cadastros/convenio/listarprocedimentossetores', {empresa: aso}, function (j) {
                                 options = '<option value=""></option>';
 //                                alert('ola');
                                 for (var c = 0; c < j.length; c++) {
-                                  
-                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].nome + '</option>';
-                                   
-                                    
+
+                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].nome + '</option>';
+
+
                                 }
 
 
@@ -784,27 +874,30 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
 
                             });
 //             
-                
-                              
-            } else {
-                $('#convenio2').hide();
-                $('#convenio1').show();
-                $('#setor2').hide();
-                $('#setor').show();
-                $('#funcao2').hide();
-                $('#funcao').show(); 
-                
-                $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+
+
+                        } else {
+//                            coordenador();
+                            
+                            $('#divcoordenador').hide();
+                            $('#convenio2').hide();
+                            $('#convenio1').show();
+                            $('#setor2').hide();
+                            $('#setor').show();
+                            $('#funcao2').hide();
+                            $('#funcao').show();
+
+                            $.getJSON('<?= base_url() ?>autocomplete/riscofuncaomt2', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
                                 options = '<option value=""></option>';
 //                                alert('ola');
                                 for (var c = 0; c < j.length; c++) {
-                         
+
                                     if (risco.indexOf(parseInt(j[c].aso_risco_id)) > -1) {
                                         options += '<option selected value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
                                     } else {
                                         options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
                                     }
-                                    
+
                                 }
 
 
@@ -814,26 +907,25 @@ if (count(@$informacao_aso[0]->impressao_aso) > 0) {
                                 $("#riscos").trigger("chosen:updated");
 //                                $('.carregando').hide();
                             });
-                            
+
                             $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
-                                    options = '<option value=""></option>';
+                                options = '<option value=""></option>';
 //                                     console.log(j);
-                                    for (var c = 0; c < j.length; c++) {
-                                        options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
-                                   
-                                    }
+                                for (var c = 0; c < j.length; c++) {
+                                    options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+
+                                }
 //                            $('#procedimento1').html(options).show();
-                                    $('#procedimento1 option').remove();
-                                    $('#procedimento1').append(options);
-                                    $("#procedimento1").trigger("chosen:updated");
+                                $('#procedimento1 option').remove();
+                                $('#procedimento1').append(options);
+                                $("#procedimento1").trigger("chosen:updated");
 //                                    $('.carregando').hide();
-                                });
+                            });
                             
+
                             
-                                    
-                
-            }
-        });
-            
-        
+                        }
+                    });
+
+
 </script>

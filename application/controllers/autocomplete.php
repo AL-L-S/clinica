@@ -2084,6 +2084,28 @@ class Autocomplete extends Controller {
 
         echo json_encode($result);
     }
+    
+    function medcoordenador() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['convenio1'])) {
+            $result = $this->convenio->listarautocompletecoordenador($_GET['convenio1']);
+        } else {
+            $result = $this->convenio->listarautocompletecoordenador(@$_GET['convenio1']);
+        }
+
+        echo json_encode($result);
+    }
+    
+    function medcoordenadorparticular() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['convenio1'])) {
+            $result = $this->convenio->listarautocompletecoordenadorparticular($_GET['convenio1']);
+        } else {
+            $result = $this->convenio->listarautocompletecoordenadorparticular(@$_GET['convenio1']);
+        }
+
+        echo json_encode($result);
+    }
 
     function perfiloperador() {
         header('Access-Control-Allow-Origin: *');
