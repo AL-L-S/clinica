@@ -44,24 +44,28 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Manter Procedimento</a></h3>
         <div>
-             <?$grupo = $this->procedimento->listargrupos(); 
-              ?>
+             <?
+             $grupo = $this->procedimento->listargrupos(); 
+             $subgrupo = $this->grupoclassificacao->listarsubgrupo2();
+             ?>
             <table>
                 <thead>
-                     <tr>
-                        <th colspan="5" class="tabela_title">
-                    </tr>
+                     <!-- <tr>
+                        <th colspan="6" class="tabela_title">
+                    </tr> -->
                 <form method="get" action="<?= base_url() ?>ambulatorio/procedimento/pesquisar">
                     <tr>
-                        <th class="tabela_title">Nome</th>
-                        <th class="tabela_title">Grupo</th>   
+                        <th class="tabela_title" style="width: 300px;">Nome</th>
+                        <th class="tabela_title" style="width: 200px;">Grupo</th>   
+                        <th class="tabela_title" style="width: 100px;">Subgrupo</th>   
                         <th class="tabela_title"></th>  
-                        <th colspan="2" class="tabela_title">Codigo</th>
+                        <th colspan="1" class="tabela_title">Codigo</th>
+                        <th colspan="1" class="tabela_title">Descrição</th>
                        
                     </tr>
                     <tr>
                         <th class="tabela_title">
-                            <input type="text" name="nome" class="texto07" value="<?php echo @$_GET['nome']; ?>" />
+                            <input type="text" name="nome" class="texto03" value="<?php echo @$_GET['nome']; ?>" />
                         </th>
                         
                         <th class="tabela_title">
@@ -77,6 +81,18 @@
                             </select>
                         </th>
                         <th class="tabela_title">
+                            <select name="subgrupo" id="subgrupo" class="size1">
+                                <option value="">Selecione</option>
+                                <? foreach ($subgrupo as $value) : ?>
+                                    <option value="<?= $value->ambulatorio_subgrupo_id; ?>"
+                                        <? if (@$_GET['subgrupo'] == $value->ambulatorio_subgrupo_id) echo 'selected'?>>
+                                    <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+
+                            </select>
+                        </th>
+                        <th class="tabela_title">
                             
                         </th>
                         <th class="tabela_title">
@@ -84,19 +100,25 @@
                         </th>
                         
                         <th class="tabela_title">
+                            <input type="text" name="descricao" class="texto03" value="<?php echo @$_GET['descricao']; ?>" />
+                        </th>
+                        
+                        <th class="tabela_title">
                             <button type="submit" id="enviar">Pesquisar</button>
                         </th>
                         
                     </tr>
+            </table>
+            <table>
                     <tr>
-                        <th class="tabela_header" width="50%">Nome</th>
+                        <th class="tabela_header" width="40%">Nome</th>
                         <th class="tabela_header" width="10%">Grupo</th>
                         <th class="tabela_header" width=""></th>
                         <? 
                         $subgrupo_procedimento = $this->session->userdata('subgrupo_procedimento');
                         if($subgrupo_procedimento == 't') { 
                             ?>
-                            <th class="tabela_header" width="10%">Subgrupo</th>
+                            <th class="tabela_header" width="20%">Subgrupo</th>
                         <? } ?>
                         <th class="tabela_header" width="10%">Codigo</th>
                         <th class="tabela_header" width="25%">Descri&ccedil;&atilde;o</th>

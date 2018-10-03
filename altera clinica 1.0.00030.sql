@@ -57,7 +57,7 @@ BEGIN
     IF resultado = 0 THEN 
 	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
         VALUES ('1.0.000030',
-            'Agora no Manter Entrada é possível Fracionar uma entrada em outra unidade. Ex: Entrada de 30 caixas de comprimidos podem ser fracionadas para 300 comprimidos. Obs: Não é possível fracionar uma caixa para uma caixa',
+            'Agora Em Estoque->Rotinas->Manter Entrada é possível Fracionar uma entrada em outra unidade. Ex: Entrada de 30 caixas de comprimidos podem ser fracionadas para 300 comprimidos. Obs: Não é possível fracionar uma caixa para uma caixa',
             '3007',
             'Melhoria'
             );

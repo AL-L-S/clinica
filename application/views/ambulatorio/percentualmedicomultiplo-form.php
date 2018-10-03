@@ -39,14 +39,6 @@
                     <div class="divTabela">
                         <table id="procedimentos">
                             <tr id="trBase">
-                                <td>
-                                    <select id="grupoText" class="size1">
-                                        <option value="">Selecione</option>
-                                        <? foreach ($grupos as $value) {?>
-                                        <option value="<?= $value->nome ?>"><?= $value->nome ?></option>
-                                        <? } ?>
-                                    </select>
-                                </td>
                                 <td width="50px;">
                                     <select name="procedimentoText" id="procedimentoText" class="size2 chosen-select" tabindex="1" data-placeholder="Procedimento">
                                         <option value="">Selecione</option>
@@ -55,6 +47,23 @@
                                         <? } ?>
                                     </select>
                                 </td>
+                                <td>
+                                    <select id="grupoText" class="size1">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($grupos as $value) {?>
+                                        <option value="<?= $value->nome ?>"><?= $value->nome ?></option>
+                                        <? } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="subgrupoText" class="size1">
+                                        <option value="">Selecione</option>
+                                        <? foreach ($subgrupos as $value) {?>
+                                        <option value="<?= $value->nome ?>"><?= $value->nome ?></option>
+                                        <? } ?>
+                                    </select>
+                                </td>
+                                
                                 <td>
                                     <button type="button" style="display: inline-block" onclick="filtrarTabela()">Buscar</button>
                                 </td>
@@ -68,12 +77,8 @@
                                         <option value="0">Nao</option>
                                     </select>
                                 </td>
-                                <td class="tdRevText">
-                                    <select id="revText" name="revText" class="size1">
-                                        <option value="">Selecione</option>
-                                        <option value="1">Sim</option>
-                                        <option value="0">Nao</option>
-                                    </select>
+                                <td class="tdValorText">
+                                    <input type="text" id="valorRevisorText" class="texto01">
                                 </td>
                                 <td class="tdDiaRecText">
                                     <input type="text" id="diaRecText" class="texto01">
@@ -84,14 +89,21 @@
                                 <td>
                                     <button type="button" onclick="aplicandoValores()">Aplicar</button>
                                 </td>
+                                <td>
+                                    <button type="button" onclick="limparValores()">Limpar</button>
+                                </td>
                             </tr>
                             <tr id="trBase">
-                                <td class="tabela_title">Grupo</td>
                                 <td class="tabela_title">Procedimento</td>
+                                
+                                
+                                <td class="tabela_title">Grupo</td>
+                                <td class="tabela_title">Subgrupo</td>
                                 <td class="tabela_title"></td>
+                                
                                 <td class="tabela_title">Valor</td>
                                 <td class="tabela_title">Percentual</td>
-                                <td class="tabela_title">Revisor</td>
+                                <td class="tabela_title">Valor Revisor</td>
                                 <td class="tabela_title">Dia Faturamento</td>
                                 <td class="tabela_title">Tempo Recebimento</td>
                                 <td class="tabela_title">Limpar?</td>
@@ -101,11 +113,13 @@
 //                            var_dump($procedimento); die;
                             foreach($procedimento as $item){ ?>
                                 <tr class="linhaTabela">
-                                    <td class="<?= $item->grupo ?>"><?= $item->grupo ?></td>
-                                    <td colspan="2" class="<?= $item->procedimento_tuss_id ?>">
+                                    <td style="width: 300px;" colspan="1" class="<?= $item->procedimento_tuss_id ?>">
                                         <input type="hidden" name="procedimento_convenio_id[<?= $i ?>]" value="<?= $item->procedimento_convenio_id ?>"/>
                                         <?= $item->codigo ?> - <?= $item->procedimento ?>
                                     </td>
+                                    <td class="<?= $item->grupo ?>"><?= $item->grupo ?></td>
+                                    <td class="<?= $item->subgrupo ?>" colspan="2"><?= $item->subgrupo ?></td>
+                                    
                                     <td class="tdValor">
                                         <input type="text" name="valor[<?= $i ?>]"  id="valor<?= $i ?>" class="texto01"/>
                                     </td>
@@ -115,11 +129,8 @@
                                             <option value="0"> NÃO</option>
                                         </select>
                                     </td>
-                                    <td class="tdRevisor">
-                                        <select name="revisor[<?= $i ?>]"  id="revisor<?= $i ?>" class="size1">
-                                            <option value="1"> SIM</option>
-                                            <option value="0"> NÃO</option>
-                                        </select>
+                                    <td class="tdValor">
+                                        <input type="text" name="valor_revisor[<?= $i ?>]"  id="valor_revisor<?= $i ?>" class="texto01"/>
                                     </td>
                                     <td class="tdDiaRecebimento">
                                         <input type="text" name="dia_recebimento[<?= $i ?>]" alt="99" id="dia_recebimento<?= $i ?>" class="texto01"/>
@@ -128,7 +139,7 @@
                                         <input type="text" name="tempo_recebimento[<?= $i ?>]" alt="99" id="tempo_recebimento<?= $i ?>" class="texto01"/>
                                     </td>
                                     <td class="tdLimpar">
-                                        <input type="checkbox" name="limparLinha" id="limparLinha" class="<?= $i ?>"/>
+                                        <input type="checkbox" name="limparLinha" id="limparLinha<?= $i ?>" class="<?= $i ?>"/>
                                     </td>
                                  </tr>
                                 <? 
@@ -171,20 +182,50 @@
     $(function () {
         $("#accordion").accordion();
     });
+
+    function limparValores(){
+        var tr = document.getElementById('procedimentos').getElementsByTagName("tr");
+              
+        for (var i = 0; i < tr.length; i++) {
+            if(tr[i].getAttribute("id") != 'trBase' && tr[i].style.display == ""){
+                var td = tr[i].getElementsByTagName("td");
+                var checkbox = td[td.length - 1].getElementsByTagName("input")[0];
+                var id = checkbox.getAttribute("id");
+                var id_linha = checkbox.getAttribute("class");
+                
+                var checkbox_limpar = document.getElementById(id);
+                if(checkbox_limpar.checked == true){
+                    // alert('Teste');
+                    $("#valor"+id_linha).val('');
+                    $("#valor_revisor"+id_linha).val('');
+                    // $("#revisor"+id_linha).val('');
+                    $("#percentual"+id_linha).val('');
+                    $("#dia_recebimento"+id_linha).val('');
+                    $("#tempo_recebimento"+id_linha).val('');
+
+                }else{
+                 
+                }
+
+                // console.log(id);  
+
+             }
+        }
+    }
     
-    $(function () {
-        $('input[name=limparLinha]').change(function () {
-            var id = $(this).attr('class');
+    // $(function () {
+    //     $('input[name=limparLinha]').change(function () {
+    //         var id = $(this).attr('class');
             
-            $("#valor"+id).val('');
-            $("#revisor"+id).val('');
-            $("#percentual"+id).val('');
-            $("#dia_recebimento"+id).val('');
-            $("#tempo_recebimento"+id).val('');
+    //         $("#valor"+id).val('');
+    //         $("#revisor"+id).val('');
+    //         $("#percentual"+id).val('');
+    //         $("#dia_recebimento"+id).val('');
+    //         $("#tempo_recebimento"+id).val('');
             
-            $(this).removeAttr('checked');
-        }); 
-    });
+    //         $(this).removeAttr('checked');
+    //     }); 
+    // });
     
     $(function () {
         $('#convenio_id').change(function () {
@@ -198,7 +239,7 @@
             valor = $("#valorText").val(),
             diaRecebimento = $("#diaRecText").val(),
             tempoRecebimento = $("#tempoRecText").val(),
-            revisor = $("#revText option:selected").val(),
+            revisor = $("#valorRevisorText").val(),
             percentual = $("#percText option:selected").val();
         
         for (var i = 0; i < tr.length; i++) {
@@ -208,7 +249,7 @@
                 var id = checkbox.getAttribute("class");
                 
                 if(valor != "") $("#valor"+id).val(valor);
-                if(revisor != "") $("#revisor"+id).val(revisor);
+                if(revisor != "") $("#valor_revisor"+id).val(revisor);
                 if(percentual != "") $("#percentual"+id).val(percentual);
                 if(diaRecebimento != "") $("#dia_recebimento"+id).val(diaRecebimento);
                 if(tempoRecebimento != "") $("#tempo_recebimento"+id).val(tempoRecebimento);
@@ -219,6 +260,7 @@
     function filtrarTabela() {
         var procedimento = document.getElementById("procedimentoText").value;
         var grupo = document.getElementById("grupoText").value;
+        var grupo2 = document.getElementById("subgrupoText").value;
         
         var tr = document.getElementById('procedimentos').getElementsByTagName("tr")
 
@@ -228,19 +270,30 @@
                 var td = tr[i].getElementsByTagName("td");
                 
                 var visivelGrupo = true;
-                
+                var visivelSubGrupo = true;
+                // alert(grupo);
+                // console.log(td);
+                // alert(td[1].getAttribute("class"));
                 // Filtro do grupo
-                if (grupo == td[0].getAttribute("class") || grupo == '') {
+                if (grupo == td[1].getAttribute("class") || grupo == '') {
                     tr[i].style.display = "";
                 } 
                 else { 
                     visivelGrupo = false;
+                    visivelSubGrupo = false;
                     tr[i].style.display = "none";
                 }
                 
                 // Filtro do procedimento
-                if (procedimento == td[2].getAttribute("class") || procedimento == '') {
+                if (procedimento == td[0].getAttribute("class") || procedimento == '') {
                     if (visivelGrupo) tr[i].style.display = "";
+                } else {
+                    visivelSubGrupo = false;
+                    tr[i].style.display = "none";
+                }
+
+                if (grupo2 == td[2].getAttribute("class") || grupo2 == '') {
+                    if (visivelSubGrupo) tr[i].style.display = "";
                 } else {
                     tr[i].style.display = "none";
                 }

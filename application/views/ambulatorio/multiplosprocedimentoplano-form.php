@@ -109,16 +109,21 @@
     <? foreach ($grupos as $value) {?>
         divPesquisa +='<option value="<?= $value->nome ?>"><?= $value->nome ?></option>';
     <? } ?>
+    divPesquisa += '</select>';
+    divPesquisa += '<select id="subgrupoText"><option value="">TODOS</option>';
+    <? foreach ($subgrupos as $value) {?>
+        divPesquisa +='<option value="<?= $value->nome ?>"><?= $value->nome ?></option>';
+    <? } ?>
     divPesquisa += '</select><button type="button" onclick="filtrarTabela()">Buscar</button></div>';
     
-    var tabelaPadrao = '<table id="procedimentos"><thead><th class="tabela_title">Procedimento</th><th class="tabela_title">Grupo</th><th class="tabela_title valor">Qtde CH</th><th class="tabela_title valor">Valor CH</th><th class="tabela_title valor">Qtde Filme</th>';
+    var tabelaPadrao = '<table id="procedimentos"><thead><th class="tabela_title">Procedimento</th><th class="tabela_title">Grupo</th><th class="tabela_title">Subgrupo</th><th class="tabela_title valor">Qtde CH</th><th class="tabela_title valor">Valor CH</th><th class="tabela_title valor">Qtde Filme</th>';
     tabelaPadrao += '<th class="tabela_title valor">Valor Filme</th><th class="tabela_title valor">Qtde Porte</th><th class="tabela_title valor">Valor Porte</th><th class="tabela_title valor">Qtde UCO</th><th class="tabela_title valor">Valor UCO</th><th class="tabela_title valor">Valor TOTAL</th>';
     tabelaPadrao += '</thead><tbody>';
     
     <? $i = 0;
     foreach($procedimento as $item){ ?>
-        tabelaPadrao += '<tr class="linhaTabela" id="<?= $item->grupo ?>"><td><input type="hidden" name="procedimento_id[<?= $i ?>]" value="<?= $item->procedimento_tuss_id ?>"/><?= $item->codigo ?> - <?= $item->nome ?></td>';
-        tabelaPadrao += '<td><?= $item->grupo ?></td><td class="valor"><input type="text" name="qtdech[<?= $i ?>]"  id="qtdech<?= $i ?>" class="texto01" value="0"/></td><td class="valor"><input type="text" name="valorch[<?= $i ?>]"  id="valorch<?= $i ?>" class="texto01" value="0"/></td>';
+        tabelaPadrao += '<tr class="linhaTabela" id="<?= $item->grupo ?>"><td><input type="hidden" name="procedimento_id[<?= $i ?>]" value="<?= $item->procedimento_tuss_id ?>"/><?= $item->codigo ?> - <?= $item->nome ?></td><td><?=$item->grupo?></td>';
+        tabelaPadrao += '<td><span><?= $item->subgrupo ?></span></td><td class="valor"><input type="text" name="qtdech[<?= $i ?>]"  id="qtdech<?= $i ?>" class="texto01" value="0"/></td><td class="valor"><input type="text" name="valorch[<?= $i ?>]"  id="valorch<?= $i ?>" class="texto01" value="0"/></td>';
         tabelaPadrao += '<td class="valor"><input type="text" name="qtdefilme[<?= $i ?>]"  id="qtdefilme<?= $i ?>" class="texto01" value="0"/></td><td class="valor"><input type="text" name="valorfilme[<?= $i ?>]"  id="valorfilme<?= $i ?>" class="texto01" value="0"/></td>';
         tabelaPadrao += '<td class="valor"><input type="text" name="qtdeporte[<?= $i ?>]"  id="qtdeporte<?= $i ?>" class="texto01" value="0"/></td><td class="valor"><input type="text" name="valorporte[<?= $i ?>]"  id="valorporte<?= $i ?>" class="texto01" value="0"/></td>';
         tabelaPadrao += '<td class="valor"><input type="text" name="qtdeuco[<?= $i ?>]"  id="qtdeuco<?= $i ?>" class="texto01" value="0"/></td><td class="valor"><input type="text" name="valoruco[<?= $i ?>]"  id="valoruco<?= $i ?>" class="texto01" value="0"/>';
@@ -273,15 +278,17 @@
         procedimento = input.value.toUpperCase();
         
         select = document.getElementById("grupoText");
+        select2 = document.getElementById("subgrupoText");
 //        select.selectedIndex        
         grupo = select.options[select.selectedIndex].value.toUpperCase();
+        grupo2 = select2.options[select2.selectedIndex].value.toUpperCase();
         
         var id = ($("#conv_secundario").val() == 'f') ? 'procedimentos' : 'tableProcConvSec';
         table = document.getElementById(id);
         tr = table.getElementsByTagName("tr");
         
-        if (grupo == "" && procedimento != "") { // CASO TENHA INFORMADO SOMENTE PROCEDIMENTO
-//            alert('1');
+        if (grupo == "" && procedimento != "" && grupo2 == "") { // CASO TENHA INFORMADO SOMENTE PROCEDIMENTO
+        //    alert('0');
             for (i = 0; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[0];
                 if (td) {
@@ -293,8 +300,75 @@
                 }       
             }
         }
+        else if (grupo != "" && procedimento != "" && grupo2 != "") { // CASO TENHA INFORMADO O GRUPO E O PROCEDIMENTO E SUBGRUPO
+        //    alert('1');
+            for (i = 0; i < tr.length; i++) {
+                
+                td = tr[i].getElementsByTagName("td")[0];
+                tdsub = tr[i].getElementsByTagName("span")[0];
+                var id = tr[i].getAttribute("id");
+                
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1 && grupo == id && tdsub.innerHTML.toUpperCase().indexOf(grupo2) > -1) {
+                      tr[i].style.display = "";
+                    } else {
+                      tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+        else if (grupo == "" && procedimento != "" && grupo2 != "") { // CASO TENHA INFORMADO O PROCEDIMENTO E SUBGRUPO
+        //    alert('6');
+            for (i = 0; i < tr.length; i++) {
+                
+                td = tr[i].getElementsByTagName("td")[0];
+                tdsub = tr[i].getElementsByTagName("span")[0];
+                var id = tr[i].getAttribute("id");
+                
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1 && tdsub.innerHTML.toUpperCase().indexOf(grupo2) > -1) {
+                      tr[i].style.display = "";
+                    } else {
+                      tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+
+        else if (grupo != "" && grupo2 != "" && procedimento == "") { // CASO TENHA INFORMADO O GRUPO E SUBGRUPO
+        //    alert('5');
+            for (i = 0; i < tr.length; i++) {
+                
+                td = tr[i].getElementsByTagName("td")[0];
+                tdsub = tr[i].getElementsByTagName("span")[0];
+                var id = tr[i].getAttribute("id");
+                
+                if (td) {
+                    if (grupo == id && tdsub.innerHTML.toUpperCase().indexOf(grupo2) > -1) {
+                      tr[i].style.display = "";
+                    } else {
+                      tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+
+        else if (grupo2 != "" && procedimento == "") { // CASO TENHA INFORMADO SOMENTE PROCEDIMENTO
+        //    alert('2');
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("span")[0];
+                if (td) {
+                    // alert(td.innerHTML.toUpperCase());
+                    if (td.innerHTML.toUpperCase().indexOf(grupo2) > -1) {
+                      tr[i].style.display = "";
+                    } else {
+                      tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
         else if (grupo != "" && procedimento == "") { // CASO TENHA INFORMADO APENAS O GRUPO
-//            alert('2');
+        //    alert('3');
             for (i = 0; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[0];
                 if (td) {
@@ -308,7 +382,7 @@
             }       
         }
         else if (grupo != "" && procedimento != "") { // CASO TENHA INFORMADO O GRUPO E O PROCEDIMENTO
-//            alert('3');
+        //    alert('4');
             for (i = 0; i < tr.length; i++) {
                 
                 td = tr[i].getElementsByTagName("td")[0];
@@ -323,6 +397,11 @@
                 }       
             }
         }
+        
+
+        
+        
+        
         else{
 //            console.log(grupo);
 //            alert(grupo);

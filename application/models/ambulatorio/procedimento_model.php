@@ -43,6 +43,9 @@ class procedimento_model extends Model {
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('pt.nome ilike', "%" . $args['nome'] . "%");
         }
+        if (isset($args['subgrupo']) && $args['subgrupo'] > 0) {
+            $this->db->where('pt.subgrupo_id', $args['subgrupo']);
+        }
         if (isset($args['grupo']) && strlen($args['grupo']) > 0) {
 
             $this->db->where('pt.grupo ilike', "%" . $args['grupo'] . "%");
@@ -50,6 +53,10 @@ class procedimento_model extends Model {
         if (isset($args['codigo']) && strlen($args['codigo']) > 0) {
 
             $this->db->where('pt.codigo ilike', "%" . $args['codigo'] . "%");
+        }
+        if (isset($args['descricao']) && strlen($args['descricao']) > 0) {
+
+            $this->db->where('pt.descricao ilike', "%" . $args['descricao'] . "%");
         }
 //            $this->db->orwhere('pt.grupo ilike', "%" . $args['nome'] . "%");
 //            $this->db->where("pt.ativo", 't');
@@ -542,34 +549,50 @@ class procedimento_model extends Model {
     }
 
     function relatorioprocedimentos() {
-        $this->db->select('procedimento_tuss_id,
-                            nome,
-                            codigo,
-                            descricao,
-                            grupo,
-                            perc_medico,
-                            percentual,
-                            percentual_revisor,
-                            valor_revisor,
-                            qtde,
-                            home_care,
-                            entrega,
+        $this->db->select('pt.procedimento_tuss_id,
+                            pt.nome,
+                            pt.codigo,
+                            pt.descricao,
+                            pt.grupo,
+                            pt.perc_medico,
+                            pt.percentual,
+                            pt.percentual_revisor,
+                            pt.valor_revisor,
+                            pt.qtde,
+                            pt.home_care,
+                            pt.entrega,
+                            sub.nome as subgrupo,
                             
                             
-                            dencidade_calorica,
-                            proteinas,
-                            carboidratos,
-                            lipidios,
-                            kcal');
-        $this->db->from('tb_procedimento_tuss');
-        $this->db->where("ativo", 't');
+                            pt.dencidade_calorica,
+                            pt.proteinas,
+                            pt.carboidratos,
+                            pt.lipidios,
+                            pt.kcal');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->join('tb_ambulatorio_subgrupo sub', 'sub.ambulatorio_subgrupo_id = pt.subgrupo_id', 'left');
+        $this->db->where("pt.ativo", 't');
         if ($_POST['grupo'] == "1") {
-            $this->db->where('grupo !=', 'RM');
+            $this->db->where('pt.grupo !=', 'RM');
         }
+        
+        if ($_POST['subgrupo'] > 0) {
+            $this->db->where('pt.subgrupo_id', $_POST['subgrupo']);
+        }
+        
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
-            $this->db->where('grupo', $_POST['grupo']);
+            $this->db->where('pt.grupo', $_POST['grupo']);
         }
-        $this->db->orderby("nome");
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatorioprocedimentossubgrupo() {
+
+        $this->db->select('sub.nome as subgrupo');
+        $this->db->from('tb_ambulatorio_subgrupo sub');
+        $this->db->where('sub.ambulatorio_subgrupo_id', $_POST['subgrupo']);
         $return = $this->db->get();
         return $return->result();
     }

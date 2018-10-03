@@ -19,6 +19,17 @@
                                     <? } ?>
                         </select>
                     </dd>
+                    <dt>
+                        <label>Subgrupo</label>
+                    </dt>
+                    <dd>
+                        <select name="subgrupo" id="subgrupo" class="size1" >
+                            <option value='0' >TODOS</option>
+                            <? foreach ($subgrupos as $grupo) { ?>                                
+                                <option value='<?= $grupo->ambulatorio_subgrupo_id ?>'><?= $grupo->nome ?></option>
+                            <? } ?>
+                        </select>
+                    </dd>
                 </dl>
                 <button type="submit" >Pesquisar</button>
             </form>
