@@ -10,7 +10,7 @@
                 $campos_obrigatorios = array();
             }
 
-//            var_dump(); die;
+//            var_dump($this->session->userdata('recomendacao_configuravel')); die;
             ?>
             <legend>Dados do Paciente</legend>
             <div>

@@ -124,6 +124,7 @@ function debug($object) {
                     url: "<?= base_url(); ?>ambulatorio/empresa/checandolembrete",
                     dataType: "json",
                     success: function (retorno) {
+//                        alert('ola');
                         for (var i = 0; i < retorno.length; i++) {
                             if (retorno[i].visualizado == 0) {
                                 alert(retorno[i].texto);
@@ -131,6 +132,27 @@ function debug($object) {
                                     url: "<?= base_url(); ?>ambulatorio/empresa/visualizalembrete"});
                             }
                         }
+                    }
+                });
+            });
+            
+            // Checando lembretes aniversário
+            jQuery(function () {
+                jQuery.ajax({
+                    type: "GET",
+                    url: "<?= base_url(); ?>ambulatorio/empresa/checandolembreteaniversario",
+                    dataType: "json",
+                    success: function (retorno) {
+//                        alert('ola');
+//                    console.log(retorno[1]);
+                        if(retorno != null){
+                                alert(retorno[0]);
+                                jQuery.ajax({type: "GET", data: "lembretes_id=" + retorno[1],
+                                    url: "<?= base_url(); ?>ambulatorio/empresa/visualizalembreteaniv"});
+                         }
+                    },
+                    error: function(){
+//                        alert('Error');
                     }
                 });
             });

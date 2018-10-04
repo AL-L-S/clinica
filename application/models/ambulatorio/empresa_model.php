@@ -334,6 +334,17 @@ class empresa_model extends Model {
         return $return->result();
     }
 
+    function listarinformacaolembrete($empresa_id) {
+//        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('texto');
+        $this->db->from('tb_empresa_lembretes_aniversario');
+        $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('ativo', 't');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarinformacaoemail($empresa_id) {
 //        $empresa_id = $this->session->userdata('empresa_id');
 
@@ -418,6 +429,30 @@ class empresa_model extends Model {
 
         return $retorno;
     }
+    
+    function buscandolembreteaniversariooperador() {
+
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+
+        $this->db->select('empresa_lembretes_aniversario_id,
+                            texto,
+                            aniversario,
+                            (
+                                SELECT COUNT(*) 
+                                FROM ponto.tb_empresa_lembretesaniv_visualizacao 
+                                WHERE ponto.tb_empresa_lembretesaniv_visualizacao.empresa_lembretes_aniversario_id = ela.empresa_lembretes_aniversario_id 
+                                AND ponto.tb_empresa_lembretesaniv_visualizacao.operador_visualizacao = ' . $operador_id . '
+                            ) as visualizado');
+        $this->db->from('tb_empresa_lembretes_aniversario ela');
+        $this->db->where('ativo', 't');
+        $this->db->where('operador_destino', $operador_id);
+        $this->db->where('empresa_id', $empresa_id);
+        $return = $this->db->get();
+        $retorno = $return->result();
+
+        return $retorno;
+    }
 
     function visualizalembrete() {
 
@@ -430,6 +465,19 @@ class empresa_model extends Model {
         $this->db->set('operador_visualizacao', $operador_id);
         $this->db->set('empresa_id', $empresa_id);
         $this->db->insert('tb_empresa_lembretes_visualizacao');
+    }
+    
+    function visualizalembreteaniv() {
+
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+        $horario = date("Y-m-d H:i:s");
+
+        $this->db->set('empresa_lembretes_aniversario_id', $_GET['lembretes_id']);
+        $this->db->set('data_visualizacao', $horario);
+        $this->db->set('operador_visualizacao', $operador_id);
+        $this->db->set('empresa_id', $empresa_id);
+        $this->db->insert('tb_empresa_lembretesaniv_visualizacao');
     }
 
     function listarempresa($empresa_id) {
@@ -580,6 +628,52 @@ class empresa_model extends Model {
                     $this->db->set('operador_atualizacao', $operador_id);
                     $this->db->where('empresa_lembretes_id', $empresa_lembretes_id);
                     $this->db->update('tb_empresa_lembretes');
+                }
+            }
+        
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return false;
+        else
+            return true;
+    }
+    
+    function gravarlembreteaniversario($empresa_lembretes_aniversario_id) {
+        
+        $this->db->select('operador_id, nome, perfil_id, nascimento');
+        $this->db->from('tb_operador o');
+
+        $this->db->where('o.ativo', 't');
+        $this->db->where('o.usuario IS NOT NULL');
+        $return = $this->db->get()->result();
+        
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $empresa_id = $this->session->userdata('empresa_id');
+      
+//        echo'<pre>';
+//        var_dump($return);die;        
+        
+            foreach ($return as $value) {
+                if ($empresa_lembretes_aniversario_id == "" || $empresa_lembretes_aniversario_id == "0") {// insert
+                    $this->db->set('texto', $_POST['aniversario']);
+                    $this->db->set('operador_destino', $value->operador_id);
+                    $this->db->set('perfil_destino', $value->perfil_id);
+                    $this->db->set('empresa_id', $empresa_id);
+                    $this->db->set('aniversario', $value->nascimento);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_empresa_lembretes_aniversario');
+                } else { // update
+                    $this->db->set('texto', $_POST['aniversario']);
+                    $this->db->set('operador_destino', $value->operador_id);
+                    $this->db->set('perfil_destino', $value->perfil_id);
+                    $this->db->set('empresa_id', $empresa_id);
+                    $this->db->set('aniversario', $value->nascimento);
+                    $this->db->set('data_atualizacao', $horario);
+                    $this->db->set('operador_atualizacao', $operador_id);
+                    $this->db->where('empresa_lembretes_aniversario_id', $empresa_lembretes_aniversario_id);
+                    $this->db->update('tb_empresa_lembretes_aniversario');
                 }
             }
         

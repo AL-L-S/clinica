@@ -4551,9 +4551,8 @@ class guia_model extends Model {
 
     function relatorioaniversariantes() {
 
-        $mes_incial = date("z", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) + 1;
+        $mes_incial = date("z", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])))+1;
         $mes_final = date("z", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) + 1;
-
         $sql = "SELECT p.nome as paciente, p.nascimento , p.celular , p.cns , p.telefone 
                 FROM ponto.tb_paciente p
                 LEFT JOIN ponto.tb_convenio c ON c.convenio_id = p.convenio_id
@@ -4561,6 +4560,7 @@ class guia_model extends Model {
                 ORDER BY Extract(Month From p.nascimento), Extract(Day From p.nascimento), Extract(Year From p.nascimento),p.nome ";
         $return = $this->db->query($sql)->result();
         return $return;
+        
     }
 
     function relatoriomedicoconveniocontadorrm() {

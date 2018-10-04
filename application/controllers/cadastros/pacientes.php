@@ -390,7 +390,8 @@ class pacientes extends BaseController {
     }
 
     function gravar() {
-
+//        echo'<pre>';
+//        var_dump($_POST);die;
         if ($_POST['nascimento'] != '') {
             $nascimento = str_replace('/', '-', $_POST['nascimento']);
 //            var_dump($nascimento); die;
@@ -424,6 +425,7 @@ class pacientes extends BaseController {
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "cadastros/pacientes", $data);
             }
+//            var_dump($contadorcpf); die;
         } else {
             $contadorcpf = 0;
         }
@@ -459,14 +461,24 @@ class pacientes extends BaseController {
                     $data['mensagem'] = 'Erro ao gravar paciente';
                 }
             } elseif ($contador == 0 && $contadorcpf == 1 && $_POST['paciente_id'] == "") {
-
+                
+                if($_POST['cpf'] == "000.000.000-00"){
+                   $paciente_id = $this->paciente->gravar();
+                   $data['mensagem'] = 'Paciente gravado com sucesso';
+                }else{
                 $data['mensagem'] = 'CPF do paciente já cadastrado';
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "cadastros/pacientes", $data);
+                }
             } else {
+                if($_POST['cpf'] == "000.000.000-00"){
+                   $paciente_id = $this->paciente->gravar();
+                   $data['mensagem'] = 'Paciente gravado com sucesso';
+                }else{
                 $data['mensagem'] = 'Paciente ja cadastrado';
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "cadastros/pacientes", $data);
+                }
             }
         } else {
             $data['mensagem'] = 'CPF inválido';

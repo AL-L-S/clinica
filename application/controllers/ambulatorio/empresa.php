@@ -45,6 +45,15 @@ class Empresa extends BaseController {
         $data['operadores'] = $this->operador->listaroperadoreslembrete();
         $this->loadView('ambulatorio/lembrete-form', $data);
     }
+    
+    function carregarlembreteaniversario($empresa_lembretes_aniversario_id) {
+        $data['empresa_lembretes_aniversario_id'] = $empresa_lembretes_aniversario_id;
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['mensagem'] = $this->empresa->listarinformacaolembrete($empresa_id);
+//        $data['perfil'] = $this->operador->listarPerfil();
+//        $data['operadores'] = $this->operador->listaroperadoreslembrete();
+        $this->loadView('ambulatorio/lembreteaniversario-form', $data);
+    }
 
     function listarcabecalho() {
 //        $data['guia_id'] = $this->guia->verificaodeclaracao();
@@ -342,13 +351,45 @@ class Empresa extends BaseController {
         $data = $this->empresa->buscandolembreteoperador();
         die(json_encode($data));
     }
+    function checandolembreteaniversario() {
+        $data = $this->empresa->buscandolembreteaniversariooperador();
+        $visualizado = $data[0]->visualizado;
+
+        if($data[0]->aniversario != ""){
+            $aniversario = date("m-d", strtotime(str_replace('/', '-', $data[0]->aniversario)));
+            $datahoje = date("m-d");
+            if($aniversario == $datahoje && $visualizado == 0){
+                $retorno = array($data[0]->texto, $data[0]->empresa_lembretes_aniversario_id);
+            } else{
+                $retorno = null;
+            }
+        }else{            
+            $retorno = null;        
+        }
+        die(json_encode($retorno));
+    }
 
     function visualizalembrete() {
         $this->empresa->visualizalembrete();
     }
+    
+    function visualizalembreteaniv() {
+        $this->empresa->visualizalembreteaniv();
+    }
 
     function gravarlembrete($empresa_lembretes_id) {
         if ($this->empresa->gravarlembrete($empresa_lembretes_id)) {
+            $mensagem = 'Sucesso ao gravar o Lembrete';
+        } else {
+            $mensagem = 'Erro ao gravar o Lembrete. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+        redirect(base_url() . "ambulatorio/empresa/pesquisarlembrete");
+    }
+    
+    function gravarlembreteaniversario($empresa_lembretes_aniversario_id) {
+        if ($this->empresa->gravarlembreteaniversario($empresa_lembretes_aniversario_id)) {
             $mensagem = 'Sucesso ao gravar o Lembrete';
         } else {
             $mensagem = 'Erro ao gravar o Lembrete. Opera&ccedil;&atilde;o cancelada.';

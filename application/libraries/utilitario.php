@@ -84,7 +84,7 @@ class Utilitario {
         }
         // Verifica se nenhuma das sequências invalidas abaixo 
         // foi digitada. Caso afirmativo, retorna falso
-        else if ($cpf == '00000000000' ||
+        else if (
                 $cpf == '11111111111' ||
                 $cpf == '22222222222' ||
                 $cpf == '33333333333' ||
@@ -98,6 +98,9 @@ class Utilitario {
             // Calcula os digitos verificadores para verificar se o
             // CPF é válido
         } else {
+            if($cpf == '00000000000'){
+                return true;
+            }else{
 
             for ($t = 9; $t < 11; $t++) {
 
@@ -111,6 +114,7 @@ class Utilitario {
             }
 
             return true;
+            }
         }
     }
 
