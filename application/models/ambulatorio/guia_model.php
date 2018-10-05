@@ -523,6 +523,51 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function relatorioguiasadt() {
+
+        $this->db->select('ss.solicitacao_sadt_id,
+                            ss.paciente_id,
+                            ss.empresa_id,
+                            ss.data_cadastro,
+                            ssp.solicitacao_sadt_procedimento_id,
+                            ssp.quantidade,
+                            ssp.valor,
+                            o.nome as solicitante,
+                            c.nome as convenio,
+                            c.codigoidentificador,
+                            c.registroans,
+                            c.caminho_logo,
+                            o.cbo_ocupacao_id as cbo,
+                            ms.codigo_ibge,
+                            o.conselho,
+                            p.convenionumero,
+                            p.vencimento_carteira,
+                            pt.nome as procedimento,
+                            pt.codigo as codigo_procedimento,
+                            ss.data_cadastro,
+                            p.nome as paciente');
+        $this->db->from('tb_solicitacao_sadt_procedimento ssp');
+        $this->db->join('tb_solicitacao_sadt ss', 'ssp.solicitacao_sadt_id = ss.solicitacao_sadt_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ssp.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = ss.convenio_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ss.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ss.medico_solicitante', 'left');
+        $this->db->join('tb_municipio ms', 'ms.municipio_id = o.municipio_id', 'left');
+        $this->db->where("ss.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . " 00:00:00");
+        $this->db->where("ss.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . " 23:59:59");
+        $this->db->where("ssp.ativo", 't');
+        if($_POST['medico'] > 0){
+            $this->db->where("ss.medico_solicitante", $_POST['medico']);
+        }
+        if($_POST['convenio'] > 0){
+            $this->db->where("c.convenio_id", $_POST['convenio']);
+        }
+        $this->db->orderby('ssp.solicitacao_sadt_id, data_cadastro desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarprocedimentosguiasadt($solicitacao_id) {
 
         $this->db->select('ss.solicitacao_sadt_id,
@@ -8261,7 +8306,7 @@ class guia_model extends Model {
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->where("ae.agenda_exames_id", $exames_id);
-        $this->db->where("ae.cancelada", "f");
+        // $this->db->where("ae.cancelada", "f");
         $return = $this->db->get();
         return $return->result();
     }
@@ -8385,7 +8430,7 @@ class guia_model extends Model {
         $this->db->join('tb_municipio m', 'm.municipio_id = ep.municipio_id', 'left');
         $this->db->join('tb_cid cid', 'cid.co_cid = ae.cid', 'left');
         $this->db->where("ae.agenda_exames_id", $exames_id);
-        $this->db->where("ae.cancelada", "f");
+        // $this->db->where("ae.cancelada", "f");
         $return = $this->db->get();
         return $return->result();
     }

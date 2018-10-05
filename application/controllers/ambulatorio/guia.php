@@ -3134,6 +3134,19 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatorioconferencia', $data);
     }
+    
+    function relatorioguiasadt() {
+        $data['grupo'] = $this->guia->listargrupo();
+        $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
+        $data['grupoclassificacao'] = $this->grupoclassificacao->listargrupoclassificacaos();
+        $data['subgrupos'] = $this->grupoclassificacao->listarsubgrupo2();
+        $data['procedimentos'] = $this->guia->listarprocedimentos();
+        $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['classificacao'] = $this->guia->listarclassificacao();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('ambulatorio/relatoriosolicitacaosadt', $data);
+    }
 
     function relatoriocomparativomensal() {
         $data['grupo'] = $this->guia->listargrupo();
@@ -3206,6 +3219,26 @@ class Guia extends BaseController {
         $data['relatorio'] = $this->guia->relatoriogastosala();
 //        var_dump($data['relatorio']); die;
         $this->load->View('ambulatorio/impressaorelatoriogastosala', $data);
+    }
+
+    function gerarelatorioguiasadt() {
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['relatorio'] = $this->guia->relatorioguiasadt();
+        // var_dump($data['relatorio']); die;
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        if ($_POST['convenio'] != '0') {
+            $data['convenios'] = $this->guia->listardados($_POST['convenio']);
+        }else{
+            $data['convenios'] = 0;
+        }
+        if ($_POST['medico'] > 0) {
+            $data['medico'] = $this->operador_m->listarCada($_POST['medico']);
+        } else {
+            $data['medico'] = 0;
+        }
+//        var_dump($data['relatorio']); die;
+        $this->load->View('ambulatorio/impressaorelatorioguiasadt', $data);
     }
 
     function gerarelatorioexame() {

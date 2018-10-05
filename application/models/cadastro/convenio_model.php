@@ -467,6 +467,7 @@ class Convenio_model extends Model {
         $this->db->select('forma_entradas_saida_id,
                             descricao');
         $this->db->from('tb_forma_entradas_saida');
+        $this->db->where("ativo", 't');
         $return = $this->db->get();
         return $return->result();
     }

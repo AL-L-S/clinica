@@ -857,11 +857,13 @@ function debug($object) {
 
         <? if ($perfil_id == 1 || $perfil_id == 3 || $perfil_id == 10 || $perfil_id == 16) { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexame">Relatorio Conferencia</a></span></ul>
+                                            
                                             <? if ($medicinadotrabalho == 't') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioaso">Relatorio ASO</a></span></ul>
                                             <? } ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriorecolhimento">Relatorio Recolhimento</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogastosala">Relatorio Gasto de Sala</a></span></ul>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioguiasadt">Relatorio Solicit. SADT</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriogeralsintetico">Relatorio Sintetico Geral</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioexamech">Relatorio Faturamento Convenio CH</a></span></ul>
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacienteexame">Relatorio Convenio Paciente</a></span></ul>-->

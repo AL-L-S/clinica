@@ -2525,7 +2525,7 @@ class agenda_model extends Model {
         $this->db->where('data <=', $datafinal);
         $this->db->where('tipo', $tipo);
         $this->db->where('horario_id is not null');
-        $this->db->where('paciente_id is null');
+        // $this->db->where('paciente_id is null');
         $this->db->groupby('horario_id');
         $return2 = $this->db->get()->result();
         if (count($return2) > 0) {

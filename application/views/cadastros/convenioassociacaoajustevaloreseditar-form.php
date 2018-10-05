@@ -8,35 +8,50 @@
     <div id="accordion">
         <h3 class="singular"><a href="#">Ajuste Valor Convenio</a></h3>
         <div>
-            <table>
-                <tr>
-                    <td style="font-weight: bold;width: 100pt">
-                        Aplicar em Todos  
-                    </td>
-                    <td>
-                        <input type="number" step="0.01" id="valor_aplicar_todos" name="valor_aplicado_todos"  style="width: 100pt"/>  
-                    </td>
-                </tr>
-                <tr>
-                    <td style="">
-                        <button id="buttonAplicarTodos">
-                            Aplicar 
-                        </button>
-                    </td>
+            <div style="float:right; margin-right: 100px;">
 
-                </tr>
+           
+            <table >
+               
             </table>
-            <form name="form_desconto" id="form_desconto" action="<?= base_url() ?>cadastros/convenio/gravarvaloresassociacaoeditar" method="post">
+            </div>
+            
                 <input type="hidden" name="convenio_secundario_id" value="<?php echo $convenio_id; ?>"/>
 
                 <br>
                 <br>
                 <table>
+                <tr>
+                    <td style="font-weight: bold">
+                        <!-- Aplicar em Todos   -->
+                    </td>
+                    <td>
+                        <select name="convenio_select" id="convenio_select">
+                            <option value="">Selecione</option>
+                                <? foreach ($convenios as $item) {
+                                if ($item->convenio_id == $convenio_id)
+                                    continue;
+                                ?>
+                                <option value="<?= $item->convenio_id; ?>" <?= $item->convenio_id == @$cv ? "selected" : "" ?>>
+                                <?php echo $item->nome; ?>
+                            </option>
+                        <? } ?>
+                        </select>  
+                    </td>
+                    <td>
+                        <input type="number" step="0.01" id="valor_aplicar_todos" name="valor_aplicado_todos"  style="width: 100pt"/>  
+                        <button id="buttonAplicarTodos">
+                            Aplicar 
+                        </button>
+                    </td>
+                </tr>
+                
                     <tr>
                         <td style="font-weight: bold">GRUPO</td>
                         <td style="font-weight: bold">CONVENIO</td>
                         <td style="font-weight: bold">VALOR (%)</td>
                     </tr>
+            <form name="form_desconto" id="form_desconto" action="<?= base_url() ?>cadastros/convenio/gravarvaloresassociacaoeditar" method="post">        
                     <?
                     $i = 0;
                     foreach ($grupos as $value) {
@@ -58,7 +73,7 @@
                                 <input type="hidden" name="convenio_associacao_id[<?= $i; ?>]" value="<?= $c_id; ?>"/>
                             </td>
                             <td>
-                                <select name="convenio[<?= $i; ?>]">
+                                <select class="convenio_alicar" name="convenio[<?= $i; ?>]">
                                     <option value="">Selecione</option>
                                     <? foreach ($convenios as $item) {
                                         if ($item->convenio_id == $convenio_id)
@@ -95,6 +110,10 @@
     });
     $('#buttonAplicarTodos').click(function () {
         $(".valor_alicar_receber").val($("#valor_aplicar_todos").val());
+        if($("#convenio_select").val() != ''){
+            $(".convenio_alicar").val($("#convenio_select").val());
+        }
+        
     });
 
     $(function () {
