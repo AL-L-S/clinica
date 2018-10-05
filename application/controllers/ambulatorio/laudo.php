@@ -1087,6 +1087,20 @@ class Laudo extends BaseController {
         $this->load->View('ambulatorio/receituarioconsulta-form', $data);
     }
     
+    function carregarrotinas($ambulatorio_laudo_id) {
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['obj'] = $obj_laudo;
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+        $data['lista'] = $this->exametemp->listarmodeloslaudorotinas();
+        $data['modelo'] = $this->exametemp->listarmodelosrotinaautomatico();
+        $data['empresapermissao'] = $this->guia->listarempresapermissoes();
+        $data['rotina'] = $this->laudo->listarrotina($obj_laudo->_paciente_id);
+        $data['operadores'] = $this->operador_m->listarmedicos();
+
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->load->View('ambulatorio/rotinas-form', $data);
+    }
+    
     function carregarreceituariosollis($ambulatorio_laudo_id) {
         $obj_laudo = new laudo_model($ambulatorio_laudo_id);
         $data['obj'] = $obj_laudo;
@@ -4741,6 +4755,14 @@ class Laudo extends BaseController {
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/laudo/carregarreceituario/$ambulatorio_laudo_id");
+    }
+    
+    function gravarrotinas($ambulatorio_laudo_id) {
+
+        $this->laudo->gravarrotinas($ambulatorio_laudo_id);
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/laudo/carregarrotinas/$ambulatorio_laudo_id");
     }
     
     function gravarreceituariosollis($ambulatorio_laudo_id, $paciente_id, $prescricao_id) {

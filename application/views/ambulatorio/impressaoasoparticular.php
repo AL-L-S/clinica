@@ -301,12 +301,15 @@
                                 if (isset($impressao_aso->procedimento1)) {
                                     foreach ($impressao_aso->procedimento1 as $key => $item) :
                                         $procedimentos = $this->procedimento->listarprocedimentoaso($item);
+                                        $guia_id = $relatorio[0]->guia_id;
+                                        $procedimentosdata = $this->procedimento->listarprocedimentoasodata($item, $guia_id);
+//                                        var_dump($procedimentosdata);die;
                                         ?>
-                                        <?
+                                        <?                                        
                                         if ($key == count($impressao_aso->procedimento1) - 1) {
-                                            echo $procedimentos[0]->nome;
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentosdata[0]->data))) . ")" ;
                                         } else {
-                                            echo $procedimentos[0]->nome . ", ";
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentosdata[0]->data))) . ")" . ", ";
                                         }
                                         ?>
 
@@ -553,7 +556,7 @@
                                 Médico Coordenador
                             </td>
 
-
+<? // var_dump(@$relatorio[0]->medico);die;?>
                         </tr>
                         <tr  class="trAlturaMaior">
                             <td>

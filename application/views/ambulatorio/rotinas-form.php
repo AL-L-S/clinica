@@ -1,5 +1,5 @@
 <head>
-    <title>Receituário</title>
+    <title>Rotinas</title>
 </head>
 <div >
     <?
@@ -9,22 +9,22 @@
     $diff = $date_time->diff(new DateTime($dataFuturo));
     $teste = $diff->format('%Ya %mm %dd');
 
-    if (count($receita) == 0) {
+    if (count($rotina) == 0) {
         $receituario_id = 0;
         $texto = "";
         $medico = ""; 
         $procedimento;
     } else {
-        $procedimento = $receita[0]->procedimento;
-        $texto = $receita[0]->texto;
-        $receituario_id = $receita[0]->ambulatorio_receituario_id;
-        $medico = $receita[0]->medico_parecer1;
+        $procedimento = $rotina[0]->procedimento;
+        $texto = $rotina[0]->texto;
+        $rotinas_id = $rotina[0]->ambulatorio_rotinas_id;
+        $medico = $rotina[0]->medico_parecer1;
     }
     $operador_id = $this->session->userdata('operador_id');
     ?>
 
     <div >
-        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarreceituario/<?= $ambulatorio_laudo_id ?>" method="post">
+        <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarrotinas/<?= $ambulatorio_laudo_id ?>" method="post">
             <div >
                 <fieldset>
                     <legend>Dados</legend>
@@ -43,8 +43,8 @@
                     <tr>
                         <td>
                             <div class="bt_link_new" style="width: 200px; margin: 5px">
-                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modeloreceita');" style="width: 250px; margin: 5px">
-                                    Modelo Receituario</a></div>
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modelolaudo');" style="width: 250px; margin: 5px">
+                                    Modelo Rotinas</a></div>
                         </td>
                         <td>
                             <div class="bt_link_new" style="width: 200px; margin: 5px">
@@ -56,13 +56,13 @@
                 <div>
 
                     <fieldset>
-                        <legend>Receituario</legend>
+                        <legend>Rotina</legend>
                         <div>
                             <label>Modelos</label>
                             <select name="exame" id="exame" class="size2" >
                                 <option value='' >selecione</option>
                                 <?php foreach ($lista as $item) { ?>
-                                    <option value="<?php echo $item->ambulatorio_modelo_receita_id; ?>" ><?php echo $item->nome; ?></option>
+                                    <option value="<?php echo $item->ambulatorio_modelo_laudo_id; ?>" ><?php echo $item->nome; ?></option>
                                 <?php } ?>
                             </select>
 
@@ -77,15 +77,16 @@
 
                         </div>
                         <div>
-                            <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $receituario_id ?>"/>
+                            <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $rotinas_id ?>"/>
                             <input type="hidden" id="ambulatorio_laudo_id" name="ambulatorio_laudo_id" value="<?= $ambulatorio_laudo_id ?>"/>
                             <input type="hidden" id="medico" name="medico" value="<?= $operador_id ?>"/>
                         </div>
                         <div>
-
+<? // var_dump($modelo[0]->texto);die; ?>
                             <textarea id="laudo" name="laudo" rows="25" cols="80" style="width: 80%">
-                                <? //var_dump($modelo);die;
-                                if (@$empresapermissao[0]->carregar_modelo_receituario == 't') {
+                                <?                                    
+                                       
+
                                     if (count($modelo) > 0) {
                                         if (file_exists("upload/1ASSINATURAS/" . @$laudo['0']->medico_parecer1 . ".jpg")) {
                                             $assinatura = "<img   width='200px' height='100px' src='" . base_url() . "./upload/1ASSINATURAS/" . @$laudo['0']->medico_parecer1 . ".jpg'>";
@@ -93,28 +94,28 @@
                                             $assinatura = "";
                                         }
                                         $corpo = $modelo[0]->texto;
-                                        $corpo = str_replace("_paciente_", @$laudo['0']->paciente, $corpo);
-                                        $corpo = str_replace("_sexo_", @$laudo['0']->sexo, $corpo);
-                                        $corpo = str_replace("_nascimento_", date("d/m/Y", strtotime(@$laudo['0']->nascimento)), $corpo);
-                                        $corpo = str_replace("_convenio_", @$laudo['0']->convenio, $corpo);
-                                        $corpo = str_replace("_sala_", @$laudo['0']->sala, $corpo);
-                                        $corpo = str_replace("_CPF_", @$laudo['0']->cpf, $corpo);
-                                        $corpo = str_replace("_solicitante_", @$laudo['0']->solicitante, $corpo);
-                                        $corpo = str_replace("_data_", substr(@$laudo['0']->data_cadastro, 8, 2) . '/' . substr(@$laudo['0']->data_cadastro, 5, 2) . '/' . substr(@$laudo['0']->data_cadastro, 0, 4), $corpo);
-                                        $corpo = str_replace("_medico_", @$laudo['0']->medico, $corpo);
-                                        $corpo = str_replace("_revisor_", @$laudo['0']->medicorevisor, $corpo);
-                                        $corpo = str_replace("_procedimento_", @$laudo['0']->procedimento, $corpo);
-                                        $corpo = str_replace("_laudo_", @$laudo['0']->texto, $corpo);
-                                        $corpo = str_replace("_nomedolaudo_", @$laudo['0']->cabecalho, $corpo);
-                                        $corpo = str_replace("_queixa_", @$laudo['0']->cabecalho, $corpo);
-                                        $corpo = str_replace("_peso_", @$laudo['0']->peso, $corpo);
-                                        $corpo = str_replace("_altura_", @$laudo['0']->altura, $corpo);
-                                        $corpo = str_replace("_cid1_", @$laudo['0']->cid1, $corpo);
-                                        $corpo = str_replace("_cid2_", @$laudo['0']->cid2, $corpo);
-                                        $corpo = str_replace("_assinatura_", $assinatura, $corpo);
+//                                        $corpo = str_replace("_paciente_", @$laudo['0']->paciente, $corpo);
+//                                        $corpo = str_replace("_sexo_", @$laudo['0']->sexo, $corpo);
+//                                        $corpo = str_replace("_nascimento_", date("d/m/Y", strtotime(@$laudo['0']->nascimento)), $corpo);
+//                                        $corpo = str_replace("_convenio_", @$laudo['0']->convenio, $corpo);
+//                                        $corpo = str_replace("_sala_", @$laudo['0']->sala, $corpo);
+//                                        $corpo = str_replace("_CPF_", @$laudo['0']->cpf, $corpo);
+//                                        $corpo = str_replace("_solicitante_", @$laudo['0']->solicitante, $corpo);
+//                                        $corpo = str_replace("_data_", substr(@$laudo['0']->data_cadastro, 8, 2) . '/' . substr(@$laudo['0']->data_cadastro, 5, 2) . '/' . substr(@$laudo['0']->data_cadastro, 0, 4), $corpo);
+//                                        $corpo = str_replace("_medico_", @$laudo['0']->medico, $corpo);
+//                                        $corpo = str_replace("_revisor_", @$laudo['0']->medicorevisor, $corpo);
+//                                        $corpo = str_replace("_procedimento_", @$laudo['0']->procedimento, $corpo);
+//                                        $corpo = str_replace("_laudo_", @$laudo['0']->texto, $corpo);
+//                                        $corpo = str_replace("_nomedolaudo_", @$laudo['0']->cabecalho, $corpo);
+//                                        $corpo = str_replace("_queixa_", @$laudo['0']->cabecalho, $corpo);
+//                                        $corpo = str_replace("_peso_", @$laudo['0']->peso, $corpo);
+//                                        $corpo = str_replace("_altura_", @$laudo['0']->altura, $corpo);
+//                                        $corpo = str_replace("_cid1_", @$laudo['0']->cid1, $corpo);
+//                                        $corpo = str_replace("_cid2_", @$laudo['0']->cid2, $corpo);
+//                                        $corpo = str_replace("_assinatura_", $assinatura, $corpo);
                                         echo $corpo;
                                     }
-                                }
+
                                 ?>
                             </textarea>
                         </div>
@@ -145,7 +146,7 @@
             </div> 
 
             <?
-            if (count($receita) > 0) {
+            if (count($rotina) > 0) {
                 ?>
                 <table id="table_agente_toxico" border="0">
                     <thead>
@@ -159,7 +160,7 @@
                     </thead>
                     <?
                     $estilo_linha = "tabela_content01";
-                    foreach ($receita as $item) {
+                    foreach ($rotina as $item) {
                         ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                         ?>
                         <tbody>
@@ -168,22 +169,22 @@
                                <!-- <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td> -->
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+<!--                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceita/<?= $item->ambulatorio_receituario_id; ?>');">Imprimir
                                         </a></div>
-                                </td>
+                                </td>-->
                             
-                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+<!--                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="repetir(<?=$item->ambulatorio_receituario_id;?>)">Repetir
                                         </a></div>
-                                </td>
+                                </td>-->
                                  <? 
                                 if (@$obj->_status != 'FINALIZADO'){ 
                                     if(@$obj->_medico_parecer1 == $item->operador_id){ ?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+<!--                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_receituario_id; ?>');">Editar
                                         </a></div>
-                                    </td>
+                                    </td>-->
                                  <? } else{ ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"></td>
                                 <? }
@@ -301,7 +302,7 @@
                                             if ($(this).val()) {
                                                 //$('#laudo').hide();
                                                 $('.carregando').show();
-                                                $.getJSON('<?= base_url() ?>autocomplete/modelosreceita', {exame: $(this).val(), ajax: true}, function (j) {
+                                                $.getJSON('<?= base_url() ?>autocomplete/modelosrotina', {exame: $(this).val(), ajax: true}, function (j) {
                                                     options = "";
 
                                                     options += j[0].texto;

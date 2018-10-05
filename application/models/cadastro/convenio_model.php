@@ -106,6 +106,28 @@ class Convenio_model extends Model {
         return $return;
     }
     
+//    function listarcoordenadorid(){
+//        $this->db->select(' c.convenio_id,
+//                            c.nome,
+//                            c.dinheiro,
+//                            c.padrao_particular,
+//                            c.coordenador_id,
+//                            c.conta_id');
+//        $this->db->from('tb_convenio c');
+//        $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
+//        $this->db->where("c.ativo", 'true');
+//        $this->db->where("c.convenio_id", 'true');
+//        $this->db->orderby("c.nome");
+//        $this->db->groupby("c.convenio_id,
+//                            c.nome,
+//                            c.dinheiro,
+//                            c.conta_id");
+//        $query = $this->db->get();
+//        $return = $query->result();
+//
+//        return $return;
+//    }
+    
     function listarconvenionovoid($convenio2){
         $this->db->select(' c.convenio_id,
                             c.nome,
@@ -188,6 +210,47 @@ class Convenio_model extends Model {
         $this->db->orderby("se.descricao_setor");
         $return = $this->db->get();
         return $return->result();
+    }
+   
+    function listarautocompletecoordenador($parametro = null) {
+
+        $this->db->select('
+                            c.convenio_id,
+                            c.coordenador_id,
+                            o.nome
+                                            ');
+
+        $this->db->from('tb_convenio c');
+        $this->db->join('tb_operador o', 'c.coordenador_id = o.operador_id', 'left');
+
+        $this->db->where('c.ativo', 'true');
+
+
+
+        if ($parametro != null) {
+            $this->db->where('c.convenio_id', $parametro);
+        }
+//        $this->db->groupby("sc.setor_id, sc.empresa_id, se.descricao_setor");
+        $this->db->orderby("c.coordenador_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function listarautocompletecoordenadorparticular() {
+
+        $this->db->select('o.operador_id,
+                               o.usuario,
+                               o.nome,
+                               o.conselho,
+                               o.perfil_id,
+                               p.nome as perfil');
+        $this->db->from('tb_operador o');
+        $this->db->join('tb_perfil p', 'p.perfil_id = o.perfil_id');
+        $this->db->where('consulta', 'true');
+        $this->db->where('o.ativo', 'true');
+        $this->db->orderby('o.nome');
+        $return = $this->db->get();
+        return $return->result();
+        
     }
 
     function listarautocompletefuncao($parametro = null, $empresa = null) {
@@ -1900,6 +1963,11 @@ class Convenio_model extends Model {
             } else {
                 $this->db->set('dinheiro', 'f');
             }
+            if ($_POST['coordenador'] != "") {
+                $this->db->set('coordenador_id', $_POST['coordenador']);
+            } else {
+                $this->db->set('coordenador_id', 0);
+            }
             if (isset($_POST['padrao_particular'])) {
                 $this->db->set('padrao_particular', $_POST['padrao_particular']);
             } else {
@@ -2169,8 +2237,7 @@ class Convenio_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             $convenio = $_POST['conveniobase_id'];
-//            var_dump($convenio);die;
-
+//            var_dump($gravarempresa);die;
 
 
                 $sql = "INSERT INTO ponto.tb_procedimento_convenio(
@@ -2193,8 +2260,8 @@ class Convenio_model extends Model {
             
 
             $this->db->query($sql);
-
-            return $convenioidnovo;
+//var_dump($convenioidnovo);die;
+            return $gravarempresa;
         } catch (Exception $exc) {
             return -1;
         }
@@ -2253,6 +2320,7 @@ class Convenio_model extends Model {
                                 c.municipio_id,
                                 co.dia_aquisicao,
                                 co.padrao_particular,
+                                co.coordenador_id,
                                 co.valor_ajuste_cbhpm,
                                 fcd.razao_social as credor');
             $this->db->from('tb_convenio co');
@@ -2295,6 +2363,7 @@ class Convenio_model extends Model {
             $this->_observacao = $return[0]->observacao;
             $this->_dinheiro = $return[0]->dinheiro;
             $this->_padrao_particular = $return[0]->padrao_particular;
+            $this->_coordenador = $return[0]->coordenador_id;
             $this->_procedimento1 = $return[0]->procedimento1;
             $this->_procedimento2 = $return[0]->procedimento2;
             $this->_tabela = $return[0]->tabela;

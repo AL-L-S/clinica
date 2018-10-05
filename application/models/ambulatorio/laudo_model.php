@@ -1320,6 +1320,31 @@ class laudo_model extends Model {
         return $return->result();
     }
     
+    function listarrotina($paciente_id) {
+
+        $this->db->select(' ar.ambulatorio_rotinas_id,
+                            ar.texto,
+                            ar.data_cadastro,
+                            ar.medico_parecer1,
+                            al.cabecalho,
+                            o.nome as medico,
+                            o.operador_id,
+                            pt.nome as procedimento
+                            ');
+        $this->db->from('tb_ambulatorio_rotinas ar');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.ambulatorio_laudo_id = ar.laudo_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = al.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ar.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = al.medico_parecer1', 'left');
+        $this->db->where('al.paciente_id', $paciente_id);
+        $this->db->where('ar.tipo', 'NORMAL');
+        $this->db->orderby('ar.data_cadastro DESC');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarprescricao($paciente_id, $ambulatorio_laudo_id) {
 
         $this->db->select(' rs.receituario_sollis_id,
@@ -4090,6 +4115,36 @@ class laudo_model extends Model {
             $this->db->set('tipo', 'NORMAL');
 
             $this->db->insert('tb_ambulatorio_receituario');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function gravarrotinas() {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('texto', $_POST['laudo']);
+            if ($_POST['carimbo'] == "on") {
+                $this->db->set('carimbo', 't');
+            }
+            if ($_POST['assinatura'] == "on") {
+                $this->db->set('assinatura', 't');
+            }
+//            $this->db->set('paciente_id', $_POST['paciente_id']);
+//            $this->db->set('procedimento_tuss_id', $_POST['procedimento_tuss_id']);
+            $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
+            $this->db->set('medico_parecer1', $_POST['medico']);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $_POST['medico']);
+            $this->db->set('tipo', 'NORMAL');
+
+            $this->db->insert('tb_ambulatorio_rotinas');
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;

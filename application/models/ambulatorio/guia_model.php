@@ -136,7 +136,7 @@ class guia_model extends Model {
                              ');
         $this->db->from('tb_cadastro_aso ca');
         $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
-        $this->db->join('tb_operador o', 'o.operador_id = ca.medico_responsavel', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ca.coordenador_id', 'left');
         $this->db->where('cadastro_aso_id', $cadastro_aso_id);
 //        $this->db->orderby("nome");
         $return = $this->db->get();
@@ -188,8 +188,18 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarriscosparticular($aso_id) {
+        $this->db->select('ca.impressao_aso');
+                                     
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->where('ca.cadastro_aso_id', $aso_id);
 
-    function gravarcadastroaso($gravarempresa, $paciente_id) {
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gravarcadastroaso($gravarempresa, $paciente_id, $ambulatorio_guia) {
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
@@ -208,7 +218,7 @@ class guia_model extends Model {
         $this->db->where('pt.grupo', 'ASO');
         $result = $this->db->get()->result();
 
-        //    echo'<pre>';var_dump($result);die;
+//            echo'<pre>';var_dump($_POST['coordenador']);die;
             
         if (count($result) > 0) {
 
@@ -224,6 +234,10 @@ class guia_model extends Model {
                 $this->db->set('data_realizacao', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
                 $this->db->set('data_validade', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['validade_exame']))));
                 $this->db->set('consulta', $_POST['consulta']);
+                if($_POST['coordenador'] != ""){
+                $this->db->set('coordenador_id', $_POST['coordenador']);
+                }                
+                $this->db->set('guia_id', $ambulatorio_guia);
                 if ($_POST['consulta'] == "particular") {
                     $this->db->set('convenio2', $_POST['convenio2']);
                 } else {
@@ -242,6 +256,10 @@ class guia_model extends Model {
                 $this->db->set('data_realizacao', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
                 $this->db->set('data_validade', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['validade_exame']))));
                 $this->db->set('consulta', $_POST['consulta']);
+                if($_POST['coordenador'] != ""){
+                $this->db->set('coordenador_id', $_POST['coordenador']);
+                }
+                $this->db->set('guia_id', $ambulatorio_guia);
                 if ($_POST['consulta'] == "particular") {
                     $this->db->set('convenio2', $_POST['convenio2']);
                 } else {
@@ -1006,13 +1024,17 @@ class guia_model extends Model {
 
         $this->db->select('ca.cadastro_aso_id,
                             ca.tipo,
+                            ca.guia_id,
+                            ca.consulta,
                             p.paciente_id,
                             p.nome as paciente,
                             ca.data_cadastro,
+                            c.dinheiro,
                             ca.consulta');
 
         $this->db->from('tb_cadastro_aso ca');
         $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = ca.convenio_id', 'left');
         $this->db->where("ca.ativo", 'true');
         $this->db->where("p.paciente_id", $paciente_id);
 //        $this->db->where("ca.medico_responsavel", $operador_id);
@@ -4574,9 +4596,8 @@ class guia_model extends Model {
 
     function relatorioaniversariantes() {
 
-        $mes_incial = date("z", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) + 1;
+        $mes_incial = date("z", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])))+1;
         $mes_final = date("z", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) + 1;
-
         $sql = "SELECT p.nome as paciente, p.nascimento , p.celular , p.cns , p.telefone 
                 FROM ponto.tb_paciente p
                 LEFT JOIN ponto.tb_convenio c ON c.convenio_id = p.convenio_id
@@ -4584,6 +4605,7 @@ class guia_model extends Model {
                 ORDER BY Extract(Month From p.nascimento), Extract(Day From p.nascimento), Extract(Year From p.nascimento),p.nome ";
         $return = $this->db->query($sql)->result();
         return $return;
+        
     }
 
     function relatoriomedicoconveniocontadorrm() {

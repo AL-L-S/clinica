@@ -2,7 +2,7 @@
 
 <?
 $impressao_aso = json_decode($relatorio[0]->impressao_aso);
-//echo'<pre>'; var_dump($impressao_aso);die;
+//echo'<pre>'; var_dump($relatorio[0]->guia_id);die;
 ?>
 <br><br><br>
 
@@ -26,7 +26,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
             <? $funcao = $this->saudeocupacional->carregarfuncao($impressao_aso->funcao); ?>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<?= $funcao[0]->descricao_funcao ?>
         </td>
-        <td width="400px" style="text-align: right">
+        <td width="350px" style="text-align: right; padding-right: 80px">
             <?= ($relatorio[0]->nascimento != '') ? date("d/m/Y", strtotime($relatorio[0]->nascimento)) : '' ?>
         </td>
         
@@ -54,7 +54,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         ?>
         </td>    
     </tr>
-    <tr height="130px">
+    <tr height="90px">
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             
@@ -62,13 +62,15 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
                                 if (isset($impressao_aso->procedimento1)) {
                                     foreach ($impressao_aso->procedimento1 as $key => $item) :
                                         $procedimentos = $this->procedimento->listarprocedimentoaso($item);
-//                                        var_dump($procedimentos);die;
+                                        $guia_id = $relatorio[0]->guia_id;
+                                        $procedimentosdata = $this->procedimento->listarprocedimentoasodata($item, $guia_id);
+//                                        var_dump($procedimentosdata);die;
                                         ?>
                                         <?                                        
                                         if ($key == count($impressao_aso->procedimento1) - 1) {
-                                            echo $procedimentos[0]->nome;
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentosdata[0]->data))) . ")" ;
                                         } else {
-                                            echo $procedimentos[0]->nome . ", ";
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentosdata[0]->data))) . ")" . ", ";
                                         }
                                         ?>
 
@@ -93,13 +95,13 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
 </table>
 
 
-<table style="width: 100%">
-    <tr height="110px">
-        <td colspan="2" width="400px">
+<table style="width: 100%"> 
+    <tr height="80px">
+        <td colspan="2" width="400px" style="padding-bottom:35px">
             &nbsp;&nbsp;&nbsp;
             <?= $impressao_aso->validade_exame ?> 
         </td>
-        <td colspan="2" width="400px">
+        <td colspan="2" width="400px" style="padding-bottom:35px">
             &nbsp;&nbsp;&nbsp;
             <?= $impressao_aso->tipo ?>
         </td>        
@@ -113,14 +115,14 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         <td colspan="2" width="400px">
             &nbsp;&nbsp;&nbsp;
             IVANISE MARIA CAVALCANTE SALES <br>
-            &nbsp;&nbsp;&nbsp;&nbsp;MEDICO COORDENADOR CRM: 3655 
+            &nbsp;&nbsp;&nbsp;&nbsp;MEDICO COORDENADOR CRM: 3655 RQE 1874 
             
         </td>
     </tr>
 
 </table>
-<br><br><br><br><br>
-<br><br><br><br><br>
+<br><br><br><br><br><br>
+<br><br><br><br><br><br>
 
 <table style="width: 100%">
     <tr height="100px">
@@ -133,7 +135,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         <td colspan="2" width="500px">
            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; <?= $relatorio[0]->paciente ?>
         </td>
-        <td>
+        <td style="text-align: center">
             <?= $relatorio[0]->rg ?> 
         </td>
     </tr>
@@ -142,7 +144,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
             <? $funcao = $this->saudeocupacional->carregarfuncao($impressao_aso->funcao); ?>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<?= $funcao[0]->descricao_funcao ?>
         </td>
-        <td width="350px" style="text-align: center">
+        <td width="350px" style="text-align: right; padding-right: 80px">
             <?= ($relatorio[0]->nascimento != '') ? date("d/m/Y", strtotime($relatorio[0]->nascimento)) : '' ?>
         </td>
         
@@ -170,7 +172,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         ?>
         </td>    
     </tr>
-    <tr height="70px">
+    <tr height="90px">
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             
@@ -178,12 +180,15 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
                                 if (isset($impressao_aso->procedimento1)) {
                                     foreach ($impressao_aso->procedimento1 as $key => $item) :
                                         $procedimentos = $this->procedimento->listarprocedimentoaso($item);
+                                        $guia_id = $relatorio[0]->guia_id;
+                                        $procedimentosdata = $this->procedimento->listarprocedimentoasodata($item, $guia_id);
+//                                        var_dump($procedimentosdata);die;
                                         ?>
-                                        <?
+                                        <?                                        
                                         if ($key == count($impressao_aso->procedimento1) - 1) {
-                                            echo $procedimentos[0]->nome;
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentosdata[0]->data))) . ")" ;
                                         } else {
-                                            echo $procedimentos[0]->nome . ", ";
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentosdata[0]->data))) . ")" . ", ";
                                         }
                                         ?>
 
@@ -208,13 +213,13 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
 </table>
 
 
-<table style="width: 100%">
-    <tr height="55px">
-        <td colspan="2" width="400px">
+<table style="width: 100%"> 
+    <tr height="80px">
+        <td colspan="2" width="400px" style="padding-bottom:35px">
             &nbsp;&nbsp;&nbsp;
             <?= $impressao_aso->validade_exame ?> 
         </td>
-        <td colspan="2" width="400px">
+        <td colspan="2" width="400px" style="padding-bottom:35px">
             &nbsp;&nbsp;&nbsp;
             <?= $impressao_aso->tipo ?>
         </td>        
@@ -228,7 +233,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         <td colspan="2" width="400px">
             &nbsp;&nbsp;&nbsp;
             IVANISE MARIA CAVALCANTE SALES <br>
-            &nbsp;&nbsp;&nbsp;&nbsp;MEDICO COORDENADOR CRM: 3655 
+            &nbsp;&nbsp;&nbsp;&nbsp;MEDICO COORDENADOR CRM: 3655 RQE 1874
             
         </td>
     </tr>

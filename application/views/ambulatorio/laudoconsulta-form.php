@@ -417,6 +417,14 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <? if (in_array('rotinas', $opc_telatendimento)) { ?>
+                                                <td width="40px;"><div class="bt_link_new">
+
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarrotinas/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
+                                                            Rotinas</a>
+                                                    </div>
+                                                </td>
+                                                    <? } ?>
 
                                             <? if (in_array('historicoimprimir', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">

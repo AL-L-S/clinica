@@ -37,7 +37,7 @@
                     $lista = $this->guia->listarcadastroaso($paciente_id)->limit($limit, $pagina)->orderby("cadastro_aso_id desc")->get()->result();
                     $estilo_linha = "tabela_content01";
                     foreach ($lista as $item) {
-//                            echo'<pre>';var_dump($item->consulta);die;
+//                            echo'<pre>';var_dump($lista[1]);die;
                         ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                         ?>
                             <tr>
@@ -91,6 +91,17 @@
                                     </div>
         <? //} ?>
                                 </td>
+                                <?if($item->consulta == "particular" || $item->dinheiro == 'TRUE'){?>
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
+
+                                        <div class="bt_link">
+                                            <a href="<?= base_url() ?>ambulatorio/guia/faturarprocedimentospersonalizados/<?= $item->guia_id; ?>">Faturar</a>
+                                        </div>
+
+                                    </td>
+                                <? }else{ ?>
+                                    <td class="<?php echo $estilo_linha; ?>"></td>
+                                <? } ?>
                                     <?
                                     $perfil_id = $this->session->userdata('perfil_id');
                                     $operador_id = $this->session->userdata('operador_id');

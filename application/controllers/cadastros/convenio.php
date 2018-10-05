@@ -22,6 +22,7 @@ class Convenio extends BaseController {
         $this->load->model('ambulatorio/empresa_model', 'empresa');
         $this->load->model('cadastro/grupoconvenio_model', 'grupoconvenio');
         $this->load->model('cadastro/formapagamento_model', 'formapagamento');
+        $this->load->model('seguranca/operador_model', 'operador_m');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -51,6 +52,7 @@ class Convenio extends BaseController {
         $obj_convenio = new convenio_model($convenio_id);
         $data['obj'] = $obj_convenio;
         $data['convenio'] = $this->convenio->listardados();
+        $data['medicos'] = $this->operador_m->listarmedicos();
         $this->loadView('cadastros/convenio-form', $data);
     }
   

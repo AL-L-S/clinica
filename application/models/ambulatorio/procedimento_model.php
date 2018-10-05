@@ -281,6 +281,21 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarprocedimentoasodata($procedimento_convenio_id, $guia_id) {
+        $this->db->select('
+                            ae.data
+                            
+                            ');
+        $this->db->from('tb_agenda_exames ae');        
+        $this->db->join('tb_cadastro_aso ca', 'ca.guia_id = ae.guia_id', 'left');
+        
+        
+        $this->db->where('ae.procedimento_tuss_id', $procedimento_convenio_id);
+        $this->db->where('ae.guia_id', $guia_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarprocedimentoagrupados($procedimento_agrupador_id) {
         $this->db->select('procedimentos_agrupados_ambulatorial_id as procedimento_agrupador_id,

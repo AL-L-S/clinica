@@ -8728,6 +8728,23 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarmodeloslaudorotinas($parametro = null) {
+
+        $this->db->select('distinct(aml.ambulatorio_modelo_laudo_id),
+                            aml.nome,
+                            aml.texto');
+        $this->db->from('tb_ambulatorio_modelo_laudo aml');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = aml.procedimento_tuss_id');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->where('aml.ativo', 'true');
+        if ($parametro != null) {
+        $this->db->where('aml.ambulatorio_modelo_laudo_id', $parametro);
+        }
+        $this->db->orderby('aml.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarautocompletemodelosreceita($parametro = null) {
         $this->db->select('aml.ambulatorio_modelo_receita_id,
@@ -8742,6 +8759,20 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarautocompletemodelosrotina($parametro = null) {
+        $this->db->select('aml.ambulatorio_modelo_laudo_id,
+                            aml.nome,
+                            aml.texto');
+        $this->db->from('tb_ambulatorio_modelo_laudo aml');
+        $this->db->where('aml.ativo', 'true');
+        if ($parametro != null) {
+            $this->db->where('ambulatorio_modelo_laudo_id', $parametro);
+        }
+        $this->db->orderby('aml.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarmodelosreceitaautomatico() {
         $this->db->select('aml.ambulatorio_modelo_receita_id,
@@ -8750,6 +8781,20 @@ class exametemp_model extends Model {
         $this->db->from('tb_ambulatorio_modelo_receita aml');
         $this->db->where('aml.ativo', 'true');
         $this->db->where('aml.carregar_automaticamente', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarmodelosrotinaautomatico() {
+        
+        $this->db->select('aml.ambulatorio_modelo_laudo_id,
+                            aml.nome,
+                            aml.texto');
+        $this->db->from('tb_ambulatorio_modelo_laudo aml');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_tuss_id = aml.procedimento_tuss_id');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        $this->db->where('aml.ativo', 'true');
+        
         $return = $this->db->get();
         return $return->result();
     }
