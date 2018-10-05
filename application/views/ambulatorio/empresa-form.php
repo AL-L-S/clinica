@@ -307,6 +307,7 @@
                                     <option value="mapa" <?= (in_array('mapa', $opc_telatendimento)) ? 'selected' : ''; ?>>Mapa</option>
                                     <option value="te" <?= (in_array('te', $opc_telatendimento)) ? 'selected' : ''; ?>>Teste Ergométrico</option>
                                     <option value="receituario" <?= (in_array('receituario', $opc_telatendimento)) ? 'selected' : ''; ?>>Receituário</option>
+                                    <option value="rotinas" <?= (in_array('rotinas', $opc_telatendimento)) ? 'selected' : ''; ?>>Rotinas</option>
                                     <option value="historicoimprimir" <?= (in_array('historicoimprimir', $opc_telatendimento)) ? 'selected' : ''; ?>>Imprimir Histórico</option>
                                     <option value="receituarioesp" <?= (in_array('receituarioesp', $opc_telatendimento)) ? 'selected' : ''; ?>>Receituário Especial</option>
                                     <option value="solicitar_exames" <?= (in_array('solicitar_exames', $opc_telatendimento)) ? 'selected' : ''; ?>>Solicitar Exames</option>

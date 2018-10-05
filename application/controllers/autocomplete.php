@@ -3137,6 +3137,18 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function modelosrotina() {
+
+        if (isset($_GET['exame'])) {
+            //$result = 'oi';
+            $result = $this->exametemp->listarautocompletemodelosrotina($_GET['exame']);
+        } else {
+            $result = $this->exametemp->listarautocompletemodelosrotina();
+            //$result = 'oi nao';
+        }
+        echo json_encode($result);
+    }
 
     function repetirreceituario() {
 

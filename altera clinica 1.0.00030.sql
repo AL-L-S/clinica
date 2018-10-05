@@ -79,6 +79,8 @@ ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN guia_id integer;
 
 ALTER TABLE ponto.tb_convenio ADD COLUMN coordenador_id integer;
 
+-- 04/10/2018
+
 CREATE TABLE ponto.tb_empresa_lembretes_aniversario
 (
   empresa_lembretes_aniversario_id serial NOT NULL,
@@ -104,4 +106,27 @@ CREATE TABLE ponto.tb_empresa_lembretesaniv_visualizacao
   operador_visualizacao integer,
   data_visualizacao timestamp without time zone,
   CONSTRAINT tb_empresa_lembretesaniv_visualizacao_pkey PRIMARY KEY (empresa_lembretesaniv_visualizacao_id)
+);
+
+-- 05/10/2018
+
+CREATE TABLE ponto.tb_ambulatorio_rotinas
+(
+  ambulatorio_rotinas_id serial NOT NULL,
+  paciente_id integer,
+  procedimento_tuss_id integer,
+  guia_id integer,
+  texto text,
+  assinatura boolean DEFAULT false,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  medico_parecer1 integer,
+  medico_parecer2 integer,
+  laudo_id integer,
+  empresa_id integer,
+  tipo character varying(50),
+  carimbo boolean DEFAULT false,
+  CONSTRAINT tb_ambulatorio_rotinas_pkey PRIMARY KEY (ambulatorio_rotinas_id)
 );
