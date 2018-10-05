@@ -10,8 +10,8 @@
                         <label>Médico</label>
                     </dt>
                     <dd>                    
-                        <select name="medico" id="medico" class="size4" required="">
-                            <option value="">SELECIONE</option>
+                        <select name="medico[]" id="medico" class="size4 chosen-select" required="" multiple data-placeholder="Selecione os Médicos">
+                            <!-- <option value="">SELECIONE</option> -->
                             <option value="TODOS">TODOS</option>
                             <? foreach ($medicos as $value) : ?>
                                 <option value="<?= $value->operador_id; ?>" <? if (@$medico_id == $value->operador_id) echo'selected';?>>
@@ -20,6 +20,9 @@
                             <? endforeach; ?>
                         </select>
                     </dd>
+                    <br>
+                    <br>
+                    <br>
                     <dt>
                         <label>Convênio</label>
                     </dt>
@@ -80,6 +83,13 @@
                                 <td class="tdValorText">
                                     <input type="text" id="valorRevisorText" class="texto01">
                                 </td>
+                                <td class="tdPercText">
+                                    <select id="perc_revisorText" name="perc_revisorText" class="size1">
+                                        <option value="">Selecione</option>
+                                        <option value="1">Sim</option>
+                                        <option value="0">Nao</option>
+                                    </select>
+                                </td>
                                 <td class="tdDiaRecText">
                                     <input type="text" id="diaRecText" class="texto01">
                                 </td>
@@ -104,6 +114,7 @@
                                 <td class="tabela_title">Valor</td>
                                 <td class="tabela_title">Percentual</td>
                                 <td class="tabela_title">Valor Revisor</td>
+                                <td class="tabela_title">Percentual Revisor</td>
                                 <td class="tabela_title">Dia Faturamento</td>
                                 <td class="tabela_title">Tempo Recebimento</td>
                                 <td class="tabela_title">Limpar?</td>
@@ -131,6 +142,12 @@
                                     </td>
                                     <td class="tdValor">
                                         <input type="text" name="valor_revisor[<?= $i ?>]"  id="valor_revisor<?= $i ?>" class="texto01"/>
+                                    </td>
+                                    <td class="tdPercentual">
+                                        <select name="percentual_revisor[<?= $i ?>]"  id="percentual_revisor<?= $i ?>" class="size1">
+                                            <option value="1"> SIM</option>
+                                            <option value="0"> NÃO</option>
+                                        </select>
                                     </td>
                                     <td class="tdDiaRecebimento">
                                         <input type="text" name="dia_recebimento[<?= $i ?>]" alt="99" id="dia_recebimento<?= $i ?>" class="texto01"/>
@@ -200,6 +217,7 @@
                     $("#valor_revisor"+id_linha).val('');
                     // $("#revisor"+id_linha).val('');
                     $("#percentual"+id_linha).val('');
+                    $("#percentual_revisor"+id_linha).val('');
                     $("#dia_recebimento"+id_linha).val('');
                     $("#tempo_recebimento"+id_linha).val('');
 
@@ -241,6 +259,7 @@
             tempoRecebimento = $("#tempoRecText").val(),
             revisor = $("#valorRevisorText").val(),
             percentual = $("#percText option:selected").val();
+            percentual_revisor = $("#perc_revisorText option:selected").val();
         
         for (var i = 0; i < tr.length; i++) {
             if(tr[i].getAttribute("id") != 'trBase' && tr[i].style.display == ""){
@@ -251,6 +270,7 @@
                 if(valor != "") $("#valor"+id).val(valor);
                 if(revisor != "") $("#valor_revisor"+id).val(revisor);
                 if(percentual != "") $("#percentual"+id).val(percentual);
+                if(percentual_revisor != "") $("#percentual_revisor"+id).val(percentual_revisor);
                 if(diaRecebimento != "") $("#dia_recebimento"+id).val(diaRecebimento);
                 if(tempoRecebimento != "") $("#tempo_recebimento"+id).val(tempoRecebimento);
             }

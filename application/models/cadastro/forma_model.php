@@ -145,13 +145,14 @@ class forma_model extends Model {
             $forma_entradas_saida_id = $_POST['txtcadastrosformaid'];            
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
 
             if ($_POST['txtcadastrosformaid'] == "") {// insert
                 $this->db->set('descricao', $_POST['txtNome']);
                 $this->db->set('agencia', $_POST['txtagencia']);
                 $this->db->set('conta', $_POST['txtconta']);            
-                $this->db->set('empresa_id', $array_empresa);
-                $this->db->set('perfil_id', $array_perfil);
+                $this->db->set('empresa_id', $empresa_id);
+                // $this->db->set('perfil_id', $array_perfil);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->insert('tb_forma_entradas_saida');
@@ -165,8 +166,8 @@ class forma_model extends Model {
                 $this->db->set('descricao', $_POST['txtNome']);
                 $this->db->set('agencia', $_POST['txtagencia']);
                 $this->db->set('conta', $_POST['txtconta']);            
-                $this->db->set('empresa_id', $array_empresa);
-                $this->db->set('perfil_id', $array_perfil);
+                $this->db->set('empresa_id', $empresa_id);
+                // $this->db->set('perfil_id', $array_perfil);
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $exame_forma_id = $_POST['txtcadastrosformaid'];

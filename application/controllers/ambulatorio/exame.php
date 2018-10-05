@@ -2220,6 +2220,11 @@ class Exame extends BaseController {
     function anexarimagemmedico($exame_id, $sala_id) {
 
         $this->load->helper('directory');
+        if (!is_dir("./upload/$exame_id")) {
+            mkdir("./upload/$exame_id");
+            $destino = "./upload/$exame_id";
+            chmod($destino, 0777);
+        }
         $data['arquivo_pasta'] = directory_map("./upload/$exame_id/");
 //        $data['arquivo_pasta'] = directory_map("/home/hamilton/projetos/clinica/upload/$exame_id/");
         if ($data['arquivo_pasta'] != false) {
@@ -2665,9 +2670,12 @@ class Exame extends BaseController {
         $this->load->helper('directory');
 
         $contador = directory_map("./upload/$exame_id/");
-//        var_dump(count($contador)); die;
+        // sort($contador);
+        // var_dump($contador); die;
+        
+
         if ($contador > 0) {
-            $novonome = count($contador) + 1 . '.jpg';
+            $novonome = count($contador) + 100 . '.jpg';
         } else {
             $novonome = $nome;
         }

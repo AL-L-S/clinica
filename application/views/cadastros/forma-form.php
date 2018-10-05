@@ -23,39 +23,8 @@
                     </dt>
                     <dd>
                         <input type="text" name="txtconta" class="texto04" value="<?= @$obj->_conta; ?>" />
-                    </dd><br>
-                    <dt>
-                        <label>Perfil</label>
-                    </dt>
-                    <dd>
-<!--                        <select  name="perfil[]" id="perfil" style="width: 400px" class="chosen-select" data-placeholder="Selecione os Perfis..." multiple required="" >      
-                            <option value="">Selecione </option>
-                            <?
-                            foreach ($perfil as $item) :
-                                ?>
-                                <option value="<?= $item->perfil_id; ?>" <?= (@$obj->_perfil_id == $item->perfil_id) ? 'selected' : '' ?>>
-                                    <?= $item->nome; ?>
-                                </option>
-                            <? endforeach; ?>
-                        </select>-->
                     </dd>
-                    <br><br>
-                    <dt>
-                        <label>Empresa</label>
-                    </dt>
-                    <dd>
-<!--                        <select  name="empresa[]" id="empresa" style="width: 400px" class="chosen-select" data-placeholder="Selecione as Empresas..." multiple required="" >      
-                            <option value="">Selecione </option>
-                            <?
-                            foreach ($empresa as $item) :
-                                ?>
-                                <option value="<?= $item->empresa_id; ?>" <?= (@$obj->_empresa_id == $item->empresa_id) ? 'selected' : '' ?>>
-                                    <?= $item->nome; ?>
-                                </option>
-                            <? endforeach; ?>
-                        </select>-->
-                    </dd>
-                    <br><br>
+
                 </dl>    
                 <hr/>
                 <button type="submit" name="btnEnviar">Enviar</button>

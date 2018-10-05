@@ -17,8 +17,8 @@
                     </dt>
                     <dd>
                         <input type="hidden" name="teste_conv_secundario" id="conv_secundario"  value="f" />
-                        <select name="convenio" id="convenio" class="size4" required="">
-                            <option value="">Selecione</option>
+                        <select name="convenio[]" id="convenio" class="size4 chosen-select" required="" multiple data-placeholder="Selecione um ou mais convênios">
+                            <!-- <option value="">Selecione</option> -->
                             <? foreach ($convenio as $value) : ?>
                                 <option value="<?= $value->convenio_id; ?>"<?
                                 if (@$obj->_convenio_id == $value->convenio_id):echo'selected';
@@ -27,11 +27,13 @@
                                     <? endforeach; ?>
                         </select>
                     </dd>
+                    <br>
+                    <br>
                     <dt>
                         <label>Empresa *</label>
                     </dt>
                     <dd>
-                        <select name="empresa" id="empresa" class="size4">
+                        <select name="empresa[]" id="empresa" class="size4 chosen-select" multiple required data-placeholder="Selecione uma ou mais empresas">
                             <? foreach ($empresa as $value) : ?>
                                 <option value="<?= $value->empresa_id; ?>"<?
                                 if (@$obj->_empresa_id == $value->empresa_id):echo'selected';
@@ -41,6 +43,8 @@
                         </select>
                     </dd>
                     
+                    <br>
+                    <br>
                     <br>
                     
                     <div class="divTabela">
@@ -62,6 +66,13 @@
     .base { max-height: 400pt; overflow-y: auto; }
 </style>
 <link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.4.2.min.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
@@ -69,9 +80,13 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js" ></script>
 <script type="text/javascript">  
     function enviarFormulario(submitButton){ // Isso foi feito devido ao Chamado: #2464.
-        if($("#convenio").val() == ""){
+        // console.log($("#convenio").val());
+        if($("#convenio").val() == null){
             $("#convenio").focus();
             alert("Informe um convenio.")
+        }else if($("#empresa").val() == null){
+            $("#empresa").focus();
+            alert("Informe uma empresa.")
         }
         else{
             $(submitButton).attr('onclick',null);
@@ -105,7 +120,7 @@
     });
     
     
-    var divPesquisa = '<div style="float: right; margin-bottom: 20pt;"><input type="text" id="procText" onkeypress="filtrarTabela()" placeholder="Pesquisar texto..." title="Pesquise pelo nome do procedimento ou pelo codigo"><select id="grupoText"><option value="">TODOS</option>';
+    var divPesquisa = '<div style="float: left; margin-bottom: 20pt;"><input type="text" id="procText" onkeypress="filtrarTabela()" placeholder="Pesquisar texto..." title="Pesquise pelo nome do procedimento ou pelo codigo"><select id="grupoText"><option value="">TODOS</option>';
     <? foreach ($grupos as $value) {?>
         divPesquisa +='<option value="<?= $value->nome ?>"><?= $value->nome ?></option>';
     <? } ?>
@@ -148,7 +163,8 @@
         $('#convenio').change(function () {
             $.getJSON('<?= base_url() ?>autocomplete/buscarconveniosecundario', {convenio: $(this).val(), ajax: true}, function (j) {
                 if(j[0].associado == 't'){                        
-                    $("#conv_secundario").val('t');
+                    // $("#conv_secundario").val('t');
+                    // Comentando isso também só de garantia
                     $("td.valor").hide();
                     $("th.valor").hide();
                     $("td.add_conv_sec").show();
@@ -167,8 +183,9 @@
                         tableProcConvSec += '</tbody></table>';
                         
                         totResultados = p.length;
-                        
-                        $(".divTabela").append("<div class='base'>"+divPesquisa+tableProcConvSec+"</div>");
+                        // Comentei isso porque não sei pra que serve. Isso um dia vai ser até esquecido, então tanto faz.
+                        // E a propósito, quero morrer. Obrigado.
+                        // $(".divTabela").append("<div class='base'>"+divPesquisa+tableProcConvSec+"</div>");
                     });
                 }
                 else{                        

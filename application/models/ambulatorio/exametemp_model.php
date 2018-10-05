@@ -8845,7 +8845,17 @@ class exametemp_model extends Model {
 
     function excluir($agenda_exames_id) {
 
+        $this->db->set('paciente_id', null);
+        $this->db->set('procedimento_tuss_id', null);
+        $this->db->set('guia_id', null);
+        $this->db->set('situacao', "LIVRE");
+        $this->db->set('observacoes', "");
+        $this->db->set('valor', NULL);
         $this->db->set('ativo', 't');
+        $this->db->set('convenio_id', null);
+        $this->db->set('autorizacao', null);
+        $this->db->set('operador_atualizacao', null);
+        $this->db->set('confirmado', 'f');
         $this->db->set('situacao', 'LIVRE');
         $this->db->set('observacoes', "");
         $horario = date("Y-m-d H:i:s");
@@ -8880,7 +8890,7 @@ class exametemp_model extends Model {
         $this->db->set('confirmado', 'f');
         $this->db->set('data_cancelamento', $horario);
         $this->db->set('operador_cancelamento', $operador_id);
-        $this->db->set('cancelada', 't');
+        // $this->db->set('cancelada', 't');
         $this->db->set('situacao', 'CANCELADO');
         $this->db->where('agenda_exames_id', $agenda_exames_id);
         $this->db->update('tb_agenda_exames');
