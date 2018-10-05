@@ -1519,6 +1519,18 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listareditarrotina($ambulatorio_laudo_id) {
+
+        $this->db->select(' ar.ambulatorio_rotinas_id ,
+                            ar.texto,
+                            ar.medico_parecer1');
+        $this->db->from('tb_ambulatorio_rotinas ar');
+        $this->db->where('ar.ambulatorio_rotinas_id', $ambulatorio_laudo_id);
+        $this->db->where('ar.tipo', 'NORMAL');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarrepetirreceita($ambulatorio_laudo_id) {
 
@@ -2437,6 +2449,59 @@ class laudo_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    function listarrotinaimpressao($ambulatorio_laudo_id) {
+
+        $this->db->select('ag.ambulatorio_laudo_id,
+                            ag.paciente_id,
+                            ag.data_cadastro,
+                            ag.exame_id,
+                            ag.peso,
+                            ag.altura,
+                            ag.data,
+                            ag.situacao,
+                            ae.agenda_exames_nome_id,
+                            ar.texto,
+                            ar.data_cadastro,
+                            p.nascimento,
+                            ag.situacao_revisor,
+                            o.nome as medico,
+                            o.conselho,
+                            ag.assinatura,
+                            ag.rodape,
+                            ag.guia_id,
+                            ag.cabecalho,
+                            ag.medico_parecer1,
+                            ag.medico_parecer2,
+                            me.nome as solicitante,
+                            op.nome as medicorevisor,
+                            pt.nome as procedimento,
+                            pt.grupo,
+                            ae.agenda_exames_id,
+                            ag.imagens,
+                            c.nome as convenio,
+                            pc.convenio_id,
+                            p.nome as paciente,
+                            p.cpf,
+                            p.nascimento,
+                            p.sexo,
+                            ar.assinatura,
+                            ar.carimbo,
+                            o.carimbo as medico_carimbo');
+        $this->db->from('tb_ambulatorio_rotinas ar');
+        $this->db->join('tb_ambulatorio_laudo ag', 'ag.ambulatorio_laudo_id = ar.laudo_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
+        $this->db->join('tb_exames e', 'e.exames_id = ag.exame_id ', 'left');
+        $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
+        $this->db->join('tb_operador me', 'me.operador_id = ae.medico_solicitante', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'pc.convenio_id = c.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("ar.ambulatorio_rotinas_id", $ambulatorio_laudo_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarsolicitarexameimpressao($ambulatorio_laudo_id) {
         $this->db->select('ag.ambulatorio_laudo_id,
@@ -2751,6 +2816,18 @@ class laudo_model extends Model {
         $this->db->from('tb_ambulatorio_receituario ag');
         $this->db->where('ag.ambulatorio_receituario_id', $ambulatorio_laudo_id);
         $this->db->where('ag.tipo', 'NORMAL');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarautocompleterepetirrotina($ambulatorio_laudo_id) {
+        $this->db->select(' ar.ambulatorio_rotinas_id ,
+                            ar.data_cadastro,
+                            ar.texto,
+                            ar.medico_parecer1');
+        $this->db->from('tb_ambulatorio_rotinas ar');
+        $this->db->where('ar.ambulatorio_rotinas_id', $ambulatorio_laudo_id);
+        $this->db->where('ar.tipo', 'NORMAL');
         $return = $this->db->get();
         return $return->result();
     }
@@ -5609,6 +5686,26 @@ class laudo_model extends Model {
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->where('ambulatorio_receituario_id', $_POST['receituario_id']);
             $this->db->update('tb_ambulatorio_receituario');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function editarrotina() {
+        try {
+//            var_dump($_POST);die;
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('texto', $_POST['laudo']);
+//            $this->db->set('paciente_id', $_POST['paciente_id']);
+//            $this->db->set('procedimento_tuss_id', $_POST['procedimento_tuss_id']);
+            $this->db->set('laudo_id', $_POST['ambulatorio_laudo_id']);
+            $this->db->set('medico_parecer1', $_POST['medico']);
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('ambulatorio_rotinas_id', $_POST['rotinas_id']);
+            $this->db->update('tb_ambulatorio_rotinas');
         } catch (Exception $exc) {
             return -1;
         }
