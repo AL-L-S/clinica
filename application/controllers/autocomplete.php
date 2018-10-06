@@ -3160,6 +3160,16 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    function repetirrotina() {
+
+        if (isset($_GET['rotina'])) {
+
+            $result = $this->laudo->listarautocompleterepetirrotina($_GET['rotina']);
+        } else {
+            $result = $this->laudo->listarautocompleterepetirrotina();
+        }
+        echo json_encode($result);
+    }
 
     function editarreceituario() {
 

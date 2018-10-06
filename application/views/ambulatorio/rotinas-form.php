@@ -169,22 +169,22 @@
                                <!-- <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento; ?></td> -->
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
-<!--                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoreceita/<?= $item->ambulatorio_receituario_id; ?>');">Imprimir
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaorotina/<?= $item->ambulatorio_rotinas_id; ?>');">Imprimir
                                         </a></div>
-                                </td>-->
+                                </td>
                             
-<!--                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="repetir(<?=$item->ambulatorio_receituario_id;?>)">Repetir
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a onclick="repetir(<?=$item->ambulatorio_rotinas_id;?>)">Repetir
                                         </a></div>
-                                </td>-->
+                                </td>
                                  <? 
                                 if (@$obj->_status != 'FINALIZADO'){ 
                                     if(@$obj->_medico_parecer1 == $item->operador_id){ ?>
-<!--                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_receituario_id; ?>');">Editar
+                                    <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarcarregarrotina/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_rotinas_id; ?>');">Editar
                                         </a></div>
-                                    </td>-->
+                                    </td>
                                  <? } else{ ?>
                                     <td class="<?php echo $estilo_linha; ?>" width="60px;"></td>
                                 <? }
@@ -411,9 +411,10 @@
                                         });
                                     });
 
-                                    function repetir(receita_id) {
+                                    function repetir(rotina_id) {
 
-                                        $.getJSON('<?= base_url() ?>autocomplete/repetirreceituario', {receita: receita_id, ajax: true}, function (j) {
+//                                           console.log(rotina_id);
+                                        $.getJSON('<?= base_url() ?>autocomplete/repetirrotina', {rotina: rotina_id, ajax: true}, function (j) {
                                             options = "";
 
                                             options += j[0].texto;
@@ -421,13 +422,13 @@
                                             $('#laudo').val(options);
                                             var ed = tinyMCE.get('laudo');
                                             ed.setContent($('#laudo').val());
-
-                                                
+                                                                                            
                                         }
+                                                
                                        ) 
                                     }
                                     
-                                             function editar(receita_id) {
+                                             function editar(rotina_id) {
 
                                         $.getJSON('<?= base_url() ?>autocomplete/editarreceituario', {receita: receita_id, ajax: true}, function (j) {
                                             options = "";
