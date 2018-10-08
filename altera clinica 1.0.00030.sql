@@ -131,4 +131,103 @@ CREATE TABLE ponto.tb_ambulatorio_rotinas
   CONSTRAINT tb_ambulatorio_rotinas_pkey PRIMARY KEY (ambulatorio_rotinas_id)
 );
 
-                                              
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3030');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000030',
+            'Ao ativar os procedimentos com valor separados por empresa, a tela de manter procedimentos convênio agora possui um botão para excluir algum procedimento especifico em todas as empresas ao mesmo tempo',
+            '3030',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3034');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000030',
+            'No manter percentual médico multiplo agora existe a possibilidade de se pesquisar por subgrupo. Além de um botão para limpar os campos dos procedimentos que estiverem marcados para serem limpos',
+            '3034',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3035');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000030',
+            'Na tela de cadastrar Percentual Múltiplo o campo Revisor deixa de existir e passa a existir um campo chamado Valor_Revisor, caso esse esteja preenchido, o sistema insere um valor para aquele Médico como Revisor e como médico comum. Também foi adicionada a possibilidade de definir se o valor é em percentual ou não.',
+            '3035',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3044');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000030',
+            'No cadastro multiplo de percentual médico é possível escolher mais de um médico.',
+            '3044',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3045');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000030',
+            'É possível cadastrar procedimentos para mais de uma empresa e convênio ao mesmo tempo na opção de adicionar procedimentos multiplos no Manter Procedimento Convênio',
+            '3045',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
