@@ -189,7 +189,8 @@ class guia_model extends Model {
         return $return->result();
     }
     
-    function listarriscosparticular($aso_id) {
+    function listarprocedimentoparticular($aso_id) {
+//        var_dump($aso_id);die;
         $this->db->select('ca.impressao_aso');
                                      
         $this->db->from('tb_cadastro_aso ca');
@@ -197,6 +198,19 @@ class guia_model extends Model {
 
         $return = $this->db->get();
         return $return->result();
+        
+    }
+    
+    function listarriscosparticular($aso_id) {
+//        var_dump($aso_id);die;
+        $this->db->select('ca.impressao_aso');
+                                     
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->where('ca.cadastro_aso_id', $aso_id);
+
+        $return = $this->db->get();
+        return $return->result();
+        
     }
 
     function gravarcadastroaso($gravarempresa, $paciente_id, $ambulatorio_guia) {

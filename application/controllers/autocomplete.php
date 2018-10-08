@@ -2128,20 +2128,40 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-//    function riscofuncaomt() {
-//        header('Access-Control-Allow-Origin: *');
-//        if (isset($_GET['funcao'])) {
-//            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt($_GET['funcao']);
-//        } else {
-//            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt(@$_GET['funcao']);
-//        }
-//
-//        $json_riscos = json_decode($result[0]->aso_risco_id);
-//
-//        $result2 = $this->saudeocupacional->listarautocompletefuncaojson($json_riscos);
-//
-//        echo json_encode($result2);
-//    }
+    function procedimentoparticular() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['aso_id'])) {
+            $result = $this->guia->listarprocedimentoparticular($_GET['aso_id']);
+        
+            
+        } else {
+            $result = $this->guia->listarriscosparticular(@$_GET['aso_id']);
+        }
+        
+        $impressao_decode = json_decode($result[0]->impressao_aso);
+        $json_procedimentos =$impressao_decode->procedimento1;
+//        var_dump($json_procedimentos);die;
+        $result2 = $this->saudeocupacional->listarautocompleteprocedimentojson2($json_procedimentos);
+
+        echo json_encode($result2);
+    }
+    
+    function riscofuncaomt() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['aso_id'])) {
+            $result = $this->guia->listarriscosparticular($_GET['aso_id']);
+        
+            
+        } else {
+            $result = $this->guia->listarriscosparticular(@$_GET['aso_id']);
+        }
+        $impressao_decode = json_decode($result[0]->impressao_aso);
+        $json_riscos = $impressao_decode->riscos;
+//        var_dump($impressao_decode->riscos);die;
+        $result2 = $this->saudeocupacional->listarautocompletefuncaojson2($json_riscos);
+
+        echo json_encode($result2);
+    }
 
     function riscofuncaomt2() {
         header('Access-Control-Allow-Origin: *');

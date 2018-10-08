@@ -130,3 +130,5 @@ CREATE TABLE ponto.tb_ambulatorio_rotinas
   carimbo boolean DEFAULT false,
   CONSTRAINT tb_ambulatorio_rotinas_pkey PRIMARY KEY (ambulatorio_rotinas_id)
 );
+
+                                              
