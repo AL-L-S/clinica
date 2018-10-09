@@ -416,11 +416,11 @@ class guia_model extends Model {
     
     function listarpacientesinternacao($parametro = null) {
 
-        $this->db->select('p.*');
+        $this->db->select('p.telefone, p.nascimento');
         $this->db->from('tb_paciente p');
         $this->db->where('p.ativo', 't');
         if ($parametro != null) {
-            $this->db->where('nome ilike', "%" . $parametro . "%");
+            $this->db->where('paciente_id', $parametro);
         }
         $this->db->orderby('p.nome');
         $return = $this->db->get();

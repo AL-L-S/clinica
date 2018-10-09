@@ -881,7 +881,37 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
 <? } ?>
 
 //                 });
+                            $.getJSON('<?= base_url() ?>ambulatorio/guia/listarriscos', {setor: $('#setor').val()}, function (j) {
+                              
+                                options = '<option value=""></option>';
+//                                alert('ola');
+                                for (var c = 0; c < j.length; c++) {
+//                                    console.log(j);
+                                    options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
 
+
+                                }
+
+
+                                $('#riscos option').remove();
+                                $('#riscos').append(options);
+                                $("#riscos").trigger("chosen:updated");
+
+                            });
+                            
+                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+                                options = '<option value=""></option>';
+//                                     console.log(j);
+                                for (var c = 0; c < j.length; c++) {
+                                    options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+
+                                }
+//                            $('#procedimento1').html(options).show();
+                                $('#procedimento1 option').remove();
+                                $('#procedimento1').append(options);
+                                $("#procedimento1").trigger("chosen:updated");
+//                                    $('.carregando').hide();
+                            });
 
 
                     $('#consulta').change(function () {

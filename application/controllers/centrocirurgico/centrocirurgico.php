@@ -716,6 +716,13 @@ class centrocirurgico extends BaseController {
             $cirurgiao = $_POST['medicocirurgia'];   
             $gravarcirurgiao = $this->solicitacirurgia_m->gravarnovasolicitacaomedicocirurgiao($solicitacao, $cirurgiao);
             }
+            if($_POST['telefone'] != ""){
+            $paciente_id = $_POST['txtNomeid']; 
+            $telefone = $_POST['telefone']; 
+            $paciente = $this->paciente->ajustarpaciente($paciente_id, $telefone);
+//            echo '<pre>';
+//            var_dump($_POST);die;
+            }
             if ($solicitacao == -1) {
                 $data['mensagem'] = 'Erro ao efetuar Solicitacao';
             } else {
@@ -726,6 +733,36 @@ class centrocirurgico extends BaseController {
             redirect(base_url() . "centrocirurgico/centrocirurgico/adicionarprocedimentos/$solicitacao");
         }
     }
+    
+    function relatoriocirurgiaconvenio() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $this->loadView('centrocirurgico/relatoriocirurgiaconvenio', $data);
+    }
+    
+    function gerarelatoriocirurgiaconvenio() {
+//        echo '<pre>';
+//        var_dump($_POST['tipo']);
+//        die;
+        $data['data_inicio'] = $_POST['txtdata_inicio'];
+        $data['data_fim'] = $_POST['txtdata_fim'];
+        $data['relatoriocirurgiaconvenio'] = $this->centrocirurgico_m->relatoriocirurgiaconvenio();
+
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
+        } else {
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
+            } else {
+                $data['convenio'] = 'TODOS';
+            }
+        }
+
+
+        $this->load->View('centrocirurgico/impressaorelatoriocirurgiaconvenio', $data);
+    }
+
 
     function gravarsolicitacaoprocedimentosalterarorcamento() {
 //        var_dump($_POST); die;

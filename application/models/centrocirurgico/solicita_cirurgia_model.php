@@ -924,6 +924,7 @@ class solicita_cirurgia_model extends BaseModel {
                 $this->db->set('ambulatorio_laudo_id', $_POST['ambulatorio_laudo_id']);
             }
             $this->db->set('leito', $_POST['leito']);
+            $this->db->set('operatorio', $_POST['operatorio']);
             $this->db->set('observacao', $_POST['observacao']);
             $this->db->set('paciente_id', $_POST['txtNomeid']);
             $this->db->set('sala_agendada', $_POST['sala']);

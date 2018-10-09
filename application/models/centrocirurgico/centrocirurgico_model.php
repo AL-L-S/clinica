@@ -789,6 +789,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
                             c.convenio_id,
                             o.nome as medico,
                             o2.nome as medico_solicitante,
+                            o3.nome as operador,
                             sc.situacao,
                             (
                                 SELECT solicitacao_orcamento_convenio_id 
@@ -809,6 +810,7 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
         $this->db->join('tb_convenio c', 'c.convenio_id = sc.convenio', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = sc.medico_agendado', 'left');
         $this->db->join('tb_operador o2', 'o2.operador_id = sc.medico_solicitante', 'left');
+        $this->db->join('tb_operador o3', 'o3.operador_id = sc.operador_cadastro', 'left');
         $this->db->where('sc.ativo', 't');
         $this->db->where('sc.excluido', 'f');
         $this->db->where('sc.autorizado', 'f');
@@ -819,6 +821,40 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
         }
 
         return $this->db;
+    }
+    
+    function relatoriocirurgiaconvenio() {
+//        var_dump($_POST);die;
+        $data = date("Y-m-d");
+        $this->db->select(' 
+                          sc.*,
+                          p.nome as paciente,
+                          o.nome as cirurgiao,
+                          c.nome as convenio
+                                                   
+                          ');
+        $this->db->from('tb_solicitacao_cirurgia sc');
+        $this->db->join('tb_paciente p', 'p.paciente_id = sc.paciente_id', 'left');
+        $this->db->join('tb_convenio c', 'sc.convenio = c.convenio_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = sc.medico_cirurgiao', 'left');
+
+        $this->db->where('sc.ativo = true');
+
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00';
+
+        $this->db->where("sc.data_prevista >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("sc.data_prevista <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
+        
+        if ($_POST['convenio'] != '') {
+            if ($_POST['convenio'] == '-1') {
+                $this->db->where('c.convenio_id', null);
+            } else {
+                $this->db->where('c.convenio_id', $_POST['convenio']);
+            }
+        }
+        $this->db->orderby("sc.data_prevista");
+        $return = $this->db->get();
+        return $return->result();
     }
 
     function formadepagamentoguiaprocedimentos($guia_id, $financeiro_grupo_id) {

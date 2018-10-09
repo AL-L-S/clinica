@@ -1887,11 +1887,19 @@ class Autocomplete extends Controller {
         header('Access-Control-Allow-Origin: *');
 
         if (isset($_GET['paciente_id'])) {
-            $result = $this->exametemp->listarpacientesinternacao($_GET['paciente_id']);
+            $result = $this->guia->listarpacientesinternacao($_GET['paciente_id']);
+            $telefone = $result[0]->telefone;
+            $data = date("Y-m-d");
+            $nascimento = $result[0]->nascimento;
+            $date_time = new DateTime($nascimento);
+            $diff = $date_time->diff(new DateTime($data));
+            $teste = $diff->format('%Y');
+            $return = array($telefone, $teste);
+//            var_dump($teste);die;
         } else {
-            $result = $this->exametemp->listarpacientesinternacao();
+            $result = $this->guia->listarpacientesinternacao();
         }
-        echo json_encode($result);
+        echo json_encode($return);
     }
 
     function procedimentoconvenioaso() {

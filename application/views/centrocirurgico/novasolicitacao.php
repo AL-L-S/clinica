@@ -29,14 +29,14 @@
                         <label>Telefone</label>
                     </dt>
                     <dd>                       
-                        <input type="text" name="telefone" id="telefone" class="texto04" value="<?= @$laudo[0]->nome; ?>"/>
+                        <input type="text" name="telefone" id="telefone" class="texto04" value=""/>
                     </dd>
                     <? // var_dump($expression);die;?>
                     <dt>
                         <label>Idade</label>
                     </dt>
                     <dd>                        
-                        <input type="text" name="idade" id="idade" class="texto02" value="<?= @$laudo[0]->nome; ?>"/>
+                        <input type="text" name="idade" id="idade" class="texto02" value=""/>
                     </dd>
 
                     <dt>
@@ -116,6 +116,15 @@
                         <div>
                             <input type="radio" name="leito" id="enf" value="ENFERMARIA" required/> <label for="enf">Enfermaria</label>
                             <input type="radio" name="leito" id="apt" value="APARTAMENTO" required/> <label for="apt">Apartamento</label>
+                        </div>
+                    </dd>
+                    <dt>
+                        <label>Pós-Operatório *</label>
+                    </dt>
+                    <dd>
+                        <div>
+                            <input type="radio" name="operatorio" id="enf" value="PQA" required/> <label for="enf">PQA</label>
+                            <input type="radio" name="operatorio" id="apt" value="INTERNACAO" required/> <label for="apt">Internação</label>
                         </div>
                     </dd>
 
@@ -231,25 +240,26 @@
         });
     });
     
-    $(function () {
-                        $('#txtNome').select(function () {
-                            alert('ola');
+//    $(function () {
+                        $('#txtNome').blur(function () {
                             if ($(this).val()) {
 
                                 $.getJSON('<?= base_url() ?>autocomplete/pacientesinternacao', {paciente_id: $('#txtNomeid').val()}, function (j) {
-                                    options = '<option value=""></option>';
-//                                    console.log(j);
-                                    for (var c = 0; c < j.length; c++) {
-                                        options += '<option selected value="' + j[c].paciente_id + '">' + j[c].nome + '</option>';
-                                    }
-
-                                    $('#idade option').remove();
-                                    $('#idade').append(options);
-                                    $("#idade").trigger("chosen:updated");
+//                            console.log(j[1]);
+                               
+                                    telefone = j[0];//                                
+                                    $('#telefone').val(telefone);                          
+                                    
                                     $('.carregando').hide();
+                                    
+                                    idade = j[1];
+                                    $('#idade').val(idade);
+                                    
+//                                    
                                 });
+
                             } 
                         });
-                    });
+//                    });
 
 </script>
