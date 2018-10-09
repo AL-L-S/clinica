@@ -377,7 +377,7 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
     .chosen-container{ margin-top: 5pt;}
     #procedimento1_chosen a { width: 330px; }
 </style>
-<? // echo'<pre>'; var_dump($informacao_aso[0]->cadastro_aso_id);die;  ?>
+<? // echo'<pre>'; var_dump($informacao_aso);die;  ?>
 <script type="text/javascript">
 
                     $(function () {
@@ -558,8 +558,13 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
                         });
                     });
                         
-    <? if ($informacao_aso[0]->cadastro_aso_id != '') { ?>
-                            var aso_id = <?= $informacao_aso[0]->cadastro_aso_id ?>;
+    <? if (count($informacao_aso) > 0) { ?>
+<? if (isset($informacao_aso[0]->cadastro_aso_id)) { ?>
+     var aso_id = <?= $informacao_aso[0]->cadastro_aso_id ?>;
+    <? } else { ?>
+     var aso_id = '';
+ <? } ?>
+                           
 //                            alert(aso_id);
 <? } else { ?>
                       

@@ -413,6 +413,19 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarpacientesinternacao($parametro = null) {
+
+        $this->db->select('p.*');
+        $this->db->from('tb_paciente p');
+        $this->db->where('p.ativo', 't');
+        if ($parametro != null) {
+            $this->db->where('nome ilike', "%" . $parametro . "%");
+        }
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarguias($args = array()) {
 

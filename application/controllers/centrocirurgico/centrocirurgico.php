@@ -705,12 +705,17 @@ class centrocirurgico extends BaseController {
     }
 
     function gravarnovasolicitacao() {
+//        var_dump($_POST);die;
         if ($_POST["txtNomeid"] == "") {
             $data['mensagem'] = 'Paciente escolhido não é válido';
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "centrocirurgico/centrocirurgico/novasolicitacao/0");
         } else {
             $solicitacao = $this->solicitacirurgia_m->gravarnovasolicitacao();
+            if($_POST['medicocirurgia'] != ""){
+            $cirurgiao = $_POST['medicocirurgia'];   
+            $gravarcirurgiao = $this->solicitacirurgia_m->gravarnovasolicitacaomedicocirurgiao($solicitacao, $cirurgiao);
+            }
             if ($solicitacao == -1) {
                 $data['mensagem'] = 'Erro ao efetuar Solicitacao';
             } else {
@@ -939,12 +944,12 @@ class centrocirurgico extends BaseController {
         $this->loadView('centrocirurgico/fornecedormaterial-form', $data);
     }
 
-    function gravarequipeoperadores() {
+    function gravarequipeoperadores($cirurgiao_id) {
         $solicitacao_id = $_POST['solicitacao_id'];
 
         $equipe_funcao = $this->centrocirurgico_m->listarequipeoperadoresfuncao();
         if (count($equipe_funcao) == 0) {
-            $this->centrocirurgico_m->gravarequipeoperadores();
+            $this->centrocirurgico_m->gravarequipeoperadores($cirurgiao_id);
             $data['mensagem'] = 'Sucesso ao gravar função.';
         } else {
             $data['mensagem'] = 'Função ou operador já cadastrado(a)';
@@ -1052,6 +1057,7 @@ class centrocirurgico extends BaseController {
         $data['solicitacao_id'] = $solicitacao_id;
         $data['hospitais'] = $this->centrocirurgico_m->listarhospitaissolicitacao();
         $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['salas'] = $this->guia->listarsalas();
         $data['convenio'] = $this->centrocirurgico_m->listarconveniocirurgiaorcamento();
         if ($laudo_id != null && $laudo_id != '0') {
             $data['laudo'] = $this->centrocirurgico_m->listarlaudosolicitacaocirurgica($laudo_id);
@@ -1229,6 +1235,7 @@ class centrocirurgico extends BaseController {
     function montarequipe($solicitacaocirurgia_id) {
         $data['solicitacaocirurgia_id'] = $solicitacaocirurgia_id;
         $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['cirurgiao'] = $this->centrocirurgico_m->listarcirurgiao($solicitacaocirurgia_id);        
 //        $data['equipe'] = $this->solicitacirurgia_m->listarequipe($solicitacaocirurgia_id);
         $data['equipe_operadores'] = $this->solicitacirurgia_m->listarequipeoperadores($solicitacaocirurgia_id);
         $data['grau_participacao'] = $this->solicitacirurgia_m->grauparticipacao();

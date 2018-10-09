@@ -231,3 +231,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
+
+-- 08/10/2018
+
+ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN medico_cirurgiao integer;

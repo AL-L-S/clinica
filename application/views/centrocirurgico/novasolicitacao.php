@@ -24,12 +24,26 @@
                         <input type="hidden" name="txtNomeid" id="txtNomeid" class="texto02" value="<?= @$laudo[0]->paciente_id; ?>"/>
                         <input type="text" name="txtNome" id="txtNome" class="texto10" value="<?= @$laudo[0]->nome; ?>"/>
                     </dd>
+                    
+                    <dt>
+                        <label>Telefone</label>
+                    </dt>
+                    <dd>                       
+                        <input type="text" name="telefone" id="telefone" class="texto04" value="<?= @$laudo[0]->nome; ?>"/>
+                    </dd>
+                    <? // var_dump($expression);die;?>
+                    <dt>
+                        <label>Idade</label>
+                    </dt>
+                    <dd>                        
+                        <input type="text" name="idade" id="idade" class="texto02" value="<?= @$laudo[0]->nome; ?>"/>
+                    </dd>
 
                     <dt>
-                        <label>Médico Solicitante *</label>
+                        <label>Médico Solicitante </label>
                     </dt>
                     <dd>
-                        <select  name="medicoagenda" id="medicoagenda" class="size4" required="true">
+                        <select  name="medicoagenda" id="medicoagenda" class="size4">
                             <option value="">Selecione</option>
                             <? foreach ($medicos as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>" <?= ( @$laudo[0]->medico_parecer1 == $item->operador_id ) ? 'selected' : '' ?>>
@@ -39,10 +53,36 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Médico Cirurgião </label>
+                    </dt>
+                    <dd>
+                        <select  name="medicocirurgia" id="medicocirurgia" class="size4">
+                            <option value="">Selecione</option>
+                            <? foreach ($medicos as $item) : ?>
+                                <option value="<?= $item->operador_id; ?>" <?= ( @$laudo[0]->medico_parecer1 == $item->operador_id ) ? 'selected' : '' ?>>
+                                    <?= $item->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Sala</label>
+                    </dt>
+                    <dd>
+                        <select  name="sala" id="sala" class="size4">
+                            <option value="">Selecione</option>
+                            <? foreach ($salas as $item) : ?>
+                                <option value="<?= $item->exame_sala_id; ?>" <?= ( @$laudo[0]->sala_agendada == $item->exame_sala_id ) ? 'selected' : '' ?>>
+                                    <?= $item->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Data da Cirurgia *</label>
                     </dt>
                     <dd>
-                        <input type="text" name="data_prevista" id="data_prevista" class="texto02" value=""/>
+                        <input type="text" name="data_prevista" id="data_prevista" class="texto02" value="" required=""/>
                     </dd>
                     <dt>
                         <label>Hora de Inicio *</label>
@@ -152,7 +192,7 @@
     $(function () {
         $("#txtNome").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-            minLength: 3,
+            minLength: 10,
             focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);
                 return false;
@@ -190,5 +230,26 @@
             }
         });
     });
+    
+    $(function () {
+                        $('#txtNome').select(function () {
+                            alert('ola');
+                            if ($(this).val()) {
+
+                                $.getJSON('<?= base_url() ?>autocomplete/pacientesinternacao', {paciente_id: $('#txtNomeid').val()}, function (j) {
+                                    options = '<option value=""></option>';
+//                                    console.log(j);
+                                    for (var c = 0; c < j.length; c++) {
+                                        options += '<option selected value="' + j[c].paciente_id + '">' + j[c].nome + '</option>';
+                                    }
+
+                                    $('#idade option').remove();
+                                    $('#idade').append(options);
+                                    $("#idade").trigger("chosen:updated");
+                                    $('.carregando').hide();
+                                });
+                            } 
+                        });
+                    });
 
 </script>

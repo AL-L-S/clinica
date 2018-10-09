@@ -1882,6 +1882,17 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function pacientesinternacao() {
+        header('Access-Control-Allow-Origin: *');
+
+        if (isset($_GET['paciente_id'])) {
+            $result = $this->exametemp->listarpacientesinternacao($_GET['paciente_id']);
+        } else {
+            $result = $this->exametemp->listarpacientesinternacao();
+        }
+        echo json_encode($result);
+    }
 
     function procedimentoconvenioaso() {
         header('Access-Control-Allow-Origin: *');

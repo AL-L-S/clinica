@@ -2611,8 +2611,9 @@ ORDER BY ae.agenda_exames_id)";
         }
     }
 
-    function gravarequipeoperadores() {
+    function gravarequipeoperadores($cirurgiao_id) {
         try {
+//            var_dump($cirurgiao_id);die;
             /* inicia o mapeamento no banco */
             $_POST['valor'] = (float) str_replace(',', '.', str_replace('.', '', $_POST['valor']));
 
@@ -2626,6 +2627,8 @@ ORDER BY ae.agenda_exames_id)";
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_equipe_cirurgia_operadores');
+            
+            
         } catch (Exception $exc) {
             return -1;
         }
@@ -3022,6 +3025,15 @@ ORDER BY ae.agenda_exames_id)";
         $this->db->join('tb_grau_participacao gp', 'gp.grau_participacao_id = eco.funcao');
 //        $this->db->orderby('ativo', 'true');
         $this->db->where('equipe_cirurgia_id', $equipe_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarcirurgiao($solicitacaocirurgia_id) {
+        $this->db->select('s.medico_cirurgiao, o.nome');
+        $this->db->from('tb_solicitacao_cirurgia s');
+        $this->db->join('tb_operador o', 'o.operador_id = s.medico_cirurgiao');        
+        $this->db->where('solicitacao_cirurgia_id', $solicitacaocirurgia_id);
         $return = $this->db->get();
         return $return->result();
     }
