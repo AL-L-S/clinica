@@ -16,7 +16,7 @@
             </table>
             </div>
             
-                <input type="hidden" name="convenio_secundario_id" value="<?php echo $convenio_id; ?>"/>
+                
 
                 <br>
                 <br>
@@ -51,7 +51,8 @@
                         <td style="font-weight: bold">CONVENIO</td>
                         <td style="font-weight: bold">VALOR (%)</td>
                     </tr>
-            <form name="form_desconto" id="form_desconto" action="<?= base_url() ?>cadastros/convenio/gravarvaloresassociacaoeditar" method="post">        
+            <form name="form_desconto" id="form_desconto" action="<?= base_url() ?>cadastros/convenio/gravarvaloresassociacaoeditar" method="post">
+            <input type="hidden" name="convenio_secundario_id" value="<?php echo $convenio_id; ?>"/>        
                     <?
                     $i = 0;
                     foreach ($grupos as $value) {

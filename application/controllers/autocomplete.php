@@ -2043,6 +2043,18 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function procedimentoconveniogrupoajustemedico() {
+        // var_dump($_GET['convenio1']); die;
+
+        if (isset($_GET['convenio1']) && isset($_GET['grupo1'])) {
+            $result = $this->procedimentoplano->procedimentoconveniogrupoajustemedico($_GET['convenio1'], $_GET['grupo1']);
+        } else {
+            $result = $this->procedimentoplano->procedimentoconveniogrupoajustemedico(@$_GET['convenio1'], @$_GET['grupo1']);
+        }
+
+        echo json_encode($result);
+    }
+
 //    function funcaosetormt() {
 //        header('Access-Control-Allow-Origin: *');
 //        if (isset($_GET['setor'])) {
@@ -2200,6 +2212,16 @@ class Autocomplete extends Controller {
             $result = $this->procedimentoplano->listarautocompleteprocedimentos($_GET['covenio']);
         } else {
             $result = $this->procedimentoplano->listarautocompleteprocedimentos();
+        }
+        echo json_encode($result);
+    }
+
+    function procedimentoporconvenioajustemedico() {
+        // var_dump($_GET['covenio']); die;
+        if (isset($_GET['covenio'])) {
+            $result = $this->procedimentoplano->procedimentoporconvenioajustemedico($_GET['covenio']);
+        } else {
+            $result = $this->procedimentoplano->procedimentoporconvenioajustemedico();
         }
         echo json_encode($result);
     }

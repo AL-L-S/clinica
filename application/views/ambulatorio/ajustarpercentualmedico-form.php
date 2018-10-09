@@ -4,7 +4,14 @@
         <h3 class="singular"><a href="#">Ajuste de Honorários Médicos</a></h3>
         <div>
             <form name="form_procedimentohonorario" id="form_procedimentohonorario" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarajustepercentualmedico" method="post">
-
+                <style>
+                    dd{
+                        margin-bottom: 4px;
+                    }
+                    dt{
+                        margin-bottom: 4px;
+                    }
+                </style>
                 <dl class="dl_desconto_lista">
                     <? if(@$medico_id != '') { ?>
                         <dt>
@@ -19,7 +26,7 @@
                             }
                             ?>
                             <input type="text" name="texto_medico" value="<?=$medicoNome?>" readonly="">
-                            <input type="hidden" name="medico" id="medico" value="<?=@$medico_id?>">
+                            <input type="hidden" name="medico[]" id="medico" value="<?=@$medico_id?>">
 
                         </dd>       
                     <? } else { ?>
@@ -28,8 +35,8 @@
                             <label>Médico</label>
                         </dt>
                         <dd>                    
-                            <select name="medico" id="medico" class="size4" required="">
-                                <option value="">SELECIONE</option>
+                            <select name="medico[]" id="medico" class="size4 chosen-select" multiple required="" data-placeholder="Selecione um ou mais médicos">
+                                <!-- <option value="">SELECIONE</option> -->
                                 <option>TODOS</option>
                                 <? foreach ($medicos as $value) : ?>
                                     <option value="<?= $value->operador_id; ?>">
@@ -38,6 +45,8 @@
                                 <? endforeach; ?>
                             </select>
                         </dd>
+                        <!-- <br> -->
+                        <br>
                     
                     <? } 
                     if(@$convenio_id != '') { ?>
@@ -61,8 +70,8 @@
                             <label>Convênio</label>
                         </dt>
                         <dd>
-                            <select name="covenio" id="covenio" class="size4" required>
-                                <option value="">SELECIONE</option>
+                            <select name="covenio[]" id="covenio" class="size4 chosen-select" multiple required="" data-placeholder="Selecione um ou mais convênios">
+                                <!-- <option value="">SELECIONE</option> -->
                                 <? foreach ($convenio as $value) : ?>
                                     <option  value="<?= $value->convenio_id; ?>">
                                         <?php echo $value->nome; ?>
@@ -70,20 +79,24 @@
                                 <? endforeach; ?>                                                                                             
                             </select>
                         </dd>
+                        <!-- <br> -->
+                        <br>
                     <? } ?>
                     <dt>                         
                         <label>Grupo</label>
                     </dt>                    
                     <dd>                       
-                        <select name="grupo" id="grupo" class="size4" required>
-                            <option value="">SELECIONE</option>
-                            <option>TODOS</option>                           
+                        <select name="grupo[]" id="grupo" class="size4 chosen-select" multiple required="" data-placeholder="Selecione um ou mais grupos">
+                            <!-- <option value="">SELECIONE</option> -->
+                            <option value="TODOS">TODOS</option>                           
                             <? foreach ($grupo as $value) : ?>
                                 <option value="<?= $value->nome; ?>"><?php echo $value->nome; ?></option>
                             <? endforeach; /* $value->ambulatorio_grupo_id; */ ?>
 
                         </select>
-                    </dd><br>
+                    </dd>
+                    <!-- <br> -->
+                    <br>
                     <dt>
                         <label>Procedimento</label>
                     </dt>
@@ -91,18 +104,56 @@
 <!--                        <select  name="procedimento" id="procedimento" class="size4" >
                             <option value="">SELECIONE</option>
                         </select>-->
-                        
-                        <select name="procedimento" id="procedimento" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
-                            <option value="">Selecione</option>
+                        <?
+                        $procedimentos_tuss = $this->procedimentoplano->listarprocedimento4();
+                        ?>
+                        <select required name="procedimento[]" id="procedimento" multiple class="size4 chosen-select" data-placeholder="Selecione um ou mais procedimentos" tabindex="1">
+                            <option value="TODOS">TODOS</option>    
+                            
                         </select>
 
                     </dd>
+                    <br>
+                    <!-- <br> -->
+                    <br>
                     <dt>
-                        <label>Ajuste Percentual</label>
+                        <label>Ajustar Percentual?</label>
                     </dt>
                     <dd>
-                        <input type="number" name="ajuste_percentual" id="ajuste_percentual" step="0.01" style="width: 6em;" required=""/> %
+                        <input type="checkbox" name="ajuste" id="ajuste" class="texto01" /> 
                     </dd>
+                    <div id="cadastrarPercentual">
+                        
+                        <dt>
+                            <label>Perc./Valor Medico</label>
+                        </dt>
+                        <dd>
+                            <input type="number" name="txtperc_medico" id="txtperc_medico" step="0.01" style="width: 6em;"/>
+                            <!--<input type="text" name="txtperc_medico" id="txtperc_medico" class="texto" value="<?= @$obj->_perc_medico; ?>" />-->
+                        </dd>
+                        <dt>
+                            <label>Percentual</label>
+                        </dt>
+                        <dd>
+                            <select name="percentual" id="percentual" class="size2" required="">
+                                <option value="">Selecione</option>
+                                <option value="t">SIM</option>
+                                <option value="f">N&Atilde;O</option>
+                            </select>
+                        </dd>
+
+                    </div>
+                    
+                    <div id="editarPercentual">                        
+                        <dt>
+                            <label>Ajuste no valor atual: </label>
+                        </dt>
+                        <dd>
+                            <input type="number" name="ajuste_percentual" id="ajuste_percentual" step="0.01" style="width: 6em;"/> %
+                            <!--<input type="text"  class="texto"/> %-->
+                        </dd>
+                    </div>
+                   
 <!--                    <dt>
                         <label>Percentual</label>
                     </dt>
@@ -159,6 +210,22 @@
 //    $('#btnVoltar').click(function () {
 //        $(location).attr('href', '<?= base_url(); ?>ponto/cargo');
 //    });
+    $("#editarPercentual").hide();
+        $('#ajuste').change(function () {
+            if ($(this).is(":checked")) {
+                $("#cadastrarPercentual").hide();
+                $("#editarPercentual").show();
+                $("#ajuste_percentual").prop('required', true);
+                $("#percentual").prop('required', false);
+                
+            } else {
+                $("#cadastrarPercentual").show();
+                $("#editarPercentual").hide();
+                $("#ajuste_percentual").prop('required', false);
+                $("#percentual").prop('required', true);
+    //            $("#procedimento").toggle();
+         }
+    });
 
     $(function () {
         $("#accordion").accordion();
@@ -166,13 +233,14 @@
 
     $(function () {
         $('#covenio').change(function () {
+            // alert($(this).val());
             if ($(this).val()) {
                 if ( $('#grupo').val() == "TODOS") {
                     $('.carregando').show();
-                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenio', {covenio: $(this).val(), ajax: true}, function (j) {
-                        options = '<option value="">TODOS</option>';
+                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenioajustemedico', {covenio: $(this).val(), ajax: true}, function (j) {
+                        options = '<option value="TODOS">TODOS</option>';
                         for (var c = 0; c < j.length; c++) {
-                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                            options += '<option value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                         }
 //                        $('#procedimento').html(options).show();
                         $('#procedimento option').remove();
@@ -183,10 +251,10 @@
                 }
                 else{
                     if ( $('#grupo').val() != "") {
-                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $('#grupo').val(), convenio1: $(this).val()}, function (j) {
-                            options = '<option value="">TODOS</option>';
+                        $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoajustemedico', {grupo1: $('#grupo').val(), convenio1: $(this).val()}, function (j) {
+                            options = '<option value="TODOS">TODOS</option>';
                             for (var c = 0; c < j.length; c++) {
-                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                options += '<option value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                             }
 //                            $('#procedimento').html(options).show();
                             $('#procedimento option').remove();
@@ -235,10 +303,10 @@
         $('#grupo').change(function () {
             if ($('#covenio').val() != 'SELECIONE' && $('#grupo').val() != 'TODOS') {
                 $('.carregando').show();
-                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#covenio').val()}, function (j) {
-                    options = '<option value="">TODOS</option>';
+                $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupoajustemedico', {grupo1: $(this).val(), convenio1: $('#covenio').val()}, function (j) {
+                    options = '<option value="TODOS">TODOS</option>';
                     for (var c = 0; c < j.length; c++) {
-                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                        options += '<option value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                     }
 //                    $('#procedimento').html(options).show();
 
@@ -253,10 +321,10 @@
                 
                 if ( $('#grupo').val() == 'TODOS' ) {
                     $('.carregando').show();
-                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenio', {covenio: $('#covenio').val(), ajax: true}, function (j) {
-                        options = '<option value="">TODOS</option>';
+                    $.getJSON('<?= base_url() ?>autocomplete/procedimentoporconvenioajustemedico', {covenio: $('#covenio').val(), ajax: true}, function (j) {
+                        options = '<option value="TODOS">TODOS</option>';
                         for (var c = 0; c < j.length; c++) {
-                            options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                            options += '<option value="' + j[c].procedimento_tuss_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                         }
 //                        $('#procedimento').html(options).show();
                         $('#procedimento option').remove();

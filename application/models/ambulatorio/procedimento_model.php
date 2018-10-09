@@ -1206,20 +1206,30 @@ class procedimento_model extends Model {
 
     function gravarajustevalores() {
         try {
+            
+            $grupos_string = '';
+            foreach($_POST['grupo'] as $item){
+                if($grupos_string == ''){
+                    $grupos_string = $grupos_string . "'$item'";
+                }else{
+                    $grupos_string = $grupos_string . ", " .  "'$item'";
+                }
+            }
+            // var_dump($grupos_string); die;
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
             if (isset($_POST['ajuste'])) {
                 $vlr = str_replace(",", ".", $_POST['ajuste_percentual']);
                 $sql = "UPDATE ponto.tb_procedimento_tuss pt
                         SET perc_medico = perc_medico + (perc_medico * {$vlr} / 100)
-                        WHERE grupo = '{$_POST['grupo']}' 
+                        WHERE grupo IN ($grupos_string) 
                         AND pt.agrupador = 'f'";
 //                die($sql);
             } else {
                 $vlr = str_replace(",", ".", $_POST['txtperc_medico']);
                 $sql = "UPDATE ponto.tb_procedimento_tuss pt
                         SET perc_medico = {$vlr}, percentual = '{$_POST['percentual']}'
-                        WHERE grupo = '{$_POST['grupo']}'
+                        WHERE grupo IN ($grupos_string)
                         AND pt.agrupador = 'f' ";
             }
 

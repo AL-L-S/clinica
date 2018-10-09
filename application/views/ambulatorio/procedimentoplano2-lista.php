@@ -167,15 +167,17 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                     </tr>
                 </thead>
                 <?php
+                // var_dump($limite_paginacao); die;
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $limit = $limite_paginacao;
+                $lista_count = $this->procedimentoplano->listar2($_GET)->get()->result();
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
                 if ($limit != "todos") {
                     $lista = $this->procedimentoplano->listar2($_GET)->limit($limit, $pagina)->get()->result();
                 } else {
                     $lista = $this->procedimentoplano->listar2($_GET)->get()->result();
                 }
-                $total = count($lista);
+                $total = count($lista_count);
                 
                 
                 if ($total > 0) {
@@ -224,16 +226,20 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                                         <?= number_format((float)$valor, 2, ',', ''); ?>
                                     </span>
                                 </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
-                                    <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/listaprocedimentomultiempresa/<?= $item->procedimento_tuss_id ?>/<?=$item->convenio_id ?>">
-                                        Detalhes
-                                    </a>
-                                </td>
-                                <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
-                                    <a target="_blank" onclick="javascript:return confirm('Deseja realmente excluir esse procedimento?');" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/excluirprocedimentomultiempresa/<?= $item->procedimento_tuss_id ?>/<?=$item->convenio_id ?>">
-                                        Excluir
-                                    </a>
-                                </td>
+                                
+                                    <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                        <a href="<?php echo base_url() ?>ambulatorio/procedimentoplano/listaprocedimentomultiempresa/<?= $item->procedimento_tuss_id ?>/<?=$item->convenio_id ?>">
+                                            Detalhes
+                                        </a>
+                                    </td>
+                               
+                                <?if($item->associado == 'f'){?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                        <a target="_blank" onclick="javascript:return confirm('Deseja realmente excluir esse procedimento?');" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/excluirprocedimentomultiempresa/<?= $item->procedimento_tuss_id ?>/<?=$item->convenio_id ?>">
+                                            Excluir
+                                        </a>
+                                    </td>
+                                <?}?>
                             </tr>
 
                         </tbody>

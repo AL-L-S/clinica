@@ -121,7 +121,7 @@
                             </tr>
                             <? 
                             $i = 0;
-//                            var_dump($procedimento); die;
+                        //    var_dump($procedimento); die;
                             foreach($procedimento as $item){ ?>
                                 <tr class="linhaTabela">
                                     <td style="width: 300px;" colspan="1" class="<?= $item->procedimento_tuss_id ?>">

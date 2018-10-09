@@ -721,8 +721,8 @@ class Operador_model extends BaseModel {
         $this->db->select('empresa_id,
                             nome');
         $this->db->from('tb_empresa');
+        $this->db->where('ativo', 't');
         $this->db->orderby('nome');
-//        $this->db->where('empresa_id', $empresa_id);
         $return = $this->db->get();
         return $return->result();
     }

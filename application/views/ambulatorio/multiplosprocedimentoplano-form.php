@@ -120,7 +120,7 @@
     });
     
     
-    var divPesquisa = '<div style="float: left; margin-bottom: 20pt;"><input type="text" id="procText" onkeypress="filtrarTabela()" placeholder="Pesquisar texto..." title="Pesquise pelo nome do procedimento ou pelo codigo"><select id="grupoText"><option value="">TODOS</option>';
+    var divPesquisa = '<div style="float: left; margin-bottom: 20pt;"><input type="text" id="procText" onkeypress="filtrarTabela()" placeholder="Pesquisar texto..." title="Pesquise pelo nome do procedimento ou pelo codigo"><select id="grupoText" class="size2"><option value="">TODOS</option>';
     <? foreach ($grupos as $value) {?>
         divPesquisa +='<option value="<?= $value->nome ?>"><?= $value->nome ?></option>';
     <? } ?>
