@@ -25,6 +25,7 @@
                     <tr>
                         <th class="tabela_header">Paciente</th>
                         <th class="tabela_header">Médico Solicitante</th>
+                        <th class="tabela_header">Operador</th>
                         <th class="tabela_header">Convenio</th>
                         <th class="tabela_header">Data Prevista</th>
                         <th class="tabela_header">Situação Orçamento</th>
@@ -104,6 +105,7 @@
                             <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->medico_solicitante; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->operador; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->convenio; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo date("d/m/Y",strtotime($item->data_prevista)); ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $situacao; ?></td>

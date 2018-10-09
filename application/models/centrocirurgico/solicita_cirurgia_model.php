@@ -924,9 +924,12 @@ class solicita_cirurgia_model extends BaseModel {
                 $this->db->set('ambulatorio_laudo_id', $_POST['ambulatorio_laudo_id']);
             }
             $this->db->set('leito', $_POST['leito']);
+            $this->db->set('operatorio', $_POST['operatorio']);
             $this->db->set('observacao', $_POST['observacao']);
             $this->db->set('paciente_id', $_POST['txtNomeid']);
+            $this->db->set('sala_agendada', $_POST['sala']);
             $this->db->set('medico_solicitante', $_POST['medicoagenda']);
+            $this->db->set('medico_cirurgiao', $_POST['medicocirurgia']);           
             $this->db->set('convenio', $_POST['convenio']);
             $this->db->set('hospital_id', $_POST['hospital_id']);
             if (isset($_POST['orcamento'])) {
@@ -937,6 +940,37 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);
             $this->db->insert('tb_solicitacao_cirurgia');
+            
+            
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") { // erro de banco
+                return -1;
+            }
+
+            $solicitacao_id = $this->db->insert_id();
+            return $solicitacao_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function gravarnovasolicitacaomedicocirurgiao($solicitacao, $cirurgiao) {
+
+        try {
+
+            $horario = date("Y-m-d H:i:s");
+            $data = date("Y-m-d");
+            $operador_id = $this->session->userdata('operador_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('operador_responsavel', $cirurgiao);
+            $this->db->set('funcao', 0);
+            $this->db->set('solicitacao_cirurgia_id', $solicitacao);
+            $this->db->insert('tb_equipe_cirurgia_operadores');
+            
+            
             $erro = $this->db->_error_message();
             if (trim($erro) != "") { // erro de banco
                 return -1;

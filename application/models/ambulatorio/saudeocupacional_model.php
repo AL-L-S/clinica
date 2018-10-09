@@ -411,6 +411,24 @@ class saudeocupacional_model extends Model {
         return $return->result();
     }
     
+    function listarautocompleteprocedimentojson2($parametro = array()) {
+        
+        $this->db->select('pc.procedimento_convenio_id,
+                            pt.nome,
+                            pt.codigo,
+                            pt.descricao,
+                            pt.grupo,
+                            pt.tipo_aso');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        if ($parametro != null) {
+        $this->db->where_in("pc.procedimento_convenio_id", $parametro);
+        }
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
     function listarautocompletefuncaojson2($parametro = array()) {
         
 

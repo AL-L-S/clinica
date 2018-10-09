@@ -1882,6 +1882,25 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function pacientesinternacao() {
+        header('Access-Control-Allow-Origin: *');
+
+        if (isset($_GET['paciente_id'])) {
+            $result = $this->guia->listarpacientesinternacao($_GET['paciente_id']);
+            $telefone = $result[0]->telefone;
+            $data = date("Y-m-d");
+            $nascimento = $result[0]->nascimento;
+            $date_time = new DateTime($nascimento);
+            $diff = $date_time->diff(new DateTime($data));
+            $teste = $diff->format('%Y');
+            $return = array($telefone, $teste);
+//            var_dump($teste);die;
+        } else {
+            $result = $this->guia->listarpacientesinternacao();
+        }
+        echo json_encode($return);
+    }
 
     function procedimentoconvenioaso() {
         header('Access-Control-Allow-Origin: *');
@@ -2140,20 +2159,40 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
-//    function riscofuncaomt() {
-//        header('Access-Control-Allow-Origin: *');
-//        if (isset($_GET['funcao'])) {
-//            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt($_GET['funcao']);
-//        } else {
-//            $result = $this->saudeocupacional->listarautocompleteriscofuncaomt(@$_GET['funcao']);
-//        }
-//
-//        $json_riscos = json_decode($result[0]->aso_risco_id);
-//
-//        $result2 = $this->saudeocupacional->listarautocompletefuncaojson($json_riscos);
-//
-//        echo json_encode($result2);
-//    }
+    function procedimentoparticular() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['aso_id'])) {
+            $result = $this->guia->listarprocedimentoparticular($_GET['aso_id']);
+        
+            
+        } else {
+            $result = $this->guia->listarriscosparticular(@$_GET['aso_id']);
+        }
+        
+        $impressao_decode = json_decode($result[0]->impressao_aso);
+        $json_procedimentos =$impressao_decode->procedimento1;
+//        var_dump($json_procedimentos);die;
+        $result2 = $this->saudeocupacional->listarautocompleteprocedimentojson2($json_procedimentos);
+
+        echo json_encode($result2);
+    }
+    
+    function riscofuncaomt() {
+        header('Access-Control-Allow-Origin: *');
+        if (isset($_GET['aso_id'])) {
+            $result = $this->guia->listarriscosparticular($_GET['aso_id']);
+        
+            
+        } else {
+            $result = $this->guia->listarriscosparticular(@$_GET['aso_id']);
+        }
+        $impressao_decode = json_decode($result[0]->impressao_aso);
+        $json_riscos = $impressao_decode->riscos;
+//        var_dump($impressao_decode->riscos);die;
+        $result2 = $this->saudeocupacional->listarautocompletefuncaojson2($json_riscos);
+
+        echo json_encode($result2);
+    }
 
     function riscofuncaomt2() {
         header('Access-Control-Allow-Origin: *');

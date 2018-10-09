@@ -189,7 +189,8 @@ class guia_model extends Model {
         return $return->result();
     }
     
-    function listarriscosparticular($aso_id) {
+    function listarprocedimentoparticular($aso_id) {
+//        var_dump($aso_id);die;
         $this->db->select('ca.impressao_aso');
                                      
         $this->db->from('tb_cadastro_aso ca');
@@ -197,6 +198,19 @@ class guia_model extends Model {
 
         $return = $this->db->get();
         return $return->result();
+        
+    }
+    
+    function listarriscosparticular($aso_id) {
+//        var_dump($aso_id);die;
+        $this->db->select('ca.impressao_aso');
+                                     
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->where('ca.cadastro_aso_id', $aso_id);
+
+        $return = $this->db->get();
+        return $return->result();
+        
     }
 
     function gravarcadastroaso($gravarempresa, $paciente_id, $ambulatorio_guia) {
@@ -396,6 +410,19 @@ class guia_model extends Model {
             $this->db->where('nome ilike', "%" . $parametro . "%");
         }
         $this->db->orderby('nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+    function listarpacientesinternacao($parametro = null) {
+
+        $this->db->select('p.telefone, p.nascimento');
+        $this->db->from('tb_paciente p');
+        $this->db->where('p.ativo', 't');
+        if ($parametro != null) {
+            $this->db->where('paciente_id', $parametro);
+        }
+        $this->db->orderby('p.nome');
         $return = $this->db->get();
         return $return->result();
     }

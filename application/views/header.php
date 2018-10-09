@@ -1151,7 +1151,9 @@ function debug($object) {
                                     </li>
     <? } ?>
 
-                                <li><span class="folder">Relatorios</span></li>
+                                <li><span class="folder">Relatorios</span>
+                                <ul><span class="file"><a href="<?= base_url() ?>centrocirurgico/centrocirurgico/relatoriocirurgiaconvenio">Relatorio Cirurgia-Convenio</a></span></ul>
+                                </li>
                             </ul>
                         </li>
                         <?

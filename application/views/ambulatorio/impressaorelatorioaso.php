@@ -54,9 +54,15 @@
                 foreach ($relatorioaso as $item) {
        
                 $impressao_aso = json_decode($item->impressao_aso);
+                if(count($impressao_aso) > 0){
+                if(isset($impressao_aso->funcao)){
                 $funcao = $this->guia->listarfuncaoaso($impressao_aso->funcao);
+                }else{
+                $funcao = $impressao_aso->funcao2;    
+                }
+                }
 //                var_dump($item);die;
-//                var_dump($funcao);die;
+//                var_dump($impressao_aso->funcao2);die;
                     ?>
                 <tr>
                     <td ><?= $item->tipo ?></td>
@@ -68,7 +74,11 @@
                     <? } ?>
                     <td ><?= $item->paciente_id ?></td>
                     <td ><?= $item->paciente ?></td>
+                    <?if(isset($impressao_aso->funcao)){?>
                     <td ><?= $funcao[0]->descricao_funcao ?></td>
+                    <? }else{ ?>
+                    <td><?= $funcao ?></td>
+                    <? } ?>
                     <td ><?= date("d/m/Y", strtotime($item->data_realizacao)); ?></td>
                     <td ><?= date("d/m/Y", strtotime($item->data_validade)); ?></td>
                     

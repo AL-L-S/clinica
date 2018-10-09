@@ -490,6 +490,29 @@ class paciente_model extends BaseModel {
             return false;
         }
     }
+    
+    function ajustarpaciente($paciente_id, $telefone) {
+
+        try {
+            if($telefone != ""){
+            $this->db->set('telefone', str_replace("(", "", str_replace(")", "", str_replace("-", "", $telefone))));
+            }
+
+            $data = date("Y-m-d");
+            $operador_id = $this->session->userdata('operador_id');
+
+                $this->db->set('data_atualizacao', $data);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('paciente_id', $paciente_id);
+                $this->db->update('tb_paciente');
+            
+
+
+            return $paciente_id;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
 
     function gravarpacientetemp() {
         try {

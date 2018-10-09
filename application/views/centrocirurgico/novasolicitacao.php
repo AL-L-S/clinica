@@ -24,12 +24,26 @@
                         <input type="hidden" name="txtNomeid" id="txtNomeid" class="texto02" value="<?= @$laudo[0]->paciente_id; ?>"/>
                         <input type="text" name="txtNome" id="txtNome" class="texto10" value="<?= @$laudo[0]->nome; ?>"/>
                     </dd>
+                    
+                    <dt>
+                        <label>Telefone</label>
+                    </dt>
+                    <dd>                       
+                        <input type="text" name="telefone" id="telefone" class="texto04" value=""/>
+                    </dd>
+                    <? // var_dump($expression);die;?>
+                    <dt>
+                        <label>Idade</label>
+                    </dt>
+                    <dd>                        
+                        <input type="text" name="idade" id="idade" class="texto02" value=""/>
+                    </dd>
 
                     <dt>
-                        <label>Médico Solicitante *</label>
+                        <label>Médico Solicitante </label>
                     </dt>
                     <dd>
-                        <select  name="medicoagenda" id="medicoagenda" class="size4" required="true">
+                        <select  name="medicoagenda" id="medicoagenda" class="size4">
                             <option value="">Selecione</option>
                             <? foreach ($medicos as $item) : ?>
                                 <option value="<?= $item->operador_id; ?>" <?= ( @$laudo[0]->medico_parecer1 == $item->operador_id ) ? 'selected' : '' ?>>
@@ -39,10 +53,36 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Médico Cirurgião </label>
+                    </dt>
+                    <dd>
+                        <select  name="medicocirurgia" id="medicocirurgia" class="size4">
+                            <option value="">Selecione</option>
+                            <? foreach ($medicos as $item) : ?>
+                                <option value="<?= $item->operador_id; ?>" <?= ( @$laudo[0]->medico_parecer1 == $item->operador_id ) ? 'selected' : '' ?>>
+                                    <?= $item->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Sala</label>
+                    </dt>
+                    <dd>
+                        <select  name="sala" id="sala" class="size4">
+                            <option value="">Selecione</option>
+                            <? foreach ($salas as $item) : ?>
+                                <option value="<?= $item->exame_sala_id; ?>" <?= ( @$laudo[0]->sala_agendada == $item->exame_sala_id ) ? 'selected' : '' ?>>
+                                    <?= $item->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Data da Cirurgia *</label>
                     </dt>
                     <dd>
-                        <input type="text" name="data_prevista" id="data_prevista" class="texto02" value=""/>
+                        <input type="text" name="data_prevista" id="data_prevista" class="texto02" value="" required=""/>
                     </dd>
                     <dt>
                         <label>Hora de Inicio *</label>
@@ -76,6 +116,15 @@
                         <div>
                             <input type="radio" name="leito" id="enf" value="ENFERMARIA" required/> <label for="enf">Enfermaria</label>
                             <input type="radio" name="leito" id="apt" value="APARTAMENTO" required/> <label for="apt">Apartamento</label>
+                        </div>
+                    </dd>
+                    <dt>
+                        <label>Pós-Operatório *</label>
+                    </dt>
+                    <dd>
+                        <div>
+                            <input type="radio" name="operatorio" id="enf" value="PQA" required/> <label for="enf">PQA</label>
+                            <input type="radio" name="operatorio" id="apt" value="INTERNACAO" required/> <label for="apt">Internação</label>
                         </div>
                     </dd>
 
@@ -152,7 +201,7 @@
     $(function () {
         $("#txtNome").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=paciente",
-            minLength: 3,
+            minLength: 10,
             focus: function (event, ui) {
                 $("#txtNome").val(ui.item.label);
                 return false;
@@ -190,5 +239,27 @@
             }
         });
     });
+    
+//    $(function () {
+                        $('#txtNome').blur(function () {
+                            if ($(this).val()) {
+
+                                $.getJSON('<?= base_url() ?>autocomplete/pacientesinternacao', {paciente_id: $('#txtNomeid').val()}, function (j) {
+//                            console.log(j[1]);
+                               
+                                    telefone = j[0];//                                
+                                    $('#telefone').val(telefone);                          
+                                    
+                                    $('.carregando').hide();
+                                    
+                                    idade = j[1];
+                                    $('#idade').val(idade);
+                                    
+//                                    
+                                });
+
+                            } 
+                        });
+//                    });
 
 </script>
