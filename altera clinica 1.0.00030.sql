@@ -239,3 +239,19 @@ ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN medico_cirurgiao integer;
 -- 09/10/2018
 
 ALTER TABLE ponto.tb_solicitacao_cirurgia ADD COLUMN operatorio character varying(100);
+
+-- 13/10/2018
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000029');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000029', '1.0.000029');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();

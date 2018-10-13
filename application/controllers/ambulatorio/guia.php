@@ -3870,6 +3870,7 @@ class Guia extends BaseController {
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['empresa'] = $this->guia->listarempresas();
         $data['salas'] = $this->exame->listartodassalas();
+        $data['grupos'] = $this->procedimento->listargrupos();
         $this->loadView('ambulatorio/relatoriomedicoagendaexamefaltouemail', $data);
     }
 
@@ -3893,8 +3894,8 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
 //        echo '<pre>'; 
         $data['relatorio'] = $this->guia->gerarelatorioexamefaltou();
-//        echo '<pre>';
-//        var_dump($data['relatorio']); die;
+        // echo '<pre>';
+        // var_dump($data['relatorio']); die;
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexamefaltouemail', $data);
     }
 
@@ -3961,6 +3962,9 @@ class Guia extends BaseController {
 
     function relatoriotempoatendimento() {
         $data['empresa'] = $this->guia->listarempresas();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $data['procedimentos'] = $this->guia->listarprocedimentos();
         $this->loadView('ambulatorio/relatoriotempoatendimento', $data);
     }
 
@@ -4038,6 +4042,13 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $data['grupos'] = $this->indicacao->listargrupoindicacao();
         $this->loadView('ambulatorio/relatorioindicacao', $data);
+    }
+
+    function relatorioindicacaounico() {
+        $data['indicacao'] = $this->paciente->listaindicacao();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['grupos'] = $this->indicacao->listargrupoindicacao();
+        $this->loadView('ambulatorio/relatorioindicacaounico', $data);
     }
 
     function relatorioindicacaoexames() {
@@ -4119,6 +4130,32 @@ class Guia extends BaseController {
 //        var_dump($data['consolidado']);die;
 
         $this->load->View('ambulatorio/impressaorelatorioindicacao', $data);
+    }
+
+    function gerarelatorioindicacaounico() {
+
+        if ($_POST['indicacao'] != '0') {
+            $data['indicacao'] = $this->guia->listacadaindicacao($_POST['indicacao']);
+            $data['indicacao'] = $data['indicacao'][0]->indicacao;
+        } else {
+            $data['indicacao'] = '0';
+        }
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->guia->relatorioindicacaounico();
+        $data['indicacao_valor'] = $this->paciente->listaindicacao();
+        if ($_POST['indicacao'] != '0') {
+            $data['indicacao'] = $this->guia->listacadaindicacao($_POST['indicacao']);
+            $data['indicacao'] = $data['indicacao'][0]->indicacao;
+        } else {
+            $data['indicacao'] = '0';
+        }
+        $data['consolidado'] = $this->guia->relatorioindicacaounicoconsolidado();
+//        echo "<pre>";
+//        var_dump($data['consolidado']);die;
+
+        $this->load->View('ambulatorio/impressaorelatorioindicacaounico', $data);
     }
 
     function gerarelatorioindicacaoexames() {
@@ -4530,6 +4567,18 @@ class Guia extends BaseController {
             $data['txtdata_inicio'] = $_POST['txtdata_inicio'];
             $data['txtdata_fim'] = $_POST['txtdata_fim'];
             $data['relatorio'] = $this->guia->gerarelatoriotempoatendimento();
+
+            if($_POST['medico'] > 0){
+                $data['medico'] = $this->operador_m->listarCada($_POST['medico']);
+            }else{
+                $data['medico'] = array();
+            }
+            if ($_POST['procedimentos'] != '0') {
+                $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
+            }else{
+                $data['procedimentos'] = array();
+            }
+            
             $this->load->View('ambulatorio/impressaorelatoriotempoatendimento', $data);
         } else {
             $data['mensagem'] = 'Cadastre um valor médio.';

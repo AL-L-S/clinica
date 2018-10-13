@@ -77,7 +77,7 @@
 
                         </div>
                         <div>
-                            <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $rotinas_id ?>"/>
+                            <input type="hidden" id="receituario_id" name="receituario_id" value="<?= @$rotinas_id ?>"/>
                             <input type="hidden" id="ambulatorio_laudo_id" name="ambulatorio_laudo_id" value="<?= $ambulatorio_laudo_id ?>"/>
                             <input type="hidden" id="medico" name="medico" value="<?= $operador_id ?>"/>
                         </div>
@@ -113,7 +113,7 @@
 //                                        $corpo = str_replace("_cid1_", @$laudo['0']->cid1, $corpo);
 //                                        $corpo = str_replace("_cid2_", @$laudo['0']->cid2, $corpo);
 //                                        $corpo = str_replace("_assinatura_", $assinatura, $corpo);
-                                        echo $corpo;
+                                        // echo $corpo;
                                     }
 
                                 ?>

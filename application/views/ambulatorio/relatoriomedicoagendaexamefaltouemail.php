@@ -29,6 +29,70 @@
                         </select>
                     </dd>
                     <dt>
+                        <label>Idade maior que:</label>
+                    </dt>
+                    <dd>
+                        <input type="number" name="idade_maior" min=1 id="idade_maior" alt=""/>
+                    </dd>
+                    <dt>
+                        <label>Idade menor que:</label>
+                    </dt>
+                    <dd>
+                        <input type="number" name="idade_menor" min=1 id="idade_menor" alt=""/>
+                    </dd>
+                    <dt>
+                        <label>Ra&ccedil;a / Cor</label>
+                    </dt>
+                    <dd>
+                        <select name="raca_cor" id="raca_cor" class="size2" >>
+
+                            <option value='' >TODOS</option>
+                            <option value=1>Branca</option>
+                            <option value=2>Amarela</option>
+                            <option value=3 >Preta</option>
+                            <option value=4 >Parda</option>
+                            <option value=5 >Ind&iacute;gena</option>
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Estado Civíl</label>
+                    </dt>
+                    <dd>
+                        <select name="estado_civil_id" id="txtEstadoCivil" class="size2"  >
+                            <option value=''>TODOS</option>
+                            <option value=1>Solteiro</option>
+                            <option value=2>Casado</option>
+                            <option value=3>Divorciado</option>
+                            <option value=4>Viuvo</option>
+                            <option value=5>Outros</option>
+                        </select>
+                    </dd>
+                    
+                    <dt>
+                        <label>Gênero</label>
+                    </dt>
+                    <dd>
+                        <select name="sexo" id="sexo" class="size2" >
+                            <option value='' >TODOS</option>    
+                            <option value='M' >Masculino</option>
+                            <option value='F'>Feminino</option>
+                         
+                        </select>
+                        </dd>
+                    <dt>
+                        <label>Especialidade</label>
+                    </dt>
+                    <dd>
+                        <select name="grupo" id="grupo" class="size2" >
+                            <option value='' >TODOS</option>
+                            <!-- <option value='1' >SEM RM/TOMOGRAFIA</option> -->
+                            <? foreach ($grupos as $value) : ?>
+                                <option value="<?= $value->nome; ?>" ><?php echo $value->nome; ?></option>
+                            <? endforeach; ?>
+
+                        </select>
+                    </dd>
+                    <dt>
                     <label>Mala Direta</label>
                     </dt>
                     <dd>

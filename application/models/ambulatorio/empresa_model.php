@@ -448,6 +448,8 @@ class empresa_model extends Model {
         $this->db->where('ativo', 't');
         $this->db->where('operador_destino', $operador_id);
         $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('aniversario is not null');
+        $this->db->orderby('visualizado');
         $return = $this->db->get();
         $retorno = $return->result();
 

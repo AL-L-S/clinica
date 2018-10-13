@@ -146,6 +146,9 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                             <div>
                                 <div id="circulo" style="background-color: blue"></div> Ajuste
                             </div>
+                            <div>
+                                <div id="circulo" style="background-color: gray"></div> Desativ.
+                            </div>
                         </th>
                     </tr>
                 </form>
@@ -190,6 +193,7 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                         
                         $convenioAtual = '';
                         $procedimentoAtual = '';
+                        // $ativoAtual = '';
                         
                         foreach ($lista as $item) {
                             if($convenioAtual == $item->convenio_id && $procedimentoAtual == $item->procedimento_tuss_id){
@@ -198,7 +202,9 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                             }
                             $convenioAtual = $item->convenio_id;
                             $procedimentoAtual = $item->procedimento_tuss_id;
-                            
+                            // $ativoAtual = $item->ativo;
+                            $lista_ativo = $this->procedimentoplano->listarativoprocedimento($item->procedimento_tuss_id, $item->convenio_id);
+                            // var_dump($lista_ativo);die;
                             
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
@@ -216,10 +222,19 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                                     } else {
                                         $cor = 'black';
                                     }
+                                    
                                     $valor = $item->valortotal;
                                     
                                     if( $item->valor_ajuste != null){
                                         $cor = 'blue';
+                                    }
+
+                                    // Verifica se todos os procedimentos dessa linha estão desativados
+                                    // Caso sim, ele mostra em cinza
+                                    if(count($lista_ativo) == 1){
+                                        if($lista_ativo[0]->ativo == 'f'){
+                                            $cor = 'gray';
+                                        }
                                     }
                                     ?>
                                     <span style="font-weight: bolder; color: <?=$cor?>">

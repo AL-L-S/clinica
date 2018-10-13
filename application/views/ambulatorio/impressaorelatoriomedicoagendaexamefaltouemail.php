@@ -11,6 +11,72 @@
     <? } else { ?>
         <h4>SITUAÇÃO: TODAS</h4>      
     <? } ?>
+    
+    <? if ($_POST['idade_maior'] > 0) { ?>
+        <h4>IDADE MAIOR QUE: <?= $_POST['idade_maior'] ?> Anos</h4>  
+    <? } else { ?>
+         
+    <? } ?>
+    <? if ($_POST['idade_menor'] > 0) { ?>
+        <h4>IDADE MENOR QUE: <?= $_POST['idade_menor'] ?> Anos</h4>  
+    <? } else { ?>
+         
+    <? } ?>
+    
+    <? if ($_POST['raca_cor'] > 0) { ?>
+        <h4>RAÇA: <?
+                        if ($_POST['raca_cor'] == "1") {
+                            echo 'Branca';
+                            // $solteiro++;
+                        } elseif ($_POST['raca_cor'] == "2") {
+                            echo 'Amarela';
+                            // $casado++;
+                        } elseif ($_POST['raca_cor'] == "3") {
+                            echo 'Preta';
+                            // $divorciado++;
+                        } elseif ($_POST['raca_cor'] == "4") {
+                            echo 'Parda';
+                            // $viuvo++;
+                        } elseif ($_POST['raca_cor'] == "5") {
+                            echo 'Ind&iacute;gena';
+                            // $outros++;
+                        }
+                        ?></h4>  
+    <? } else { ?>
+        <h4> RAÇA: TODAS</h4> 
+    <? } ?>
+    <? if ($_POST['estado_civil_id'] > 0) { ?>
+        <h4>ESTADO CIVIL: <?
+                        if ($_POST['estado_civil_id'] == "1") {
+                            echo 'Solteiro(a)';
+                            // $solteiro++;
+                        } elseif ($_POST['estado_civil_id'] == "2") {
+                            echo 'Casado(a)';
+                            // $casado++;
+                        } elseif ($_POST['estado_civil_id'] == "3") {
+                            echo 'Divorciado(a)';
+                            // $divorciado++;
+                        } elseif ($_POST['estado_civil_id'] == "4") {
+                            echo 'Viuvo(a)';
+                            // $viuvo++;
+                        } elseif ($_POST['estado_civil_id'] == "5") {
+                            // echo 'Outros';
+                            // $outros++;
+                        }
+                        ?></h4>  
+    <? } else { ?>
+        <h4>ESTADO CIVIL: TODOS</h4> 
+    <? } ?>
+    <? if ($_POST['sexo'] != '') { ?>
+        <h4>GENERO: <?=($_POST['sexo'] == 'M')? 'Masculino' : 'Feminino';?></h4>  
+    <? } else { ?>
+        <h4>GENERO: TODOS</h4> 
+    <? } ?>
+    <? if ($_POST['grupo'] != '') { ?>
+        <h4>ESPECIALIDADE: <?= $_POST['grupo'] ?></h4>  
+    <? } else { ?>
+        <h4>ESPECIALIDADE: TODOS</h4>      
+    <? } ?>
 
     <h4>PERIODO: <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_inicio))); ?> ate <?= str_replace("-", "/", date("d-m-Y", strtotime($txtdata_fim))); ?></h4>
 

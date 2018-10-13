@@ -1764,6 +1764,13 @@ class guia_model extends Model {
 
         $this->db->orderby('ae.data');
         $this->db->orderby('ae.inicio');
+        if($_POST['medico'] > 0){
+            $this->db->where("al.medico_parecer1", $_POST['medico']);
+        }
+
+        if($_POST['procedimentos']){
+            $this->db->where("pc.procedimento_tuss_id", $_POST['procedimentos']);
+        }
 
 
         $return = $this->db->get();
@@ -1846,6 +1853,11 @@ class guia_model extends Model {
                             p.nome as paciente,
                             p.cns,
                             pt.nome as procedimento,
+                            pt.grupo,
+                            p.sexo,
+                            p.nascimento,
+                            p.estado_civil_id,
+                            p.raca_cor,
                             m.nome as cidade,
                             ae.tipo,
                             ae.data
@@ -1877,13 +1889,36 @@ class guia_model extends Model {
             $this->db->where('ae.data <=', $_POST['txtdata_fim']);
         }
 
-        $this->db->where('ae.paciente_id is not null');
-        $this->db->orderby('ae.agenda_exames_id');
-        $this->db->orderby('p.nome');
+        if ($_POST['grupo'] != '') {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        if ($_POST['raca_cor'] != '') {
+            $this->db->where('p.raca_cor', $_POST['raca_cor']);
+        }
+        if ($_POST['estado_civil_id'] != '') {
+            $this->db->where('p.estado_civil_id', $_POST['estado_civil_id']);
+        }
+        
+        if ($_POST['sexo'] != '') {
+            $this->db->where('p.sexo', $_POST['sexo']);
+        }
+        if ($_POST['idade_maior'] > 0) {
+            $idade_maior = $_POST['idade_maior'];
+            $this->db->where("substring(NOW()::text from 1 for 4)::integer - substring(p.nascimento::text from 1 for 4)::integer  > $idade_maior");
+        }
+        if ($_POST['idade_menor'] > 0) {
+            $idade_menor = $_POST['idade_menor'];
+            $this->db->where("substring(NOW()::text from 1 for 4)::integer - substring(p.nascimento::text from 1 for 4)::integer  < $idade_menor");
+        }
+
         if ($_POST['empresa'] != '') {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
 
+        $this->db->where('ae.paciente_id is not null');
+        $this->db->orderby('ae.agenda_exames_id');
+        $this->db->orderby('p.nome');
+       
 
         $return = $this->db->get();
         return $return->result();
@@ -3107,6 +3142,36 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function relatorioindicacaounico() {
+
+        $this->db->select('distinct(p.nome) as paciente,
+            pi.nome as indicacao');
+        $this->db->from('tb_paciente p');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = p.indicacao');
+        $this->db->join('tb_agenda_exames ae', 'ae.paciente_id = p.paciente_id');
+        if ($_POST['indicacao'] != "0") {
+            $this->db->where("p.indicacao", $_POST['indicacao']);
+        } else {
+            $this->db->where("p.indicacao is not null");
+        }
+
+        // if ($_POST['grupo_indicacao'] != "0") {
+        //     $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
+        // }
+
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->groupby('p.nome, pi.nome');
+        $this->db->orderby('pi.nome');
+        
+        // $this->db->orderby('ae.data');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listacadaindicacao() {
 
         $this->db->select('pi.nome as indicacao,
@@ -3551,6 +3616,35 @@ class guia_model extends Model {
         if ($_POST['grupo_indicacao'] != "0") {
             $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
         }
+
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+        $this->db->groupby('pi.nome');
+        $this->db->orderby('pi.nome');
+//        $this->db->orderby('ae.data');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function relatorioindicacaounicoconsolidado() {
+
+        $this->db->select('pi.nome as indicacao,
+            count(pi.nome) as quantidade');
+        $this->db->from('tb_paciente p');
+        $this->db->join('tb_paciente_indicacao pi', 'pi.paciente_indicacao_id = p.indicacao');
+        $this->db->join('tb_agenda_exames ae', 'ae.paciente_id = p.paciente_id');
+        if ($_POST['indicacao'] != "0") {
+            $this->db->where("p.indicacao", $_POST['indicacao']);
+        } else {
+            $this->db->where("p.indicacao is not null");
+        }
+
+        // if ($_POST['grupo_indicacao'] != "0") {
+        //     $this->db->where('pi.grupo_id', $_POST['grupo_indicacao']);
+        // }
 
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);

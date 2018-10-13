@@ -143,8 +143,8 @@ function debug($object) {
                     url: "<?= base_url(); ?>ambulatorio/empresa/checandolembreteaniversario",
                     dataType: "json",
                     success: function (retorno) {
-//                        alert('ola');
-//                    console.log(retorno[1]);
+                    //    alert('ola');
+                //    console.log(retorno);
                         if(retorno != null){
                                 alert(retorno[0]);
                                 jQuery.ajax({type: "GET", data: "lembretes_id=" + retorno[1],
@@ -1100,6 +1100,7 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriopacientewhatsapp">Relatorio WhatsApp Pacientes</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriounicoretorno">Relatório Paciente Unico/Retorno</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriotempoatendimento">Relatório Tempo de atendimento</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatorioindicacaounico">Relatorio Indicacao </a></span></ul>
 
         <?
     }

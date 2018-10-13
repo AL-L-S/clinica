@@ -1966,6 +1966,20 @@ class procedimentoplano_model extends Model {
         return $result;
     }
 
+    function listarativoprocedimento($procedimento_tuss_id, $convenio_id) {
+
+        //verifica se os procedimentos nessas duas condições estão todos ativos 
+        $this->db->select('pc.procedimento_tuss_id, pc.ativo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->where('pc.convenio_id', $convenio_id);
+        $this->db->where('pc.procedimento_tuss_id', $procedimento_tuss_id);
+        $this->db->groupby('pc.procedimento_tuss_id, pc.ativo');
+        $this->db->orderby('pc.ativo');
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
+
     function removeformapagamentoconvenio($formasSelecionadas, $convenio_id) {
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
