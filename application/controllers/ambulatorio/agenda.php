@@ -375,6 +375,9 @@ class Agenda extends BaseController {
         elseif( $retorno == -4 ) {
             $data['mensagem'] = 'Erro ao gravar o Horário. Horário de inicio não pode ser maior ou igual que o horários final.';
         } 
+        elseif( $retorno == -5 ) {
+            $data['mensagem'] = 'Aviso! Alguns horários foram gravados, porém tiveram seu inicio e fim ajustados ao horário de funcionamento cadastrado em Manter Empresa';
+        } 
         else {
             $data['mensagem'] = 'Sucesso ao gravar o Horário.';
         }

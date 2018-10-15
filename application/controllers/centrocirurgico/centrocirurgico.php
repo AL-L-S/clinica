@@ -1094,7 +1094,7 @@ class centrocirurgico extends BaseController {
         $data['solicitacao_id'] = $solicitacao_id;
         $data['hospitais'] = $this->centrocirurgico_m->listarhospitaissolicitacao();
         $data['medicos'] = $this->operador_m->listarmedicos();
-        $data['salas'] = $this->guia->listarsalas();
+        $data['salas'] = $this->centrocirurgico_m->listarsalascirurgico();
         $data['convenio'] = $this->centrocirurgico_m->listarconveniocirurgiaorcamento();
         if ($laudo_id != null && $laudo_id != '0') {
             $data['laudo'] = $this->centrocirurgico_m->listarlaudosolicitacaocirurgica($laudo_id);

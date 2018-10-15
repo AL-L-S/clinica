@@ -2892,7 +2892,8 @@ class agenda_model extends Model {
         try {
             $agenda_id = $_POST['txtagendaID'];
             $i = 0;
-            
+            $retorno_mensagem = 1;
+                    
             /* inicia o mapeamento no banco */
             
             foreach ($_POST['txtDia'] as $dia) {
@@ -2905,8 +2906,55 @@ class agenda_model extends Model {
                 $qtdeconsulta = $_POST['txtQtdeconsulta'][$i];
                 $empresa_id = $_POST['empresa'][$i];
                 $sala_id = $_POST['sala'][$i];
+                
+                
+                
 
+                // var_dump($_POST); die;
                 if ($horaentrada1 != '') {
+                // A lógica abaixo serve para limitar os horários ao horário existente no cadastro de empresa
+
+                    $this->db->select('horario_seg_sex_inicio,
+                               horario_seg_sex_fim,
+                               horario_sab_inicio,
+                               horario_sab_fim,
+                                ');
+                    $this->db->from('tb_empresa');
+                    $this->db->where('empresa_id', $empresa_id);
+                    // $this->db->where('dia', $dia);
+                    $empresa_inf = $this->db->get()->result();
+                    // echo '<pre>';
+                    
+                    $horario_seg_ini = $empresa_inf[0]->horario_seg_sex_inicio;
+                    $horario_seg_sex_fim = $empresa_inf[0]->horario_seg_sex_fim;
+                    $horario_sab_inicio = $empresa_inf[0]->horario_sab_inicio;
+                    $horario_sab_fim = $empresa_inf[0]->horario_sab_fim;
+
+                    if($i < 6){ // Caso seja dia de semana.
+
+                        if(strtotime($horario_seg_ini) > strtotime($horaentrada1) && $horario_seg_ini != ''){
+                            $horaentrada1 = $horario_seg_ini;
+                            $retorno_mensagem = -5;
+                        }
+        
+                        if(strtotime($horario_seg_sex_fim) < strtotime($horasaida1) && $horario_seg_sex_fim != ''){
+                            $horasaida1 = $horario_seg_sex_fim;
+                            $retorno_mensagem = -5;
+                        }
+    
+                    } else{
+    
+                        if(strtotime($horario_sab_inicio) > strtotime($horaentrada1) && $horario_sab_inicio != ''){
+                            $horaentrada1 = $horario_sab_inicio;
+                            $retorno_mensagem = -5;
+                        }
+        
+                        if(strtotime($horario_sab_fim) < strtotime($horasaida1) && $horario_sab_fim != ''){
+                            $horasaida1 = $horario_sab_fim;
+                            $retorno_mensagem = -5;
+                        }
+                    }
+
                     if ($horaentrada1 >= $horasaida1 ){
                         return -4;
                     }
@@ -2977,7 +3025,7 @@ class agenda_model extends Model {
             if (trim($erro) != "") // erro de banco
                 return -1;
             else
-                return 1;
+                return $retorno_mensagem;
         } catch (Exception $exc) {
             return false;
         }

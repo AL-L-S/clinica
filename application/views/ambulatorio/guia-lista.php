@@ -6,6 +6,7 @@
         </a>
     </div>
     <?
+    $limitar_acesso = $this->session->userdata('limitar_acesso');
     $operador_id = $this->session->userdata('operador_id');
     $empresa = $this->session->userdata('empresa');
     $empresa_id = $this->session->userdata('empresa_id');
@@ -127,13 +128,22 @@
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiadeclaracao/" . $guia_id; ?> ', '_blank', 'width=800,height=700');">Declara&ccedil;&atilde;o
 
                                         </a></div></th>
+                                <? if ($limitar_acesso == 't') { ?>        
+                                <? if ($perfil_id != 2) { ?>
+                                    <th class="tabela_header"><div class="bt_link">
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiavalor/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Valor
 
+                                            </a></div></th>
+
+                                <? } ?>
+                                <? }else{ ?>
                                 <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
                                     <th class="tabela_header"><div class="bt_link">
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiavalor/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Valor
 
                                             </a></div></th>
 
+                                <? } ?>
                                 <? } ?>
                                 <th class="tabela_header"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaobservacao/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Observa&ccedil;&atilde;o

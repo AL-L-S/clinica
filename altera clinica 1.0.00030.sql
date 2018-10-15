@@ -248,3 +248,19 @@ ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN limitar_acesso boolean DEFAUL
 ALTER TABLE ponto.tb_paciente ADD COLUMN ocupacao_mae character varying(200);
 ALTER TABLE ponto.tb_paciente ADD COLUMN ocupacao_pai character varying(200);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN observacao character varying(2000);
+
+-- 13/10/2018
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000029');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000030', '1.0.000030');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();

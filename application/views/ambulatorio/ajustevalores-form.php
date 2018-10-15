@@ -9,14 +9,17 @@
                         <label>Grupo</label>
                     </dt>                    
                     <dd>                       
-                        <select name="grupo" id="grupo" class="size4" required>
-                            <option value="">SELECIONE</option>                    
+                        <select name="grupo[]" id="grupo" class="size4 chosen-select" required multiple data-placeholder="Escolha um ou mais grupos">
+                            <!-- <option value="">SELECIONE</option>                     -->
                             <? foreach ($grupos as $value) : ?>
                                 <option value="<?= $value->nome; ?>"><?php echo $value->nome; ?></option>
                             <? endforeach; ?>
 
                         </select>
                     </dd>
+                    <br>
+                    <br>
+                    <!-- <br> -->
                     <dt>
                         <label>Ajustar Percentual?</label>
                     </dt>

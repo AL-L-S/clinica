@@ -448,6 +448,8 @@ class empresa_model extends Model {
         $this->db->where('ativo', 't');
         $this->db->where('operador_destino', $operador_id);
         $this->db->where('empresa_id', $empresa_id);
+        $this->db->where('aniversario is not null');
+        $this->db->orderby('visualizado');
         $return = $this->db->get();
         $retorno = $return->result();
 
@@ -1614,6 +1616,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('limitar_acesso', 'f');
                     }
+                    if (isset($_POST['perfil_marketing_p'])) {
+                        $this->db->set('perfil_marketing_p', 't');
+                    } else {
+                        $this->db->set('perfil_marketing_p', 'f');
+                    }
                     if (isset($_POST['financeiro_cadastro'])) {
                         $this->db->set('financeiro_cadastro', 't');
                     } else {
@@ -2447,6 +2454,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('limitar_acesso', 'f');
                     }
+                    if (isset($_POST['perfil_marketing_p'])) {
+                        $this->db->set('perfil_marketing_p', 't');
+                    } else {
+                        $this->db->set('perfil_marketing_p', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -2621,6 +2633,7 @@ class empresa_model extends Model {
                                ep.integracaosollis,
                                ep.medicinadotrabalho,
                                ep.limitar_acesso,
+                               ep.perfil_marketing_p,
                                ep.botao_ficha_convenio
                                ');
             $this->db->from('tb_empresa f');
@@ -2786,6 +2799,7 @@ class empresa_model extends Model {
             $this->_ocupacao_mae = $return[0]->ocupacao_mae;
             $this->_ocupacao_pai = $return[0]->ocupacao_pai;
             $this->_limitar_acesso = $return[0]->limitar_acesso;
+            $this->_perfil_marketing_p = $return[0]->perfil_marketing_p;
         } else {
             $this->_empresa_id = null;
         }

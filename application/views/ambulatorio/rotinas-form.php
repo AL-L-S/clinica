@@ -109,7 +109,7 @@
 //                                        $corpo = str_replace("_cid1_", @$laudo['0']->cid1, $corpo);
 //                                        $corpo = str_replace("_cid2_", @$laudo['0']->cid2, $corpo);
 //                                        $corpo = str_replace("_assinatura_", $assinatura, $corpo);
-                                        echo $corpo;
+                                        // echo $corpo;
                                     }
 
                                 ?>

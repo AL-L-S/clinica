@@ -10,7 +10,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
-<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/jquery.tinymce.min.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/langs/pt_BR.js"></script>
@@ -1628,10 +1628,12 @@
     #sortable { list-style-type: none; margin: 0; padding: 0; width: 1300px; }
     #sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
 </style>
-<!--<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui.js" ></script>
+
 
 <script type="text/javascript">
     jQuery('#rev').change(function () {
@@ -1883,6 +1885,7 @@
     //imc = res;
     resultado = imc.toFixed(2)
     document.getElementById('imc').value = resultado.replace('.', ',');
+    
     function calculaImc() {
         pesob1 = document.getElementById('Peso').value;
         peso = parseFloat(pesob1.replace(',', '.'));
@@ -2021,6 +2024,7 @@
 
                 $(function () {
                     $("#txtCICPrimariolabel").autocomplete({
+
                         source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
                         minLength: 3,
                         focus: function (event, ui) {
@@ -2248,7 +2252,7 @@
                     });
                 });
                 //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-                $('.jqte-test').jqte();
+//                $('.jqte-test').jqte();
 
 
 

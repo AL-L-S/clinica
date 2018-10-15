@@ -908,6 +908,21 @@ INSERT INTO ponto.tb_centrocirurgico_percentual_outros(leito_enfermaria, leito_a
         return $return->result();
     }
 
+    function listarsalascirurgico() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('an.exame_sala_id,
+                            an.nome, an.tipo');
+        $this->db->from('tb_exame_sala an');
+        $this->db->join('tb_exame_sala_grupo esg', 'esg.exame_sala_id = an.exame_sala_id', 'left');
+        $this->db->where('an.empresa_id', $empresa_id);
+        $this->db->where('an.excluido', 'f');
+        $this->db->where('esg.grupo', 'CIRURGICO');
+        $this->db->where('esg.ativo', 't');
+        $this->db->orderby('an.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function formadepagamento() {
         $credito = $this->creditoempresa();
 //        var_dump($credito); die;

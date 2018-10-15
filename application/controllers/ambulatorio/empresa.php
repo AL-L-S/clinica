@@ -351,10 +351,12 @@ class Empresa extends BaseController {
         $data = $this->empresa->buscandolembreteoperador();
         die(json_encode($data));
     }
+
     function checandolembreteaniversario() {
         $data = $this->empresa->buscandolembreteaniversariooperador();
         $visualizado = $data[0]->visualizado;
-
+        // echo '<pre>';
+        // var_dump($data); die;
         if($data[0]->aniversario != ""){
             $aniversario = date("m-d", strtotime(str_replace('/', '-', $data[0]->aniversario)));
             $datahoje = date("m-d");

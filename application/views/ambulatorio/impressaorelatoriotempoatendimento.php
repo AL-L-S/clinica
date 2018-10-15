@@ -19,6 +19,8 @@
             $tipoempresa = 'TODAS';
         }
         ?>
+
+        
         <tr>
             <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">Relatorio Tempo de Atendimento</th>
         </tr>
@@ -34,7 +36,36 @@
         <tr>
             <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PERIODO: <?= $txtdata_inicio ?> ate <?= $txtdata_fim; ?></th>
         </tr>
-
+        <? if (count($procedimentos) > 0) { ?>
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PROCEDIMENTO: <?= $procedimentos[0]->nome; ?></th>
+            </tr>
+            <?
+            $procedimentos = $procedimentos[0]->nome;
+        } else {
+            ?>
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">PROCEDIMENTO: TODOS</th>
+            </tr>
+            <?
+            // $tipoempresa = 'TODAS';
+        }
+        ?>
+        <? if (count($medico) > 0) { ?>
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MÉDICO: <?= $medico[0]->operador; ?></th>
+            </tr>
+            <?
+            $medico = $medico[0]->nome;
+        } else {
+            ?>
+            <tr>
+                <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">MÉDICO: TODOS</th>
+            </tr>
+            <?
+            // $tipoempresa = 'TODAS';
+        }
+        ?>
     </thead>
 </table>
 

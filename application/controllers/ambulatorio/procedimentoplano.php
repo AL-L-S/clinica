@@ -517,6 +517,7 @@ class Procedimentoplano extends BaseController {
         $data['grupos'] = $this->procedimentoplano->listargrupo();
         $data['medicos'] = $this->operador_m->listarmedicos();
         $data['medico_id'] = $medico_id;
+        $data['medico_selec'] = $this->operador_m->listarCada($medico_id);
 //        echo "<pre>";
 //        var_dump($data['procedimento']); die;
         $this->loadView('ambulatorio/editarmedicopercentualmultiplos-form', $data);
@@ -712,7 +713,9 @@ class Procedimentoplano extends BaseController {
 
     function gravarformapagamentoplanoconvenio($convenio_id) {
         $formasSelecionadas = array();
-        
+        if(!isset($_POST['ativar'])){
+            $_POST['ativar'] = array();
+        }
         foreach ($_POST['ativar'] as $key => $value) {
             
             $formapagamento_id = $key;
@@ -721,7 +724,7 @@ class Procedimentoplano extends BaseController {
             
             $formasSelecionadas[] = $key;
         }
-        
+        // var_dump(count($_POST['ativar'])); die;
         if (count($formasSelecionadas) > 0 || count($_POST['ativar']) == 0){
             $this->procedimentoplano->removeformapagamentoconvenio($formasSelecionadas, $convenio_id);
         }

@@ -5,6 +5,11 @@
         <div>
             <form name="form_procedimentoplano" id="form_procedimentoplano" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravareditarmedicopercentualmultiplos" method="post">
                 <input type="hidden" id="medico_id" name="medico_id" value="<?= $medico_id ?>"/>
+                <div>
+                    <label>Médico</label>
+                    <input readonly type="text" name="medico_selecionado_nome" id="medico_selecionado_nome" class="texto06" value="<?= @$medico_selec[0]->operador; ?>">
+                </div>
+                <br>
                 <div class="divTabela">
                     <table id="procedimentos">
                         <tr id="trBase">

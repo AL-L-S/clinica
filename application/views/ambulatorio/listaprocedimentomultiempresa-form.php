@@ -62,24 +62,29 @@
                                                 Sessão
                                             </a>
                                         </td>   
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <a onclick="javascript: return confirm('Deseja realmente desativar o procedimento? ');" target="_blank"
-                                               href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
-                                                Desativar
-                                            </a>
-                                        </td>                                     
+                                        <?if($item->associado == 'f' || true){?>
+                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                                <a onclick="javascript: return confirm('Deseja realmente desativar o procedimento? ');" target="_blank"
+                                                href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
+                                                    Desativar
+                                                </a>
+                                            </td>       
+                                        <?}?>                              
                                     <? } else { ?>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <a onclick="javascript: return confirm('Deseja realmente ativar o procedimento? ');" target="_blank"
-                                               href="<?= base_url() ?>ambulatorio/procedimentoplano/reativarprocedimentoconvenio/<?= $item->procedimento_convenio_id ?>">
-                                                Reativar
-                                            </a>
-                                        </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <a target="_blank" onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirdesativado/<?= $item->procedimento_convenio_id ?>">
-                                                Excluir
-                                            </a>
-                                        </td>
+                                       
+                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                                <a onclick="javascript: return confirm('Deseja realmente ativar o procedimento? ');" target="_blank"
+                                                href="<?= base_url() ?>ambulatorio/procedimentoplano/reativarprocedimentoconvenio/<?= $item->procedimento_convenio_id ?>">
+                                                    Reativar
+                                                </a>
+                                            </td>
+                                            <?if($item->associado == 'f'){ ?>
+                                                <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                                    <a target="_blank" onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirdesativado/<?= $item->procedimento_convenio_id ?>">
+                                                        Excluir
+                                                    </a>
+                                                </td>
+                                            <?}?>   
                                     <? } ?>
 
                                 <? } 
@@ -93,24 +98,29 @@
                                                 Editar
                                             </a>
                                         </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <a target="_blank" onclick="javascript: return confirm('Deseja realmente desativar o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
-                                                Desativar
-                                            </a>
-                                        </td>
+                                        <?if($item->associado == 'f' || true){?>
+                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                                <a target="_blank" onclick="javascript: return confirm('Deseja realmente desativar o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluir/<?= $item->procedimento_convenio_id ?>">
+                                                    Desativar
+                                                </a>
+                                            </td>
+                                        <?}?>
                                 <?  } 
                                     else { ?>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <a onclick="javascript: return confirm('Deseja realmente ativar o procedimento? ');" target="_blank"
-                                               href="<?= base_url() ?>ambulatorio/procedimentoplano/reativarprocedimentoconvenio/<?= $item->procedimento_convenio_id ?>">
-                                                Reativar
-                                            </a>
-                                        </td>
-                                        <td class="<?php echo $estilo_linha; ?>" width="60px;">
-                                            <a target="_blank" onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirdesativado/<?= $item->procedimento_convenio_id ?>">
-                                                Excluir
-                                            </a>
-                                        </td>
+                                        
+                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                                <a onclick="javascript: return confirm('Deseja realmente ativar o procedimento? ');" target="_blank"
+                                                href="<?= base_url() ?>ambulatorio/procedimentoplano/reativarprocedimentoconvenio/<?= $item->procedimento_convenio_id ?>">
+                                                    Reativar
+                                                </a>
+                                            </td>
+                                        <?if($item->associado == 'f'){?>    
+                                            <td class="<?php echo $estilo_linha; ?>" width="60px;">
+                                                <a target="_blank" onclick="javascript: return confirm('Deseja realmente excluir o procedimento? ');" href="<?= base_url() ?>ambulatorio/procedimentoplano/excluirdesativado/<?= $item->procedimento_convenio_id ?>">
+                                                    Excluir
+                                                </a>
+                                            </td>
+                                        <?}?>
                                 <?  } 
                                 }
                             } 
