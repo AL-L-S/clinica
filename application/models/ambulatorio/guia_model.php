@@ -6997,6 +6997,7 @@ class guia_model extends Model {
                             pt.descricao as procedimento,
                             pt.codigo,
                             ae.desconto,
+                            ae.observacao,
                             ae.parcelas1,
                             ae.parcelas2,
                             ae.parcelas3,

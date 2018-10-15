@@ -176,7 +176,7 @@
                 } else {
                     element.mask("(99) 9999-9999?9");
                 }
-    });
+            });
 
     $(function () {
         $("#accordion").accordion();
