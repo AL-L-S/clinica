@@ -276,6 +276,8 @@ class paciente_model extends BaseModel {
             $this->_whatsapp = $return[0]->whatsapp;
             $this->_instagram = $return[0]->instagram;
             $this->_telefone = $return[0]->telefone;
+            $this->_ocupacao_pai = $return[0]->ocupacao_pai;
+            $this->_ocupacao_mae = $return[0]->ocupacao_mae;
             $this->_telefoneresp = $return[0]->telefoneresp;
             $this->_nomeresp = $return[0]->nomeresp;
             $this->_tipoLogradouro = $return[0]->codigo_logradouro;

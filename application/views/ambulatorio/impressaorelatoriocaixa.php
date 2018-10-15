@@ -36,6 +36,7 @@
                         <th class="tabela_header" style="text-align: right"><font size="-1">QTDE</th>
                         <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">V. Total</th>
                         <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">Desconto</th>
+                        <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">Observação</th>
                         <!--<th class="tabela_teste" width="80px;"style="text-align: right"><font size="-1">Total Geral</th>-->
                     </tr>
                 </thead>

@@ -174,6 +174,7 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
         $medico_solicitante_id = "";
         $convenio_paciente = "";
         $promotor_id = @$exames[count($exames) - 1]->indicacao;
+//        var_dump($contador);die;
         if ($contador > 0) {
             $sala_id = $exames[0]->agenda_exames_nome_id;
             $sala = $exames[0]->sala;

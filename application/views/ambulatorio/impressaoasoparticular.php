@@ -61,7 +61,7 @@
     </style>
     <?
     $impressao_aso = json_decode($relatorio[0]->impressao_aso);
-    echo '<pre>';
+//    echo '<pre>';
 //    var_dump($relatorio[0]->consulta); die;
     ?>
     <body>

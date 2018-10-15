@@ -147,7 +147,13 @@ if (@$exame[0]->forma_pagamento4 == 1000) {
                             <input type="hidden" name="valorcredito" id="valorcredito" value="0">
                             <input type="hidden" name="paciente_id" id="paciente_id" value="<?= $exame[0]->paciente_id; ?>">
                         </dd>
-                    </dl>    
+                    </dl> 
+                    <dt>
+                        <label>Observa&ccedil;&atilde;o</label>
+                    </dt>
+                    <dd>
+                            <textarea type="text" id="observacao" name="observacao" class="texto"  value="" cols="50" rows="4"></textarea>  
+                    </dd>
 
                     <hr/>
                     <? if ($exame[0]->financeiro == 'f') { ?>

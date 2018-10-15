@@ -2597,6 +2597,7 @@ class Guia extends BaseController {
         $resulta = $_POST['valortotal'];
         if ($resulta == "0.00") {
             $ambulatorio_guia_id = $this->guia->gravarfaturamento();
+            
 
             if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
                 $this->guia->descontacreditopaciente();
@@ -2715,6 +2716,7 @@ class Guia extends BaseController {
 
         $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['guia_id'] = $guia_id;
+        $data['observacao'] = $this->guia->listarobservacao($guia_id);
         $data['valor'] = 0.00;
 
         $this->load->View('ambulatorio/faturarprocedimentos-form', $data);
@@ -5182,6 +5184,7 @@ class Guia extends BaseController {
         $data['contador'] = $this->guia->relatoriocaixacontador();
         $data['formapagamento'] = $this->formapagamento->listarformanaocredito();
         $data['relatoriocredito'] = $this->guia->relatorioresumocredito();
+//        $data['observacao'] = $this->guia->listarobservacao($guia_id);
         $this->load->View('ambulatorio/impressaorelatoriocaixa', $data);
     }
 

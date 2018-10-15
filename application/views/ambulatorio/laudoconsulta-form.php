@@ -120,10 +120,10 @@
                             <? if (in_array('sexo', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Sexo: <?= @$obj->_sexo ?></td>
                             <? } ?>
-                            <? if (in_array('estadocivil', $opc_dadospaciente)) { ?>
+                            <? if (in_array('ocupacao', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Ocupação: <?= @$obj->_profissao_cbo ?> </td>
                             <? } ?>
-                            <? if (in_array('ocupacao', $opc_dadospaciente)) { ?>
+                            <? if (in_array('estadocivil', $opc_dadospaciente)) { ?>
                                 <td >Estado Civíl: <?= @$estado_civil ?> </td>
                             <? } ?>
                             <? if (in_array('convenio', $opc_dadospaciente)) { ?>
@@ -131,12 +131,13 @@
                             <? } ?>
                             <? if (in_array('telefone', $opc_dadospaciente)) { ?>
                                 <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
-                            <? } ?>
+                            <? } ?>                           
+                          
 
                         </tr>
 
                         <tr>
-                            <? if (in_array('telefone', $opc_dadospaciente)) { ?>
+                            <? if (in_array('indicacao', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
                             <? } ?>
 
@@ -144,10 +145,24 @@
                             <? if (in_array('endereco', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                             <? } ?>
+                            
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
+                            <? if (in_array('ocupacao_pai', $opc_dadospaciente)) { ?>
+                                <td colspan="2" style="width: 200px">Ocupação do Pai: <?= @$obj->_ocupacao_pai ?></td>
+                            <? } ?>
+                            <? if (in_array('nome_pai', $opc_dadospaciente)) { ?>
+                                <td colspan="3" style="width: 200px">Nome do Pai: <?= @$obj->_nome_pai ?></td>
+                            <? } ?>    
                         </tr>
+                        <tr>
+                              <? if (in_array('ocupacao_mae', $opc_dadospaciente)) { ?>
+                                <td colspan="2" style="width: 200px">Ocupação da Mãe: <?= @$obj->_ocupacao_mae ?></td>
+                            <? } ?>
+                            
+                            <? if (in_array('nome_mae', $opc_dadospaciente)) { ?>
+                                <td colspan="3" style="width: 200px">Nome da Mãe: <?= @$obj->_nome_mae ?></td>
+                            <? } ?>
                         </tr>
                         <td>
                             <? if (in_array('preencherform', $opc_telatendimento)) { ?>
@@ -2038,7 +2053,7 @@
                 });
                 $(function () {
                     $("#txtCICSecundariolabel").autocomplete({
-                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid2",
                         minLength: 3,
                         focus: function (event, ui) {
                             $("#txtCICSecundariolabel").val(ui.item.label);

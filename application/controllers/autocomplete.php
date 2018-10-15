@@ -3199,6 +3199,17 @@ class Autocomplete extends Controller {
         }
         echo json_encode($result);
     }
+    
+    function repetirexame() {
+
+        if (isset($_GET['exame_id'])) {
+
+            $result = $this->laudo->listarautocompleterepetirexame($_GET['exame_id']);
+        } else {
+            $result = $this->laudo->listarautocompleterepetirexame();
+        }
+        echo json_encode($result);
+    }
     function repetirrotina() {
 
         if (isset($_GET['rotina'])) {

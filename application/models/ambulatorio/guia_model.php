@@ -389,6 +389,8 @@ class guia_model extends Model {
                             ep.ajuste_pagamento_procedimento,
                             ep.valor_autorizar,
                             ep.botao_ficha_convenio,
+                            ep.ocupacao_mae,
+                            ep.ocupacao_pai,
                             ep.impressao_cimetra
                             
                             ');
@@ -8702,7 +8704,16 @@ class guia_model extends Model {
             $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
         }
         $return = $this->db->get();
-//        var_dump($financeiro_grupo_id); die;
+
+        return $return->result();
+    }
+    function listarobservacao($guia_id) {
+        $this->db->select('ae.observacao');
+        $this->db->from('tb_agenda_exames ae');        
+        $this->db->where("guia_id", $guia_id);
+       
+        $return = $this->db->get();
+
         return $return->result();
     }
 
@@ -9577,6 +9588,7 @@ class guia_model extends Model {
             $this->db->set('data_faturamento', $horario);
             $this->db->set('operador_faturamento', $operador_id);
             $this->db->set('faturado', 't');
+            $this->db->set('observacao', $_POST['observacao']);
             $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
             $this->db->update('tb_agenda_exames');
             $erro = $this->db->_error_message();
@@ -10979,6 +10991,7 @@ class guia_model extends Model {
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('faturado', 't');
+                    $this->db->set('observacao', $_POST['observacao']);
                     $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
                     $i = 1;
@@ -11004,6 +11017,7 @@ class guia_model extends Model {
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('faturado', 't');
+                    $this->db->set('observacao', $_POST['observacao']);
                     $this->db->set('valor_total', str_replace(",", ".", $valortotal));
                     $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
@@ -11060,6 +11074,7 @@ class guia_model extends Model {
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('valor_total', str_replace(",", ".", $valortotal));
                     $this->db->set('faturado', 't');
+                    $this->db->set('observacao', $_POST['observacao']);
                     $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
                     $valor2 = 0;
@@ -11181,6 +11196,7 @@ class guia_model extends Model {
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('valor_total', str_replace(",", ".", $valortotal));
                     $this->db->set('faturado', 't');
+                    $this->db->set('observacao', $_POST['observacao']);
                     $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
                     $valor2 = 0;

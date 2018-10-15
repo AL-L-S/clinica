@@ -927,9 +927,15 @@ class solicita_cirurgia_model extends BaseModel {
             $this->db->set('operatorio', $_POST['operatorio']);
             $this->db->set('observacao', $_POST['observacao']);
             $this->db->set('paciente_id', $_POST['txtNomeid']);
+            if($_POST['sala'] != ""){
             $this->db->set('sala_agendada', $_POST['sala']);
+            }
+            if($_POST['medicoagenda'] != ""){
             $this->db->set('medico_solicitante', $_POST['medicoagenda']);
-            $this->db->set('medico_cirurgiao', $_POST['medicocirurgia']);           
+            }
+            if($_POST['medicocirurgia'] != ""){
+            $this->db->set('medico_cirurgiao', $_POST['medicocirurgia']); 
+            }
             $this->db->set('convenio', $_POST['convenio']);
             $this->db->set('hospital_id', $_POST['hospital_id']);
             if (isset($_POST['orcamento'])) {

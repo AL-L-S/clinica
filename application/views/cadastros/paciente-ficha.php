@@ -9,8 +9,10 @@
             } else {
                 $campos_obrigatorios = array();
             }
-
-//            var_dump($this->session->userdata('recomendacao_configuravel')); die;
+            $ocupacao_mae = $this->session->userdata('ocupacao_mae');
+            $ocupacao_pai = $this->session->userdata('ocupacao_pai');
+//            echo'<pre>';
+//            var_dump(@$empresapermissoes); die;
             ?>
             <legend>Dados do Paciente</legend>
             <div>
@@ -33,11 +35,19 @@
                 <label>Nome da M&atilde;e</label>
                 <input type="text" name="nome_mae" id="txtNomeMae" class="texto06" value="<?= @$obj->_nomemae; ?>" 
                        <?= (in_array('nome_mae', $campos_obrigatorios)) ? 'required' : '' ?>/>
+                <?if (@$empresapermissoes[0]->ocupacao_mae == 't') { ?>
+                <label>Ocupação da M&atilde;e</label>
+                <input type="text"  name="ocupacao_mae" id="ocupacao_mae" class="texto06" value="<?= @$obj->_ocupacao_mae; ?>"/>
+                <?}?>
             </div>
             <div>
                 <label>Nome do Pai</label>
                 <input type="text"  name="nome_pai" id="txtNomePai" class="texto06" value="<?= @$obj->_nomepai; ?>" 
                        <?= (in_array('nome_pai', $campos_obrigatorios)) ? 'required' : '' ?>/>
+                <?if (@$empresapermissoes[0]->ocupacao_pai == 't') { ?>
+                <label>Ocupação do Pai</label>
+                <input type="text"  name="ocupacao_pai" id="ocupacao_pai" class="texto06" value="<?= @$obj->_ocupacao_pai; ?>"/>
+                <?}?>
             </div>
             <?
 //            var_dump(@$empresapermissoes); die;
