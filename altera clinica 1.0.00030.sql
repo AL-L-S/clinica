@@ -249,7 +249,7 @@ BEGIN
     resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000029');
     IF resultado = 0 THEN 
 	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
-        VALUES ('1.0.000029', '1.0.000029');
+        VALUES ('1.0.000030', '1.0.000030');
     END IF;
     RETURN 'SUCESSO';
 END;

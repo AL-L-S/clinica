@@ -89,7 +89,10 @@
                 foreach ($relatorio as $item) :
                     $i++;
                     $qtdetotal++;
-                    $indicacao[$item->indicacao] ++;
+                    if(isset($indicacao[$item->indicacao])){
+                        $indicacao[$item->indicacao] ++;
+                    }
+                    
                     // $valor_total = $item->valor_total;
                     ?>
                     <?
