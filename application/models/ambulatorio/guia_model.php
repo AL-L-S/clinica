@@ -223,7 +223,7 @@ class guia_model extends Model {
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
-        $this->db->where('pt.tipo_aso', $_POST['tipo']);
+//        $this->db->where('pt.tipo_aso', $_POST['tipo']);
         if($_POST['consulta'] == "particular"){
         $this->db->where('pc.convenio_id', $gravarempresa);
         }else{
@@ -232,7 +232,7 @@ class guia_model extends Model {
         $this->db->where('pt.grupo', 'ASO');
         $result = $this->db->get()->result();
 
-//            echo'<pre>';var_dump($_POST['coordenador']);die;
+//            echo'<pre>';var_dump($_POST['tipo']);die;
             
         if (count($result) > 0) {
 
@@ -389,6 +389,8 @@ class guia_model extends Model {
                             ep.ajuste_pagamento_procedimento,
                             ep.valor_autorizar,
                             ep.botao_ficha_convenio,
+                            ep.ocupacao_mae,
+                            ep.ocupacao_pai,
                             ep.impressao_cimetra
                             
                             ');
@@ -4830,6 +4832,7 @@ class guia_model extends Model {
     }
 
     function percentuallaboratorioconvenioexames($procedimentopercentual) {
+//        var_dump($procedimentopercentual);
         $this->db->select('mc.valor as perc_laboratorio, mc.percentual, mc.laboratorio');
         $this->db->from('tb_procedimento_percentual_laboratorio_convenio mc');
         $this->db->join('tb_procedimento_percentual_laboratorio m', 'm.procedimento_percentual_laboratorio_id = mc.procedimento_percentual_laboratorio_id', 'left');
@@ -6995,6 +6998,7 @@ class guia_model extends Model {
                             pt.descricao as procedimento,
                             pt.codigo,
                             ae.desconto,
+                            ae.observacao,
                             ae.parcelas1,
                             ae.parcelas2,
                             ae.parcelas3,
@@ -8796,7 +8800,16 @@ class guia_model extends Model {
             $this->db->where("cp.grupo_pagamento_id", $financeiro_grupo_id);
         }
         $return = $this->db->get();
-//        var_dump($financeiro_grupo_id); die;
+
+        return $return->result();
+    }
+    function listarobservacao($guia_id) {
+        $this->db->select('ae.observacao');
+        $this->db->from('tb_agenda_exames ae');        
+        $this->db->where("guia_id", $guia_id);
+       
+        $return = $this->db->get();
+
         return $return->result();
     }
 
@@ -9671,6 +9684,7 @@ class guia_model extends Model {
             $this->db->set('data_faturamento', $horario);
             $this->db->set('operador_faturamento', $operador_id);
             $this->db->set('faturado', 't');
+            $this->db->set('observacao', $_POST['observacao']);
             $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
             $this->db->update('tb_agenda_exames');
             $erro = $this->db->_error_message();
@@ -11073,6 +11087,7 @@ class guia_model extends Model {
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('faturado', 't');
+                    $this->db->set('observacao', $_POST['observacao']);
                     $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
                     $i = 1;
@@ -11098,6 +11113,7 @@ class guia_model extends Model {
                     $this->db->set('data_faturamento', $horario);
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('faturado', 't');
+                    $this->db->set('observacao', $_POST['observacao']);
                     $this->db->set('valor_total', str_replace(",", ".", $valortotal));
                     $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
@@ -11154,6 +11170,7 @@ class guia_model extends Model {
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('valor_total', str_replace(",", ".", $valortotal));
                     $this->db->set('faturado', 't');
+                    $this->db->set('observacao', $_POST['observacao']);
                     $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
                     $valor2 = 0;
@@ -11275,6 +11292,7 @@ class guia_model extends Model {
                     $this->db->set('operador_faturamento', $operador_id);
                     $this->db->set('valor_total', str_replace(",", ".", $valortotal));
                     $this->db->set('faturado', 't');
+                    $this->db->set('observacao', $_POST['observacao']);
                     $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                     $this->db->update('tb_agenda_exames');
                     $valor2 = 0;
@@ -15626,7 +15644,7 @@ ORDER BY ae.paciente_credito_id)";
 
     function gravarconsultaaso($ambulatorio_guia_id, $percentual, $percentual_laboratorio, $procedimento_convenio_id) {
         try {
-//            var_dump($percentual);die;
+//            var_dump($percentual_laboratorio);die;
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -15644,7 +15662,7 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);
             $valorproc = $this->db->get()->result();
             
-//            var_dump($valorproc);die;
+//            var_dump($_POST['autorizacao1']);die;
 
             $hora = date("H:i:s");
             $data = date("Y-m-d");
@@ -15671,8 +15689,9 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('valor_total', $valortotal);
 
             $this->db->set('quantidade', 1);
+            if(isset ($_POST['autorizacao1'])){
             $this->db->set('autorizacao', $_POST['autorizacao1']);
-
+            }
             $this->db->set('agenda_exames_nome_id', $_POST['sala1']);
             $this->db->set('inicio', $hora);
             $this->db->set('fim', $hora);

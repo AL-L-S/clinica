@@ -1761,6 +1761,7 @@ class Convenio_model extends Model {
             /* inicia o mapeamento no banco */
 //            $convenio_id = $_POST['txtconvenio_id'];
             $this->db->set('nome', $convenio2);
+            $this->db->set('razao_social', $convenio2);
            
             if ($financeiro_credor_devedor_id != "") {
                 $this->db->set('credor_devedor_id', $financeiro_credor_devedor_id);

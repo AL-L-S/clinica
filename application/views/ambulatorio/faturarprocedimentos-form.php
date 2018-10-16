@@ -234,7 +234,16 @@
                                 <input type="hidden" name="paciente_id" id="paciente_id">
                             </td>
                         </tr>
-
+                        <tr>
+                            <td>
+                                Observação
+                            </td>    
+                        </tr>
+                        <tr>
+                            <td>
+                              <textarea type="text" id="observacao" name="observacao" class="texto"  value="" cols="50" rows="4"></textarea>  
+                            </td>
+                        </tr>
                     </table>
                     <dl class="dl_desconto_lista">
 

@@ -60,6 +60,10 @@ class login_model extends Model {
                            ep.enfermagem,
                            ep.integracaosollis,
                            ep.medicinadotrabalho,
+                           ep.ocupacao_pai,
+                           ep.ocupacao_mae,
+                           ep.limitar_acesso,
+                           ep.perfil_marketing_p,
                            ep.subgrupo_procedimento');
         $this->db->from('tb_empresa e');
         $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
@@ -128,6 +132,10 @@ class login_model extends Model {
             $enfermagem = $retorno[0]->enfermagem;
             $integracaosollis = $retorno[0]->integracaosollis;
             $medicinadotrabalho = $retorno[0]->medicinadotrabalho;
+            $ocupacao_mae = $retorno[0]->ocupacao_mae;
+            $ocupacao_pai = $retorno[0]->ocupacao_pai;
+            $limitar_acesso = $retorno[0]->limitar_acesso;
+            $perfil_marketing_p = $retorno[0]->perfil_marketing_p;
         } else {
             $empresanome = "";
             $internacao = false;
@@ -170,6 +178,10 @@ class login_model extends Model {
                 'financeiro_cadastro' => $financeiro_cadastro,
                 'gerente_relatorio_financeiro' => $gerente_relatorio_financeiro,
                 'relatoriorm' => $relatoriorm,
+                'ocupacao_pai' => $ocupacao_pai,
+                'ocupacao_mae' => $ocupacao_mae,
+                'limitar_acesso' => $limitar_acesso,
+                'perfil_marketing_p' => $perfil_marketing_p,
                 'imagem' => $imagem,
                 'consulta' => $consulta,
                 'especialidade' => $especialidade,

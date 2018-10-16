@@ -11,12 +11,12 @@
 
 
     if (count($receita) == 0) {
-        $receituario_id = 0;
+        $exame_id = 0;
         $texto = "";
         $medico = "";
     } else {
         $texto = $receita[0]->texto;
-        $receituario_id = $receita[0]->ambulatorio_exame_id;
+        $exame_id = $receita[0]->ambulatorio_exame_id;
         $medico = $receita[0]->medico_parecer1;
     }
     $operador_id = $this->session->userdata('operador_id');
@@ -39,6 +39,15 @@
                     </table>
 
                 </fieldset>
+                <table>
+                    <tr>
+                        <td>
+                            <div class="bt_link_new" style="width: 200px; margin: 5px">
+                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modelosolicitarexames');" style="width: 250px; margin: 5px">
+                                    Modelo Exame</a></div>
+                        </td>                        
+                    </tr>
+                </table>
                 <div >
                     <div>
 
@@ -61,7 +70,7 @@
 
                             </div>
                             <div>
-                                <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $receituario_id ?>"/>
+                                <input type="hidden" id="receituario_id" name="receituario_id" value="<?= $exame_id ?>"/>
                                 <input type="hidden" id="ambulatorio_laudo_id" name="ambulatorio_laudo_id" value="<?= $ambulatorio_laudo_id ?>"/>
                                 <input type="hidden" id="medico" name="medico" value="<?= $operador_id ?>"/>
                             </div>
@@ -83,17 +92,22 @@
                 <table id="table_agente_toxico" border="0">
                     <thead>
                         <tr>
+                            <th class="tabela_header">Data</th>                            
+                            <th class="tabela_header">Médico</th>
                             <th class="tabela_header">Descri&ccedil;&atilde;o</th>
-                            <th colspan="2" class="tabela_header">&nbsp;</th>
+                            <th colspan="3" class="tabela_header">&nbsp;</th>
                         </tr>
                     </thead>
                     <?
                     $estilo_linha = "tabela_content01";
                     foreach ($receita as $item) {
                         ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+//                        var_dump($item);die;
                         ?>
                         <tbody>
                             <tr>
+                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_cadastro)); ?></td>
+                                <td class="<?php echo $estilo_linha; ?>"><?= $item->medico; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->texto; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaosolicitarexame/<?= $item->ambulatorio_exame_id; ?>');">Imprimir
@@ -101,6 +115,10 @@
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/editarexame/<?= $ambulatorio_laudo_id ?>/<?= $item->ambulatorio_exame_id; ?>');">Editar
+                                        </a></div>
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                        <a onclick="repetir(<?=$item->ambulatorio_exame_id;?>)">Repetir
                                         </a></div>
                                 </td>
 
@@ -271,7 +289,21 @@
                                     $('.jqte-test').jqte();
 
 
+                                    function repetir(exame_id) {
 
+                                        $.getJSON('<?= base_url() ?>autocomplete/repetirexame', {exame_id: exame_id, ajax: true}, function (j) {
+                                            options = "";
+
+                                            options += j[0].texto;
+
+                                            $('#laudo').val(options);
+                                            var ed = tinyMCE.get('laudo');
+                                            ed.setContent($('#laudo').val());
+
+                                                
+                                        }
+                                       ) 
+                                    }
 
 
 

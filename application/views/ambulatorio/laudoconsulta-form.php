@@ -10,7 +10,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
-<!--<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>-->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/jquery.tinymce.min.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/langs/pt_BR.js"></script>
@@ -120,10 +120,10 @@
                             <? if (in_array('sexo', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Sexo: <?= @$obj->_sexo ?></td>
                             <? } ?>
-                            <? if (in_array('estadocivil', $opc_dadospaciente)) { ?>
+                            <? if (in_array('ocupacao', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Ocupação: <?= @$obj->_profissao_cbo ?> </td>
                             <? } ?>
-                            <? if (in_array('ocupacao', $opc_dadospaciente)) { ?>
+                            <? if (in_array('estadocivil', $opc_dadospaciente)) { ?>
                                 <td >Estado Civíl: <?= @$estado_civil ?> </td>
                             <? } ?>
                             <? if (in_array('convenio', $opc_dadospaciente)) { ?>
@@ -131,12 +131,13 @@
                             <? } ?>
                             <? if (in_array('telefone', $opc_dadospaciente)) { ?>
                                 <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
-                            <? } ?>
+                            <? } ?>                           
+                          
 
                         </tr>
 
                         <tr>
-                            <? if (in_array('telefone', $opc_dadospaciente)) { ?>
+                            <? if (in_array('indicacao', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
                             <? } ?>
 
@@ -144,10 +145,24 @@
                             <? if (in_array('endereco', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                             <? } ?>
+                            
                         </tr>
                         <tr>
-                            <td colspan="2"></td>
+                            <? if (in_array('ocupacao_pai', $opc_dadospaciente)) { ?>
+                                <td colspan="2" style="width: 200px">Ocupação do Pai: <?= @$obj->_ocupacao_pai ?></td>
+                            <? } ?>
+                            <? if (in_array('nome_pai', $opc_dadospaciente)) { ?>
+                                <td colspan="3" style="width: 200px">Nome do Pai: <?= @$obj->_nome_pai ?></td>
+                            <? } ?>    
                         </tr>
+                        <tr>
+                              <? if (in_array('ocupacao_mae', $opc_dadospaciente)) { ?>
+                                <td colspan="2" style="width: 200px">Ocupação da Mãe: <?= @$obj->_ocupacao_mae ?></td>
+                            <? } ?>
+                            
+                            <? if (in_array('nome_mae', $opc_dadospaciente)) { ?>
+                                <td colspan="3" style="width: 200px">Nome da Mãe: <?= @$obj->_nome_mae ?></td>
+                            <? } ?>
                         </tr>
                         <td>
                             <? if (in_array('preencherform', $opc_telatendimento)) { ?>
@@ -1613,10 +1628,12 @@
     #sortable { list-style-type: none; margin: 0; padding: 0; width: 1300px; }
     #sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
 </style>
-<!--<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
-<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery-ui.js" ></script>
+
 
 <script type="text/javascript">
     jQuery('#rev').change(function () {
@@ -1868,6 +1885,7 @@
     //imc = res;
     resultado = imc.toFixed(2)
     document.getElementById('imc').value = resultado.replace('.', ',');
+    
     function calculaImc() {
         pesob1 = document.getElementById('Peso').value;
         peso = parseFloat(pesob1.replace(',', '.'));
@@ -2006,6 +2024,7 @@
 
                 $(function () {
                     $("#txtCICPrimariolabel").autocomplete({
+
                         source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
                         minLength: 3,
                         focus: function (event, ui) {
@@ -2038,7 +2057,7 @@
                 });
                 $(function () {
                     $("#txtCICSecundariolabel").autocomplete({
-                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid2",
                         minLength: 3,
                         focus: function (event, ui) {
                             $("#txtCICSecundariolabel").val(ui.item.label);
@@ -2233,7 +2252,7 @@
                     });
                 });
                 //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-                $('.jqte-test').jqte();
+//                $('.jqte-test').jqte();
 
 
 

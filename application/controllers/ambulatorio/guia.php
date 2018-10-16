@@ -592,6 +592,7 @@ class Guia extends BaseController {
     }
 
     function gravarcadastroaso($paciente_id) {
+//        echo '<pre>';
 //        var_dump($_POST);
 //        die;
         $paciente_id = $_POST['txtPacienteId'];
@@ -626,8 +627,6 @@ class Guia extends BaseController {
         }
         
         $retorno2 = $this->guia->gravarprocedimentoaso($gravarempresa, $ambulatorio_guia, $retorno);
-//            var_dump($retorno2);
-//        die;
         if ($_POST['cadastro_aso_id'] == '') {            
 
             foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
@@ -647,8 +646,6 @@ class Guia extends BaseController {
                 $paciente_id = $_POST['txtPacienteId'];
 
                 $resultadoguia = $this->guia->listarguia($paciente_id);
-//                   var_dump($procedimento_convenio_id);
-//        die;
                 if ($_POST['medico'] != '') {
 
                     if ($resultadoguia == null) {
@@ -657,11 +654,15 @@ class Guia extends BaseController {
                         $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
                     }
 
+//            var_dump($procedimento_convenio_id);
+//        die;
 
                     $retorno = $this->guia->gravarconsultaaso($ambulatorio_guia, $percentual, $percentual_laboratorio, $procedimento_convenio_id);
                 }
             }
         }
+//                   var_dump($ambulatorio_guia_id);
+//        die;
         if ($ambulatorio_guia_id) {
             $data['mensagem'] = 'Erro ao gravar ASO.';
         } else {
@@ -2597,6 +2598,7 @@ class Guia extends BaseController {
         $resulta = $_POST['valortotal'];
         if ($resulta == "0.00") {
             $ambulatorio_guia_id = $this->guia->gravarfaturamento();
+            
 
             if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
                 $this->guia->descontacreditopaciente();
@@ -2715,6 +2717,7 @@ class Guia extends BaseController {
 
         $data['financeiro_grupo_id'] = $financeiro_grupo_id;
         $data['guia_id'] = $guia_id;
+        $data['observacao'] = $this->guia->listarobservacao($guia_id);
         $data['valor'] = 0.00;
 
         $this->load->View('ambulatorio/faturarprocedimentos-form', $data);
@@ -5231,6 +5234,7 @@ class Guia extends BaseController {
         $data['contador'] = $this->guia->relatoriocaixacontador();
         $data['formapagamento'] = $this->formapagamento->listarformanaocredito();
         $data['relatoriocredito'] = $this->guia->relatorioresumocredito();
+//        $data['observacao'] = $this->guia->listarobservacao($guia_id);
         $this->load->View('ambulatorio/impressaorelatoriocaixa', $data);
     }
 

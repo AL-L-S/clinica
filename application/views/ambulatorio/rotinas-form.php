@@ -46,11 +46,7 @@
                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modelolaudo');" style="width: 250px; margin: 5px">
                                     Modelo Rotinas</a></div>
                         </td>
-                        <td>
-                            <div class="bt_link_new" style="width: 200px; margin: 5px">
-                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/modelomedicamento');" style="width: 250px; margin: 5px">
-                                    Modelo Medicamento</a></div>
-                        </td>
+                        
                     </tr>
                 </table>
                 <div>
@@ -82,7 +78,7 @@
                             <input type="hidden" id="medico" name="medico" value="<?= $operador_id ?>"/>
                         </div>
                         <div>
-<? // var_dump($modelo[0]->texto);die; ?>
+<? // var_dump($modelo);die; ?>
                             <textarea id="laudo" name="laudo" rows="25" cols="80" style="width: 80%">
                                 <?                                    
                                        

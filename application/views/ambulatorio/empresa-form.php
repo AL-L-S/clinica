@@ -358,6 +358,10 @@
                                     <option value="solicitante" <?= (in_array('solicitante', $opc_dadospaciente)) ? 'selected' : ''; ?>>Solicitante</option>
                                     <option value="sala" <?= (in_array('sala', $opc_dadospaciente)) ? 'selected' : ''; ?>>Sala</option>
                                     <option value="telefone" <?= (in_array('telefone', $opc_dadospaciente)) ? 'selected' : ''; ?>>Telefone</option>
+                                    <option value="ocupacao_pai" <?= (in_array('ocupacao_pai', $opc_dadospaciente)) ? 'selected' : ''; ?>>Ocupação do Pai</option>
+                                    <option value="ocupacao_mae" <?= (in_array('ocupacao_mae', $opc_dadospaciente)) ? 'selected' : ''; ?>>Ocupação da Mãe</option>
+                                    <option value="nome_pai" <?= (in_array('nome_pai', $opc_dadospaciente)) ? 'selected' : ''; ?>>Nome do Pai</option>
+                                    <option value="nome_mae" <?= (in_array('nome_mae', $opc_dadospaciente)) ? 'selected' : ''; ?>>Nome da Mãe</option>
 
                                 </select>
                             </dd>
@@ -524,6 +528,12 @@
                                         </tr>
                                         <tr>
                                             <td><input type="checkbox" id="reservar_escolher_proc" name="reservar_escolher_proc" <? if (@$obj->_reservar_escolher_proc == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, você deve escolher o procedimento ao reservar um horário.">Escolher Procedimento Ao Reservar</label></td>
+                                            <td><input type="checkbox" id="ocupacao_mae" name="ocupacao_mae" <? if (@$obj->_ocupacao_mae == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, aparecerá na página de cadastro o campo de ocupação da mãe.">Ocupação Mãe</label></td>
+                                            <td><input type="checkbox" id="ocupacao_pai" name="ocupacao_pai" <? if (@$obj->_ocupacao_pai == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, aparecerá na página de cadastro o campo de ocupação do pai.">Ocupação Pai</label></td>
+                                            <td><input type="checkbox" id="limitar_acesso" name="limitar_acesso" <? if (@$obj->_limitar_acesso == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o Perfil de Recepção não terá acesso as configurações.">Limitar Acesso Recepção</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" id="perfil_marketing_p" name="perfil_marketing_p" <? if (@$obj->_perfil_marketing_p == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, você dará ao perfil de Marketing acesso a todos os itens da Recepção e ao Solicitar Material (no estoque).">Perfil Marketing_P</label></td>
                                         </tr>
                                     </table>
                                 </fieldset>

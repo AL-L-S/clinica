@@ -1601,6 +1601,26 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('medicinadotrabalho', 'f');
                     }
+                    if (isset($_POST['ocupacao_mae'])) {
+                        $this->db->set('ocupacao_mae', 't');
+                    } else {
+                        $this->db->set('ocupacao_mae', 'f');
+                    }
+                    if (isset($_POST['ocupacao_pai'])) {
+                        $this->db->set('ocupacao_pai', 't');
+                    } else {
+                        $this->db->set('ocupacao_pai', 'f');
+                    }
+                    if (isset($_POST['limitar_acesso'])) {
+                        $this->db->set('limitar_acesso', 't');
+                    } else {
+                        $this->db->set('limitar_acesso', 'f');
+                    }
+                    if (isset($_POST['perfil_marketing_p'])) {
+                        $this->db->set('perfil_marketing_p', 't');
+                    } else {
+                        $this->db->set('perfil_marketing_p', 'f');
+                    }
                     if (isset($_POST['financeiro_cadastro'])) {
                         $this->db->set('financeiro_cadastro', 't');
                     } else {
@@ -2419,6 +2439,26 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('medicinadotrabalho', 'f');
                     }
+                    if (isset($_POST['ocupacao_pai'])) {
+                        $this->db->set('ocupacao_pai', 't');
+                    } else {
+                        $this->db->set('ocupacao_pai', 'f');
+                    }
+                    if (isset($_POST['ocupacao_mae'])) {
+                        $this->db->set('ocupacao_mae', 't');
+                    } else {
+                        $this->db->set('ocupacao_mae', 'f');
+                    }
+                    if (isset($_POST['limitar_acesso'])) {
+                        $this->db->set('limitar_acesso', 't');
+                    } else {
+                        $this->db->set('limitar_acesso', 'f');
+                    }
+                    if (isset($_POST['perfil_marketing_p'])) {
+                        $this->db->set('perfil_marketing_p', 't');
+                    } else {
+                        $this->db->set('perfil_marketing_p', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -2512,6 +2552,8 @@ class empresa_model extends Model {
                                ep.relatorio_producao,
                                ep.relatorios_recepcao,
                                ep.financeiro_cadastro,
+                               ep.ocupacao_mae,
+                               ep.ocupacao_pai,
                                botao_faturar_guia,
                                botao_faturar_procedimento,
                                producao_medica_saida,
@@ -2590,6 +2632,8 @@ class empresa_model extends Model {
                                ep.enfermagem,
                                ep.integracaosollis,
                                ep.medicinadotrabalho,
+                               ep.limitar_acesso,
+                               ep.perfil_marketing_p,
                                ep.botao_ficha_convenio
                                ');
             $this->db->from('tb_empresa f');
@@ -2752,6 +2796,10 @@ class empresa_model extends Model {
             $this->_enfermagem = $return[0]->enfermagem;
             $this->_integracaosollis = $return[0]->integracaosollis;
             $this->_medicinadotrabalho = $return[0]->medicinadotrabalho;
+            $this->_ocupacao_mae = $return[0]->ocupacao_mae;
+            $this->_ocupacao_pai = $return[0]->ocupacao_pai;
+            $this->_limitar_acesso = $return[0]->limitar_acesso;
+            $this->_perfil_marketing_p = $return[0]->perfil_marketing_p;
         } else {
             $this->_empresa_id = null;
         }

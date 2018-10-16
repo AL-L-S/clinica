@@ -36,6 +36,7 @@
                         <th class="tabela_header" style="text-align: right"><font size="-1">QTDE</th>
                         <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">V. Total</th>
                         <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">Desconto</th>
+                        <th class="tabela_header" width="120px;" style="text-align: right"><font size="-1">Observação</th>
                         <!--<th class="tabela_teste" width="80px;"style="text-align: right"><font size="-1">Total Geral</th>-->
                     </tr>
                 </thead>
@@ -89,11 +90,12 @@
                 if (count($relatorio) > 0) {
 
 
-//                    var_dump($formapagamento); die;
 
 
 
                     foreach ($relatorio as $item) {
+//                        echo'<pre>';
+//                    var_dump($relatorio); die;
 
                         $i++;
                         $b++;
@@ -182,6 +184,8 @@
 
                                     <? } ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    
+                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
@@ -207,6 +211,7 @@
 
                                     <? } ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
@@ -231,6 +236,7 @@
 
                                     <? } ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
@@ -258,6 +264,7 @@
 
                                     <? } ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 } 
                                    if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
@@ -287,6 +294,7 @@
                                     <? }
                                     ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
@@ -311,6 +319,7 @@
                                     <? }
                                     ?>
                                     <td><font size="-2"><?= $item->desconto; ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
@@ -336,6 +345,7 @@
                                     <? }
                                     ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                 ?>
