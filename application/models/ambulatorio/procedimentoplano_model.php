@@ -167,6 +167,7 @@ class procedimentoplano_model extends Model {
         
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
         $this->db->set('excluido', 't');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
@@ -278,6 +279,7 @@ class procedimentoplano_model extends Model {
         $this->db->where("ag.tipo !=", 'CIRURGICO');
         $this->db->where("c.associado", 'false');
         $this->db->where("pc.ativo", 't');
+        $this->db->where("pc.excluido", 'f');
         $this->db->where("pc.convenio_id", $convenio_id);
         $empresa_id = $this->session->userdata('empresa_id');
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
@@ -3746,6 +3748,7 @@ class procedimentoplano_model extends Model {
             $this->db->from('tb_procedimento_convenio pc');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
             $this->db->where('pc.ativo', 't');
+            $this->db->where('pc.excluido', 'f');
             $this->db->where('pc.agrupador', 'f');
             $this->db->where('pt.grupo', $value->grupo);
             $this->db->where('pc.convenio_id', $convenio);

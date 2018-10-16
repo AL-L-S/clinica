@@ -1,3 +1,4 @@
+<meta charset="UTF-8">
 <style>
     .negrito{
         font-weight: bold;

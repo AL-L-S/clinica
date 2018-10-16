@@ -194,8 +194,8 @@ switch ($MES) {
     <div>
         <table>
             <tr >
-                <td  width="550px"  style="text-align: center;" ><? echo $DIA; ?> De <? echo $MES; ?><br> <? echo $empresa[0]->municipio; ?> - <? echo $empresa[0]->estado; ?>
-                </td>
+            <td  width="550px"  style="text-align: center;" ><? echo $DIA; ?> de <? echo $MES; ?> de <?=date("Y")?><br> <? echo $empresa[0]->municipio; ?> - <? echo $empresa[0]->estado; ?>
+            </td>
 
             </tr>
 
@@ -363,7 +363,7 @@ switch ($MES) {
             <br>
             <table>
                 <tr>
-                    <td  width="550px"  style="text-align: center;" ><? echo $DIA; ?> De <? echo $MES; ?><br> <? echo $empresa[0]->municipio; ?> - <? echo $empresa[0]->estado; ?>
+                    <td  width="550px"  style="text-align: center;" ><? echo $DIA; ?> de <? echo $MES; ?> de <?=date("Y")?><br> <? echo $empresa[0]->municipio; ?> - <? echo $empresa[0]->estado; ?>
                     </td>
 
                 </tr>

@@ -1103,8 +1103,8 @@ class internacao extends BaseController {
         $this->load->View('internacao/impressaorelatoriointernacaofaturamento', $data);
     }
 
-    function mostratransferirpaciente($paciente_id) {
-        $data['paciente'] = $this->internacao_m->listapacienteinternado($paciente_id);
+    function mostratransferirpaciente($internacao_id) {
+        $data['paciente'] = $this->internacao_m->listapacienteinternado($internacao_id);
         $data['unidades'] = $this->internacao_m->listaunidadetransferencia();
         $this->loadView('internacao/transferirpaciente', $data);
     }
@@ -1143,7 +1143,8 @@ class internacao extends BaseController {
 
         //Redirecionando para a ficha do paciente novamente
         $leito_id = $_POST['novo_leito'];
-        redirect(base_url() . "internacao/internacao/mostrafichapaciente/$leito_id");
+        $internacao_id = $_POST['internacao_id'];
+        redirect(base_url() . "internacao/internacao/mostrafichapaciente/$internacao_id");
     }
 
     function permutapaciente() {
@@ -1152,11 +1153,12 @@ class internacao extends BaseController {
 
         //Redirecionando para a ficha do paciente novamente
         $leito_id = $_POST['leito_troca'];
-        redirect(base_url() . "internacao/internacao/mostrafichapaciente/$leito_id");
+        $internacao_id = $_POST['internacao_id'];
+        redirect(base_url() . "internacao/internacao/mostrafichapaciente/$internacao_id");
     }
 
-    function mostrapermutapaciente($paciente_id) {
-        $data['paciente'] = $this->internacao_m->listapacienteinternado($paciente_id);
+    function mostrapermutapaciente($internacao_id) {
+        $data['paciente'] = $this->internacao_m->listapacienteinternado($internacao_id);
         $data['unidades'] = $this->internacao_m->listaunidadetransferencia();
         $this->loadView('internacao/permutapaciente', $data);
     }

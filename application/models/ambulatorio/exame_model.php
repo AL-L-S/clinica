@@ -3923,10 +3923,16 @@ class exame_model extends Model {
     function testarautorizarorcamentorelatorio($ambulatorio_orcamento_id, $dataSelecionada) {
 //        $data = date("Y-m-d");
 //        $empresa_id = $this->session->userdata('empresa_id');
+        
         $this->db->select('autorizado, paciente_id');
         $this->db->from('tb_ambulatorio_orcamento_item ao');
         $this->db->where('ao.orcamento_id', $ambulatorio_orcamento_id);
-        $this->db->where("(ao.data_preferencia = '$dataSelecionada' OR ao.data_preferencia is null)");
+        if($dataSelecionada != ''){
+           $this->db->where("(ao.data_preferencia = '$dataSelecionada' OR ao.data_preferencia is null)");
+        }else{
+            $this->db->where("orcamento_id", $ambulatorio_orcamento_id);
+        }
+       
         $this->db->orderby('ao.autorizado');
         $return = $this->db->get();
         return $return->result();
