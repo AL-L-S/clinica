@@ -8,9 +8,7 @@ ALTER TABLE ponto.tb_paciente ADD COLUMN ocupacao_pai character varying(200);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN observacao character varying(2000);
 
 -- 15/10/2018
-<<<<<<< HEAD
 ALTER TABLE ponto.tb_ambulatorio_tipo_consulta ADD COLUMN grupo text;
-=======
 
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$
@@ -73,4 +71,3 @@ $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN perfil_marketing_p boolean DEFAULT false;
->>>>>>> bddd67062451997c577c8d81a5acf611361e9b20
