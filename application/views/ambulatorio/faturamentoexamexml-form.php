@@ -32,6 +32,26 @@
                         <input type="text"  id="paciente" name="paciente" class="size3"/>
                     </dd>
                     <dt>
+                        <label>Faturamento</label>
+                    </dt>
+                    <dd>
+                        <select name="faturamento" id="faturamento" class="size2" >
+                            <option value='0' >TODOS</option>
+                            <option value='t' >Faturado</option>
+                            <option value='f' >Nao Faturado</option>
+                        </select>
+                    </dd>
+                    <dt>
+                        <label>Layout Arq</label>
+                    </dt>
+                    <dd>
+                        <select name="layoutarq" id="layoutarq" class="size2" >                            
+                            <option value='sadt' >SADT</option>
+                            <option value='consulta' >CONSULTA</option>
+                            <option value='internacao' >INTERNAÇÃO</option>
+                        </select>
+                    </dd>
+                    <dt>
                         <label>Convenio</label>
                     </dt>
                     <dd>
@@ -43,7 +63,7 @@
                         </select>
                     </dd>
                     <dt>
-                        <label>Tipo</label>
+                        <label>Grupo</label>
                     </dt>
                     <dd>
                         <select name="tipo" id="tipo" class="size2">
@@ -103,8 +123,8 @@
                     </dt>
                     <dd>
                         <select name="modelo" id="modelo" class="size2">
-                            <option value='cpf' >cpf</option>
-                            <option value='cnpj'>cnpj</option>
+                            <option value='cpf' >CPF</option>
+                            <option value='cnpj'>CNPJ</option>
                         </select>
                     </dd>
                     

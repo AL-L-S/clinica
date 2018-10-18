@@ -10,7 +10,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
     <tr height="100px">
         <td colspan="3" style="padding-top: 30px">
             <? $convenio = $this->convenio->listarconvenioselecionado($impressao_aso->convenio1); ?>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<?= $convenio[0]->nome ?> 
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<?= $convenio[0]->razao_social ?> 
         </td>
     </tr> 
     <tr height="30px">

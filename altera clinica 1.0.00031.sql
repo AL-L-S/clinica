@@ -70,3 +70,76 @@ $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN perfil_marketing_p boolean DEFAULT false;
+
+-- Data 16/10/2018
+
+
+CREATE TABLE ponto.tb_estoque_nota
+(
+  estoque_nota_id serial NOT NULL,  
+  valor_nota numeric(10,2),  
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  nota_fiscal character varying(30),
+  fornecedor_id integer,
+  armazem_id integer,  
+  CONSTRAINT tb_estoque_nota_pkey PRIMARY KEY (estoque_nota_id)
+);
+
+CREATE TABLE ponto.tb_estoque_entrada_nota
+(
+  estoque_entrada_nota_id serial NOT NULL,
+  produto_id integer,
+  fornecedor_id integer,
+  armazem_id integer,
+  valor_compra numeric(10,2),
+  quantidade numeric,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  nota_fiscal character varying(30),
+  validade date,
+  inventario boolean DEFAULT false,
+  lote character varying(30),
+  transferencia boolean DEFAULT false,
+  armazem_transferencia integer,
+  saida_id_transferencia text,
+  fracionamento_id integer,
+  situacao character varying(30) DEFAULT 'PENDENTE'::character varying,
+  CONSTRAINT tb_estoque_entrada_nota_pkey PRIMARY KEY (estoque_entrada_nota_id)
+);
+
+CREATE TABLE ponto.tb_estoque_saldo_nota
+(
+  estoque_saldo_nota_id serial NOT NULL,
+  estoque_entrada_nota_id integer,
+  estoque_saida_id integer,
+  produto_id integer,
+  fornecedor_id integer,
+  armazem_id integer,
+  valor_compra numeric(10,2),
+  quantidade numeric,
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  nota_fiscal character varying(30),
+  validade date,
+  ambulatorio_gasto_sala_id integer,
+  CONSTRAINT tb_estoque_saldo_nota_pkey PRIMARY KEY (estoque_saldo_nota_id)
+);
+
+-- Data 17/10/2018
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN operador_ajuste_faturamento integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_ajuste_faturamento timestamp without time zone;
+
+-- Data 18/10/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN manternota boolean DEFAULT false;

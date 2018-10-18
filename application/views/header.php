@@ -19,6 +19,7 @@ $internacao = $this->session->userdata('internacao');
 $financeiro = $this->session->userdata('financeiro');
 $empresa_id = $this->session->userdata('empresa_id');
 $calendario = $this->session->userdata('calendario');
+$manternota = $this->session->userdata('manternota');
 $operador_id = $this->session->userdata('operador_id');
 $relatoriorm = $this->session->userdata('relatoriorm');
 $odontologia = $this->session->userdata('odontologia');
@@ -914,7 +915,12 @@ function debug($object) {
                                     <ul><span class="file"><a href="<?= base_url() ?>estoque/solicitacao">Manter Solicitacao</a></span></ul>
                                     <? if ($enfermagem == 't') { ?>
         <? if ($perfil_id == 1 || $perfil_id == 8 || $perfil_id == 10 || $perfil_id == 7) { ?>
+                                            <? if ($manternota != 't') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada">Manter Entrada</a></span></ul>
+                                            <?}?>
+                                            <? if ($manternota == 't') { ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>estoque/nota">Manter Nota Fiscal</a></span></ul>
+                                            <?}?>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/inventario">Manter Inventario</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/fornecedor">Manter Fornecedor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/produto">Manter Produto</a></span></ul>
@@ -923,7 +929,12 @@ function debug($object) {
                                     } else {
                                         ?>
         <? if ($perfil_id == 1 || $perfil_id == 8 || $perfil_id == 10) { ?>
+                                            <? if ($manternota != 't') { ?>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada">Manter Entrada</a></span></ul>
+                                            <?}?>
+                                            <? if ($manternota == 't') { ?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>estoque/nota">Manter Nota Fiscal</a></span></ul>
+                                            <?}?>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/inventario">Manter Inventario</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/fornecedor">Manter Fornecedor</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>estoque/produto">Manter Produto</a></span></ul>

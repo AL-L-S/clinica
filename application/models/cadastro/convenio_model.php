@@ -376,6 +376,7 @@ class Convenio_model extends Model {
     function listarconvenioselecionado($convenio_id) {
         $this->db->select('convenio_id,
                             nome,
+                            razao_social,
                             dinheiro,
                             conta_id');
         $this->db->from('tb_convenio');

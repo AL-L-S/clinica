@@ -11,12 +11,14 @@ require_once APPPATH . 'controllers/base/BaseController.php';
  * @package Model
  * @subpackage GIAH
  */
-class Entrada extends BaseController {
+class Entrada_nota extends BaseController {
 
-    function Entrada() {
+    function Entrada_nota() {
         parent::Controller();
         $this->load->model('estoque/entrada_model', 'entrada');
         $this->load->model('estoque/cliente_model', 'cliente');
+        $this->load->model('estoque/nota_model', 'nota');
+        $this->load->model('estoque/entrada_nota_model', 'entrada_nota');
         $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
@@ -35,14 +37,13 @@ class Entrada extends BaseController {
 //            $this->carregarView($data);
     }
 
-    function carregarentrada($estoque_entrada_id) {
-        $obj_entrada = new entrada_model($estoque_entrada_id);
-        $data['obj'] = $obj_entrada;
-        $data['sub'] = $this->entrada->listararmazem();
-        $data['unidade'] = $this->entrada->listarunidade();
-        //$this->carregarView($data, 'giah/servidor-form');
-        $this->loadView('estoque/entrada-form', $data);
-    }
+//    function carregarentrada($estoque_entrada_nota_id, $estoque_nota_id) {
+//        $data['nota'] = $this->nota->listarnota($estoque_nota_id);
+//        $nota_fiscal = $data['nota'][0]->nota_fiscal;
+//        $data['notafiscal'] = $this->nota->listarnotafiscal($nota_fiscal);
+//        
+//        $this->loadView('estoque/alimentarnota-form', $data);
+//    }
 
     function carregarfracionamento($estoque_entrada_id) {
         // $data['obj'] = $obj_entrada;
@@ -261,40 +262,28 @@ class Entrada extends BaseController {
         $this->load->View('estoque/impressaorelatoriosaidaarmazem', $data);
     }
 
-    function excluir($estoque_entrada_id) {
-        $valida = $this->entrada->excluir($estoque_entrada_id);
+    function excluir($estoque_entrada_nota_id, $nota_id) {
+        $valida = $this->entrada_nota->excluir($estoque_entrada_nota_id);
         if ($valida == 0) {
             $data['mensagem'] = 'Sucesso ao excluir a Entrada';
         } else {
             $data['mensagem'] = 'Erro ao excluir a entrada. Opera&ccedil;&atilde;o cancelada.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "estoque/entrada");
+        redirect(base_url() . "estoque/nota/alimentarnota/$nota_id");
     }
 
-    function gravar() {
-        $exame_entrada_id = $this->entrada->gravar();
-        if ($exame_entrada_id == "-1") {
-            $data['mensagem'] = 'Erro ao gravar a Entrada. Opera&ccedil;&atilde;o cancelada.';
-        } else {
-            $data['mensagem'] = 'Sucesso ao gravar a Entrada.';
-        }
-        $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "estoque/entrada");
-    }
-    
-    function gravarnota() {
-//        var_dump($_POST);die;
-        $estoque_entrada_nota_id = $this->entrada->gravarnota();
+    function gravar($estoque_nota_id) {
+        $estoque_entrada_nota_id = $this->entrada_nota->gravar();
         if ($estoque_entrada_nota_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar a Entrada. Opera&ccedil;&atilde;o cancelada.';
         } else {
             $data['mensagem'] = 'Sucesso ao gravar a Entrada.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "estoque/entrada");
+        redirect(base_url() . "estoque/nota/alimentarnota/$estoque_nota_id");
     }
-
+  
     function gravarfracionamento() {
         if($_POST['quantidade'] > 0 || $_POST['quantidade_entrada'] > 0){
             $exame_entrada_id = $this->entrada->gravarfracionamento();

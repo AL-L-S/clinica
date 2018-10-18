@@ -1621,6 +1621,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('perfil_marketing_p', 'f');
                     }
+                    if (isset($_POST['manternota'])) {
+                        $this->db->set('manternota', 't');
+                    } else {
+                        $this->db->set('manternota', 'f');
+                    }
                     if (isset($_POST['financeiro_cadastro'])) {
                         $this->db->set('financeiro_cadastro', 't');
                     } else {
@@ -2459,6 +2464,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('perfil_marketing_p', 'f');
                     }
+                    if (isset($_POST['manternota'])) {
+                        $this->db->set('manternota', 't');
+                    } else {
+                        $this->db->set('manternota', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -2633,6 +2643,7 @@ class empresa_model extends Model {
                                ep.integracaosollis,
                                ep.medicinadotrabalho,
                                ep.limitar_acesso,
+                               ep.manternota,
                                ep.perfil_marketing_p,
                                ep.botao_ficha_convenio
                                ');
@@ -2798,6 +2809,7 @@ class empresa_model extends Model {
             $this->_medicinadotrabalho = $return[0]->medicinadotrabalho;
             $this->_ocupacao_mae = $return[0]->ocupacao_mae;
             $this->_ocupacao_pai = $return[0]->ocupacao_pai;
+            $this->_manternota = $return[0]->manternota;
             $this->_limitar_acesso = $return[0]->limitar_acesso;
             $this->_perfil_marketing_p = $return[0]->perfil_marketing_p;
         } else {

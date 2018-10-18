@@ -63,6 +63,7 @@ class login_model extends Model {
                            ep.ocupacao_pai,
                            ep.ocupacao_mae,
                            ep.limitar_acesso,
+                           ep.manternota,
                            ep.perfil_marketing_p,
                            ep.subgrupo_procedimento');
         $this->db->from('tb_empresa e');
@@ -135,6 +136,7 @@ class login_model extends Model {
             $ocupacao_mae = $retorno[0]->ocupacao_mae;
             $ocupacao_pai = $retorno[0]->ocupacao_pai;
             $limitar_acesso = $retorno[0]->limitar_acesso;
+            $manternota = $retorno[0]->manternota;
             $perfil_marketing_p = $retorno[0]->perfil_marketing_p;
         } else {
             $empresanome = "";
@@ -227,6 +229,7 @@ class login_model extends Model {
                 'relatorio_caixa' => $relatorio_caixa,
                 'relatorio_demandagrupo' => $relatorio_demandagrupo,
                 'enfermagem' => $enfermagem,
+                'manternota' => $manternota,
                 'integracaosollis' => $integracaosollis
             );
             $this->session->set_userdata($p);

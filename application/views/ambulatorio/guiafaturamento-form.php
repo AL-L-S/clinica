@@ -198,7 +198,10 @@
                                 </div>
                             </td>
                         <? } else { ?>
-                            <td class="<?php echo $estilo_linha; ?>" width="60px;">&nbsp;</td>                          
+                            <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
+                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/desfazerfaturadoconvenio/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">Desfazer
+                                            </a></div>
+                            </td>                          
                         <? } ?>
                         <td class="<?php echo $estilo_linha; ?>">
                             <div class="bt_link_new" width="140">
@@ -224,6 +227,9 @@
                             </th>
                             <th colspan="2"><div class="bt_link_new">
                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarguias/" . $guia_id; ?> ');">Faturar todos
+                                    </a>
+                                </div><div class="bt_link_new">
+                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/desfazerfaturadoguiaconvenio/" . $guia_id; ?> ');">Desfazer todos
                                     </a>
                                 </div></th>
                         </tr>
