@@ -2186,6 +2186,9 @@ class exametemp_model extends Model {
                             oi.data,
                             oi.orcamento_id,
                             oi.valor_total,
+                            oi.valor_ajustado,
+                            oi.forma_pagamento as forma_pagamento_id,
+                            
                             oi.orcamento_id,
                             oi.empresa_id,
                             oi.paciente_id,
@@ -2194,8 +2197,10 @@ class exametemp_model extends Model {
                             oi.dia_semana_preferencia,
                             oi.turno_prefencia,
                             ao.autorizado,
+                            e.nome as empresa,
                             (oi.valor_ajustado * oi.quantidade) as valor_total_ajustado,
                             pc.convenio_id,
+                            pc.procedimento_convenio_id,
                             p.nome as paciente,
                             c.nome as convenio,
                             pt.descricao_procedimento,
@@ -2206,6 +2211,7 @@ class exametemp_model extends Model {
         $this->db->from('tb_ambulatorio_orcamento_item oi');
         $this->db->join('tb_ambulatorio_orcamento ao', 'ao.ambulatorio_orcamento_id = oi.orcamento_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = oi.paciente_id', 'left');
+        $this->db->join('tb_empresa e', 'e.empresa_id = oi.empresa_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = oi.procedimento_tuss_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
@@ -6895,7 +6901,7 @@ class exametemp_model extends Model {
                     $tipo = '';
                 }
 
-                if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO' || $tipo == 'MATERIAL') && $_POST['medico'][$i] == '') {
+                if (($tipo == 'EXAME' || $tipo == 'MEDICAMENTO' || $tipo == 'MATERIAL') && $_POST['medico'][$i] == '' && $confimado == "on") {
                     return 2;
                 }
 

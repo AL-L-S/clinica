@@ -50,20 +50,7 @@
                     <div class="divTabela">
                         <div class='base'>
 
-                            <div style="float: right; margin-bottom: 20pt;">
-                                <input type="text" id="procText" onkeypress="filtrarTabela()" placeholder="Pesquisar texto..." title="Pesquise pelo nome do procedimento ou pelo codigo">
-                                <select id="grupoText">
-                                    <option value="">TODOS</option>
-                                    <?
-                                    foreach ($grupos as $value) {
-                                        if ($value->nome == 'AGRUPADOR')
-                                            continue;
-                                        ?>
-                                        <option value="<?= $value->nome ?>"><?= $value->nome ?></option>
-                                    <? } ?>
-                                </select>
-                                <button type="button" onclick="filtrarTabela()">Buscar</button>
-                            </div>
+                            
 
                             <table id="procedimentos">
                                 <thead>
@@ -74,6 +61,30 @@
                                         <th class="tabela_title">Adicionar</th>
                                     </tr>
                                 </thead>
+                                    <tr class="linhaPesquisar">
+                                        <td class="tabela_title">
+                                            <input type="text" id="procText" onkeypress="filtrarTabela()" placeholder="Pesquisar texto..." title="Pesquise pelo nome do procedimento ou pelo codigo">
+
+                                        </td>
+                                        <td class="tabela_title">
+                                            <!-- <div style="float: left; margin-bottom: 20pt;"> -->
+                                               
+                                                <select id="grupoText">
+                                                    <option value="">TODOS</option>
+                                                    <?
+                                                    foreach ($grupos as $value) {
+                                                        if ($value->nome == 'AGRUPADOR')
+                                                            continue;
+                                                        ?>
+                                                        <option value="<?= $value->nome ?>"><?= $value->nome ?></option>
+                                                    <? } ?>
+                                                </select>
+                                                <button type="button" onclick="filtrarTabela()">Buscar</button>
+                                            <!-- </div> -->
+                                        </td>
+                                        <td class="tabela_title"></td>
+                                        <td class="tabela_title"></td>
+                                    </tr>
                                 <tbody>
                                     <?
                                     $i = 0;
@@ -180,41 +191,47 @@
                                         var id = 'procedimentos';
                                         table = document.getElementById(id);
                                         tr = table.getElementsByTagName("tr");
-
+                                        // console.log(tr);
                                         if (grupo == "" && procedimento != "") { // CASO TENHA INFORMADO SOMENTE PROCEDIMENTO
                                             for (i = 0; i < tr.length; i++) {
-                                                td = tr[i].getElementsByTagName("td")[0];
-                                                if (td) {
-                                                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1) {
-                                                        tr[i].style.display = "";
-                                                    } else {
-                                                        tr[i].style.display = "none";
+                                                if(tr[i].getAttribute('class') != 'linhaPesquisar'){
+                                                    td = tr[i].getElementsByTagName("td")[0];
+                                                    if (td) {
+                                                        if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1) {
+                                                            tr[i].style.display = "";
+                                                        } else {
+                                                            tr[i].style.display = "none";
+                                                        }
                                                     }
                                                 }
                                             }
                                         } else if (grupo != "" && procedimento == "") { // CASO TENHA INFORMADO APENAS O GRUPO
                                             for (i = 0; i < tr.length; i++) {
-                                                td = tr[i].getElementsByTagName("td")[0];
-                                                if (td) {
-                                                    var id = tr[i].getAttribute("id");
-                                                    if (grupo == id) {
-                                                        tr[i].style.display = "";
-                                                    } else {
-                                                        tr[i].style.display = "none";
+                                                if(tr[i].getAttribute('class') != 'linhaPesquisar'){
+                                                    // alert('aa');
+                                                    td = tr[i].getElementsByTagName("td")[0];
+                                                    if (td) {
+                                                        var id = tr[i].getAttribute("id");
+                                                        if (grupo == id) {
+                                                            tr[i].style.display = "";
+                                                        } else {
+                                                            tr[i].style.display = "none";
+                                                        }
                                                     }
                                                 }
                                             }
                                         } else if (grupo != "" && procedimento != "") { // CASO TENHA INFORMADO O GRUPO E O PROCEDIMENTO
                                             for (i = 0; i < tr.length; i++) {
+                                                if(tr[i].getAttribute('class') != 'linhaPesquisar'){
+                                                    td = tr[i].getElementsByTagName("td")[0];
+                                                    var id = tr[i].getAttribute("id");
 
-                                                td = tr[i].getElementsByTagName("td")[0];
-                                                var id = tr[i].getAttribute("id");
-
-                                                if (td) {
-                                                    if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1 && grupo == id) {
-                                                        tr[i].style.display = "";
-                                                    } else {
-                                                        tr[i].style.display = "none";
+                                                    if (td) {
+                                                        if (td.innerHTML.toUpperCase().indexOf(procedimento) > -1 && grupo == id) {
+                                                            tr[i].style.display = "";
+                                                        } else {
+                                                            tr[i].style.display = "none";
+                                                        }
                                                     }
                                                 }
                                             }

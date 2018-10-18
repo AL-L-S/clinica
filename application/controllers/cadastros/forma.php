@@ -38,7 +38,8 @@ class Forma extends BaseController {
     function carregarforma($forma_entradas_saida_id) {
         $obj_forma = new forma_model($forma_entradas_saida_id);
         $data['obj'] = $obj_forma;
-        $data['empresa'] = $this->guia->listarempresa2();
+        // $data['empresa'] = $this->guia->listarempresa2();
+        $data['empresa'] = $this->guia->listarempresas();
         $data['perfil'] = $this->operador_m->listarPerfil();
         $this->loadView('cadastros/forma-form', $data);
     }

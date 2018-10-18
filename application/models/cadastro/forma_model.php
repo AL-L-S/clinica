@@ -24,7 +24,7 @@ class forma_model extends Model {
         $this->db->join('tb_empresa e', 'e.empresa_id = c.empresa_id', 'left');
         $this->db->where('c.ativo', 'true');
         $empresa_id = $this->session->userdata('empresa_id');
-        $this->db->where('c.empresa_id', $empresa_id);
+        // $this->db->where('c.empresa_id', $empresa_id);
         if (isset($args['nome']) && strlen($args['nome']) > 0) {
             $this->db->where('c.descricao ilike', "%" . $args['nome'] . "%");
         }
@@ -150,8 +150,11 @@ class forma_model extends Model {
             if ($_POST['txtcadastrosformaid'] == "") {// insert
                 $this->db->set('descricao', $_POST['txtNome']);
                 $this->db->set('agencia', $_POST['txtagencia']);
-                $this->db->set('conta', $_POST['txtconta']);            
-                $this->db->set('empresa_id', $empresa_id);
+                $this->db->set('conta', $_POST['txtconta']);  
+                if($_POST['empresa'] > 0){
+                    $this->db->set('empresa_id', $_POST['empresa']);
+                }          
+                
                 // $this->db->set('perfil_id', $array_perfil);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -166,7 +169,9 @@ class forma_model extends Model {
                 $this->db->set('descricao', $_POST['txtNome']);
                 $this->db->set('agencia', $_POST['txtagencia']);
                 $this->db->set('conta', $_POST['txtconta']);            
-                $this->db->set('empresa_id', $empresa_id);
+                if($_POST['empresa'] > 0){
+                    $this->db->set('empresa_id', $_POST['empresa']);
+                } 
                 // $this->db->set('perfil_id', $array_perfil);
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
@@ -183,7 +188,7 @@ class forma_model extends Model {
     private function instanciar($forma_entradas_saida_id) {
 
         if ($forma_entradas_saida_id != 0) {
-            $this->db->select('forma_entradas_saida_id, descricao, conta, agencia, empresa_id, perfil_id');
+            $this->db->select('forma_entradas_saida_id, descricao, conta, agencia, empresa_id');
             $this->db->from('tb_forma_entradas_saida');
             $this->db->where("forma_entradas_saida_id", $forma_entradas_saida_id);
             $query = $this->db->get();
@@ -193,7 +198,7 @@ class forma_model extends Model {
             $this->_agencia = $return[0]->agencia;
             $this->_conta = $return[0]->conta;
             $this->_empresa_id = $return[0]->empresa_id;
-            $this->_perfil_id = $return[0]->perfil_id;
+            // $this->_perfil_id = $return[0]->perfil_id;
         } else {
             $this->_forma_entradas_saida_id = null;
         }

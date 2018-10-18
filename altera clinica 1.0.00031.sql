@@ -71,3 +71,9 @@ $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN perfil_marketing_p boolean DEFAULT false;
+
+-- 18/10/2018
+ALTER TABLE ponto.tb_ambulatorio_orcamento_item ADD COLUMN detalhes boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN orcamento_multiplo boolean DEFAULT false;
+

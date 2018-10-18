@@ -440,6 +440,11 @@ class internacao extends BaseController {
         $this->loadView('internacao/mostrafichapaciente', $data);
     }
 
+    function mostrafichapacienteleito($internacao_leito_id) {
+        $data['paciente'] = $this->unidade_m->mostrafichapacienteleito($internacao_leito_id);
+        $this->loadView('internacao/mostrafichapaciente', $data);
+    }
+
     function termoresponsabilidade($internacao_id) {
         $this->load->plugin('mpdf');
 
@@ -791,8 +796,9 @@ class internacao extends BaseController {
         $this->prescricaonormalenteral($internacao_id);
     }
 
-    function excluirinternacao($internacao_motivosaida_id) {
-        $this->internacao_m->excluirinternacao($internacao_motivosaida_id);
+    function excluirinternacao($internacao_motivosaida_id, $paciente_id, $leito_id) {
+        // var_dump($leito_id); die;
+        $this->internacao_m->excluirinternacao($internacao_motivosaida_id, $paciente_id, $leito_id);
         $data['mensagem'] = 'Motivo de Saida excluido com sucesso.';
 
 
@@ -812,8 +818,29 @@ class internacao extends BaseController {
     }
 
     function excluirleito($leito_id) {
-        $this->leito_m->excluirleito($leito_id);
-        $data['mensagem'] = 'Leito excluido com sucesso.';
+        $retorno = $this->leito_m->excluirleito($leito_id);
+        // var_dump($retorno); die;
+        if($retorno == -10){
+            $data['mensagem'] = 'O leito está em uso.';
+        }else{
+            $data['mensagem'] = 'Leito excluido com sucesso.';
+        }
+        // $data['mensagem'] = 'Leito excluido com sucesso.';
+        // var_dump($data['mensagem']); die;
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/pesquisarleito", $data);
+    }
+
+    function ativarleito($leito_id) {
+        $retorno = $this->leito_m->ativarleito($leito_id);
+        // var_dump($retorno); die;
+        if($retorno == -10){
+            $data['mensagem'] = 'O leito está em uso.';
+        }else{
+            $data['mensagem'] = 'Leito excluido com sucesso.';
+        }
+        // $data['mensagem'] = 'Leito excluido com sucesso.';
+        // var_dump($data['mensagem']); die;
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "internacao/internacao/pesquisarleito", $data);
     }
@@ -922,9 +949,9 @@ class internacao extends BaseController {
 //        var_dump($_POST);
 //        die;
         $data['censodiario'] = $this->internacao_m->relatoriocensodiario();
-//        echo '<pre>';
-//        var_dump($data['censodiario']);
-//        die;
+    //    echo '<pre>';
+    //    var_dump($data['censodiario']);
+    //    die;
         if ($_POST['unidade'] != 0) {
             $unidade = $this->internacao_m->pesquisarunidade($_POST['unidade']);
             $data['unidade'] = $unidade[0]->nome;

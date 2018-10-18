@@ -38,8 +38,11 @@
 
                 $unidade_foreach = '';
                 foreach ($censodiario as $item) {
-                    $unidade_conta[$item->unidade] ++;
-                    ?>
+                    if (($item->row_number == 1 && $item->ativo == 't') || $item->ativo == 'f') {
+
+
+                        $unidade_conta[$item->unidade]++;
+                        ?>
 
                     <? if ($contador == 0 || $item->unidade != $unidade_foreach) {
                         ?>
@@ -79,38 +82,39 @@
 
 
                     </tr>
-                <? }
-                if ($item->ativo == 'f') {
-                    $ocupado++;
-                    $unidade_ocupado[$item->unidade] ++;
+                <?
+            }
+            if ($item->ativo == 'f') {
+                $ocupado++;
+                $unidade_ocupado[$item->unidade]++;
                     // Idade
-                    $nascimento = new DateTime($item->nascimento);
-                    $atual = new DateTime(date("Y-m-d"));
+                $nascimento = new DateTime($item->nascimento);
+                $atual = new DateTime(date("Y-m-d"));
 
                     // Resgata diferença entre as datas
-                    $dateInterval = $nascimento->diff($atual);
+                $dateInterval = $nascimento->diff($atual);
 
-                    $data_inicio = new DateTime($item->data_internacao);
-                    $data_fim = new DateTime(date("Y-m-d H:i:s"));
+                $data_inicio = new DateTime($item->data_internacao);
+                $data_fim = new DateTime(date("Y-m-d H:i:s"));
 
                     // Resgata diferença entre as datas
-                    $dateInterval2 = $data_inicio->diff($data_fim);
-                    ?>
+                $dateInterval2 = $data_inicio->diff($data_fim);
+                ?>
                     <tr>
                         <td ><?= $item->enfermaria; ?></td>
                         <td ><?= $item->leito; ?></td>
                         <td ><?= $item->paciente; ?></td>
                         <td ><?= $item->sexo; ?></td>
-                        <td ><?= ($item->nascimento != '')? $dateInterval->y : $item->idade; ?> Anos</td>
+                        <td ><?= ($item->nascimento != '') ? $dateInterval->y : $item->idade; ?> Anos</td>
                         <td ><?= $item->procedimento; ?></td>
                         <td ><?= $item->cid1; ?></td>
-                        <td ><?= date("d/m/Y H:i:s",strtotime($item->data_internacao)); ?></td>
+                        <td ><?= date("d/m/Y H:i:s", strtotime($item->data_internacao)); ?></td>
                         <td ><?= $dateInterval2->days; ?> Dias</td>
                     </tr>
                     <?
                 } else {
                     $vago++;
-                    $unidade_vago[$item->unidade] ++;
+                    $unidade_vago[$item->unidade]++;
                     ?>
                     <tr>
                         <td ><?= $item->enfermaria; ?></td>
@@ -118,12 +122,15 @@
                         <td colspan="6" style="color: #029302; text-align: center;">Vago</td>
 
                     </tr>
-                <? } ?>
+                <?
+            } ?>
                 <?
                 $unidade_foreach = $item->unidade;
                 $contador++;
+
             }
-            ?>
+        }
+        ?>
 <!--            <tr>
 
                 <th colspan="3" class="tabela_header">Leitos Vagos: <?= $vago; ?></th>
@@ -181,7 +188,7 @@
 
                 <th class="tabela_header"><?= $vago; ?></th>
                 <th class="tabela_header"><?= $ocupado; ?></th>
-                <th class="tabela_header"><?= count($censodiario); ?></th>
+                <th class="tabela_header"><?= $contador; ?></th>
             </tr>
 
         </table>

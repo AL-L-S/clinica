@@ -61,7 +61,7 @@
                     </tr>
                     <tr>
                         <td height="16" colspan="3" class="tc"><strong><? echo $relatorio[0]->convenionumero; ?></strong></td>
-                        <td colspan="1" class="tc"><strong><?=date("d/m/Y",strtotime($relatorio[0]->vencimento_carteira));?> </strong></td>
+                        <td colspan="1" class="tc"><strong><?=($relatorio[0]->vencimento_carteira != '') ? date("d/m/Y",strtotime($relatorio[0]->vencimento_carteira)) : '';?> </strong></td>
                         <td colspan="4" class="tc"><strong><?= $relatorio[0]->paciente; ?> </strong></td>
                         <td colspan="1" class="tc"><strong>&nbsp; </strong></td>
                         <td colspan="1" class="tc"><strong>&nbsp; </strong></td>

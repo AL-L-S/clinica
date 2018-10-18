@@ -3,6 +3,11 @@
     <table>
         <thead>
             <tr>
+                <?
+                $empresaPermissoes = $this->guia->listarempresapermissoes();
+                
+                ?>
+                <?if($empresaPermissoes[0]->orcamento_multiplo == 'f'){?>
                 <th>        
                     <div class="bt_link_new" style="cursor: pointer;">
                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/orcamento/0');">
@@ -10,6 +15,15 @@
                         </a>
                     </div>
                 </th>
+                <?}else{?>
+                    <th>        
+                        <div class="bt_link_new" style="cursor: pointer;">
+                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/procedimentoplano/orcamentomultiplo/0');">
+                                Or&ccedil;amento
+                            </a>
+                        </div>
+                    </th>
+                <?}?>
             </tr>
 
 

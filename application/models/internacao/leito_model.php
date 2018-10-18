@@ -120,6 +120,8 @@ class leito_model extends BaseModel {
                 $this->db->orwhere('iu.nome ilike', "%" . $args['nome'] . "%");
             }
         }
+        $this->db->where('il.excluido', 'f');
+        // $this->db->orderby('');
         return $this->db;
     }
 
@@ -134,6 +136,7 @@ class leito_model extends BaseModel {
         join ponto.tb_internacao_enfermaria as ie on ie.internacao_enfermaria_id = il.enfermaria_id
         join ponto.tb_internacao_unidade as iu on iu.internacao_unidade_id = ie.unidade_id
         where il.ativo = true and il.condicao = 'Normal'
+        and il.excluido = false
         and (il.nome ilike '%$parametro%'
         or ie.nome ilike '%$parametro%'
         or iu.nome ilike '%$parametro%')
@@ -159,7 +162,31 @@ class leito_model extends BaseModel {
     }
 
     function excluirleito($leito_id) {
+
+        $this->db->select(' il.internacao_leito_id,
+                            il.ativo');
+        $this->db->from('tb_internacao_leito il');
+        $this->db->where('internacao_leito_id', $leito_id);
+        $return = $this->db->get()->result();
+        
+        if($return[0]->ativo == 'f'){
+            return -10;
+        }
+        //  var_dump($return); die;
+
+
         $this->db->set('excluido', 't');
+        $this->db->where('internacao_leito_id', $leito_id);
+        $this->db->update('tb_internacao_leito');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        }
+    }
+
+    function ativarleito($leito_id) {
+
+        $this->db->set('ativo', 't');
         $this->db->where('internacao_leito_id', $leito_id);
         $this->db->update('tb_internacao_leito');
         $erro = $this->db->_error_message();

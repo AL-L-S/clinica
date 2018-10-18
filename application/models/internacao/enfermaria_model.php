@@ -92,13 +92,13 @@ class enfermaria_model extends BaseModel {
                             ie.tipo');
         $this->db->from('tb_internacao_enfermaria ie');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
-        $this->db->where('ie.ativo', 't');
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('ie.nome ilike', "%" . $args['nome'] . "%");
                 $this->db->orwhere('iu.nome ilike', "%" . $args['nome'] . "%");
             }
         }
+        $this->db->where('ie.ativo', 't');
         return $this->db;
     }
 
@@ -120,11 +120,11 @@ class enfermaria_model extends BaseModel {
                             iu.nome as unidade');
         $this->db->from('tb_internacao_enfermaria ie');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
-        $this->db->where('ie.ativo', 'true');
         if ($parametro != null) {
             $this->db->where('ie.nome ilike', "%" . $parametro . "%");
             $this->db->orwhere('iu.nome ilike', "%" . $parametro . "%");
         }
+        $this->db->where('ie.ativo', 'true');
         $return = $this->db->get();
         return $return->result();
     }

@@ -61,7 +61,7 @@
                         $.getJSON('<?= base_url() ?>autocomplete/unidadeleito2', {unidade: $(this).val(), ajax: true}, function(j) {
                             options = '<option value=""></option>';
                             for (var c = 0; c < j.length; c++) {
-                                options += '<option value="' + j[c].internacao_leito_id+ '">' + j[c].leito + ' - ' + j[c].enfermaria + '</option>';
+                                options += '<option value="' + j[c].internacao_leito_id+ '">' + j[c].enfermaria + ' - ' + j[c].leito + '</option>';
                             }
                             $('#novo_leito').html(options).show();
                             $('.carregando').hide();

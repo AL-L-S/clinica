@@ -1441,6 +1441,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('gerente_recepcao_top_saude', 'f');
                     }
+                    if (isset($_POST['orcamento_multiplo'])) {
+                        $this->db->set('orcamento_multiplo', 't');
+                    } else {
+                        $this->db->set('orcamento_multiplo', 'f');
+                    }
                     if (isset($_POST['modelo_laudo_medico'])) {
                         $this->db->set('modelo_laudo_medico', 't');
                     } else {
@@ -2018,6 +2023,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('modelo_laudo_medico', 'f');
                     }
+                    if (isset($_POST['orcamento_multiplo'])) {
+                        $this->db->set('orcamento_multiplo', 't');
+                    } else {
+                        $this->db->set('orcamento_multiplo', 'f');
+                    }
                     if (isset($_POST['profissional_completo'])) {
                         $this->db->set('profissional_completo', 't');
                     } else {
@@ -2592,6 +2602,7 @@ class empresa_model extends Model {
                                ep.senha_finalizar_laudo,
                                ep.retirar_flag_solicitante,
                                ep.campos_cadastro,
+                               ep.orcamento_multiplo,
                                ep.campos_atendimentomed,
                                ep.dados_atendimentomed,
                                ep.cadastrar_painel_sala,
@@ -2649,6 +2660,7 @@ class empresa_model extends Model {
             $this->_celular = $return[0]->celular;
             $this->_farmacia = $return[0]->farmacia;
             $this->_telefone = $return[0]->telefone;
+            $this->_orcamento_multiplo = $return[0]->orcamento_multiplo;
             $this->_profissional_agendar = $return[0]->profissional_agendar;
             $this->_profissional_externo = $return[0]->profissional_externo;
             $this->_email = $return[0]->email;

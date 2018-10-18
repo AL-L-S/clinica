@@ -124,6 +124,32 @@ class unidade_model extends BaseModel {
         return $return->result();
     }
 
+    function mostrafichapacienteleito($leito_id) {
+
+        $this->db->select('p.nome as paciente,
+                           i.internacao_id,
+                           p.paciente_id,
+                           i.data_internacao,
+                           ie.nome as enfermaria_nome,
+                           iu.nome as unidade_nome,
+                           il.internacao_leito_id as leito_id,
+                           p.sexo,
+                           p.nascimento,
+                           il.nome as leito');
+        $this->db->from('tb_internacao i, tb_paciente p, tb_internacao_leito il');
+        $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
+        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
+        $this->db->where('i.leito = il.internacao_leito_id');
+        $this->db->where('p.paciente_id = i.paciente_id');
+        $this->db->where('i.leito', $leito_id);
+        $this->db->where('il.ativo', 'f');
+        $this->db->where('i.ativo', 't');
+        $this->db->where('i.excluido', 'f');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listaunidadeautocomplete($parametro = null) {
         $this->db->select('internacao_unidade_id,
                             nome,

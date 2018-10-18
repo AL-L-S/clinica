@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div id="accordion">
-        <h3 class="singular"><a href="#">Cadastro de Tipo consulta</a></h3>
+        <h3 class="singular"><a href="#">Cadastro de Tipo Agenda</a></h3>
         <div>
             <form name="form_sala" id="form_sala" action="<?= base_url() ?>ambulatorio/tipoconsulta/gravar" method="post">
 

@@ -20,6 +20,7 @@
     $ponto = $this->session->userdata('ponto');
     $calendario = $this->session->userdata('calendario');
     $credito = $this->guia->creditoempresa();
+    $empresaPermissoes = $this->guia->listarempresapermissoes();
     $medicinadotrabalho = $this->session->userdata('medicinadotrabalho');
     ?>
 
@@ -104,7 +105,14 @@
                     <? if ($especialidade == 't') { ?>
                         <td width="250px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/exame/autorizarsessaofisioterapia/<?= $paciente_id ?>">Sessao Especialidade</a></div></td>
                     <? } ?>
-                    <td width="250px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/orcamento/<?= $paciente_id ?>">Or&ccedil;amento</a></div></td>
+                    <? if ($empresaPermissoes[0]->orcamento_multiplo == 'f') { ?>
+                        <td width="250px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/orcamento/<?= $paciente_id ?>">Or&ccedil;amento</a></div></td>
+                    <? }else{?>
+                        <td width="250px;"><div class="bt_link_new"><a href="<?= base_url() ?>ambulatorio/guia/orcamentomultiplo/<?= $paciente_id ?>">Or&ccedil;amento</a></div></td>    
+                    <?} ?>
+                    
+
+                    
 
                     <? if ($perfil_id == 1) {
                         ?>

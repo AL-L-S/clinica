@@ -195,6 +195,21 @@ class procedimentoplano_model extends Model {
 
     }
 
+    function desativarprocedimentomultiempresa($procedimento_tuss_id, $convenio_id) {
+        
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        // $this->db->set('excluido', 't');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where("procedimento_tuss_id", $procedimento_tuss_id);
+        $this->db->where("convenio_id", $convenio_id);
+        // $this->db->where("pc.excluido", "f");
+        $this->db->update('tb_procedimento_convenio pc');
+
+    }
+
     function excluirdesativarprocedimentomultiempresa($procedimento_tuss_id, $convenio_id) {
         
         $horario = date("Y-m-d H:i:s");

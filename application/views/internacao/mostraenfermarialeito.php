@@ -16,7 +16,7 @@
                                     ?>
                                     <li style="display: inline-block; padding: 10px; list-style: none;"> 
                                         <? echo $item->nome; ?> <br/>
-                                        <a onclick="javascript:window.open('<?= base_url() ?>internacao/internacao/mostrafichapaciente/<?= $item->internacao_leito_id ?>', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>internacao/internacao/mostrafichapacienteleito/<?= $item->internacao_leito_id ?>', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">
                                             <img src="<?= base_url() ?>img/<?= $item->ativo === 't' ? $item->condicao . '.png' : 'Ocupado.png'; ?>"
                                                  width="25px" height="25px" style="cursor: pointer;"
                                                  title=" <?= $item->ativo === 't' ? $item->condicao : 'Ocupado'; ?> "/>
