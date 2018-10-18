@@ -108,7 +108,7 @@
                             <? } ?>
 
 
-<!--<td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>-->
+<td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>
                         </tr>
                         <tr>
                             <? if (in_array('convenio', $opc_dadospaciente)) { ?>
