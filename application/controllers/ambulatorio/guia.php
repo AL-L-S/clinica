@@ -2626,6 +2626,12 @@ class Guia extends BaseController {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $this->load->View('ambulatorio/faturarconvenio-form', $data);
     }
+    
+//    function desfaturarconvenio($agenda_exames_id) {
+//        $data['exame'] = $this->guia->listarexame($agenda_exames_id);
+//        $data['agenda_exames_id'] = $agenda_exames_id;
+//        $this->load->View('ambulatorio/faturarconvenio-form', $data);
+//    }
 
     function faturarconveniostatus($agenda_exames_id) {
         $data['exame'] = $this->guia->listarexame($agenda_exames_id);
@@ -2769,6 +2775,13 @@ class Guia extends BaseController {
     function gravarfaturadoconvenio() {
 
         $this->guia->gravarfaturamentoconvenio();
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+    }
+    
+    function desfazerfaturadoconvenio($agenda_exames_id) {
+
+        $this->guia->desfazerfaturamentoconvenio($agenda_exames_id);
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }
@@ -3231,6 +3244,19 @@ class Guia extends BaseController {
         } else {
             $this->load->View('ambulatorio/erro');
         }
+    }
+    
+    function desfazerfaturadoguiaconvenio($guia_id) {
+
+            $ambulatorio_guia_id = $this->guia->desfazerfaturamentototalconvenio($guia_id);
+            if ($ambulatorio_guia_id == "-1") {
+                $data['mensagem'] = 'Erro ao desfazer faturamento. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao desfazer faturamento.';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
+        
     }
 
     function gravarfaturadoguiacaixa() {

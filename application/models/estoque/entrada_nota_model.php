@@ -1,8 +1,8 @@
 <?php
 
-class entrada_model extends Model {
+class entrada_nota_model extends Model {
 
-    var $_estoque_entrada_id = null;
+    var $_estoque_entrada_nota_id = null;
     var $_razao_social = null;
     var $_produto_id = null;
     var $_produto = null;
@@ -14,49 +14,39 @@ class entrada_model extends Model {
     var $_valor_compra = null;
     var $_validade = null;
 
-    function Entrada_model($estoque_entrada_id = null) {
+    function Entrada_nota_model($estoque_entrada_nota_id = null) {
         parent::Model();
-        if (isset($estoque_entrada_id)) {
-            $this->instanciar($estoque_entrada_id);
+        if (isset($estoque_entrada_nota_id)) {
+            $this->instanciar($estoque_entrada_nota_id);
         }
     }
 
     function listar($args = array()) {
-        $this->db->select('e.estoque_entrada_id,
-                            e.produto_id,
+        $this->db->select('en.estoque_entrada_nota_id,
+                            en.produto_id,
                             f.fantasia,
                             p.descricao as produto,
-                            e.fornecedor_id,
+                            en.fornecedor_id,
                             f.razao_social as fornecedor,
-                            e.armazem_id,
-                            e.fracionamento_id,
-                            e.transferencia,
+                            en.armazem_id,
+                            en.fracionamento_id,
+                            en.transferencia,
                             a.descricao as armazem,
                             at.descricao as armazem_transferencia,
-                            e.data_cadastro,
-                            e.valor_compra,
-                            e.quantidade,
-                            e.nota_fiscal,
-                            e.validade');
-        $this->db->from('tb_estoque_entrada e');
-        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = e.produto_id', 'left');
-        $this->db->join('tb_estoque_fornecedor f', 'f.estoque_fornecedor_id = e.fornecedor_id', 'left');
-        $this->db->join('tb_estoque_armazem a', 'a.estoque_armazem_id = e.armazem_id', 'left');
-        $this->db->join('tb_estoque_armazem at', 'at.estoque_armazem_id = e.armazem_transferencia', 'left');
-        $this->db->where('e.ativo', 'true');
-        $this->db->where('e.inventario', 'false');
-        if (isset($args['produto']) && strlen($args['produto']) > 0) {
-            $this->db->where('p.descricao ilike', "%" . $args['produto'] . "%");
-        }
-        if (isset($args['fornecedor']) && strlen($args['fornecedor']) > 0) {
-            $this->db->where('f.razao_social ilike', "%" . $args['fornecedor'] . "%");
-        }
-        if (isset($args['armazem']) && strlen($args['armazem']) > 0) {
-            $this->db->where('a.descricao ilike', "%" . $args['armazem'] . "%");
-        }
-        if (isset($args['nota']) && strlen($args['nota']) > 0) {
-            $this->db->where('e.nota_fiscal ilike', "%" . $args['nota'] . "%");
-        }
+                            en.data_cadastro,
+                            en.valor_compra,
+                            en.quantidade,
+                            en.nota_fiscal,
+                            en.situacao,
+                            en.validade');
+        $this->db->from('tb_estoque_entrada_nota en');
+        $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = en.produto_id', 'left');
+        $this->db->join('tb_estoque_fornecedor f', 'f.estoque_fornecedor_id = en.fornecedor_id', 'left');
+        $this->db->join('tb_estoque_armazem a', 'a.estoque_armazem_id = en.armazem_id', 'left');
+        $this->db->join('tb_estoque_armazem at', 'at.estoque_armazem_id = en.armazem_transferencia', 'left');
+        $this->db->where('en.ativo', 'true');
+        $this->db->where('en.inventario', 'false');
+        
         return $this->db;
     }
 
@@ -618,57 +608,17 @@ class entrada_model extends Model {
         return $return;
     }
 
-    function excluir($estoque_entrada_id) {
+    function excluir($estoque_entrada_nota_id) {
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        
-        $this->db->select('e.saida_id_transferencia');
-        $this->db->from('tb_estoque_entrada e');
-        $this->db->where('estoque_entrada_id', $estoque_entrada_id);
-        $return = $this->db->get()->result();
-//        var_dump($return);
-//        die;
-        // DELETANDO A TRANSFERENCIA
-        if ($return[0]->saida_id_transferencia != '') {
-            $saida_id_transferencia = $return[0]->saida_id_transferencia;
-            
-            $this->db->set('ativo', 'f');
-            $this->db->set('data_atualizacao', $horario);
-            $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->where("estoque_saida_id IN ($saida_id_transferencia)");
-            $this->db->update('tb_estoque_saldo');
+  
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('estoque_entrada_nota_id', $estoque_entrada_nota_id);
+        $this->db->update('tb_estoque_entrada_nota');
 
-            //atualizando tabela estoque_saida
-            $this->db->set('ativo', 'f');
-            $this->db->set('data_atualizacao', $horario);
-            $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->where("estoque_saida_id IN ($saida_id_transferencia)");
-            $this->db->update('tb_estoque_saida');
-        }
-
-        
-        $this->db->set('ativo', 'f');
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('estoque_entrada_id', $estoque_entrada_id);
-        $this->db->update('tb_estoque_entrada');
-        
-        //atualizando tabela estoque_saldo
-        $this->db->set('ativo', 'f');
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('estoque_entrada_id', $estoque_entrada_id);
-        $this->db->update('tb_estoque_saldo');
-        
-        //atualizando tabela estoque_saida
-        $this->db->set('ativo', 'f');
-        $this->db->set('data_atualizacao', $horario);
-        $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('estoque_entrada_id', $estoque_entrada_id);
-        $this->db->update('tb_estoque_saida');
-        
-        
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return -1;
@@ -833,8 +783,9 @@ class entrada_model extends Model {
 
     function gravar() {
         try {
+//            var_dump($_POST['txtarmazem']);die;
             /* inicia o mapeamento no banco */
-            $estoque_entrada_id = $_POST['txtestoque_entrada_id'];
+            $estoque_entrada_nota_id = $_POST['txtestoque_entrada_nota_id'];
             $this->db->set('produto_id', $_POST['txtproduto']);
             $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
             $this->db->set('armazem_id', $_POST['txtarmazem']);
@@ -848,17 +799,17 @@ class entrada_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            if ($_POST['txtestoque_entrada_id'] == "") {// insert
+            if ($_POST['txtestoque_entrada_nota_id'] == "") {// insert
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_estoque_entrada');
+                $this->db->insert('tb_estoque_entrada_nota');
                 $erro = $this->db->_error_message();
                 if (trim($erro) != "") // erro de banco
                     return -1;
                 else
-                    $estoque_entrada_id = $this->db->insert_id();
+                    $estoque_entrada_nota_id = $this->db->insert_id();
 
-                $this->db->set('estoque_entrada_id', $estoque_entrada_id);
+                $this->db->set('estoque_entrada_nota_id', $estoque_entrada_nota_id);
                 $this->db->set('produto_id', $_POST['txtproduto']);
                 $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
                 $this->db->set('armazem_id', $_POST['txtarmazem']);
@@ -870,14 +821,14 @@ class entrada_model extends Model {
                 }
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_estoque_saldo');
+                $this->db->insert('tb_estoque_saldo_nota');
             } else { // update
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->where('estoque_entrada_id', $estoque_entrada_id);
-                $this->db->update('tb_estoque_entrada');
+                $this->db->where('estoque_entrada_nota_id', $estoque_entrada_nota_id);
+                $this->db->update('tb_estoque_entrada_nota');
 
-                $this->db->set('estoque_entrada_id', $estoque_entrada_id);
+                $this->db->set('estoque_entrada_nota_id', $estoque_entrada_nota_id);
                 $this->db->set('produto_id', $_POST['txtproduto']);
                 $this->db->set('fornecedor_id', $_POST['txtfornecedor']);
                 $this->db->set('armazem_id', $_POST['txtarmazem']);
@@ -889,11 +840,11 @@ class entrada_model extends Model {
                 }
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->where('estoque_entrada_id', $estoque_entrada_id);
+                $this->db->where('estoque_entrada_nota_id', $estoque_entrada_nota_id);
                 $this->db->where('estoque_saida_id is null');
-                $this->db->update('tb_estoque_saldo');
+                $this->db->update('tb_estoque_saldo_nota');
             }
-            return $estoque_entrada_id;
+            return $estoque_entrada_nota_id;
         } catch (Exception $exc) {
             return -1;
         }
@@ -966,29 +917,30 @@ class entrada_model extends Model {
         }
     }
 
-    private function instanciar($estoque_entrada_id) {
-        if ($estoque_entrada_id != 0) {
-            $this->db->select('e.estoque_entrada_id,
-                            e.produto_id,
-                            e.lote,
+    private function instanciar($estoque_entrada_nota_id) {
+        if ($estoque_entrada_nota_id != 0) {
+            $this->db->select('en.estoque_entrada_nota_id,
+                            en.produto_id,
+                            en.lote,
                             p.descricao as produto,
-                            e.armazem_id,
+                            en.armazem_id,
                             a.descricao as armazem,
-                            e.fornecedor_id,
+                            en.fornecedor_id,
                             f.razao_social as fornecedor,
-                            e.quantidade,
-                            e.valor_compra,
-                            e.quantidade,
-                            e.validade,
-                            e.nota_fiscal');
-            $this->db->from('tb_estoque_entrada e');
+                            en.quantidade,
+                            en.valor_compra,
+                            en.quantidade,
+                            en.validade,
+                            en.situacao,
+                            en.nota_fiscal');
+            $this->db->from('tb_estoque_entrada_nota en');
             $this->db->join('tb_estoque_armazem a', 'a.estoque_armazem_id = e.armazem_id', 'left');
             $this->db->join('tb_estoque_fornecedor f', 'f.estoque_fornecedor_id = e.fornecedor_id', 'left');
             $this->db->join('tb_estoque_produto p', 'p.estoque_produto_id = e.produto_id', 'left');
-            $this->db->where("e.estoque_entrada_id", $estoque_entrada_id);
+            $this->db->where("en.estoque_entrada_nota_id", $estoque_entrada_nota_id);
             $query = $this->db->get();
             $return = $query->result();
-            $this->_estoque_entrada_id = $estoque_entrada_id;
+            $this->_estoque_entrada_nota_id = $estoque_entrada_nota_id;
             $this->_produto_id = $return[0]->produto_id;
             $this->_produto = $return[0]->produto;
             $this->_fornecedor_id = $return[0]->fornecedor_id;
@@ -1000,8 +952,9 @@ class entrada_model extends Model {
             $this->_quantidade = $return[0]->quantidade;
             $this->_valor_compra = $return[0]->valor_compra;
             $this->_validade = $return[0]->validade;
+            $this->_situacao = $return[0]->situacao;
         } else {
-            $this->_estoque_entrada_id = null;
+            $this->_estoque_entrada_nota_id = null;
         }
     }
 

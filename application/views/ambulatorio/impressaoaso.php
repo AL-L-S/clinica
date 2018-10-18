@@ -145,7 +145,7 @@
                                 <?= $relatorio[0]->convenio2 ?> 
                                <? }else{ ?>
                                 <? $convenio = $this->convenio->listarconvenioselecionado($impressao_aso->convenio1); ?>
-                                <?= $convenio[0]->nome ?> 
+                                <?= $convenio[0]->razao_social ?> 
                               <? } ?>
                             </td>
 

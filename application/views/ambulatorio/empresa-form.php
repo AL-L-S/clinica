@@ -569,8 +569,8 @@
                                         <tr>
                                             <td><input type="checkbox" id="producao_alternativo" name="producao_alternativo" <? if (@$obj->_producao_alternativo == 't') echo "checked"; ?>/> </td><td><label title="Ativando essa opção, o relatório de produção terá o visual alternativo (Ronaldo).">Relatório Produção M. Alternativo</label></td>
                                             <td><input type="checkbox" id="data_contaspagar" name="data_contaspagar" <? if (@$obj->_data_contaspagar == 't') echo "checked"; ?>/></td><td><label title="Data manual na produção médica .">Data Manual Produção M.</label></td>
-                                            <td></td><td></td>
-                                            <td></td><td></td>
+                                            <td><input type="checkbox" id="manternota" name="manternota" <? if (@$obj->_manternota == 't') echo "checked"; ?>/></td><td><label title="O Estoque passará a funcionar cadastrando a nota fiscal antes de cadastrar os produtos.">Manter Nota Fiscal</label></td>
+                                           
                                         </tr>
                                     </table>
                                 </fieldset>

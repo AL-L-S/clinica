@@ -29,6 +29,13 @@
                 <label>Idade</label>
                 <input type="text" name="idade2" id="idade2" class="texto02" readonly/>
             </div>
+            
+            <div>
+                <legend>Foto</legend>
+
+                <!-- A Imagem do Paciente-->
+                <img src="<?= base_url() ?>upload/webcam/pacientes/<?= @$obj->_paciente_id ?>.jpg" alt="" height="140" width="100"  />
+            </div>
 
 
             <div>
@@ -112,12 +119,6 @@
 
             </div>
 
-            <div>
-                <legend>Foto</legend>
-
-                <!-- A Imagem do Paciente-->
-                <img src="<?= base_url() ?>upload/webcam/pacientes/<?= @$obj->_paciente_id ?>.jpg" alt="" height="140" width="100"  />
-            </div>
         </fieldset>
         <fieldset>
             <legend>Documentos</legend>

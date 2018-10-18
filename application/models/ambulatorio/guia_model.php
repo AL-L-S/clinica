@@ -10107,6 +10107,26 @@ class guia_model extends Model {
             return -1;
         }
     }
+    
+    function desfazerfaturamentoconvenio($agenda_exames_id) {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('valor1', 0);            
+
+            $this->db->set('data_ajuste_faturamento', $horario);
+            $this->db->set('operador_ajuste_faturamento', $operador_id);
+            $this->db->set('faturado', 'f');
+            $this->db->where('agenda_exames_id', $agenda_exames_id);
+            $this->db->update('tb_agenda_exames');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
 
     function gravarfaturamentoconveniostatus() {
         try {
@@ -11662,6 +11682,33 @@ class guia_model extends Model {
                 $this->db->set('data_faturamento', $horario);
                 $this->db->set('operador_faturamento', $operador_id);
                 $this->db->set('faturado', 't');
+                $this->db->where('agenda_exames_id', $value->agenda_exames_id);
+                $this->db->update('tb_agenda_exames');
+            }
+            return 0;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    
+    function desfazerfaturamentototalconvenio($guia_id) {
+        try {
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+
+            $this->db->select('agenda_exames_id, valor_total');
+            $this->db->from('tb_agenda_exames');
+            $this->db->where("guia_id", $guia_id);
+            $query = $this->db->get();
+            $returno = $query->result();
+
+            foreach ($returno as $value) {
+//                $this->db->set('forma_pagamento', $_POST['formapamento1']);
+                $this->db->set('valor1', 0);
+                $this->db->set('data_ajuste_faturamento', $horario);
+                $this->db->set('operador_ajuste_faturamento', $operador_id);
+                $this->db->set('faturado', 'f');
                 $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
             }

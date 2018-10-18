@@ -92,88 +92,100 @@
                 <input type="hidden" name="guia_id" id="guia_id" class="texto01"  value="<?= @$obj->_guia_id; ?>"/>
                 <fieldset>
                     <legend>Dados</legend>
-                    <table> 
+                    <table style="border-collapse: collapse; width: 100%;"> 
                         <tr >
                             <? if (in_array('paciente', $opc_dadospaciente)) { ?>
-                                <td colspan="3" width="400px;">Paciente:<?= @$obj->_nome ?></td>
+                                <td colspan="4" width="400px;">Paciente:<?= @$obj->_nome ?></td>
                             <? } ?>
-                            <? if (in_array('exame', $opc_dadospaciente)) { ?>
-                                <td colspan="3" width="400px;">Exame: <?= @$obj->_procedimento ?></td>
+                            <? if (in_array('nascimento', $opc_dadospaciente)) { ?>
+                                <td colspan="1">Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
                             <? } ?>
-                            <? if (in_array('solicitante', $opc_dadospaciente)) { ?>
-                                <td>Solicitante: <?= @$obj->_solicitante ?></td>
-                            <? } ?>
-<!--<td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>-->
-                        </tr>
-                        <tr>
                             <? if (in_array('idade', $opc_dadospaciente)) { ?>
                                 <td colspan="3">Idade: <?= $teste ?></td>
                             <? } ?>
-                            <? if (in_array('nascimento', $opc_dadospaciente)) { ?>
-                                <td colspan="3">Nascimento:<?= substr(@$obj->_nascimento, 8, 2) . "/" . substr(@$obj->_nascimento, 5, 2) . "/" . substr(@$obj->_nascimento, 0, 4); ?></td>
-                            <? } ?>
-                            <? if (in_array('sala', $opc_dadospaciente)) { ?>
-                                <td>Sala:<?= @$obj->_sala ?></td>
-                            <? } ?>
-                        </tr>
-                        <tr>
                             <? if (in_array('sexo', $opc_dadospaciente)) { ?>
                                 <td colspan="2">Sexo: <?= @$obj->_sexo ?></td>
                             <? } ?>
-                            <? if (in_array('ocupacao', $opc_dadospaciente)) { ?>
-                                <td colspan="2">Ocupação: <?= @$obj->_profissao_cbo ?> </td>
-                            <? } ?>
-                            <? if (in_array('estadocivil', $opc_dadospaciente)) { ?>
-                                <td >Estado Civíl: <?= @$estado_civil ?> </td>
-                            <? } ?>
+
+
+<td rowspan="3"><img src="<?= base_url() ?>upload/webcam/pacientes/<?= $paciente_id ?>.jpg" width="100" height="120" /></td>
+                        </tr>
+                        <tr>
                             <? if (in_array('convenio', $opc_dadospaciente)) { ?>
-                                <td>Convenio:<?= @$obj->_convenio; ?></td>
+                                <td colspan="2">Convenio:<?= @$obj->_convenio; ?></td>
                             <? } ?>
                             <? if (in_array('telefone', $opc_dadospaciente)) { ?>
-                                <td colspan="1" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
-                            <? } ?>                           
-                          
+                                <td colspan="2" style="width: 200px">Telefone: <?= @$obj->_telefone ?></td>
+                            <? } ?> 
+                            <? if (in_array('ocupacao', $opc_dadospaciente)) { ?>
+                                <td colspan="4" width="300px;">Ocupação: <?= @$obj->_profissao_cbo ?> </td>
+                            <? } ?>
+
+                            <? if (in_array('estadocivil', $opc_dadospaciente)) { ?>
+                                <td colspan="2" style="width: 200px">Estado Civíl: <?= @$estado_civil ?> </td>
+                            <? } ?>
+
+                        </tr>
+                        <tr>
+
+                            <? if (in_array('sala', $opc_dadospaciente)) { ?>
+                                <td colspan="5" width="400px;">Sala:<?= @$obj->_sala ?></td>
+                            <? } ?>                            
+
+                            <? if (in_array('exame', $opc_dadospaciente)) { ?>
+                                <td colspan="5" width="400px;">Exame: <?= @$obj->_procedimento ?></td>
+                            <? } ?>                                                     
 
                         </tr>
 
                         <tr>
+                            <? if (in_array('solicitante', $opc_dadospaciente)) { ?>
+                                <td colspan="4" width="400px;">Solicitante: <?= @$obj->_solicitante ?></td>
+                            <? } ?>
                             <? if (in_array('indicacao', $opc_dadospaciente)) { ?>
-                                <td colspan="2">Indicaçao: <?= @$obj->_indicacao ?></td>
+                                <td colspan="6">Indicaçao: <?= @$obj->_indicacao ?></td>
                             <? } ?>
 
 <!--<td>Indicacao: <?= @$obj->_indicado ?></td>-->
+
+                        </tr>
+                        <tr>
                             <? if (in_array('endereco', $opc_dadospaciente)) { ?>
-                                <td colspan="2">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
+                                <td colspan="10">Endereco: <?= @$obj->_logradouro ?>, <?= @$obj->_numero . ' ' . @$obj->_bairro ?> - <?= @$obj->_uf ?></td>
                             <? } ?>
-                            
                         </tr>
                         <tr>
-                            <? if (in_array('ocupacao_pai', $opc_dadospaciente)) { ?>
-                                <td colspan="2" style="width: 200px">Ocupação do Pai: <?= @$obj->_ocupacao_pai ?></td>
-                            <? } ?>
                             <? if (in_array('nome_pai', $opc_dadospaciente)) { ?>
-                                <td colspan="3" style="width: 200px">Nome do Pai: <?= @$obj->_nome_pai ?></td>
+                                <td colspan="5" style="width: 200px">Pai: <?= @$obj->_nome_pai ?></td>
                             <? } ?>    
+                            <? if (in_array('ocupacao_pai', $opc_dadospaciente)) { ?>
+                                <td colspan="5" style="width: 200px">Ocupação: <?= @$obj->_ocupacao_pai ?></td>
+                            <? } ?>
                         </tr>
                         <tr>
-                              <? if (in_array('ocupacao_mae', $opc_dadospaciente)) { ?>
-                                <td colspan="2" style="width: 200px">Ocupação da Mãe: <?= @$obj->_ocupacao_mae ?></td>
-                            <? } ?>
-                            
                             <? if (in_array('nome_mae', $opc_dadospaciente)) { ?>
-                                <td colspan="3" style="width: 200px">Nome da Mãe: <?= @$obj->_nome_mae ?></td>
+                                <td colspan="5" style="width: 200px">Mãe: <?= @$obj->_nome_mae ?></td>
                             <? } ?>
+                            <? if (in_array('ocupacao_mae', $opc_dadospaciente)) { ?>
+                                <td colspan="5" style="width: 200px">Ocupação: <?= @$obj->_ocupacao_mae ?></td>
+                            <? } ?>
+
                         </tr>
-                        <td>
-                            <? if (in_array('preencherform', $opc_telatendimento)) { ?>
-                                <div class="bt_link_new">
-                                    <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherformulario/<?= $ambulatorio_laudo_id ?>');" >
-                                        Formulário</a></div>
-                            <? } ?>
-                        </td>
-                        <tr>
 
                     </table>
+
+                    <table>
+                        <tr>
+                            <td>
+                                <? if (in_array('preencherform', $opc_telatendimento)) { ?>
+                                    <div class="bt_link_new">
+                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherformulario/<?= $ambulatorio_laudo_id ?>');" >
+                                            Formulário</a></div>
+                                <? } ?>
+                            </td> 
+                        </tr>                        
+                    </table>
+
 
 
                 </fieldset>
@@ -318,7 +330,7 @@
                 <? if ($empresapermissao[0]->oftamologia == 't' && @$obj->_grupo == 'OFTALMOLOGIA') { ?>
                     <script>
                         $(function () {
-                            $("#tabs").tabs();
+                        $("#tabs").tabs();
                         });
                         $(".tab-ativa").tabs("option", "active", 1);
                     </script>    
@@ -393,40 +405,40 @@
                                     <table>
                                         <tr><td rowspan="11" >
                                                 <textarea id="laudo" name="laudo" rows="30" cols="80" style="width: 100%"><?= @$obj->_texto; ?></textarea></td>
-                                                
-                                                    <? if (in_array('receituario', $opc_telatendimento)) { ?>
+
+                                            <? if (in_array('receituario', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
 
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarreceituario/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>/<?= $procedimento_tuss_id ?>');" >
                                                             Receituario</a>
                                                     </div>
                                                 </td>
-                                                    <? } ?>
-                                               <? if ($integracaosollis == 't') { ?>
-                                                    <td width="40px;"><div class="bt_link_new">
+                                            <? } ?>
+                                            <? if ($integracaosollis == 't') { ?>
+                                                <td width="40px;"><div class="bt_link_new">
 
                                                         <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/carregarprescricao/<?= $ambulatorio_laudo_id ?>/<?= $paciente_id ?>');" >
                                                             Prescrição</a>
                                                     </div>
                                                 </td>
-                                                    
-                                             <?   } ?>
-                                                <td>
-                                                    <? if (in_array('parecercirurgia', $opc_telatendimento)) { ?>
-                                                        <div class="bt_link_new">
-                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherparecer/<?= $ambulatorio_laudo_id ?>');" >
-                                                                Parecer C.P</a></div>
-                                                    <? } ?>
-                                                </td>
-                                                
-                                                <td>
-                                                    <? if (in_array('laudoapendicite', $opc_telatendimento)) { ?>
-                                                        <div class="bt_link_new">
-                                                            <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherlaudoapendicite/<?= $ambulatorio_laudo_id ?>');" >
-                                                                Laudo Apendicite</a></div>
-                                                    <? } ?>
-                                                </td>
-                                              
+
+                                            <? } ?>
+                                            <td>
+                                                <? if (in_array('parecercirurgia', $opc_telatendimento)) { ?>
+                                                    <div class="bt_link_new">
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherparecer/<?= $ambulatorio_laudo_id ?>');" >
+                                                            Parecer C.P</a></div>
+                                                <? } ?>
+                                            </td>
+
+                                            <td>
+                                                <? if (in_array('laudoapendicite', $opc_telatendimento)) { ?>
+                                                    <div class="bt_link_new">
+                                                        <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/preencherlaudoapendicite/<?= $ambulatorio_laudo_id ?>');" >
+                                                            Laudo Apendicite</a></div>
+                                                <? } ?>
+                                            </td>
+
                                             <td rowspan="5" >
 
                                             </td>
@@ -439,7 +451,7 @@
                                                             Rotinas</a>
                                                     </div>
                                                 </td>
-                                                    <? } ?>
+                                            <? } ?>
 
                                             <? if (in_array('historicoimprimir', $opc_telatendimento)) { ?>
                                                 <td width="40px;"><div class="bt_link_new">
@@ -1636,321 +1648,294 @@
 
 
 <script type="text/javascript">
-    jQuery('#rev').change(function () {
-        if (this.checked) {
-            var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
-            jQuery(".dias").append(tag);
-        } else {
-            jQuery(".dias span").remove();
-            jQuery(".dias input").remove();
-        }
-    });
-
+                                            jQuery('#rev').change(function () {
+                                            if (this.checked) {
+                                            var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
+                                            jQuery(".dias").append(tag);
+                                            } else {
+                                            jQuery(".dias span").remove();
+                                            jQuery(".dias input").remove();
+                                            }
+                                            });
 <? if ((int) @$obj->_dias_retorno != '0') { ?>
-        jQuery(".dias_retorno_div").show();
+                                                jQuery(".dias_retorno_div").show();
 <? } else { ?>
-        jQuery(".dias_retorno_div").hide();
+                                                jQuery(".dias_retorno_div").hide();
 <? } ?>
 
-    jQuery('#ret').change(function () {
-        if (this.checked) {
-            jQuery(".dias_retorno_div").show();
-        } else {
-            jQuery(".dias_retorno_div").hide();
-        }
-    });
-
-    jQuery("#Altura").mask("999", {placeholder: " "});
+                                            jQuery('#ret').change(function () {
+                                            if (this.checked) {
+                                            jQuery(".dias_retorno_div").show();
+                                            } else {
+                                            jQuery(".dias_retorno_div").hide();
+                                            }
+                                            });
+                                            jQuery("#Altura").mask("999", {placeholder: " "});
 //                                                    jQuery("#Peso").mask("999", {placeholder: " "});
 
 ////////// ORDENANDO OS SELECTS DA OFTAMOLOGIA//////////////////
 
-    function oftamologia_od_esferico() {
-        var itensOrdenados = $('#oftamologia_od_esferico option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_od_esferico').html(itensOrdenados);
+                                            function oftamologia_od_esferico() {
+                                            var itensOrdenados = $('#oftamologia_od_esferico option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_od_esferico').html(itensOrdenados);
 <? if (@$obj->_oftamologia_od_esferico != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_od_esferico ?>';
-            //        alert(teste);
-            $('#oftamologia_od_esferico').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_od_esferico ?>';
+                                                //        alert(teste);
+                                                $('#oftamologia_od_esferico').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_od_esferico').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_od_esferico').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_od_esferico();
-
-    function oftamologia_oe_esferico() {
-        var itensOrdenados = $('#oftamologia_oe_esferico option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_oe_esferico').html(itensOrdenados);
+                                            }
+                                            oftamologia_od_esferico();
+                                            function oftamologia_oe_esferico() {
+                                            var itensOrdenados = $('#oftamologia_oe_esferico option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_oe_esferico').html(itensOrdenados);
 <? if (@$obj->_oftamologia_oe_esferico != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_oe_esferico ?>';
-            //        alert(teste);
-            $('#oftamologia_oe_esferico').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_oe_esferico ?>';
+                                                //        alert(teste);
+                                                $('#oftamologia_oe_esferico').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_oe_esferico').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_oe_esferico').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_oe_esferico();
-
-    function oftamologia_od_cilindrico() {
-        var itensOrdenados = $('#oftamologia_od_cilindrico option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_od_cilindrico').html(itensOrdenados);
+                                            }
+                                            oftamologia_oe_esferico();
+                                            function oftamologia_od_cilindrico() {
+                                            var itensOrdenados = $('#oftamologia_od_cilindrico option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_od_cilindrico').html(itensOrdenados);
 <? if (@$obj->_oftamologia_od_cilindrico != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_od_cilindrico ?>';
-            //        alert(teste);
-            $('#oftamologia_od_cilindrico').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_od_cilindrico ?>';
+                                                //        alert(teste);
+                                                $('#oftamologia_od_cilindrico').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_od_cilindrico').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_od_cilindrico').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_od_cilindrico();
-
-    function oftamologia_oe_cilindrico() {
-        var itensOrdenados = $('#oftamologia_oe_cilindrico option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_oe_cilindrico').html(itensOrdenados);
+                                            }
+                                            oftamologia_od_cilindrico();
+                                            function oftamologia_oe_cilindrico() {
+                                            var itensOrdenados = $('#oftamologia_oe_cilindrico option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_oe_cilindrico').html(itensOrdenados);
 <? if (@$obj->_oftamologia_oe_cilindrico != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_oe_cilindrico ?>';
-            $('#oftamologia_oe_cilindrico').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_oe_cilindrico ?>';
+                                                $('#oftamologia_oe_cilindrico').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_oe_cilindrico').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_oe_cilindrico').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_oe_cilindrico();
-
-    function oftamologia_oe_eixo() {
-        var itensOrdenados = $('#oftamologia_oe_eixo option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_oe_eixo').html(itensOrdenados);
+                                            }
+                                            oftamologia_oe_cilindrico();
+                                            function oftamologia_oe_eixo() {
+                                            var itensOrdenados = $('#oftamologia_oe_eixo option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_oe_eixo').html(itensOrdenados);
 <? if (@$obj->_oftamologia_oe_eixo != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_oe_eixo ?>';
-            //        alert(teste);
-            $('#oftamologia_oe_eixo').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_oe_eixo ?>';
+                                                //        alert(teste);
+                                                $('#oftamologia_oe_eixo').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_oe_eixo').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_oe_eixo').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_oe_eixo();
-
-    function oftamologia_oe_av() {
-        var itensOrdenados = $('#oftamologia_oe_av option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_oe_av').html(itensOrdenados);
+                                            }
+                                            oftamologia_oe_eixo();
+                                            function oftamologia_oe_av() {
+                                            var itensOrdenados = $('#oftamologia_oe_av option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_oe_av').html(itensOrdenados);
 <? if (@$obj->_oftamologia_oe_av != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_oe_av ?>';
-            //        alert(teste);
-            $('#oftamologia_oe_av').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_oe_av ?>';
+                                                //        alert(teste);
+                                                $('#oftamologia_oe_av').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_oe_av').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_oe_av').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_oe_av();
-
-    function oftamologia_od_eixo() {
-        var itensOrdenados = $('#oftamologia_od_eixo option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_od_eixo').html(itensOrdenados);
+                                            }
+                                            oftamologia_oe_av();
+                                            function oftamologia_od_eixo() {
+                                            var itensOrdenados = $('#oftamologia_od_eixo option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_od_eixo').html(itensOrdenados);
 <? if (@$obj->_oftamologia_od_eixo != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_od_eixo ?>';
-            //        alert(teste);
-            $('#oftamologia_od_eixo').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_od_eixo ?>';
+                                                //        alert(teste);
+                                                $('#oftamologia_od_eixo').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_od_eixo').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_od_eixo').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_od_eixo();
-
-    function oftamologia_od_av() {
-        var itensOrdenados = $('#oftamologia_od_av option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_od_av').html(itensOrdenados);
+                                            }
+                                            oftamologia_od_eixo();
+                                            function oftamologia_od_av() {
+                                            var itensOrdenados = $('#oftamologia_od_av option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_od_av').html(itensOrdenados);
 <? if (@$obj->_oftamologia_od_av != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_od_av ?>';
-            //        alert(teste);
-            $('#oftamologia_od_av').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_od_av ?>';
+                                                //        alert(teste);
+                                                $('#oftamologia_od_av').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_od_av').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_od_av').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_od_av();
-
-
-    function oftamologia_ad_esferico() {
-        var itensOrdenados = $('#oftamologia_ad_esferico option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_ad_esferico').html(itensOrdenados);
+                                            }
+                                            oftamologia_od_av();
+                                            function oftamologia_ad_esferico() {
+                                            var itensOrdenados = $('#oftamologia_ad_esferico option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_ad_esferico').html(itensOrdenados);
 <? if (@$obj->_oftamologia_ad_esferico != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_ad_esferico ?>';
-            //        alert(teste);
-            $('#oftamologia_ad_esferico').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_ad_esferico ?>';
+                                                //        alert(teste);
+                                                $('#oftamologia_ad_esferico').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_ad_esferico').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_ad_esferico').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_ad_esferico();
-
-    function oftamologia_ad_cilindrico() {
-        var itensOrdenados = $('#oftamologia_ad_cilindrico option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-
-        $('#oftamologia_ad_cilindrico').html(itensOrdenados);
+                                            }
+                                            oftamologia_ad_esferico();
+                                            function oftamologia_ad_cilindrico() {
+                                            var itensOrdenados = $('#oftamologia_ad_cilindrico option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#oftamologia_ad_cilindrico').html(itensOrdenados);
 <? if (@$obj->_oftamologia_ad_cilindrico != '') { ?>
-            var teste = '<?= @$obj->_oftamologia_ad_cilindrico ?>';
-            //        alert(teste);
-            $('#oftamologia_ad_cilindrico').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_oftamologia_ad_cilindrico ?>';
+                                                //        alert(teste);
+                                                $('#oftamologia_ad_cilindrico').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#oftamologia_ad_cilindrico').find('option:contains(" ")').prop('selected', true);
+                                                $('#oftamologia_ad_cilindrico').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    oftamologia_ad_cilindrico();
-    function acuidade_oe() {
-        var itensOrdenados = $('#acuidade_oe option').sort(function (a, b) {
-            return a.text < b.text ? -1 : 1;
-        });
-        $('#acuidade_oe').html(itensOrdenados);
+                                            }
+                                            oftamologia_ad_cilindrico();
+                                            function acuidade_oe() {
+                                            var itensOrdenados = $('#acuidade_oe option').sort(function (a, b) {
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
+                                            $('#acuidade_oe').html(itensOrdenados);
 <? if (@$obj->_acuidade_oe != '') { ?>
-            var teste = '<?= @$obj->_acuidade_oe ?>';
-            //        alert(teste);
-            $('#acuidade_oe').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_acuidade_oe ?>';
+                                                //        alert(teste);
+                                                $('#acuidade_oe').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#acuidade_oe').find('option:contains(" ")').prop('selected', true);
+                                                $('#acuidade_oe').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    acuidade_oe();
-
-
-    function acuidade_od() {
-        var acuidade_oditensOrdenados = $('#acuidade_od option').sort(function (a, b) {
+                                            }
+                                            acuidade_oe();
+                                            function acuidade_od() {
+                                            var acuidade_oditensOrdenados = $('#acuidade_od option').sort(function (a, b) {
 //                        alert(b.text);
-            return a.text < b.text ? -1 : 1;
-        });
+                                            return a.text < b.text ? - 1 : 1;
+                                            });
 //        console.log(acuidade_oditensOrdenados);
-        $('#acuidade_od').html(acuidade_oditensOrdenados);
+                                            $('#acuidade_od').html(acuidade_oditensOrdenados);
 <? if (@$obj->_acuidade_od != '') { ?>
-            var teste = '<?= @$obj->_acuidade_od ?>';
-            //        alert(teste);
-            $('#acuidade_od').find('option:contains("' + teste + '")').prop('selected', true);
+                                                var teste = '<?= @$obj->_acuidade_od ?>';
+                                                //        alert(teste);
+                                                $('#acuidade_od').find('option:contains("' + teste + '")').prop('selected', true);
 <? } else { ?>
-            $('#acuidade_od').find('option:contains(" ")').prop('selected', true);
+                                                $('#acuidade_od').find('option:contains(" ")').prop('selected', true);
 <? } ?>
-    }
-    acuidade_od();
-
-
+                                            }
+                                            acuidade_od();
 //////////////////////////////////////////////////
 
 
 
-    function validar(dom, tipo) {
-        switch (tipo) {
-            case'num':
-                var regex = /[A-Za-z]/g;
-                break;
-            case'text':
-                var regex = /\d/g;
-                break;
-        }
-        dom.value = dom.value.replace(regex, '');
-    }
+                                            function validar(dom, tipo) {
+                                            switch (tipo) {
+                                            case'num':
+                                                    var regex = /[A-Za-z]/g;
+                                            break;
+                                            case'text':
+                                                    var regex = /\d/g;
+                                            break;
+                                            }
+                                            dom.value = dom.value.replace(regex, '');
+                                            }
 
 
-    pesob1 = document.getElementById('Peso').value;
-    peso = parseFloat(pesob1.replace(',', '.'));
+                                            pesob1 = document.getElementById('Peso').value;
+                                            peso = parseFloat(pesob1.replace(',', '.'));
 //                                        peso = pesob1.substring(0, 2)  + "." + pesob1.substring(3, 1);
-    alturae1 = document.getElementById('Altura').value;
-    var res = alturae1.substring(0, 1) + "." + alturae1.substring(1, 3);
-    var altura = parseFloat(res);
-    imc = peso / Math.pow(altura, 2);
-    //imc = res;
-    resultado = imc.toFixed(2)
-    document.getElementById('imc').value = resultado.replace('.', ',');
-    
-    function calculaImc() {
-        pesob1 = document.getElementById('Peso').value;
-        peso = parseFloat(pesob1.replace(',', '.'));
-        //                                        peso = pesob1.substring(0, 2)  + "." + pesob1.substring(3, 1);
-        alturae1 = document.getElementById('Altura').value;
-        var res = alturae1.substring(0, 1) + "." + alturae1.substring(1, 3);
-        var altura = parseFloat(res);
-        imc = peso / Math.pow(altura, 2);
-        //imc = res;
-        resultado = imc.toFixed(2)
-        document.getElementById('imc').value = resultado.replace('.', ',');
-    }
+                                            alturae1 = document.getElementById('Altura').value;
+                                            var res = alturae1.substring(0, 1) + "." + alturae1.substring(1, 3);
+                                            var altura = parseFloat(res);
+                                            imc = peso / Math.pow(altura, 2);
+                                            //imc = res;
+                                            resultado = imc.toFixed(2)
+                                                    document.getElementById('imc').value = resultado.replace('.', ',');
+                                            function calculaImc() {
+                                            pesob1 = document.getElementById('Peso').value;
+                                            peso = parseFloat(pesob1.replace(',', '.'));
+                                            //                                        peso = pesob1.substring(0, 2)  + "." + pesob1.substring(3, 1);
+                                            alturae1 = document.getElementById('Altura').value;
+                                            var res = alturae1.substring(0, 1) + "." + alturae1.substring(1, 3);
+                                            var altura = parseFloat(res);
+                                            imc = peso / Math.pow(altura, 2);
+                                            //imc = res;
+                                            resultado = imc.toFixed(2)
+                                                    document.getElementById('imc').value = resultado.replace('.', ',');
+                                            }
 
 
 
-    var sHors = "0" + 0;
-    var sMins = "0" + 0;
-    var sSecs = -1;
-    function getSecs() {
-        sSecs++;
-        if (sSecs == 60) {
-            sSecs = 0;
-            sMins++;
-            if (sMins <= 9)
-                sMins = "0" + sMins;
-        }
-        if (sMins == 60) {
-            sMins = "0" + 0;
-            sHors++;
-            if (sHors <= 9)
-                sHors = "0" + sHors;
-        }
-        if (sSecs <= 9)
-            sSecs = "0" + sSecs;
-        clock1.innerHTML = sHors + "<font color=#000000>:</font>" + sMins + "<font color=#000000>:</font>" + sSecs;
-        setTimeout('getSecs()', 1000);
-    }
+                                            var sHors = "0" + 0;
+                                            var sMins = "0" + 0;
+                                            var sSecs = - 1;
+                                            function getSecs() {
+                                            sSecs++;
+                                            if (sSecs == 60) {
+                                            sSecs = 0;
+                                            sMins++;
+                                            if (sMins <= 9)
+                                                    sMins = "0" + sMins;
+                                            }
+                                            if (sMins == 60) {
+                                            sMins = "0" + 0;
+                                            sHors++;
+                                            if (sHors <= 9)
+                                                    sHors = "0" + sHors;
+                                            }
+                                            if (sSecs <= 9)
+                                                    sSecs = "0" + sSecs;
+                                            clock1.innerHTML = sHors + "<font color=#000000>:</font>" + sMins + "<font color=#000000>:</font>" + sSecs;
+                                            setTimeout('getSecs()', 1000);
+                                            }
 
 
-    $(document).ready(function () {
-        $('#sortable').sortable();
-    });
-    $(document).ready(function () {
-        jQuery('#ficha_laudo').validate({
-            rules: {
-                imagem: {
-                    required: true
-                }
-            },
-            messages: {
-                imagem: {
-                    required: "*"
-                }
-            }
-        });
-    });
-    function muda(obj) {
-        if (obj.value != 'DIGITANDO') {
-            document.getElementById('titulosenha').style.display = "block";
-            document.getElementById('senha').style.display = "block";
-        } else {
-            document.getElementById('titulosenha').style.display = "none";
-            document.getElementById('senha').style.display = "none";
-        }
-    }
+                                            $(document).ready(function () {
+                                            $('#sortable').sortable();
+                                            });
+                                            $(document).ready(function () {
+                                            jQuery('#ficha_laudo').validate({
+                                            rules: {
+                                            imagem: {
+                                            required: true
+                                            }
+                                            },
+                                                    messages: {
+                                                    imagem: {
+                                                    required: "*"
+                                                    }
+                                                    }
+                                            });
+                                            });
+                                            function muda(obj) {
+                                            if (obj.value != 'DIGITANDO') {
+                                            document.getElementById('titulosenha').style.display = "block";
+                                            document.getElementById('senha').style.display = "block";
+                                            } else {
+                                            document.getElementById('titulosenha').style.display = "none";
+                                            document.getElementById('senha').style.display = "none";
+                                            }
+                                            }
 
 
 
@@ -1965,293 +1950,282 @@
     }
     $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$obj->_toten_fila_id/$obj->_nome/$cpf/$obj->_medico_parecer1/$obj->_medico_nome/$obj->_toten_sala_id/false";
     ?>
-        $("#botaochamar").click(function () {
-        //    alert('<?//= $url_enviar_ficha ?>');
-            $.ajax({
-                type: "POST",
-                data: {teste: 'teste'},
-                //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                url: "<?= $url_enviar_ficha ?>",
-                success: function (data) {
-                    //                console.log(data);
-                    //                    alert(data.id);
-                    $("#idChamada").val(data.id);
+                                                $("#botaochamar").click(function () {
+                                                //    alert('<? //= $url_enviar_ficha  ?>');
+                                                $.ajax({
+                                                type: "POST",
+                                                        data: {teste: 'teste'},
+                                                        //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                        url: "<?= $url_enviar_ficha ?>",
+                                                        success: function (data) {
+                                                        //                console.log(data);
+                                                        //                    alert(data.id);
+                                                        $("#idChamada").val(data.id);
+                                                        },
+                                                        error: function (data) {
+                                                        console.log(data);
+                                                        //                alert('DEU MERDA');
+                                                        }
+                                                });
+                                                $.ajax({
+                                                type: "POST",
+                                                        data: {teste: 'teste'},
+                                                        //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                        url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>/<?= @$obj->_toten_fila_id ?>/<?= @$obj->_toten_sala_id ?>",
+                                                                    success: function (data) {
 
-                },
-                error: function (data) {
-                    console.log(data);
-                    //                alert('DEU MERDA');
-                }
-            });
+                                                                    alert('Operação efetuada com sucesso');
+                                                                    },
+                                                                    error: function (data) {
+                                                                    console.log(data);
+                                                                    alert('Erro ao chamar paciente');
+                                                                    }
+                                                            });
+                                                            $.ajax({
+                                                            type: "POST",
+                                                                    data: {teste: 'teste'},
+                                                                    //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                                    url: "<?= $endereco ?>/webService/telaChamado/cancelar/<?= @$obj->_toten_fila_id ?>",
+                                                                                success: function (data) {
 
-
-            $.ajax({
-                type: "POST",
-                data: {teste: 'teste'},
-                //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>/<?= @$obj->_toten_fila_id ?>/<?= @$obj->_toten_sala_id ?>",
-                success: function (data) {
-
-                    alert('Operação efetuada com sucesso');
-
-
-                },
-                error: function (data) {
-                    console.log(data);
-                    alert('Erro ao chamar paciente');
-                }
-            });
-            $.ajax({
-                type: "POST",
-                data: {teste: 'teste'},
-                //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                url: "<?= $endereco ?>/webService/telaChamado/cancelar/<?= @$obj->_toten_fila_id ?>",
-                            success: function (data) {
-
-    //                            alert('Operação efetuada com sucesso');
+                                                                                //                            alert('Operação efetuada com sucesso');
 
 
-                            },
-                            error: function (data) {
-                                console.log(data);
-    //                            alert('Erro ao chamar paciente');
-                            }
-                        });
-                    });
+                                                                                },
+                                                                                error: function (data) {
+                                                                                console.log(data);
+                                                                                //                            alert('Erro ao chamar paciente');
+                                                                                }
+                                                                        });
+                                                                        });
 <? } ?>
 
 
 
-                $(function () {
-                    $("#txtCICPrimariolabel").autocomplete({
+                                                                    $(function () {
+                                                                    $("#txtCICPrimariolabel").autocomplete({
 
-                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
-                        minLength: 3,
-                        focus: function (event, ui) {
-                            $("#txtCICPrimariolabel").val(ui.item.label);
-                            return false;
-                        },
-                        select: function (event, ui) {
-                            $("#txtCICPrimariolabel").val(ui.item.value);
-                            $("#txtCICPrimario").val(ui.item.id);
-                            return false;
-                        }
-                    });
-                });
-                $(function () {
-                    $("#txtCodigoTusslabel").autocomplete({
-                        source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentotusspesquisa",
-                        minLength: 3,
-                        focus: function (event, ui) {
-                            $("#txtCodigoTusslabel").val(ui.item.label);
-                            return false;
-                        },
-                        select: function (event, ui) {
-                            $("#txtCodigoTusslabel").val(ui.item.value);
-                            $("#txtCodigoTuss").val(ui.item.id);
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                                                                            minLength: 3,
+                                                                            focus: function (event, ui) {
+                                                                            $("#txtCICPrimariolabel").val(ui.item.label);
+                                                                            return false;
+                                                                            },
+                                                                            select: function (event, ui) {
+                                                                            $("#txtCICPrimariolabel").val(ui.item.value);
+                                                                            $("#txtCICPrimario").val(ui.item.id);
+                                                                            return false;
+                                                                            }
+                                                                    });
+                                                                    });
+                                                                    $(function () {
+                                                                    $("#txtCodigoTusslabel").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=procedimentotusspesquisa",
+                                                                            minLength: 3,
+                                                                            focus: function (event, ui) {
+                                                                            $("#txtCodigoTusslabel").val(ui.item.label);
+                                                                            return false;
+                                                                            },
+                                                                            select: function (event, ui) {
+                                                                            $("#txtCodigoTusslabel").val(ui.item.value);
+                                                                            $("#txtCodigoTuss").val(ui.item.id);
 //                                                                $("#txtcodigo").val(ui.item.codigo);
 //                                                                $("#txtdescricao").val(ui.item.descricao);
-                            return false;
-                        }
-                    });
-                });
-                $(function () {
-                    $("#txtCICSecundariolabel").autocomplete({
-                        source: "<?= base_url() ?>index.php?c=autocomplete&m=cid2",
-                        minLength: 3,
-                        focus: function (event, ui) {
-                            $("#txtCICSecundariolabel").val(ui.item.label);
-                            return false;
-                        },
-                        select: function (event, ui) {
-                            $("#txtCICSecundariolabel").val(ui.item.value);
-                            $("#txtCICSecundario").val(ui.item.id);
-                            return false;
-                        }
-                    });
-                });
-                var readonly = <?= $readonly ?>;
-                tinyMCE.init({
-                    // General options
-                    mode: "exact",
-                    elements: "laudo",
-                    theme: "advanced",
-                    readonly: readonly,
-                    plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                    menubar: "tools",
-                    toolbar: "spellchecker",
-                    spellchecker_languages: 'pt_BR',
-                    browser_spellcheck: true,
-                    theme_url: 'js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js',
+                                                                            return false;
+                                                                            }
+                                                                    });
+                                                                    });
+                                                                    $(function () {
+                                                                    $("#txtCICSecundariolabel").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=cid2",
+                                                                            minLength: 3,
+                                                                            focus: function (event, ui) {
+                                                                            $("#txtCICSecundariolabel").val(ui.item.label);
+                                                                            return false;
+                                                                            },
+                                                                            select: function (event, ui) {
+                                                                            $("#txtCICSecundariolabel").val(ui.item.value);
+                                                                            $("#txtCICSecundario").val(ui.item.id);
+                                                                            return false;
+                                                                            }
+                                                                    });
+                                                                    });
+                                                                    var readonly = <?= $readonly ?>;
+                                                                    tinyMCE.init({
+                                                                    // General options
+                                                                    mode: "exact",
+                                                                            elements: "laudo",
+                                                                            theme: "advanced",
+                                                                            readonly: readonly,
+                                                                            plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                                            menubar: "tools",
+                                                                            toolbar: "spellchecker",
+                                                                            spellchecker_languages: 'pt_BR',
+                                                                            browser_spellcheck: true,
+                                                                            theme_url: 'js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js',
 //                                                        external_plugins: 'js/tinymce/jscripts/tiny_mce/plugins/spellchecker/plugin.min.js',
 
-                    // Theme options
-                    theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                    theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-                    theme_advanced_toolbar_location: "top",
-                    theme_advanced_toolbar_align: "left",
-                    theme_advanced_statusbar_location: "bottom",
-                    theme_advanced_resizing: true,
-                    // Example content CSS (should be your site CSS)
-                    //                                    content_css : "css/content.css",
-                    content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                    // Drop lists for link/image/media/template dialogs
-                    template_external_list_url: "lists/template_list.js",
-                    external_link_list_url: "lists/link_list.js",
-                    external_image_list_url: "lists/image_list.js",
-                    media_external_list_url: "lists/media_list.js",
-                    // Style formats
-                    style_formats: [
-                        {title: 'Bold text', inline: 'b'},
-                        {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                        {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                        {title: 'Example 1', inline: 'span', classes: 'example1'},
-                        {title: 'Example 2', inline: 'span', classes: 'example2'},
-                        {title: 'Table styles'},
-                        {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                    ],
-                    // Replace values for the template plugin
-                    template_replace_values: {
-                        username: "Some User",
-                        staffid: "991234"
-                    }
+                                                                            // Theme options
+                                                                            theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                                                            theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                                                                            theme_advanced_toolbar_location: "top",
+                                                                            theme_advanced_toolbar_align: "left",
+                                                                            theme_advanced_statusbar_location: "bottom",
+                                                                            theme_advanced_resizing: true,
+                                                                            // Example content CSS (should be your site CSS)
+                                                                            //                                    content_css : "css/content.css",
+                                                                            content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                                                            // Drop lists for link/image/media/template dialogs
+                                                                            template_external_list_url: "lists/template_list.js",
+                                                                            external_link_list_url: "lists/link_list.js",
+                                                                            external_image_list_url: "lists/image_list.js",
+                                                                            media_external_list_url: "lists/media_list.js",
+                                                                            // Style formats
+                                                                            style_formats: [
+                                                                            {title: 'Bold text', inline: 'b'},
+                                                                            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                                            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                                            {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                                            {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                                            {title: 'Table styles'},
+                                                                            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                                            ],
+                                                                            // Replace values for the template plugin
+                                                                            template_replace_values: {
+                                                                            username: "Some User",
+                                                                                    staffid: "991234"
+                                                                            }
 
-                });
-                tinyMCE.init({
-                    // General options
-                    mode: "exact",
-                    elements: "adendo",
-                    theme: "advanced",
-                    // plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                    menubar: "tools",
-                    toolbar: "spellchecker",
-                    spellchecker_languages: 'pt_BR',
-                    browser_spellcheck: true,
-                    theme_url: 'js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js',
+                                                                    });
+                                                                    tinyMCE.init({
+                                                                    // General options
+                                                                    mode: "exact",
+                                                                            elements: "adendo",
+                                                                            theme: "advanced",
+                                                                            // plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                                            menubar: "tools",
+                                                                            toolbar: "spellchecker",
+                                                                            spellchecker_languages: 'pt_BR',
+                                                                            browser_spellcheck: true,
+                                                                            theme_url: 'js/tinymce/jscripts/tiny_mce/themes/modern/theme.min.js',
 //                                                        external_plugins: 'js/tinymce/jscripts/tiny_mce/plugins/spellchecker/plugin.min.js',
 
-                    // Theme options
-                    theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                    theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
-                    theme_advanced_toolbar_location: "top",
-                    theme_advanced_toolbar_align: "left",
-                    theme_advanced_statusbar_location: "bottom",
-                    theme_advanced_resizing: true,
-                    // Example content CSS (should be your site CSS)
-                    //                                    content_css : "css/content.css",
-                    content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                    // Drop lists for link/image/media/template dialogs
-                    template_external_list_url: "lists/template_list.js",
-                    external_link_list_url: "lists/link_list.js",
-                    external_image_list_url: "lists/image_list.js",
-                    media_external_list_url: "lists/media_list.js",
-                    // Style formats
-                    style_formats: [
-                        {title: 'Bold text', inline: 'b'},
-                        {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                        {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                        {title: 'Example 1', inline: 'span', classes: 'example1'},
-                        {title: 'Example 2', inline: 'span', classes: 'example2'},
-                        {title: 'Table styles'},
-                        {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                    ],
-                    // Replace values for the template plugin
-                    template_replace_values: {
-                        username: "Some User",
-                        staffid: "991234"
-                    }
+                                                                            // Theme options
+                                                                            theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                                                            theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor",
+                                                                            theme_advanced_toolbar_location: "top",
+                                                                            theme_advanced_toolbar_align: "left",
+                                                                            theme_advanced_statusbar_location: "bottom",
+                                                                            theme_advanced_resizing: true,
+                                                                            // Example content CSS (should be your site CSS)
+                                                                            //                                    content_css : "css/content.css",
+                                                                            content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                                                            // Drop lists for link/image/media/template dialogs
+                                                                            template_external_list_url: "lists/template_list.js",
+                                                                            external_link_list_url: "lists/link_list.js",
+                                                                            external_image_list_url: "lists/image_list.js",
+                                                                            media_external_list_url: "lists/media_list.js",
+                                                                            // Style formats
+                                                                            style_formats: [
+                                                                            {title: 'Bold text', inline: 'b'},
+                                                                            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                                            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                                            {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                                            {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                                            {title: 'Table styles'},
+                                                                            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                                            ],
+                                                                            // Replace values for the template plugin
+                                                                            template_replace_values: {
+                                                                            username: "Some User",
+                                                                                    staffid: "991234"
+                                                                            }
 
-                });
+                                                                    });
+                                                                    $(function () {
+                                                                    $('#exame').change(function () {
+                                                                    if ($(this).val()) {
+                                                                    //$('#laudo').hide();
+                                                                    $('.carregando').show();
+                                                                    $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
+                                                                    options = "";
+                                                                    options += j[0].texto;
+                                                                    //                                                document.getElementById("laudo").value = options
 
-                $(function () {
-                    $('#exame').change(function () {
-                        if ($(this).val()) {
-                            //$('#laudo').hide();
-                            $('.carregando').show();
-                            $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
-                                options = "";
-
-                                options += j[0].texto;
-                                //                                                document.getElementById("laudo").value = options
-
-                                $('#laudo').val(options)
-                                var ed = tinyMCE.get('laudo');
-                                ed.setContent($('#laudo').val());
-
-                                //$('#laudo').val(options);
-                                //$('#laudo').html(options).show();
-                                //                                                $('.carregando').hide();
-                                //history.go(0) 
-                            });
-                        } else {
-                            $('#laudo').html('value=""');
-                        }
-                    });
-                });
-
-                $(function () {
-                    $('#linha').change(function () {
-                        if ($(this).val()) {
-                            //$('#laudo').hide();
-                            $('.carregando').show();
-                            $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
-                                options = "";
-
-                                options += j[0].texto;
-                                //                                                document.getElementById("laudo").value = $('#laudo').val() + options
-                                $('#laudo').val() + options
-                                var ed = tinyMCE.get('laudo');
-                                ed.setContent($('#laudo').val());
-                                //$('#laudo').html(options).show();
-                            });
-                        } else {
-                            $('#laudo').html('value=""');
-                        }
-                    });
-                });
-
-                $(function () {
-                    $("#linha2").autocomplete({
-                        source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
-                        minLength: 1,
-                        focus: function (event, ui) {
-                            $("#linha2").val(ui.item.label);
-                            return false;
-                        },
-                        select: function (event, ui) {
-                            $("#linha2").val(ui.item.value);
-                            tinyMCE.triggerSave(true, true);
-                            document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
-                            $('#laudo').val() + ui.item.id
-                            var ed = tinyMCE.get('laudo');
-                            ed.setContent($('#laudo').val());
-                            //$( "#laudo" ).val() + ui.item.id;
-                            document.getElementById("linha2").value = ''
-                            return false;
-                        }
-                    });
-                });
-                $(function (a) {
-                    $('#anteriores').change(function () {
-                        if ($(this).val()) {
-                            //$('#laudo').hide();
-                            $('.carregando').show();
-                            $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
-                                option = "";
-                                option = i[0].texto;
-                                tinyMCE.triggerSave();
-                                document.getElementById("laudo").value = option
-                                //$('#laudo').val(options);
-                                //$('#laudo').html(options).show();
-                                $('.carregando').hide();
-                                history.go(0)
-                            });
-                        } else {
-                            $('#laudo').html('value="texto"');
-                        }
-                    });
-                });
-                //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+                                                                    $('#laudo').val(options)
+                                                                            var ed = tinyMCE.get('laudo');
+                                                                    ed.setContent($('#laudo').val());
+                                                                    //$('#laudo').val(options);
+                                                                    //$('#laudo').html(options).show();
+                                                                    //                                                $('.carregando').hide();
+                                                                    //history.go(0) 
+                                                                    });
+                                                                    } else {
+                                                                    $('#laudo').html('value=""');
+                                                                    }
+                                                                    });
+                                                                    });
+                                                                    $(function () {
+                                                                    $('#linha').change(function () {
+                                                                    if ($(this).val()) {
+                                                                    //$('#laudo').hide();
+                                                                    $('.carregando').show();
+                                                                    $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
+                                                                    options = "";
+                                                                    options += j[0].texto;
+                                                                    //                                                document.getElementById("laudo").value = $('#laudo').val() + options
+                                                                    $('#laudo').val() + options
+                                                                            var ed = tinyMCE.get('laudo');
+                                                                    ed.setContent($('#laudo').val());
+                                                                    //$('#laudo').html(options).show();
+                                                                    });
+                                                                    } else {
+                                                                    $('#laudo').html('value=""');
+                                                                    }
+                                                                    });
+                                                                    });
+                                                                    $(function () {
+                                                                    $("#linha2").autocomplete({
+                                                                    source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
+                                                                            minLength: 1,
+                                                                            focus: function (event, ui) {
+                                                                            $("#linha2").val(ui.item.label);
+                                                                            return false;
+                                                                            },
+                                                                            select: function (event, ui) {
+                                                                            $("#linha2").val(ui.item.value);
+                                                                            tinyMCE.triggerSave(true, true);
+                                                                            document.getElementById("laudo").value = $('#laudo').val() + ui.item.id
+                                                                                    $('#laudo').val() + ui.item.id
+                                                                                    var ed = tinyMCE.get('laudo');
+                                                                            ed.setContent($('#laudo').val());
+                                                                            //$( "#laudo" ).val() + ui.item.id;
+                                                                            document.getElementById("linha2").value = ''
+                                                                                    return false;
+                                                                            }
+                                                                    });
+                                                                    });
+                                                                    $(function (a) {
+                                                                    $('#anteriores').change(function () {
+                                                                    if ($(this).val()) {
+                                                                    //$('#laudo').hide();
+                                                                    $('.carregando').show();
+                                                                    $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
+                                                                    option = "";
+                                                                    option = i[0].texto;
+                                                                    tinyMCE.triggerSave();
+                                                                    document.getElementById("laudo").value = option
+                                                                            //$('#laudo').val(options);
+                                                                            //$('#laudo').html(options).show();
+                                                                            $('.carregando').hide();
+                                                                    history.go(0)
+                                                                    });
+                                                                    } else {
+                                                                    $('#laudo').html('value="texto"');
+                                                                    }
+                                                                    });
+                                                                    });
+                                                                    //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
 //                $('.jqte-test').jqte();
 
 

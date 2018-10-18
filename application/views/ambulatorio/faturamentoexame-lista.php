@@ -175,9 +175,18 @@
                                 </td>
                             <? } else { ?>
                                 <td>Faturado&nbsp;</td>
+                                <td width="40px;"><div class="bt_link">
+                                        <? if ($perfil_id != 10) { ?>
+
+
+                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/desfazerfaturadoconvenio/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">Desfazer
+                                            </a>                                          
+                                        <? } ?>
+                                    </div>
+                                </td>
                             <? }
                             ?>
-
+                
 
 
                             <td width="110px;">
