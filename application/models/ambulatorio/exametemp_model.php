@@ -2187,8 +2187,10 @@ class exametemp_model extends Model {
                             oi.orcamento_id,
                             oi.valor_total,
                             oi.orcamento_id,
+                            oi.empresa_id,
                             oi.paciente_id,
                             oi.data_preferencia,
+                            oi.horario_preferencia,
                             oi.dia_semana_preferencia,
                             oi.turno_prefencia,
                             ao.autorizado,
@@ -7560,37 +7562,35 @@ class exametemp_model extends Model {
     }
 
     function listarhorariosdisponiveisorcamento($parametro, $empresa_id) {
-        $this->db->select("pt.grupo");
-        $this->db->from('tb_procedimento_convenio pc');
-        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
-        $this->db->where('pc.procedimento_convenio_id', $parametro);
-        $this->db->where('pt.grupo', 'LABORATORIAL');
-        $retorno = $this->db->get()->result();
+        // $this->db->select("pt.grupo");
+        // $this->db->from('tb_procedimento_convenio pc');
+        // $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
+        // $this->db->where('pc.procedimento_convenio_id', $parametro);
+        // $this->db->where('pt.grupo', 'LABORATORIAL');
+        // $retorno = $this->db->get()->result();
 
-        if (count($retorno) == 0) {
-
-            $horario = date("Y-m-d");
+        // if (count($retorno) == 0) {
+            // var_dump($parametro);
+        $horario = date("Y-m-d");
             // O "false" no parametro so SELECT serve para dizer ao CodeIgniter não pôr aspas.
-            $this->db->select("a.data,to_char(a.data, 'DD-MM-YYYY') as data_formatada_picker,
+        $this->db->select("a.data,to_char(a.data, 'DD-MM-YYYY') as data_formatada_picker,
                               to_char(a.data, 'DD/MM/YYYY') as data_formatada", false);
-            $this->db->from('tb_agenda_exames a');
-            $this->db->where('a.ativo', 'true');
-            $this->db->where('a.bloqueado', 'false');
-            $this->db->where('a.data >=', $horario);
-            $this->db->where('a.empresa_id', $empresa_id);
-            $this->db->where("a.medico_agenda IN (
-                SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
-                WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
-                AND cop.empresa_id = $empresa_id
-            )");
-            $this->db->orderby('a.data');
-            $this->db->groupby('a.data');
+        $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_ambulatorio_tipo_consulta atc', 'atc.ambulatorio_tipo_consulta_id = a.tipo_consulta_id');
+        $this->db->where('a.ativo', 'true');
+        $this->db->where('a.bloqueado', 'false');
+        $this->db->where('a.data >=', $horario);
+        $this->db->where('a.empresa_id', $empresa_id);
+        $this->db->where("atc.grupo", $parametro);
+            // $this->db->where("a.medico_agenda ");
+        $this->db->orderby('a.data');
+        $this->db->groupby('a.data');
             //        $this->db->limit(250);
-            $return = $this->db->get()->result();
-            return $return;
-        } else {
-            return false;
-        }
+        $return = $this->db->get()->result();
+        return $return;
+        // } else {
+            // return false;
+        // }
     }
 
     function listarhorariosdisponiveisorcamentodata($parametro, $empresa_id, $data) {
@@ -7598,15 +7598,17 @@ class exametemp_model extends Model {
         // O "false" no parametro so SELECT serve para dizer ao CodeIgniter não pôr aspas.
         $this->db->select("a.inicio,a.agenda_exames_id", false);
         $this->db->from('tb_agenda_exames a');
+        $this->db->join('tb_ambulatorio_tipo_consulta atc', 'atc.ambulatorio_tipo_consulta_id = a.tipo_consulta_id');
         $this->db->where('a.ativo', 'true');
         $this->db->where('a.bloqueado', 'false');
         $this->db->where('a.data', date("Y-m-d", strtotime(str_replace('/', '-', $data))));
         $this->db->where('a.empresa_id', $empresa_id);
-        $this->db->where("a.medico_agenda IN (
-                SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
-                WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
-                AND cop.empresa_id = $empresa_id
-            )");
+        $this->db->where("atc.grupo", $parametro);
+        // $this->db->where("a.medico_agenda IN (
+        //         SELECT cop.operador FROM ponto.tb_convenio_operador_procedimento cop
+        //         WHERE cop.ativo = 't' AND cop.procedimento_convenio_id = $parametro
+        //         AND cop.empresa_id = $empresa_id
+        //     )");
         $this->db->orderby('a.inicio');
 //        $this->db->groupby('a.data');
         //        $this->db->limit(250);

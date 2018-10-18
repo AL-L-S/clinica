@@ -8,6 +8,7 @@ ALTER TABLE ponto.tb_paciente ADD COLUMN ocupacao_pai character varying(200);
 ALTER TABLE ponto.tb_agenda_exames ADD COLUMN observacao character varying(2000);
 
 -- 15/10/2018
+ALTER TABLE ponto.tb_ambulatorio_tipo_consulta ADD COLUMN grupo text;
 
 CREATE OR REPLACE FUNCTION insereValor()
 RETURNS text AS $$

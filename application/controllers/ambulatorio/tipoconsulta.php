@@ -16,6 +16,7 @@ class Tipoconsulta extends BaseController {
     function Tipoconsulta() {
         parent::Controller();
         $this->load->model('ambulatorio/tipoconsulta_model', 'tipoconsulta');
+        $this->load->model('ambulatorio/procedimentoplano_model', 'procedimentoplano');
         $this->load->library('mensagem');
         $this->load->library('utilitario');
         $this->load->library('pagination');
@@ -36,6 +37,7 @@ class Tipoconsulta extends BaseController {
     function carregartipoconsulta($estoque_tipoconsulta_id) {
         $obj_tipoconsulta = new tipoconsulta_model($estoque_tipoconsulta_id);
         $data['obj'] = $obj_tipoconsulta;
+        $data['grupos'] = $this->procedimentoplano->listargrupo();
         //$this->carregarView($data, 'giah/servidor-form');
         $this->loadView('ambulatorio/tipoconsulta-form', $data);
     }

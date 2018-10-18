@@ -15278,7 +15278,10 @@ ORDER BY ae.paciente_credito_id)";
             if ($_POST['txtdata'] != '') {
                 $this->db->set('data_preferencia', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdata']))));
             }
-            $this->db->set('turno_prefencia', $_POST['turno_preferencia']);
+            if($_POST['turno_preferencia'] != ''){
+                $this->db->set('horario_preferencia', $_POST['turno_preferencia']);
+            }
+            
 
             $this->db->set('valor', $_POST['valor1']);
             $valortotal = $_POST['valor1'] * $_POST['qtde1'];

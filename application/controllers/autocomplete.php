@@ -1058,16 +1058,17 @@ class Autocomplete extends Controller {
 
     function horariosdisponiveisorcamento() {
         $result = array();
-        if (isset($_GET['procedimento1']) && isset($_GET['empresa1'])) {
-            $result = $this->exametemp->listarhorariosdisponiveisorcamento($_GET['procedimento1'], $_GET['empresa1']);
+        // var_dump($_GET); die;
+        if (isset($_GET['grupo1']) && isset($_GET['empresa1'])) {
+            $result = $this->exametemp->listarhorariosdisponiveisorcamento($_GET['grupo1'], $_GET['empresa1']);
         }
         echo json_encode($result);
     }
 
     function horariosdisponiveisorcamentodata() {
         $result = array();
-        if (isset($_GET['procedimento1']) && isset($_GET['empresa1']) && isset($_GET['data'])) {
-            $result = $this->exametemp->listarhorariosdisponiveisorcamentodata($_GET['procedimento1'], $_GET['empresa1'], $_GET['data']);
+        if (isset($_GET['grupo1']) && isset($_GET['empresa1']) && isset($_GET['data'])) {
+            $result = $this->exametemp->listarhorariosdisponiveisorcamentodata($_GET['grupo1'], $_GET['empresa1'], $_GET['data']);
         }
         echo json_encode($result);
     }

@@ -254,6 +254,9 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                                             Excluir
                                         </a>
                                     </td>
+                                <?}else{?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="80px;">    
+                                    </td>
                                 <?}?>
                             </tr>
 

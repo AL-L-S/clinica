@@ -453,7 +453,7 @@
     date_picker();
     $(function () {
         $('#procedimento1').change(function () {
-            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {grupo1: $("#grupo1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
 //                                   alert('teste');
                 if(j.length > 0){
                      array_datas = [];
@@ -487,7 +487,7 @@
     $(function () {
         $('#txtdata').change(function () {
 //            alert('asd');
-            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamentodata', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), data:  $('#txtdata').val(),  ajax: true}, function (j) {
+            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamentodata', {grupo1: $("#grupo1").val(), empresa1: $('#empresa1').val(), data:  $('#txtdata').val(),  ajax: true}, function (j) {
 //                    console.log(j);
                     if(j.length > 0){
 //                    alert('teste');
@@ -535,7 +535,7 @@
     
     $(function () {
         $('#empresa1').change(function () {
-            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {procedimento1: $("#procedimento1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {grupo1: $("#grupo1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
 //                                   alert('teste');
                 if(j.length > 0){
                      array_datas = [];

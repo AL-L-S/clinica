@@ -94,11 +94,11 @@
                                 <th class="tabela_header">Convenio*</th>
                                 <th class="tabela_header">Grupo</th>
                                 <th class="tabela_header">Procedimento*</th>
-                                <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">Data Preferência</th>
-                                <th class="tabela_header">Turno</th>
+                                <th class="tabela_header">Horário Preferência</th>
                                 <th class="tabela_header">Qtde*</th>
                                 <th class="tabela_header">V. Unit</th>
+                                <th class="tabela_header">Forma de Pagamento</th>
                                 <th class="tabela_header">V. Ajuste</th>
 <!--                                <th class="tabela_header">Observa&ccedil;&otilde;es</th>-->
                             </tr>
@@ -108,8 +108,10 @@
                                 <td  width="50px;">
                                     <select  name="empresa1" id="empresa1" class="size1" required="">
                                         <option value="">Selecione</option>
-                                        <? foreach ($empresasLista as $item) : ?>
-                                            <option value="<?= $item->empresa_id; ?>"><?= $item->nome; ?></option>
+                                        <? 
+                                        $lastEmp = $exames[count($exames) - 1]->empresa_id;
+                                        foreach ($empresasLista as $item) : ?>
+                                            <option <? if ($lastEmp == $item->empresa_id) echo 'selected'; ?> value="<?= $item->empresa_id; ?>"><?= $item->nome; ?></option>
                                         <? endforeach; ?>
                                     </select>
                                 </td>
@@ -147,26 +149,15 @@
                                         <option value="">Selecione</option>
                                     </select>
                                 </td>
-                                
-                                <td width="100px;">
-                                    
-                                    <select name="formapamento" id="formapamento" class="size1" >
-                                        <option value="">Selecione</option>
-                                        <? foreach ($forma_pagamento as $item) : ?>
-                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
-                                        <? endforeach; ?>
-                                    </select>
-                                </td>
-                                
                                 <td>
                                     <div class="input-data">
                                         <input type="text" name="txtdata" id="txtdata" alt="date" class="size1"/>
                                     </div>
-                                    <div class="select-data">
+                                    <!-- <div class="select-data">
                                         <select name="txtdata" id="txtdata" class="size1" >
                                             <option value="">Selecione</option>
                                         </select>
-                                    </div>
+                                    </div> -->
                                 </td>
                                 <td>
                                     <select name="turno_preferencia" id="turno_preferencia" class="size1" >
@@ -178,6 +169,15 @@
                                 </td>
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00"/></td>
                                 <td  width="20px;"><input type="text" name="valor1" id="valor1" class="texto01" readonly=""/></td>
+                                <td width="100px;">
+                                    
+                                    <select name="formapamento" id="formapamento" class="size1" >
+                                        <option value="">Selecione</option>
+                                        <? foreach ($forma_pagamento as $item) : ?>
+                                            <option value="<?= $item->forma_pagamento_id; ?>"><?= $item->nome; ?></option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
                                 <td  width="20px;"><input type="text" name="ajustevalor1" id="ajustevalor1" class="texto01" readonly=""/></td>
                             </tr>
 
@@ -216,7 +216,7 @@
                                 <th class="tabela_header">V. Total</th>
                                 <th class="tabela_header">V. Ajuste</th>
                                 <th class="tabela_header">Data</th>
-                                <th class="tabela_header">Turno</th>
+                                <th class="tabela_header">Horário de Preferência</th>
                                 <th class="tabela_header"></th>
                             </tr>
                         </thead>
@@ -257,7 +257,7 @@
                                         <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia)); 
                                            else echo "Não informado";?>
                                     </td>
-                                    <td class="<?php echo $estilo_linha; ?>"><?= $turno ?></td>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= ($item->horario_preferencia != '') ? date("H:i", strtotime($item->horario_preferencia)) : 'Não-Informado' ?></td>
                                     <td class="<?php echo $estilo_linha; ?>">
                                         <a href="<?= base_url() ?>ambulatorio/guia/excluirorcamento/<?= $item->ambulatorio_orcamento_item_id ?>/<?= $item->paciente_id ?>/<?= $item->orcamento_id ?>" class="delete">
                                         </a>
@@ -333,7 +333,7 @@
                                         <th class="tabela_header">V. Total</th>
                                         <th class="tabela_header">V. Ajuste</th>
                                         <th class="tabela_header">Data</th>
-                                        <th class="tabela_header">Turno</th>
+                                        <th class="tabela_header">Horário de Preferência</th>
                                         <th class="tabela_header"></th>
                                     </tr>
                                 </thead>
@@ -382,7 +382,7 @@
                                                 <? if ($item->data_preferencia != "") echo date("d/m/Y", strtotime($item->data_preferencia)); 
                                                    else echo "Não informado";?>
                                             </td>
-                                            <td class="<?php echo $estilo_linha; ?>"><?= $turno ?></td>
+                                            <td class="<?php echo $estilo_linha; ?>"><?= ($item->horario_preferencia != '') ? date("H:i", strtotime($item->horario_preferencia)) : 'Não-Informado' ?></td>
                                         </tr>
                                 <?
                                 }
@@ -452,9 +452,23 @@
     #procedimento1_chosen a { width: 100%; }
 </style>
 <script type="text/javascript">
-
-    $(function () {
-        $("input#txtdata").datepicker({
+//    $(".select-data").hide();
+//    $(".input-data").hide();
+var array_datas = [];
+//    var array_datas_teste = [];
+    
+//     $(document).ready(function() {
+    function date_picker (){
+        $("#txtdata").datepicker({
+            beforeShowDay: function(d) {
+        // normalize the date for searching in array
+            var dmy = "";
+            dmy += ("00" + d.getDate()).slice(-2) + "-";
+            dmy += ("00" + (d.getMonth() + 1)).slice(-2) + "-";
+            dmy += d.getFullYear();
+//            console.log(dmy);
+            return [$.inArray(dmy, array_datas) >= 0 ? true : false, ""];
+            },
             autosize: true,
             changeYear: true,
             changeMonth: true,
@@ -463,10 +477,130 @@
             buttonImage: '<?= base_url() ?>img/form/date.png',
             dateFormat: 'dd/mm/yy'
         });
+//    });
+    }
+    date_picker();
+    $(function () {
+        $('#procedimento1').change(function () {
+            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {grupo1: $("#grupo1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+//                                   alert('teste');
+                if(j.length > 0){
+                     array_datas = [];
+
+                    var options = '<option value="">Selecione</option>';
+                    for (var c = 0; c < j.length; c++) {
+                        if (j[c].data != null) {
+                           
+                            array_datas.push(j[c].data_formatada_picker);
+                            options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
+                        }
+                    }
+//                    console.log(array_datas);
+//                    $("#txtdata").datepicker("refresh");
+                    date_picker();
+//                    $('select#txtdata').html(options).show();
+                    $('.carregando').hide();
+                   
+                    
+                }else{
+                    array_datas = [];
+                    date_picker();
+                }
+            });
+        });
+    });
+    var manha = '';
+    var tarde = '';
+    var noite = '';
+    var hora = '';
+    $(function () {
+        $('#txtdata').change(function () {
+//            alert('asd');
+            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamentodata', {grupo1: $("#grupo1").val(), empresa1: $('#empresa1').val(), data:  $('#txtdata').val(),  ajax: true}, function (j) {
+//                    console.log(j);
+                    if(j.length > 0){
+//                    alert('teste');
+                    var options = '<option value="">Selecione</option>';
+                    manha = '';
+                    tarde = '';
+                    noite = '';
+                    hora = '';
+                    for (var c = 0; c < j.length; c++) {
+                        if (j[c].inicio != null) {
+                            hora = j[c].inicio;
+                            if(parseInt(hora.substring(0, 2)) < 12 && manha == ''){
+                                manha = j[c].inicio;
+                                options += '<option value="' + manha + '">' + manha.substring(0, 5) + '</option>';
+                            }
+                            if(parseInt(hora.substring(0, 2)) < 18 && parseInt(hora.substring(0, 2)) > 11 && tarde == ''){
+                                tarde = j[c].inicio;
+                                options += '<option value="' + tarde + '">' + tarde.substring(0, 5) + '</option>';
+                            }
+                            if(parseInt(hora.substring(0, 2)) > 17 && noite == ''){
+                                noite = j[c].inicio;
+                                options += '<option value="' + noite + '">' + noite.substring(0, 5) + '</option>';
+                            }
+                            
+                        }
+                    }
+                    
+                    
+                    
+                    
+                    $('#turno_preferencia').html(options).show();
+                    $('.carregando').hide();
+                   
+                    
+                }
+            });
+        });
     });
     
-    $(".select-data").show();
-    $(".input-data").hide();
+    
+//    var availableDates = ["9-5-2011","14-5-2011","15-5-2011"];
+
+    
+
+    
+    $(function () {
+        $('#empresa1').change(function () {
+            $.getJSON('<?= base_url() ?>autocomplete/horariosdisponiveisorcamento', {grupo1: $("#grupo1").val(), empresa1: $('#empresa1').val(), ajax: true}, function (j) {
+//                                   alert('teste');
+                if(j.length > 0){
+                     array_datas = [];
+
+                    var options = '<option value="">Selecione</option>';
+                    for (var c = 0; c < j.length; c++) {
+                        if (j[c].data != null) {
+                           
+                            array_datas.push(j[c].data_formatada_picker);
+                            options += '<option value="' + j[c].data + '">' + j[c].data_formatada + '</option>';
+                        }
+                    }
+//                    console.log(array_datas);
+                    $("#txtdata").datepicker("refresh");
+//                    $('select#txtdata').html(options).show();
+                    $('.carregando').hide();
+                   
+                    
+                }
+            });
+        });
+    });
+    // $(function () {
+    //     $("input#txtdata").datepicker({
+    //         autosize: true,
+    //         changeYear: true,
+    //         changeMonth: true,
+    //         monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+    //         dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+    //         buttonImage: '<?= base_url() ?>img/form/date.png',
+    //         dateFormat: 'dd/mm/yy'
+    //     });
+    // });
+    
+    // $(".select-data").show();
+    // $(".input-data").hide();
     
     $(function () {
         $('#procedimento1').change(function () {
@@ -634,12 +768,12 @@
                                                 options = "";
                                                 options += j[0].valortotal;
                                                 if(j[0].grupo == 'LABORATORIAL'){
-                                                    $(".select-data").hide();
-                                                    $(".input-data").show();
+                                                    // $(".select-data").hide();
+                                                    // $(".input-data").show();
                                                 }
                                                 else{
-                                                    $(".select-data").show();
-                                                    $(".input-data").hide();
+                                                    // $(".select-data").show();
+                                                    // $(".input-data").hide();
                                                 }
                                                 
                                                 <? if($odontologia_alterar == 't'){?>

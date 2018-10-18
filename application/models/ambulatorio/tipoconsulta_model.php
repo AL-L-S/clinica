@@ -65,6 +65,7 @@ class tipoconsulta_model extends Model {
             /* inicia o mapeamento no banco */
             $ambulatorio_tipo_consulta_id = $_POST['tipo_consulta_id'];
             $this->db->set('descricao', $_POST['txtNome']);
+            $this->db->set('grupo', $_POST['grupo']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
@@ -94,13 +95,14 @@ class tipoconsulta_model extends Model {
     private function instanciar($ambulatorio_tipo_consulta_id) {
 
         if ($ambulatorio_tipo_consulta_id != 0) {
-            $this->db->select('ambulatorio_tipo_consulta_id, descricao');
+            $this->db->select('ambulatorio_tipo_consulta_id, descricao, grupo');
             $this->db->from('tb_ambulatorio_tipo_consulta');
             $this->db->where("ambulatorio_tipo_consulta_id", $ambulatorio_tipo_consulta_id);
             $query = $this->db->get();
             $return = $query->result();
             $this->_ambulatorio_tipo_consulta_id = $ambulatorio_tipo_consulta_id;
             $this->_descricao = $return[0]->descricao;
+            $this->_grupo = $return[0]->grupo;
         } else {
             $this->_ambulatorio_tipo_consulta_id = null;
         }

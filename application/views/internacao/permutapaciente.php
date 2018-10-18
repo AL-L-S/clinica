@@ -11,6 +11,7 @@
                 <div style="display: none;">                     
                     <input type="number" id="paciente_id_selecionado" name="paciente_id_selecionado"  class="texto02" value="<?= $paciente[0]->paciente_id; ?>" readonly/>
                     <input type="number" id="leito_id_selecionado" name="leito_id_selecionado"  class="texto02" value="<?= $paciente[0]->leito_id; ?>" readonly/>
+                    <input type="number" id="internacao_id" name="internacao_id"  class="texto02" value="<?= $paciente[0]->internacao_id; ?>" readonly/>
                 </div>
 
                 <div>

@@ -6,6 +6,21 @@
             <form name="form_procedimentoplano" id="form_procedimentoplano" action="<?= base_url() ?>ambulatorio/procedimentoplano/gravarpercentualmedicomultiplo" method="post">
 
                 <dl class="dl_desconto_lista">
+                    
+                    <dt>
+                        <label>Convênio</label>
+                    </dt>
+                    <dd>
+                        <select name="convenio_id" id="convenio_id" class="size2">
+                            <option value="">Selecione</option>
+                            <? foreach ($convenio as $value) : ?>
+                                <option value="<?= $value->convenio_id; ?>" <? if (@$convenio_id == $value->convenio_id) echo'selected';?>>
+                                    <?php echo $value->nome; ?>
+                                </option>
+                            <? endforeach; ?>
+                        </select>
+                    </dd>
+                    <br>
                     <dt>
                         <label>Médico</label>
                     </dt>
@@ -23,20 +38,6 @@
                     <br>
                     <br>
                     <br>
-                    <dt>
-                        <label>Convênio</label>
-                    </dt>
-                    <dd>
-                        <select name="convenio_id" id="convenio_id" class="size2">
-                            <option value="">Selecione</option>
-                            <? foreach ($convenio as $value) : ?>
-                                <option value="<?= $value->convenio_id; ?>" <? if (@$convenio_id == $value->convenio_id) echo'selected';?>>
-                                    <?php echo $value->nome; ?>
-                                </option>
-                            <? endforeach; ?>
-                        </select>
-                    </dd>
-                    
                     <br>
                     
                     <div class="divTabela">
@@ -111,8 +112,8 @@
                                 <td class="tabela_title">Subgrupo</td>
                                 <td class="tabela_title"></td>
                                 
-                                <td class="tabela_title">Valor</td>
-                                <td class="tabela_title">Percentual</td>
+                                <td class="tabela_title">Valor Médico</td>
+                                <td class="tabela_title">Percentual Médico</td>
                                 <td class="tabela_title">Valor Revisor</td>
                                 <td class="tabela_title">Percentual Revisor</td>
                                 <td class="tabela_title">Dia Faturamento</td>

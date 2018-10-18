@@ -160,10 +160,10 @@ class Guia extends BaseController {
             $geral_obj->lote = $lote_obj;
             $json_geral = json_encode($geral_obj);
 
-            //     echo '<pre>';
-            //     var_dump($url);
-            // // var_dump($json_novo_decode);
-            //     die;
+            // echo '<pre>';
+                // var_dump($url);
+            // var_dump($json_geral);
+            // die;
             // Aqui defino o envio que irá ser feito para a função no nosso sistema que manda o Curl pro LabLuz
             $postdata = http_build_query(
                     array(
@@ -308,7 +308,7 @@ class Guia extends BaseController {
         $solicitacao_obj->codigoLis = $codigoLis;
 
 ////////////////// Lote /////////////////////////////////////
-        $lote_obj->codigoLis = $identificadorLis;
+        $lote_obj->codigoLis = $codigoLis;
         $lote_obj->identificadorLis = $identificadorLis;
         $lote_obj->origemLis = $origemLis;
         $lote_obj->criacaoLis = $criacaoLis;
@@ -350,7 +350,7 @@ class Guia extends BaseController {
         // $json = json_encode($xml);
         $decode_result = json_decode($result);
         // echo '<pre>';
-        // // var_dump($geral_obj); 
+        // var_dump($decode_result); 
         // var_dump($decode_result->lote->solicitacoes->solicitacao[0]->link); 
         // die;
         // To encodando de novo só pra não ter o risco de ir um espaço vazio ou alguma besteira

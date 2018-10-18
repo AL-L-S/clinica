@@ -1593,16 +1593,21 @@ class internacao_model extends BaseModel {
         return $return->result();
     }
 
-    function listapacienteinternado($paciente_id) {
+    function listapacienteinternado($internacao_id) {
         $this->db->select(' p.nome as paciente,
                             p.paciente_id,
+                            i.internacao_id,
                             il.nome as leito,
                             i.leito as leito_id');
-        $this->db->from('tb_internacao i, tb_paciente p, tb_internacao_leito il');
-        $this->db->where('p.paciente_id', $paciente_id);
-        $this->db->where('i.paciente_id', $paciente_id);
-        $this->db->where('i.leito = il.internacao_leito_id');
-        $this->db->where('il.ativo', 'f');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id ');
+        $this->db->join('tb_internacao_leito il', 'i.leito = il.internacao_leito_id ');
+        $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
+        $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
+        // $this->db->where('p.paciente_id', $paciente_id);
+        $this->db->where('i.internacao_id', $internacao_id);
+        // $this->db->where('i.leito = il.internacao_leito_id');
+        // $this->db->where('il.ativo', 'f');
         $return = $this->db->get();
         return $return->result();
     }

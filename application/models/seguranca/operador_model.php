@@ -1213,7 +1213,7 @@ class Operador_model extends BaseModel {
         $this->db->select('empresa_id,
                             nome');
         $this->db->from('tb_empresa');
-
+        $this->db->where('ativo', 't');
         $return = $this->db->get();
 
         return $return->result();
