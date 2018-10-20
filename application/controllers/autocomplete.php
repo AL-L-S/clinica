@@ -3963,7 +3963,8 @@ class Autocomplete extends Controller {
     }
 
     function enfermaria() {
-
+        //  $nascimento_str = str_replace('-','', '1950-12-10');
+        //  echo $nascimento_str; die;
         if (isset($_GET['term'])) {
             $result = $this->enfermaria_m->listaenfermariaautocomplete($_GET['term']);
         } else {

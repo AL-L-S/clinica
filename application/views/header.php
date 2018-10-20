@@ -3,6 +3,15 @@
 if ($this->session->userdata('autenticado') != true) {
     redirect(base_url() . "login/index/login004", "refresh");
 }
+// // $this->load->model('login_model', 'login');
+$empresa_id = $this->session->userdata('empresa_id');
+$this->db->select('ep.*');
+$this->db->from('tb_empresa_permissoes ep');
+//        
+$this->db->where('ep.empresa_id', $empresa_id);
+$retorno = $this->db->get()->result();
+// session_cache_limiter();
+// var_dump(session_cache_limiter()); die;
 $chat = $this->session->userdata('chat');
 $geral = $this->session->userdata('geral');
 $ponto = $this->session->userdata('ponto');
@@ -348,6 +357,7 @@ function debug($object) {
 
     <?php
     $this->load->library('utilitario');
+    // var_dump($this->session->flashdata('message'));die;
     Utilitario::pmf_mensagem($this->session->flashdata('message'));
     ?>
 

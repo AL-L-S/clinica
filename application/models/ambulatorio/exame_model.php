@@ -6543,6 +6543,9 @@ class exame_model extends Model {
         if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
             $this->db->where('ae.data_faturar <=', $_POST['datafim']);
         }
+        if ($_POST['faturamento'] != "0") {
+            $this->db->where('ae.faturado', $_POST['faturamento']);
+        }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
@@ -6606,6 +6609,11 @@ class exame_model extends Model {
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
         }
+
+        if ($_POST['faturamento'] != "0") {
+            $this->db->where('ae.faturado', $_POST['faturamento']);
+        }
+
         if ($_POST['tipo'] != "0" && $_POST['tipo'] != "") {
             $this->db->where("tu.classificacao", $_POST['tipo']);
         }
@@ -6677,6 +6685,9 @@ class exame_model extends Model {
         }
         if (isset($_POST['datafim']) && strlen($_POST['datafim']) > 0) {
             $this->db->where('ae.data_faturar <=', $_POST['datafim']);
+        }
+        if ($_POST['faturamento'] != "0") {
+            $this->db->where('ae.faturado', $_POST['faturamento']);
         }
         if ($_POST['empresa'] != "0") {
             $this->db->where('ae.empresa_id', $_POST['empresa']);
@@ -8221,9 +8232,11 @@ class exame_model extends Model {
             $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
             $this->db->where("ppm.procedimento_tuss_id", $_POST['txtprocedimento_tuss_id']);
             $this->db->where("ppmc.medico", $_POST['txtmedico']);
+            $this->db->where("ppm.ativo", 't');
+            $this->db->where("ppmc.ativo", 't');
             $retorno = $this->db->get()->result();
 
-//            echo "<pre>"; var_dump($retorno); die;
+        //    echo "<pre>"; var_dump($retorno); die;
             if (count($retorno) > 0 && @$retorno[0]->dia_recebimento != '' && @$retorno[0]->tempo_recebimento != '') {
                 if (date("d") > $retorno[0]->dia_recebimento) {
                     $d = date("Y-m-", strtotime("+1 month")) . $retorno[0]->dia_recebimento;

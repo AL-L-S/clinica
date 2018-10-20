@@ -21,8 +21,9 @@ class Login extends Controller {
         set_time_limit(7200); // Limite de tempo de execução: 2h. Deixe 0 (zero) para sem limite
         ignore_user_abort(true); // Não encerra o processamento em caso de perda de conexão
 
-        $servicoemail = $this->session->userdata('servicoemail');
-
+        $empresaPermissoes = $this->login->listarEmpresa();
+        $servicoemail = $empresaPermissoes[0]->servicoemail;
+        // var_dump($empresaPermissoes); die;
         if ($servicoemail == 't') {
             $emailVerificacao = $this->login->verificaemail();
             if (count($emailVerificacao) == 0) {
@@ -30,7 +31,8 @@ class Login extends Controller {
             }
         }
 
-        $servicosms = $this->session->userdata('servicosms');
+        
+        $servicosms = $empresaPermissoes[0]->servicosms;
         
         if ($servicosms == 't') {
 

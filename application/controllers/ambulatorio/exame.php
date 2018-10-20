@@ -3788,9 +3788,9 @@ class Exame extends BaseController {
         $listarpacienete = $this->exame->listarpacientesxmlfaturamento();        
         $listarexame = $this->exame->listargxmlfaturamento();
         $listarexames = $this->exame->listarxmlfaturamentoexames();
-//        $data['internacao'] = $this->internacao_m->relatoriointernacaosituacao();
-//        echo'<pre>';
-//        var_dump($listarexamess);die;
+        // $data['internacao'] = $this->internacao_m->relatoriointernacaosituacao();
+        // echo'<pre>';
+        // var_dump($listarexames);die;
 
         $horario = date("Y-m-d");
         $hora = date("H:i:s");
@@ -4227,7 +4227,7 @@ class Exame extends BaseController {
             if ($versao == '3.03.01' || $versao == '3.03.02' || $versao == '3.03.03') {
                 if ($modelo == 'cpf') {
 
-                    if (@$listarexame[0]->grupo != 'CONSULTA' && count($listarexame) > 0) {
+                    if ($_POST['layoutarq'] == 'sadt' && count($listarexame) > 0) {
                         $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
         <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
            <ans:cabecalho>
@@ -4787,7 +4787,7 @@ class Exame extends BaseController {
                         }
                     }
                 } else {
-                    if (@$listarexame[0]->grupo != 'CONSULTA' && count($listarexame) > 0) {
+                    if ($_POST['layoutarq'] == 'sadt' && count($listarexame) > 0) {
                         $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
         <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
            <ans:cabecalho>

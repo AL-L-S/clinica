@@ -5201,7 +5201,7 @@ class exametemp_model extends Model {
                     $paciente_inf = $this->db->get()->result();
 
                     $sexo = ($paciente_inf[0]->sexo != '') ? $paciente_inf[0]->sexo : '';
-                    $nascimento_str = strtotime($paciente_inf[0]->nascimento);
+                    $nascimento_str = str_replace('-','',$paciente_inf[0]->nascimento);
                     $string_worklist = $paciente_inf[0]->nome . ";{$ambulatorio_guia_id};$nascimento_str;{$convenio_nome};{$sexo};V2; \n";
                     if (!is_dir("./upload/RIS")) {
                         mkdir("./upload/RIS");
@@ -6998,7 +6998,7 @@ class exametemp_model extends Model {
                         $this->db->where('paciente_id', $paciente_id);
                         $paciente_inf = $this->db->get()->result();
                         $sexo = ($paciente_inf[0]->sexo != '') ? $paciente_inf[0]->sexo : '';
-                        $nascimento_str = strtotime($paciente_inf[0]->nascimento);
+                        $nascimento_str = str_replace('-','',$paciente_inf[0]->nascimento);
                         $string_worklist = $paciente_inf[0]->nome . ";{$ambulatorio_guia_id};$nascimento_str;{$convenio_nome};{$sexo};V2; \n";
                         if (!is_dir("./upload/RIS")) {
                             mkdir("./upload/RIS");

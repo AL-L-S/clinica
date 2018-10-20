@@ -1692,7 +1692,7 @@ class Guia extends BaseController {
 
                 $paciente_informacoes = $this->paciente->listardados($paciente_id);
                 $convenio_informacoes = $this->convenio->listarconvenioselecionado($_POST['convenio1']);
-                $nascimento_str = strtotime(@$paciente_informacoes[0]->nascimento);
+                $nascimento_str = str_replace('-','', @$paciente_informacoes[0]->nascimento);
                 $sexo = (@$paciente_informacoes[0]->sexo != '') ? @$paciente_informacoes[0]->sexo : '';
                 $string_worklist = @$paciente_informacoes[0]->nome . ";{$ambulatorio_guia};$nascimento_str;{$convenio_informacoes[0]->nome};{$sexo};V2; \n";
 //                if (!is_dir("./upload/RIS")) {
@@ -1848,8 +1848,9 @@ class Guia extends BaseController {
 
 
                     $paciente_informacoes = $this->paciente->listardados($paciente_id);
+                    // var_dump($paciente_informacoes); die;
                     $convenio_informacoes = $this->convenio->listarconvenioselecionado($_POST['convenio1']);
-                    $nascimento_str = strtotime(@$paciente_informacoes[0]->nascimento);
+                    $nascimento_str = str_replace('-','', @$paciente_informacoes[0]->nascimento);
                     $sexo = (@$paciente_informacoes[0]->sexo != '') ? @$paciente_informacoes[0]->sexo : '';
                     $string_worklist = @$paciente_informacoes[0]->nome . ";{$ambulatorio_guia};$nascimento_str;{$convenio_informacoes[0]->nome};{$sexo};V2; \n";
 //                if (!is_dir("./upload/RIS")) {
