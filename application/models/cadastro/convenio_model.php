@@ -65,7 +65,7 @@ class Convenio_model extends Model {
                             c.conta_id');
         $this->db->from('tb_convenio c');
         $this->db->join('tb_convenio_empresa ce', 'ce.convenio_id = c.convenio_id', 'left');
-        $this->db->where("c.ativo", 'true');
+        $this->db->where("c.ativo", 'true');      
 
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
         if ($procedimento_multiempresa != 't') {

@@ -360,6 +360,8 @@ class guia_model extends Model {
                             retirar_botao_ficha,
                             endereco_integracao_lab,
                             identificador_lis,
+                            laboratorio,
+                            ep.laboratorio_sc,
                             ep.desabilitar_trava_retorno,
                             ep.conjuge,
                             ep.associa_credito_procedimento,

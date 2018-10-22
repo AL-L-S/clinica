@@ -144,3 +144,11 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_ajuste_faturamento timestamp 
 -- Data 18/10/2018
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN manternota boolean DEFAULT false;
+
+-- Data 22/10/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN laboratorio_sc boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_estoque_nota ADD COLUMN situacao character varying(30) DEFAULT 'PENDENTE'::character varying;
+
+ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN estoque_nota_id integer;

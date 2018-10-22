@@ -20,11 +20,25 @@ class nota_model extends Model {
             $this->instanciar($estoque_nota_id);
         }
     }
-
+    
+    function autocompletenota($parametro = null) {
+        $this->db->select('nota_fiscal,
+                           estoque_nota_id 
+                           ');
+        if ($parametro != null) {
+            $this->db->where('nota_fiscal ilike', $parametro . "%");
+        }
+        $this->db->where('ativo', 't');
+        $this->db->from('tb_estoque_nota');
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listar($args = array()) {
         $this->db->select(' n.estoque_nota_id,                            
                             f.fantasia,                            
                             n.fornecedor_id,
+                            n.situacao,
                             f.razao_social as fornecedor,
                             n.armazem_id,                            
                             a.descricao as armazem,                            
@@ -125,18 +139,21 @@ class nota_model extends Model {
 //        $return = $this->db->get();
 //        return $return->result();
 //    }
-//
-//    function listarprodutocada($estoque_produto_id) {
-//        $this->db->select('estoque_produto_id,
-//                            descricao');
-//        $this->db->from('tb_estoque_produto');
-//        if ($estoque_produto_id != "0" && $estoque_produto_id != "") {
-//            $this->db->where('estoque_produto_id', $estoque_produto_id);
-//        }
-//        $this->db->where('ativo', 'true');
-//        $return = $this->db->get();
-//        return $return->result();
-//    }
+
+    function listarnotacada($estoque_nota_id) {
+        $this->db->select('nota_fiscal,
+                           operador_cadastro,
+                           valor_nota,
+                           data_cadastro
+                            ');
+        $this->db->from('tb_estoque_nota');
+        if ($estoque_nota_id != "0" && $estoque_nota_id != "") {
+            $this->db->where('estoque_nota_id', $estoque_nota_id);
+        }
+        $this->db->where('ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
 //
 //    function listarprodutosfracionamento() {
 //        $this->db->select('p.estoque_produto_id,
@@ -286,33 +303,38 @@ class nota_model extends Model {
 //        $return = $this->db->get();
 //        return $return->result();
 //    }
-//    function relatoriosaldoprodutos() {
-//        $this->db->select('ea.descricao as armazem,
-//
-//            sum(es.quantidade) as quantidade,
-//            ep.descricao as produto');
-//        $this->db->from('tb_estoque_saldo es');
-//        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = es.armazem_id', 'left');
-////        $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = es.fornecedor_id', 'left');
-//        $this->db->join('tb_estoque_produto ep', 'ep.estoque_produto_id = es.produto_id', 'left');
-//        $this->db->where('es.ativo', 'true');
-//        if ($_POST['armazem'] != "0") {
-//            $this->db->where('es.armazem_id', $_POST['armazem']);
-//        }
-//        if ($_POST['txtfornecedor'] != "0" && $_POST['txtfornecedor'] != "") {
-//            $this->db->where("es.fornecedor_id", $_POST['txtfornecedor']);
-//        }
-//        if ($_POST['txtproduto'] != "0" && $_POST['txtproduto'] != "") {
-//            $this->db->where("es.produto_id", $_POST['txtproduto']);
-//        }
-////        if ($_POST['empresa'] != "0") {
-////            $this->db->where('ae.empresa_id', $_POST['empresa']);
-////        }
-//        $this->db->groupby('ea.descricao, ep.descricao');
-//        $this->db->orderby('ea.descricao, ep.descricao');
-//        $return = $this->db->get();
-//        return $return->result();
-//    }
+    function relatorionotas() {
+        $this->db->select('ea.descricao as armazem,
+                           en.nota_fiscal,
+                           en.estoque_nota_id,
+                           en.operador_cadastro,
+                           en.fornecedor_id,
+                           ef.fantasia,
+                           en.valor_nota,
+                           en.data_cadastro,
+                           cp.ativo,
+                           o.nome');
+        $this->db->from('tb_estoque_nota en');
+        $this->db->join('tb_estoque_armazem ea', 'ea.estoque_armazem_id = en.armazem_id', 'left');
+        $this->db->join('tb_estoque_fornecedor ef', 'ef.estoque_fornecedor_id = en.fornecedor_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = en.operador_cadastro', 'left');        
+        $this->db->join('tb_financeiro_contaspagar cp', 'en.estoque_nota_id = cp.estoque_nota_id', 'left');        
+        $this->db->where('en.ativo', 'true');
+        if ($_POST['armazem'] != "0") {
+            $this->db->where('en.armazem_id', $_POST['armazem']);
+        }
+        if ($_POST['txtfornecedor'] != "0" && $_POST['txtfornecedor'] != "") {
+            $this->db->where("en.fornecedor_id", $_POST['txtfornecedor']);
+        }        
+        if ($_POST['txtnota'] != "0" && $_POST['txtnota'] != "") {
+            $this->db->where("en.estoque_nota_id", $_POST['txtnota']);
+        }        
+
+//        $this->db->groupby('ea.descricao, en.nota_fiscal, en.operador_cadastro, en.valor_nota, en.data_cadastro, o.nome, en.estoque_nota_id');
+        $this->db->orderby('en.data_cadastro','desc');
+        $return = $this->db->get();
+        return $return->result();
+    }
 //
 //    function relatoriosaldoprodutoscontador() {
 //        $this->db->select('ea.descricao as armazem,
@@ -952,10 +974,65 @@ class nota_model extends Model {
                 
                 $horario = date("Y-m-d H:i:s");
                 $operador_id = $this->session->userdata('operador_id');
+                $empresa_id = $this->session->userdata('empresa_id');
+                
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->where('nota_fiscal', $nota_fiscal);
                 $this->db->update('tb_estoque_entrada_nota');
+                
+                // ----x----
+                
+                $this->db->set('situacao', 'FINALIZADA');
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('nota_fiscal', $nota_fiscal);
+                $this->db->update('tb_estoque_nota');
+                
+            $this->db->select('n.*');
+            $this->db->from('tb_estoque_nota n');
+            $this->db->where('nota_fiscal', $nota_fiscal);
+            $this->db->where('ativo', 'TRUE');
+            $return2 = $this->db->get()->result();  
+            
+            $this->db->select('forma_entradas_saida_id,
+                            agencia,
+                            conta,
+                            descricao');
+            $this->db->from('tb_forma_entradas_saida');
+            $this->db->where('empresa_id', $empresa_id);
+            $this->db->where('ativo', 'true');
+            $conta = $this->db->get()->result();
+                
+                /* inicia o mapeamento no banco de contas a pagar */
+            $financeiro_contaspagar_id = $_POST['financeiro_contaspagar_id'];
+            $this->db->set('valor', $return2[0]->valor_nota);
+            $this->db->set('credor', $return2[0]->fornecedor_id);
+            $this->db->set('data', $return2[0]->data_atualizacao);            
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('classe', 'DESPESAS ADMINISTRATIVAS');
+            $this->db->set('conta', $conta[0]->forma_entradas_saida_id);
+            $this->db->set('tipo', 'GERAL');
+            $this->db->set('estoque_nota_id', $return2[0]->estoque_nota_id);
+            
+            
+
+            if ($_POST['financeiro_contaspagar_id'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_contaspagar');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $financeiro_contaspagar_id = $this->db->insert_id();
+            }
+            else { // update
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('financeiro_contaspagar_id', $financeiro_contaspagar_id);
+                $this->db->update('tb_financeiro_contaspagar');
+            }
                 
             
             return $nota_fiscal;
