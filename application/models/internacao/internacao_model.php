@@ -1833,6 +1833,10 @@ class internacao_model extends BaseModel {
                           il.nome as leito,
                           il.condicao,
                           il.ativo,
+                          ROW_NUMBER() OVER (PARTITION BY il.internacao_leito_id) AS row_number, 
+                          il.internacao_leito_id,
+                          i.excluido as excluido_int,
+                          i.ativo as ativo_int,
                           ie.nome as enfermaria,
                           ie.unidade_id,
                           iu.nome as unidade,
@@ -1855,8 +1859,8 @@ class internacao_model extends BaseModel {
         $this->db->where('il.excluido', 'f');
         $this->db->where('ie.ativo', 't');
         $this->db->where('iu.ativo', 't');
-        $this->db->where('(i.excluido = false OR i.excluido is null)');
-        $this->db->where('(i.ativo = true OR i.ativo is null)');
+        $this->db->where('(i.excluido = false OR i.excluido is null OR (i.excluido = true AND il.ativo = true))');
+        $this->db->where('(i.ativo = true OR i.ativo is null OR (i.ativo = false AND il.ativo = true))');
         // Não dá pra fazer a verificação da existência da internação aqui, deve ser feito na view
         if ($_POST['unidade'] != '') {
             $this->db->where('ie.unidade_id', $_POST['unidade']);
@@ -2187,8 +2191,10 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_internacao_enfermaria ie', 'ie.internacao_enfermaria_id = il.enfermaria_id ');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->where('il.ativo', 't');
+        $this->db->where('il.excluido', 'f');
         $this->db->where('il.condicao', 'Normal');
         $this->db->where('iu.internacao_unidade_id', $unidade_id);
+        $this->db->orderby('ie.internacao_enfermaria_id, il.internacao_leito_id');
         $return = $this->db->get();
         return $return->result();
     }
@@ -2200,9 +2206,11 @@ class internacao_model extends BaseModel {
         $this->db->from('tb_internacao_leito il, tb_internacao_enfermaria ie');
         $this->db->where('ie.internacao_enfermaria_id = il.enfermaria_id');
         $this->db->where('il.ativo', 't');
+        $this->db->where('il.excluido', 'f');
         $this->db->where('il.condicao', 'Normal');
         $this->db->join('tb_internacao_unidade iu', 'iu.internacao_unidade_id = ie.unidade_id ');
         $this->db->where('iu.internacao_unidade_id', $unidade_id);
+        $this->db->orderby('ie.internacao_enfermaria_id, il.internacao_leito_id');
         $return = $this->db->get();
         return $return->result();
     }
@@ -2218,9 +2226,11 @@ class internacao_model extends BaseModel {
         $this->db->where('i.leito = il.internacao_leito_id');
         $this->db->where('il.ativo', 'f');
         $this->db->where('i.ativo', 't');
+        $this->db->where('i.excluido', 'f');
+        $this->db->where('il.excluido', 'f');
         $this->db->where('ie.internacao_enfermaria_id = il.enfermaria_id');
         $this->db->where('ie.unidade_id', $unidade);
-
+        $this->db->orderby('ie.internacao_enfermaria_id, il.internacao_leito_id');
 
         $return = $this->db->get();
         return $return->result();

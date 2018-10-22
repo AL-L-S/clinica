@@ -258,6 +258,7 @@ class pacientes extends BaseController {
             } else {
                 $messagem = "O paciente não existe no sistema de fidelidade.";
             }
+            // die;
             $this->session->set_flashdata('message', $messagem);
             redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
         } else {
@@ -268,6 +269,7 @@ class pacientes extends BaseController {
                 $data['mensagem'] = 'Erro ao gravar paciente';
             } elseif ($teste == 2) {
                 $data['mensagem'] = 'ERRO: Obrigatório preencher solicitante.';
+                // die;
                 $this->session->set_flashdata('message', $data['mensagem']);
                 redirect(base_url() . "cadastros/pacientes/procedimentoautorizaratendimento/$paciente_id");
             }

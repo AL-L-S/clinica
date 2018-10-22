@@ -24,6 +24,21 @@
                     <dd>
                         <input type="text" name="txtconta" class="texto04" value="<?= @$obj->_conta; ?>" />
                     </dd>
+                    <dt>
+                        <label>Empresa</label>
+                    </dt>
+                    <dd>
+                        <select name="empresa" id="empresa" class="size2" required>
+                        <option value="">Selecione</option>
+                        <? foreach ($empresa as $item) { ?>
+                            <option value="<?= $item->empresa_id ?>" <?
+                            if (@$obj->_empresa_id == $item->empresa_id) {
+                                echo 'selected';
+                            }
+                            ?>><?= $item->nome ?></option>
+                                <? } ?>
+                        </select>
+                    </dd>
 
                 </dl>    
                 <hr/>

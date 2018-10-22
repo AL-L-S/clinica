@@ -534,6 +534,7 @@ class Guia extends BaseController {
 
         $this->load->View('ambulatorio/impressaoguiasolicitacaospsadt', $data);
     }
+    
     function listarriscos(){
         
       $result = $this->guia->listarriscos();
@@ -2281,6 +2282,127 @@ class Guia extends BaseController {
         $data['exames'] = $this->exametemp->listarorcamentos($paciente_id);
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
         $this->loadView('ambulatorio/orcamento-form', $data);
+    }
+
+    function orcamentomultiplo($paciente_id, $ambulatorio_orcamento_id = null) {
+        $data['paciente_id'] = $paciente_id;
+        $data['empresasLista'] = $this->guia->listarempresas();
+        $data['convenio'] = $this->convenio->listardados();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['procedimento'] = $this->procedimento->listarprocedimentos();
+        $data['responsavel'] = $this->exametemp->listaresponsavelorcamento($paciente_id);
+        $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
+//        var_dump($data['responsavel']);die;
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['orcamentos'] = $this->procedimento->listarorcamentosrecepcaotodos($ambulatorio_orcamento_id, $paciente_id);
+        $data['orcamentoslista'] = $this->procedimento->listarorcamentosrecepcaoprincipal($ambulatorio_orcamento_id, $paciente_id);
+        $data['exames'] = $this->exametemp->listarorcamentos($paciente_id);
+        $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
+        $this->loadView('ambulatorio/orcamentomultiplocadastro-form.php', $data);
+    }
+
+    function gravarorcamentomultiplocadastro() {
+       
+
+        if (count($_POST['procedimento1']) == 0 || $_POST['convenio1'] == '-1') {
+            $data['mensagem'] = 'Informe o convenio, o procedimento e a quantidade.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/orcamentomultiplo/$paciente_id");
+        } else {
+            $paciente_id = $_POST['txtpaciente_id'];
+            $resultadoorcamento = $this->guia->listarorcamento($paciente_id);
+
+            if ($resultadoorcamento == null) {
+                $ambulatorio_orcamento = $this->guia->gravarorcamentorecepcao($paciente_id);
+            } else {
+                $ambulatorio_orcamento = $resultadoorcamento['ambulatorio_orcamento_id'];
+            }
+            // echo '<pre>';
+            // var_dump($_POST['procedimento1']); 
+            // die;
+            foreach ($_POST['procedimento1'] as $key => $procedimento_convenio_id) {
+                // Adicionando mais de um proc
+
+                $agrupador = $this->guia->verificaprocedimentoagrupador($procedimento_convenio_id);
+                if ($agrupador[0]->agrupador != 't') {
+                    $this->guia->gravarorcamentoitemrecepcaomultiplo($ambulatorio_orcamento, $paciente_id, $procedimento_convenio_id);
+                } else {
+                    // Cria um agrupador para o pacote
+                    $agrupador_id = $this->guia->gravaragrupadorpacote($procedimento_convenio_id);
+    
+                    // Traz os procedimentos desse pacote bem como o valor  
+                    $pacoteProc = $this->guia->listarprocedimentospacote($procedimento_convenio_id);
+
+                    if ($pacoteProc[0]->valor_pacote_diferenciado == 't') {
+                        $vl_pacote = 0;
+                        $valorTotal = 0;
+                        foreach ($pacoteProc as $value) {
+                            $valorTotal += $value->valortotal;
+                        }
+                    }
+                    // echo '<pre>';
+                    // var_dump($pacoteProc); die;
+
+                    $i = 0;
+                    $totPro = count($pacoteProc);
+                    foreach ($pacoteProc as $value) {
+
+                        if ($value->valor_pacote_diferenciado == 't') {
+                            /* Caso seja um valor diferenciado, ele vai descobrir o valor unitário.
+                             * Para isso, usa-se a seguinte regra: se antes o proc valia 15% do total do pacote,
+                             * entao, mesmo com um valor diferenciado, ele deve continuar valendo 15% do total. */
+                            $valor = round(($value->valor_pacote * $value->valortotal) / $valorTotal);
+                            $vl_pacote += $valor;
+
+                            if ($i == $totPro - 1) {
+                                 /* Caso tenha acontecido alguma diferença no valor informado na criaçao do pacote 
+                                 * para o valor aqui calculado (geralmente ocorre uma diferença de alguns centavos)
+                                 * ele acrescenta essa diferença no ultimo procedimento. */
+
+                                $diferenca = (float)$value->valor_pacote - (float)$vl_pacote;
+                                $valor += $diferenca;
+                            }
+                        } else {
+                            $valor = $value->valortotal;
+                        }
+                        $i++;
+                        $this->guia->gravarorcamentoitemrecepcaoagrupadormultiplo($ambulatorio_orcamento, $paciente_id, $value->procedimento_convenio_id, $value->quantidade_agrupador, $valor);
+                    }
+                }
+
+            }
+            
+
+            redirect(base_url() . "ambulatorio/guia/orcamentomultiplo/$paciente_id/$ambulatorio_orcamento");
+        }
+    }
+
+    function gravarorcamentomultiplodetalhescadastro($ambulatorio_orcamento, $paciente_id) {
+        // echo '<pre>';
+        // var_dump($_POST); die;
+        if (count($_POST['orcamento_item_id']) == 0) {
+            $data['mensagem'] = 'Informe o convenio, o procedimento e a quantidade.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/procedimentoplano/orcamentomultiplo/$paciente_id/$ambulatorio_orcamento");
+        } else {
+            $this->guia->gravarorcamentoitemrecepcaomultiplodetalhes($ambulatorio_orcamento, $paciente_id);
+            $data['mensagem'] = 'Detalhes gravados com sucesso.';
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/orcamentomultiplo/$paciente_id/$ambulatorio_orcamento");
+        }
+    }
+
+    function excluirorcamentorecepcaomultiplo($ambulatorio_orcamento_item_id, $paciente_id, $orcamento_id) {
+        if ($this->procedimento->excluirorcamentorecepcao($ambulatorio_orcamento_item_id)) {
+            $mensagem = 'Sucesso ao excluir o Procedimento';
+        } else {
+            $mensagem = 'Erro ao excluir o Procedimento. Opera&ccedil;&atilde;o cancelada.';
+        }
+
+        $this->session->set_flashdata('message', $mensagem);
+//        var_dump($paciente_id); die;
+        redirect(base_url() . "ambulatorio/guia/orcamentomultiplo/$paciente_id/$orcamento_id");
     }
 
     function orcamentocadastrofila($orcamento) {

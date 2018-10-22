@@ -63,7 +63,7 @@
                         $.getJSON('<?= base_url() ?>autocomplete/unidadepaciente', {unidade: $(this).val(), ajax: true}, function(j) {
                             options = '<option value=""></option>';
                             for (var c = 0; c < j.length; c++) {
-                                options += '<option value="' + j[c].leito_id+ '">' + j[c].paciente + ' - ' + j[c].leito + ' - ' + j[c].enfermaria + '</option>';
+                                options += '<option value="' + j[c].leito_id+ '">' + j[c].paciente + ' - ' + j[c].enfermaria  + ' - ' + j[c].leito + '</option>';
                             }
                             $('#leito_troca').html(options).show();
                             $('.carregando').hide();

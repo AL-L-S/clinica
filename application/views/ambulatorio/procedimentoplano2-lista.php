@@ -255,7 +255,10 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                                         </a>
                                     </td>
                                 <?}else{?>
-                                    <td class="<?php echo $estilo_linha; ?>" width="80px;">    
+                                    <td class="<?php echo $estilo_linha; ?>" width="80px;"> 
+                                        <a target="_blank" onclick="javascript:return confirm('Deseja realmente desativar esse procedimento?');" href="<?php echo base_url() ?>ambulatorio/procedimentoplano/desativarprocedimentomultiempresa/<?= $item->procedimento_tuss_id ?>/<?=$item->convenio_id ?>">
+                                            Desativar
+                                        </a>   
                                     </td>
                                 <?}?>
                             </tr>
