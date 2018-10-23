@@ -4839,6 +4839,9 @@ class Laudo extends BaseController {
 
         $this->laudo->gravaranaminese($ambulatorio_laudo_id, $exame_id, $procedimento_tuss_id);
 
+        $empresaPermissoes = $this->login->listarEmpresa();
+        $servicoemail = $empresaPermissoes[0]->servicoemail;
+        
         $servicoemail = $this->session->userdata('servicoemail');
         if ($servicoemail == 't') {
 

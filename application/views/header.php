@@ -3,6 +3,15 @@
 if ($this->session->userdata('autenticado') != true) {
     redirect(base_url() . "login/index/login004", "refresh");
 }
+// // $this->load->model('login_model', 'login');
+$empresa_id = $this->session->userdata('empresa_id');
+$this->db->select('ep.*');
+$this->db->from('tb_empresa_permissoes ep');
+//        
+$this->db->where('ep.empresa_id', $empresa_id);
+$retorno_header = $this->db->get()->result();
+// session_cache_limiter();
+// var_dump(@$retorno_header[0]->agenda_modelo2); die;
 $chat = $this->session->userdata('chat');
 $geral = $this->session->userdata('geral');
 $ponto = $this->session->userdata('ponto');
@@ -29,6 +38,7 @@ $relatorio_rm = $this->session->userdata('relatorio_rm');
 $logo_clinica = $this->session->userdata('logo_clinica');
 $especialidade = $this->session->userdata('especialidade');
 $endereco_toten = $this->session->userdata('endereco_toten');
+$agenda_modelo2 = @$retorno_header[0]->agenda_modelo2;
 $limitar_acesso = $this->session->userdata('limitar_acesso');
 $fila_impressao = $this->session->userdata('fila_impressao');
 $relatorio_caixa = $this->session->userdata('relatorio_caixa');
@@ -348,6 +358,7 @@ function debug($object) {
 
     <?php
     $this->load->library('utilitario');
+    // var_dump($this->session->flashdata('message'));die;
     Utilitario::pmf_mensagem($this->session->flashdata('message'));
     ?>
 
@@ -1240,7 +1251,12 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/motivocancelamento">Motivo cancelamento</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/tipoconsulta">Tipo Agenda</a></span></ul>
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/horario">Manter Horarios</a></span></ul>-->
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
+                                            
+                                            <?if($agenda_modelo2 == 'f'){?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
+                                            <?}else{?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/pesquisaragendamodelo2">Agenda Médica</a></span></ul>
+                                            <?}?>
                                             <? if ($this->session->userdata('recomendacao_configuravel') == "t") { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter Promotor</a></span></ul>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Promotor</a></span></ul>

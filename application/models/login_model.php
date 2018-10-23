@@ -7,6 +7,56 @@ class login_model extends Model {
         parent::Model();
     }
 
+    function listarEmpresa(){
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('e.*, 
+                           ep.procedimento_excecao, 
+                           ep.calendario_layout, 
+                           ep.recomendacao_configuravel, 
+                           ep.recomendacao_obrigatorio, 
+                           ep.valor_autorizar,
+                           ep.gerente_contasapagar,
+                           ep.cpf_obrigatorio,
+                           ep.orcamento_recepcao,
+                           ep.relatorio_ordem,
+                           ep.relatorio_producao,
+                           ep.relatorios_recepcao,
+                           ep.laudo_sigiloso,
+                           ep.gerente_relatorio_financeiro,
+                           ep.financeiro_cadastro,       
+                           ep.gerente_recepcao_top_saude,       
+                           ep.caixa_personalizado,       
+                           ep.botao_ativar_sala,
+                           ep.retirar_preco_procedimento,
+                           ep.relatorios_clinica_med,
+                           ep.autorizar_sala_espera,
+                           ep.manter_indicacao,
+                           ep.fila_impressao,
+                           ep.medico_solicitante,
+                           ep.uso_salas,
+                           ep.relatorio_operadora,
+                           ep.relatorio_rm,
+                           ep.relatorio_demandagrupo,
+                           ep.profissional_agendar,
+                           ep.relatorio_caixa,
+                           ep.enfermagem,
+                           ep.integracaosollis,
+                           ep.medicinadotrabalho,
+                           ep.ocupacao_pai,
+                           ep.ocupacao_mae,
+                           ep.limitar_acesso,
+                           ep.manternota,
+                           ep.perfil_marketing_p,
+                           ep.subgrupo_procedimento');
+        $this->db->from('tb_empresa e');
+        $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id');
+//        
+        $this->db->where('e.empresa_id', $empresa_id);
+        $retorno = $this->db->get()->result();
+        return $retorno;
+    }
+
     function autenticar($usuario, $senha, $empresa) {
         $this->db->select(' o.operador_id,
                                 o.perfil_id,
@@ -204,9 +254,6 @@ class login_model extends Model {
                 'fila_impressao' => $fila_impressao,
                 'internacao' => $internacao,
                 'chat' => $chat,
-                'servicosms' => $servicosms,
-                'servicoemail' => $servicoemail,
-                "verificandoMensagens" => false,
                 'botao_faturar_guia' => $botao_faturar_guia,
                 'botao_faturar_proc' => $botao_faturar_proc,
                 'empresa_id' => $empresa,

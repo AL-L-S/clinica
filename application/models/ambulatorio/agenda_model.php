@@ -315,6 +315,68 @@ class agenda_model extends Model {
             return -1;
         }
     }
+    
+    function gravarAgendaData($agenda_id) {
+        try {
+            
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            $this->db->set('datacon_inicio', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdatainicial']))));
+            $this->db->set('datacon_fim', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdatafinal']))));
+            $this->db->set('consolidada', 't');
+            if($_POST['txtintervalo'] > 0){
+                $this->db->set('intervalo', $_POST['txtintervalo']);
+            }
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('agenda_id', $agenda_id);
+            $this->db->update('tb_agenda');
+
+
+            return $agenda_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+
+    function gravarmodelo2() {
+        try {
+
+            /* inicia o mapeamento no banco */
+            $agenda_id = $_POST['txtagendaID'];
+            $this->db->set('nome', $_POST['txtNome']);
+            $this->db->set('medico_id', $_POST['medico_id']);
+            $this->db->set('tipo_agenda', $_POST['tipo_agenda']);
+            $this->db->set('tipo', 'Fixo');
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['txthorariostipoID'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_agenda');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $agenda_id = $this->db->insert_id();
+            }
+            else { // update
+                $agenda_id = $_POST['txthorariostipoID'];
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('agenda_id', $agenda_id);
+                $this->db->update('tb_agenda');
+            }
+
+            return $agenda_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
 
     function gravarmedico() {
         try {
@@ -2514,6 +2576,28 @@ class agenda_model extends Model {
         return $return->result();
     }
 
+    function listaragendainformacoes($agenda_id) {
+        $this->db->select('a.agenda_id,
+                            a.nome, 
+                            a.datacon_inicio, 
+                            a.datacon_fim, 
+                            a.intervalo, 
+                            a.consolidada, 
+                            a.tipo_agenda as tipo_agenda_id, 
+                            o.nome as medico,
+                            o.operador_id as medico_id,
+                            ts.descricao as tipo_agenda,
+                            a.tipo');
+        $this->db->from('tb_agenda a');
+        $this->db->join('tb_operador o', 'o.operador_id = a.medico_id', 'left');
+        $this->db->join('tb_ambulatorio_tipo_consulta ts', 'ts.ambulatorio_tipo_consulta_id = a.tipo_agenda', 'left');
+        // $this->db->where('a.ativo', 'true');
+        $this->db->where('a.agenda_id', $agenda_id);
+        $this->db->orderby('a.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarhorarioagendacriacao($agenda_id = null, $medico_id = null, $datainicial, $datafinal, $tipo) {
 
         $this->db->select('distinct(horario_id)');
@@ -2570,6 +2654,7 @@ class agenda_model extends Model {
 //        var_dump($return->result()); die;
         return $return->result();
     }
+
     function listarhorarioagendacriacaogeral($agenda_id = null, $medico_id = null, $datainicial, $datafinal, $tipo) {
 
         $this->db->select('distinct(horario_id)');
@@ -2616,6 +2701,74 @@ class agenda_model extends Model {
 
         if (count($return2) > 0) {
             $this->db->where("horarioagenda_id NOT IN ($horario_id)");
+        }
+
+        $this->db->orderby('dia');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+
+    function deletaragendacriacaogeralmodelo2($agenda_id = null) {
+
+        // Deletando todos os horários daquela agenda cujo o Agenda_id é igual
+        // e não há agendamento
+        if($agenda_id > 0){
+            $this->db->where('horarioagenda_id', $agenda_id);
+            $this->db->where('paciente_id is null');
+            $this->db->delete('tb_agenda_exames');
+        }
+        
+        return $agenda_id;
+    }
+
+    function listarhorarioagendacriacaogeralmodelo2($agenda_id = null, $medico_id = null, $datainicial, $datafinal, $tipo) {
+
+        $this->db->select('distinct(horario_id)');
+        $this->db->from('tb_agenda_exames ae');
+//        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->where('horarioagenda_id', $agenda_id);
+        $this->db->where('medico_agenda', $medico_id);
+        $this->db->where('data >=', $datainicial);
+        $this->db->where('data <=', $datafinal);
+        $this->db->where('tipo', $tipo);
+        $this->db->where('horario_id is not null');
+        $this->db->groupby('horario_id');
+        $return2 = $this->db->get()->result();
+        if (count($return2) > 0) {
+            $horario_id = '';
+            foreach ($return2 as $item) {
+                if ($horario_id == '') {
+                    $horario_id = $horario_id . "$item->horario_id";
+                } else {
+                    $horario_id = $horario_id . ",$item->horario_id";
+                }
+            }
+        }
+
+
+        $this->db->select('e.nome as empresa,
+                           h.dia,
+                           h.horaentrada1,
+                           h.horasaida1,
+                           h.intervaloinicio,
+                           h.intervalofim,
+                           h.tempoconsulta,
+                           h.agenda_id,
+                           h.qtdeconsulta,
+                           h.empresa_id,
+                           h.observacoes,
+                           h.horarioagenda_id,
+                           h.sala_id');
+        $this->db->from('tb_horarioagenda h');
+        $this->db->join('tb_empresa e', 'e.empresa_id = h.empresa_id', 'left');
+        $this->db->join('tb_exame_sala s', 's.exame_sala_id = h.sala_id', 'left');
+        $this->db->where('agenda_id', $agenda_id);
+        $this->db->where('h.sala_id IS NOT NULL');
+
+        if (count($return2) > 0) {
+            // A verificação de horários já existentes será feita posteriormente
+            // $this->db->where("horarioagenda_id NOT IN ($horario_id)");
         }
 
         $this->db->orderby('dia');

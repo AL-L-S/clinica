@@ -1827,8 +1827,10 @@ class Convenio_model extends Model {
             $result = array();
             $this->db->select('financeiro_credor_devedor_id')->from('tb_financeiro_credor_devedor');
             $this->db->where('cnpj', $cnpj);
+            $this->db->where('cnpj !=', '');
             $this->db->where('ativo', 't');
             $result = $this->db->get()->result();
+            // var_dump($result); die;
 
             if (count($result) == 0) {
                 $this->db->set('razao_social', $_POST['txtNome']);

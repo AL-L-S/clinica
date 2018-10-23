@@ -469,8 +469,7 @@
                                             <td><input type="checkbox" id="desabilitar_trava_retorno" name="desabilitar_trava_retorno" <? if (@$obj->_desabilitar_trava_retorno == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o sistema não irá mais barrar o lançamento de procedimentos do tipo Retorno.">Desabilitar trava no Retorno</label></td>
                                             <td><input type="checkbox" id="desativar_personalizacao_impressao" name="desativar_personalizacao_impressao" <? if (@$obj->_desativar_personalizacao_impressao == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, as opçoes de impressao, tais como assinatura e carimbo, deixaram de aparecer na tela do médico.">Desativar personalização da impressao dos medicos</label></td>
                                             <td><input type="checkbox" id="orcamento_multiplo" name="orcamento_multiplo" <? if (@$obj->_orcamento_multiplo == 't') echo "checked"; ?>/></td><td><label title="Ativando essa opção os orçamentos do cadastro e recepção terão o padrão multiplo. Será possível adicionar mais de um procedimento ao mesmo tempo.">Orçamento Multiplo</label></td>
-                                            <!-- <td></td><td></td> -->
-                                            <td></td><td></td>
+                                            <td><input type="checkbox" id="agenda_modelo2" name="agenda_modelo2" <? if (@$obj->_agenda_modelo2 == 't') echo "checked"; ?>/></td><td><label title="Ativando essa opção, a agenda será criada a partir do modelo pedido pela Clinica Med. Agora a agenda é diretamente associada ao médico e ao Tipo Agenda antes de ser de fato criada">Criação de Agenda Modelo 2</label></td>
                                         </tr>
                                     </table>
                                 </fieldset>
@@ -571,6 +570,7 @@
                                             <td><input type="checkbox" id="producao_alternativo" name="producao_alternativo" <? if (@$obj->_producao_alternativo == 't') echo "checked"; ?>/> </td><td><label title="Ativando essa opção, o relatório de produção terá o visual alternativo (Ronaldo).">Relatório Produção M. Alternativo</label></td>
                                             <td><input type="checkbox" id="data_contaspagar" name="data_contaspagar" <? if (@$obj->_data_contaspagar == 't') echo "checked"; ?>/></td><td><label title="Data manual na produção médica .">Data Manual Produção M.</label></td>
                                             <td><input type="checkbox" id="manternota" name="manternota" <? if (@$obj->_manternota == 't') echo "checked"; ?>/></td><td><label title="O Estoque passará a funcionar cadastrando a nota fiscal antes de cadastrar os produtos.">Manter Nota Fiscal</label></td>
+                                            <td><input type="checkbox" id="faturamento_novo" name="faturamento_novo" <? if (@$obj->_faturamento_novo == 't') echo "checked"; ?>/></td><td><label title="Novo modelo de faturamento (Particular) que permite a possibilidade de faturar parcialmente e fechar o caixa mais de uma vez">Faturamento Modelo 2</label></td>
                                            
                                         </tr>
                                     </table>

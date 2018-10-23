@@ -616,9 +616,9 @@ class Guia extends BaseController {
         } else {
             $gravarempresa = $_POST['convenio1'];
         }
-
-        $retorno = $this->guia->gravarcadastroaso($gravarempresa, $paciente_id, $ambulatorio_guia);
-
+        
+            $retorno = $this->guia->gravarcadastroaso($gravarempresa, $paciente_id, $ambulatorio_guia);
+            
         if ($retorno == -1) {
             $data['mensagem'] = 'Erro ao gravar ASO. Não há procedimento com esse tipo de ASO!';
             $this->session->set_flashdata('message', $data['mensagem']);
@@ -626,7 +626,8 @@ class Guia extends BaseController {
         }
 
         $retorno2 = $this->guia->gravarprocedimentoaso($gravarempresa, $ambulatorio_guia, $retorno);
-        if ($_POST['cadastro_aso_id'] == '') {
+        // var_dump($retorno); die;
+        if ($_POST['cadastro_aso_id'] == '') {            
 
             foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
 
@@ -1712,7 +1713,7 @@ class Guia extends BaseController {
 
                 $paciente_informacoes = $this->paciente->listardados($paciente_id);
                 $convenio_informacoes = $this->convenio->listarconvenioselecionado($_POST['convenio1']);
-                $nascimento_str = strtotime(@$paciente_informacoes[0]->nascimento);
+                $nascimento_str = str_replace('-','', @$paciente_informacoes[0]->nascimento);
                 $sexo = (@$paciente_informacoes[0]->sexo != '') ? @$paciente_informacoes[0]->sexo : '';
                 $string_worklist = @$paciente_informacoes[0]->nome . ";{$ambulatorio_guia};$nascimento_str;{$convenio_informacoes[0]->nome};{$sexo};V2; \n";
 
@@ -1858,8 +1859,9 @@ class Guia extends BaseController {
 
 
                     $paciente_informacoes = $this->paciente->listardados($paciente_id);
+                    // var_dump($paciente_informacoes); die;
                     $convenio_informacoes = $this->convenio->listarconvenioselecionado($_POST['convenio1']);
-                    $nascimento_str = strtotime(@$paciente_informacoes[0]->nascimento);
+                    $nascimento_str = str_replace('-','', @$paciente_informacoes[0]->nascimento);
                     $sexo = (@$paciente_informacoes[0]->sexo != '') ? @$paciente_informacoes[0]->sexo : '';
                     $string_worklist = @$paciente_informacoes[0]->nome . ";{$ambulatorio_guia};$nascimento_str;{$convenio_informacoes[0]->nome};{$sexo};V2; \n";
 //                if (!is_dir("./upload/RIS")) {
@@ -2496,8 +2498,8 @@ class Guia extends BaseController {
             $data['exames_pacote'] = array();
         }
 
-//        echo "<pre>";
-//        var_dump($data['exames_pacote']); die;
+    //    echo "<pre>";
+    //    var_dump($data['exames_particular']); die;
 
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);

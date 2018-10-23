@@ -15100,8 +15100,8 @@ ORDER BY ae.paciente_credito_id)";
         if ($medico != "") {
             $this->db->set('medico_consulta_id', $medico);
             $this->db->set('medico_agenda', $medico);
-            $this->db->set('valor_medico', $percentual[0]->perc_medico);
-            $this->db->set('percentual_medico', $percentual[0]->percentual);
+            // $this->db->set('valor_medico', $percentual[0]->perc_medico);
+            // $this->db->set('percentual_medico', $percentual[0]->percentual);
         }
         $this->db->set('realizada', 'true');
         $this->db->set('senha', md5($exame_id));
@@ -15794,33 +15794,38 @@ ORDER BY ae.paciente_credito_id)";
             if (trim($erro) != "") { // erro de banco
                 return -1;
             } else {
-                $agenda_exames_id = $this->db->insert_id();
+                // Caso edite o aso, ele não tenta gravar de novo na agenda exames, já que está gravado
+                // Além do fato de que ao dar update não se tem um Insert_id, fazendo com que o sistema tenha uma parada
+                if (!$_POST['cadastro_aso_id'] > 0) {
+                    $agenda_exames_id = $this->db->insert_id();
+                    // var_dump($agenda_exames_id);
+                    // die;
+
+                    $this->db->set('senha', md5($agenda_exames_id));
+                    $this->db->where('agenda_exames_id', $agenda_exames_id);
+                    $this->db->update('tb_agenda_exames');
 
 
-                $this->db->set('senha', md5($agenda_exames_id));
-                $this->db->where('agenda_exames_id', $agenda_exames_id);
-                $this->db->update('tb_agenda_exames');
+                    $this->db->select('ep.autorizar_sala_espera');
+                    $this->db->from('tb_empresa e');
+                    $this->db->where('e.empresa_id', $this->session->userdata('empresa_id'));
+                    $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
+                    $this->db->orderby('e.empresa_id');
+                    $sala_de_espera_p = $this->db->get()->result();
 
+                    if (@$sala_de_espera_p[0]->autorizar_sala_espera == 'f') {
 
-                $this->db->select('ep.autorizar_sala_espera');
-                $this->db->from('tb_empresa e');
-                $this->db->where('e.empresa_id', $this->session->userdata('empresa_id'));
-                $this->db->join('tb_empresa_permissoes ep', 'ep.empresa_id = e.empresa_id', 'left');
-                $this->db->orderby('e.empresa_id');
-                $sala_de_espera_p = $this->db->get()->result();
+                        $tipo_grupo = $this->verificatipoprocedimento($procedimento_convenio_id);
+                        $dados['agenda_exames_id'] = $agenda_exames_id;
+                        $dados['medico'] = $_POST['medico'];
+                        $dados['paciente_id'] = $_POST['txtPacienteId'];
+                        $dados['procedimento_tuss_id'] = $procedimento_convenio_id;
+                        $dados['sala_id'] = $_POST['sala1'];
+                        $dados['guia_id'] = $ambulatorio_guia_id;
+                        $dados['tipo'] = 'CONSULTA';
 
-                if (@$sala_de_espera_p[0]->autorizar_sala_espera == 'f') {
-
-                    $tipo_grupo = $this->verificatipoprocedimento($procedimento_convenio_id);
-                    $dados['agenda_exames_id'] = $agenda_exames_id;
-                    $dados['medico'] = $_POST['medico'];
-                    $dados['paciente_id'] = $_POST['txtPacienteId'];
-                    $dados['procedimento_tuss_id'] = $procedimento_convenio_id;
-                    $dados['sala_id'] = $_POST['sala1'];
-                    $dados['guia_id'] = $ambulatorio_guia_id;
-                    $dados['tipo'] = $tipo_grupo;
-
-                    $this->enviarsaladeespera($dados);
+                        $this->enviarsaladeespera($dados);
+                    }
                 }
             }
 

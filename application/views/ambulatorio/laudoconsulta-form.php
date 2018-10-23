@@ -10,7 +10,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/jquery.tinymce.min.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/langs/pt_BR.js"></script>
@@ -22,7 +22,7 @@
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-meiomask.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
-<!--<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <head>
     <title>Laudo Consulta</title>
 </head>
@@ -1641,7 +1641,7 @@
     #sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
 </style>
 <!--<link rel="stylesheet" href="<?= base_url() ?>css/jquery-ui-1.8.5.custom.css">-->
-<script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<!-- <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script> -->
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui.js" ></script>

@@ -669,8 +669,13 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
                         //                       
                         var exame = [<?= implode(', ', @$config->procedimento1); ?>];
                         carregarProcedimentoAtualizar();
+                    //  Carrega os procedimentos quando a página atualiza e cria um array com os procedimentos
+                    // para os mesmos já virem selecionados em caso de edição
 <? } else { ?>
                         var exame = '';
+                        carregarProcedimentoAtualizar();
+                        //Se não houver procedimentos salvos nesse aso, ele entra na função e mostra os procedimentos
+                        // que existem para aquela função, deixando possível de alguém adicionar um procedimento
 <? }
 ?>
 
@@ -681,7 +686,7 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
 
                             for (var c = 0; c < j.length; c++) {
 //                                    alert(exame.indexOf(parseInt(j[c].procedimento_convenio_id)));
-//                                    alert(j[c].procedimento_convenio_id);
+                                //    alert(j[c].procedimento_convenio_id);
                                 if (exame.indexOf(parseInt(j[c].procedimento_convenio_id)) > -1) {
                                     options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
                                 } else {
@@ -801,7 +806,25 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
 
                         }
                     }
-                    calculoIdade();                   
+                    calculoIdade();   
+
+
+//                     function carregarProcedimentosAtualizar(){
+
+//                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+//                                 options = '<option value=""></option>';
+// //                                     console.log(j);
+//                                 for (var c = 0; c < j.length; c++) {
+//                                     options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+
+//                                 }
+// //                            $('#procedimento1').html(options).show();
+//                                 $('#procedimento1 option').remove();
+//                                 $('#procedimento1').append(options);
+//                                 $("#procedimento1").trigger("chosen:updated");
+// //                                    $('.carregando').hide();
+//                             });
+//                     }                
   
                     
                     function coordenador() {
@@ -871,6 +894,49 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
                         $("#setor").prop('required', false);
                         $("#funcao").prop('required', false);
 
+
+                        $.getJSON('<?= base_url() ?>ambulatorio/guia/listarriscos', {setor: $('#setor').val()}, function (j) {
+                              
+                              options = '<option value=""></option>';
+//                                alert('ola');
+                              for (var c = 0; c < j.length; c++) {
+//                                    console.log(j);
+                                  options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+
+
+                              }
+
+
+                              $('#riscos option').remove();
+                              $('#riscos').append(options);
+                              $("#riscos").trigger("chosen:updated");
+
+                          });
+<? if (count($convenioid) > 0) { ?>
+                              var aso = <?= $convenioid[0]->convenio_id ?>;
+<? } else { ?>
+                              alert('Não existe um convênio padrão associado para o Particular.')
+                              var aso = '';
+<? }
+?>
+          
+                          $.getJSON('<?= base_url() ?>cadastros/convenio/listarprocedimentossetores', {empresa: aso}, function (j) {
+                              options = '<option value=""></option>';
+                             
+                              for (var c = 0; c < j.length; c++) {
+
+                                  options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].nome + '</option>';
+
+
+                              }
+
+
+                              $('#procedimento1 option').remove();
+                              $('#procedimento1').append(options);
+                              $("#procedimento1").trigger("chosen:updated");
+
+                          });
+
 <? } else {
     ?>
                         //                            alert('eeee');
@@ -886,37 +952,37 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
 <? } ?>
 
 //                 });
-                            $.getJSON('<?= base_url() ?>ambulatorio/guia/listarriscos', {setor: $('#setor').val()}, function (j) {
+//                             $.getJSON('<?= base_url() ?>ambulatorio/guia/listarriscos', {setor: $('#setor').val()}, function (j) {
                               
-                                options = '<option value=""></option>';
-//                                alert('ola');
-                                for (var c = 0; c < j.length; c++) {
-//                                    console.log(j);
-                                    options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
+//                                 options = '<option value=""></option>';
+// //                                alert('ola');
+//                                 for (var c = 0; c < j.length; c++) {
+// //                                    console.log(j);
+//                                     options += '<option value="' + j[c].aso_risco_id + '">' + j[c].descricao_risco + '</option>';
 
 
-                                }
+//                                 }
 
 
-                                $('#riscos option').remove();
-                                $('#riscos').append(options);
-                                $("#riscos").trigger("chosen:updated");
+//                                 $('#riscos option').remove();
+//                                 $('#riscos').append(options);
+//                                 $("#riscos").trigger("chosen:updated");
 
-                            });
+//                             });
                             
-                            $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
-                                options = '<option value=""></option>';
-//                                     console.log(j);
-                                for (var c = 0; c < j.length; c++) {
-                                    options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
+//                             $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenioaso', {funcao: $('#funcao').val(), empresa: $('#convenio1').val(), setor: $('#setor').val()}, function (j) {
+//                                 options = '<option value=""></option>';
+// //                                     console.log(j);
+//                                 for (var c = 0; c < j.length; c++) {
+//                                     options += '<option selected value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + '</option>';
 
-                                }
-//                            $('#procedimento1').html(options).show();
-                                $('#procedimento1 option').remove();
-                                $('#procedimento1').append(options);
-                                $("#procedimento1").trigger("chosen:updated");
-//                                    $('.carregando').hide();
-                            });
+//                                 }
+// //                            $('#procedimento1').html(options).show();
+//                                 $('#procedimento1 option').remove();
+//                                 $('#procedimento1').append(options);
+//                                 $("#procedimento1").trigger("chosen:updated");
+// //                                    $('.carregando').hide();
+//                             });
 
 
                     $('#consulta').change(function () {
