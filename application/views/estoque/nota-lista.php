@@ -85,7 +85,7 @@
 
                                 <?
                                 if ($perfil_id != 10) {
-                                    if (date("Y-m-d", strtotime($item->data_cadastro)) == date("Y-m-d")) {
+                                    if (date("Y-m-d", strtotime($item->data_cadastro)) == date("Y-m-d") && $item->situacao != 'FINALIZADA') {
                                         ?>
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">                                  
                                                 <a href="<?= base_url() ?>estoque/nota/carregarnota/<?= $item->estoque_nota_id ?>">Editar</a></div>

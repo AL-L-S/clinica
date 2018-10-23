@@ -18,6 +18,7 @@ class Autocomplete extends Controller {
         $this->load->model('ambulatorio/exame_model', 'exame');
         $this->load->model('estoque/fornecedor_model', 'fornecedor_m');
         $this->load->model('estoque/produto_model', 'produto_m');
+        $this->load->model('estoque/nota_model', 'nota');
         $this->load->model('estoque/armazem_model', 'armazem');
         $this->load->model('ambulatorio/laudo_model', 'laudo');
         $this->load->model('ponto/cargo_model', 'cargo');
@@ -3574,6 +3575,21 @@ class Autocomplete extends Controller {
         foreach ($result as $item) {
             $retorno['value'] = $item->descricao;
             $retorno['id'] = $item->estoque_produto_id;
+            $var[] = $retorno;
+        }
+        echo json_encode($var);
+    }
+    
+    function nota() {
+
+        if (isset($_GET['term'])) {
+            $result = $this->nota->autocompletenota($_GET['term']);
+        } else {
+            $result = $this->nota->autocompletenota();
+        }
+        foreach ($result as $item) {
+            $retorno['value'] = $item->nota_fiscal;
+            $retorno['id'] = $item->estoque_nota_id;
             $var[] = $retorno;
         }
         echo json_encode($var);

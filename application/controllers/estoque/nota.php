@@ -63,11 +63,11 @@ class Nota extends BaseController {
 //        $this->loadView('estoque/fracionamento-form', $data);
 //    }
 //
-//    function relatoriosaldoarmazem() {
-//        $data['armazem'] = $this->entrada->listararmazem();
-//        $data['empresa'] = $this->guia->listarempresas();
-//        $this->loadView('estoque/relatoriosaldoarmazem', $data);
-//    }
+    function relatorionotas() {
+        $data['armazem'] = $this->entrada->listararmazem();
+        $data['empresa'] = $this->guia->listarempresas();
+        $this->loadView('estoque/relatorionotas', $data);
+    }
 //
 //    function gerarelatoriosaldoarmazem() {
 //        $armazem = $_POST['armazem'];
@@ -133,32 +133,32 @@ class Nota extends BaseController {
 //        $this->load->View('estoque/impressaorelatoriosaldo', $data);
 //    }
 //    
-//    function gerarelatoriosaldoprodutos() {
-//        $armazem = $_POST['armazem'];
-//        $estoque_fornecedor_id = $_POST['txtfornecedor'];
-//        $estoque_produto_id = $_POST['txtproduto'];
-//        if ($armazem == 0) {
-//            $data['armazem'] = 0;
-//        } else {
-//            $data['armazem'] = $this->entrada->listararmazemcada($armazem);
-//        }
-//        if ($estoque_fornecedor_id == '') {
-//            $data['fornecedor'] = 0;
-//        } else {
-//            $data['fornecedor'] = $this->entrada->listarfornecedorcada($estoque_fornecedor_id);
-//        }
-//        if ($estoque_produto_id == '') {
-//            $data['produto'] = 0;
-//        } else {
-//            $data['produto'] = $this->entrada->listarprodutocada($estoque_produto_id);
-//        }
-//
-//        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
-//        $data['contador'] = $this->entrada->relatoriosaldoprodutoscontador();
-//        $data['relatorio'] = $this->entrada->relatoriosaldoprodutos();
-//        $this->load->View('estoque/impressaorelatoriosaldoprodutos', $data);
-//    }
-//
+    function gerarelatorionotas() {
+        $armazem = $_POST['armazem'];
+        $estoque_fornecedor_id = $_POST['txtfornecedor'];
+        $estoque_nota_id = $_POST['txtnota'];
+//        var_dump($_POST);die;
+        if ($armazem == 0) {
+            $data['armazem'] = 0;
+        } else {
+            $data['armazem'] = $this->entrada->listararmazemcada($armazem);
+        }
+        if ($estoque_fornecedor_id == '') {
+            $data['fornecedor'] = 0;
+        } else {
+            $data['fornecedor'] = $this->entrada->listarfornecedorcada($estoque_fornecedor_id);
+        }
+        if ($estoque_nota_id == '') {
+            $data['nota'] = 0;
+        } else {
+            $data['nota'] = $this->nota->listarnotacada($estoque_nota_id);
+        }
+
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->nota->relatorionotas();
+        $this->load->View('estoque/impressaorelatorionotas', $data);
+    }
+
 //    function relatoriominimo() {
 //        $data['armazem'] = $this->entrada->listararmazem();
 //        $data['empresa'] = $this->guia->listarempresas();

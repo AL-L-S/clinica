@@ -159,6 +159,7 @@
         $empresa_id = $this->session->userdata('empresa_id');
         $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
 
+
         $sala = "";
         $ordenador1 = "";
         $sala_id = "";
@@ -178,7 +179,8 @@
             $convenio_paciente = $exames[0]->convenio_id;
             $ordenador1 = $exames[0]->ordenador;
         }
-//        var_dump($ordenador1); die;
+//        echo'<pre>';
+//        var_dump($convenio); die;
         ?>
         <h3 class="singular"><a href="#">Marcar exames</a></h3>
         <div>
@@ -240,7 +242,9 @@
 
                             <tr>
                                 <th width="70px;" class="tabela_header">Sala*</th>
+                                <?if($empresapermissoes[0]->laboratorio_sc != 't'){?>
                                 <th class="tabela_header">Medico*</th>
+                                <?}?>
                                 <th class="tabela_header">Qtde*</th>
                                 <th colspan="2" class="tabela_header">Solicitante*</th>
                                 <th class="tabela_header">Convenio*</th>
@@ -268,6 +272,7 @@
                                             </option>
                                         <? endforeach; ?>
                                     </select></td>
+                                <?if($empresapermissoes[0]->laboratorio_sc != 't'){?>
                                 <td> 
                                     <select  name="medicoagenda" id="medicoagenda" class="size1"  required="">
                                         <option value="">Selecione</option>
@@ -279,9 +284,24 @@
                                                 <? endforeach; ?>
                                     </select>
                                 </td>
+                                <?}?>
                                 <td  width="10px;"><input type="text" name="qtde1" id="qtde1" value="1" class="texto00" required=""/></td>
                                 <td  width="50px;"><input type="text" name="medico1" id="medico1" value="<?= $medico_solicitante; ?>" class="size1"  required=""/></td>
                                 <td  width="50px;"><input type="hidden" name="crm1" id="crm1" value="<?= $medico_solicitante_id; ?>" class="texto01"/></td>
+                                <?if(count($convenio) == 1){?>
+                                <td  width="50px;">
+                                    <select  name="convenio1" id="convenio1" class="size1" required="" >                                        
+                                        <?
+                                        foreach ($convenio as $item) :
+                                            $lastConv = $exames[count($exames) - 1]->convenio_id;
+                                            ?>
+                                            <option value="<?= $item->convenio_id; ?>" <? if ($lastConv == $item->convenio_id) echo 'selected'; ?>>
+                                                <?= $item->nome; ?>
+                                            </option>
+                                        <? endforeach; ?>
+                                    </select>
+                                </td>
+                                <?}else{?>
                                 <td  width="50px;">
                                     <select  name="convenio1" id="convenio1" class="size1" required="" >
                                         <option value="-1">Selecione</option>
@@ -295,6 +315,7 @@
                                         <? endforeach; ?>
                                     </select>
                                 </td>
+                                <? } ?>
                                 <td  width="50px;">
                                     <select  name="grupo1" id="grupo1" class="size1" >
                                         <option value="">Selecione</option>

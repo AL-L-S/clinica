@@ -288,3 +288,10 @@ ALTER TABLE ponto.tb_agenda ADD COLUMN intervalo integer;
 ALTER TABLE ponto.tb_agenda ADD COLUMN datacon_inicio date;
 ALTER TABLE ponto.tb_agenda ADD COLUMN datacon_fim date;
 ALTER TABLE ponto.tb_agenda ADD COLUMN consolidada boolean DEFAULT false;
+-- Data 22/10/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN laboratorio_sc boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_estoque_nota ADD COLUMN situacao character varying(30) DEFAULT 'PENDENTE'::character varying;
+
+ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN estoque_nota_id integer;

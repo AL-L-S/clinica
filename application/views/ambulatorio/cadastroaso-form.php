@@ -866,6 +866,10 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
                         $('#funcao').hide();
                         $('#funcao2').show();
                         $('#divcoordenador').show();
+                        $("#consulta").prop('required', false);
+                        $("#convenio1").prop('required', false);
+                        $("#setor").prop('required', false);
+                        $("#funcao").prop('required', false);
 
 <? } else {
     ?>
@@ -878,6 +882,7 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
                         $('#funcao2').hide();
                         $('#funcao').show();
                         $('#divcoordenador').hide();
+                        $("#consulta").prop('required', false);
 <? } ?>
 
 //                 });

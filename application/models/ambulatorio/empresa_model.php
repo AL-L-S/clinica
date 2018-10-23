@@ -1636,6 +1636,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('manternota', 'f');
                     }
+                    if (isset($_POST['laboratorio_sc'])) {
+                        $this->db->set('laboratorio_sc', 't');
+                    } else {
+                        $this->db->set('laboratorio_sc', 'f');
+                    }
                     if (isset($_POST['financeiro_cadastro'])) {
                         $this->db->set('financeiro_cadastro', 't');
                     } else {
@@ -2489,6 +2494,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('manternota', 'f');
                     }
+                    if (isset($_POST['laboratorio_sc'])) {
+                        $this->db->set('laboratorio_sc', 't');
+                    } else {
+                        $this->db->set('laboratorio_sc', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -2534,6 +2544,7 @@ class empresa_model extends Model {
                                data_contaspagar,
                                medico_laudodigitador,
                                laboratorio,
+                               ep.laboratorio_sc,
                                ponto,
                                marketing,
                                imagem,
@@ -2752,6 +2763,7 @@ class empresa_model extends Model {
             $this->_excluir_transferencia = $return[0]->excluir_transferencia;
             $this->_imagem = $return[0]->imagem;
             $this->_laboratorio = $return[0]->laboratorio;
+            $this->_laboratorio_sc = $return[0]->laboratorio_sc;
             $this->_ponto = $return[0]->ponto;
             $this->_impressao_tipo = $return[0]->impressao_tipo;
             $this->_impressao_laudo = $return[0]->impressao_laudo;

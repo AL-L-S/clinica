@@ -1012,6 +1012,14 @@ class Guia extends BaseController {
                 $this->load->View('ambulatorio/impressaofichageral', $data);
             }
         }
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 22) { //MULTICLINICAS HORIZONTE 
+            
+                $this->load->View('ambulatorio/impressaofichahorizontegeral', $data);           
+                
+            
+        }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1638,8 +1646,15 @@ class Guia extends BaseController {
     }
 
     function gravarprocedimentos() {
+//        echo'<pre>';
+//        var_dump($_POST);die;
+        $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
         $procedimentopercentual = $_POST['procedimento1'];
+        if(isset($_POST['medicoagenda'])){
         $medicopercentual = $_POST['medicoagenda'];
+        }else{
+        $medicopercentual = 0;    
+        }
         $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
         if (count($percentual) == 0) {
             $percentual = $this->guia->percentualmedicoprocedimento($procedimentopercentual, $medicopercentual);
@@ -1662,7 +1677,7 @@ class Guia extends BaseController {
             } else {
                 redirect(base_url() . "ambulatorio/guia/novo/$paciente_id");
             }
-        } elseif ($_POST['sala1'] == '' || $_POST['medicoagenda'] == '' || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+        } elseif ($_POST['sala1'] == '' ||( $_POST['medicoagenda'] == '' && $empresapermissoes[0]->laboratorio != 't')|| $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
             if (isset($_POST['guia_id'])) {
@@ -1682,7 +1697,7 @@ class Guia extends BaseController {
             $paciente_id = $_POST['txtpaciente_id'];
             $resultadoguia = $this->guia->listarguia($paciente_id);
 
-            if ($_POST['medicoagenda'] != '') {
+            if ($_POST['medicoagenda'] != '' || ( $_POST['medicoagenda'] == '' && $empresapermissoes[0]->laboratorio_sc == 't')) {
                 if ($resultadoguia == null) {
                     $ambulatorio_guia = $this->guia->gravarguia($paciente_id);
                 } else {
@@ -1695,17 +1710,7 @@ class Guia extends BaseController {
                 $nascimento_str = str_replace('-','', @$paciente_informacoes[0]->nascimento);
                 $sexo = (@$paciente_informacoes[0]->sexo != '') ? @$paciente_informacoes[0]->sexo : '';
                 $string_worklist = @$paciente_informacoes[0]->nome . ";{$ambulatorio_guia};$nascimento_str;{$convenio_informacoes[0]->nome};{$sexo};V2; \n";
-//                if (!is_dir("./upload/RIS")) {
-//                    mkdir("./upload/RIS");
-//                    $destino = "./upload/RIS";
-//                    chmod($destino, 0777);
-//                }
-//                $fp = fopen("./upload/RIS/worklist.txt", "a+");
-//                $escreve = fwrite($fp, $string_worklist);
-//                fclose($fp);
-//                chmod("./upload/RIS/worklist.txt", 0777);
-//                var_dump($string_worklist);
-//                die;
+
 
 
                 if ($agrupador[0]->agrupador != 't') {

@@ -958,6 +958,7 @@ function debug($object) {
                                 <li><span class="folder">Relatorios</span>
     <? if ($perfil_id == 1 || $perfil_id == 8 || $perfil_id == 10) { ?>
                                         <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatoriosaldoproduto">Relatorio Saldo Produtos</a></span></ul>
+                                        <ul><span class="file"><a href="<?= base_url() ?>estoque/nota/relatorionotas">Relatorio Nota</a></span></ul>
 
 
                                         <ul><span class="file"><a href="<?= base_url() ?>estoque/entrada/relatorioentradaarmazem">Relatorio Entrada Produtos</a></span></ul>

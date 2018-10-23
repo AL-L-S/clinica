@@ -378,7 +378,7 @@
                                         <td> <input type="checkbox" id="especialidade" name="especialidade" <? if (@$obj->_especialidade == 't') echo "checked"; ?>/></td><td><label title="Habilitar Modulo de Especialidade.">Especialidade</label></td>
                                         <td> <input type="checkbox" id="odontologia" name="odontologia" <? if (@$obj->_odontologia == 't') echo "checked"; ?>/></td><td><label title="Habilitar Modulo de Odontologia.">Odontologia</label></td>
                                         <td> <input type="checkbox" id="oftamologia" name="oftamologia" <? if (@$obj->_oftamologia == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, oftamologia irá aparecer na consulta.">Oftalmologia</label></td>
-                                        <td> <input type="checkbox" id="laboratorio" name="laboratorio" <? if (@$obj->_laboratorio == 't') echo "checked"; ?>/></td><td><label title="Habilitar Laboratorio.">Laboratorio</label></td>
+                                        <td> <input type="checkbox" id="laboratorio" name="laboratorio" <? if (@$obj->_laboratorio == 't') echo "checked"; ?>/></td><td><label title="Habilitar Laboratorio.">Integração Laboratório</label></td>
                                     </tr>
                                     <tr>                                        
                                         <td> <input type="checkbox" id="geral" name="geral" <? if (@$obj->_geral == 't') echo "checked"; ?>/></td><td><label title="Habilitar Geral.">Geral</label></td>
@@ -398,6 +398,7 @@
                                     </tr>
                                     <tr>
                                        <td><input type="checkbox" id="medicinadotrabalho" name="medicinadotrabalho" <? if (@$obj->_medicinadotrabalho == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag todas as funções relacionadas com Medicina do Trabalho estarão disponíveis no sistema.">Medicina do Trabalho</label></td> 
+                                       <td><input type="checkbox" id="laboratorio_sc" name="laboratorio_sc" <? if (@$obj->_laboratorio_sc == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag não será necessário selecionar um médico na hora de adicionar um novo exame.">Laboratório</label></td> 
                                     </tr>
                                 </table>
                             </fieldset>
