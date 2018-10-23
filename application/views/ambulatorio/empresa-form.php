@@ -468,8 +468,7 @@
                                             <td><input type="checkbox" id="desabilitar_trava_retorno" name="desabilitar_trava_retorno" <? if (@$obj->_desabilitar_trava_retorno == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o sistema não irá mais barrar o lançamento de procedimentos do tipo Retorno.">Desabilitar trava no Retorno</label></td>
                                             <td><input type="checkbox" id="desativar_personalizacao_impressao" name="desativar_personalizacao_impressao" <? if (@$obj->_desativar_personalizacao_impressao == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, as opçoes de impressao, tais como assinatura e carimbo, deixaram de aparecer na tela do médico.">Desativar personalização da impressao dos medicos</label></td>
                                             <td><input type="checkbox" id="orcamento_multiplo" name="orcamento_multiplo" <? if (@$obj->_orcamento_multiplo == 't') echo "checked"; ?>/></td><td><label title="Ativando essa opção os orçamentos do cadastro e recepção terão o padrão multiplo. Será possível adicionar mais de um procedimento ao mesmo tempo.">Orçamento Multiplo</label></td>
-                                            <!-- <td></td><td></td> -->
-                                            <td></td><td></td>
+                                            <td><input type="checkbox" id="agenda_modelo2" name="agenda_modelo2" <? if (@$obj->_agenda_modelo2 == 't') echo "checked"; ?>/></td><td><label title="Ativando essa opção, a agenda será criada a partir do modelo pedido pela Clinica Med. Agora a agenda é diretamente associada ao médico e ao Tipo Agenda antes de ser de fato criada">Criação de Agenda Modelo 2</label></td>
                                         </tr>
                                     </table>
                                 </fieldset>

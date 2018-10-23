@@ -559,6 +559,40 @@ class exametemp_model extends Model {
         return $return->result();
     }
 
+    function listarhorarioscalendarioagendacriada($agenda_id = null, $situacao = null) {
+        $data = date('Y-m-d');
+        $data_passado = date('Y-m-d', strtotime("-1 year", strtotime($data)));
+        $data_futuro = date('Y-m-d', strtotime("+1 year", strtotime($data)));
+        $empresa_atual = $this->session->userdata('empresa_id');
+        $this->db->select('ae.data, count(ae.data) as contagem, situacao');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+
+        $this->db->where("(ae.situacao = 'LIVRE' OR ae.situacao = 'OK')");
+//        $this->db->where("ae.tipo IN ('CONSULTA', 'ESPECIALIDADE', 'FISIOTERAPIA', 'EXAME') OR ae.tipo is null");
+        $this->db->where("ae.data is not null");
+//        if ($grupo != '') {
+//        }
+        $this->db->where("ae.data >", $data_passado);
+        $this->db->where("ae.data <", $data_futuro);
+        $this->db->where("ae.horarioagenda_id", $agenda_id);
+        if ($situacao == 'OK') {
+            $this->db->where("ae.paciente_id is not null");
+        } elseif ($situacao == 'LIVRE') {
+            $this->db->where("ae.paciente_id is null");
+        } else {
+
+        }
+        $this->db->where('ae.bloqueado', 'f');
+
+        $this->db->groupby("ae.data, situacao");
+
+        $this->db->orderby("ae.data, situacao");
+
+        $return = $this->db->get();
+        return $return->result();
+    }
     function listarhorarioscalendariovago($medico = null, $especialidade = null, $empresa_id = null, $sala_id = null, $grupo = null, $tipoagenda = null) {
         $data = date('Y-m-d');
         $data_passado = date('Y-m-d', strtotime("-1 year", strtotime($data)));

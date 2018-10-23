@@ -149,3 +149,142 @@ ALTER TABLE ponto.tb_agenda_exames ADD COLUMN data_ajuste_faturamento timestamp 
 -- Data 18/10/2018
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN manternota boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN agenda_modelo2 boolean DEFAULT false;
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3090');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000031',
+            'Agora no Manter Percentual Médico já é possível ajustar os valores de mais de um convênio, médico e etc. E além disso ao clicar em Ajuste Percentual, ele abre o outro campo para digitar um ajuste em percentual podendo assim aumentar 10% do valor de um profissional por exemplo',
+            '3090',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3094');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000031',
+            'No orçamento as datas no campo de data de preferência são listadas baseadas no "Tipo Agenda" utilizado na criação da mesma.',
+            '3094',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3107');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000031',
+            'Em Novo Agrupador (Manter Procedimentos) os filtros de pesquisa foram reposicionados baseados nos campos logo abaixo, ou seja, o filtro de grupo fica logo acima dos grupos dos procedimentos na listagem, o de nome em cima do nome do procedimento e etc.',
+            '3107',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3108');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000031',
+            'Nos procedimentos dos convenios filhos colocado um botao "desativar" que irá desativar o procedimento para todas as empresas',
+            '3108',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3083');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000031',
+            'Atualmente no cadastro de empresa existe um local onde é possível definir o horário de funcionamento da empresa. O mesmo aparecia apenas na ficha. Agora através dele, as agendas criadas são limitadas temporalmente baseando-se nesse horário cadastrado, ou seja, em caso de a clinica só funcionar de 08:00 as 12:00, os horários lançados serão ajustados para não ocorrer problemas como alguém agendar um paciente para um horário onde a empresa não funciona',
+            '3083',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3109');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000031',
+            'Existe a opção de transformar os orçamentos em "orçamento multiplo", isso irá fazer com que seja possível lançar mais de um procedimento ao mesmo tempo no orçamento. No orçamento padrão, você lança um procedimento de cada vez, utilizando esse novo método, você consegue lançar vários ao mesmo tempo e apenas alterar os detalhes posteriormente.',
+            '3109',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+-- 22/10/2018
+
+ALTER TABLE ponto.tb_agenda ADD COLUMN medico_id integer;
+ALTER TABLE ponto.tb_agenda ADD COLUMN tipo_agenda integer;
+ALTER TABLE ponto.tb_agenda ADD COLUMN intervalo integer;
+ALTER TABLE ponto.tb_agenda ADD COLUMN datacon_inicio date;
+ALTER TABLE ponto.tb_agenda ADD COLUMN datacon_fim date;
+ALTER TABLE ponto.tb_agenda ADD COLUMN consolidada boolean DEFAULT false;

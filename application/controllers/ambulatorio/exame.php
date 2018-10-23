@@ -186,6 +186,11 @@ class Exame extends BaseController {
         $this->loadView('ambulatorio/examemultifuncaogeral-lista', $args);
     }
 
+    function calendariohorariosagenda($args = array()) {
+        // var_dump($_GET); die;
+        $this->load->View('ambulatorio/calendariohorariosagenda', $args);
+    }
+
     function listarmultifuncaocalendario2($args = array()) {
 
         $this->load->View('ambulatorio/calendario2', $args);
@@ -2903,6 +2908,191 @@ class Exame extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/procedimento");
     }
+
+    function gravarintervalogeralmodelo2() {
+        $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));
+        $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatafinal'])));
+        $intervalo = (int) $_POST['txtintervalo'];
+
+        $agenda_id = $_POST['txthorario'];
+        $tipo_agenda_id = $_POST['tipo_agenda_id'];
+        $medico_id = $_POST['txtmedico'];
+        // Deletando os horários para recria-los caso a agenda seja consolidada novamente
+        $deletarHorarios = $this->agenda->deletaragendacriacaogeralmodelo2($agenda_id);
+        // Gravando as informacoes de data inicial/final
+        $gravarAgenda = $this->agenda->gravarAgendaData($agenda_id);
+        // echo '<pre>';
+        // var_dump($_POST); die;
+
+        if ($intervalo != '' && $intervalo > 0) {
+
+            // Data inicial
+            $datainicial_intervalo = $datainicial;
+
+            // Pega a quantidade de dias que faltam até encerrar a semana da data inicial
+            $diasAteFimDaSemana = 6 - date("N", strtotime($datainicial));
+
+            // Data equivalente ao ultimo dia da semana da data inicial      
+            $datafinal_intervalo = date('Y-m-d', strtotime("+$diasAteFimDaSemana days", strtotime($datainicial)));
+
+            while (strtotime($datafinal_intervalo) <= strtotime($datafinal)) {
+
+                $this->gravargeralmodelo2($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
+
+                // Avança o marcador inicial para o primeiro dia da semana seguinte
+                $datainicial_intervalo = date('Y-m-d', strtotime("+" . $intervalo . " week 1 day", strtotime($datafinal_intervalo)));
+
+                // Avança o marcador final para o ultimo dia da semana seguinte
+                $datafinal_intervalo = date('Y-m-d', strtotime("+" . $intervalo + 1 . " week", strtotime($datafinal_intervalo)));
+
+                if (strtotime($datafinal_intervalo) >= strtotime($datafinal)) {
+                    // Caso o marcador final fique maior que a data final informada na criaçao da agenda, ele repoe o valor do marcador
+                    // Pela data maxima que a agenda pode ser criada (ou seja, a data que o usuario informou)
+                    $datafinal_intervalo = $datafinal;
+
+                    // Em seguida ele salva e sai do laço
+                    $this->gravargeralmodelo2($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id);
+                    break; // Se tirar esse trecho, ele irá ficar no loop eternamente
+                }
+            }
+        } else {
+            $this->gravargeralmodelo2($datainicial, $datafinal, $agenda_id, $medico_id);
+        }
+        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/agenda/novohorarioagendamodelo2/$agenda_id");
+    }
+
+    function gravargeralmodelo2($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $medico_id) {
+        //        var_dump($datainicial_intervalo, $datafinal_intervalo, $agenda_id, $sala_id, $medico_id);
+        //        die;
+        //        $agenda_id = $_POST['txthorario'];
+        //        $sala_id = $_POST['txtsala'];
+        //        $medico_id = $_POST['txtmedico'];
+                $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $datainicial_intervalo)));
+                $datafinal = date("Y-m-d", strtotime(str_replace("/", "-", $datafinal_intervalo)));
+                $nome = $_POST['txtNome'];
+        
+                $tipo = $this->agenda->listartiposala();
+                $tipo = $tipo[0]->tipo;
+                
+                
+                $horarioagenda = $this->agenda->listarhorarioagendacriacaogeralmodelo2($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
+                // echo '<pre>';
+                // var_dump($horarioagenda); die;
+                $id = 0;
+        
+                foreach ($horarioagenda as $item) {
+        
+                    $tempoconsulta = $item->tempoconsulta;
+                    $qtdeconsulta = $item->qtdeconsulta;
+                    $qtdeconsulta = (int) $qtdeconsulta;
+                    $horarioagenda_id = $item->horarioagenda_id;
+                    $empresa_id = $item->empresa_id;
+                    $obs = $item->observacoes;
+                    $sala_id = $item->sala_id;
+        
+                    if (($qtdeconsulta != 0) && ($item->intervaloinicio == "00:00:00")) {
+                        $entrada = $item->horaentrada1;
+                        $saida = $item->horasaida1;
+                        $hora1 = explode(":", $entrada);
+                        $hora2 = explode(":", $saida);
+                        $acumulador1 = ($hora1[0] * 60) + $hora1[1];
+                        $acumulador2 = ($hora2[0] * 60) + $hora2[1];
+                        $resultado = $acumulador2 - $acumulador1;
+                        $tempoconsulta = $resultado / $item->qtdeconsulta;
+                        $tempoconsulta = (int) $tempoconsulta + 1;
+                    }
+                    if (($qtdeconsulta != 0) && ($item->intervaloinicio != "00:00:00")) {
+                        $entrada = $item->horaentrada1;
+                        $saida = $item->horasaida1;
+                        $intervaloinicio = $item->intervaloinicio;
+                        $intervalofim = $item->intervalofim;
+                        $hora1 = explode(":", $entrada);
+                        $hora2 = explode(":", $saida);
+                        $horainicio = explode(":", $intervaloinicio);
+                        $horafim = explode(":", $intervalofim);
+                        $acumulador1 = ($hora1[0] * 60) + $hora1[1];
+                        $acumulador2 = ($hora2[0] * 60) + $hora2[1];
+                        $acumulador3 = ($horainicio[0] * 60) + $horainicio[1];
+                        $acumulador4 = ($horafim[0] * 60) + $horafim[1];
+                        $resultado = ($acumulador3 - $acumulador1) + ($acumulador2 - $acumulador4);
+                        $tempoconsulta = $resultado / $item->qtdeconsulta;
+                        $tempoconsulta = (int) $tempoconsulta + 1;
+                    }
+        
+                    for ($index = $datainicial; strtotime($index) <= strtotime($datafinal); $index = date('d-m-Y', strtotime("+1 days", strtotime($index)))) {
+        
+                        $data = strftime("%A", strtotime($index));
+        
+                        switch ($data) {
+                            case"Sunday": $data = "Domingo";
+                                break;
+                            case"Monday": $data = "Segunda";
+                                break;
+                            case"Tuesday": $data = "Terça";
+                                break;
+                            case"Wednesday": $data = "Quarta";
+                                break;
+                            case"Thursday": $data = "Quinta";
+                                break;
+                            case"Friday": $data = "Sexta";
+                                break;
+                            case"Saturday": $data = "Sabado";
+                                break;
+                        }
+                        $i = 0;
+                        $horaconsulta = 0;
+                        $horaverifica = 0;
+                        $horasaida = 0;
+                        if ($data == substr($item->dia, 4)) {
+                            for ($horaindex = $item->horaentrada1; $horaindex <= $item->horasaida1; $horaindex = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaindex)))) {
+        
+                                if ($item->intervaloinicio == "00:00:00") {
+                                    if ($i == 0) {
+                                        $horaconsulta = date('H:i:s', strtotime($item->horaentrada1));
+                                        $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($item->horaentrada1)));
+                                        $i = 1;
+                                        if ($id == 0) {
+                                            $id = $this->exame->gravarnome($nome);
+                                        }
+                                        $this->exame->gravargeralmodelo2($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs, $tipo);
+                                    }
+                                    if (( $horaverifica < $item->horasaida1)) {
+                                        $x = 1;
+                                        $horaconsulta = $horaverifica;
+                                        $horasaida = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
+                                        $this->exame->gravargeralmodelo2($horarioagenda_id, $agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs, $tipo);
+                                    }
+                                    $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
+                                } else {
+                                    if ($i == 0) {
+                                        $horaconsulta = date('H:i:s', strtotime($item->horaentrada1));
+                                        $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($item->horaentrada1)));
+                                        $i = 1;
+                                        if ($id == 0) {
+                                            $id = $this->exame->gravarnome($nome);
+                                        }
+                                        $this->exame->gravargeralmodelo2($horarioagenda_id, $agenda_id, $horaconsulta, $horaverifica, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs, $tipo);
+                                    }
+                                    if ((($horaverifica < $item->intervaloinicio) || ($horaverifica >= $item->intervalofim)) && ( $horaverifica < $item->horasaida1)) {
+                                        $x = 1;
+                                        $horaconsulta = $horaverifica;
+                                        $horasaida = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
+                                        $this->exame->gravargeralmodelo2($horarioagenda_id, $agenda_id, $horaconsulta, $horasaida, $nome, $datainicial, $datafinal, $index, $sala_id, $id, $medico_id, $empresa_id, $obs, $tipo);
+                                    }
+                                    $horaverifica = date('H:i:s', strtotime("+ $tempoconsulta minutes", strtotime($horaverifica)));
+                                }
+                            }
+                        }
+                    }
+                }
+        
+        //        $data['mensagem'] = 'Sucesso ao gravar o Agenda.';
+        //        $this->session->set_flashdata('message', $data['mensagem']);
+        //        redirect(base_url() . "ambulatorio/agenda");
+            }
 
     function gravarintervalogeral() {
         $datainicial = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['txtdatainicial'])));

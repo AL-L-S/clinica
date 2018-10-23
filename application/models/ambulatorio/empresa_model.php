@@ -1441,6 +1441,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('gerente_recepcao_top_saude', 'f');
                     }
+                    if (isset($_POST['agenda_modelo2'])) {
+                        $this->db->set('agenda_modelo2', 't');
+                    } else {
+                        $this->db->set('agenda_modelo2', 'f');
+                    }
                     if (isset($_POST['orcamento_multiplo'])) {
                         $this->db->set('orcamento_multiplo', 't');
                     } else {
@@ -2037,6 +2042,11 @@ class empresa_model extends Model {
                         $this->db->set('profissional_completo', 't');
                     } else {
                         $this->db->set('profissional_completo', 'f');
+                    }
+                    if (isset($_POST['agenda_modelo2'])) {
+                        $this->db->set('agenda_modelo2', 't');
+                    } else {
+                        $this->db->set('agenda_modelo2', 'f');
                     }
                     if (isset($_POST['autorizar_sala_espera'])) {
                         $this->db->set('autorizar_sala_espera', 't');
@@ -2655,6 +2665,7 @@ class empresa_model extends Model {
                                ep.medicinadotrabalho,
                                ep.limitar_acesso,
                                ep.manternota,
+                               ep.agenda_modelo2,
                                ep.perfil_marketing_p,
                                ep.botao_ficha_convenio
                                ');
@@ -2676,6 +2687,7 @@ class empresa_model extends Model {
             $this->_profissional_externo = $return[0]->profissional_externo;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
+            $this->_agenda_modelo2 = $return[0]->agenda_modelo2;
             $this->_endereco_integracao_lab = $return[0]->endereco_integracao_lab;
             $this->_identificador_lis = $return[0]->identificador_lis;
             $this->_origem_lis = $return[0]->origem_lis;
