@@ -6213,6 +6213,7 @@ class exame_model extends Model {
                             ae.tipo,
                             ae.data_faturar,
                             ae.data,
+                            ae.valor,
                             observacao_faturamento');
         $this->db->from('tb_ambulatorio_guia g');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = g.ambulatorio_guia_id', 'left');

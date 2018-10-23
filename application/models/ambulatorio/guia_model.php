@@ -686,6 +686,7 @@ class guia_model extends Model {
                             ae.data_recebido,
                             ae.empresa_id,
                             emp.nome as empresa,
+                            emp.email,
                             ae.empresa_id,
                             ae.entregue,
                             ae.data_entregue,
@@ -8502,6 +8503,7 @@ class guia_model extends Model {
                             ep.telefone as telefoneempresa,
                             ep.celular as celularempresa,
                             ep.bairro,
+                            ep.email,
                             ep.razao_social,
                             es.nome as sala,
                             ae.cid,
@@ -13955,7 +13957,7 @@ ORDER BY ae.paciente_credito_id)";
         return $medico_id;
     }
 
-    function gravarexames($ambulatorio_guia_id, $medico_id, $percentual, $percentual_laboratorio) {
+    function gravarexames($ambulatorio_guia_id, $medico_id, $percentual, $percentual_laboratorio, $medicopercentual) {
         try {
 //            var_dump($_POST); die;
             $horario = date("Y-m-d H:i:s");
@@ -14002,13 +14004,14 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('percentual_laboratorio', $percentual_laboratorio[0]->percentual);
                 $this->db->set('laboratorio_id', $percentual_laboratorio[0]->laboratorio);
             }
+            $empresa_id = $this->session->userdata('empresa_id');            
 //            var_dump($percentual_laboratorio); die;
             $this->db->set('valor_medico', $percentual[0]->perc_medico);
             $this->db->set('percentual_medico', $percentual[0]->percentual);
             $this->db->set('procedimento_tuss_id', $_POST['procedimento1']);
-            if ($_POST['medicoagenda'] != "") {
-                $this->db->set('medico_agenda', $_POST['medicoagenda']);
-                $this->db->set('medico_consulta_id', $_POST['medicoagenda']);
+            if ($medicopercentual != "") {
+                $this->db->set('medico_agenda', $medicopercentual);
+                $this->db->set('medico_consulta_id', $medicopercentual);
             }
 
             $valorProc = $_POST['valor1'];
@@ -14049,7 +14052,7 @@ ORDER BY ae.paciente_credito_id)";
                     $this->db->set('valor_forma_pagamento_ajuste', (float) $_POST['valorAjuste']);
                 }
             }
-            $empresa_id = $this->session->userdata('empresa_id');
+            
             $this->db->set('empresa_id', $empresa_id);
             $this->db->set('confirmado', 't');
             $this->db->set('tipo', 'EXAME');
@@ -14163,7 +14166,7 @@ ORDER BY ae.paciente_credito_id)";
 
                     $tipo_grupo = $this->verificatipoprocedimento($_POST['procedimento1']);
                     $dados['agenda_exames_id'] = $agenda_exames_id;
-                    $dados['medico'] = $_POST['medicoagenda'];
+                    $dados['medico'] = $medicopercentual;
                     $dados['paciente_id'] = $_POST['txtpaciente_id'];
                     $dados['procedimento_tuss_id'] = $_POST['procedimento1'];
                     $dados['sala_id'] = $_POST['sala1'];
