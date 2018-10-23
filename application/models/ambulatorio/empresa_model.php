@@ -1561,6 +1561,12 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('manter_indicacao', 'f');
                     }
+                    if (isset($_POST['faturamento_novo'])) {
+                        $this->db->set('faturamento_novo', 't');
+                    } else {
+                        $this->db->set('faturamento_novo', 'f');
+                    }
+
                     if (isset($_POST['fila_impressao'])) {
                         $this->db->set('fila_impressao', 't');
                     } else {
@@ -2148,6 +2154,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('laudo_sigiloso', 'f');
                     }
+                    if (isset($_POST['faturamento_novo'])) {
+                        $this->db->set('faturamento_novo', 't');
+                    } else {
+                        $this->db->set('faturamento_novo', 'f');
+                    }
                     if (isset($_POST['gerente_contasapagar'])) {
                         $this->db->set('gerente_contasapagar', 't');
                     } else {
@@ -2675,6 +2686,7 @@ class empresa_model extends Model {
                                ep.integracaosollis,
                                ep.medicinadotrabalho,
                                ep.limitar_acesso,
+                               ep.faturamento_novo,
                                ep.manternota,
                                ep.agenda_modelo2,
                                ep.perfil_marketing_p,
@@ -2696,6 +2708,7 @@ class empresa_model extends Model {
             $this->_orcamento_multiplo = $return[0]->orcamento_multiplo;
             $this->_profissional_agendar = $return[0]->profissional_agendar;
             $this->_profissional_externo = $return[0]->profissional_externo;
+            $this->_faturamento_novo = $return[0]->faturamento_novo;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;
             $this->_agenda_modelo2 = $return[0]->agenda_modelo2;

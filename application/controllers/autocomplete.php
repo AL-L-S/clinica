@@ -1970,14 +1970,18 @@ class Autocomplete extends Controller {
 
         if ($_GET['funcao'] != '') {
             $result = $this->exametemp->listarautocompleteprocedimentos2($_GET['funcao'], $_GET['empresa'], $_GET['setor']);
-            
+            // echo '<pre>';
+
             $json_exames = json_decode($result[0]->exames_id);
-            if($result[0]->exames_id != null){
-            $result2 = $this->saudeocupacional->listarautocompleteexamesjson2($json_exames);
-            echo json_encode($result2);            
-            }else{
-            $result2 = array();   
-            echo json_encode($result2);
+            // var_dump(count($json_exames));
+            // var_dump($json_exames); die;
+
+            if (count($json_exames) > 0) {
+                $result2 = $this->saudeocupacional->listarautocompleteexamesjson2($json_exames);
+                echo json_encode($result2);
+            } else {
+                $result2 = array();
+                echo json_encode($result2);
             }
         } else {            
             $result2 = array();

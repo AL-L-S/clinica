@@ -1607,7 +1607,10 @@ class exametemp_model extends Model {
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.realizada', 'false');
+        $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
+        if($sala_de_espera == 't'){
+            $this->db->where('ae.realizada', 'false');
+        }
         $this->db->where('ae.cancelada', 'false');
         $this->db->where("guia_id", $ambulatorio_guia_id);
         $this->db->where("ae.agrupador_pacote_id IS NOT NULL");
@@ -1666,7 +1669,10 @@ class exametemp_model extends Model {
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.realizada', 'false');
+        $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
+        if($sala_de_espera == 't'){
+            $this->db->where('ae.realizada', 'false');
+        }
         $this->db->where('ae.cancelada', 'false');
         $this->db->where("guia_id", $ambulatorio_guia_id);
         $this->db->where("ae.agrupador_pacote_id IS NULL");
@@ -1785,7 +1791,10 @@ class exametemp_model extends Model {
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.realizada', 'false');
+        $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
+        if($sala_de_espera == 't'){
+            $this->db->where('ae.realizada', 'false');
+        }
         $this->db->where('ae.cancelada', 'false');
         $this->db->where("ae.agrupador_pacote_id IS NULL");
         $this->db->where("guia_id", $ambulatorio_guia_id);
@@ -1896,7 +1905,10 @@ class exametemp_model extends Model {
         $this->db->where('ae.confirmado', 'true');
 //        $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.realizada', 'false');
+        $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
+        if($sala_de_espera == 't'){
+            $this->db->where('ae.realizada', 'false');
+        }
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('ae.agenda_exames_id', $agenda_exames_id);
 //        $this->db->where("guia_id", $ambulatorio_guia_id);
@@ -2042,7 +2054,10 @@ class exametemp_model extends Model {
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.realizada', 'false');
+        $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
+        if($sala_de_espera == 't'){
+            $this->db->where('ae.realizada', 'false');
+        }
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('c.dinheiro', 't');
         $this->db->where("guia_id", $ambulatorio_guia_id);
@@ -2100,7 +2115,10 @@ class exametemp_model extends Model {
         $this->db->where('ae.confirmado', 'true');
 //        $this->db->where('pt.grupo !=', 'CONSULTA');
         $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.realizada', 'false');
+        $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
+        if($sala_de_espera == 't'){
+            $this->db->where('ae.realizada', 'false');
+        }
         $this->db->where('ae.cancelada', 'false');
         $this->db->where('c.dinheiro', 'f');
         $this->db->where("guia_id", $ambulatorio_guia_id);
@@ -2489,7 +2507,10 @@ class exametemp_model extends Model {
         $this->db->join('tb_agenda_exames_nome an', 'an.agenda_exames_nome_id = ae.agenda_exames_nome_id', 'left');
         $this->db->where('ae.confirmado', 'true');
         $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.realizada', 'false');
+        $sala_de_espera = $this->session->userdata('autorizar_sala_espera');
+        if($sala_de_espera == 't'){
+            $this->db->where('ae.realizada', 'false');
+        }
         $this->db->where('ae.cancelada', 'false');
         $this->db->where("guia_id", $ambulatorio_guia_id);
         $this->db->where("ae.agrupador_pacote_id IS NULL");
@@ -8446,6 +8467,7 @@ class exametemp_model extends Model {
 
     function listarautocompleteprocedimentosfisioterapia($parametro) {
         $this->db->select(' pc.procedimento_convenio_id,
+                            pt.codigo,
                             pt.nome as procedimento');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');

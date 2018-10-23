@@ -618,7 +618,7 @@ class Guia extends BaseController {
         }else{
             $gravarempresa = $_POST['convenio1'];
         }
-  
+        
             $retorno = $this->guia->gravarcadastroaso($gravarempresa, $paciente_id, $ambulatorio_guia);
             
         if ($retorno == -1) {
@@ -628,6 +628,7 @@ class Guia extends BaseController {
         }
         
         $retorno2 = $this->guia->gravarprocedimentoaso($gravarempresa, $ambulatorio_guia, $retorno);
+        // var_dump($retorno); die;
         if ($_POST['cadastro_aso_id'] == '') {            
 
             foreach ($_POST['procedimento1'] as $procedimento_convenio_id) {
@@ -2493,8 +2494,8 @@ class Guia extends BaseController {
             $data['exames_pacote'] = array();
         }
 
-//        echo "<pre>";
-//        var_dump($data['exames_pacote']); die;
+    //    echo "<pre>";
+    //    var_dump($data['exames_particular']); die;
 
         foreach ($data['exames'] as $value) {
             $teste = $this->exametemp->verificaprocedimentosemformapagamento($value->procedimento_tuss_id);

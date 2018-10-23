@@ -1255,7 +1255,7 @@ function debug($object) {
                                             <?if($agenda_modelo2 == 'f'){?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
                                             <?}else{?>
-                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/pesquisaragendamodelo2">Agenda Horarios</a></span></ul>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/pesquisaragendamodelo2">Agenda Médica</a></span></ul>
                                             <?}?>
                                             <? if ($this->session->userdata('recomendacao_configuravel') == "t") { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter Promotor</a></span></ul>
