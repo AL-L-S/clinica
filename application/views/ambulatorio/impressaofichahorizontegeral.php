@@ -10,7 +10,7 @@
     ?>
     <table>
         <td>
-            <table style="width: 100%;">
+            <table style="width: 200px;">
                 <tr>
                     <td>
                         <?= @$cabecalho_config; ?>
@@ -28,7 +28,7 @@
                         <td align="center"><font size = -1>Rua Raimundo Nogueira Lopes, 236  Centro - Horizonte</td>
                     </tr>
                     <tr>
-                        <td align="center"><font size = -1><?= $exame[0]->telefoneempresa; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; multiclinicashorizonte@yahoo.com.br</td>                        
+                        <td align="center"><font size = -1><?= $exame[0]->telefoneempresa; ?>-<?= $exame[0]->celularempresa; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; multiclinicashorizonte@yahoo.com.br</td>                        
                     </tr>
 
                 </tbody>
@@ -38,14 +38,15 @@
     <table style="width: 100%">
         <tr>            
             <td colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-            <td ><font size = -1>Data de Realização do(s) exame(s): <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>            
+            <td align="right"><font size = -1>Data de Realização do(s) exame(s):<b> <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></b></td>            
 <!--            <td ><font size = -1>
                 <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
                 Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>
             </td>-->
         </tr>
         <tr>
-            <td colspan="1"><font size = -1>Exame(s):<b> <?= $exame[0]->procedimento; ?></b></td>            
+            <td colspan="2"><font size = -1>Exame(s):<b> <?= $exame[0]->procedimento; ?></b></td>            
+            <td colspan="1" align="right"><font size = -1>Horário de Atendimento:<b> <?= $exame[0]->inicio; ?></b></td>            
         </tr>
     </table>
     <? // echo'<pre>'; var_dump($exame);die;?>
@@ -68,7 +69,7 @@
             <td>
                 <table>
                     <tr>
-                        <td>
+                        <td width="30px">
                             <?= @$cabecalho_config; ?>
                         </td>
                     </tr>
@@ -83,14 +84,14 @@
                         <td align="center"><font size = -1>Rua Raimundo Nogueira Lopes, 236  Centro - Horizonte</td>
                     </tr>
                     <tr>
-                        <td align="center"><font size = -1><?= $exame[0]->telefoneempresa; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; multiclinicashorizonte@yahoo.com.br</td>                        
+                        <td align="center"><font size = -1><?= $exame[0]->telefoneempresa; ?>-<?= $exame[0]->celularempresa; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; multiclinicashorizonte@yahoo.com.br</td>                        
                     </tr>                    
                 </table>
             </td>
             <td>
                 <table>
                     <tr>
-                        <td>
+                        <td width="30px">
                             <?= @$cabecalho_config; ?>
                         </td>
                     </tr>
@@ -105,7 +106,7 @@
                         <td align="center"><font size = -1>Rua Raimundo Nogueira Lopes, 236  Centro - Horizonte</td>
                     </tr>
                     <tr>
-                        <td align="center"><font size = -1><?= $exame[0]->telefoneempresa; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; multiclinicashorizonte@yahoo.com.br</td>                        
+                        <td align="center"><font size = -1><?= $exame[0]->telefoneempresa; ?>-<?= $exame[0]->celularempresa; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; multiclinicashorizonte@yahoo.com.br</td>                        
                     </tr>  
                 </table>
             </td>
@@ -194,60 +195,62 @@
         <tr>
             <td>Forma de Pagamento.: 
                 <? foreach ($exames as $key => $item): if ($item->grupo == $exame[0]->grupo) { ?>
-                        <? if ($key == count($exames) - 1) {
-                        echo $item->formadepagamento;
-                        if($item->formadepagamento2 != ''){
-                         echo  ", " . $item->formadepagamento2;   
-                        }
-                        if($item->formadepagamento3 != ''){
-                         echo  ", " . $item->formadepagamento3;   
-                        }
-                        if($item->formadepagamento4 != ''){
-                         echo  ", " . $item->formadepagamento4;   
-                        }
-                    } else {
-                        echo $item->formadepagamento . ", ";
-                        if($item->formadepagamento2 != ''){
-                         echo $item->formadepagamento2 . ", ";   
-                        }
-                        if($item->formadepagamento3 != ''){
-                         echo $item->formadepagamento3 . ", ";   
-                        }
-                        if($item->formadepagamento4 != ''){
-                         echo $item->formadepagamento4 . ", ";   
+                        <?
+                        if ($key == count($exames) - 1) {
+                            echo $item->formadepagamento;
+                            if ($item->formadepagamento2 != '') {
+                                echo ", " . $item->formadepagamento2;
+                            }
+                            if ($item->formadepagamento3 != '') {
+                                echo ", " . $item->formadepagamento3;
+                            }
+                            if ($item->formadepagamento4 != '') {
+                                echo ", " . $item->formadepagamento4;
+                            }
+                        } else {
+                            echo $item->formadepagamento . ", ";
+                            if ($item->formadepagamento2 != '') {
+                                echo $item->formadepagamento2 . ", ";
+                            }
+                            if ($item->formadepagamento3 != '') {
+                                echo $item->formadepagamento3 . ", ";
+                            }
+                            if ($item->formadepagamento4 != '') {
+                                echo $item->formadepagamento4 . ", ";
+                            }
                         }
                     }
-                    
-                    } ?>
+                    ?>
 <? endforeach; ?>
             </td>
             <td>Forma de Pagamento.: 
                 <? foreach ($exames as $key => $item): if ($item->grupo == $exame[0]->grupo) { ?>
-                        <? if ($key == count($exames) - 1) {
-                        echo $item->formadepagamento;
-                        if($item->formadepagamento2 != ''){
-                         echo  ", " . $item->formadepagamento2;   
-                        }
-                        if($item->formadepagamento3 != ''){
-                         echo  ", " . $item->formadepagamento3;   
-                        }
-                        if($item->formadepagamento4 != ''){
-                         echo  ", " . $item->formadepagamento4;   
-                        }
-                    } else {
-                        echo $item->formadepagamento . ", ";
-                        if($item->formadepagamento2 != ''){
-                         echo $item->formadepagamento2 . ", ";   
-                        }
-                        if($item->formadepagamento3 != ''){
-                         echo $item->formadepagamento3 . ", ";   
-                        }
-                        if($item->formadepagamento4 != ''){
-                         echo $item->formadepagamento4 . ", ";   
+                        <?
+                        if ($key == count($exames) - 1) {
+                            echo $item->formadepagamento;
+                            if ($item->formadepagamento2 != '') {
+                                echo ", " . $item->formadepagamento2;
+                            }
+                            if ($item->formadepagamento3 != '') {
+                                echo ", " . $item->formadepagamento3;
+                            }
+                            if ($item->formadepagamento4 != '') {
+                                echo ", " . $item->formadepagamento4;
+                            }
+                        } else {
+                            echo $item->formadepagamento . ", ";
+                            if ($item->formadepagamento2 != '') {
+                                echo $item->formadepagamento2 . ", ";
+                            }
+                            if ($item->formadepagamento3 != '') {
+                                echo $item->formadepagamento3 . ", ";
+                            }
+                            if ($item->formadepagamento4 != '') {
+                                echo $item->formadepagamento4 . ", ";
+                            }
                         }
                     }
-                    
-                    } ?>
+                    ?>
 <? endforeach; ?>
             </td>
         </tr>
@@ -389,20 +392,19 @@
                             $valor_total_ficha = $valor_total_ficha + ($item->valor_total * $item->quantidade);
                             $desconto_total = $desconto_total + $item->desconto;
                             ?>
-        <? // echo'<pre>'; var_dump($exames);die; ?>
+        <? // echo'<pre>'; var_dump($exames);die;  ?>
                             <tr>
                                 <td ><?= $item->procedimento ?></td>                    
                                 <td align="right"><font size = -1>R$<?= number_format($item->valor_total * $item->quantidade, 2, ',', '.') + number_format($item->desconto * $item->quantidade, 2, ',', '.') ?></td>
-                            </tr>
-                            <tr height="50px">
-                                <td >Desc: R$ <?= $item->desconto ?></td> 
-                                <td align="right">Total Líquido.: R$<?= number_format($item->valor_total * $item->quantidade, 2, ',', '.') ?></td>
                             </tr>
                             <?
                         }
                     endforeach;
                     ?>
-
+                    <tr height="50px">
+                        <td >Desc: R$ <?= $desconto_total ?></td> 
+                        <td align="right">Total Líquido.: R$<?= $valor_total_ficha ?></td>
+                    </tr>        
                 </table>
                 <hr>
                 Para sua segurança, não passamos resultado de exames por telefone.<br>
@@ -492,16 +494,15 @@
                             <tr>
                                 <td ><?= $item->procedimento ?></td>                    
                                 <td align="right"><font size = -1>R$<?= number_format($item->valor_total * $item->quantidade, 2, ',', '.') + number_format($item->desconto * $item->quantidade, 2, ',', '.') ?></td>
-                            </tr>
-                            <tr height="50px">
-                                <td >Desc: R$ <?= $item->desconto ?></td> 
-                                <td align="right">Total Líquido.: R$<?= number_format($item->valor_total * $item->quantidade, 2, ',', '.') ?></td>
-                            </tr>
+                            </tr>                            
                             <?
                         }
                     endforeach;
                     ?>
-
+                     <tr height="50px">
+                        <td >Desc: R$ <?= $desconto_total ?></td> 
+                        <td align="right">Total Líquido.: R$<?= $valor_total_ficha ?></td>
+                    </tr>        
                 </table>
                 <hr>
                 Para sua segurança, não passamos resultado de exames por telefone.<br>

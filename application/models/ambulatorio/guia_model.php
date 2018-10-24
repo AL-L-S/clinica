@@ -8056,6 +8056,7 @@ class guia_model extends Model {
                             ae.agenda_exames_nome_id,
                             pt.procedimento_tuss_id,
                             ae.data,
+                            ae.data_entrega,
                             ae.operador_autorizacao,
                             op.nome as operador,
                             ae.inicio,

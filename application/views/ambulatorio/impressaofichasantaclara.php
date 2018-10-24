@@ -10,56 +10,383 @@
     ?>
     <? // echo'<pre>';    var_dump($exame[0]->email);die;?>
     <table border="1" width="100%" style="border-collapse: collapse">
-        <tr height="100px">
-        <td colspan="1">
-            <table style="width: 100%;">
-                <tbody>
-                    <tr>                        
-                        <td width="900px" align="center"><span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span></td>
-                    </tr>
-                    
-                    <tr>
-                        <td align="center"><font size = -1>Telefone:<?= $exame[0]->telefoneempresa; ?></td>                        
-                    </tr>
-                    <tr>
-                        <td align="center"><font size = -1>Email:<?= $exame[0]->email; ?></td>                        
-                    </tr>
+        <tr height="90px">
+            <td colspan="1">
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr>                        
+                            <td width="900px" align="center"><span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span></td>
+                        </tr>
 
-                </tbody>
-            </table>
-        </td>
-        <td colspan="1">
-            <table style="width: 250px;">
-                <tr>
-                    <td>
-                        <b>Data Coleta:</b> 23/11/2018 <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>
-                    </td>
-                </tr>
-            </table>
-        </td>
+                        <tr>
+                            <td align="center"><font size = -1>Telefone:<?= $exame[0]->telefoneempresa; ?></td>                        
+                        </tr>
+                        <tr>
+                            <td align="center"><font size = -1>Email:<?= $exame[0]->email; ?></td>                        
+                        </tr>
+
+                    </tbody>
+                </table>
+            </td>
+            <td colspan="1">
+                <table style="width: 250px;">
+                    <tr>
+                        <td>
+                            &nbsp;&nbsp;<b>Data Coleta:</b> <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?>
+                        </td>
+                    </tr>
+                </table>
+            </td>
         </tr>
         <tr>
             <td colspan="2">
-            <table style="width: 100%;">
-                <tbody>
-                    <tr>                        
-                        <td width="900px" align="center"><span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span></td>
-                    </tr>
-                    
-                    <tr>
-                        <td align="center"><font size = -1>Telefone:<?= $exame[0]->telefoneempresa; ?></td>                        
-                    </tr>
-                    <tr>
-                        <td align="center"><font size = -1>Email:<?= $exame[0]->email; ?></td>                        
-                    </tr>
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr height="50px">                        
+                            <td colspan="2" width="900px" align="center"><span style="font-weight: normal"><b>PROTOCOLO DE RETIRADA</b></span></td>
+                        </tr>
 
-                </tbody>
-            </table>
-        </td>            
+                        <tr>
+                            <td><font size = -1>RG: <?= $exame[0]->rg; ?></td>                        
+                            <td><font size = -1>Nº CARTEIRINHA: <?= $exame[0]->rg; ?></td>                        
+                            <td><font size = -1><b>Resultados na Internet:</b></td>                        
+                        </tr>
+                        <tr>
+                            <td colspan="2"><font size = -1>NOME: <?= $exame[0]->paciente_id; ?> - <?= $exame[0]->paciente; ?></td>
+                            <td colspan="1"><font size = -1><b>Optar por:</b></td>                        
+                        </tr>
+                        <tr>
+                            <td><font size = -1>IDADE: <?= $teste; ?></td>                        
+                            <td><font size = -1>SEXO: <?= $paciente[0]->sexo; ?></td>                        
+                            <td><font size = -1><b>Solicitação:</b></td>                        
+                        </tr>
+                        <tr>
+                            <td colspan="2"><font size = -1>MÉDICO: <?
+                                if ($exame[0]->crm_medico != '') {
+                                    $exame[0]->crm_medico;
+                                } else {
+                                    echo 'NI';
+                                }
+                                ?>  - <?
+                                if ($exame[0]->medico != '') {
+                                    $exame[0]->medico;
+                                } else {
+                                    echo 'NÃO INFORMADO';
+                                }
+                                ?></td>                        
+                            <td colspan="1"><font size = -1><b>Senha de internet:</b></td>                        
+                        </tr>
+                        <tr>
+                            <?
+                            $maior_data_entrega = '1995-08-30';
+                            foreach ($exames as $item):
+                                if ($item->data_entrega > $maior_data_entrega) {
+                                    $maior_data_entrega = $item->data_entrega;
+                                } else {
+                                    $maior_data_entrega = $maior_data_entrega;
+                                }
+                            endforeach;
+                            ?>
+                            <td colspan="2"><font size = -1><b>
+                                    PREVISÃO DE ENTREGA: <?= ($maior_data_entrega != '1995-08-30') ? date("d/m/Y", strtotime($maior_data_entrega)) : ''; ?>
+                                </b></td>                        
+                        </tr>
+
+                    </tbody>
+                </table>                
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td>
+                <b>Procedimentos</b>
+            </td>
+        </tr>
+        <?
+        $valor_total_ficha = 0;
+        $desconto_total = 0;
+        $cartao_total = 0;
+        foreach ($formapagamento as $value) {
+            $data[$value->nome] = 0;
+            $datacredito[$value->nome] = 0;
+            $numerocredito[$value->nome] = 0;
+            $descontocredito[$value->nome] = 0;
+            $numero[$value->nome] = 0;
+            $desconto[$value->nome] = 0;
+        }
+//                    echo'<pre>';
+//        var_dump($exames); die;
+        foreach ($exames as $item) :
+            $u = 0;
+
+
+
+//                        if ($item->grupo == $exame[0]->grupo) {
+            foreach ($formapagamento as $value) {
+                if ($item->formadepagamento == $value->nome) {
+                    $data[$value->nome] = $data[$value->nome] + $item->valor1;
+                    $numero[$value->nome] ++;
+                    if ($u == 0) {
+                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                    }
+                    if ($item->desconto != '') {
+                        $u++;
+                    }
+                }
+            }
+            foreach ($formapagamento as $value) {
+                if ($item->formadepagamento2 == $value->nome) {
+                    $data[$value->nome] = $data[$value->nome] + $item->valor2;
+                    $numero[$value->nome] ++;
+                    if ($u == 0) {
+
+                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                    }
+                    if ($item->desconto != '') {
+                        $u++;
+                    }
+                }
+            }
+            foreach ($formapagamento as $value) {
+                if ($item->formadepagamento3 == $value->nome) {
+                    $data[$value->nome] = $data[$value->nome] + $item->valor3;
+                    $numero[$value->nome] ++;
+                    if ($u == 0) {
+
+                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                    }
+                    if ($item->desconto != '') {
+                        $u++;
+                    }
+                }
+            }
+            foreach ($formapagamento as $value) {
+                if ($item->formadepagamento4 == $value->nome) {
+                    $data[$value->nome] = $data[$value->nome] + $item->valor4;
+                    $numero[$value->nome] ++;
+                    if ($u == 0) {
+
+                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                    }
+                    if ($item->desconto != '') {
+                        $u++;
+                    }
+                }
+            }
+
+
+            $valor_total_ficha = $valor_total_ficha + ($item->valor_total * $item->quantidade);
+            $desconto_total = $desconto_total + $item->desconto;
+            ?>
+            <tr height="30px">
+                <td ><font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?></td>                              
+            </tr>
+            <tr height="30px">
+                <td ><font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?></td>                              
+            </tr>
+            <?
+//                        }
+        endforeach;
+        ?>
+        <tr>
+            <td class="tabela_header"><b>Total de Procedimentos: <?= count($exames); ?></b></td>
+            <td><b>Valor Total: R$ <?= $valor_total_ficha ?></b></td>
+            <!--<td><b>Valor Pago: R$ </b></td>-->
+        </tr>
+    </table>
+    <br>
+    <table border="1" width="100%" style="border-collapse: collapse">
+        <tr height="90px">
+            <td colspan="1">
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr>                        
+                            <td width="900px" align="center"><span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span></td>
+                        </tr>
+
+                        <tr>
+                            <td align="center"><font size = -1>Telefone:<?= $exame[0]->telefoneempresa; ?></td>                        
+                        </tr>
+                        <tr>
+                            <td align="center"><font size = -1>Email:<?= $exame[0]->email; ?></td>                        
+                        </tr>
+
+                    </tbody>
+                </table>
+            </td>
+            <td colspan="1">
+                <table style="width: 250px;">
+                    <tr>
+                        <td>
+                            &nbsp;&nbsp;<b>Data Coleta:</b> <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr height="50px">                        
+                            <td colspan="2" width="900px" align="center"><span style="font-weight: normal"><b>PROTOCOLO DE RETIRADA</b></span></td>
+                        </tr>
+
+                        <tr>
+                            <td><font size = -1>RG: <?= $exame[0]->rg; ?></td>                        
+                            <td><font size = -1>Nº CARTEIRINHA: <?= $exame[0]->rg; ?></td>                        
+                            <td><font size = -1><b>Resultados na Internet:</b></td>                        
+                        </tr>
+                        <tr>
+                            <td colspan="2"><font size = -1>NOME: <?= $exame[0]->paciente_id; ?> - <?= $exame[0]->paciente; ?></td>
+                            <td colspan="1"><font size = -1><b>Optar por:</b></td>                        
+                        </tr>
+                        <tr>
+                            <td><font size = -1>IDADE: <?= $teste; ?></td>                        
+                            <td><font size = -1>SEXO: <?= $paciente[0]->sexo; ?></td>                        
+                            <td><font size = -1><b>Solicitação:</b></td>                        
+                        </tr>
+                        <tr>
+                            <td colspan="2"><font size = -1>MÉDICO: <?
+                                if ($exame[0]->crm_medico != '') {
+                                    $exame[0]->crm_medico;
+                                } else {
+                                    echo 'NI';
+                                }
+                                ?>  - <?
+                                if ($exame[0]->medico != '') {
+                                    $exame[0]->medico;
+                                } else {
+                                    echo 'NÃO INFORMADO';
+                                }
+                                ?>
+                            </td>                        
+                            <td colspan="1"><font size = -1><b>Senha de internet:</b></td>                        
+                        </tr>
+                        <tr>
+                            <?
+                            $maior_data_entrega = '1995-08-30';
+                            foreach ($exames as $item):
+                                if ($item->data_entrega > $maior_data_entrega) {
+                                    $maior_data_entrega = $item->data_entrega;
+                                } else {
+                                    $maior_data_entrega = $maior_data_entrega;
+                                }
+                            endforeach;
+                            ?>
+                            <td colspan="2"><font size = -1><b>
+                                    PREVISÃO DE ENTREGA: <?= ($maior_data_entrega != '1995-08-30') ? date("d/m/Y", strtotime($maior_data_entrega)) : ''; ?>
+                                </b></td>                        
+                        </tr>
+
+                    </tbody>
+                </table>                
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td>
+                <b>Procedimentos</b>
+            </td>
+        </tr>
+        <?
+        $valor_total_ficha = 0;
+        $desconto_total = 0;
+        $cartao_total = 0;
+        foreach ($formapagamento as $value) {
+            $data[$value->nome] = 0;
+            $datacredito[$value->nome] = 0;
+            $numerocredito[$value->nome] = 0;
+            $descontocredito[$value->nome] = 0;
+            $numero[$value->nome] = 0;
+            $desconto[$value->nome] = 0;
+        }
+//                    echo'<pre>';
+//        var_dump($exames); die;
+        foreach ($exames as $item) :
+            $u = 0;
+
+
+
+//                        if ($item->grupo == $exame[0]->grupo) {
+            foreach ($formapagamento as $value) {
+                if ($item->formadepagamento == $value->nome) {
+                    $data[$value->nome] = $data[$value->nome] + $item->valor1;
+                    $numero[$value->nome] ++;
+                    if ($u == 0) {
+                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                    }
+                    if ($item->desconto != '') {
+                        $u++;
+                    }
+                }
+            }
+            foreach ($formapagamento as $value) {
+                if ($item->formadepagamento2 == $value->nome) {
+                    $data[$value->nome] = $data[$value->nome] + $item->valor2;
+                    $numero[$value->nome] ++;
+                    if ($u == 0) {
+
+                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                    }
+                    if ($item->desconto != '') {
+                        $u++;
+                    }
+                }
+            }
+            foreach ($formapagamento as $value) {
+                if ($item->formadepagamento3 == $value->nome) {
+                    $data[$value->nome] = $data[$value->nome] + $item->valor3;
+                    $numero[$value->nome] ++;
+                    if ($u == 0) {
+
+                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                    }
+                    if ($item->desconto != '') {
+                        $u++;
+                    }
+                }
+            }
+            foreach ($formapagamento as $value) {
+                if ($item->formadepagamento4 == $value->nome) {
+                    $data[$value->nome] = $data[$value->nome] + $item->valor4;
+                    $numero[$value->nome] ++;
+                    if ($u == 0) {
+
+                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                    }
+                    if ($item->desconto != '') {
+                        $u++;
+                    }
+                }
+            }
+
+
+            $valor_total_ficha = $valor_total_ficha + ($item->valor_total * $item->quantidade);
+            $desconto_total = $desconto_total + $item->desconto;
+            ?>
+            <tr height="30px">
+                <td ><font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?></td> 
+            </tr>
+            <tr height="30px">
+                <td ><font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?></td> 
+            </tr>
+            <?
+//                        }
+        endforeach;
+        ?>
+        <tr>
+            <td class="tabela_header"><b>Total de Procedimentos: <?= count($exames); ?></b></td>
+            <td><b>Valor Total: R$ <?= $valor_total_ficha ?></b></td>
+            <!--<td><b>Valor Pago: R$ </b></td>-->
         </tr>
     </table>
 
-    
+
 </div>
 
 

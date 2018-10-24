@@ -110,7 +110,7 @@
                         if ($item->faturado == 't') {
                             $valortotal_faturado = $valortotal_faturado + $item->valortotal;
                         } else {
-                            $valortotal_naofaturado = $valortotal_naofaturado + ($valortotal - $valortotal_faturado);
+                            $valortotal_naofaturado = ($valortotal - $valortotal_faturado);
                         }
 
                         $guia = $item->ambulatorio_guia_id;
@@ -158,7 +158,11 @@
                                     </a>
                                 </div>
                             </td>
+                            <?if ($item->faturado == "t") {?>
                             <td ><?= number_format($item->valortotal, 2, ",", "."); ?></td>
+                            <?}else{?>
+                            <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
+                            <? } ?>
                             <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
                             <?
                             if ($item->faturado != "t") {
