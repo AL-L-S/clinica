@@ -93,6 +93,7 @@
                         <th width="110px;">Nome</th>
                         <th width="180px;">Obs.</th>
                         <th width="60px;">Valor Fatur.</th>
+                        <th width="60px;">Valor Proc.</th>
 
                         <th colspan="3"><center>A&ccedil;&otilde;es</center></th>
                 </tr>
@@ -105,11 +106,11 @@
                 <tbody>
                     <?php
                     foreach ($listar as $item) {
-                        $valortotal = $valortotal + $item->valortotal;
+                        $valortotal = $valortotal + $item->valor;
                         if ($item->faturado == 't') {
                             $valortotal_faturado = $valortotal_faturado + $item->valortotal;
                         } else {
-                            $valortotal_naofaturado = $valortotal_naofaturado + $item->valortotal;
+                            $valortotal_naofaturado = ($valortotal - $valortotal_faturado);
                         }
 
                         $guia = $item->ambulatorio_guia_id;
@@ -157,7 +158,12 @@
                                     </a>
                                 </div>
                             </td>
+                            <?if ($item->faturado == "t") {?>
                             <td ><?= number_format($item->valortotal, 2, ",", "."); ?></td>
+                            <?}else{?>
+                            <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
+                            <? } ?>
+                            <td ><?= number_format($item->valor, 2, ",", "."); ?></td>
                             <?
                             if ($item->faturado != "t") {
                                 $faturado = 1;

@@ -161,7 +161,7 @@ class Guia extends BaseController {
             $json_geral = json_encode($geral_obj);
 
             // echo '<pre>';
-                // var_dump($url);
+            // var_dump($url);
             // var_dump($json_geral);
             // die;
             // Aqui defino o envio que irá ser feito para a função no nosso sistema que manda o Curl pro LabLuz
@@ -534,25 +534,23 @@ class Guia extends BaseController {
 
         $this->load->View('ambulatorio/impressaoguiasolicitacaospsadt', $data);
     }
-    
-    function listarriscos(){
-        
-      $result = $this->guia->listarriscos();
-      echo json_encode($result);
-      
-    }
-    
-    function listarriscosparticular(){
-        
-      if (isset($_GET['aso'])) {  
-      $result = $this->guia->listarriscosparticular($_GET['aso']);
-      $json_riscos = json_encode($result[0]->risco_id);
-      
-      $result2 = $this->saudeocupacional->listarautocompleteparticular($json_riscos);
 
-        echo json_encode($result2);
-      }
-      
+    function listarriscos() {
+
+        $result = $this->guia->listarriscos();
+        echo json_encode($result);
+    }
+
+    function listarriscosparticular() {
+
+        if (isset($_GET['aso'])) {
+            $result = $this->guia->listarriscosparticular($_GET['aso']);
+            $json_riscos = json_encode($result[0]->risco_id);
+
+            $result2 = $this->saudeocupacional->listarautocompleteparticular($json_riscos);
+
+            echo json_encode($result2);
+        }
     }
 
     function carregarcadastroaso($paciente_id, $cadastro_aso_id) {
@@ -571,8 +569,8 @@ class Guia extends BaseController {
             $data['setor'] = $this->saudeocupacional->carregarsetores();
         }
         $data['convenio'] = $this->convenio->listardados();
-        
-        $data['convenioid'] = $this->convenio->listarconvenioid();        
+
+        $data['convenioid'] = $this->convenio->listarconvenioid();
         $data['risco'] = $this->guia->listarriscos();
         $data['procedimento'] = $this->procedimento->listarprocedimentos();
         $data['paciente_id'] = $paciente_id;
@@ -607,15 +605,15 @@ class Guia extends BaseController {
         } else {
             $ambulatorio_guia = $resultadoguia['ambulatorio_guia_id'];
         }
-        
-        $convenio2 = $_POST['convenio2'];        
+
+        $convenio2 = $_POST['convenio2'];
         $modalidade = $_POST['consulta'];
         $convenionovo_id = $this->convenio->listarconvenionovoid($convenio2);
-        
-        if($modalidade == "particular"){
-         $gravarempresa = $this->convenio->gravarempresa($convenionovo_id, $convenio2,$modalidade);
-         $gravarconvenio = $this->convenio->gravarcopiaconvenio($gravarempresa, $convenio2,$modalidade);
-        }else{
+
+        if ($modalidade == "particular") {
+            $gravarempresa = $this->convenio->gravarempresa($convenionovo_id, $convenio2, $modalidade);
+            $gravarconvenio = $this->convenio->gravarcopiaconvenio($gravarempresa, $convenio2, $modalidade);
+        } else {
             $gravarempresa = $_POST['convenio1'];
         }
         
@@ -626,7 +624,7 @@ class Guia extends BaseController {
             $this->session->set_flashdata('message', $data['mensagem']);
             redirect(base_url() . "ambulatorio/guia/carregarcadastroaso/$paciente_id/0");
         }
-        
+
         $retorno2 = $this->guia->gravarprocedimentoaso($gravarempresa, $ambulatorio_guia, $retorno);
         // var_dump($retorno); die;
         if ($_POST['cadastro_aso_id'] == '') {            
@@ -738,6 +736,7 @@ class Guia extends BaseController {
 
         $this->load->View('ambulatorio/impressaoasoparticular', $data);
     }
+
     function impressaoaso($cadastro_aso_id) {
 
         $data['relatorio'] = $this->guia->impressaoaso($cadastro_aso_id);
@@ -1013,13 +1012,15 @@ class Guia extends BaseController {
                 $this->load->View('ambulatorio/impressaofichageral', $data);
             }
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_tipo == 22) { //MULTICLINICAS HORIZONTE 
-            
-                $this->load->View('ambulatorio/impressaofichahorizontegeral', $data);           
-                
-            
+            $this->load->View('ambulatorio/impressaofichahorizontegeral', $data);
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        elseif ($data['empresa'][0]->impressao_tipo == 99) { //CLÍNICA SANTA CLARA 
+            $this->load->View('ambulatorio/impressaofichasantaclara', $data);
         }
 
 
@@ -1651,10 +1652,14 @@ class Guia extends BaseController {
 //        var_dump($_POST);die;
         $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
         $procedimentopercentual = $_POST['procedimento1'];
-        if(isset($_POST['medicoagenda'])){
-        $medicopercentual = $_POST['medicoagenda'];
-        }else{
-        $medicopercentual = 0;    
+        if ($empresapermissoes[0]->laboratorio_sc == 't') {
+            if (isset($_POST['medicoagenda'])) {
+                $medicopercentual = $_POST['medicoagenda'];
+            } else {
+                $medicopercentual = 1;
+            }
+        } else {
+            $medicopercentual = $_POST['medicoagenda'];
         }
         $percentual = $this->guia->percentualmedicoconvenioexames($procedimentopercentual, $medicopercentual);
         if (count($percentual) == 0) {
@@ -1678,7 +1683,7 @@ class Guia extends BaseController {
             } else {
                 redirect(base_url() . "ambulatorio/guia/novo/$paciente_id");
             }
-        } elseif ($_POST['sala1'] == '' ||( $_POST['medicoagenda'] == '' && $empresapermissoes[0]->laboratorio != 't')|| $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
+        } elseif ($_POST['sala1'] == '' || ( $_POST['medicoagenda'] == '' && $empresapermissoes[0]->laboratorio != 't') || $_POST['qtde1'] == '' || $_POST['medico1'] == '' || $_POST['convenio1'] == -1 || $_POST['procedimento1'] == '') {
             $data['mensagem'] = 'Insira os campos obrigatorios.';
             $this->session->set_flashdata('message', $data['mensagem']);
             if (isset($_POST['guia_id'])) {
@@ -1715,7 +1720,7 @@ class Guia extends BaseController {
 
 
                 if ($agrupador[0]->agrupador != 't') {
-                    $retorno = $this->guia->gravarexames($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio);
+                    $retorno = $this->guia->gravarexames($ambulatorio_guia, $medico_id, $percentual, $percentual_laboratorio, $medicopercentual);
 
                     if (!is_dir("./upload/RIS")) {
                         mkdir("./upload/RIS");
@@ -2305,7 +2310,7 @@ class Guia extends BaseController {
     }
 
     function gravarorcamentomultiplocadastro() {
-       
+
 
         if (count($_POST['procedimento1']) == 0 || $_POST['convenio1'] == '-1') {
             $data['mensagem'] = 'Informe o convenio, o procedimento e a quantidade.';
@@ -2332,7 +2337,7 @@ class Guia extends BaseController {
                 } else {
                     // Cria um agrupador para o pacote
                     $agrupador_id = $this->guia->gravaragrupadorpacote($procedimento_convenio_id);
-    
+
                     // Traz os procedimentos desse pacote bem como o valor  
                     $pacoteProc = $this->guia->listarprocedimentospacote($procedimento_convenio_id);
 
@@ -2358,11 +2363,11 @@ class Guia extends BaseController {
                             $vl_pacote += $valor;
 
                             if ($i == $totPro - 1) {
-                                 /* Caso tenha acontecido alguma diferença no valor informado na criaçao do pacote 
+                                /* Caso tenha acontecido alguma diferença no valor informado na criaçao do pacote 
                                  * para o valor aqui calculado (geralmente ocorre uma diferença de alguns centavos)
                                  * ele acrescenta essa diferença no ultimo procedimento. */
 
-                                $diferenca = (float)$value->valor_pacote - (float)$vl_pacote;
+                                $diferenca = (float) $value->valor_pacote - (float) $vl_pacote;
                                 $valor += $diferenca;
                             }
                         } else {
@@ -2372,9 +2377,8 @@ class Guia extends BaseController {
                         $this->guia->gravarorcamentoitemrecepcaoagrupadormultiplo($ambulatorio_orcamento, $paciente_id, $value->procedimento_convenio_id, $value->quantidade_agrupador, $valor);
                     }
                 }
-
             }
-            
+
 
             redirect(base_url() . "ambulatorio/guia/orcamentomultiplo/$paciente_id/$ambulatorio_orcamento");
         }
@@ -2666,7 +2670,7 @@ class Guia extends BaseController {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $this->load->View('ambulatorio/faturarconvenio-form', $data);
     }
-    
+
 //    function desfaturarconvenio($agenda_exames_id) {
 //        $data['exame'] = $this->guia->listarexame($agenda_exames_id);
 //        $data['agenda_exames_id'] = $agenda_exames_id;
@@ -2766,7 +2770,7 @@ class Guia extends BaseController {
         $resulta = $_POST['valortotal'];
         if ($resulta == "0.00") {
             $ambulatorio_guia_id = $this->guia->gravarfaturamento();
-            
+
 
             if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
                 $this->guia->descontacreditopaciente();
@@ -2900,7 +2904,7 @@ class Guia extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }
-    
+
     function desfazerfaturadoconvenio($agenda_exames_id) {
 
         $this->guia->desfazerfaturamentoconvenio($agenda_exames_id);
@@ -3367,18 +3371,17 @@ class Guia extends BaseController {
             $this->load->View('ambulatorio/erro');
         }
     }
-    
+
     function desfazerfaturadoguiaconvenio($guia_id) {
 
-            $ambulatorio_guia_id = $this->guia->desfazerfaturamentototalconvenio($guia_id);
-            if ($ambulatorio_guia_id == "-1") {
-                $data['mensagem'] = 'Erro ao desfazer faturamento. Opera&ccedil;&atilde;o cancelada.';
-            } else {
-                $data['mensagem'] = 'Sucesso ao desfazer faturamento.';
-            }
-            $this->session->set_flashdata('message', $data['mensagem']);
-            redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
-        
+        $ambulatorio_guia_id = $this->guia->desfazerfaturamentototalconvenio($guia_id);
+        if ($ambulatorio_guia_id == "-1") {
+            $data['mensagem'] = 'Erro ao desfazer faturamento. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao desfazer faturamento.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao", $data);
     }
 
     function gravarfaturadoguiacaixa() {
@@ -3407,7 +3410,7 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresas();
         $this->loadView('ambulatorio/relatorioconferencia', $data);
     }
-    
+
     function relatorioguiasadt() {
         $data['grupo'] = $this->guia->listargrupo();
         $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
@@ -3502,7 +3505,7 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         if ($_POST['convenio'] != '0') {
             $data['convenios'] = $this->guia->listardados($_POST['convenio']);
-        }else{
+        } else {
             $data['convenios'] = 0;
         }
         if ($_POST['medico'] > 0) {
@@ -4701,7 +4704,7 @@ class Guia extends BaseController {
             redirect(base_url() . "/ambulatorio/guia/relatorioaniversariante");
         }
     }
-    
+
     function gerarelatorioaniversariantesdodia() {
         if ($_POST["txtdata_inicio"] != "" && $_POST["txtdata_fim"] != "") {
             $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
@@ -4841,17 +4844,17 @@ class Guia extends BaseController {
             $data['txtdata_fim'] = $_POST['txtdata_fim'];
             $data['relatorio'] = $this->guia->gerarelatoriotempoatendimento();
 
-            if($_POST['medico'] > 0){
+            if ($_POST['medico'] > 0) {
                 $data['medico'] = $this->operador_m->listarCada($_POST['medico']);
-            }else{
+            } else {
                 $data['medico'] = array();
             }
             if ($_POST['procedimentos'] != '0') {
                 $data['procedimentos'] = $this->guia->selecionarprocedimentos($_POST['procedimentos']);
-            }else{
+            } else {
                 $data['procedimentos'] = array();
             }
-            
+
             $this->load->View('ambulatorio/impressaorelatoriotempoatendimento', $data);
         } else {
             $data['mensagem'] = 'Cadastre um valor médio.';
@@ -5180,12 +5183,12 @@ class Guia extends BaseController {
             $data['sala'] = array();
         }
 //        var_dump($data['sala']); die;
-        if(!$_POST['empresa'] > 0){
+        if (!$_POST['empresa'] > 0) {
             $empresa_id = $this->session->userdata('empresa_id');
-        }else{
+        } else {
             $empresa_id = $_POST['empresa'];
         }
-       
+
         $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
@@ -5301,17 +5304,16 @@ class Guia extends BaseController {
         $data['cabecalho'] = @$data['cabecalhoconfig'][0]->cabecalho;
         $data['rodape'] = @$data['cabecalhoconfig'][0]->rodape;
         // var_dump($data['exames']); die;
-        if(count($data['exames']) > 0){
+        if (count($data['exames']) > 0) {
             if ($data['permissoes'][0]->orcamento_config == 't') {
                 $this->load->View('ambulatorio/impressaoorcamentorecepcaoconfiguravel', $data);
             } else {
                 $this->load->View('ambulatorio/impressaorelatorioorcamentoprocedimento', $data);
             }
-        }else{
+        } else {
             echo '<meta charset="UTF-8">';
             echo '<h3>Sem procedimentos no orçamento';
         }
-       
     }
 
     function procedimentoguianotaform($ambulatorio_guia_id, $valorguia, $valor = 0.00) {
