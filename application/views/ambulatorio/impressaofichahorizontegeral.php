@@ -46,7 +46,7 @@
         </tr>
         <tr>
             <td colspan="2"><font size = -1>Exame(s):<b> <?= $exame[0]->procedimento; ?></b></td>            
-            <td colspan="1" align="right"><font size = -1>Horário de Atendimento:<b> <?= $exame[0]->inicio; ?></b></td>            
+            <!--<td colspan="1" align="right"><font size = -1>Horário de Atendimento:<b> <?= $exame[0]->inicio; ?></b></td>-->            
         </tr>
     </table>
     <? // echo'<pre>'; var_dump($exame);die;?>
@@ -135,6 +135,10 @@
 
         </tr>
         <tr>
+            <td><font size = -1>Horário de Atendimento:<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= $exame[0]->inicio; ?></b></td>
+            <td><font size = -1>Horário de Atendimento:<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= $exame[0]->inicio; ?></b></td>
+        </tr>
+        <tr>
             <td>
                 Paciente.: <span style="font-weight: bold"><?= $paciente[0]->paciente_id; ?>  - <?= $paciente[0]->nome; ?></span>
             </td>
@@ -143,6 +147,7 @@
             </td>
 
         </tr>
+        
         <tr>
             <td>
                 Idade.......:  <?= $teste; ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -194,7 +199,9 @@
         </tr>
         <tr>
             <td>Forma de Pagamento.: 
-                <? foreach ($exames as $key => $item): if ($item->grupo == $exame[0]->grupo) { ?>
+                
+                <? foreach ($exames as $key => $item): if ($item->grupo == $exame[0]->grupo) { 
+                    if($item->faturado == 't'){?>
                         <?
                         if ($key == count($exames) - 1) {
                             echo $item->formadepagamento;
@@ -220,11 +227,14 @@
                             }
                         }
                     }
+                }
                     ?>
 <? endforeach; ?>
             </td>
             <td>Forma de Pagamento.: 
-                <? foreach ($exames as $key => $item): if ($item->grupo == $exame[0]->grupo) { ?>
+                
+                <? foreach ($exames as $key => $item): if ($item->grupo == $exame[0]->grupo) { 
+                    if($item->faturado == 't'){?>
                         <?
                         if ($key == count($exames) - 1) {
                             echo $item->formadepagamento;
@@ -250,16 +260,17 @@
                             }
                         }
                     }
+                }
                     ?>
 <? endforeach; ?>
             </td>
         </tr>
         <tr>
             <td>
-                Atendente...: <?= $exame[0]->atendente; ?>
+                Atendente.: <?= $exame[0]->usuario; ?>
             </td>
             <td>
-                Atendente...: <?= $exame[0]->atendente; ?>
+                Atendente.: <?= $exame[0]->usuario; ?>
             </td>
 
         </tr>
@@ -275,15 +286,7 @@
             <td>
                 Previsão de Entrega.: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>
             </td>
-        </tr>
-        <tr>
-            <td>
-                Técnico: <?= $exame[0]->atendente; ?>
-            </td>
-            <td>
-                Técnico: <?= $exame[0]->atendente; ?>
-            </td>
-        </tr>
+        </tr>        
         <tr>
             <td>
 

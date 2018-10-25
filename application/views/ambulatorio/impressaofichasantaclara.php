@@ -49,32 +49,34 @@
                         <tr>
                             <td><font size = -1>RG: <?= $exame[0]->rg; ?></td>                        
                             <td><font size = -1>Nº CARTEIRINHA: <?= $exame[0]->rg; ?></td>                        
-                            <td><font size = -1><b>Resultados na Internet:</b></td>                        
+                            <td><font size = -1><b>Resultados na Internet:</b> http://stgclinica.ddns.net/pacientesantaclara/</td>                        
                         </tr>
+                       
                         <tr>
                             <td colspan="2"><font size = -1>NOME: <?= $exame[0]->paciente_id; ?> - <?= $exame[0]->paciente; ?></td>
-                            <td colspan="1"><font size = -1><b>Optar por:</b></td>                        
+                            <td><font size = -1><b>Usuario:</b><?= $exame[0]->paciente_id; ?> <b>Senha:</b><?= $exame[0]->agenda_exames_id; ?></td>                        
                         </tr>
                         <tr>
                             <td><font size = -1>IDADE: <?= $teste; ?></td>                        
                             <td><font size = -1>SEXO: <?= $paciente[0]->sexo; ?></td>                        
-                            <td><font size = -1><b>Solicitação:</b></td>                        
+                                                    
                         </tr>
                         <tr>
                             <td colspan="2"><font size = -1>MÉDICO: <?
                                 if ($exame[0]->crm_medico != '') {
-                                    $exame[0]->crm_medico;
+                                    echo $exame[0]->crm_medico;
                                 } else {
                                     echo 'NI';
                                 }
                                 ?>  - <?
                                 if ($exame[0]->medico != '') {
-                                    $exame[0]->medico;
+                                    echo $exame[0]->medico;
                                 } else {
                                     echo 'NÃO INFORMADO';
                                 }
-                                ?></td>                        
-                            <td colspan="1"><font size = -1><b>Senha de internet:</b></td>                        
+                                ?>
+                            </td>                        
+                            <td><font size = -1><b>Solicitação: <?= $exame[0]->agenda_exames_id; ?></b></td>                        
                         </tr>
                         <tr>
                             <?
@@ -104,96 +106,106 @@
                 <b>Procedimentos</b>
             </td>
         </tr>
-        <?
-        $valor_total_ficha = 0;
-        $desconto_total = 0;
-        $cartao_total = 0;
-        foreach ($formapagamento as $value) {
-            $data[$value->nome] = 0;
-            $datacredito[$value->nome] = 0;
-            $numerocredito[$value->nome] = 0;
-            $descontocredito[$value->nome] = 0;
-            $numero[$value->nome] = 0;
-            $desconto[$value->nome] = 0;
-        }
+        <tr height="30px">
+            <?
+            $valor_total_ficha = 0;
+            $desconto_total = 0;
+            $cartao_total = 0;
+            foreach ($formapagamento as $value) {
+                $data[$value->nome] = 0;
+                $datacredito[$value->nome] = 0;
+                $numerocredito[$value->nome] = 0;
+                $descontocredito[$value->nome] = 0;
+                $numero[$value->nome] = 0;
+                $desconto[$value->nome] = 0;
+            }
 //                    echo'<pre>';
 //        var_dump($exames); die;
-        foreach ($exames as $item) :
-            $u = 0;
+            $contador = 0;            
+            foreach ($exames as $item) :
+                $u = 0;
+                $contador++;
+                
 
-
-
-//                        if ($item->grupo == $exame[0]->grupo) {
-            foreach ($formapagamento as $value) {
-                if ($item->formadepagamento == $value->nome) {
-                    $data[$value->nome] = $data[$value->nome] + $item->valor1;
-                    $numero[$value->nome] ++;
-                    if ($u == 0) {
-                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-                    }
-                    if ($item->desconto != '') {
-                        $u++;
-                    }
-                }
-            }
-            foreach ($formapagamento as $value) {
-                if ($item->formadepagamento2 == $value->nome) {
-                    $data[$value->nome] = $data[$value->nome] + $item->valor2;
-                    $numero[$value->nome] ++;
-                    if ($u == 0) {
-
-                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-                    }
-                    if ($item->desconto != '') {
-                        $u++;
+                foreach ($formapagamento as $value) {
+                    if ($item->formadepagamento == $value->nome) {
+                        $data[$value->nome] = $data[$value->nome] + $item->valor1;
+                        $numero[$value->nome] ++;
+                        if ($u == 0) {
+                            $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                        }
+                        if ($item->desconto != '') {
+                            $u++;
+                        }
                     }
                 }
-            }
-            foreach ($formapagamento as $value) {
-                if ($item->formadepagamento3 == $value->nome) {
-                    $data[$value->nome] = $data[$value->nome] + $item->valor3;
-                    $numero[$value->nome] ++;
-                    if ($u == 0) {
+                foreach ($formapagamento as $value) {
+                    if ($item->formadepagamento2 == $value->nome) {
+                        $data[$value->nome] = $data[$value->nome] + $item->valor2;
+                        $numero[$value->nome] ++;
+                        if ($u == 0) {
 
-                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-                    }
-                    if ($item->desconto != '') {
-                        $u++;
-                    }
-                }
-            }
-            foreach ($formapagamento as $value) {
-                if ($item->formadepagamento4 == $value->nome) {
-                    $data[$value->nome] = $data[$value->nome] + $item->valor4;
-                    $numero[$value->nome] ++;
-                    if ($u == 0) {
-
-                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-                    }
-                    if ($item->desconto != '') {
-                        $u++;
+                            $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                        }
+                        if ($item->desconto != '') {
+                            $u++;
+                        }
                     }
                 }
-            }
+                foreach ($formapagamento as $value) {
+                    if ($item->formadepagamento3 == $value->nome) {
+                        $data[$value->nome] = $data[$value->nome] + $item->valor3;
+                        $numero[$value->nome] ++;
+                        if ($u == 0) {
+
+                            $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                        }
+                        if ($item->desconto != '') {
+                            $u++;
+                        }
+                    }
+                }
+                foreach ($formapagamento as $value) {
+                    if ($item->formadepagamento4 == $value->nome) {
+                        $data[$value->nome] = $data[$value->nome] + $item->valor4;
+                        $numero[$value->nome] ++;
+                        if ($u == 0) {
+
+                            $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                        }
+                        if ($item->desconto != '') {
+                            $u++;
+                        }
+                    }
+                }
 
 
-            $valor_total_ficha = $valor_total_ficha + ($item->valor_total * $item->quantidade);
-            $desconto_total = $desconto_total + $item->desconto;
+                $valor_total_ficha = $valor_total_ficha + ($item->valor_total * $item->quantidade);
+                if($item->faturado == 't'){
+                $valor_total_pago = $valor_total_ficha + ($item->valor_total * $item->quantidade);
+                }else{
+                $valor_total_pago = 0;    
+                }
+                $desconto_total = $desconto_total + $item->desconto;
+                ?>
+                <td width="400px">
+                    <font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?>
+                </td>    
+                    <?if ($contador == 3) {
+                        $contador = 0;
+                        ?>
+                </tr><tr>
+                    <?
+                }
+
+//        var_dump($contador1);die;
+            endforeach;
             ?>
-            <tr height="30px">
-                <td ><font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?></td>                              
-            </tr>
-            <tr height="30px">
-                <td ><font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?></td>                              
-            </tr>
-            <?
-//                        }
-        endforeach;
-        ?>
-        <tr>
+        </tr>
+        <tr height="50px">
             <td class="tabela_header"><b>Total de Procedimentos: <?= count($exames); ?></b></td>
             <td><b>Valor Total: R$ <?= $valor_total_ficha ?></b></td>
-            <!--<td><b>Valor Pago: R$ </b></td>-->
+            <td><b>Valor Pago: R$ <?= $valor_total_pago ?></b></td>
         </tr>
     </table>
     <br>
@@ -237,33 +249,34 @@
                         <tr>
                             <td><font size = -1>RG: <?= $exame[0]->rg; ?></td>                        
                             <td><font size = -1>Nº CARTEIRINHA: <?= $exame[0]->rg; ?></td>                        
-                            <td><font size = -1><b>Resultados na Internet:</b></td>                        
+                            <td><font size = -1><b>Resultados na Internet:</b> http://stgclinica.ddns.net/pacientesantaclara/</td>                        
                         </tr>
+                        
                         <tr>
                             <td colspan="2"><font size = -1>NOME: <?= $exame[0]->paciente_id; ?> - <?= $exame[0]->paciente; ?></td>
-                            <td colspan="1"><font size = -1><b>Optar por:</b></td>                        
+                            <td><font size = -1><b>Usuario:</b><?= $exame[0]->paciente_id; ?> <b>Senha:</b><?= $exame[0]->agenda_exames_id; ?></td>                        
                         </tr>
                         <tr>
                             <td><font size = -1>IDADE: <?= $teste; ?></td>                        
                             <td><font size = -1>SEXO: <?= $paciente[0]->sexo; ?></td>                        
-                            <td><font size = -1><b>Solicitação:</b></td>                        
+                                                   
                         </tr>
                         <tr>
                             <td colspan="2"><font size = -1>MÉDICO: <?
                                 if ($exame[0]->crm_medico != '') {
-                                    $exame[0]->crm_medico;
+                                    echo $exame[0]->crm_medico;
                                 } else {
                                     echo 'NI';
                                 }
                                 ?>  - <?
                                 if ($exame[0]->medico != '') {
-                                    $exame[0]->medico;
+                                    echo $exame[0]->medico;
                                 } else {
                                     echo 'NÃO INFORMADO';
                                 }
                                 ?>
                             </td>                        
-                            <td colspan="1"><font size = -1><b>Senha de internet:</b></td>                        
+                            <td><font size = -1><b>Solicitação: <?= $exame[0]->agenda_exames_id; ?></b></td>                        
                         </tr>
                         <tr>
                             <?
@@ -293,96 +306,106 @@
                 <b>Procedimentos</b>
             </td>
         </tr>
-        <?
-        $valor_total_ficha = 0;
-        $desconto_total = 0;
-        $cartao_total = 0;
-        foreach ($formapagamento as $value) {
-            $data[$value->nome] = 0;
-            $datacredito[$value->nome] = 0;
-            $numerocredito[$value->nome] = 0;
-            $descontocredito[$value->nome] = 0;
-            $numero[$value->nome] = 0;
-            $desconto[$value->nome] = 0;
-        }
+        <tr height="30px">
+            <?
+            $valor_total_ficha = 0;
+            $desconto_total = 0;
+            $cartao_total = 0;
+            foreach ($formapagamento as $value) {
+                $data[$value->nome] = 0;
+                $datacredito[$value->nome] = 0;
+                $numerocredito[$value->nome] = 0;
+                $descontocredito[$value->nome] = 0;
+                $numero[$value->nome] = 0;
+                $desconto[$value->nome] = 0;
+            }
 //                    echo'<pre>';
 //        var_dump($exames); die;
-        foreach ($exames as $item) :
-            $u = 0;
+            $contador = 0;            
+            foreach ($exames as $item) :
+                $u = 0;
+                $contador++;
+                
 
-
-
-//                        if ($item->grupo == $exame[0]->grupo) {
-            foreach ($formapagamento as $value) {
-                if ($item->formadepagamento == $value->nome) {
-                    $data[$value->nome] = $data[$value->nome] + $item->valor1;
-                    $numero[$value->nome] ++;
-                    if ($u == 0) {
-                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-                    }
-                    if ($item->desconto != '') {
-                        $u++;
-                    }
-                }
-            }
-            foreach ($formapagamento as $value) {
-                if ($item->formadepagamento2 == $value->nome) {
-                    $data[$value->nome] = $data[$value->nome] + $item->valor2;
-                    $numero[$value->nome] ++;
-                    if ($u == 0) {
-
-                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-                    }
-                    if ($item->desconto != '') {
-                        $u++;
+                foreach ($formapagamento as $value) {
+                    if ($item->formadepagamento == $value->nome) {
+                        $data[$value->nome] = $data[$value->nome] + $item->valor1;
+                        $numero[$value->nome] ++;
+                        if ($u == 0) {
+                            $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                        }
+                        if ($item->desconto != '') {
+                            $u++;
+                        }
                     }
                 }
-            }
-            foreach ($formapagamento as $value) {
-                if ($item->formadepagamento3 == $value->nome) {
-                    $data[$value->nome] = $data[$value->nome] + $item->valor3;
-                    $numero[$value->nome] ++;
-                    if ($u == 0) {
+                foreach ($formapagamento as $value) {
+                    if ($item->formadepagamento2 == $value->nome) {
+                        $data[$value->nome] = $data[$value->nome] + $item->valor2;
+                        $numero[$value->nome] ++;
+                        if ($u == 0) {
 
-                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-                    }
-                    if ($item->desconto != '') {
-                        $u++;
-                    }
-                }
-            }
-            foreach ($formapagamento as $value) {
-                if ($item->formadepagamento4 == $value->nome) {
-                    $data[$value->nome] = $data[$value->nome] + $item->valor4;
-                    $numero[$value->nome] ++;
-                    if ($u == 0) {
-
-                        $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
-                    }
-                    if ($item->desconto != '') {
-                        $u++;
+                            $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                        }
+                        if ($item->desconto != '') {
+                            $u++;
+                        }
                     }
                 }
-            }
+                foreach ($formapagamento as $value) {
+                    if ($item->formadepagamento3 == $value->nome) {
+                        $data[$value->nome] = $data[$value->nome] + $item->valor3;
+                        $numero[$value->nome] ++;
+                        if ($u == 0) {
+
+                            $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                        }
+                        if ($item->desconto != '') {
+                            $u++;
+                        }
+                    }
+                }
+                foreach ($formapagamento as $value) {
+                    if ($item->formadepagamento4 == $value->nome) {
+                        $data[$value->nome] = $data[$value->nome] + $item->valor4;
+                        $numero[$value->nome] ++;
+                        if ($u == 0) {
+
+                            $desconto[$value->nome] = $desconto[$value->nome] + $item->desconto;
+                        }
+                        if ($item->desconto != '') {
+                            $u++;
+                        }
+                    }
+                }
 
 
-            $valor_total_ficha = $valor_total_ficha + ($item->valor_total * $item->quantidade);
-            $desconto_total = $desconto_total + $item->desconto;
+                $valor_total_ficha = $valor_total_ficha + ($item->valor_total * $item->quantidade);
+                if($item->faturado == 't'){
+                $valor_total_pago = $valor_total_ficha + ($item->valor_total * $item->quantidade);
+                }else{
+                $valor_total_pago = 0;    
+                }
+                $desconto_total = $desconto_total + $item->desconto;
+                ?>
+                <td width="400px">
+                    <font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?>
+                </td>    
+                    <?if ($contador == 3) {
+                        $contador = 0;
+                        ?>
+                </tr><tr>
+                    <?
+                }
+
+//        var_dump($contador1);die;
+            endforeach;
             ?>
-            <tr height="30px">
-                <td ><font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?></td> 
-            </tr>
-            <tr height="30px">
-                <td ><font size = -1><?= $item->codigo ?> - <?= $item->procedimento ?></td> 
-            </tr>
-            <?
-//                        }
-        endforeach;
-        ?>
-        <tr>
+        </tr>
+        <tr height="50px">
             <td class="tabela_header"><b>Total de Procedimentos: <?= count($exames); ?></b></td>
-            <td><b>Valor Total: R$ <?= $valor_total_ficha ?></b></td>
-            <!--<td><b>Valor Pago: R$ </b></td>-->
+            <td><b>Valor Total: R$ <?= $valor_total_ficha ?></b></td>            
+            <td><b>Valor Pago: R$ <?= $valor_total_pago ?></b></td>
         </tr>
     </table>
 
