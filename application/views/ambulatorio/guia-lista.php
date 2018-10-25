@@ -101,11 +101,19 @@
                                         }
                                         if ($botao_faturar_proc == 't') {
                                             ?>
+                                            <?if($empresapermissoes[0]->faturamento_novo == 'f'){?>
                                             <th class="tabela_header">
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia_id; ?> ', '_blank', 'width=1000,height=600');">F. Proc</a>
                                                 </div>
                                             </th>  
+                                             <?}else{?>
+                                                <th class="tabela_header">
+                                                    <div class="bt_link">
+                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentosmodelo2/" . $guia_id; ?> ', '_blank', 'width=1000,height=600');">F. Proc</a>
+                                                    </div>
+                                                </th>
+                                             <?}?>
                                             <?
                                         }
                                     } else {
@@ -329,9 +337,16 @@
                                             <? if (($item->faturado == "f" || $perfil_id == 1 || $perfil_id == 13 || $perfil_id == 5 || $perfil_id == 18) && ($item->dinheiro == "t")) { ?>
                                                 <? if ($perfil_id != 12) { ?>
                                                     <? if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't' || $item->procedimento_possui_ajuste_pagamento == 'f') { ?>
-                                                        <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');">Faturar</a>
-                                                        </td>
+                                                        <?if($empresapermissoes[0]->faturamento_novo == 't'){?>
+                                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarmodelo2/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id ?>', '_blank', 'width=1000,height=600');">Faturar</a>
+                                                            </td>
+                                                        <?}else{?>
+                                                            <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');">Faturar</a>
+                                                            </td>
+                                                        <?}?> 
+                                                        
                                                     <? } else { ?>
                                                         <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>', '_blank', 'width=1000,height=600');">Faturar</a>

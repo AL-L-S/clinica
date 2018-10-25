@@ -394,6 +394,7 @@ class guia_model extends Model {
                             ep.orcamento_multiplo,
                             ep.ocupacao_mae,
                             ep.ocupacao_pai,
+                            ep.faturamento_novo,
                             ep.impressao_cimetra
                             
                             ');
@@ -3354,7 +3355,7 @@ class guia_model extends Model {
                            p.nascimento,
                            p.escolaridade_id,
                            p.estado_civil_id,
-                           c.nome as plano");
+                           c.nome as plano", false);
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'ae.paciente_id = p.paciente_id');
         $this->db->join('tb_convenio c', 'c.convenio_id = p.convenio_id');
@@ -3384,18 +3385,17 @@ class guia_model extends Model {
     }
 
     function relatoriounicoretornopaciente($paciente_id) {
+
         $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
         $data_fim = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
-        $this->db->select("ae.paciente_id");
-        $this->db->from('tb_agenda_exames ae');
+
+        $this->db->select("al.paciente_id");
+        $this->db->from('tb_ambulatorio_laudo al');
 //        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where("ae.paciente_id", $paciente_id);
-        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
-        $this->db->where('ae.realizada', 't');
-        $this->db->where('ae.cancelada', 'f');
-//        $this->db->limit(1);
+        $this->db->where("al.paciente_id", $paciente_id);
+        $this->db->where("al.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
 
-
+        $this->db->limit(1);
         $return = $this->db->get()->result();
         return $return;
     }
@@ -8745,6 +8745,26 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarexameguiaprocedimentosmodelo2($guia_id) {
+
+        $this->db->select('sum((valor * quantidade)) as valor_total, 
+                           array_agg(ae.agenda_exames_id) as array_exames,
+                           array_agg(valor * quantidade) as array_valores,
+    
+                        ');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        // $this->db->where('faturado', 'f');
+        $this->db->where('confirmado', 't');
+        $this->db->where('c.dinheiro', 't');
+        $this->db->where("guia_id", $guia_id);
+        $this->db->groupby("guia_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function listarexameguiaprocedimentos($guia_id) {
 
         $this->db->select('sum((valor * quantidade)) as total');
@@ -8959,6 +8979,96 @@ class guia_model extends Model {
         } else {
             return $retorno;
         }
+    }
+
+    function agendaExamesFormasPagamento($agenda_exames_id) {
+       
+//        var_dum
+        // Dentro do select tem um pequeno select interno que faz a contagem pra saber quanto ainda resta a pagar
+        // Desse procedimento
+        $this->db->select('fp.forma_pagamento_id,
+                            aef.agenda_exames_faturar_id,
+                            aef.agenda_exames_id,
+                            aef.valor_total,
+                            (aef.valor_total - (select sum(valor_bruto) + sum(desconto)  as valorTotPag from ponto.tb_agenda_exames_faturar aef2
+                            where aef2.agenda_exames_id = aef.agenda_exames_id and ativo = true)) as valor_restante,
+                            aef.valor,
+                            aef.data,
+                            aef.ajuste,
+                            aef.parcela,
+                            aef.desconto,
+                            aef.agenda_exames_faturar_id,
+                            fp.nome as forma_pagamento', false);
+        $this->db->from('tb_agenda_exames_faturar aef');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = aef.forma_pagamento_id', 'left');
+        $this->db->where('aef.agenda_exames_id', $agenda_exames_id);
+        $this->db->where('aef.ativo', 't');
+        $this->db->orderby('aef.data, fp.nome');
+        $return = $this->db->get();
+        $retorno = $return->result();
+        return $retorno;
+    }
+
+    function agendaExamesFormasPagamentoGuia($guia_id) {
+       
+//        var_dum
+        // Dentro do select tem um pequeno select interno que faz a contagem pra saber quanto ainda resta a pagar
+        // Desse procedimento
+        $this->db->select('fp.forma_pagamento_id,
+                            aef.guia_id,
+                            sum(aef.valor_total) as valor_total,
+                            (sum(aef.valor_total) - (select sum(valor_bruto) + sum(desconto)  as valorTotPag from ponto.tb_agenda_exames_faturar aef2
+                            where aef2.guia_id = aef.guia_id and ativo = true)) as valor_restante,
+                            sum(aef.valor) as valor,
+                            aef.data,
+                            aef.ajuste,
+                            aef.parcela,
+                            sum(aef.desconto) as desconto,
+                            
+                            fp.nome as forma_pagamento', false);
+        $this->db->from('tb_agenda_exames_faturar aef');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = aef.forma_pagamento_id', 'left');
+        $this->db->where('aef.guia_id', $guia_id);
+        $this->db->where('aef.ativo', 't');
+        $this->db->groupby('fp.forma_pagamento_id,
+                            aef.guia_id,
+                            aef.data,
+                            aef.ajuste,
+                            aef.parcela,
+                            fp.nome
+                            ');
+        $this->db->orderby('aef.data, fp.nome');
+        $return = $this->db->get();
+        $retorno = $return->result();
+        return $retorno;
+    }
+
+    function agendaExamesFormasPagamentoGuiaTotal($guia_id) {
+
+//        var_dum
+        // Dentro do select tem um pequeno select interno que faz a contagem pra saber quanto ainda resta a pagar
+        // Desse procedimento
+        $this->db->select('
+                            aef.guia_id,
+                            sum(aef.valor_total) as valor_total,
+                            (sum(aef.valor_total) - (select sum(valor_bruto) + sum(desconto)  as valorTotPag from ponto.tb_agenda_exames_faturar aef2
+                            where aef2.guia_id = aef.guia_id and ativo = true)) as valor_restante,
+                            sum(aef.valor) as valor,
+                            sum(valor_bruto) + sum(desconto) as valor_total_pago,
+                            aef.data,
+                            sum(aef.desconto) as desconto', false);
+        $this->db->from('tb_agenda_exames_faturar aef');
+        $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = aef.forma_pagamento_id', 'left');
+        $this->db->where('aef.guia_id', $guia_id);
+        $this->db->where('aef.ativo', 't');
+        $this->db->groupby('
+                            aef.guia_id,
+                            aef.data
+                            ');
+        $this->db->orderby('aef.data');
+        $return = $this->db->get();
+        $retorno = $return->result();
+        return $retorno;
     }
 
     function formadepagamentoguia($guia_id, $financeiro_grupo_id) {
@@ -9591,6 +9701,391 @@ class guia_model extends Model {
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco
                 return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function verificarPagamentoExistente($agenda_exames_id, $forma_pagamento_id , $data = null) {
+
+        if($data == null){
+            $data = date("Y-m-d");
+        }
+
+        $this->db->select('*');
+        $this->db->from('tb_agenda_exames_faturar');
+        $this->db->where('data', $data);
+        $this->db->where('forma_pagamento_id', $forma_pagamento_id);
+        $this->db->where('agenda_exames_id', $agenda_exames_id);
+        $this->db->where('ativo', 't');
+        $return = $this->db->get();
+        $result = $return->result();
+        
+        return $result;
+
+    }
+
+    function gravarProcedimentosBackupFaturar($forma_pagamento_id, $guia_id, $alteracao = 'EDITAR') {
+
+        $this->db->select('*');
+        $this->db->from('tb_agenda_exames_faturar');
+        $this->db->where('guia_id', $guia_id);
+        $this->db->where('forma_pagamento_id', $forma_pagamento_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        foreach($result as $item){
+
+            $this->db->set('agenda_exames_faturar_id', $item->agenda_exames_faturar_id);
+            $this->db->set('json_salvar', json_encode($item));
+            $this->db->set('alteracao', $alteracao);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_agenda_exames_faturar_bkp');
+
+        }
+        
+        
+
+    }
+
+    function gravarBackupFaturar($agenda_exames_faturar_id, $alteracao = 'EDITAR') {
+
+        $this->db->select('*');
+        $this->db->from('tb_agenda_exames_faturar');
+        $this->db->where('agenda_exames_faturar_id', $agenda_exames_faturar_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        // echo '<pre>';
+        // var_dump($result);
+        // die;
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+
+        $this->db->set('agenda_exames_faturar_id', $agenda_exames_faturar_id);
+        $this->db->set('json_salvar', json_encode($result));
+        $this->db->set('alteracao', $alteracao);
+        $this->db->set('data_cadastro', $horario);
+        $this->db->set('operador_cadastro', $operador_id);
+        $this->db->insert('tb_agenda_exames_faturar_bkp');
+
+    }
+
+    function apagarfaturarmodelo2($agenda_exames_faturar_id) {
+        try {
+
+            // Gravando backup das alterações 
+            $this->gravarBackupFaturar($agenda_exames_faturar_id, 'EXCLUIR');
+
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('agenda_exames_faturar_id', $agenda_exames_faturar_id);
+            $this->db->update('tb_agenda_exames_faturar');
+
+            // echo 'something'; die;
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id) {
+        try {
+
+            // Gravando backup das alterações 
+            $this->gravarProcedimentosBackupFaturar($forma_pagamento_id, $guia_id, 'EXCLUIR GUIA');
+
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('ativo', 'f');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('guia_id', $guia_id);
+            $this->db->where('forma_pagamento_id', $forma_pagamento_id);
+            $this->db->update('tb_agenda_exames_faturar');
+
+            // echo 'something'; die;
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarfaturamentomodelo2() {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            // echo '<pre>';
+            // var_dump($_POST); die;
+            $desconto = (float) $_POST['desconto'];
+            $valor1 = (float) $_POST['valor1'];
+            $ajuste1 = (float) $_POST['ajuste1'];
+            $valor_bruto = (float) $_POST['valor1'];
+            $valorajuste1 = (float) $_POST['valorajuste1'];
+            $valor_proc = (float) $_POST['valor_proc'];
+            $parcela1 = (int) $_POST['parcela1'];
+            $guia_id =  $_POST['guia_id'];
+            $agenda_exames_id =  $_POST['agenda_exames_id'];
+            $procedimento_convenio_id =  $_POST['procedimento_convenio_id'];
+            $forma_pagamento_id =  $_POST['forma_pagamento_id'];
+            $data = date("Y-m-d");
+
+            // Verifica se tem uma forma já cadastrada para adicionar o valor a ela, ao invés de inserir uma nova linha
+            // Isso no caso de já haver uma forma de pagamento para aquele dia naquele exame
+            // $verificarExi = $this->verificarPagamentoExistente($agenda_exames_id, $forma_pagamento_id, $data);
+            // Mas deixei a lógica de lado por enquanto, não quero complicar a vida tão cedo.
+            // Apesar de já ser complicada
+            // if(count($verificarExi) > 0){
+            //     $valor1New = $verificarExi[0]->valor + $valor1;
+            //     $valor_brutoNew = $verificarExi[0]->valor + $valor_bruto;
+            //     $valorNew = $verificarExi[0]->valor + $valor1;
+            //     $valorNew = $verificarExi[0]->valor + $valor1;
+            // }else{
+            $this->db->set('forma_pagamento_id', $forma_pagamento_id);
+            $this->db->set('parcela', $parcela1);
+            $this->db->set('guia_id', $guia_id);
+            $this->db->set('agenda_exames_id', $agenda_exames_id);
+            $this->db->set('procedimento_convenio_id', $procedimento_convenio_id);
+            $this->db->set('desconto', $desconto);
+            $this->db->set('ajuste', $ajuste1);
+            $this->db->set('valor_total', $valor_proc);
+            $this->db->set('valor', $valorajuste1);
+            $this->db->set('valor_bruto', $valor_bruto);
+            $this->db->set('data', $data);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->set('faturado', 't');
+            $this->db->insert('tb_agenda_exames_faturar');
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+            // }
+
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+
+    function gravarprocedimentosfaturarmodelo2() {
+        try {
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            // echo '<pre>';
+            // var_dump($_POST);
+            //  die;
+            $desconto = (float) $_POST['desconto'];
+            $valor1 = (float) $_POST['valor1'];
+            $ajuste1 = (float) $_POST['ajuste1'];
+            $valor_bruto = (float) $_POST['valor1'];
+            $valorajuste1 = (float) round( $_POST['valorajuste1'] , 2);
+            $valor_proc = (float) $_POST['valor_proc'];
+            $parcela1 = (int) $_POST['parcela1'];
+            $guia_id =  $_POST['guia_id'];
+            
+            $forma_pagamento_id =  $_POST['forma_pagamento_id'];
+            $data = date("Y-m-d");
+
+            $array_examesPG =  $_POST['array_exames'];
+            $array_valoresPG =  $_POST['array_valores'];
+            // Os arrays acima vem do POST e são definidos através de uma função do Postgresql
+            // aqui eu só faço tratar e deixar como arrays do PHP
+            $array_examesStr = str_replace('{', '',str_replace('}', '', $array_examesPG));
+            $array_exames = explode(',', $array_examesStr);
+            // Array com agenda exames
+            $array_valoresStr = str_replace('{', '',str_replace('}', '', $array_valoresPG));
+            $array_valores = explode(',', $array_valoresStr);
+            // Array com os valores de procedimentos
+            // echo '<pre>';
+            // var_dump($array_exames); 
+            // var_dump($array_valores); 
+            // die;
+
+            // Unindo os arrays em um só e ordenando pelo menor valor;
+            $i = 0;
+            $array_geral = array();
+            foreach($array_exames as $agenda_exames){
+                $array_geral[$agenda_exames] = (float) $array_valores[$i];
+                $i++;
+
+            }
+            asort($array_geral);
+            // foreach ($array_geral as $key => $value) {
+            //     echo "Meu valor E $value e eu tenho o agenda exames $key <br>";
+            // }
+            // die;
+
+            $contador = 0;
+            $qtdeProc = count($array_exames);
+            $qtdeProcRes = count($array_exames);
+            // $valorForRestante = $valor_bruto;
+            $valorForRestante = $valorajuste1;
+            $valorDescRestante = $desconto;
+            $valorDescTotal = 0;
+            $valorForTotal = 0;
+            $teste = 0;
+            $valorTotalProc = 0;
+            $valorDivisao = (float) round($valorajuste1 / $qtdeProc, 2);
+            $valorDescDivisao = (float) round($desconto / $qtdeProc, 2);
+            // Divide o valor igualmente por procedimento
+            // echo '<pre>';
+            // 
+            // var_dump();
+            $valor_ajusteAdicional = 0;
+            if($ajuste1 > 0){
+               $valor_ajusteAdicional = ($valorForRestante - $valor_bruto);
+               $valor_ajusteAdicional =  round($valor_ajusteAdicional / $qtdeProcRes, 2);
+
+            }
+            // echo $valor_ajusteAdicional;
+            foreach($array_geral as $agenda_exames_id => $valor) {
+                if($ajuste1 > 0){
+                    $valor += $valor_ajusteAdicional;
+                }
+
+                $valorProcAtual = $valor;
+                // Caso o valor da divisao seja maior que o proc
+                // ele vai refazer o calculo da divisao tirando o valor do proc pago e
+                // e retirando um da quantidade, já que ele foi pago.
+                if($valorDivisao > $valorProcAtual){
+                    $valor_pago = $valorProcAtual;
+                    $valorForRestante -= $valor_pago;
+                    $qtdeProcRes--; // Subtrai um
+                    if($qtdeProcRes < 1){
+                        $qtdeProcRes = 1; // Nao se divide nada por zero.
+                    }
+                    $valorDivisao = (float) round($valorForRestante/$qtdeProcRes, 2);
+                    $valorDescDivisao = (float) round($valorDescRestante / $qtdeProcRes, 2);
+                    $valor_desconto = 0;
+
+                }else{
+                    $qtdeProcRes--;
+
+                    $valor_pago = $valorDivisao;
+                    $valorForRestante -= $valor_pago;
+
+                    if($valorDescRestante > 0){
+                        
+                        $valor_calculo = $valorDescDivisao + $valor_pago;
+                        if($valor_calculo > $valorProcAtual){
+                           
+                            $valor_desconto = $valorProcAtual - $valor_pago;
+                            // echo "Desconto de: $valor_desconto<br>";
+                            // $valor_desconto = $valorDescDivisao;
+                            $valorDescRestante -= $valor_desconto; 
+                            if($qtdeProcRes < 1){
+                                $qtdeProcRes = 1;
+                            }
+                            $valorDescDivisao = (float) round($valorDescRestante / $qtdeProcRes, 2);
+                        }else{
+                            // echo "Desconto de: $valor_desconto<br>";
+                            $valorDescRestante -= $valorDescDivisao; 
+                            $valor_desconto = $valorDescDivisao;
+                        }
+                        $valorDescTotal += $valor_desconto;
+                        // $valor_pago -= $valor_desconto;
+
+                    }
+                }
+                // if($ajuste1 > 0){
+                //     $valor_pago = $valor_pago + ($valor_pago * ($ajuste1/100));
+                // }
+                // echo "Desconto de: $valor_desconto e desconto restante de: $valorDescRestante<br>";
+                $valorForTotal += $valor_pago;
+                // var_dump($valorDivisao);
+                $contador++;
+
+                $valorTotalProc += $valorProcAtual;
+                // Aqui eu verifico se o foreach chegou no fim
+                if($contador >= count($array_geral)){
+                    // Se sim, olho se restou alguns centavos ou coisa do tipo no valor
+                    // caso sobre, eu só faço somar ao último valor que ele vai inserir
+                    if($valorForRestante > 0){
+                        $valor_pago += $valorForRestante;
+                        $valorForTotal += $valorForRestante;
+                    }
+                    
+                    if($valorDescRestante > 0){
+                    
+                        // echo "Desconto final de: $valor_desconto <br>";
+                        $valor_desconto += $valorDescRestante;
+                        $valorDescTotal += $valorDescRestante;
+                        $valorProcAtual += $valorDescRestante;
+                        $valorDescRestante -= $valorDescRestante;
+                        // echo "Desconto final mesmo de: $valor_desconto <br>";
+                        // echo "Sobrou: $valorDescRestante <br>";
+                    }
+
+                    if($valorProcAtual > ($valor_desconto + $valor_pago)){
+                        $restanteDeTudo = round($valorProcAtual - ($valor_desconto + $valor_pago), 2);
+                        // echo round($valorProcAtual - ($valor_desconto + $valor_pago), 2);
+                        // echo '<br>';
+                        $valorProcAtual -= $restanteDeTudo;
+                    }
+                    
+                    if($valorProcAtual < ($valor_desconto + $valor_pago)){
+                        $restanteDeTudo = round($valorProcAtual - ($valor_desconto + $valor_pago), 2);
+                        // echo round($valorProcAtual - ($valor_desconto + $valor_pago), 2);
+                        // echo '<br>';
+                        $valorProcAtual -= $restanteDeTudo;
+                    }
+
+                    // if(){}
+
+                    // die;
+                }
+                // Se houver algum ajuste, é provável que o valor fique maior que o valor do procedimento
+                // então esse if é pra ajustar o valor bruto a ser salvo para não mostrar negativados os valores
+                // if(($valor_pago + $valor_desconto) > $valorProcAtual){
+                //     $valor_bruto_ins = $valorProcAtual;
+                // }else{
+                $valor_bruto_ins = $valor_pago;
+                
+                // }
+                
+                // echo " Valor do Proc: $valorProcAtual Valor a ser pago: $valor_pago com desconto de: $valor_desconto <br>";
+                
+                // Abaixo o insert na tabela de pagamentos
+                $this->db->set('forma_pagamento_id', $forma_pagamento_id);
+                $this->db->set('parcela', $parcela1);
+                $this->db->set('guia_id', $guia_id);
+                $this->db->set('agenda_exames_id', $agenda_exames_id);
+                // $this->db->set('procedimento_convenio_id', $procedimento_convenio_id);
+                $this->db->set('desconto', $valor_desconto);
+                $this->db->set('ajuste', $ajuste1);
+                $this->db->set('valor_total', $valorProcAtual);
+                $this->db->set('valor', $valor_pago);
+                $this->db->set('valor_bruto', $valor_bruto_ins);
+                $this->db->set('data', $data);
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->set('faturado_guia', 't');
+                $this->db->insert('tb_agenda_exames_faturar');
+                // echo '<hr>';
+            }
+            
+            // echo '<hr>';
+            // echo "Valor dos procs: $valorTotalProc  Valor total calculado:  $valorForTotal e o valor ajustado: $valorajuste1  Valor do Desconto foi de: $valorDescTotal. Desconto restante de: $valorDescRestante";
+            
+            // die;
+
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        
+
         } catch (Exception $exc) {
             return -1;
         }

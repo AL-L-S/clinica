@@ -5699,8 +5699,7 @@ class exametemp_model extends Model {
         if ($medico != "") {
             $this->db->set('medico_consulta_id', $medico);
             $this->db->set('medico_agenda', $medico);
-            $this->db->set('valor_medico', $percentual[0]->perc_medico);
-            $this->db->set('percentual_medico', $percentual[0]->percentual);
+           
         }
         $this->db->set('realizada', 'true');
         $this->db->set('senha', md5($exame_id));

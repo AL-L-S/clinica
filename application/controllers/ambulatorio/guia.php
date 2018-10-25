@@ -2619,6 +2619,39 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/faturar-form', $data);
     }
 
+    function faturarmodelo2($agenda_exames_id, $procedimento_convenio_id, $guia_id) {
+        $data['forma_pagamento'] = $this->guia->formadepagamentoprocedimento($procedimento_convenio_id);
+        $data['forma_cadastrada'] = $this->guia->agendaExamesFormasPagamento($agenda_exames_id);
+        $data['exame'] = $this->guia->listarexame($agenda_exames_id);
+        $data['guia_id'] = $guia_id;
+        $data['agenda_exames_id'] = $agenda_exames_id;
+        $data['procedimento_convenio_id'] = $procedimento_convenio_id;
+        $data['valor'] = 0.00;
+        $this->load->View('ambulatorio/faturarmodelo2-form.php', $data);
+    }
+
+    function faturarprocedimentosmodelo2($guia_id, $financeiro_grupo_id = null) {
+        // $data['exame'][0] = new stdClass();
+        // Criar acima a variável resolve o Warning que aparece na página de Faturar Guia.
+        // A linha acima inicia o Objeto antes de atribuir um valor
+        $data['forma_cadastrada'] = $this->guia->agendaExamesFormasPagamentoGuia($guia_id);
+        $data['forma_cadastradaTotal'] = $this->guia->agendaExamesFormasPagamentoGuiaTotal($guia_id);
+        $data['forma_pagamento'] = $this->guia->formadepagamento();
+        $data['exame'] = $this->guia->listarexameguiaprocedimentosmodelo2($guia_id);
+//            $data['exame2'] = $this->guia->listarexameguiaformaprocedimentos($guia_id, $financeiro_grupo_id);
+
+
+        // echo '<pre>';
+        // var_dump($data['exame']);
+        // die;
+
+        $data['financeiro_grupo_id'] = $financeiro_grupo_id;
+        $data['guia_id'] = $guia_id;
+        $data['valor'] = 0.00;
+
+        $this->load->View('ambulatorio/faturarprocedimentosmodelo2-form', $data);
+    }
+
     function faturarpersonalizado($agenda_exames_id, $procedimento_convenio_id) {
         $data['forma_pagamento'] = $this->guia->formadepagamentoprocedimento($procedimento_convenio_id);
         $data['exame'] = $this->guia->listarexame($agenda_exames_id);
@@ -2750,6 +2783,88 @@ class Guia extends BaseController {
         } else {
             $this->load->View('ambulatorio/erro');
         }
+    }
+
+    function gravarfaturadomodelo2() {
+
+        $resulta = $_POST['valorajuste1'];
+        // var_dump($_POST); die;
+        // if ((float) $resulta > 0) {
+            $ambulatorio_guia_id = $this->guia->gravarfaturamentomodelo2();
+            $guia_id =  $_POST['guia_id'];
+            $agenda_exames_id =  $_POST['agenda_exames_id'];
+            $procedimento_convenio_id =  $_POST['procedimento_convenio_id'];
+
+            // if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
+            //     $this->guia->descontacreditopaciente();
+            // }
+
+            if ($ambulatorio_guia_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar pagamento. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao gravar pagamento.';
+            }
+
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/faturarmodelo2/$agenda_exames_id/$procedimento_convenio_id/$guia_id", $data);
+        // } else {
+        //     $this->load->View('ambulatorio/erro');
+        // }
+    }
+
+    function gravarprocedimentosfaturarmodelo2() {
+
+        $resulta = $_POST['valorajuste1'];
+        // var_dump($_POST); die;
+        // if ((float) $resulta > 0) {
+            $ambulatorio_guia_id = $this->guia->gravarprocedimentosfaturarmodelo2();
+            $guia_id =  $_POST['guia_id'];
+
+            // if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
+            //     $this->guia->descontacreditopaciente();
+            // }
+
+            if ($ambulatorio_guia_id == "-1") {
+                $data['mensagem'] = 'Erro ao gravar pagamento. Opera&ccedil;&atilde;o cancelada.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao gravar pagamento.';
+            }
+
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/faturarprocedimentosmodelo2/$guia_id", $data);
+        // } else {
+        //     $this->load->View('ambulatorio/erro');
+        // }
+    }
+
+    function apagarfaturarmodelo2($agenda_exames_faturar_id, $agenda_exames_id, $procedimento_convenio_id, $guia_id) {
+            $ambulatorio_guia_id = $this->guia->apagarfaturarmodelo2($agenda_exames_faturar_id);
+
+            if ($ambulatorio_guia_id == "-1") {
+                $data['mensagem'] = 'Erro ao excluir pagamento.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao excluir pagamento.';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/faturarmodelo2/$agenda_exames_id/$procedimento_convenio_id/$guia_id", $data);
+        // } else {
+        //     $this->load->View('ambulatorio/erro');
+        // }
+    }
+
+    function apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id) {
+            $ambulatorio_guia_id = $this->guia->apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id);
+
+            if ($ambulatorio_guia_id == "-1") {
+                $data['mensagem'] = 'Erro ao excluir pagamento.';
+            } else {
+                $data['mensagem'] = 'Sucesso ao excluir pagamento.';
+            }
+            $this->session->set_flashdata('message', $data['mensagem']);
+            redirect(base_url() . "ambulatorio/guia/faturarprocedimentosmodelo2/$guia_id", $data);
+        // } else {
+        //     $this->load->View('ambulatorio/erro');
+        // }
     }
 
     function gravarfaturadopersonalizado() {
