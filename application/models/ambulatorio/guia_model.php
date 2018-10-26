@@ -8998,6 +8998,7 @@ class guia_model extends Model {
                             (aef.valor_total - (select sum(valor_bruto) + sum(desconto)  as valorTotPag from ponto.tb_agenda_exames_faturar aef2
                             where aef2.agenda_exames_id = aef.agenda_exames_id and ativo = true)) as valor_restante,
                             aef.valor,
+                            aef.valor_bruto,
                             aef.data,
                             aef.ajuste,
                             aef.parcela,
@@ -9060,7 +9061,7 @@ class guia_model extends Model {
                             where aef2.guia_id = aef.guia_id and ativo = true)) as valor_restante,
                             sum(aef.valor) as valor,
                             sum(valor_bruto) + sum(desconto) as valor_total_pago,
-                            aef.data,
+                            
                             sum(aef.desconto) as desconto', false);
         $this->db->from('tb_agenda_exames_faturar aef');
         $this->db->join('tb_forma_pagamento fp', 'fp.forma_pagamento_id = aef.forma_pagamento_id', 'left');
@@ -9068,9 +9069,9 @@ class guia_model extends Model {
         $this->db->where('aef.ativo', 't');
         $this->db->groupby('
                             aef.guia_id,
-                            aef.data
+                            
                             ');
-        $this->db->orderby('aef.data');
+        // $this->db->orderby('');
         $return = $this->db->get();
         $retorno = $return->result();
         return $retorno;
@@ -9883,6 +9884,30 @@ class guia_model extends Model {
         }
     }
 
+    function buscarValorExistentePagamento($agenda_exames_id = null){
+
+        $this->db->select('
+                            aef.agenda_exames_id,
+                            aef.valor_total,
+                            (aef.valor_total - (select sum(valor_bruto) + sum(desconto)  as valorTotPag from ponto.tb_agenda_exames_faturar aef2
+                            where aef2.agenda_exames_id = aef.agenda_exames_id and ativo = true)) as valor_restante
+                            ', false);
+        $this->db->from('tb_agenda_exames_faturar aef');
+        $this->db->where('aef.agenda_exames_id', $agenda_exames_id);
+        $this->db->where('aef.ativo', 't');
+        $this->db->groupby('aef.agenda_exames_id,
+                            aef.valor_total,
+                            ');
+        $return = $this->db->get();
+        $retorno = $return->result();
+
+        return $retorno;
+        // echo '<pre>';
+        // var_dump($retorno); die;
+        
+
+    }
+
     function gravarprocedimentosfaturarmodelo2() {
         try {
             /* inicia o mapeamento no banco */
@@ -9890,9 +9915,10 @@ class guia_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
             // echo '<pre>';
             // var_dump($_POST);
-            //  die;
+            // die;
             $desconto = (float) $_POST['desconto'];
             $valor1 = (float) $_POST['valor1'];
+            $valorafaturar = (float) $_POST['valorafaturar'];
             $ajuste1 = (float) $_POST['ajuste1'];
             $valor_bruto = (float) $_POST['valor1'];
             $valorajuste1 = (float) round( $_POST['valorajuste1'] , 2);
@@ -9922,50 +9948,83 @@ class guia_model extends Model {
             $i = 0;
             $array_geral = array();
             foreach($array_exames as $agenda_exames){
-                $array_geral[$agenda_exames] = (float) $array_valores[$i];
+                // Se ja existir um pagamento pra esse agenda_exames,
+                // eu tenho que ordenar os valores utilizando o valor restante existente
+                // ex: 3 proc custam 120, mas um só falta pagar 90, então ele coloca o de 90 primeiro
+                // daí eu ordeno o array corretamente e reatribuo os valores iniciais dos procedimentos
+                $valorExi_Array = $this->buscarValorExistentePagamento($agenda_exames);
+                if(count($valorExi_Array) > 0){
+                    $array_geral[$agenda_exames] = (float) $valorExi_Array[0]->valor_restante;
+                }else{
+                    $array_geral[$agenda_exames] = (float) $array_valores[$i];
+                }
                 $i++;
 
             }
             asort($array_geral);
-            // foreach ($array_geral as $key => $value) {
-            //     echo "Meu valor E $value e eu tenho o agenda exames $key <br>";
-            // }
-            // die;
+
+            $i = 0;
+            // daí eu ordeno o array corretamente e reatribuo os valores iniciais dos procedimentos nesse foreach
+            foreach($array_exames as $agenda_exames){
+                $valorExi_Array = $this->buscarValorExistentePagamento($agenda_exames);
+                $array_geral[$agenda_exames] = (float) $array_valores[$i];
+                $i++;
+
+            }
+            // asort($array_geral);
 
             $contador = 0;
             $qtdeProc = count($array_exames);
             $qtdeProcRes = count($array_exames);
-            // $valorForRestante = $valor_bruto;
-            $valorForRestante = $valorajuste1;
+            $valorForRestante = $valor_bruto;
+            // $valorForRestante = $valorajuste1;
             $valorDescRestante = $desconto;
             $valorDescTotal = 0;
             $valorForTotal = 0;
             $teste = 0;
+            $valor_desconto = 0;
             $valorTotalProc = 0;
-            $valorDivisao = (float) round($valorajuste1 / $qtdeProc, 2);
+            $teste_de_valor = 0;
+            $valor_ajustado = 0;
+            $valorProcExis = null;
+            $permissaoInsert = true;
+            // $valorProcExi = null;
+            $valorAjusteCalculado = 0;
+            $valorDivisao = (float) round($valorForRestante / $qtdeProc, 2);
             $valorDescDivisao = (float) round($desconto / $qtdeProc, 2);
-            // Divide o valor igualmente por procedimento
-            // echo '<pre>';
-            // 
-            // var_dump();
             $valor_ajusteAdicional = 0;
-            if($ajuste1 > 0){
-               $valor_ajusteAdicional = ($valorForRestante - $valor_bruto);
-               $valor_ajusteAdicional =  round($valor_ajusteAdicional / $qtdeProcRes, 2);
+            // Divide o valor igualmente por procedimento
 
-            }
-            // echo $valor_ajusteAdicional;
             foreach($array_geral as $agenda_exames_id => $valor) {
-                if($ajuste1 > 0){
-                    $valor += $valor_ajusteAdicional;
-                }
+                $contador++;
 
                 $valorProcAtual = $valor;
+                $valorProcExis = $this->buscarValorExistentePagamento($agenda_exames_id);
+                // Se o procedimento atual já existir e não tiver nada restante, ele não insere mais pagamentos
+                // Se existir e o valor for maior que zero, ele define o valor a ser pago como o restante
+                // Caso contrário, ele vai pegar o valor que vem do POST e percorrer
+                if(count($valorProcExis) > 0){
+                    if ($valorProcExis[0]->valor_restante == 0) {
+                        $valorPagarAtual = $valorProcExis[0]->valor_restante;
+                        $permissaoInsert = false;    
+                        // echo 'te';
+                    } elseif ($valorProcExis[0]->valor_restante > 0) {
+                        $valorPagarAtual = $valorProcExis[0]->valor_restante;
+                        $permissaoInsert = true;
+                    } 
+                }
+                else {
+                    $valorPagarAtual = $valorProcAtual;
+                    $permissaoInsert = true;
+                }
+                // var_dump($valorProcExis);
+
+                // echo "$agenda_exames_id Valor do Proc: $valorProcAtual Valor Vindo do Inicio: $valorPagarAtual <br><hr>";
                 // Caso o valor da divisao seja maior que o proc
                 // ele vai refazer o calculo da divisao tirando o valor do proc pago e
                 // e retirando um da quantidade, já que ele foi pago.
-                if($valorDivisao > $valorProcAtual){
-                    $valor_pago = $valorProcAtual;
+                if($valorDivisao > $valorPagarAtual){
+                    $valor_pago = $valorPagarAtual;
                     $valorForRestante -= $valor_pago;
                     $qtdeProcRes--; // Subtrai um
                     if($qtdeProcRes < 1){
@@ -9982,108 +10041,97 @@ class guia_model extends Model {
                     $valorForRestante -= $valor_pago;
 
                     if($valorDescRestante > 0){
-                        
                         $valor_calculo = $valorDescDivisao + $valor_pago;
-                        if($valor_calculo > $valorProcAtual){
-                           
-                            $valor_desconto = $valorProcAtual - $valor_pago;
-                            // echo "Desconto de: $valor_desconto<br>";
-                            // $valor_desconto = $valorDescDivisao;
+                        if($valor_calculo > $valorPagarAtual){
+                            $valor_desconto = $valorPagarAtual - $valor_pago;
                             $valorDescRestante -= $valor_desconto; 
-                            if($qtdeProcRes < 1){
+                            if($qtdeProcRes < 1){ // Nada se divide por zero, lembre-se da matemática.
                                 $qtdeProcRes = 1;
                             }
                             $valorDescDivisao = (float) round($valorDescRestante / $qtdeProcRes, 2);
                         }else{
-                            // echo "Desconto de: $valor_desconto<br>";
                             $valorDescRestante -= $valorDescDivisao; 
                             $valor_desconto = $valorDescDivisao;
                         }
                         $valorDescTotal += $valor_desconto;
-                        // $valor_pago -= $valor_desconto;
-
                     }
                 }
-                // if($ajuste1 > 0){
-                //     $valor_pago = $valor_pago + ($valor_pago * ($ajuste1/100));
-                // }
-                // echo "Desconto de: $valor_desconto e desconto restante de: $valorDescRestante<br>";
-                $valorForTotal += $valor_pago;
-                // var_dump($valorDivisao);
-                $contador++;
 
-                $valorTotalProc += $valorProcAtual;
+                $valorForTotal += $valor_pago;
+                $valorTotalProc += $valorPagarAtual;
                 // Aqui eu verifico se o foreach chegou no fim
                 if($contador >= count($array_geral)){
                     // Se sim, olho se restou alguns centavos ou coisa do tipo no valor
                     // caso sobre, eu só faço somar ao último valor que ele vai inserir
-                    if($valorForRestante > 0){
+                    if($valorForRestante != 0){
                         $valor_pago += $valorForRestante;
                         $valorForTotal += $valorForRestante;
                     }
-                    
-                    if($valorDescRestante > 0){
-                    
-                        // echo "Desconto final de: $valor_desconto <br>";
+                    if($valorDescRestante != 0){
                         $valor_desconto += $valorDescRestante;
                         $valorDescTotal += $valorDescRestante;
-                        $valorProcAtual += $valorDescRestante;
                         $valorDescRestante -= $valorDescRestante;
-                        // echo "Desconto final mesmo de: $valor_desconto <br>";
-                        // echo "Sobrou: $valorDescRestante <br>";
                     }
-
-                    if($valorProcAtual > ($valor_desconto + $valor_pago)){
-                        $restanteDeTudo = round($valorProcAtual - ($valor_desconto + $valor_pago), 2);
-                        // echo round($valorProcAtual - ($valor_desconto + $valor_pago), 2);
-                        // echo '<br>';
-                        $valorProcAtual -= $restanteDeTudo;
-                    }
-                    
-                    if($valorProcAtual < ($valor_desconto + $valor_pago)){
-                        $restanteDeTudo = round($valorProcAtual - ($valor_desconto + $valor_pago), 2);
-                        // echo round($valorProcAtual - ($valor_desconto + $valor_pago), 2);
-                        // echo '<br>';
-                        $valorProcAtual -= $restanteDeTudo;
-                    }
-
-                    // if(){}
-
-                    // die;
                 }
-                // Se houver algum ajuste, é provável que o valor fique maior que o valor do procedimento
-                // então esse if é pra ajustar o valor bruto a ser salvo para não mostrar negativados os valores
-                // if(($valor_pago + $valor_desconto) > $valorProcAtual){
-                //     $valor_bruto_ins = $valorProcAtual;
-                // }else{
+
+                if($ajuste1 > 0){
+                    $valor_ajustado = round($valor_pago + ($valor_pago * ($ajuste1/100)), 2);
+                }else{
+                    // $valor_ajustado = $valor_pago;
+                }
+                $valorAjusteCalculado += $valor_ajustado;
+
+                if ($contador >= count($array_geral)) {
+
+                    if ($valorajuste1 > $valorAjusteCalculado && $ajuste1 > 0) {
+                        $restoAjuste = $valorajuste1 - $valorAjusteCalculado;
+                        $valor_ajusteAdicional = $restoAjuste;
+                    }
+
+                }
+                // Depois de ver se tem algum centavo perdido, ele vai inserir no valor bruto o certo
                 $valor_bruto_ins = $valor_pago;
-                
-                // }
-                
-                // echo " Valor do Proc: $valorProcAtual Valor a ser pago: $valor_pago com desconto de: $valor_desconto <br>";
-                
+                // echo "$valor_ajustado <br>";
+                // echo " Valor do Proc: $valorPagarAtual Valor a ser pago: $valor_pago com desconto de: $valor_desconto <br>";
                 // Abaixo o insert na tabela de pagamentos
-                $this->db->set('forma_pagamento_id', $forma_pagamento_id);
-                $this->db->set('parcela', $parcela1);
-                $this->db->set('guia_id', $guia_id);
-                $this->db->set('agenda_exames_id', $agenda_exames_id);
-                // $this->db->set('procedimento_convenio_id', $procedimento_convenio_id);
-                $this->db->set('desconto', $valor_desconto);
-                $this->db->set('ajuste', $ajuste1);
-                $this->db->set('valor_total', $valorProcAtual);
-                $this->db->set('valor', $valor_pago);
-                $this->db->set('valor_bruto', $valor_bruto_ins);
-                $this->db->set('data', $data);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->set('faturado_guia', 't');
-                $this->db->insert('tb_agenda_exames_faturar');
+                // Caso o procedimento não esteja totalmente pago, ele vai fazer insert da forma
+                // $permissaoInsert = false;
+                if ($permissaoInsert) {
+
+                    $this->db->set('forma_pagamento_id', $forma_pagamento_id);
+                    $this->db->set('parcela', $parcela1);
+                    $this->db->set('guia_id', $guia_id);
+                    $this->db->set('agenda_exames_id', $agenda_exames_id);
+                    // $this->db->set('procedimento_convenio_id', $procedimento_convenio_id);
+                    $this->db->set('desconto', $valor_desconto);
+                    $this->db->set('ajuste', $ajuste1);
+                    $this->db->set('valor_total', $valorProcAtual);
+                    $this->db->set('valor', $valor_pago);
+                    $this->db->set('valor_bruto', $valor_bruto_ins);
+                    $this->db->set('data', $data);
+                    $this->db->set('data_cadastro', $horario);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->set('faturado_guia', 't');
+                    $this->db->insert('tb_agenda_exames_faturar');
+
+
+                    // Ajustando o valor do procedimento baseado no ajuste do cartão
+                    if ($ajuste1 > 0) {
+                        $sql = "UPDATE ponto.tb_agenda_exames_faturar
+                    SET valor = valor_bruto + $valor_ajusteAdicional + (valor_bruto * (ajuste/100)) 
+                    WHERE agenda_exames_id = $agenda_exames_id;";
+                        $this->db->query($sql);
+                    }
+
+                }
+
+                
+
                 // echo '<hr>';
             }
             
             // echo '<hr>';
-            // echo "Valor dos procs: $valorTotalProc  Valor total calculado:  $valorForTotal e o valor ajustado: $valorajuste1  Valor do Desconto foi de: $valorDescTotal. Desconto restante de: $valorDescRestante";
-            
+            // echo "Valor dos procs: $valorTotalProc  Valor total calculado:  $valorForTotal e o valor ajustado: $valorajuste1 e o valor ajustado calculado $valorAjusteCalculado Valor do Desconto foi de: $valorDescTotal. Desconto restante de: $valorDescRestante";
             // die;
 
             $erro = $this->db->_error_message();
@@ -15534,6 +15582,8 @@ ORDER BY ae.paciente_credito_id)";
         $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
         $this->db->where("ppm.procedimento_tuss_id", $procedimento_tuss_id);
         $this->db->where("ppmc.medico", $medico);
+        $this->db->where("ppmc.ativo", 't');
+        $this->db->where("ppm.ativo", 't');
         $retorno = $this->db->get()->result();
 
 //            echo "<pre>"; var_dump($retorno); die;
@@ -15602,6 +15652,7 @@ ORDER BY ae.paciente_credito_id)";
             // $this->db->set('percentual_medico', $percentual[0]->percentual);
         }
         $this->db->set('realizada', 'true');
+        $this->db->set('cancelada', 'false');
         $this->db->set('senha', md5($exame_id));
         $this->db->set('data_realizacao', $horario);
         $this->db->set('operador_realizacao', $operador_id);

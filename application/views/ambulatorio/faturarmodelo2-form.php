@@ -53,7 +53,8 @@ if(count($forma_cadastrada) > 0){
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input type="text" name="valorafaturar" id="valorafaturar" class="input_pequeno" value="<?= number_format($valor_restante, 2, ',', '.'); ?>" readonly />
+                                        <input type="text"  name="valorFaturarVisivel" id="valorFaturarVisivel" class="input_pequeno" value="<?= number_format($valor_restante, 2, ',', '.'); ?>" readonly />
+                                        <input type="hidden" name="valorafaturar" id="valorafaturar" class="input_pequeno" value="<?= number_format($valor_restante, 2, ',', '.'); ?>" readonly />
                                         <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" class="texto01" value="<?= $agenda_exames_id; ?>"/>
                                         <input type="hidden" name="guia_id" id="guia_id" class="texto01" value="<?= $guia_id; ?>"/>
                                         <input type="hidden" name="procedimento_convenio_id" id="procedimento_convenio_id" class="texto01" value="<?= $procedimento_convenio_id; ?>"/>
@@ -158,6 +159,7 @@ if(count($forma_cadastrada) > 0){
 
                                 <tr>
                                     <th class="tabela_header">Valor</th>
+                                    <th class="tabela_header">Valor Ajustado</th>
                                     <th class="tabela_header">Forma de Pag.</th>
                                     <th class="tabela_header">Ajuste</th>
                                     <th class="tabela_header">Desconto</th>
@@ -185,6 +187,7 @@ if(count($forma_cadastrada) > 0){
                                     ?>
 
                                     <tr>
+                                        <td class="<?php echo $estilo_linha; ?>" width="120px;"><center>R$ <?=number_format($item->valor_bruto, 2, ',', '.'); ?></center></td>
                                         <td class="<?php echo $estilo_linha; ?>" width="120px;"><center>R$ <?=number_format($item->valor, 2, ',', '.'); ?></center></td>
                                         <td class="<?php echo $estilo_linha; ?>" style="min-width: 300px;"><center><? echo $item->forma_pagamento; ?></center></td>
                                         <td class="<?php echo $estilo_linha; ?>" width="120px;"><center><?=$item->ajuste . "%"; ?></center></td>
@@ -203,7 +206,7 @@ if(count($forma_cadastrada) > 0){
                             }
                             ?>
                             <tr>
-                                <th class="tabela_header" colspan="6">Total Pago: <?=number_format($total_pago,2,',', '.')?></th>
+                                <th class="tabela_header" colspan="7">Total Pago: <?=number_format($total_pago,2,',', '.')?></th>
                                 
                             </tr>
                             </tbody>
@@ -241,20 +244,23 @@ $this->load->library('utilitario');
 Utilitario::pmf_mensagem($this->session->flashdata('message'));
 ?>
 <script type="text/javascript">
-        $(function () {
+         $(function () {
             $('#desconto').change(function () {
+                // alert('asdasd');
                 descontoFuncao();
             });
         });
 
         function descontoFuncao(){
-            desconto = parseFloat(document.form_faturar.desconto.value.replace(",", "."));
+            // alert('asdasd');
+                desconto = parseFloat(document.form_faturar.desconto.value.replace(",", "."));
                 restante = parseFloat(document.form_faturar.valorafaturar.value.replace(",", "."));
                 valor_max = restante - desconto;      
                 if(valor_max < 0){
                     valor_max = 0;
                 }
                 $('#valor1').prop("max", valor_max);
+                $('#valorFaturarVisivel').val(valor_max);
                 return true;
         }
         descontoFuncao();

@@ -21,8 +21,10 @@
 <?
 if(count($forma_cadastradaTotal) > 0){
     $valor_restante = $exame[0]->valor_total - $forma_cadastradaTotal[0]->valor_total_pago;
+    $valor_total = $exame[0]->valor_total;
 }else{
     $valor_restante = $exame[0]->valor_total;
+    $valor_total = $exame[0]->valor_total;
 }
 // echo '<pre>';
 // var_dump($forma_cadastradaTotal);
@@ -42,7 +44,7 @@ if(count($forma_cadastradaTotal) > 0){
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input type="text" name="valor_proc" id="valor_proc" class="input_pequeno" value="<?= number_format($exame[0]->valor_total, 2, ',', '.'); ?>" readonly />
+                                        <input type="text" name="valor_proc" id="valor_proc" class="input_pequeno" value="<?= number_format($valor_total, 2, ',', '.'); ?>" readonly />
                                     </td>
                                 </tr>
                                 <tr>

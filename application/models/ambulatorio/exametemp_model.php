@@ -5635,6 +5635,8 @@ class exametemp_model extends Model {
         $this->db->join("tb_procedimento_percentual_medico_convenio ppmc", "ppmc.procedimento_percentual_medico_id = ppm.procedimento_percentual_medico_id");
         $this->db->where("ppm.procedimento_tuss_id", $procedimento_tuss_id);
         $this->db->where("ppmc.medico", $medico);
+        $this->db->where("ppmc.ativo", 't');
+        $this->db->where("ppm.ativo", 't');
         $retorno = $this->db->get()->result();
 
 //            echo "<pre>"; var_dump($retorno); die;
@@ -5701,6 +5703,7 @@ class exametemp_model extends Model {
             $this->db->set('medico_agenda', $medico);
            
         }
+        $this->db->set('cancelada', 'false');
         $this->db->set('realizada', 'true');
         $this->db->set('senha', md5($exame_id));
         $this->db->set('data_realizacao', $horario);
