@@ -36,8 +36,8 @@
                         <th class="tabela_header" style="text-align: right"><font size="-1">QTDE</th>
                         <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">V. Total</th>
                         <th class="tabela_header" width="80px;" style="text-align: right"><font size="-1">Desconto</th>
-                        <th class="tabela_header" width="120px;" style="text-align: right"><font size="-1">Observação</th>
-                        <!--<th class="tabela_teste" width="80px;"style="text-align: right"><font size="-1">Total Geral</th>-->
+                        <th class="tabela_teste" width="80px;"style="text-align: right"><font size="-1">Total Geral</th>
+                        <th class="tabela_header" width="120px;" style="text-align: right"><font size="-1">Observação</th>                        
                     </tr>
                 </thead>
             <? } ?>
@@ -87,18 +87,26 @@
                 $paciente = "";
                 $exame = "";
                 $pendentes = 0;
+                $maximo = 0;
+                $totalpaciente = 0;
+                
+                foreach ($relatorio as $key => $value) {
+                        $maximo = $key;
+                    }
+                    
                 if (count($relatorio) > 0) {
-
-
-
-
 
                     foreach ($relatorio as $item) {
 //                        echo'<pre>';
 //                    var_dump($relatorio); die;
-
+                        $p = $i + 1;
                         $i++;
+                        if ($p > $maximo) {
+                            $p = $maximo;
+                        }
+                        $totalpaciente = $totalpaciente + $item->valor_total;
                         $b++;
+                        
                         if ($item->financeiro == 't') {
                             $financeiro = 't';
                         }
@@ -185,7 +193,15 @@
                                     <? } ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
                                     
-                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
+                                        <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
@@ -211,7 +227,16 @@
 
                                     <? } ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
-                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
+                                    
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
+                                        <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
@@ -236,7 +261,16 @@
 
                                     <? } ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
-                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
+                                    
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
+                                        <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
@@ -264,7 +298,16 @@
 
                                     <? } ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
-                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
+                                    
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
+                                        <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 } 
                                    if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
@@ -294,7 +337,16 @@
                                     <? }
                                     ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
-                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
+                                    
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
+                                        <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
@@ -319,7 +371,16 @@
                                     <? }
                                     ?>
                                     <td><font size="-2"><?= $item->desconto; ?></td>
-                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
+                                    
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
+                                        <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                    if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 != '') {
@@ -345,7 +406,16 @@
                                     <? }
                                     ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
-                                    <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
+                                    
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
+                                        <td style="text-align: right"><font size="-2"><?= $item->observacao; ?></td>
                                     <?
                                 }
                                 ?>
@@ -665,12 +735,7 @@
                     $w = 0;
                 }
                 ?>    
-    <!--            <tr>
-    <td colspan="8"><font ><b>&nbsp;</b></td>
-    </tr>
-    <tr>
-    <td colspan="8" style="text-align: center;"><font ><b>HOME CARE</b></td>
-    </tr>-->
+  
                 <?php
                 if (count($relatoriohomecare) > 0) {
 

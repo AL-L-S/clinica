@@ -1426,7 +1426,7 @@ class exame_model extends Model {
         $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
-        $this->db->where('e.cancelada', 'false');
+//        $this->db->where('e.cancelada', 'false');
         $this->db->where('ae.guia_id', $guia_id);
         $this->db->orderby('ae.valor_total desc');
         $return = $this->db->get();
@@ -8928,7 +8928,7 @@ class exame_model extends Model {
             return -1;
         }
     }
-
+    
     function bloquear($agenda_exame_id) {
         try {
             $horario = date("Y-m-d H:i:s");

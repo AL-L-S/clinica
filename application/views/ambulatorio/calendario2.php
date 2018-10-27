@@ -838,6 +838,8 @@ if (@$_GET['nome'] != '') {
 if (@$_GET['sala'] != '') {
     $sala = "";
 }
+$feriado = $this->agenda->listarferiadosagenda();
+//var_dump($feriado[0]->data);die;
 ?>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script>
@@ -935,17 +937,24 @@ if (@$_GET['sala'] != '') {
                                                     var data_escolhida = $('#data').val();
                                                     var today = moment(new Date()).format('YYYY-MM-DD');
                                                     var check = moment(date).format('YYYY-MM-DD');
-//            alert(data_escolhida);
+                                                    var data2 = date.format('DD/MM');
+//                                                    var feriado = (new Date()).format('DD/MM');
+//            alert(feriado);
 //            var today = $.fullCalendar.formatDate(new Date(), 'yyyy-MM-dd');
+                                                    
                                                     if (data_escolhida == check && data_escolhida != today) {
                                                         cell.css("background-color", "#BCD2EE");
+                                                    }
+                                                    if (data2 == '03/10') {
+                                                        cell.css("background-color", "#FF9999");
                                                     }
                                                 },
                                                 dayClick: function (date, cell) {
                                                     var data = date.format();
-//            cell.css("background-color", "#BCD2EE");
+                                                    var data2 = date.format('DD/MM');
+//            cell.css("background-color", "#BCD2EE");                                                   
                                                     window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario2?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() + '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=' + paciente + '', '_self');
-
+                                                    
 
 
                                                 },
@@ -1114,17 +1123,6 @@ if (@$_GET['sala'] != '') {
                                                 });
                                             });
 
-//    var x = document.getElementById("encaixe");
-//            
-//            if ($('#encaixar').val() == 'encaixar') {
-//            
-//            x.style.display = "block";
-//
-//            } else {
-//            
-//            x.style.display = "none";
-//            
-//            }
 
                                             $('#encaixar').click(function () {
 

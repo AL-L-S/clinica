@@ -170,8 +170,6 @@
                                 ?>
                                 <td width="40px;"><div class="bt_link">
                                         <? if ($perfil_id != 10) { ?>
-
-
                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarconvenio/" . $item->agenda_exames_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=250');">Faturar
                                             </a>
                                         <? } else { ?>

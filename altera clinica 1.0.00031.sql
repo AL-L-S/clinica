@@ -300,3 +300,7 @@ ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN estoque_nota_id integer;
 -- Dia 23/10/2018
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN faturamento_novo boolean DEFAULT false;
+
+-- Dia 26/10/2018
+
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN data_aso date;

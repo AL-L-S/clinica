@@ -37,6 +37,15 @@ class agenda_model extends Model {
         }
         return $this->db;
     }
+    
+    function listarferiadosagenda() {
+        $this->db->select('data');
+        $this->db->from('tb_feriado');
+        $this->db->where('ativo', 'true');
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function listarempresa() {
         $this->db->select('empresa_id,

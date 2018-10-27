@@ -245,6 +245,7 @@ class guia_model extends Model {
                 $this->db->set('medico_responsavel', $_POST['medico']);
                 $this->db->set('operador_atualizacao', $operador_id);
                 $this->db->set('data_atualizacao', $horario);
+                $this->db->set('data_aso', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
                 $this->db->set('data_realizacao', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
                 $this->db->set('data_validade', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['validade_exame']))));
                 $this->db->set('consulta', $_POST['consulta']);
@@ -267,6 +268,7 @@ class guia_model extends Model {
                 $this->db->set('medico_responsavel', $_POST['medico']);
                 $this->db->set('operador_cadastro', $operador_id);
                 $this->db->set('data_cadastro', $horario);
+                $this->db->set('data_aso', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
                 $this->db->set('data_realizacao', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data_realizacao']))));
                 $this->db->set('data_validade', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['validade_exame']))));
                 $this->db->set('consulta', $_POST['consulta']);
@@ -1050,7 +1052,19 @@ class guia_model extends Model {
 
         return $return;
     }
+    
 
+    function listaragendaexames($aso_id) {
+
+        $this->db->select('ae.agenda_exames_id');
+
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->where("ae.aso_id", $aso_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarcadastroaso($paciente_id) {
         $empresa_id = $this->session->userdata('empresa_id');
         $operador_id = $this->session->userdata('operador_id');
@@ -1062,6 +1076,8 @@ class guia_model extends Model {
                             p.paciente_id,
                             p.nome as paciente,
                             ca.data_cadastro,
+                            ca.data_realizacao,
+                            ca.data_aso,
                             c.dinheiro,
                             ca.consulta');
 
@@ -10042,6 +10058,36 @@ class guia_model extends Model {
             return -1;
         }
     }
+    
+    function gravaralterardatacadastroaso($exames_id, $aso_id) {
+        try {
+//            var_dump($aso_id);die;
+            /* inicia o mapeamento no banco */
+            $horario = date("Y-m-d H:i:s");
+            $hora = date("H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            
+            $data = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data'])));
+            $result = date('Y-m-d', strtotime("+365 days", strtotime($data)));
+
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->set('data_aso', $_POST['data']);
+            $this->db->set('data_validade', $result);
+            $this->db->where('cadastro_aso_id', $aso_id);
+            $this->db->update('tb_cadastro_aso');
+            
+            $this->db->set('data', $_POST['data']);
+            $this->db->where('agenda_exames_id', $exames_id);
+            $this->db->update('tb_agenda_exames');
+            
+            $erro = $this->db->_error_message();
+            if (trim($erro) != "") // erro de banco
+                return -1;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
 
     function gravaralterardatafaturamento($agenda_exames_id) {
         try {
@@ -15756,7 +15802,7 @@ ORDER BY ae.paciente_credito_id)";
                 $this->db->set('paciente_id', $_POST['txtPacienteId']);
 
                 $this->db->set('data_faturar', $data);
-                $this->db->set('data', $data);
+                $this->db->set('data', $_POST['data_realizacao']);
                 $this->db->set('data_autorizacao', $horario);
                 $this->db->set('data_cadastro', $horario);
                 $this->db->set('operador_cadastro', $operador_id);
@@ -15783,7 +15829,7 @@ ORDER BY ae.paciente_credito_id)";
 //                $this->db->set('guia_id', $ambulatorio_guia_id);
                 $this->db->set('paciente_id', $_POST['txtPacienteId']);
                 $this->db->set('data_faturar', $data);
-                $this->db->set('data', $data);
+                $this->db->set('data', $_POST['data_realizacao']);
                 $this->db->set('data_autorizacao', $horario);
                 $this->db->set('data_atualizacao', $horario);
                 $this->db->set('operador_atualizacao', $operador_id);
@@ -15903,7 +15949,7 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('paciente_id', $_POST['txtPacienteId']);
 
             $this->db->set('data_faturar', $data);
-            $this->db->set('data', $data);
+            $this->db->set('data', $_POST['data_realizacao']);
             $this->db->set('data_autorizacao', $horario);
             $this->db->set('data_cadastro', $horario);
             $this->db->set('operador_cadastro', $operador_id);

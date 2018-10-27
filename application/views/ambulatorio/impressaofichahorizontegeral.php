@@ -134,10 +134,7 @@
             <td>Código: <?= $item->codigo ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Data: <?= date("d/m/Y", strtotime($exame[0]->data)); ?></td>
 
         </tr>
-        <tr>
-            <td><font size = -1>Horário de Atendimento:<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= $exame[0]->inicio; ?></b></td>
-            <td><font size = -1>Horário de Atendimento:<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= $exame[0]->inicio; ?></b></td>
-        </tr>
+        
         <tr>
             <td>
                 Paciente.: <span style="font-weight: bold"><?= $paciente[0]->paciente_id; ?>  - <?= $paciente[0]->nome; ?></span>

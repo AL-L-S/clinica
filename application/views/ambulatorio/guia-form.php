@@ -400,6 +400,7 @@
                 </fieldset>
             </form>
             <fieldset>
+                
                 <?
                 if ($contador > 0) { //buscar exames com forma de pagamento pre-definida (inicio)
                     $exame = $this->exametemp->listarprocedimentocomformapagamento($ambulatorio_guia_id);
@@ -423,7 +424,7 @@
                             $total = 0;
                             $guia = 0;
                             $faturado = 0;
-
+                            
                             foreach ($exame as $item) {
                                 ?>
                                 <?
@@ -432,6 +433,7 @@
                                 $total = $total + $item->valor_total;
                                 $guia = $item->guia_id;
                                 ?>
+                                <?$empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);?>
                                 <tbody>
                                     <tr>
                                         <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . '/' . substr($item->data, 5, 2) . '/' . substr($item->data, 0, 4); ?></td>
@@ -441,8 +443,9 @@
                                         <td class="<?php echo $estilo_linha; ?>"><a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/vizualizarpreparoconvenio/" . $item->convenio_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=400');"><?= $item->convenio; ?></a></td>
                                         <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                         <td class="<?php echo $estilo_linha; ?>" colspan="2"><?= $item->descricao_procedimento; ?></td>
-                                        <td class="<?php echo $estilo_linha; ?>"  width="50px;" >
-                                            <? if (@$empresapermissoes->gerente_cancelar == 't' || $perfil_id == 1) { ?>
+                                        <td class="<?php echo $estilo_linha; ?>"  width="50px;" >                                            
+                                            
+                                            <? if (@$empresapermissoes->gerente_cancelar == 't' || $perfil_id == 1 || $empresapermissoes[0]->laboratorio_sc == 't') { ?>
                                                 <div class="bt_link">
                                                     <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');">Cancelar</a>
                                                 </div>
@@ -550,7 +553,7 @@
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->procedimento . "-" . $item->codigo; ?></td>
                                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->descricao_procedimento; ?></td>
                                                 <td class="<?php echo $estilo_linha; ?>" width="50px;" >
-                                                    <? if (@$empresapermissoes->gerente_cancelar == 't' || $perfil_id == 1) { ?>
+                                                    <? if (@$empresapermissoes->gerente_cancelar == 't' || $perfil_id == 1 || $empresapermissoes[0]->laboratorio_sc == 't') { ?>
                                                         <div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/guiacancelamento/<?= $item->agenda_exames_id ?>/<?= $item->paciente_id ?>/<?= $item->procedimento_tuss_id ?>');"><b>Cancelar</b>
 

@@ -585,9 +585,19 @@ class Guia extends BaseController {
         $data['paciente_id'] = $paciente_id;
         $empresa_id = $this->session->userdata('empresa_id');
         $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
-
-
+        
         $this->loadView('ambulatorio/cadastroaso-lista', $data);
+    }
+    
+    function cadastroasoalteradata($exames_id, $aso_id) {
+//        var_dump($aso_id);die;
+        $data['exames_id'] = $exames_id;
+        $data['aso_id'] = $aso_id;
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+
+
+        $this->load->View('ambulatorio/cadastroasoalteradata-form', $data);
     }
 
     function gravarcadastroaso($paciente_id) {
@@ -692,7 +702,7 @@ class Guia extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $this->loadView('ambulatorio/relatorioaso', $data);
     }
-
+    
     function gerarelatorioaso() {
 //        echo '<pre>';
 //        var_dump($_POST['tipo']);
@@ -2682,6 +2692,15 @@ class Guia extends BaseController {
 //        } else {
         $this->guia->gravaralterardata($agenda_exames_id);
 //        }
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+    }
+    
+    function gravaralterardatacadastroaso($exames_id, $aso_id) {
+        $data_escolhida = date("Y-m-d", strtotime(str_replace("/", "-", $_POST['data'])));
+        $hoje = date("Y-m-d");
+
+        $this->guia->gravaralterardatacadastroaso($exames_id, $aso_id);
+
         redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 

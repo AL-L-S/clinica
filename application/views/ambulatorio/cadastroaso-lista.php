@@ -19,33 +19,38 @@
                         <tr>
                             <th class="tabela_header">Paciente</th>
                             <th class="tabela_header">Tipo</th>
-                            <th class="tabela_header">Data/Hora</th>
+                            <th class="tabela_header">Data ASO</th>
                             <th class="tabela_header" colspan="5"><center>Detalhes</center></th>
                     </tr>
                     </thead>
                 </form>
                 <?php
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $consulta = $this->guia->listarcadastroaso($paciente_id);
+                $consulta = $this->guia->listarcadastroaso($paciente_id);                
                 $total = $consulta->count_all_results();
                 $limit = 10;
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
                 if ($total > 0) {
                     ?>
                     <tbody>
-                    <?php
-                    $lista = $this->guia->listarcadastroaso($paciente_id)->limit($limit, $pagina)->orderby("cadastro_aso_id desc")->get()->result();
-                    $estilo_linha = "tabela_content01";
-                    foreach ($lista as $item) {
-//                            echo'<pre>';var_dump($lista[1]);die;
-                        ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                        ?>
+                        <?php
+                        $lista = $this->guia->listarcadastroaso($paciente_id)->limit($limit, $pagina)->orderby("cadastro_aso_id desc")->get()->result();
+                        $estilo_linha = "tabela_content01";
+                        foreach ($lista as $item) {
+                            $agenda_exames_id = $this->guia->listaragendaexames($item->cadastro_aso_id);
+                            $exames_id = $agenda_exames_id[0]->agenda_exames_id;
+//                            echo'<pre>';var_dump($exames_id);die;
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                            ?>
                             <tr>
 
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->paciente; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->tipo; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y H:i:s", strtotime($item->data_cadastro)); ?></td>
-
+                                <?if($item->data_aso != ''){?>
+                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_aso)); ?></td>
+                                <?}else{?>
+                                <td class="<?php echo $estilo_linha; ?>"><?= date("d/m/Y", strtotime($item->data_realizacao)); ?></td>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
 
                                     <div class="bt_link">
@@ -53,8 +58,17 @@
                                     </div>
 
                                 </td>
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
 
-        <? if ($permissoes[0]->impressao_cimetra == 't') { ?>
+                                    <div class="bt_link">
+                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/cadastroasoalteradata/$exames_id/$item->cadastro_aso_id" ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=600,height=400');">Alterar Data
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                                <? if ($permissoes[0]->impressao_cimetra == 't') { ?>
                                     <? if ($item->consulta == "conveniado") { ?>
                                         <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
 
@@ -63,7 +77,7 @@
                                             </div>
 
                                         </td>
-            <? } else { ?>
+                                    <? } else { ?>
 
                                         <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
 
@@ -73,7 +87,7 @@
 
                                         </td>
 
-            <? } ?>
+                                    <? } ?>
                                 <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
 
@@ -83,40 +97,40 @@
 
                                     </td>
 
-        <? } ?>
+                                <? } ?>
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
-                                <? //if($item->aprovado == 'f'){?>
+                                    <? //if($item->aprovado == 'f'){?>
                                     <div class="bt_link">
                                         <a onclick="javascript: return confirm('Deseja realmente excluir esse ASO?');" href="<?= base_url() ?>ambulatorio/guia/excluircadastroaso/<?= $item->cadastro_aso_id; ?>/<?= $item->paciente_id; ?>">Excluir</a>
                                     </div>
-        <? //} ?>
+                                    <? //} ?>
                                 </td>
-                                <?if($item->consulta == "particular" || $item->dinheiro == 'TRUE'){?>
-                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
+                                <? if ($item->consulta == "particular" || $item->dinheiro == 'TRUE') { ?>
+                                    <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
 
                                         <div class="bt_link">
                                             <a href="<?= base_url() ?>ambulatorio/guia/faturarprocedimentospersonalizados/<?= $item->guia_id; ?>">Faturar</a>
                                         </div>
 
                                     </td>
-                                <? }else{ ?>
+                                <? } else { ?>
                                     <td class="<?php echo $estilo_linha; ?>"></td>
                                 <? } ?>
-                                    <?
-                                    $perfil_id = $this->session->userdata('perfil_id');
-                                    $operador_id = $this->session->userdata('operador_id');
-                                    ?>
+                                <?
+                                $perfil_id = $this->session->userdata('perfil_id');
+                                $operador_id = $this->session->userdata('operador_id');
+                                ?>
                             </tr>
 
                         </tbody>
-        <?php
-    }
-}
-?>
+                        <?php
+                    }
+                }
+                ?>
                 <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="10">
-<?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
+                            <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>

@@ -16,6 +16,7 @@ class Laudo extends BaseController {
     function Laudo() {
         parent::Controller();
         $this->load->model('ambulatorio/laudo_model', 'laudo');
+        $this->load->model('login_model', 'login');
         $this->load->model('ambulatorio/guia_model', 'guia');
         $this->load->model('ambulatorio/laudooit_model', 'laudooit');
         $this->load->model('seguranca/operador_model', 'operador_m');
