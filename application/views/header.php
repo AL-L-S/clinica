@@ -39,6 +39,7 @@ $logo_clinica = $this->session->userdata('logo_clinica');
 $especialidade = $this->session->userdata('especialidade');
 $endereco_toten = $this->session->userdata('endereco_toten');
 $agenda_modelo2 = @$retorno_header[0]->agenda_modelo2;
+$faturamento_novo = @$retorno_header[0]->faturamento_novo;
 $limitar_acesso = $this->session->userdata('limitar_acesso');
 $fila_impressao = $this->session->userdata('fila_impressao');
 $relatorio_caixa = $this->session->userdata('relatorio_caixa');
@@ -641,7 +642,12 @@ function debug($object) {
                                     }
                                     if ($relatorio_caixa == 't') {
                                         ?>
-                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
+                                        <?if($faturamento_novo == 't'){?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixamodelo2">Relatorio Caixa</a></span></ul>
+                                        <?}else{?>
+                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
+                                        <?}?>
+                                        
                                         <?
                                     }
                                     if ($perfil_id == 1 || $perfil_id == 6 || $perfil_id == 15) {
@@ -1060,7 +1066,11 @@ function debug($object) {
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocreditosaldo">Relatorio Crédito Saldo</a></span></ul>
                                         <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocreditoestorno">Relatorio Crédito Estorno</a></span></ul>
         <? if ($caixa_personalizado == 'f') { ?>
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
+                                            <?if($faturamento_novo == 't'){?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixamodelo2">Relatorio Caixa</a></span></ul>
+                                            <?}else{?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixa">Relatorio Caixa</a></span></ul>
+                                            <?}?>
             <? if (($gerente_relatorio_financeiro == 'f' && $perfil_id == 18) || $perfil_id != 18) { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixapersonalizado">Relatorio Caixa Personalizado</a></span></ul>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/guia/relatoriocaixafaturado">Relatorio Caixa Faturamento</a></span></ul>

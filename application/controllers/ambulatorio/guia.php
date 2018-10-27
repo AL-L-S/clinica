@@ -2631,7 +2631,7 @@ class Guia extends BaseController {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['procedimento_convenio_id'] = $procedimento_convenio_id;
         $data['valor'] = 0.00;
-        $this->load->View('ambulatorio/faturarmodelo2-form.php', $data);
+        $this->load->View('ambulatorio/faturarmodelo2-form', $data);
     }
 
     function faturarprocedimentosmodelo2($guia_id, $financeiro_grupo_id = null) {
@@ -2856,8 +2856,8 @@ class Guia extends BaseController {
         // }
     }
 
-    function apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id) {
-            $ambulatorio_guia_id = $this->guia->apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id);
+    function apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id, $data_pag) {
+            $ambulatorio_guia_id = $this->guia->apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id, $data_pag);
 
             if ($ambulatorio_guia_id == "-1") {
                 $data['mensagem'] = 'Erro ao excluir pagamento.';
@@ -5510,6 +5510,21 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/impressaorelatoriocaixa', $data);
     }
 
+    function gerarelatoriocaixamodelo2() {
+        $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
+        $data['medico'] = $this->operador_m->listaroperador($_POST['medico']);
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['grupo'] = $_POST['grupo'];
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->guia->relatoriocaixamodelo2();
+        // echo '<pre>';
+        // var_dump($data['relatorio']); 
+        // die;
+        $data['formapagamento'] = $this->formapagamento->listarformanaocredito();
+        $this->load->View('ambulatorio/impressaorelatoriocaixamodelo2', $data);
+    }
+
     function relatoriocaixa() {
         $data['operadores'] = $this->operador_m->listartecnicos();
         $data['empresa'] = $this->guia->listarempresas();
@@ -5518,6 +5533,16 @@ class Guia extends BaseController {
         $data['procedimentos'] = $this->procedimento->listarprocedimentos();
         $data['grupomedico'] = $this->grupomedico->listargrupomedicos();
         $this->loadView('ambulatorio/relatoriocaixa', $data);
+    }
+
+    function relatoriocaixamodelo2() {
+        $data['operadores'] = $this->operador_m->listartecnicos();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $data['procedimentos'] = $this->procedimento->listarprocedimentos();
+        $data['grupomedico'] = $this->grupomedico->listargrupomedicos();
+        $this->loadView('ambulatorio/relatoriocaixamodelo2', $data);
     }
 
     function relatoriocaixafaturado() {

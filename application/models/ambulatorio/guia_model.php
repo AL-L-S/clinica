@@ -7061,6 +7061,106 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+
+    function relatoriocaixamodelo2() {
+
+        $this->db->select('ae.agenda_exames_id,
+                            ae.realizada,
+                            ae.data,
+                            aef.data as data_faturar,
+                            ae.guia_id,
+                            pt.grupo,
+                            c.nome as convenio,
+                            ae.guia_id,
+                            array_agg(f.nome) as forma_pagamento_array,
+                            array_agg(aef.valor_bruto) as valor_bruto_array,
+                            array_agg(aef.valor) as valor_ajustado_array,
+                            array_agg(aef.ajuste) as ajuste_array,
+                            array_agg(aef.desconto) as desconto_array,
+                            array_agg(aef.ativo) as ativo_array,
+
+                            ae.quantidade,
+                            ae.valor_total,
+                            ae.paciente_id,
+                            p.nome as paciente,
+                            ae.procedimento_tuss_id,
+                            pt.nome as procedimento,
+                            o.nome as operador_autorizacao,
+                            op.nome as operador_faturamento,
+                            pt.codigo');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_agenda_exames_faturar aef', 'aef.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_forma_pagamento f', 'f.forma_pagamento_id = aef.forma_pagamento_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ae.operador_autorizacao', 'left');
+        $this->db->join('tb_operador_grupo_medico ogm', 'ae.medico_consulta_id = ogm.operador_id', 'left');
+//        $this->db->join('tb_operador_grupo og', 'og.operador_grupo_id = ogm.operador_grupo_id', 'left');
+        $this->db->join('tb_operador op', 'op.operador_id = aef.operador_cadastro', 'left');
+        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.confirmado', 'true');
+        $this->db->where('pt.home_care', 'f');
+        $this->db->where('ae.operador_autorizacao >', 0);
+        $this->db->where('pt.grupo !=', 'CIRURGICO');
+        $this->db->where('c.dinheiro', "t");
+        // $this->db->where('(aef.ativo = true OR aef.ativo is null)');
+        $this->db->where("ae.data >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ae.data <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))));
+
+        if ($_POST['grupo'] == "1") {
+            $this->db->where('pt.grupo !=', 'RM');
+        }
+        if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
+            $this->db->where('pt.grupo', $_POST['grupo']);
+        }
+        if ($_POST['procedimentos'] != "0") {
+            $this->db->where('pt.procedimento_tuss_id', $_POST['procedimentos']);
+        }
+//        var_dump($_POST['grupomedico']); die;
+        if ($_POST['grupomedico'] != "0") {
+            $this->db->where('ogm.operador_grupo_id', $_POST['grupomedico']);
+            $this->db->where('ogm.ativo', 't');
+        }
+        if ($_POST['medico'] != "0") {
+            $this->db->where('al.medico_parecer1', $_POST['medico']);
+        }
+        if ($_POST['operador'] != "0") {
+            $this->db->where('ae.operador_autorizacao', $_POST['operador']);
+        }
+        if ($_POST['empresa'] != "0") {
+            $this->db->where('ae.empresa_id', $_POST['empresa']);
+        }
+        $this->db->groupby('ae.agenda_exames_id,
+                            ae.realizada,
+                            ae.data,
+                            aef.data,
+                            ae.guia_id,
+                            pt.grupo,
+                            c.nome,
+                            ae.guia_id,
+                            pc.valortotal,
+                            ae.quantidade,
+                            ae.valor_total,
+                            ae.paciente_id,
+                            p.nome,
+                            ae.procedimento_tuss_id,
+                            pt.nome,
+                            o.nome,
+                            e.exames_id,
+                            op.nome,
+                            pt.codigo');
+        $this->db->orderby('ae.operador_autorizacao, ae.paciente_id, p.nome, ae.agenda_exames_id');
+//        $this->db->orderby('pc.convenio_id');
+        $this->db->orderby('ae.data');
+        $this->db->orderby('p.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function relatoriocaixacartaoconsolidado() {
 
@@ -9026,6 +9126,7 @@ class guia_model extends Model {
                             (sum(aef.valor_total) - (select sum(valor_bruto) + sum(desconto)  as valorTotPag from ponto.tb_agenda_exames_faturar aef2
                             where aef2.guia_id = aef.guia_id and ativo = true)) as valor_restante,
                             sum(aef.valor) as valor,
+                            sum(aef.valor_bruto) as valor_bruto,
                             aef.data,
                             aef.ajuste,
                             aef.parcela,
@@ -9803,11 +9904,11 @@ class guia_model extends Model {
         }
     }
 
-    function apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id) {
+    function apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id, $data_pag) {
         try {
 
             // Gravando backup das alterações 
-            $this->gravarProcedimentosBackupFaturar($forma_pagamento_id, $guia_id, 'EXCLUIR GUIA');
+            $this->gravarProcedimentosBackupFaturar($forma_pagamento_id, $guia_id, 'EXCLUIR GUIA', $data_pag);
 
             /* inicia o mapeamento no banco */
             $horario = date("Y-m-d H:i:s");
@@ -9817,6 +9918,7 @@ class guia_model extends Model {
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->where('guia_id', $guia_id);
             $this->db->where('forma_pagamento_id', $forma_pagamento_id);
+            $this->db->where('data', $data_pag);
             $this->db->update('tb_agenda_exames_faturar');
 
             // echo 'something'; die;
@@ -9966,7 +10068,7 @@ class guia_model extends Model {
             $i = 0;
             // daí eu ordeno o array corretamente e reatribuo os valores iniciais dos procedimentos nesse foreach
             foreach($array_exames as $agenda_exames){
-                $valorExi_Array = $this->buscarValorExistentePagamento($agenda_exames);
+                // $valorExi_Array = $this->buscarValorExistentePagamento($agenda_exames);
                 $array_geral[$agenda_exames] = (float) $array_valores[$i];
                 $i++;
 

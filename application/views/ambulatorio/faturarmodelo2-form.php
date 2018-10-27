@@ -44,22 +44,13 @@ if(count($forma_cadastrada) > 0){
                                 <tr>
                                     <td>
                                         <input type="text" name="valor_proc" id="valor_proc" class="input_pequeno" value="<?= number_format($exame[0]->valor, 2, ',', '.'); ?>" readonly />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>Valor Restante a Faturar</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="text"  name="valorFaturarVisivel" id="valorFaturarVisivel" class="input_pequeno" value="<?= number_format($valor_restante, 2, ',', '.'); ?>" readonly />
                                         <input type="hidden" name="valorafaturar" id="valorafaturar" class="input_pequeno" value="<?= number_format($valor_restante, 2, ',', '.'); ?>" readonly />
                                         <input type="hidden" name="agenda_exames_id" id="agenda_exames_id" class="texto01" value="<?= $agenda_exames_id; ?>"/>
                                         <input type="hidden" name="guia_id" id="guia_id" class="texto01" value="<?= $guia_id; ?>"/>
                                         <input type="hidden" name="procedimento_convenio_id" id="procedimento_convenio_id" class="texto01" value="<?= $procedimento_convenio_id; ?>"/>
                                     </td>
                                 </tr>
+                                
                                 
                             </table>
                             <br>
@@ -98,7 +89,7 @@ if(count($forma_cadastrada) > 0){
                                 </tr>
                                 <tr>
                                         <td>
-                                            <input required type="number" step="0.01" min=0 max='<?=$valor_restante?>' name="valor1" id="valor1" value="0"  />
+                                            <input required type="number" class="input_pequeno" step="0.01" min=0 max='<?=$valor_restante?>' name="valor1" id="valor1" value="0"  />
                                         </td>
                                         <td>
                                             <select required  name="forma_pagamento_id" id="forma_pagamento_id" class="size2" >
@@ -110,19 +101,37 @@ if(count($forma_cadastrada) > 0){
 
                                         </td>
                                         <td>
-                                            <input readonly type="text" name="ajuste1" id="ajuste1" size="2" value="<?= $valor; ?>"/> 
+                                            <input readonly type="text" class="input_pequeno" name="ajuste1" id="ajuste1" size="2" value="<?= $valor; ?>"/> 
                                         </td>
                                         <td>
-                                            <input readonly type="text" name="valorajuste1" id="valorajuste1" size="2" value="<?= $valor; ?>"/> 
+                                            <input readonly type="text" class="input_pequeno" name="valorajuste1" id="valorajuste1" size="2" value="<?= $valor; ?>"/> 
                                         </td>
                                         <td>
-                                            <input  style="width: 60px;" type="number" name="parcela1" id="parcela1"  value="1" min="1" /> 
+                                            <input  style="width: 60px;" class="input_pequeno" type="number" name="parcela1" id="parcela1"  value="1" min="1" /> 
                                         </td>
 
                                 </tr>
                                 <tr>
+                                        <td>
+                                            <label>Valor Pendente</label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="text"  name="valorFaturarVisivel" id="valorFaturarVisivel" class="input_pequeno" value="<?= number_format($valor_restante, 2, ',', '.'); ?>" readonly />
+                                            
+                                        </td>
+                                    </tr>  
+                                <tr>
                                     <td>
-                                    <?if($valor_restante > 0){?>
+                                        <?
+                                        // Ele não deixa adicionar mais formas se o valor for igual a zero.
+                                        // Caso o valor seja zero, ele só vê se já tem alguma forma cadastrada, senão, ele deixa cadastrar
+                                        // já que existem procedimentos do tipo retorno e etc que não contam no caixa.
+                                        // Mas pra todos os efeitos, não é necessário faturar.
+                                        ?>
+                                      
+                                    <?if($valor_restante > 0 || count(@$forma_cadastrada) == 0){?>
                                         <button type="submit" name="btnEnviar" id="btnEnviar" >
                                             Adicionar
                                         </button>
@@ -152,6 +161,7 @@ if(count($forma_cadastrada) > 0){
                 </fieldset>    
                 <fieldset>
                     <?
+                    $desconto_total = 0;
                     if (count(@$forma_cadastrada) > 0) {
                         ?>
                         <table id="table_agente_toxico" border="0">
@@ -176,7 +186,7 @@ if(count($forma_cadastrada) > 0){
                                 $total_pago = 0;
                                 foreach ($forma_cadastrada as $item) {
                                     $total_pago+= $item->valor;
-
+                                    $desconto_total += $item->desconto;
                                     if($item->data != $data_for){?>
                                         <tr>
                                             <th class="tabela_header" colspan="8"><?= date("d/m/Y", strtotime($item->data)); ?></th>
@@ -195,8 +205,11 @@ if(count($forma_cadastrada) > 0){
                                         <td class="<?php echo $estilo_linha; ?>"><center><? echo $item->parcela; ?></center></td>
                                         <!-- <td class="<?php echo $estilo_linha; ?>"><center><?= date("d/m/Y", strtotime($item->data)); ?></center></td> -->
                                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
+                                        <?$perfil_id = $this->session->userdata('perfil_id');?>
+                                        <?if($perfil_id == 1){?> 
                                             <a onclick="javascript:return confirm('Deseja realmente excluir o pagamento?');" href="<?= base_url() ?>ambulatorio/guia/apagarfaturarmodelo2/<?= $item->agenda_exames_faturar_id; ?>/<?= $agenda_exames_id?>/<?= $procedimento_convenio_id?>/<?=$guia_id?>" class="delete">
                                             </a>
+                                        <?}?>    
                                         </td>
                                     </tr>
 
@@ -206,7 +219,7 @@ if(count($forma_cadastrada) > 0){
                             }
                             ?>
                             <tr>
-                                <th class="tabela_header" colspan="7">Total Pago: <?=number_format($total_pago,2,',', '.')?></th>
+                                <th class="tabela_header" colspan="7">Total Pago: <?=number_format($total_pago,2,',', '.')?> | Desconto: <?=number_format($desconto_total,2,',', '.')?></th>
                                 
                             </tr>
                             </tbody>
