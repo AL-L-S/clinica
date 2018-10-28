@@ -181,6 +181,10 @@ if(count($forma_cadastradaTotal) > 0){
                                 foreach ($forma_cadastrada as $item) {
                                     $desconto_total += $item->desconto;
                                     $total_pago+= $item->valor;
+                                    
+                                    $array_financeiroPG = $item->array_financeiro;
+                                    $array_financeiroStr = str_replace('{', '',str_replace('}', '', $array_financeiroPG));
+                                    $array_financeiro = explode(',', $array_financeiroStr);
 
                                     if($item->data != $data_for){?>
                                         <tr>
@@ -203,7 +207,7 @@ if(count($forma_cadastradaTotal) > 0){
                                       
                                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                         <?$perfil_id = $this->session->userdata('perfil_id');?>
-                                        <?if($perfil_id == 1){?> 
+                                        <?if(($perfil_id == 1 && !in_array('t', $array_financeiro))){?> 
                                             <a onclick="javascript:return confirm('Deseja realmente excluir o pagamento?');" href="<?= base_url() ?>ambulatorio/guia/apagarfaturarprocedimentosmodelo2/<?= $item->forma_pagamento_id; ?>/<?=$guia_id?>/<?=$item->data?>" class="delete">
                                             </a>
                                         <? }?>

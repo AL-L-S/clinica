@@ -4,6 +4,8 @@
         <div>
             <?
             $perfil_id = $this->session->userdata('perfil_id');
+            $empresa_id = $this->session->userdata('empresa_id');
+            $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
             ?>
             <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/valorexames" method="post">
                 <fieldset>
@@ -101,7 +103,8 @@ if ($perfil_id != 1) {
 }
 ?> class="texto01"/></td>
                         </tr>
-                        <tr>
+                        
+                        <tr <?=($empresapermissoes[0]->faturamento_novo == 't')? "style='display:none;'": ''?>>
                             <td>Pagamento</td>
                             <td><select  name="formapamento" id="formapamento" class="size2"  <?
 if ($perfil_id != 1) {
@@ -117,7 +120,28 @@ if ($perfil_id != 1) {
                         </tr>
                     </table>
                     <hr/>
-                    <button type="submit" name="btnEnviar">Enviar</button>
+                    
+                    <?
+                    $mostrarBotao = true;
+                    // Caso o caixa esteja fechado
+                    // ele não deixa o botão pra trocar o procedimento.
+                    if(count($forma_cadastrada) > 0){
+                        $array_financeiroPG = $forma_cadastrada[0]->array_financeiro;
+                        $array_financeiroStr = str_replace('{', '',str_replace('}', '', $array_financeiroPG));
+                        $array_financeiro = explode(',', $array_financeiroStr);
+                        
+                        if(in_array('t', $array_financeiro)){
+                            $mostrarBotao = false;
+                        }
+                    }
+                    
+                    ?>
+                    <?if($mostrarBotao){?>
+                        <button type="submit" name="btnEnviar">Enviar</button>
+                    <?}else{?>
+                        <button disabled="" >Caixa Fechado</button>
+                    <?}?>
+                    
                 </fieldset>
             </form>
         </div> 

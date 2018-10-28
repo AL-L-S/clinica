@@ -341,3 +341,22 @@ CREATE TABLE ponto.tb_agenda_exames_faturar_bkp
 
 
 ALTER TABLE ponto.tb_agenda_exames_faturar ADD COLUMN faturado_guia boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_agenda_exames_faturar ADD COLUMN operador_financeiro integer;
+ALTER TABLE ponto.tb_agenda_exames_faturar ADD COLUMN data_financeiro timestamp without time zone;
+
+
+CREATE TABLE ponto.tb_financeiro_caixa
+(
+  financeiro_caixa_id serial NOT NULL,
+  forma_pagamento_id integer,
+  forma_pagamento_nome text,
+  valor numeric(10,2),
+  operador_cadastro integer,
+  data_cadastro timestamp without time zone,
+  CONSTRAINT tb_financeiro_caixa_pkey PRIMARY KEY (financeiro_caixa_id)
+);
+
+
+ALTER TABLE ponto.tb_financeiro_contasreceber ADD COLUMN financeiro_caixa_id integer;
+ALTER TABLE ponto.tb_entradas ADD COLUMN financeiro_caixa_id integer;

@@ -27,25 +27,15 @@
                             <? endforeach; ?>
                         </select>
                     </dd>
+                    
                     <dt>
-                        <label>Grupo Médico</label>
-                    </dt>
-                    <dd>
-                        <select name="grupomedico" id="grupomedico" class="size2">
-                            <option value="0">TODOS</option>
-                            <? foreach ($grupomedico as $value) : ?>
-                                <option value="<?= $value->operador_grupo_id; ?>" ><?php echo $value->nome; ?></option>
-                            <? endforeach; ?>
-                        </select>
-                    </dd>
-                    <dt>
-                        <label>Data inicio</label>
+                        <label>Data Início</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_inicio" id="txtdata_inicio" alt="date"/>
                     </dd>
                     <dt>
-                        <label>Data fim</label>
+                        <label>Data Fim</label>
                     </dt>
                     <dd>
                         <input type="text" name="txtdata_fim" id="txtdata_fim" alt="date"/>
@@ -71,13 +61,13 @@
                         }
 
                     </style>
-                    <dt>
+<!--                    <dt>
                         <label>Procedimentos</label>
                     </dt>
                     <dd>
                         <select name="procedimentos" id="grupo" class="size4 chosen-select" tabindex="1">
                             <option value='0' >TODOS</option>
-                            <!--<option value='1' >SEM RM</option>-->
+                            <option value='1' >SEM RM</option>
                             <? foreach ($procedimentos as $grupo) { ?>                                
                                 <option value='<?= $grupo->procedimento_tuss_id ?>' <?
                                 if (@$obj->_grupo == $grupo->procedimento_tuss_id):echo 'selected';
@@ -85,7 +75,7 @@
                                 ?>><?= $grupo->codigo ?> - <?= $grupo->nome ?></option>
                                     <? } ?>
                         </select>
-                    </dd>
+                    </dd>-->
                     <?
                     $empresa_id = $this->session->userdata('empresa_id');
                     $perfil_id = $this->session->userdata('perfil_id');

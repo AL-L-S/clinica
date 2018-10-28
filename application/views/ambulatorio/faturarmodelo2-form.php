@@ -206,7 +206,8 @@ if(count($forma_cadastrada) > 0){
                                         <!-- <td class="<?php echo $estilo_linha; ?>"><center><?= date("d/m/Y", strtotime($item->data)); ?></center></td> -->
                                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
                                         <?$perfil_id = $this->session->userdata('perfil_id');?>
-                                        <?if($perfil_id == 1){?> 
+                                        <?$operador_id = $this->session->userdata('operador_id');?>
+                                        <?if(($perfil_id == 1 && $item->financeiro == 'f')){?> 
                                             <a onclick="javascript:return confirm('Deseja realmente excluir o pagamento?');" href="<?= base_url() ?>ambulatorio/guia/apagarfaturarmodelo2/<?= $item->agenda_exames_faturar_id; ?>/<?= $agenda_exames_id?>/<?= $procedimento_convenio_id?>/<?=$guia_id?>" class="delete">
                                             </a>
                                         <?}?>    
