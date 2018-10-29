@@ -103,7 +103,7 @@
             $idades = array();
             foreach ($relatorio as $item) :
                 $relatoriounico = $this->guia->relatoriounicoretornopaciente($item->paciente_id);
-//                var_dump($relatoriounico); die;
+                // var_dump($relatoriounico); die;
                 
                 $i++;
                 $qtdetotal++;

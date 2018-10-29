@@ -2979,8 +2979,8 @@ class Exame extends BaseController {
                 
                 
                 $horarioagenda = $this->agenda->listarhorarioagendacriacaogeralmodelo2($agenda_id, $medico_id, $datainicial, $datafinal, $tipo);
-                // echo '<pre>';
-                // var_dump($horarioagenda); die;
+//                 echo '<pre>';
+//                 var_dump($horarioagenda); die;
                 $id = 0;
         
                 foreach ($horarioagenda as $item) {

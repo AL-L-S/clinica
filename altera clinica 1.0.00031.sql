@@ -301,6 +301,46 @@ ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN estoque_nota_id integer;
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN faturamento_novo boolean DEFAULT false;
 
+CREATE TABLE ponto.tb_agenda_exames_faturar
+(
+  agenda_exames_faturar_id serial NOT NULL,
+  agenda_exames_id integer,
+  guia_id integer,
+  procedimento_convenio_id integer,
+  forma_pagamento_id integer,
+  valor_total numeric(10,2) DEFAULT 0,
+  valor numeric(10,2) DEFAULT 0,
+  valor_bruto numeric(10,2) DEFAULT 0,
+  parcela integer DEFAULT 0,
+  desconto numeric(10,2)DEFAULT 0,
+  ajuste numeric(10,2) DEFAULT 0,
+  desconto_ajuste numeric(10,2) DEFAULT 0,
+  data date,
+  ativo boolean DEFAULT true,
+  faturado boolean DEFAULT false,
+  financeiro boolean DEFAULT false,
+  operador_faturamento integer,
+  operador_cadastro integer,
+  operador_atualizacao integer,
+  data_atualizacao timestamp without time zone,
+  data_cadastro timestamp without time zone,
+  CONSTRAINT tb_agenda_exames_faturar_pkey PRIMARY KEY (agenda_exames_faturar_id)
+);
+
+
+CREATE TABLE ponto.tb_agenda_exames_faturar_bkp
+(
+  agenda_exames_faturar_bkp_id serial NOT NULL,
+  agenda_exames_faturar_id integer,
+  alteracao text,
+  json_salvar text,
+  operador_cadastro integer,
+  data_cadastro timestamp without time zone,
+  CONSTRAINT tb_agenda_exames_faturar_bkp_pkey PRIMARY KEY (agenda_exames_faturar_bkp_id)
+);
+
+
+ALTER TABLE ponto.tb_agenda_exames_faturar ADD COLUMN faturado_guia boolean DEFAULT false;
 -- Dia 26/10/2018
 
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN data_aso date;

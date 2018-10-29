@@ -68,7 +68,7 @@ $gerente_recepcao_top_saude = $this->session->userdata('gerente_recepcao_top_sau
 $retirar_preco_procedimento = $this->session->userdata('retirar_preco_procedimento');
 $gerente_relatorio_financeiro = $this->session->userdata('gerente_relatorio_financeiro');
 
-//var_dump($endereco_toten); die;
+//var_dump($agenda_modelo2); die;
 function alerta($valor) {
     echo "<script>alert('$valor');</script>";
 }
@@ -1456,7 +1456,11 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/motivocancelamento">Motivo cancelamento</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/tipoconsulta">Tipo Agenda</a></span></ul>
                                             <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/horario">Manter Horarios</a></span></ul>-->
-                                            <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
+                                            <?if($agenda_modelo2 == 'f'){?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda">Agenda Horarios</a></span></ul>
+                                            <?}else{?>
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/agenda/pesquisaragendamodelo2">Agenda Médica</a></span></ul>
+                                            <?}?>
                                             <? if ($this->session->userdata('recomendacao_configuravel') == "t") { ?>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao">Manter Promotor</a></span></ul>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/indicacao/pesquisargrupoindicacao">Manter Grupo Promotor</a></span></ul>

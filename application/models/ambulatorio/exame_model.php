@@ -10044,6 +10044,19 @@ class exame_model extends Model {
 
             for ($i = 1; $i <= $total; $i++) {
 
+                
+                $indexferiado = date("m/d", strtotime(str_replace("-", "/", $index)));
+//                var_dump($indexferiado);die;
+                //LEMBRAR! verificar se é feriado vai ficar aqui
+                $this->db->select('f.feriado_id');
+                $this->db->from('tb_feriado f');                
+                $this->db->where('f.data', $indexferiado);                
+                $return_feriado = $this->db->get()->result();
+                // Caso esse dia seja feriado não vai criar agenda pra ele
+                if(count($return_feriado) > 0){
+                    continue;
+                }
+                //
                 $index = date("Y-m-d", strtotime(str_replace("/", "-", $index)));
                 $this->db->select('ae.agenda_exames_id');
                 $this->db->from('tb_agenda_exames ae');

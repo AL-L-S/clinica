@@ -38,7 +38,7 @@
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             $agenda_exames_id = $this->guia->listaragendaexames($item->cadastro_aso_id);
-                            $exames_id = $agenda_exames_id[0]->agenda_exames_id;
+                            @$exames_id = $agenda_exames_id[0]->agenda_exames_id;
 //                            echo'<pre>';var_dump($exames_id);die;
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
