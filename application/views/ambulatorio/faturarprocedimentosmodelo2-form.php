@@ -45,22 +45,13 @@ if(count($forma_cadastradaTotal) > 0){
                                 <tr>
                                     <td>
                                         <input type="text" name="valor_proc" id="valor_proc" class="input_pequeno" value="<?= number_format($valor_total, 2, ',', '.'); ?>" readonly />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label>Valor Restante a Faturar</label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <input type="text" name="valorFaturarVisivel" id="valorFaturarVisivel" class="input_pequeno" value="<?= number_format($valor_restante, 2, ',', '.'); ?>" readonly />
                                         <input type="hidden" name="valorafaturar" id="valorafaturar" class="input_pequeno" value="<?= number_format($valor_restante, 2, ',', '.'); ?>" readonly />
                                         <input type="hidden" name="guia_id" id="guia_id" class="texto01" value="<?= $guia_id; ?>"/>
                                         <input type="hidden" name="array_exames" id="guia_id" class="texto01" value="<?= $exame[0]->array_exames; ?>"/>
                                         <input type="hidden" name="array_valores" id="guia_id" class="texto01" value="<?= $exame[0]->array_valores; ?>"/>
                                     </td>
                                 </tr>
+                                
                                 
                             </table>
                             <br>
@@ -99,7 +90,7 @@ if(count($forma_cadastradaTotal) > 0){
                                 </tr>
                                 <tr>
                                         <td>
-                                            <input required type="number" step="0.01" min=0 max='<?=$valor_restante?>' name="valor1" id="valor1" value="0"  />
+                                            <input class="input_pequeno" required type="number" step="0.01" min=0 max='<?=$valor_restante?>' name="valor1" id="valor1" value="0"  />
                                         </td>
                                         <td>
                                             <select required  name="forma_pagamento_id" id="forma_pagamento_id" class="size2" >
@@ -111,15 +102,26 @@ if(count($forma_cadastradaTotal) > 0){
 
                                         </td>
                                         <td>
-                                            <input readonly type="text" name="ajuste1" id="ajuste1" size="2" value="<?= $valor; ?>"/> 
+                                            <input class="input_pequeno" readonly type="text" name="ajuste1" id="ajuste1" size="2" value="<?= $valor; ?>"/> 
                                         </td>
                                         <td>
-                                            <input readonly type="text" name="valorajuste1" id="valorajuste1" size="2" value="<?= $valor; ?>"/> 
+                                            <input class="input_pequeno" readonly type="text" name="valorajuste1" id="valorajuste1" size="2" value="<?= $valor; ?>"/> 
                                         </td>
                                         <td>
                                             <input  style="width: 60px;" type="number" name="parcela1" id="parcela1"  value="1" min="1" /> 
                                         </td>
 
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>Valor Pendente</label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" name="valorFaturarVisivel" id="valorFaturarVisivel" class="input_pequeno" value="<?= number_format($valor_restante, 2, ',', '.'); ?>" readonly />
+                                        
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -153,6 +155,7 @@ if(count($forma_cadastradaTotal) > 0){
                 </fieldset>    
                 <fieldset>
                     <?
+                    $desconto_total = 0;
                     if (count(@$forma_cadastrada) > 0) {
                         ?>
                         <table id="table_agente_toxico" border="0">
@@ -160,6 +163,7 @@ if(count($forma_cadastradaTotal) > 0){
 
                                 <tr>
                                     <th class="tabela_header">Valor</th>
+                                    <th class="tabela_header">Valor Ajustado</th>
                                     <th class="tabela_header">Forma de Pag.</th>
                                     <th class="tabela_header">Ajuste</th>
                                     <th class="tabela_header">Desconto</th>
@@ -175,7 +179,12 @@ if(count($forma_cadastradaTotal) > 0){
                                 $data_for = '';
                                 $total_pago = 0;
                                 foreach ($forma_cadastrada as $item) {
+                                    $desconto_total += $item->desconto;
                                     $total_pago+= $item->valor;
+                                    
+                                    $array_financeiroPG = $item->array_financeiro;
+                                    $array_financeiroStr = str_replace('{', '',str_replace('}', '', $array_financeiroPG));
+                                    $array_financeiro = explode(',', $array_financeiroStr);
 
                                     if($item->data != $data_for){?>
                                         <tr>
@@ -187,15 +196,21 @@ if(count($forma_cadastradaTotal) > 0){
                                     ?>
 
                                     <tr>
+                                        <td class="<?php echo $estilo_linha; ?>" width="120px;"><center>R$ <?=number_format($item->valor_bruto, 2, ',', '.'); ?></center></td>
                                         <td class="<?php echo $estilo_linha; ?>" width="120px;"><center>R$ <?=number_format($item->valor, 2, ',', '.'); ?></center></td>
                                         <td class="<?php echo $estilo_linha; ?>" style="min-width: 300px;"><center><? echo $item->forma_pagamento; ?></center></td>
                                         <td class="<?php echo $estilo_linha; ?>" width="120px;"><center><?=$item->ajuste . "%"; ?></center></td>
                                         <td class="<?php echo $estilo_linha; ?>" width="120px;"><center>R$ <?=number_format($item->desconto, 2, ',', '.'); ?></center></td>
                                         <td class="<?php echo $estilo_linha; ?>"><center><? echo $item->parcela; ?></center></td>
                                         <!-- <td class="<?php echo $estilo_linha; ?>"><center><?= date("d/m/Y", strtotime($item->data)); ?></center></td> -->
+                                        
+                                      
                                         <td class="<?php echo $estilo_linha; ?>" width="100px;">
-                                            <a onclick="javascript:return confirm('Deseja realmente excluir o pagamento?');" href="<?= base_url() ?>ambulatorio/guia/apagarfaturarprocedimentosmodelo2/<?= $item->forma_pagamento_id; ?>/<?=$guia_id?>" class="delete">
+                                        <?$perfil_id = $this->session->userdata('perfil_id');?>
+                                        <?if(($perfil_id == 1 && !in_array('t', $array_financeiro))){?> 
+                                            <a onclick="javascript:return confirm('Deseja realmente excluir o pagamento?');" href="<?= base_url() ?>ambulatorio/guia/apagarfaturarprocedimentosmodelo2/<?= $item->forma_pagamento_id; ?>/<?=$guia_id?>/<?=$item->data?>" class="delete">
                                             </a>
+                                        <? }?>
                                         </td>
                                     </tr>
 
@@ -205,7 +220,7 @@ if(count($forma_cadastradaTotal) > 0){
                             }
                             ?>
                             <tr>
-                                <th class="tabela_header" colspan="6">Total Pago: <?=number_format($total_pago,2,',', '.')?></th>
+                                <th class="tabela_header" colspan="7">Total Pago: <?=number_format($total_pago,2,',', '.')?> | Desconto: <?=number_format($desconto_total,2,',', '.')?></th>
                                 
                             </tr>
                             </tbody>
@@ -322,7 +337,9 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
                         if (j[0].ajuste != null) {
                             document.getElementById("ajuste1").value = options;
                             valorajuste1 = (numer_1 * options) / 100;
+                            // pg1 = parseFloat(numer_1 + valorajuste1).toFixed(2);
                             pg1 = numer_1 + valorajuste1;
+                            // console.log(pg1);
                             document.getElementById("valorajuste1").value = pg1;
 //                                                        document.getElementById("desconto1").type = 'text';
 //                                                        document.getElementById("valordesconto1").type = 'text';
@@ -338,6 +355,7 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
                 }
             });
         });
+
         $(function () {
             $('#valor1').change(function () {
                 // console.log($('#forma_pagamento_id').val());

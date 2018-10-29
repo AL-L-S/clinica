@@ -145,13 +145,13 @@
 
                                 <? } ?>
                                 <? }else{ ?>
-                                <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
-                                    <th class="tabela_header"><div class="bt_link">
-                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiavalor/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Valor
+                                    <? if ($perfil_id != 11 && $perfil_id != 2) { ?>
+                                        <th class="tabela_header"><div class="bt_link">
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiavalor/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Valor
 
-                                            </a></div></th>
+                                                </a></div></th>
 
-                                <? } ?>
+                                    <? } ?>
                                 <? } ?>
                                 <th class="tabela_header"><div class="bt_link">
                                         <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/guiaobservacao/" . $guia_id; ?> ', '_blank', 'width=800,height=600');">Observa&ccedil;&atilde;o

@@ -62,6 +62,33 @@ class Guia extends BaseController {
         $exames_procedimentos = $this->guia->listarexamesguialaboratorio($guia_id);
         // var_dump($exames_procedimentos);
         // die;
+        // Caso não esteja faturado por completo
+        // 
+        $valorSomadoProc = $this->guia->listarexameguiaprocedimentosmodelo2($guia_id);
+        $valor_total = $valorSomadoProc[0]->valor_total;
+        $valor_metade = (float) $valor_total/2;
+        $valor_pago = 0;
+        $forma_cadastradaTotal = $this->guia->agendaExamesFormasPagamentoGuiaTotalLab($guia_id);
+        if(count($forma_cadastradaTotal) > 0){
+            $valor_pago = (float) $forma_cadastradaTotal[0]->valor_total_pago;
+        }
+//        echo '<pre>';
+//        var_dump($forma_cadastradaTotal);
+//        var_dump($valor_metade);
+//        var_dump($valor_pago);
+//        die;
+        if($valor_metade > $valor_pago){
+//            echo 'asuhdhuasd';
+            $mensagem_data = 'É preciso faturar pelo menos metade da guia para Importar Exames';
+            $this->session->set_flashdata('message', $mensagem_data);
+            // echo(utf8_decode($mensagem_data)); die;
+            redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
+        }
+        
+//        die;
+        
+        
+        
         if (count($exames_procedimentos) > 0) {
 
 
@@ -248,6 +275,34 @@ class Guia extends BaseController {
         // var_dump($exames_procedimentos);
         // die;
         // if (count($exames_procedimentos) > 0) {
+        
+        // Caso não esteja faturado por completo
+        // 
+        $valorSomadoProc = $this->guia->listarexameguiaprocedimentosmodelo2($guia_id);
+        $valor_total = $valorSomadoProc[0]->valor_total;
+        $valor_metade = (float) $valor_total/2;
+        $valor_pago = 0;
+        $forma_cadastradaTotal = $this->guia->agendaExamesFormasPagamentoGuiaTotalLab($guia_id);
+        if(count($forma_cadastradaTotal) > 0){
+            $valor_pago = (float) $forma_cadastradaTotal[0]->valor_total_pago;
+        }
+//        echo '<pre>';
+//        var_dump($forma_cadastradaTotal);
+//        var_dump($valor_metade);
+//        var_dump($valor_pago);
+//        die;
+        if($valor_metade > $valor_pago){
+//            echo 'asuhdhuasd';
+            $mensagem_data = 'É preciso faturar pelo menos metade da guia para ver resultados';
+            $this->session->set_flashdata('message', $mensagem_data);
+            // echo(utf8_decode($mensagem_data)); die;
+            redirect(base_url() . "ambulatorio/guia/pesquisar/$paciente_id");
+        }
+        
+//        die;
+        
+        
+     
 
 
         $url = $empresa[0]->endereco_integracao_lab;
@@ -1542,6 +1597,24 @@ class Guia extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/guia/relatoriocaixa", $data);
     }
+    
+    function fecharcaixamodelo2() {
+//        echo '<pre>';
+//        var_dump($_POST); die;
+        $caixa = $this->guia->fecharcaixamodelo2();
+//        echo 'mostre algo';
+//        var_dump($caixa);
+//        die;
+        if ($caixa == "-1") {
+            $data['mensagem'] = 'Erro ao fechar caixa. Opera&ccedil;&atilde;o cancelada.';
+        } elseif ($caixa == 10) {
+            $data['mensagem'] = 'Erro ao fechar caixa. Forma de pagamento não configurada corretamente.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao fechar caixa.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/guia/relatoriocaixamodelo2", $data);
+    }
 
     function fecharpromotor() {
         if ($_POST['conta'] == '') {
@@ -2247,6 +2320,7 @@ class Guia extends BaseController {
         $percentual_laboratorio = $this->guia->percentuallaboratorioconvenioexames($procedimentopercentual);
 
         $credito = $this->exame->creditocancelamentoeditarvalor();
+        $cancelarFaturamento = $this->guia->apagarfaturartrocarprocmodelo2($agenda_exames_id);
 //        } else {
 //            $percentual_laboratorio = array();
 //        }
@@ -2278,6 +2352,10 @@ class Guia extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $data['forma_pagamento'] = $this->guia->formadepagamentoguianovo();
         $data['exame'] = $this->guia->listarexamealterarvalor($agenda_exames_id);
+        $data['forma_cadastrada'] = $this->guia->agendaExamesFormasPagamentoFinanceiro($agenda_exames_id);
+//        echo '<pre>';
+//        var_dump($data['forma_cadastrada']); die;
+        // Pagamento do faturamento 2. É pra ver se pode editar o procedimento.
         $data['paciente'] = $this->paciente->listardados($paciente_id);
         $data['ambulatorio_guia_id'] = $ambulatorio_guia_id;
         $data['guia_id'] = $guia_id;
@@ -2641,7 +2719,7 @@ class Guia extends BaseController {
         $data['agenda_exames_id'] = $agenda_exames_id;
         $data['procedimento_convenio_id'] = $procedimento_convenio_id;
         $data['valor'] = 0.00;
-        $this->load->View('ambulatorio/faturarmodelo2-form.php', $data);
+        $this->load->View('ambulatorio/faturarmodelo2-form', $data);
     }
 
     function faturarprocedimentosmodelo2($guia_id, $financeiro_grupo_id = null) {
@@ -2875,8 +2953,8 @@ class Guia extends BaseController {
         // }
     }
 
-    function apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id) {
-            $ambulatorio_guia_id = $this->guia->apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id);
+    function apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id, $data_pag) {
+            $ambulatorio_guia_id = $this->guia->apagarfaturarprocedimentosmodelo2($forma_pagamento_id, $guia_id, $data_pag);
 
             if ($ambulatorio_guia_id == "-1") {
                 $data['mensagem'] = 'Erro ao excluir pagamento.';
@@ -5529,6 +5607,21 @@ class Guia extends BaseController {
         $this->load->View('ambulatorio/impressaorelatoriocaixa', $data);
     }
 
+    function gerarelatoriocaixamodelo2() {
+        $data['operador'] = $this->operador_m->listaroperador($_POST['operador']);
+        $data['medico'] = $this->operador_m->listaroperador($_POST['medico']);
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['grupo'] = $_POST['grupo'];
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->guia->relatoriocaixamodelo2();
+        // echo '<pre>';
+        // var_dump($data['relatorio']); 
+        // die;
+        $data['formapagamento'] = $this->formapagamento->listarformanaocredito();
+        $this->load->View('ambulatorio/impressaorelatoriocaixamodelo2', $data);
+    }
+
     function relatoriocaixa() {
         $data['operadores'] = $this->operador_m->listartecnicos();
         $data['empresa'] = $this->guia->listarempresas();
@@ -5537,6 +5630,16 @@ class Guia extends BaseController {
         $data['procedimentos'] = $this->procedimento->listarprocedimentos();
         $data['grupomedico'] = $this->grupomedico->listargrupomedicos();
         $this->loadView('ambulatorio/relatoriocaixa', $data);
+    }
+
+    function relatoriocaixamodelo2() {
+        $data['operadores'] = $this->operador_m->listartecnicos();
+        $data['empresa'] = $this->guia->listarempresas();
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['grupos'] = $this->procedimento->listargrupos();
+        $data['procedimentos'] = $this->procedimento->listarprocedimentos();
+        $data['grupomedico'] = $this->grupomedico->listargrupomedicos();
+        $this->loadView('ambulatorio/relatoriocaixamodelo2', $data);
     }
 
     function relatoriocaixafaturado() {

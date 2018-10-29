@@ -15,7 +15,7 @@ if (!defined('BASEPATH'))
   |
  */
 //$config['base_url']	= "http://localhost/clinicas/";
-//$config['base_url']	= "http://192.168.25.35/clinicas/";
+// $config['base_url']	= "http://192.168.25.51/clinicas/";
 $config['base_url']	= "http://localhost/clinicas/";
 //$config['base_url']	= "http://localhost/clinicas/";
 

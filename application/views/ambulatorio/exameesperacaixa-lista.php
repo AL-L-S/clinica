@@ -43,6 +43,10 @@
                     $lista_cont = $this->exame->listarexamecaixaespera($grupo->financeiro_grupo_id, $_GET)->groupby('g.ambulatorio_guia_id, p.nome, ae.paciente_id, g.data_criacao')->orderby('g.data_criacao')->get()->result();
                     $contador_tot = $contador_tot + count($lista_cont);
                 }
+                
+                if($contador_tot == 0){
+                    $contador_tot = $total;
+                }
 
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
