@@ -7091,6 +7091,7 @@ class guia_model extends Model {
                             array_agg(aef.desconto) as desconto_array,
                             array_agg(aef.ativo) as ativo_array,
                             array_agg(aef.financeiro) as financeiro_array,
+                            array_agg(aef.parcela) as parcelas_array,
 
                             ae.quantidade,
                             ae.valor_total,
@@ -12631,6 +12632,51 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function burcarcontasreceberModelo2() {
+        $this->db->select('sum(valor) as valor,   
+                           devedor,
+                           parcela,
+                           data,
+                           observacao,
+                           entrada_id,
+                           conta,
+                           classe');
+        $this->db->from('tb_financeiro_contasreceber_temp ct');
+        // $this->db->where('data', $data);
+        $this->db->where('ativo', 't');
+        $this->db->groupby('devedor');
+        $this->db->groupby('parcela');
+        $this->db->groupby('data');
+        $this->db->groupby('observacao');
+        // $this->db->groupby('data_cadastro');
+        // $this->db->groupby('operador_cadastro');
+        $this->db->groupby('entrada_id');
+        $this->db->groupby('conta');
+        $this->db->groupby('classe');
+        $this->db->orderby('devedor');
+        $this->db->orderby('parcela');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function buscarParcelaMaxima($devedor){
+        // $sql = (select max(parcela) from ponto.tb_financeiro_contasreceber_temp ct2
+        // where ct.devedor = ct2.devedor and ct2.ativo = true) as parcela_maxima, 
+        $this->db->select('max(parcela)');
+                          
+        $this->db->from('tb_financeiro_contasreceber_temp ct');
+        $this->db->where('devedor', $devedor);
+        $this->db->where('ativo', 't');
+        $this->db->groupby('devedor');
+
+        $this->db->orderby('devedor');
+
+        $return = $this->db->get();
+        return $return->result();
+        
+
+    }
 
     function fecharcaixapersonalizado() {
 
@@ -13275,6 +13321,7 @@ class guia_model extends Model {
 
         $this->db->select(' array_agg(aef.agenda_exames_faturar_id) as agenda_exames_array,
                             aef.forma_pagamento_id,
+                            aef.parcela,
                             f.nome as forma_pagamento,
                             f.nome,
                             f.cartao,
@@ -13318,6 +13365,7 @@ class guia_model extends Model {
         }
         $this->db->groupby('
                             aef.forma_pagamento_id,
+                            aef.parcela,
                             f.nome,
                             f.cartao,
                             f.credor_devedor,
@@ -13329,9 +13377,9 @@ class guia_model extends Model {
 //        $this->db->orderby('pc.convenio_id');
         $return = $this->db->get()->result();
 
-//        echo '<pre>';
-//        var_dump($return);
-//        die;
+    //    echo '<pre>';
+    //    var_dump($return);
+    //    die;
         // Foreach só pra saber se todas as formas estão configuradas corretamente
         foreach ($return as $value) {
             // Precisa ter uma empresa associada a conta
@@ -13434,21 +13482,31 @@ class guia_model extends Model {
                 } else {
                     $data_receber = $data_inicio;
                 }
+                $parcelas_pag = $value->parcela;
+
+                $valor_parcela = $valor_total/$parcelas_pag;
                 // Insert no contas a receber
-                $this->db->set('financeiro_caixa_id', $financeiro_caixa_id);
-                $this->db->set('valor', $valor_total);
-                $this->db->set('devedor', $value->credor_devedor);
-                $this->db->set('data', $data_receber);
-                $this->db->set('parcela', 1);
-                $this->db->set('numero_parcela', 1);
-                $this->db->set('classe', $classe);
-                $this->db->set('conta', $value->conta_id);
-                $this->db->set('observacao', $observacao);
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('empresa_id', $empresa_insert);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_financeiro_contasreceber');
-                
+
+                // Insert na tabela contas a receber Temp
+                for($i = 1; $i <= $parcelas_pag; $i++){
+
+                    // $this->db->set('financeiro_caixa_id', $financeiro_caixa_id);
+                    $this->db->set('valor', $valor_parcela);
+                    $this->db->set('devedor', $value->credor_devedor);
+                    $this->db->set('data', $data_receber);
+                    $this->db->set('parcela', $i);
+                    $this->db->set('numero_parcela', $parcelas_pag);
+                    $this->db->set('classe', $classe);
+                    $this->db->set('conta', $value->conta_id);
+                    $this->db->set('observacao', $observacao);
+                    $this->db->set('data_cadastro', $horario);
+                    // $this->db->set('empresa_id', $empresa_insert);
+                    $this->db->set('operador_cadastro', $operador_id);
+                    $this->db->insert('tb_financeiro_contasreceber_temp');
+
+                    $data_receber = date("Y-m-d", strtotime("+1 month", strtotime($data_receber)));
+                }
+
             }
             
             $array_agenda_examesPG = $value->agenda_exames_array;
@@ -13460,7 +13518,35 @@ class guia_model extends Model {
             $this->db->set('operador_financeiro', $operador_id);
             $this->db->where_in('agenda_exames_faturar_id', $array_agenda_exames);
             $this->db->update('tb_agenda_exames_faturar');
+        }// Fim do foreach
+        // Inserindo da temp pra Contas Receber
+        $receber_temp = $this->burcarcontasreceberModelo2();
+        // echo '<pre>';
+        foreach ($receber_temp as $temp) {
+            // var_dump($temp);
+            // echo '<br> <hr><br>';
+            $receber_temp2 = $this->buscarParcelaMaxima($temp->devedor);
+            // var_dump($receber_temp2);
+            // echo '<br> <hr><br>';
+            // $this->db->set('financeiro_caixa_id', $temp->financeiro_caixa_id);
+            $this->db->set('valor', $temp->valor);
+            $this->db->set('devedor', $temp->devedor);
+            $this->db->set('data', $temp->data);
+            $this->db->set('parcela', $temp->parcela);
+            $this->db->set('numero_parcela', $receber_temp2[0]->max);
+            $this->db->set('classe', $temp->classe);
+            $this->db->set('conta', $temp->conta);
+            $this->db->set('observacao', $temp->observacao);
+            $this->db->set('observacao', $observacao);
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('empresa_id', $empresa_insert);
+            $this->db->insert('tb_financeiro_contasreceber');
+
         }
+        $this->db->set('ativo', 'f');
+        $this->db->update('tb_financeiro_contasreceber_temp');
+        // die;
+
         return 1;
 //        echo '<pre>';
 //        var_dump($return);

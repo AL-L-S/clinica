@@ -24,7 +24,7 @@
                     <th class="tabela_header">Unidade</th>
                     <th class="tabela_header">Enfermaria</th>
                     <th class="tabela_header" width="30px;"><center></center></th>
-                <th class="tabela_header" width="30px;"><center></center></th>
+                    <th class="tabela_header" colspan="3" width="30px;"><center></center></th>
 
                 </tr>
                 </thead>
@@ -39,6 +39,9 @@
                     ?>
                     <tbody>
                         <?php
+                        
+                        $operador_id = $this->session->userdata('operador_id');
+                        
                         $lista = $this->leito_m->listaleito($_GET)->orderby('iu.internacao_unidade_id,ie.internacao_enfermaria_id, il.nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
@@ -49,19 +52,31 @@
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->unidade; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>"><?php echo $item->enfermaria; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                    <a href="<?= base_url() ?>internacao/internacao/carregarleito/<?= $item->internacao_leito_id ?>"><center>
-                                            <img border="0" title="Alterar registro" alt="Detalhes"
-                                                 src="<?= base_url() ?>img/form/page_white_edit.png" />
-                                        </center></a>
-                                </td>
+                                
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                        <a href="<?= base_url() ?>internacao/internacao/carregarleito/<?= $item->internacao_leito_id ?>"><center>
+                                                <img border="0" title="Alterar registro" alt="Detalhes"
+                                                    src="<?= base_url() ?>img/form/page_white_edit.png" />
+                                            </center></a>
+                                    </td>
+                               
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
                                     <a onclick="javascript: return confirm('Deseja realmente excluir o Leito?');"
                                        href="<?=base_url()?>internacao/internacao/excluirleito/<?= $item->internacao_leito_id ?>">
                                         <center><img border="0" title="Excluir" alt="Excluir"
                                                     src="<?=  base_url()?>img/form/page_white_delete.png" /></center>
                                     </a>
+                                    
                                 </td>
+                                <?if($operador_id == 1){?>
+                                    <td class="<?php echo $estilo_linha; ?>" width="30px;">
+                                        <a onclick="javascript: return confirm('Deseja realmente ativar o Leito?');"
+                                        href="<?=base_url()?>internacao/internacao/ativarleito/<?= $item->internacao_leito_id ?>">
+                                            Ativar Leito
+                                        </a>
+                                        
+                                    </td>
+                                <?}?>
                             </tr>
                         </tbody>
                         <?php
@@ -70,7 +85,7 @@
                 ?>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="7">
+                        <th class="tabela_footer" colspan="8">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>

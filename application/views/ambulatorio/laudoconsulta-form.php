@@ -624,16 +624,22 @@
                                         </td>
                                     </table>    
                                 </div>
+                                    <?
+                                    $perfil_id = $this->session->userdata('perfil_id');
+                                    ?>
                                 <div>
-                                    <label>M&eacute;dico respons&aacutevel</label>
-                                    <select name="medico" id="medico" class="size2">
-                                        <? foreach ($operadores as $value) : ?>
-                                            <option value="<?= $value->operador_id; ?>"<?
-                                            if (@$obj->_medico_parecer1 == $value->operador_id):echo "selected = 'true'";
-                                            endif;
-                                            ?>><?= $value->nome; ?></option>
-                                                <? endforeach; ?>
-                                    </select>
+                                    <label <?=($perfil_id == 1)?'':"style='display:none;'";?> >M&eacute;dico respons&aacutevel</label>
+                                    
+                                    
+                                        <select name="medico" id="medico" class="size2" <?=($perfil_id == 1)?'':"style='display:none;'";?>>
+                                            <? foreach ($operadores as $value) : ?>
+                                                <option value="<?= $value->operador_id; ?>"<?
+                                                if (@$obj->_medico_parecer1 == $value->operador_id):echo "selected = 'true'";
+                                                endif;
+                                                ?>><?= $value->nome; ?></option>
+                                                    <? endforeach; ?>
+                                        </select>
+                                    
                                     <? if ($empresapermissao[0]->desativar_personalizacao_impressao != 't') { ?>
                                         <?php
                                         if (@$obj->_assinatura == "t") {

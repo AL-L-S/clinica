@@ -363,3 +363,22 @@ ALTER TABLE ponto.tb_entradas ADD COLUMN financeiro_caixa_id integer;
 -- Dia 26/10/2018
 
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN data_aso date;
+
+
+ALTER TABLE ponto.tb_financeiro_contasreceber_temp ADD COLUMN financeiro_caixa_id integer;
+
+
+CREATE TABLE ponto.tb_internacao_statusinternacao
+(
+  internacao_statusinternacao_id serial NOT NULL,
+  nome character varying(100) NOT NULL,
+  observacao text,
+  dias_status integer,
+  ativo boolean NOT NULL DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer,
+  hospital integer,
+  CONSTRAINT tb_internacao_statusinternacao_pkey PRIMARY KEY (internacao_statusinternacao_id)
+);

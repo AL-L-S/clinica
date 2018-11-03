@@ -51,6 +51,10 @@ class internacao extends BaseController {
         $this->loadView('internacao/listarmotivosaida');
     }
 
+    public function pesquisarstatusinternacao($args = array()) {
+        $this->loadView('internacao/listarstatusinternacao');
+    }
+
     public function listarimpressoes($internacao_id) {
         $data['internacao_id'] = $internacao_id;
         $this->loadView('internacao/listarimpressoesinternacao', $data);
@@ -480,6 +484,35 @@ class internacao extends BaseController {
             $rodape = '';
             $cabecalho_file = '';
         }
+        pdf($html, $filename, $cabecalho_file, $rodape);
+    }
+
+    function imprimirevolucaointernacao($internacao_evolucao_id) {
+        $this->load->plugin('mpdf');
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
+        @$impressao_empresa_id = $data['empresa'][0]->impressao_internacao;
+
+        if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
+            $cabecalho = "$cabecalho_config";
+        } else {
+            $cabecalho = "<table><tr><td><img src='img/cabecalho.jpg'></td></tr></table>";
+        }
+
+        $data['cabecalho_form'] = $cabecalho;
+        $data['paciente'] = $this->internacao_m->imprimirevolucaointernacao($internacao_evolucao_id);
+        $paciente_id = $data['paciente'][0]->paciente_id;
+//        echo '<pre>';
+//        var_dump($data['historicoantigo']); die;
+        $html = $this->load->View('internacao/impressaoevolucaointernacao', $data, true);
+        $filename = 'Impressão Evolução';
+        $rodape = @$rodape_config;
+        $cabecalho_file = $cabecalho;
         pdf($html, $filename, $cabecalho_file, $rodape);
     }
 
@@ -1243,6 +1276,12 @@ class internacao extends BaseController {
     }
 
     function carregarmotivosaida($internacao_motivosaida_id) {
+        $obj_paciente = new motivosaida_model($internacao_motivosaida_id);
+        $data['obj'] = $obj_paciente;
+        $this->loadView('internacao/cadastrarmotivosaida', $data);
+    }
+
+    function novostatusinternacao($internacao_motivosaida_id) {
         $obj_paciente = new motivosaida_model($internacao_motivosaida_id);
         $data['obj'] = $obj_paciente;
         $this->loadView('internacao/cadastrarmotivosaida', $data);

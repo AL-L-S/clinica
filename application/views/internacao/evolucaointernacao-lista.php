@@ -15,7 +15,7 @@
                         
                         <th class="tabela_header">Evolu&ccedil;&atilde;o</th>
                         <th class="tabela_header">Data</th>
-                        <th class="tabela_header">Diagnostico</th>
+                        <th class="tabela_header">Operador</th>
                         <th class="tabela_header">Conduta</th>
                         
                         <th class="tabela_header" colspan="3" width="70px"><center>A&ccedil;&otilde;es</center></th>
@@ -34,9 +34,21 @@
                     <tr>
                         <td class="<?=$classe;?>"><?=$item->internacao_evolucao_id;?></td>
                         <td class="<?=$classe;?>"><?=date("d/m/Y H:i:s",strtotime($item->data_cadastro));?></td>
+                        <td class="<?=$classe;?>"><?=$item->operador;?></td>
                         <td class="<?=$classe;?>"><?=$item->diagnostico;?></td>
-                        <td class="<?=$classe;?>"><?=$item->conduta;?></td>
-                        
+                        <!-- <td class="<?=$classe;?>"><?=$item->conduta;?></td> -->
+                        <td class="<?=$classe;?>" width="50px;" ><div class="bt_link">
+                            <a  href="<?=  base_url()?>internacao/internacao/editarevolucaointernacao/<?=$item->internacao_evolucao_id;?>/<?=$internacao_id?>">
+                                <b>Editar</b>
+                            </a>
+                            </div>    
+                        </td>
+                        <td class="<?=$classe;?>" width="50px;" ><div class="bt_link">
+                            <a  href="<?=  base_url()?>internacao/internacao/imprimirevolucaointernacao/<?=$item->internacao_evolucao_id;?>/<?=$internacao_id?>">
+                                <b>Imprimir</b>
+                            </a>
+                            </div>    
+                        </td>
                         <td class="<?=$classe;?>" width="50px;" ><div class="bt_link">
                             <a onclick="javascript: return confirm('Deseja realmente exlcuir esse registro?');"
                                href="<?=  base_url()?>internacao/internacao/excluirevolucaointernacao/<?=$item->internacao_evolucao_id;?>/<?=$internacao_id?>">
@@ -44,12 +56,7 @@
                             </a>
                             </div>
                         </td>
-                        <td class="<?=$classe;?>" width="50px;" ><div class="bt_link">
-                            <a  href="<?=  base_url()?>internacao/internacao/editarevolucaointernacao/<?=$item->internacao_evolucao_id;?>/<?=$internacao_id?>">
-                                <b>Editar</b>
-                            </a>
-                            </div>    
-                        </td>
+                        
                     </tr>
                             <?
                             $i++;
@@ -57,13 +64,13 @@
                     else :
                         ?>
                     <tr>
-                        <td class="tabela_content01" colspan="4">Sem Evolu&ccedil;&atilde;o cadastrada.</td>
+                        <td class="tabela_content01" colspan="6">Sem Evolu&ccedil;&atilde;o cadastrada.</td>
                     </tr>
                     <? endif; ?>
               </tbody>
                 <tfoot>
                     <tr>
-                        <th class="tabela_footer" colspan="6">Evolu&ccedil;&otilde;es: <?=count($lista); ?></th>
+                        <th class="tabela_footer" colspan="7">Evolu&ccedil;&otilde;es: <?=count($lista); ?></th>
                     </tr>
                 </tfoot>
             </table><!-- Fim da lista de pensionistas -->
