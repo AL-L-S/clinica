@@ -427,7 +427,8 @@ class internacao extends BaseController {
 
     function alterarstatuspaciente($internacao_id) {
         $data['internacao_id'] = $internacao_id;
-        $data['status'] = $this->internacao->listarstatuspaciente($internacao_id);
+        $data['status_sele'] = $this->internacao_m->listarstatuspaciente($internacao_id);
+        $data['status'] = $this->internacao_m->listarstatuspacientetodos();
         $this->load->View('internacao/alterarstatuspaciente-form', $data);
     }
 
@@ -711,12 +712,23 @@ class internacao extends BaseController {
     function gravarstatusinternacao() {
 
         if ($this->internacao_m->gravarstatusinternacao()) {
+            $data['mensagem'] = 'Status de internação gravada com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao gravar status de internação';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/pesquisarstatusinternacao");
+    }
+
+    function gravarstatuspaciente($internacao_id) {
+
+        if ($this->internacao_m->gravarstatuspaciente($internacao_id)) {
             $data['mensagem'] = 'Motivo de saida gravada com sucesso';
         } else {
             $data['mensagem'] = 'Erro ao gravar Motivo de Saida';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "internacao/internacao/pesquisarstatusinternacao");
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
     }
 
     function gravarevolucaointernacao($internacao_id) {
