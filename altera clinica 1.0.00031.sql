@@ -382,3 +382,63 @@ CREATE TABLE ponto.tb_internacao_statusinternacao
   hospital integer,
   CONSTRAINT tb_internacao_statusinternacao_pkey PRIMARY KEY (internacao_statusinternacao_id)
 );
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3109');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000031',
+            'Desenvolvida uma nova forma de criar agendas. Ao ativar a nova opção, as agendas são associadas diretamente ao médico e podem ser editadas/consolidadas em uma única tela.',
+            '3134',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao_alteracao WHERE chamado = '3109');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao_alteracao(versao, alteracao, chamado, tipo)
+        VALUES ('1.0.000031',
+            'Recriado o faturamento de procedimentos particulares. Ao ativar a opção agora existe uma nova forma de faturar procedimentos particulares e a possibilidade de faturar parcialmente um procedimento. Ex: Paciente pagou 50 reais do procedimento, o caixa irá fechar com aqueles 50 reais e quando o paciente pagar o resto, será possível fechar o caixa novamente. Também é possível fechar o caixa várias vezes ao dia.',
+            '2999',
+            'Melhoria'
+            );
+
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+
+
+ALTER TABLE ponto.tb_internacao_statusinternacao ADD COLUMN color text;
+-- 05/11/2018
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_versao WHERE sistema = '1.0.000031');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
+        VALUES ('1.0.000031', '1.0.000031');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();

@@ -1,6 +1,6 @@
 <div class="content"> <!-- Inicio da DIV content -->
     <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>internacao/internacao/novostatusinternacao">
+        <a href="<?php echo base_url() ?>internacao/internacao/novostatusinternacao/0">
             Novo Status Internação
         </a>
     </div>
@@ -21,6 +21,7 @@
                 <tr>
                     <th class="tabela_header">Codigo</th>
                     <th class="tabela_header">Nome</th>
+                    <th class="tabela_header">Número de Dias</th>
                     <th class="tabela_header" width="30px;"><center></center></th>
                     <th class="tabela_header" width="30px;"><center></center></th>
 
@@ -37,16 +38,17 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->statusinternacao->listastatusinternacao($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
+                        $lista = $this->internacao_m->listastatusinternacao($_GET)->orderby('nome')->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         foreach ($lista as $item) {
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->internacao_statusinternacao_id; ?></td>
-                                <td class="<?php echo $estilo_linha; ?>"><?php echo $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 120px"><?php echo $item->internacao_statusinternacao_id; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 120px"><?php echo $item->nome; ?></td>
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 300px"><?php echo $item->dias_status; ?></td>
                                 <td class="<?php echo $estilo_linha; ?>" width="30px;">
-                                    <a href="<?= base_url() ?>internacao/internacao/carregarstatusinternacao/<?= $item->internacao_statusinternacao_id ?>"><center>
+                                    <a href="<?= base_url() ?>internacao/internacao/novostatusinternacao/<?= $item->internacao_statusinternacao_id ?>"><center>
                                             <img border="0" title="Alterar registro" alt="Detalhes"
                                                  src="<?= base_url() ?>img/form/page_white_edit.png" />
                                         </center></a>

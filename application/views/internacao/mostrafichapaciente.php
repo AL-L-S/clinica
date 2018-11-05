@@ -77,6 +77,7 @@ if (@$paciente[0] == '') {
                                 <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostrapermutapaciente/<?= $paciente[0]->internacao_id ?>">Permuta</a></div></td>
                                 <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/mostrarnovasaidapaciente/<?= $paciente[0]->internacao_id ?>">Saída</a></div></td>
                                 <td width="150px;"><div class="bt_link_new"><a target="_blank" href="<?= base_url() ?>ambulatorio/laudo/carregaranaminesehistoricogeral/<?= $paciente[0]->paciente_id ?>">Histórico </a></div></td>
+                                <td width="150px;"><div class="bt_link_new"><a target="_blank" href="<?= base_url() ?>internacao/internacao/alterarstatuspaciente/<?= $paciente[0]->paciente_id ?>"> Status </a></div></td>
                             </tr>
                             <tr>
                                 <td width="150px;"><div class="bt_link_new"><a href="<?= base_url() ?>internacao/internacao/prescricaopaciente/<?= $paciente[0]->internacao_id ?>">Prescrição</a></div></td> 

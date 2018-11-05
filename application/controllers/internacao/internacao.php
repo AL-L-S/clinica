@@ -425,6 +425,12 @@ class internacao extends BaseController {
         $this->loadView('internacao/pacientesinternados', $data);
     }
 
+    function alterarstatuspaciente($internacao_id) {
+        $data['internacao_id'] = $internacao_id;
+        $data['status'] = $this->internacao->listarstatuspaciente($internacao_id);
+        $this->load->View('internacao/alterarstatuspaciente-form', $data);
+    }
+
     function mostraenfermarialeito($unidade) {
         $data['enfermaria'] = $this->unidade_m->listaenfermariaunidade($unidade);
         $data['leitos'] = $this->unidade_m->listaleitounidade();
@@ -700,6 +706,17 @@ class internacao extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "internacao/internacao/pesquisarmotivosaida");
+    }
+
+    function gravarstatusinternacao() {
+
+        if ($this->internacao_m->gravarstatusinternacao()) {
+            $data['mensagem'] = 'Motivo de saida gravada com sucesso';
+        } else {
+            $data['mensagem'] = 'Erro ao gravar Motivo de Saida';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "internacao/internacao/pesquisarstatusinternacao");
     }
 
     function gravarevolucaointernacao($internacao_id) {
@@ -1281,10 +1298,12 @@ class internacao extends BaseController {
         $this->loadView('internacao/cadastrarmotivosaida', $data);
     }
 
-    function novostatusinternacao($internacao_motivosaida_id) {
-        $obj_paciente = new motivosaida_model($internacao_motivosaida_id);
-        $data['obj'] = $obj_paciente;
-        $this->loadView('internacao/cadastrarmotivosaida', $data);
+    function novostatusinternacao($internacao_statusinternacao_id) {
+        
+        $data['lista'] = $this->internacao_m->novostatusinternacao($internacao_statusinternacao_id);
+
+        $this->loadView('internacao/cadastrarstatusinternacao', $data);
+
     }
 
     function carregarenfermaria($internacao_enfermaria_id) {

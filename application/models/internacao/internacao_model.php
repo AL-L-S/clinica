@@ -355,6 +355,7 @@ class internacao_model extends BaseModel {
     function listastatusinternacao($args = array()) {
 
         $this->db->select(' internacao_statusinternacao_id,
+                            dias_status,
                             nome');
         $this->db->from('tb_internacao_statusinternacao');
         $this->db->where('ativo', 't');
@@ -364,6 +365,69 @@ class internacao_model extends BaseModel {
             }
         }
         return $this->db;
+    }
+
+    function novostatusinternacao($internacao_ficha_questionario_id) {
+
+        $this->db->select('ist.internacao_statusinternacao_id, 
+                            ist.nome, 
+                            ist.color, 
+                            ist.dias_status, 
+                            ist.observacao, 
+                             ');
+        $this->db->from('tb_internacao_statusinternacao ist');
+        $this->db->where('ist.internacao_statusinternacao_id', $internacao_ficha_questionario_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarstatuspaciente($internacao_id) {
+
+        $this->db->select('ist.internacao_statusinternacao_id, 
+                            ist.nome, 
+                            ist.color, 
+                            ist.dias_status, 
+                            ist.observacao, 
+                             ');
+        $this->db->from('tb_internacao_statusinternacao ist');
+        $this->db->where('ist.internacao_statusinternacao_id', $internacao_ficha_questionario_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gravarstatusinternacao() {
+
+        try {
+            $this->db->set('nome', $_POST['nome']);
+            $this->db->set('observacao', $_POST['observacao']);
+            $this->db->set('color', $_POST['color']);
+            $this->db->set('dias_status', $_POST['dias_status']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['internacao_statusinternacao_id'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_internacao_statusinternacao');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") { // erro de banco
+                    return false;
+                } else
+                    $internacao_statusinternacao_id = $this->db->insert_id();
+            }
+            else { // update
+                $internacao_statusinternacao_id = $_POST['internacao_statusinternacao_id'];
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('internacao_statusinternacao_id', $internacao_statusinternacao_id);
+                $this->db->update('tb_internacao_statusinternacao');
+            }
+
+            return $internacao_statusinternacao_id;
+        } catch (Exception $exc) {
+            return false;
+        }
     }
 
     function observacaoprecadastros($internacao_ficha_questionario_id) {

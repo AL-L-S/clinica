@@ -1364,7 +1364,7 @@ function debug($object) {
                                             <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarenfermaria">Lista Enfermarias</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarleito">Listar Leitos</a></span></ul>
                                             <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarmotivosaida">Manter Motivo Saida</a></span></ul> 
-                                            <!-- <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarstatusinternacao">Manter Status Internação</a></span></ul>  -->
+                                            <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/pesquisarstatusinternacao">Manter Status Internação</a></span></ul> 
                                             <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/mantermodelogrupo">Manter Modelo Grupo</a></span></ul> 
                                             <ul><span class="file"><a href="<?= base_url() ?>internacao/internacao/mantertipodependencia">Manter Tipo Depedência</a></span></ul> 
                                             <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/empresa/listarinternacaoconfig">Manter Impressões</a></span></ul>
