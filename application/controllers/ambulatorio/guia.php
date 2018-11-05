@@ -635,6 +635,35 @@ class Guia extends BaseController {
 
         $this->loadView('ambulatorio/cadastroaso-form', $data);
     }
+    
+    function detalhescadastroaso($paciente_id, $cadastro_aso_id) {
+        $empresa_id = $this->session->userdata('empresa_id');
+        if ($cadastro_aso_id == 0) {
+            $data['informacao_aso'] = $this->guia->carregarcadastroaso2($paciente_id);
+        } else {
+            $data['informacao_aso'] = $this->guia->carregarcadastroaso($cadastro_aso_id);
+        }
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['medicos'] = $this->operador_m->listarmedicos();
+        $data['salas'] = $this->guia->listarsalas();
+        if ($cadastro_aso_id == 0) {
+            $data['setor'] = $this->saudeocupacional->carregarsetores2();
+        } else {
+            $data['setor'] = $this->saudeocupacional->carregarsetores();
+        }
+        $data['convenio'] = $this->convenio->listardados();
+        $data['situacao'] = $this->saudeocupacional->carregarsituacaolista();
+        $data['convenioid'] = $this->convenio->listarconvenioid();
+        $data['risco'] = $this->guia->listarriscos();
+        $data['procedimento'] = $this->procedimento->listarprocedimentos();
+        $data['paciente_id'] = $paciente_id;
+        $data['cadastro_aso_id'] = $cadastro_aso_id;
+        $data['permissoes'] = $this->guia->listarempresapermissoes($empresa_id);
+//        var_dump($data['informacao_aso']);die;
+
+
+        $this->loadView('ambulatorio/detalhescadastroaso', $data);
+    }
 
     function cadastroaso($paciente_id) {
         $data['paciente_id'] = $paciente_id;
@@ -653,6 +682,18 @@ class Guia extends BaseController {
 
 
         $this->load->View('ambulatorio/cadastroasoalteradata-form', $data);
+    }
+    
+    function gravardetalhamentoaso($paciente_id, $cadastro_aso_id){
+//         echo'<pre>'; var_dump($_POST);die; 
+        $retorno = $this->guia->gravardetalhamentoaso($paciente_id, $cadastro_aso_id);
+        if ($retorno == "-1") {
+            $data['mensagem'] = 'Erro ao gravar Detalhamento. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar Detalhamento.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/guia/detalhescadastroaso/$paciente_id/$cadastro_aso_id");
     }
 
     function gravarcadastroaso($paciente_id) {
@@ -722,7 +763,7 @@ class Guia extends BaseController {
 //            var_dump($procedimento_convenio_id);
 //        die;
 
-                    $retorno = $this->guia->gravarconsultaaso($ambulatorio_guia, $percentual, $percentual_laboratorio, $procedimento_convenio_id);
+                    $retorno3 = $this->guia->gravarconsultaaso($ambulatorio_guia, $percentual, $percentual_laboratorio, $procedimento_convenio_id, $gravarempresa, $retorno);
                 }
             }
         }
@@ -844,7 +885,63 @@ class Guia extends BaseController {
     function chat() {
         $this->loadView('chat/formulario');
     }
+    
+    function impressaofichaaudiometria($paciente_id, $guia_id, $agenda_exames_id) {
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        @$data['cabecalho_config'] = $data['cabecalho'][0]->cabecalho;
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['exame'] = $this->guia->listarexame($agenda_exames_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['exames'] = $this->guia->listarexamesguia($guia_id);
+//        $data['paciente_id'] = $paciente_id;
+        $data['guia_id'] = $guia_id;
+//        $data['agenda_exames_id'] = $agenda_exames_id;
+        if ($data['empresa'][0]->impressao_tipo == 12) { //CIMETRA          
+                $this->load->View('ambulatorio/impressaofichaavalaudiologica', $data);
+        }
+    }
+    
+    function impressaofichaacuidadevisual($paciente_id, $guia_id, $agenda_exames_id) {
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        @$data['cabecalho_config'] = $data['cabecalho'][0]->cabecalho;
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['exame'] = $this->guia->listarexame($agenda_exames_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['exames'] = $this->guia->listarexamesguia($guia_id);
+//        $data['paciente_id'] = $paciente_id;
+        $data['guia_id'] = $guia_id;
+//        $data['agenda_exames_id'] = $agenda_exames_id;
+        if ($data['empresa'][0]->impressao_tipo == 12) { //CIMETRA          
+                $this->load->View('ambulatorio/impressaofichaacuidadevisual', $data);
+        }
+    }
+    
+    function impressaofichaacuidadevisual2($paciente_id, $guia_id, $agenda_exames_id) {
+        
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        @$data['cabecalho_config'] = $data['cabecalho'][0]->cabecalho;
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['exame'] = $this->guia->listarexame($agenda_exames_id);
+        $data['paciente'] = $this->paciente->listardados($paciente_id);
+        $data['exames'] = $this->guia->listarexamesguia($guia_id);
+//        $data['paciente_id'] = $paciente_id;
+        $data['guia_id'] = $guia_id;
+//        $data['agenda_exames_id'] = $agenda_exames_id;
+        if ($data['empresa'][0]->impressao_tipo == 12) { //CIMETRA          
+                $this->load->View('ambulatorio/impressaofichaacuidadevisualespecial', $data);
+        }
+    }
 
+    function detalharnr($cadastro_aso_id) {
+        $data['aso_id'] = $cadastro_aso_id;
+        $this->load->View('ambulatorio/detalharnr-form', $data);
+    }
+    
     function fala() {
         $data['chamada'] = $this->guia->listarchamadas();
         $this->load->View('ambulatorio/aafala', $data);

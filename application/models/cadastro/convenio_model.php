@@ -403,6 +403,7 @@ class Convenio_model extends Model {
     function listarsetorselecionado($setor_cadastro_id) {
         $this->db->select('sc.setor_cadastro_id,
                             sc.setor_id,
+                            sc.exames_id,
                             sc.funcao_id,
                             sc.risco_id,
                             se.descricao_setor,
@@ -2102,7 +2103,10 @@ class Convenio_model extends Model {
                     $this->db->where("ativo", 't');
                     $this->db->where("setor_id", $setor_id);
                     $this->db->where("funcao_id", $item);
+                    $this->db->where("empresa_id", $convenio_id);
                     $return2 = $this->db->get()->result();
+//                     var_dump($return2);
+//                        die;
 
                     if (count($return2) == 0) {
                         $this->db->set('empresa_id', $convenio_id);
@@ -2129,10 +2133,12 @@ class Convenio_model extends Model {
             $operador_id = $this->session->userdata('operador_id');
 //            var_dump($_POST);die;
             $array_risco = json_encode($_POST['txtrisco_id']);
+            $array_exame = json_encode($_POST['procedimentos']);
 
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->set('risco_id', $array_risco);
+            $this->db->set('exames_id', $array_exame);
             $this->db->where('setor_cadastro_id', $setor_cadastro_id);
             $this->db->where("ativo", 'true');
             $this->db->update('tb_setor_cadastro');

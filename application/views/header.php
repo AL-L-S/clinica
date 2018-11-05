@@ -1329,6 +1329,7 @@ function debug($object) {
 
 
 
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarsetor">Manter Situação</a></span></ul>                                        
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarsetor">Manter Setor</a></span></ul>                                        
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarfuncao">Manter Função</a></span></ul>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarrisco">Manter Riscos OE.</a></span></ul>
@@ -1533,6 +1534,7 @@ function debug($object) {
 
 
 
+                                                <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarsituacao">Manter Situação</a></span></ul>                                        
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarsetor">Manter Setor</a></span></ul>                                        
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarfuncao">Manter Função</a></span></ul>
                                                 <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/saudeocupacional/pesquisarrisco">Manter Riscos OE.</a></span></ul>

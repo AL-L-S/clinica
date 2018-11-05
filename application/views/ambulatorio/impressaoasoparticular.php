@@ -307,9 +307,9 @@
                                         ?>
                                         <?                                        
                                         if ($key == count($impressao_aso->procedimento1) - 1) {
-                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentosdata[0]->data))) . ")" ;
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', @$procedimentosdata[0]->data))) . ")" ;
                                         } else {
-                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentosdata[0]->data))) . ")" . ", ";
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', @$procedimentosdata[0]->data))) . ")" . ", ";
                                         }
                                         ?>
 

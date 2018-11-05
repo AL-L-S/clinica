@@ -125,8 +125,7 @@ class exame_model extends Model {
         $count = count($operador_id);
         
             for($i=0; $i<$count; $i++){            
-      
-//        var_dump($guiche[$i]);die;
+
                     if($guiche[$i] != ''){
                     $this->db->set('guiche', $guiche[$i]);
                     }else{
@@ -5531,7 +5530,26 @@ class exame_model extends Model {
                     $this->db->where('ae.bloqueado', 'f');
                     $this->db->where('ae.operador_atualizacao is not null');
                 }
+                
             }
+            if (isset($args['status']) && strlen($args['status']) > 0) {
+                
+                if ($args['status'] == "AGUARDANDO") {
+                    $this->db->where('ae.realizada', 't');
+                    $this->db->where('e.situacao !=', 'FINALIZADO');
+                }
+                if ($args['status'] == "ESPERA") {
+                    $this->db->where('ae.realizada', 'f');                    
+                }
+                if ($args['status'] == "AGENDADO") {
+                    $this->db->where('ae.confirmado', 'f');
+                }
+                if ($args['status'] == "ATENDIDO") {
+                    $this->db->where('ae.realizada', 't');
+                    $this->db->where('e.situacao', 'FINALIZADO');
+                }
+            }
+            
             if (isset($args['medico']) && strlen($args['medico']) > 0) {
                 $this->db->where('ae.medico_consulta_id', $args['medico']);
             }

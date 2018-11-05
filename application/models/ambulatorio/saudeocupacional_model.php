@@ -26,6 +26,17 @@ class saudeocupacional_model extends Model {
         }
         return $this->db;
     }
+    
+    function listarsituacao($args = array()) {
+        $this->db->select('s.aso_situacao_id,
+                            s.descricao_situacao');
+        $this->db->from('tb_aso_situacao s');
+        $this->db->where('s.ativo', 'true');
+        if (isset($args['nome']) && strlen($args['nome']) > 0) {
+            $this->db->where('s.descricao_situacao ilike', "%" . $args['nome'] . "%");
+        }
+        return $this->db;
+    }
 
     function listarsetor2() {
         $this->db->select('se.aso_setor_id,
@@ -51,6 +62,14 @@ class saudeocupacional_model extends Model {
                             se.aso_funcao_id');
         $this->db->from('tb_aso_setor se');
         $this->db->where('se.aso_setor_id', $aso_setor_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+    function carregarsituacao($aso_situacao_id) {
+        $this->db->select('s.aso_situacao_id,
+                            s.descricao_situacao');
+        $this->db->from('tb_aso_situacao s');
+        $this->db->where('s.aso_situacao_id', $aso_situacao_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -147,6 +166,15 @@ class saudeocupacional_model extends Model {
         return $return->result();
     }
     
+    function carregarsituacaolista() {
+        $this->db->select('s.aso_situacao_id,
+                            s.descricao_situacao');
+        $this->db->from('tb_aso_situacao s');
+
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function carregarriscoaso($aso_risco_id) {
         
         $this->db->select('r.aso_risco_id,
@@ -167,6 +195,22 @@ class saudeocupacional_model extends Model {
         $this->db->set('operador_atualizacao', $operador_id);
         $this->db->where('aso_setor_id', $aso_setor_id);
         $this->db->update('tb_aso_setor');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") // erro de banco
+            return -1;
+        else
+            return 0;
+    }
+    
+    function excluirsituacao($aso_situacao_id) {
+
+        $horario = date("Y-m-d H:i:s");
+        $operador_id = $this->session->userdata('operador_id');
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('aso_situacao_id', $aso_situacao_id);
+        $this->db->update('tb_aso_situacao');
         $erro = $this->db->_error_message();
         if (trim($erro) != "") // erro de banco
             return -1;
@@ -236,6 +280,37 @@ class saudeocupacional_model extends Model {
                 $this->db->update('tb_aso_setor');
             }
             return $aso_setor_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarsituacao() {
+        try {
+ 
+            /* inicia o mapeamento no banco */
+            $aso_situacao_id = $_POST['txtasosituacao'];
+            $this->db->set('descricao_situacao', $_POST['nome']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['txtasosituacao'] == "") {
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_aso_situacao');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $aso_setor_id = $this->db->insert_id();
+            }
+            else {
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('aso_situacao_id', $aso_situacao_id);
+                $this->db->update('tb_aso_situacao');
+            }
+            return $aso_situacao_id;
         } catch (Exception $exc) {
             return -1;
         }

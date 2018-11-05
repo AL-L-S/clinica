@@ -85,11 +85,18 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
     <tr height="30px">
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;            
-            <? if($impressao_aso->avaliacao_clinica == ""){
-                echo "APTO PARA A FUNÇÃO QUE EXERCE";
-            } else{
-            $impressao_aso->avaliacao_clinica; 
-            }?>
+            <? if($impressao_aso->tipo == "ADMISSIONAL"){
+                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER";
+            } elseif($impressao_aso->tipo == "PERÍODICO"){
+                echo "APTO PARA A FUNÇÃO QUE EXERCE"; 
+            }elseif($impressao_aso->tipo == "DEMISSIONAL"){
+                echo "APTO PARA A FUNÇÃO QUE EXERCEU"; 
+            }elseif($impressao_aso->tipo == "RETORNO AO TRABALHO"){
+                echo "APTO PARA A FUNÇÃO QUE EXERCE"; 
+            }elseif($impressao_aso->tipo == "MUDANÇA DE FUNÇÃO"){
+                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER"; 
+            }
+            ?>
         </td>    
     </tr>
 </table>
@@ -99,7 +106,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
     <tr height="80px">
         <td colspan="2" width="400px" style="padding-bottom:35px">
             &nbsp;&nbsp;&nbsp;
-            <?= $impressao_aso->validade_exame ?> 
+            <?= date("d/m/Y", strtotime(str_replace('-', '/', $relatorio[0]->data_validade))) ?> 
         </td>
         <td colspan="2" width="400px" style="padding-bottom:35px">
             &nbsp;&nbsp;&nbsp;
@@ -203,11 +210,18 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
     <tr height="30px">
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;            
-            <? if($impressao_aso->avaliacao_clinica == ""){
-                echo "APTO PARA A FUNÇÃO QUE EXERCE";
-            } else{
-            $impressao_aso->avaliacao_clinica; 
-            }?>
+            <? if($impressao_aso->tipo == "ADMISSIONAL"){
+                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER";
+            } elseif($impressao_aso->tipo == "PERÍODICO"){
+                echo "APTO PARA A FUNÇÃO QUE EXERCE"; 
+            }elseif($impressao_aso->tipo == "DEMISSIONAL"){
+                echo "APTO PARA A FUNÇÃO QUE EXERCEU"; 
+            }elseif($impressao_aso->tipo == "RETORNO AO TRABALHO"){
+                echo "APTO PARA A FUNÇÃO QUE EXERCE"; 
+            }elseif($impressao_aso->tipo == "MUDANÇA DE FUNÇÃO"){
+                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER"; 
+            }
+            ?>
         </td>    
     </tr>
 </table>
@@ -217,7 +231,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
     <tr height="80px">
         <td colspan="2" width="400px" style="padding-bottom:35px">
             &nbsp;&nbsp;&nbsp;
-            <?= $impressao_aso->validade_exame ?> 
+            <?= date("d/m/Y", strtotime(str_replace('-', '/', $relatorio[0]->data_validade))) ?> 
         </td>
         <td colspan="2" width="400px" style="padding-bottom:35px">
             &nbsp;&nbsp;&nbsp;

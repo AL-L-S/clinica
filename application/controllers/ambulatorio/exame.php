@@ -238,7 +238,7 @@ class Exame extends BaseController {
     }
     
     function gravaroperadorguiche() {
-
+//        var_dump($_POST);die;
         if ($this->exame->gravaroperadorguiche()) {
             $mensagem = 'Sucesso ao gravar!';
         } else {
