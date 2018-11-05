@@ -352,6 +352,119 @@ class internacao_model extends BaseModel {
         return $this->db;
     }
 
+    function listastatusinternacao($args = array()) {
+
+        $this->db->select(' internacao_statusinternacao_id,
+                            dias_status,
+                            nome');
+        $this->db->from('tb_internacao_statusinternacao');
+        $this->db->where('ativo', 't');
+        if ($args) {
+            if (isset($args['nome']) && strlen($args['nome']) > 0) {
+                $this->db->where('nome ilike', "%" . $args['nome'] . "%", 'left');
+            }
+        }
+        return $this->db;
+    }
+
+    function listarstatuspacientetodos() {
+
+        $this->db->select('ist.internacao_statusinternacao_id, 
+                            ist.nome, 
+                            ist.color, 
+                            ist.dias_status, 
+                            ist.observacao, 
+                             ');
+        $this->db->from('tb_internacao_statusinternacao ist');
+        $this->db->where('ist.ativo', 't');
+        $this->db->orderby('ist.nome');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function novostatusinternacao($internacao_ficha_questionario_id) {
+
+        $this->db->select('ist.internacao_statusinternacao_id, 
+                            ist.nome, 
+                            ist.color, 
+                            ist.dias_status, 
+                            ist.observacao, 
+                             ');
+        $this->db->from('tb_internacao_statusinternacao ist');
+        $this->db->where('ist.internacao_statusinternacao_id', $internacao_ficha_questionario_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarstatuspaciente($internacao_id) {
+
+        $this->db->select('ist.internacao_statusinternacao_id, 
+                            ist.nome, 
+                            ist.color, 
+                            ist.dias_status, 
+                            ist.observacao, 
+                             ');
+        $this->db->from('tb_internacao i');
+        $this->db->join('tb_internacao_statusinternacao ist', 'ist.internacao_statusinternacao_id = i.internacao_statusinternacao_id', 'left');
+        $this->db->where('i.internacao_id', $internacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function gravarstatuspaciente($internacao_id) {
+
+        try {
+            $this->db->set('internacao_statusinternacao_id', $_POST['status']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('data_status', $horario);
+            $this->db->set('operador_status', $operador_id);
+            $this->db->where('internacao_id', $internacao_id);
+            $this->db->update('tb_internacao');
+            return $internacao_id;
+
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
+
+    function gravarstatusinternacao() {
+
+        try {
+            $this->db->set('nome', $_POST['nome']);
+            $this->db->set('observacao', $_POST['observacao']);
+            $this->db->set('color', $_POST['color']);
+            $this->db->set('dias_status', $_POST['dias_status']);
+
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['internacao_statusinternacao_id'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_internacao_statusinternacao');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") { // erro de banco
+                    return false;
+                } else
+                    $internacao_statusinternacao_id = $this->db->insert_id();
+            }
+            else { // update
+                $internacao_statusinternacao_id = $_POST['internacao_statusinternacao_id'];
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('internacao_statusinternacao_id', $internacao_statusinternacao_id);
+                $this->db->update('tb_internacao_statusinternacao');
+            }
+
+            return $internacao_statusinternacao_id;
+        } catch (Exception $exc) {
+            return false;
+        }
+    }
+
     function observacaoprecadastros($internacao_ficha_questionario_id) {
 
         $this->db->select('if.internacao_ficha_questionario_id, 
@@ -421,6 +534,7 @@ class internacao_model extends BaseModel {
                            o.conselho,
                            i.data_internacao,
                            i.data_saida,
+                           i.senha,
                            i.forma_de_entrada,
                            i.estado,
                            i.idade_inicio,
@@ -472,6 +586,40 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
         $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
         $this->db->where('i.internacao_id', $internacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function imprimirevolucaointernacao($internacao_evolucao_id) {
+
+        $this->db->select('i.internacao_id,
+                           p.*,
+                           p.paciente_id,
+                           ie.operador_cadastro,
+                           i.prelaudo,
+                           o.nome as medico,
+                           o.conselho,
+                           i.data_internacao,
+                           i.data_saida,
+                           i.senha,
+                           ie.diagnostico,
+
+                           p.nascimento');
+        $this->db->from('tb_internacao_evolucao ie');
+        $this->db->join('tb_internacao i', 'ie.internacao_id = i.internacao_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ie.operador_cadastro', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');
+        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
+        $this->db->join('tb_cid cid2', 'cid2.co_cid = i.cid2solicitado', 'left');
+        $this->db->join('tb_municipio mr', 'mr.municipio_id = i.municipio_responsavel_id', 'left');
+        
+        $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = p.profissao', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'i.procedimento_convenio_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+        $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
+        $this->db->where('ie.internacao_evolucao_id', $internacao_evolucao_id);
         $return = $this->db->get();
         return $return->result();
     }
@@ -647,7 +795,7 @@ class internacao_model extends BaseModel {
 
 
         $this->db->set('diagnostico', $_POST['txtdiagnostico']);
-        $this->db->set('conduta', $_POST['txtconduta']);
+        // $this->db->set('conduta', $_POST['txtconduta']);
         $this->db->set('internacao_id', $_POST['internacao_id']);
 
         if (@$_POST['internacao_evolucao_id'] != '') {
@@ -1447,11 +1595,13 @@ class internacao_model extends BaseModel {
                            ie.internacao_evolucao_id, 
                            ie.conduta, 
                            ie.diagnostico, 
+                           o.nome as operador,
                            ie.data_cadastro, 
                            p.nascimento');
         $this->db->from('tb_internacao_evolucao ie');
         $this->db->join('tb_internacao i', "i.internacao_id = ie.internacao_id", 'left');
         $this->db->join('tb_paciente p', "i.paciente_id = p.paciente_id", 'left');
+        $this->db->join('tb_operador o', "ie.operador_cadastro = o.operador_id", 'left');
         $this->db->where("ie.internacao_id = $internacao_id");
         $this->db->where("ie.ativo", 't');
         $this->db->orderby("ie.internacao_evolucao_id");
@@ -1833,6 +1983,8 @@ class internacao_model extends BaseModel {
                           il.nome as leito,
                           il.condicao,
                           il.ativo,
+                          ist.nome as status,
+                          ist.color,
                           ROW_NUMBER() OVER (PARTITION BY il.internacao_leito_id) AS row_number, 
                           il.internacao_leito_id,
                           i.excluido as excluido_int,
@@ -1851,6 +2003,7 @@ class internacao_model extends BaseModel {
                           ');
         $this->db->from('tb_internacao_leito il');
         $this->db->join('tb_internacao i', 'i.leito = il.internacao_leito_id', 'left');
+        $this->db->join('tb_internacao_statusinternacao ist', 'ist.internacao_statusinternacao_id = i.internacao_statusinternacao_id', 'left');
         $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = i.procedimento_convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -1879,7 +2032,7 @@ class internacao_model extends BaseModel {
             }
         }
 
-        $this->db->orderby('iu.internacao_unidade_id, ie.internacao_enfermaria_id, il.ativo, il.nome, p.paciente_id, i.data_internacao desc');
+        $this->db->orderby('iu.internacao_unidade_id, ie.internacao_enfermaria_id, il.nome, p.paciente_id, i.data_internacao desc');
         $return = $this->db->get();
         return $return->result();
     }

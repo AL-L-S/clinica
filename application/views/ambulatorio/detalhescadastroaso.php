@@ -79,7 +79,7 @@
                                 <? } ?>                                        
                                         <td class="<?php echo $estilo_linha; ?>" style="width: 150px;">
                                             <div class="bt_link">
-                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/detalharnr/" . $item->cadastro_aso_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=1300,height=800');">Detalhar
+                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/detalharnr/" . $item->cadastro_aso_id . "/" . $paciente['0']->paciente_id; ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=1300,height=800');">Detalhar
                                                 </a>
                                             </div>
                                         </td>

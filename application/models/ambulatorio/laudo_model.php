@@ -3984,7 +3984,7 @@ class laudo_model extends Model {
             $this->db->orderby('e.empresa_id');
             $permissao = $this->db->get()->result();
 
-
+            
             $this->db->select('mc.valor as perc_medico, mc.percentual');
             $this->db->from('tb_procedimento_percentual_medico_convenio mc');
             $this->db->join('tb_procedimento_percentual_medico m', 'm.procedimento_percentual_medico_id = mc.procedimento_percentual_medico_id', 'left');
@@ -4101,8 +4101,8 @@ class laudo_model extends Model {
 //                $this->db->set('adendo', $adendo_coluna);
                 $this->db->set("texto", $adendo);
             }
-//            var_dump($adendo);
-//            die;
+        //    var_dump($_POST['medico']);
+        //    die;
             if ($_POST['txtCICPrimario'] != '') {
                 $this->db->set('cid', $_POST['txtCICPrimario']);
             }
@@ -4159,6 +4159,9 @@ class laudo_model extends Model {
             }
             $this->db->where('ambulatorio_guia_id', $_POST['guia_id']);
             $this->db->update('tb_ambulatorio_guia');
+
+
+            // die;
         } catch (Exception $exc) {
             return -1;
         }

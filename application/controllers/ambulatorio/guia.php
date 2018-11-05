@@ -695,6 +695,17 @@ class Guia extends BaseController {
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/guia/detalhescadastroaso/$paciente_id/$cadastro_aso_id");
     }
+    function gravardetalhamentonr($cadastro_aso_id, $paciente_id){
+//         echo'<pre>'; var_dump($_POST);die; 
+        $retorno = $this->guia->gravardetalhamentonr($cadastro_aso_id, $paciente_id);
+        if ($retorno == "-1") {
+            $data['mensagem'] = 'Erro ao gravar Detalhamento. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar Detalhamento.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/guia/detalhescadastroaso/$paciente_id/$cadastro_aso_id");
+    }
 
     function gravarcadastroaso($paciente_id) {
 //        echo '<pre>';
@@ -937,8 +948,9 @@ class Guia extends BaseController {
         }
     }
 
-    function detalharnr($cadastro_aso_id) {
+    function detalharnr($cadastro_aso_id, $paciente_id) {
         $data['aso_id'] = $cadastro_aso_id;
+        $data['paciente_id'] = $paciente_id;
         $this->load->View('ambulatorio/detalharnr-form', $data);
     }
     

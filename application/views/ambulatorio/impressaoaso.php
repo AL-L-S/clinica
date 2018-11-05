@@ -53,10 +53,10 @@
             background-color: #b7b2b2;
         }
         .caixaBranca{
-            display: inline-block;border:1px solid; height: 20px;width: 30px; background: white;   
+            display: inline-block;border:1px solid; height: 20px;width: 30px; background-color: white;   
         }
         .caixaPreta{
-            display: inline-block;border:1px solid; height: 20px;width: 30px; background: black;   
+            display: inline-block;border:1px solid; height: 20px;width: 30px; background-color: black;   
         }
     </style>
     <?

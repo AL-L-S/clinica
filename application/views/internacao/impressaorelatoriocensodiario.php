@@ -47,7 +47,7 @@
                     <? if ($contador == 0 || $item->unidade != $unidade_foreach) {
                         ?>
                     <tr>
-                        <td colspan="8" style="font-weight: bold;"><h3>Unidade: <?= $item->unidade; ?></h3></td>
+                        <td colspan="9" style="font-weight: bold;"><h3>Unidade: <?= $item->unidade; ?></h3></td>
 
                     </tr>  
                     <tr>
@@ -77,6 +77,9 @@
                         </th>
                         <th class="tabela_header">
                             Dias De Internação
+                        </th>
+                        <th class="tabela_header">
+                            Status
                         </th>
 
 
@@ -110,6 +113,7 @@
                         <td ><?= $item->cid1; ?></td>
                         <td ><?= date("d/m/Y H:i:s", strtotime($item->data_internacao)); ?></td>
                         <td ><?= $dateInterval2->days; ?> Dias</td>
+                        <td style="color: <?=$item->color;?>"><?= $item->status; ?></td>
                     </tr>
                     <?
                 } else {
@@ -119,7 +123,7 @@
                     <tr>
                         <td ><?= $item->enfermaria; ?></td>
                         <td ><?= $item->leito; ?></td>
-                        <td colspan="6" style="color: #029302; text-align: center;">Vago</td>
+                        <td colspan="8" style="color: #029302; text-align: center;">Vago</td>
 
                     </tr>
                 <?

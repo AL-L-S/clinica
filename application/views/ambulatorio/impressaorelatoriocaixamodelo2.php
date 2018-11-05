@@ -106,10 +106,20 @@
             width: 100px;
             /* max-width: 100px; */
         }
+        .thNomeForma{
+            text-align: center;
+            width: 110px;
+            /* max-width: 100px; */
+        }
         .tabelaFormasValor{
             /* margin-bottom: 30px; */
             width: 70px;
             text-align: left;
+        }
+        .tabelaFormasParcelas{
+            /* margin-bottom: 30px; */
+            width: 50px;
+            text-align: center;
         }
     </style>
     <?
@@ -275,6 +285,10 @@
            $array_descontoPG = $item->desconto_array;
            $array_descontoStr = str_replace('{', '',str_replace('}', '', $array_descontoPG));
            $array_desconto = explode(',', $array_descontoStr);
+           // Parcelas
+           $array_parcelasPG = $item->parcelas_array;
+           $array_parcelasStr = str_replace('{', '',str_replace('}', '', $array_parcelasPG));
+           $array_parcelas = explode(',', $array_parcelasStr);
            // Ajuste
            $array_ajustePG = $item->ajuste_array;
            $array_ajusteStr = str_replace('{', '',str_replace('}', '', $array_ajustePG));
@@ -299,15 +313,18 @@
                     <td class="tabela_header">
                         <table border=1 class="tabelaFormas" cellspacing=0 cellpadding=1>
                                 <tr>
-                                    <th class="tdNomeForma">
+                                    <th class="thNomeForma">
                                     F. Pag   
+                                    </th>
+                                    <th class="tabelaFormasParcelas">
+                                    Parcelas   
                                     </th>
                                     <th class="tabelaFormasValor">
                                     Valor Pag
-                                    </th class="tabelaFormasValor">
-                                    <th>
+                                    </th>
+                                    <th class="tabelaFormasValor">
                                     Ajuste
-                                    </th class="tabelaFormasValor">
+                                    </th >
                                     <th class="tabelaFormasValor">
                                     Desconto 
                                     </th>
@@ -362,8 +379,8 @@
                                 $contf++;
                                 continue;
                             }
-                           
-                            
+
+                            $parcelas = $array_parcelas[$contf];
                             $valor_totalFormas += $array_valorAjustado[$contf];
                             $valor_descontoTotal+= $array_desconto[$contf];
                             
@@ -389,6 +406,10 @@
                         <tr style="color: <?=$corForma?>">
                             <td class="tdNomeForma">
                                 <?=$forma?>
+                            </td>
+
+                            <td class="tabelaFormasParcelas">
+                                <?=$parcelas?>
                             </td>
                             
                             <td class="tabelaFormasValor">

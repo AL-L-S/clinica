@@ -297,7 +297,7 @@
             </div>
             <div>
                 <label>Justificativa</label>
-                <textarea cols="" rows="" name="observacao" id="txtobservacao" class="texto_area" value="<?= @$internacao[0]->data_internacao; ?>"></textarea><br/>
+                <textarea cols="" rows="" name="observacao" id="txtobservacao" class="texto_area" ><?= @$internacao[0]->justificativa; ?></textarea><br/>
             </div>
         </fieldset>
         <button type="submit">Enviar</button>

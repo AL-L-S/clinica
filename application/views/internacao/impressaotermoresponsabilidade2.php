@@ -50,7 +50,7 @@ foreach ($array_dependencia as $value) {
             </tr>
             <tr >
                 <td style="text-align: center;">
-                    SENHA:______________ 
+                    SENHA: <?= @$paciente[0]->senha; ?> 
                 </td>
             </tr>
         </table>

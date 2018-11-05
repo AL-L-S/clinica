@@ -4,13 +4,13 @@
         <fieldset>
             <legend>Atendimento</legend>
             <div>
-                <label>Diagnostico</label>
+                <label>Evolução</label>
                 <textarea cols="" rows="" name="txtdiagnostico" id="txtdiagnostico" value="" class="texto_area"></textarea>
             </div>
-            <div>
+            <!-- <div>
                 <label>Conduta</label>
                 <textarea cols="" rows="" name="txtconduta" id="txtconduta" value="" class="texto_area"></textarea>
-            </div>
+            </div> -->
             <div style="border-top: 1px solid rgba(0,0,0,.5); margin: 5pt; width: 89%; padding: 5pt;">
                 <input type="checkbox" name="solicitasaida" value="on"> Solicitar saida
             </div>
