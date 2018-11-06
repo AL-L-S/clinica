@@ -360,6 +360,7 @@ CREATE TABLE ponto.tb_financeiro_caixa
 
 ALTER TABLE ponto.tb_financeiro_contasreceber ADD COLUMN financeiro_caixa_id integer;
 ALTER TABLE ponto.tb_entradas ADD COLUMN financeiro_caixa_id integer;
+
 -- Dia 26/10/2018
 
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN data_aso date;
@@ -437,6 +438,39 @@ BEGIN
     IF resultado = 0 THEN 
 	INSERT INTO ponto.tb_versao(sistema, banco_de_dados)
         VALUES ('1.0.000031', '1.0.000031');
+    END IF;
+    RETURN 'SUCESSO';
+END;
+$$ LANGUAGE plpgsql;
+SELECT insereValor();
+-- Dia 30/10/2018
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN cadastro_aso_id integer;
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN situacao_aso integer;
+
+CREATE TABLE ponto.tb_aso_situacao
+(
+  aso_situacao_id serial NOT NULL,
+  descricao_situacao character varying(200),
+  ativo boolean DEFAULT true,
+  data_cadastro timestamp without time zone,
+  operador_cadastro integer,
+  data_atualizacao timestamp without time zone,
+  operador_atualizacao integer, 
+  CONSTRAINT tb_aso_situacao_pkey PRIMARY KEY (aso_situacao_id)
+);
+
+-- Dia 01/11/2018
+
+CREATE OR REPLACE FUNCTION insereValor()
+RETURNS text AS $$
+DECLARE
+    resultado integer;
+BEGIN
+    resultado := ( SELECT COUNT(*) FROM ponto.tb_ambulatorio_grupo WHERE nome = 'ACUIDADE VISUAL');
+    IF resultado = 0 THEN 
+	INSERT INTO ponto.tb_ambulatorio_grupo(nome, tipo)
+        VALUES ('ACUIDADE VISUAL', 'ESPECIALIDADE');
     END IF;
     RETURN 'SUCESSO';
 END;

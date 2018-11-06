@@ -39,6 +39,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                             <th class="tabela_title">Medico</th>
                         <? } ?>
                         <th class="tabela_title">Situação</th>
+                        <th colspan="1" class="tabela_title">Status</th>
                         <th class="tabela_title">Data</th>
                         <th colspan="1" class="tabela_title">Nome</th>
                         <th colspan="1" class="tabela_title">Procedimento</th>
@@ -75,11 +76,13 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                         <th class="tabela_title">
                             <select name="situacao" id="situacao" class="size1">
                                 <option value=""></option>
+                               
                                 <option value="BLOQUEADO" <?
                                 if (@$_GET['situacao'] == "BLOQUEADO") {
                                     echo 'selected';
                                 }
                                 ?>>BLOQUEADO</option>
+                                
                                 <option value="FALTOU" <?
                                 if (@$_GET['situacao'] == "FALTOU") {
                                     echo 'selected';
@@ -98,6 +101,33 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                             </select>
                         </th>
                         <th class="tabela_title">
+                            <select name="status" id="status" class="size1">
+                                <option value=""></option>
+                                <option value="AGENDADO" <?
+                                if (@$_GET['status'] == "AGENDADO") {
+                                    echo 'selected';
+                                }
+                                ?>>AGENDADO</option>
+                                <option value="AGUARDANDO" <?
+                                if (@$_GET['status'] == "AGUARDANDO") {
+                                    echo 'selected';
+                                }
+                                ?>>AGUARDANDO</option>
+                                <option value="ATENDIDO" <?
+                                if (@$_GET['status'] == "ATENDIDO") {
+                                    echo 'selected';
+                                }
+                                ?>>ATENDIDO</option>
+                                
+                                <option value="ESPERA" <?
+                                if (@$_GET['status'] == "ESPERA") {
+                                    echo 'selected';
+                                }
+                                ?>>ESPERA</option>
+                                
+                            </select>
+                        </th>
+                        <th class="tabela_title">
                             <input type="text"  id="data" alt="date" name="data" class="size1"  value="<?php echo @$_GET['data']; ?>" />
                         </th>
                         <th colspan="1" class="tabela_title">
@@ -107,7 +137,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                         <th colspan="1" class="tabela_title">
                             <input type="text" name="txtprocedimento" class="texto03 bestupper" value="<?php echo @$_GET['txtprocedimento']; ?>" />
 
-                        </th>
+                        </th>                        
                         <th colspan="1" class="tabela_title">
                             <input type="text" name="txtCICPrimariolabel" id="txtCICPrimariolabel" class="texto03" value="<?php echo @$_GET['txtCICPrimariolabel']; ?>" />
                             <input type="hidden" name="txtCICPrimario" id="txtCICPrimario" value="" class="size2" />
@@ -348,16 +378,16 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                                     <? } ?>
 
 
-                                                                        <!--                                                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                                                                                                                            <a></a></font>
-                                                                                                                                        </td>
-                                                                                                                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                                                                                                                                            <a></a></font>
-                                                                                                                                        </td>-->
+                                                                                    <!--                                                                        <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                                                                                                                                        <a></a></font>
+                                                                                                                                                    </td>
+                                                                                                                                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                                                                                                                                                        <a></a></font>
+                                                                                                                                                    </td>-->
 
 
-                                                                                                            <!--                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $item->ambulatorio_laudo_id ?>');">
-                                                                                                                                                                Arquivos</a></div>-->
+                                                                                                                        <!--                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/anexarimagem/<?= $item->ambulatorio_laudo_id ?>');">
+                                                                                                                                                                            Arquivos</a></div>-->
                                 <? } else {
                                     ?>
                                     <!--</td>-->
@@ -367,7 +397,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                                         <td class="<?php echo $estilo_linha; ?>" width="70px;" colspan="">
                                             <? if ($endereco != '') { ?>
                                                 <div class="bt_link">
-                                                    <a onclick="chamarPaciente('<?= $url_enviar_ficha ?>', <?= $toten_fila_id ?>, <?= $item->medico_consulta_id ?>, <?=$toten_sala_id?>);" >Chamar</a>
+                                                    <a onclick="chamarPaciente('<?= $url_enviar_ficha ?>', <?= $toten_fila_id ?>, <?= $item->medico_consulta_id ?>, <?= $toten_sala_id ?>);" >Chamar</a>
                                                 </div>  
                                             <? } else { ?>
                                                 <div class="bt_link">
@@ -387,27 +417,27 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                                         </td>                                            
                                     <? } ?>
             <!--                                            <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                        <a></a></font>
-                    </td>
-                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                        <a></a></font>
-                    </td>
-                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                        <a></a></font>
-                    </td>
-                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
-                        <a></a></font>
-                    </td>-->
+                    <a></a></font>
+                </td>
+                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                    <a></a></font>
+                </td>
+                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                    <a></a></font>
+                </td>
+                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2">
+                    <a></a></font>
+                </td>-->
 
                                     <?
                                 }
                             }
                             ?>
-                    <!--                            <td class="<?php // echo $estilo_linha;          ?>" width="70px;"><font size="-2">
-                                                    <a></a></font>
-                                                </td>
-                                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
-                                                <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>-->
+                        <!--                            <td class="<?php // echo $estilo_linha;           ?>" width="70px;"><font size="-2">
+                                                        <a></a></font>
+                                                    </td>
+                                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>
+                                                    <td class="<?php echo $estilo_linha; ?>" width="70px;"><font size="-2"><a></a></font></td>-->
                         <? } ?>
                     </tr>
 
@@ -432,183 +462,183 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
 <!--<script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>-->
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>    
 <script type="text/javascript">
-                                                    $(document).ready(function () {
+                                    $(document).ready(function () {
 //alert('teste_parada');
-                                                        if ($('#especialidade').val() != '') {
-                                                            $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
-                                                                var options = '<option value=""></option>';
-                                                                var slt = '';
-                                                                for (var c = 0; c < j.length; c++) {
-                                                                    if (j[0].operador_id != undefined) {
-                                                                        if (j[c].operador_id == '<?= @$_GET['medico'] ?>') {
-                                                                            slt = 'selected';
-                                                                        }
-                                                                        options += '<option value="' + j[c].operador_id + '" ' + slt + '>' + j[c].nome + '</option>';
-                                                                        slt = '';
-                                                                    }
-                                                                }
-                                                                $('#medico').html(options).show();
-                                                                $('.carregando').hide();
-
-
-
-                                                            });
+                                        if ($('#especialidade').val() != '') {
+                                            $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $('#especialidade').val(), ajax: true}, function (j) {
+                                                var options = '<option value=""></option>';
+                                                var slt = '';
+                                                for (var c = 0; c < j.length; c++) {
+                                                    if (j[0].operador_id != undefined) {
+                                                        if (j[c].operador_id == '<?= @$_GET['medico'] ?>') {
+                                                            slt = 'selected';
                                                         }
-                                                        $(function () {
-                                                            $('#especialidade').change(function () {
+                                                        options += '<option value="' + j[c].operador_id + '" ' + slt + '>' + j[c].nome + '</option>';
+                                                        slt = '';
+                                                    }
+                                                }
+                                                $('#medico').html(options).show();
+                                                $('.carregando').hide();
 
-                                                                if ($(this).val()) {
+
+
+                                            });
+                                        }
+                                        $(function () {
+                                            $('#especialidade').change(function () {
+
+                                                if ($(this).val()) {
 
 //              alert('teste_parada');
-                                                                    $('.carregando').show();
+                                                    $('.carregando').show();
 //                    alert('teste_parada');
-                                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                                                                        options = '<option value=""></option>';
-                                                                        console.log(j);
+                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidade', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        console.log(j);
 
-                                                                        for (var c = 0; c < j.length; c++) {
-
-
-                                                                            if (j[0].operador_id != undefined) {
-                                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                                                                            }
-                                                                        }
-                                                                        $('#medico').html(options).show();
-                                                                        $('.carregando').hide();
+                                                        for (var c = 0; c < j.length; c++) {
 
 
+                                                            if (j[0].operador_id != undefined) {
+                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
 
-                                                                    });
-                                                                } else {
-                                                                    $('.carregando').show();
-//                    alert('teste_parada');
-                                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
-                                                                        options = '<option value=""></option>';
-                                                                        console.log(j);
-
-                                                                        for (var c = 0; c < j.length; c++) {
-
-
-                                                                            if (j[0].operador_id != undefined) {
-                                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
-
-                                                                            }
-                                                                        }
-                                                                        $('#medico').html(options).show();
-                                                                        $('.carregando').hide();
-
-
-
-                                                                    });
-
-                                                                }
-                                                            });
-                                                        });
-
-
-
-
-                                                        $(function () {
-                                                            $("#txtCICPrimariolabel").autocomplete({
-                                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
-                                                                minLength: 3,
-                                                                focus: function (event, ui) {
-                                                                    $("#txtCICPrimariolabel").val(ui.item.label);
-                                                                    return false;
-                                                                },
-                                                                select: function (event, ui) {
-                                                                    $("#txtCICPrimariolabel").val(ui.item.value);
-                                                                    $("#txtCICPrimario").val(ui.item.id);
-                                                                    return false;
-                                                                }
-                                                            });
-                                                        });
-
-
-
-                                                        $(function () {
-                                                            $("#data").datepicker({
-                                                                autosize: true,
-                                                                changeYear: true,
-                                                                changeMonth: true,
-                                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                                                buttonImage: '<?= base_url() ?>img/form/date.png',
-                                                                dateFormat: 'dd/mm/yy'
-                                                            });
-                                                        });
-
-                                                        $(function () {
-                                                            $("#accordion").accordion();
-                                                        });
-
-                                                        setTimeout('delayReload()', 20000);
-                                                        function delayReload()
-                                                        {
-                                                            if (navigator.userAgent.indexOf("MSIE") != -1) {
-                                                                history.go(0);
-                                                            } else {
-                                                                window.location.reload();
                                                             }
                                                         }
+                                                        $('#medico').html(options).show();
+                                                        $('.carregando').hide();
+
+
+
+                                                    });
+                                                } else {
+                                                    $('.carregando').show();
+//                    alert('teste_parada');
+                                                    $.getJSON('<?= base_url() ?>autocomplete/medicoespecialidadetodos', {txtcbo: $(this).val(), ajax: true}, function (j) {
+                                                        options = '<option value=""></option>';
+                                                        console.log(j);
+
+                                                        for (var c = 0; c < j.length; c++) {
+
+
+                                                            if (j[0].operador_id != undefined) {
+                                                                options += '<option value="' + j[c].operador_id + '">' + j[c].nome + '</option>';
+
+                                                            }
+                                                        }
+                                                        $('#medico').html(options).show();
+                                                        $('.carregando').hide();
+
+
 
                                                     });
 
+                                                }
+                                            });
+                                        });
+
+
+
+
+                                        $(function () {
+                                            $("#txtCICPrimariolabel").autocomplete({
+                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=cid1",
+                                                minLength: 3,
+                                                focus: function (event, ui) {
+                                                    $("#txtCICPrimariolabel").val(ui.item.label);
+                                                    return false;
+                                                },
+                                                select: function (event, ui) {
+                                                    $("#txtCICPrimariolabel").val(ui.item.value);
+                                                    $("#txtCICPrimario").val(ui.item.id);
+                                                    return false;
+                                                }
+                                            });
+                                        });
+
+
+
+                                        $(function () {
+                                            $("#data").datepicker({
+                                                autosize: true,
+                                                changeYear: true,
+                                                changeMonth: true,
+                                                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                                buttonImage: '<?= base_url() ?>img/form/date.png',
+                                                dateFormat: 'dd/mm/yy'
+                                            });
+                                        });
+
+                                        $(function () {
+                                            $("#accordion").accordion();
+                                        });
+
+                                        setTimeout('delayReload()', 20000);
+                                        function delayReload()
+                                        {
+                                            if (navigator.userAgent.indexOf("MSIE") != -1) {
+                                                history.go(0);
+                                            } else {
+                                                window.location.reload();
+                                            }
+                                        }
+
+                                    });
+
 <? if (($endereco != '')) { ?>
-  function chamarPaciente(url, toten_fila_id, medico_id, toten_sala_id) {
-    //   alert(url);
-      $.ajax({
-          type: "POST",
-          data: {teste: 'teste'},
-          //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-          url: url,
-          success: function (data) {
-              //                console.log(data);
-              //                    alert(data.id);
-              $("#idChamada").val(data.id);
+                                        function chamarPaciente(url, toten_fila_id, medico_id, toten_sala_id) {
+                                            //   alert(url);
+                                            $.ajax({
+                                                type: "POST",
+                                                data: {teste: 'teste'},
+                                                //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                url: url,
+                                                success: function (data) {
+                                                    //                console.log(data);
+                                                    //                    alert(data.id);
+                                                    $("#idChamada").val(data.id);
 
-          },
-          error: function (data) {
-              console.log(data);
+                                                },
+                                                error: function (data) {
+                                                    console.log(data);
 
-          }
-      });
-
-
-      $.ajax({
-          type: "POST",
-          data: {teste: 'teste'},
-          //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-          url: "<?= $endereco ?>/webService/telaChamado/proximo/" + medico_id + '/ '+ toten_fila_id +'/' + toten_sala_id,
-          success: function (data) {
-
-              alert('Operação efetuada com sucesso');
+                                                }
+                                            });
 
 
-          },
-          error: function (data) {
-              console.log(data);
-              alert('Erro ao chamar paciente');
-          }
-      });
-      $.ajax({
-          type: "POST",
-          data: {teste: 'teste'},
-          //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-          url: "<?= $endereco ?>/webService/telaChamado/cancelar/" + toten_fila_id,
-          success: function (data) {
+                                            $.ajax({
+                                                type: "POST",
+                                                data: {teste: 'teste'},
+                                                //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                url: "<?= $endereco ?>/webService/telaChamado/proximo/" + medico_id + '/ ' + toten_fila_id + '/' + toten_sala_id,
+                                                success: function (data) {
 
-              //                            alert('Operação efetuada com sucesso');
+                                                    alert('Operação efetuada com sucesso');
 
 
-          },
-          error: function (data) {
-              console.log(data);
-              //                            alert('Erro ao chamar paciente');
-          }
-      });
-  }
+                                                },
+                                                error: function (data) {
+                                                    console.log(data);
+                                                    alert('Erro ao chamar paciente');
+                                                }
+                                            });
+                                            $.ajax({
+                                                type: "POST",
+                                                data: {teste: 'teste'},
+                                                //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                url: "<?= $endereco ?>/webService/telaChamado/cancelar/" + toten_fila_id,
+                                                success: function (data) {
+
+                                                    //                            alert('Operação efetuada com sucesso');
+
+
+                                                },
+                                                error: function (data) {
+                                                    console.log(data);
+                                                    //                            alert('Erro ao chamar paciente');
+                                                }
+                                            });
+                                        }
 
 <? } ?>
 </script>

@@ -47,6 +47,11 @@ class Saudeocupacional extends BaseController {
     }
    
 
+    function pesquisarsituacao($args = array()) {
+               
+        $this->loadView('ambulatorio/situacao-lista', $args);
+
+    }
     function pesquisarsetor($args = array()) {
                
         $this->loadView('ambulatorio/setor-lista', $args);
@@ -85,6 +90,13 @@ class Saudeocupacional extends BaseController {
         $data['convenio'] = $this->convenio->listardados();
         $this->loadView('ambulatorio/setor-empresa-form', $data);
     }
+    
+    function carregarsituacao($aso_situacao_id) {
+
+        $data['obj'] = $this->saudeocupacional->carregarsituacao($aso_situacao_id);        
+        
+        $this->loadView('ambulatorio/situacao-form', $data);
+    }
 
     function excluirsetor($aso_setor_id) {
         $valida = $this->saudeocupacional->excluirsetor($aso_setor_id);
@@ -95,6 +107,17 @@ class Saudeocupacional extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/saudeocupacional/pesquisarsetor");
+    }
+    
+    function excluirsituacao($aso_situacao_id) {
+        $valida = $this->saudeocupacional->excluirsituacao($aso_situacao_id);
+        if ($valida == 0) {
+            $data['mensagem'] = 'Sucesso ao excluir Situa&ccedil;&atilde;o';
+        } else {
+            $data['mensagem'] = 'Erro ao excluir Situa&ccedil;&atilde;o. Opera&ccedil;&atilde;o cancelada.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/saudeocupacional/pesquisarsituacao");
     }
     
     function excluirfuncao($aso_funcao_id) {
@@ -127,6 +150,17 @@ class Saudeocupacional extends BaseController {
         }
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/saudeocupacional/pesquisarsetor");
+    }
+    
+    function gravarsituacao() {
+        $aso_setor_id = $this->saudeocupacional->gravarsituacao();
+        if ($aso_setor_id == "-1") {
+            $data['mensagem'] = 'Erro ao gravar Situa&ccedil;&atilde;o. Opera&ccedil;&atilde;o cancelada.';
+        } else {
+            $data['mensagem'] = 'Sucesso ao gravar Situa&ccedil;&atilde;o.';
+        }
+        $this->session->set_flashdata('message', $data['mensagem']);
+        redirect(base_url() . "ambulatorio/saudeocupacional/pesquisarsituacao");
     }
     function gravarfuncao() {
         $aso_funcao_id = $this->saudeocupacional->gravarfuncao();

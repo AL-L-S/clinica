@@ -44,7 +44,7 @@
                         }else{
                             $array_risco = array();
                         }
-                        
+//                        var_dump($array_risco);die;
                         ?>
 
                         <th class="tabela_title">Riscos</th>
@@ -55,6 +55,28 @@
                                     ?>>                    
 
                                         <?= $value->descricao_risco; ?></option>
+                                <? endforeach; ?>
+                            </select>
+                        </td>
+                    </tr>                    
+                    <tr height="80px">
+                        
+                        <?
+                        if(count(json_decode($setor_selecionado[0]->exames_id)) > 0){
+                            $array_exames = json_decode($setor_selecionado[0]->exames_id);
+                        }else{
+                            $array_exames = array();
+                        }
+                        ?>
+
+                        <th class="tabela_title">Exames Complementares</th>
+                        <td>                 
+                        <? //echo'<pre>';var_dump($procedimento);die;?>
+                            <select name="procedimentos[]" id="procedimentos" style="width: 450px;" class="chosen-select" data-placeholder="Selecione os Exames Complementares..." multiple required="">
+                                <? foreach ($procedimento as $value) : ?>
+                                    <option value="<?= $value->procedimento_convenio_id; ?>"<? if (in_array($value->procedimento_convenio_id, $array_exames)):echo 'selected'; endif;
+                                    ?>> 
+                                        <?= $value->nome; ?></option>
                                 <? endforeach; ?>
                             </select>
                         </td>

@@ -54,6 +54,13 @@
                                 <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
 
                                     <div class="bt_link">
+                                        <a href="<?= base_url() ?>ambulatorio/guia/detalhescadastroaso/<?= $item->paciente_id; ?>/<?= $item->cadastro_aso_id; ?>">Detalhes</a>
+                                    </div>
+
+                                </td>
+                                <td class="<?php echo $estilo_linha; ?>" style="width: 100px;">
+
+                                    <div class="bt_link">
                                         <a href="<?= base_url() ?>ambulatorio/guia/carregarcadastroaso/<?= $item->paciente_id; ?>/<?= $item->cadastro_aso_id; ?>">Editar</a>
                                     </div>
 

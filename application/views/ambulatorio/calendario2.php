@@ -839,7 +839,7 @@ if (@$_GET['sala'] != '') {
     $sala = "";
 }
 $feriado = $this->agenda->listarferiadosagenda();
-//var_dump($feriado[0]->data);die;
+//var_dump(date($feriado[0]->data));die;
 ?>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.maskedinput.js"></script>
 <script>
@@ -937,17 +937,27 @@ $feriado = $this->agenda->listarferiadosagenda();
                                                     var data_escolhida = $('#data').val();
                                                     var today = moment(new Date()).format('YYYY-MM-DD');
                                                     var check = moment(date).format('YYYY-MM-DD');
-                                                    var data2 = date.format('DD/MM');
-//                                                    var feriado = (new Date()).format('DD/MM');
-//            alert(feriado);
-//            var today = $.fullCalendar.formatDate(new Date(), 'yyyy-MM-dd');
+                                                    
+                                                    
+                                                    <? if (count($feriado) > 0) { 
+                                                            foreach($feriado as $item){?>
+                                var feriado = date.format('<?= date($item->data)?>');
+                                var data2 = date.format('DD/MM');      
+//                                alert(data2);
+//                                alert(feriado);
+                                
+                                if (data2 == feriado) {
+                                                        cell.css("background-color", "#FF9999");                                                        
+                                                    }
+                                                    <?      }
+
+                                                            } ?>
+
                                                     
                                                     if (data_escolhida == check && data_escolhida != today) {
                                                         cell.css("background-color", "#BCD2EE");
                                                     }
-                                                    if (data2 == '03/10') {
-                                                        cell.css("background-color", "#FF9999");
-                                                    }
+                                                    
                                                 },
                                                 dayClick: function (date, cell) {
                                                     var data = date.format();

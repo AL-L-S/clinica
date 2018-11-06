@@ -22,3 +22,7 @@ CREATE TABLE ponto.tb_internacao_procedimento_externo
 
 -- 06/11/2018
 ALTER TABLE ponto.tb_farmacia_produto ADD COLUMN procedimento_tuss_id integer;
+-- Dia 05/11/2018
+
+ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN detalhamento_nr text;
+
