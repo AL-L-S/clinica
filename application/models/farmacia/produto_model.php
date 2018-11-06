@@ -72,6 +72,16 @@ class produto_model extends Model {
             return 0;
     }
 
+    function listarprocedimentos() {
+        $this->db->select('pt.procedimento_tuss_id,
+                           pt.codigo,
+                           pt.nome');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->where('pt.ativo', 'true');
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function gravar() {
         try {
             /* inicia o mapeamento no banco */
@@ -81,6 +91,9 @@ class produto_model extends Model {
             $this->db->set('valor_venda', str_replace(",", ".", str_replace(".", "", $_POST['venda'])));
             $this->db->set('farmacia_minimo', $_POST['minimo']);
             $this->db->set('quantidade_unitaria', $_POST['quantidade']);
+            if($_POST['procedimentoID'] > 0){
+                $this->db->set('procedimento_tuss_id', $_POST['procedimentoID']);
+            }
             $this->db->set('unidade_id', $_POST['unidade']);
             $this->db->set('sub_classe_id', $_POST['sub']);
             $horario = date("Y-m-d H:i:s");
@@ -113,6 +126,8 @@ class produto_model extends Model {
             $this->db->select('p.farmacia_produto_id,
                             p.descricao,
                             p.unidade_id,
+                            p.procedimento_tuss_id,
+                            p.quantidade_unitaria,
                             u.descricao as unidade,
                             p.sub_classe_id,
                             sc.descricao as sub_classe,
@@ -128,6 +143,8 @@ class produto_model extends Model {
             $this->_farmacia_produto_id = $farmacia_produto_id;
             $this->_descricao = $return[0]->descricao;
             $this->_unidade_id = $return[0]->unidade_id;
+            $this->_procedimento_tuss_id = $return[0]->procedimento_tuss_id;
+            $this->_quantidade_unitaria = $return[0]->quantidade_unitaria;
             $this->_unidade = $return[0]->unidade;
             $this->_sub_classe_id = $return[0]->sub_classe_id;
             $this->_sub_classe = $return[0]->sub_classe;

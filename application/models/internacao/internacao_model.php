@@ -819,6 +819,57 @@ class internacao_model extends BaseModel {
         }
     }
 
+    function gravarprocedimentoexternointernacao() {
+        $operador_id = ($this->session->userdata('operador_id'));
+        $horario = date("Y-m-d H:i:s");
+
+
+        $this->db->set('procedimento', $_POST['procedimento']);
+        $this->db->set('data', date("Y-m-d", strtotime(str_replace('/','-',$_POST['data']))));
+        $this->db->set('duracao', $_POST['duracao']);
+        $this->db->set('observacao', $_POST['observacao']);
+        // $this->db->set('conduta', $_POST['txtconduta']);
+        $this->db->set('internacao_id', $_POST['internacao_id']);
+
+        if (@$_POST['internacao_procedimentoexterno_id'] > 0) {
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('internacao_procedimento_externo_id', $_POST['internacao_procedimentoexterno_id']);
+            $this->db->update('tb_internacao_procedimento_externo');
+        } else {
+            $this->db->set('data_cadastro', $horario);
+            $this->db->set('operador_cadastro', $operador_id);
+            $this->db->insert('tb_internacao_procedimento_externo');
+            $this->db->insert_id();
+        }
+
+
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function excluirprocedimentoexternointernacao($internacao_proc_id) {
+        $operador_id = ($this->session->userdata('operador_id'));
+        $horario = date("Y-m-d H:i:s");
+
+        $this->db->set('ativo', 'f');
+        // $this->db->set('data', date("Y-m-d", strtotime(str_replace('/','-',$_POST['data']))));
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('internacao_procedimento_externo_id', $internacao_proc_id);
+        $this->db->update('tb_internacao_procedimento_externo');
+        $erro = $this->db->_error_message();
+        if (trim($erro) != "") { // erro de banco
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     function excluirevolucaointernacao($internacao_evolucao_id) {
         $operador_id = ($this->session->userdata('operador_id'));
         $horario = date("Y-m-d H:i:s");
@@ -1609,6 +1660,26 @@ class internacao_model extends BaseModel {
         return $return->result();
     }
 
+    function listarprocedimentoexterno($internacao_id) {
+        $this->db->select('p.nome, 
+                           ie.internacao_procedimento_externo_id, 
+                           ie.procedimento, 
+                           ie.duracao, 
+                           ie.data, 
+                           o.nome as operador,
+                           ie.data_cadastro, 
+                           p.nascimento');
+        $this->db->from('tb_internacao_procedimento_externo ie');
+        $this->db->join('tb_internacao i', "i.internacao_id = ie.internacao_id", 'left');
+        $this->db->join('tb_paciente p', "i.paciente_id = p.paciente_id", 'left');
+        $this->db->join('tb_operador o', "ie.operador_cadastro = o.operador_id", 'left');
+        $this->db->where("ie.internacao_id = $internacao_id");
+        $this->db->where("ie.ativo", 't');
+        $this->db->orderby("ie.internacao_procedimento_externo_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
     function editarevolucaointernacao($internacao_evolucao_id) {
         $this->db->select('p.nome, 
                            ie.internacao_evolucao_id, 
@@ -1622,6 +1693,25 @@ class internacao_model extends BaseModel {
         $this->db->where("ie.internacao_evolucao_id = $internacao_evolucao_id");
 //        $this->db->where("ie.ativo", 't');
         $this->db->orderby("ie.internacao_evolucao_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function editarprocedimentoexternointernacao($internacao_procedimento_externo_id) {
+        $this->db->select('p.nome, 
+                           ie.internacao_procedimento_externo_id, 
+                           ie.data, 
+                           ie.duracao, 
+                           ie.procedimento, 
+                           ie.observacao, 
+                           ie.data_cadastro, 
+                           p.nascimento');
+        $this->db->from('tb_internacao_procedimento_externo ie');
+        $this->db->join('tb_internacao i', "i.internacao_id = ie.internacao_id", 'left');
+        $this->db->join('tb_paciente p', "i.paciente_id = p.paciente_id", 'left');
+        $this->db->where("ie.internacao_procedimento_externo_id = $internacao_procedimento_externo_id");
+//        $this->db->where("ie.ativo", 't');
+        $this->db->orderby("ie.internacao_procedimento_externo_id");
         $return = $this->db->get();
         return $return->result();
     }
@@ -3165,12 +3255,27 @@ cast((Select sum(quantidade) from ponto.tb_internacao_procedimentos
                             ip.aprasamento,
                             ip.confirmado,
                             ip.qtde_ministrada,
+                            pc.convenio_id,
+                            fp.procedimento_tuss_id as procedimento_farmacia,
                             ip.internacao_prescricao_id,
                             fp.descricao');
         $this->db->from('tb_internacao_prescricao ip');
+        $this->db->join('tb_internacao i', 'i.internacao_id = ip.internacao_id');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = i.procedimento_convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_farmacia_produto fp', 'fp.farmacia_produto_id = ip.medicamento_id');
         $this->db->where('ip.ativo', 'true');
-        $this->db->where('internacao_id', $internacao_id);
+        $this->db->where('ip.internacao_id', $internacao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listaconveniomedicamento($convenio_id, $procedimento_tuss_id) {
+        $this->db->select('pc.convenio_id');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->where('pc.ativo', 'true');
+        $this->db->where('pc.procedimento_tuss_id', $procedimento_tuss_id);
+        $this->db->where('pc.convenio_id', $convenio_id);
         $return = $this->db->get();
         return $return->result();
     }
