@@ -25,6 +25,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
             $salas = $this->exame->listartodassalas();
             $empresa = $this->guia->listarempresasaladeespera();
             @$ordem_chegada = @$empresa[0]->ordem_chegada;
+            @$ordenacao_situacao = @$empresa[0]->ordenacao_situacao;
             $medicos = $this->operador_m->listarmedicos();
             $perfil_id = $this->session->userdata('perfil_id');
             ?>
@@ -197,7 +198,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
                 $limit = 100;
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada)->limit($limit, $pagina)->get()->result();
+                $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada, $ordenacao_situacao)->limit($limit, $pagina)->get()->result();
                 $total = count($lista);
 
 //                echo "<pre>";

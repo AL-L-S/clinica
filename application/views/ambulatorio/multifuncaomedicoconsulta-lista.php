@@ -34,6 +34,7 @@
             $salas = $this->exame->listartodassalas();
             $empresa = $this->guia->listarempresasaladeespera();
             @$ordem_chegada = @$empresa[0]->ordem_chegada;
+            @$ordenacao_situacao = @$empresa[0]->ordenacao_situacao;
             $medicos = $this->operador_m->listarmedicos();
             $perfil_id = $this->session->userdata('perfil_id');
             $procedimento = $this->procedimento->listarprocedimento2();
@@ -120,7 +121,7 @@
                 </thead>
             </table>
             <?
-            $listas = $this->exame->listarmultifuncao2consulta($_GET, @$ordem_chegada)->get()->result();
+            $listas = $this->exame->listarmultifuncao2consulta($_GET, @$ordem_chegada, $ordenacao_situacao)->get()->result();
             $aguardando = 0;
             $espera = 0;
             $finalizado = 0;
@@ -176,7 +177,7 @@
                     ?>
                     <tbody>
                         <?php
-                        $lista = $this->exame->listarmultifuncao2consulta($_GET, @$ordem_chegada)->limit($limit, $pagina)->get()->result();
+                        $lista = $this->exame->listarmultifuncao2consulta($_GET, @$ordem_chegada, $ordenacao_situacao)->limit($limit, $pagina)->get()->result();
                         $estilo_linha = "tabela_content01";
                         $operador_id = $this->session->userdata('operador_id');
 //                        echo '<pre>';

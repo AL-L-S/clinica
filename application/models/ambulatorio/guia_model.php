@@ -14702,6 +14702,7 @@ ORDER BY ae.paciente_credito_id)";
 
         $this->db->select('e.empresa_id,
                             ordem_chegada,
+                            ordenacao_situacao,
                             cancelar_sala_espera,
                             administrador_cancelar,
                             gerente_cancelar_sala,

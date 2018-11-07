@@ -26,3 +26,4 @@ ALTER TABLE ponto.tb_farmacia_produto ADD COLUMN procedimento_tuss_id integer;
 
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN detalhamento_nr text;
 
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN ordenacao_situacao boolean DEFAULT false;
