@@ -1637,6 +1637,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('perfil_marketing_p', 'f');
                     }
+                    if (isset($_POST['filtrar_agenda'])) {
+                        $this->db->set('filtrar_agenda', 't');
+                    } else {
+                        $this->db->set('filtrar_agenda', 'f');
+                    }
                     if (isset($_POST['manternota'])) {
                         $this->db->set('manternota', 't');
                     } else {
@@ -2500,6 +2505,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('perfil_marketing_p', 'f');
                     }
+                    if (isset($_POST['filtrar_agenda'])) {
+                        $this->db->set('filtrar_agenda', 't');
+                    } else {
+                        $this->db->set('filtrar_agenda', 'f');
+                    }
                     if (isset($_POST['manternota'])) {
                         $this->db->set('manternota', 't');
                     } else {
@@ -2690,6 +2700,7 @@ class empresa_model extends Model {
                                ep.manternota,
                                ep.agenda_modelo2,
                                ep.perfil_marketing_p,
+                               ep.filtrar_agenda,
                                ep.botao_ficha_convenio
                                ');
             $this->db->from('tb_empresa f');
@@ -2861,6 +2872,7 @@ class empresa_model extends Model {
             $this->_manternota = $return[0]->manternota;
             $this->_limitar_acesso = $return[0]->limitar_acesso;
             $this->_perfil_marketing_p = $return[0]->perfil_marketing_p;
+            $this->_filtrar_agenda = $return[0]->filtrar_agenda;
         } else {
             $this->_empresa_id = null;
         }

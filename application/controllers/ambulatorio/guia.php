@@ -810,6 +810,15 @@ class Guia extends BaseController {
         $this->loadView('ambulatorio/relatorioaso', $data);
     }
     
+    function relatoriocadastroaso() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['grupos'] = $this->procedimento->listargruposexame();
+        $data['procedimento'] = $this->procedimento->listarprocedimentos();
+        
+        $this->loadView('ambulatorio/relatoriocadastroaso', $data);
+    }
+    
     function gerarelatorioaso() {
 //        echo '<pre>';
 //        var_dump($_POST['tipo']);
@@ -839,6 +848,54 @@ class Guia extends BaseController {
 
 
         $this->load->View('ambulatorio/impressaorelatorioaso', $data);
+    }
+    function gerarelatoriocadastroaso() {
+
+        $data['data_inicio'] = $_POST['txtdata_inicio'];
+        $data['data_fim'] = $_POST['txtdata_fim'];
+        $data['relatoriocadastroaso'] = $this->guia->relatoriocadastroaso();
+
+
+        if ($_POST['conveniogrupo'] != '') {
+            $conveniogrupo = $this->guia->listarasoconveniogrupo($_POST['conveniogrupo']);
+            $data['conveniogrupo'] = $conveniogrupo[0]->nome;
+        } else {
+            $data['conveniogrupo'] = 'TODOS';
+        }
+        
+        if ($_POST['gproc'] != '') {
+            $procedimentogrupo = $this->guia->listarasoconveniogrupo($_POST['gproc']);
+            $data['procedimentogrupo'] = $procedimentogrupo[0]->nome;
+        } else {
+            $data['procedimentogrupo'] = 'TODOS';
+        }
+        
+        if ($_POST['procedimento'] != '') {
+            $procedimento = $this->guia->listarasoconveniogrupo($_POST['procedimento']);
+            $data['procedimento'] = $procedimento[0]->nome;
+        } else {
+            $data['procedimento'] = 'TODOS';
+        }
+        
+        if ($_POST['agrupador'] == 'FUNCAO') {            
+            $data['agrupador'] = 'FUNCAO';
+        } else {
+            $data['agrupador'] = 'SETOR';
+        }
+
+        if ($_POST['convenio'] == '-1') {
+            $data['convenio'] = 'Não Tem';
+        } else {
+            if ($_POST['convenio'] != 0) {
+                $convenio = $this->internacao_m->pesquisarconvenio($_POST['convenio']);
+                $data['convenio'] = $convenio[0]->nome;
+            } else {
+                $data['convenio'] = 'TODOS';
+            }
+        }
+
+
+        $this->load->View('ambulatorio/impressaorelatoriocadastroaso', $data);
     }
 
     function impressaoasoparticular($cadastro_aso_id) {

@@ -6,3 +6,7 @@ ALTER TABLE ponto.tb_internacao ADD COLUMN data_status timestamp without time zo
 
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN detalhamento_nr text;
 
+-- Dia 07/11/2018
+
+ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN filtrar_agenda boolean DEFAULT false;
+

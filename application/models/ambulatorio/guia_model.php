@@ -124,6 +124,41 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function relatoriocadastroaso() {
+//        var_dump($_POST);die;
+        $data = date("Y-m-d");
+        $this->db->select(' 
+                          ca.*,
+                          p.nome as paciente,
+                          c.nome as convenio
+                                                   
+                          ');
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ca.paciente_id', 'left');
+        $this->db->join('tb_convenio c', 'ca.convenio_id = c.convenio_id', 'left');
+
+        $this->db->where('ca.ativo = true');
+
+//        if ($_POST['tipo'] != '') {
+//            $this->db->where('ca.tipo', $_POST['tipo']);
+//        }
+
+        $data_inicio = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00';
+
+        $this->db->where("ca.data_realizacao >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))));
+        $this->db->where("ca.data_realizacao <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
+        if ($_POST['convenio'] != '') {
+            if ($_POST['convenio'] == '-1') {
+                $this->db->where('c.convenio_id', null);
+            } else {
+                $this->db->where('c.convenio_id', $_POST['convenio']);
+            }
+        }
+        $this->db->orderby("ca.tipo, ca.data_realizacao");
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function impressaoasoparticular($cadastro_aso_id) {
         $this->db->select('ca.*, p.nome as paciente,
@@ -461,6 +496,7 @@ class guia_model extends Model {
                             ep.ocupacao_mae,
                             ep.ocupacao_pai,
                             ep.faturamento_novo,
+                            ep.filtrar_agenda,
                             ep.impressao_cimetra
                             
                             ');

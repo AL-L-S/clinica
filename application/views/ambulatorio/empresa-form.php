@@ -535,6 +535,7 @@
                                         </tr>
                                         <tr>
                                             <td><input type="checkbox" id="perfil_marketing_p" name="perfil_marketing_p" <? if (@$obj->_perfil_marketing_p == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, você dará ao perfil de Marketing acesso a todos os itens da Recepção e ao Solicitar Material (no estoque).">Perfil Marketing_P</label></td>
+                                            <td><input type="checkbox" id="filtrar_agenda" name="filtrar_agenda" <? if (@$obj->_filtrar_agenda == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, você terá os filtros de status, situação e procedimento aparecendo na Multifuncao Geral.">Filtrar Agenda</label></td>
                                         </tr>
                                     </table>
                                 </fieldset>

@@ -99,6 +99,8 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
 
                     </li>
                     <?
+                    $empresa_id = $this->session->userdata('empresa_id');
+                    $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                     $listaespera = $this->exame->listarexameagendaconfirmada2geral()->get()->result();
 
                     if (count($listaespera) > 0) {
@@ -185,6 +187,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
             $salas = $this->exame->listartodassalasgrupos();
             $especialidade = $this->exame->listarespecialidade();
             $grupos = $this->procedimento->listargrupos();
+            $procedimento = $this->procedimento->listarprocedimento();
             $empresas = $this->exame->listarempresas();
             $empresa_logada = $this->session->userdata('empresa_id');
             $tipo_consulta = $this->tipoconsulta->listarcalendario();
@@ -289,7 +292,9 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                 <table border="1">
                                     <tr>
                                         <th class="tabela_title">Sala</th>
-
+                                        <? if ($empresapermissoes[0]->filtrar_agenda == 't') { ?>
+                                        <th class="tabela_title">Procedimento</th>
+                                        <? } ?>
                                     </tr>
                                     <tr>
                                         <th class="tabela_title">
@@ -304,10 +309,95 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                             </select>
 
                                         </th>
+                                        <? if ($empresapermissoes[0]->filtrar_agenda == 't') { ?>
+                                        <th class="tabela_title">
+                                            <select name="procedimento" id="procedimento" class="size2" >
+                                                <option value='' >TODOS</option>                                                
+                                                <?php
+                                                foreach ($procedimento as $item) {
+                                                    ?>
+                                                    <option value ="<?php echo $item->procedimento_convenio_id; ?>" <?
+                                                    if (@$_GET['procedimento'] == $item->procedimento_convenio_id):echo 'selected';
+                                                    endif;
+                                                    ?>>
+    <?php echo $item->nome; ?>
+                                                    </option>
 
+<? } ?> 
+
+                                            </select>
+
+                                        </th>
+                                        <? } ?>
                                     </tr>    
                                 </table>
+                                <? if ($empresapermissoes[0]->filtrar_agenda == 't') { ?>
+                                <table border="1">
+                                    <tr>
+                                        <th class="tabela_title">Situação</th>
+                                        <th class="tabela_title">Status</th>
 
+                                    </tr>
+                                    <tr>
+                                        <th class="tabela_title">
+                                            <select name="situacao" id="situacao" class="size2">
+                                                <option value=""></option>
+
+                                                <option value="BLOQUEADO" <?
+                                                if (@$_GET['situacao'] == "BLOQUEADO") {
+                                                    echo 'selected';
+                                                }
+                                                ?>>BLOQUEADO</option>
+
+                                                <option value="FALTOU" <?
+                                                if (@$_GET['situacao'] == "FALTOU") {
+                                                    echo 'selected';
+                                                }
+                                                ?>>FALTOU</option>
+                                                <option value="OK" <?
+                                                if (@$_GET['situacao'] == "OK") {
+                                                    echo 'selected';
+                                                }
+                                                ?>>OCUPADO</option>
+                                                <option value="LIVRE" <?
+                                                if (@$_GET['situacao'] == "LIVRE") {
+                                                    echo 'selected';
+                                                }
+                                                ?>>VAGO</option>
+                                            </select>
+
+                                        </th>
+                                        <th class="tabela_title">
+                                            <select name="status" id="status" class="size2">
+                                                <option value=""></option>
+                                                <option value="AGENDADO" <?
+                                                if (@$_GET['status'] == "AGENDADO") {
+                                                    echo 'selected';
+                                                }
+                                                ?>>AGENDADO</option>
+                                                <option value="AGUARDANDO" <?
+                                                if (@$_GET['status'] == "AGUARDANDO") {
+                                                    echo 'selected';
+                                                }
+                                                ?>>AGUARDANDO</option>
+                                                <option value="ATENDIDO" <?
+                                                if (@$_GET['status'] == "ATENDIDO") {
+                                                    echo 'selected';
+                                                }
+                                                ?>>ATENDIDO</option>
+
+                                                <option value="ESPERA" <?
+                                                if (@$_GET['status'] == "ESPERA") {
+                                                    echo 'selected';
+                                                }
+                                                ?>>ESPERA</option>
+
+                                            </select>
+
+                                        </th>
+                                    </tr>    
+                                </table>
+                                <? } ?>
                             </div>
 
                             <div style="border: 1pt dotted #444; border-radius: 10pt;">
@@ -333,9 +423,9 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                                                 //                                                    echo '<script>carregaMedicoEspecialidade();</script>';
                                                                 //                                                endif;
                                                                 ?>
-                                                                <?php echo $value->descricao; ?>
+                                                    <?php echo $value->descricao; ?>
                                                     </option>
-                                                <? endforeach; ?>
+<? endforeach; ?>
                                             </select>
                                         </th>
                                         <th class="tabela_title" colspan="2">
@@ -347,11 +437,11 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                                     endif;
                                                     ?>>
 
-                                                        <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
+    <?php echo $value->nome . ' - CRM: ' . $value->conselho; ?>
 
 
                                                     </option>
-                                                <? endforeach; ?>
+<? endforeach; ?>
 
                                             </select>
                                         </th>
@@ -373,7 +463,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                             <input type="hidden" name="data" id="data" class="texto04 bestupper" value="<?php echo date("Y-m-d", strtotime(str_replace('/', '-', @$_GET['data']))); ?>" />
                                         <? } else { ?>
                                             <input type="hidden" name="data" id="data" class="texto04 bestupper" value="" />
-                                        <? } ?>
+<? } ?>
                                     </th>
                                 </tr>
 
@@ -401,7 +491,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
 
             </table> 
             <!-- Comentei essa parte só pra publicar -->
-             <table>
+            <table>
                 <tr>
                     <th style="padding-left:88%" class="tabela_title">
                         <button value="encaixar" id="encaixar">Encaixar Horário</button>
@@ -474,7 +564,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                 <td class="<?php echo $estilo_linha; ?>"><?= $lista[0]->convenio . " - " . $lista[0]->procedimento . " - " . $lista[0]->codigo; ?></td>
                             <? } else { ?>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $lista[0]->convenio_paciente . " - " . $lista[0]->procedimento . " - " . $lista[0]->codigo; ?></td>
-                            <? } ?>
+    <? } ?>
 
                             <td class="<?php echo $estilo_linha; ?>" style="color:green"><?= $lista[0]->sala; ?></td> 
                             <td class="<?php echo $estilo_linha; ?>" style="color:green"><?= $lista[0]->medicoagenda; ?></td> 
@@ -648,15 +738,15 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                             <!--<td class="<?php echo $estilo_linha; ?>"><?= substr($item->secretaria, 0, 9); ?></td>-->
 
                             <!-- DATA, DIA E AGENDA -->
-                            <? if ($item->ocupado == 't') { ?>
+        <? if ($item->ocupado == 't') { ?>
                                 <td class="<?php echo $estilo_linha; ?>"><strike><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></strike></td>
                             <td class="<?php echo $estilo_linha; ?>"><strike><?= $item->inicio; ?></strike></td>
                             <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><?= $item->paciente; ?></b></td>
-                        <? } else { ?>
+        <? } else { ?>
                             <td class="<?php echo $estilo_linha; ?>"><?= substr($item->data, 8, 2) . "/" . substr($item->data, 5, 2) . "/" . substr($item->data, 0, 4); ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->inicio; ?></td>
                             <td class="<?php echo $estilo_linha; ?>"><font color="<?= $cor ?>"><b><?= $item->paciente; ?></b></td>
-                        <? } ?>
+        <? } ?>
                         <!-- EMPRESA -->
 
 
@@ -679,7 +769,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio . " - " . $item->procedimento . " - " . $item->codigo; ?></td>
                         <? } else { ?>
                             <td class="<?php echo $estilo_linha; ?>"><?= $item->convenio_paciente . " - " . $item->procedimento . " - " . $item->codigo; ?></td>
-                        <? } ?>
+        <? } ?>
 
                         <!-- SALA -->   
                         <?
@@ -710,17 +800,17 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                             ?>
                             <td style="cursor: pointer; color: <?= $cor ?>;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala; ?>"><b><a style="color:<?= $cor ?>;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->sala; ?></b></td>
                             <td style="cursor: pointer; color: <?= $corMedico; ?>" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $title; ?>"><b><a style="color:<?= $corMedico ?>;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/trocarmedicoconsulta/<?= $item->agenda_exames_id; ?>', '_blank', 'toolbar=no,Location=no,menubar=no,width=500,height=400');" /><?= $item->medicoagenda ?></b></td>
-                        <? } else { ?>
+        <? } else { ?>
                             <td style="cursor: pointer; color: <?= $cor ?>;" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $item->sala ?>"><?= $item->sala ?></td>
                             <td style="cursor: pointer; color: <?= $corMedico; ?>" class="<?php echo $estilo_linha; ?>" width="150px;" title="<?= $title; ?>"><?= $item->medicoagenda; ?></td>
 
-                        <? } ?>  
+        <? } ?>  
                         <!-- OBSERVAÇOES -->
-                        <!--<td class="<?php // echo $estilo_linha;                             ?>"><?= $item->observacoes; ?></td>-->
+                        <!--<td class="<?php // echo $estilo_linha;                                ?>"><?= $item->observacoes; ?></td>-->
 
                         <td class="<?php echo $estilo_linha; ?>"><a title="<?= $item->observacoes; ?>" style=" cursor: pointer;" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/alterarobservacao/<?= $item->agenda_exames_id ?>', '_blank', 'toolbar=no,Location=no,menubar=no,\n\
-                                                                                                                                                                                                                                                                                                                        width=500,height=400');">=><?= $item->observacoes; ?></td>
-                            <? if ($item->paciente_id != "") { ?>
+                                                                                                                                                                                                                                                                                                                                                width=500,height=400');">=><?= $item->observacoes; ?></td>
+        <? if ($item->paciente_id != "") { ?>
                             <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                     <a onclick="javascript:window.open('<?= base_url() ?>cadastros/pacientes/carregar/<?= $item->paciente_id ?>');">Editar
                                     </a></div>
@@ -771,7 +861,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                         <a title="<?= $item->operador_desbloqueio ?>" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/bloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Bloquear
                                         </a></div>
                                 </td>
-                            <? } else { ?>
+            <? } else { ?>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
                                         <a title="<?= $item->operador_bloqueio ?>"  onclick="javascript:window.open('<?= base_url() ?>ambulatorio/exame/desbloquear/<?= $item->agenda_exames_id ?>/<?= $item->inicio; ?> ', 'toolbar=no,Location=no,menubar=no,width=500,height=200');">Desbloq.
                                         </a></div>
@@ -937,34 +1027,37 @@ $feriado = $this->agenda->listarferiadosagenda();
                                                     var data_escolhida = $('#data').val();
                                                     var today = moment(new Date()).format('YYYY-MM-DD');
                                                     var check = moment(date).format('YYYY-MM-DD');
-                                                    
-                                                    
-                                                    <? if (count($feriado) > 0) { 
-                                                            foreach($feriado as $item){?>
-                                var feriado = date.format('<?= date($item->data)?>');
-                                var data2 = date.format('DD/MM');      
-//                                alert(data2);
-//                                alert(feriado);
-                                
-                                if (data2 == feriado) {
-                                                        cell.css("background-color", "#FF9999");                                                        
-                                                    }
-                                                    <?      }
 
-                                                            } ?>
 
-                                                    
+<?
+if (count($feriado) > 0) {
+    foreach ($feriado as $item) {
+        ?>
+                                                            var feriado = date.format('<?= date($item->data) ?>');
+                                                            var data2 = date.format('DD/MM');
+                                                            //                                alert(data2);
+                                                            //                                alert(feriado);
+
+                                                            if (data2 == feriado) {
+                                                                cell.css("background-color", "#FF9999");
+                                                            }
+        <?
+    }
+}
+?>
+
+
                                                     if (data_escolhida == check && data_escolhida != today) {
                                                         cell.css("background-color", "#BCD2EE");
                                                     }
-                                                    
+
                                                 },
                                                 dayClick: function (date, cell) {
                                                     var data = date.format();
                                                     var data2 = date.format('DD/MM');
 //            cell.css("background-color", "#BCD2EE");                                                   
                                                     window.open('<?= base_url() ?>ambulatorio/exame/listarmultifuncaocalendario2?empresa=' + $('#empresa').val() + '&tipoagenda=' + $('#tipoagenda').val() + '&sala=' + $('#sala').val() + '&grupo=' + $('#grupo').val() + '&especialidade=&medico=' + $('#medico').val() + '&situacao=&data=' + moment(data).format('DD%2FMM%2FYYYY') + '&nome=' + paciente + '', '_self');
-                                                    
+
 
 
                                                 },

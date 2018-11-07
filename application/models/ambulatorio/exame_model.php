@@ -1248,7 +1248,7 @@ class exame_model extends Model {
             $this->db->where('ae.medico_consulta_id', $args['medico']);
         }
         if (isset($args['tipo']) && strlen($args['tipo']) > 0) {
-            $this->db->where('ae.tipo', $args['tipo']);
+            $this->db->where('ag.tipo', $args['tipo']);
         }
         return $this->db;
     }
@@ -2223,7 +2223,7 @@ class exame_model extends Model {
             $this->db->where('ae.empresa_id', $empresa_id);
         } else {
             $this->db->where('ae.empresa_id', $args['empresa']);
-        }
+        }        
 //        $this->db->limit(5);
 //        $this->db->where('ae.ativo', 'false');
 //        $this->db->where('ae.realizada', 'false');
@@ -2254,6 +2254,9 @@ class exame_model extends Model {
         if (isset($args['sala']) && strlen($args['sala']) > 0) {
             $this->db->where('ae.agenda_exames_nome_id', $args['sala']);
         }
+        if (isset($args['procedimento']) && strlen($args['procedimento']) > 0) {
+            $this->db->where('ae.procedimento_tuss_id', $args['procedimento']);
+        }
         if (isset($args['situacao']) && strlen($args['situacao']) > 0) {
             if ($args['situacao'] == "BLOQUEADO") {
                 $this->db->where('ae.bloqueado', 't');
@@ -2276,6 +2279,23 @@ class exame_model extends Model {
                 $this->db->where('ae.operador_atualizacao is not null');
             }
         }
+        if (isset($args['status']) && strlen($args['status']) > 0) {
+                
+                if ($args['status'] == "AGUARDANDO") {
+                    $this->db->where('ae.realizada', 't');
+                    $this->db->where('e.situacao !=', 'FINALIZADO');
+                }
+                if ($args['status'] == "ESPERA") {
+                    $this->db->where('ae.realizada', 'f');                    
+                }
+                if ($args['status'] == "AGENDADO") {
+                    $this->db->where('ae.confirmado', 'f');
+                }
+                if ($args['status'] == "ATENDIDO") {
+                    $this->db->where('ae.realizada', 't');
+                    $this->db->where('e.situacao', 'FINALIZADO');
+                }
+            }
         if (isset($args['c_s_medico']) && strlen($args['c_s_medico']) > 0) {
             $this->db->where('pt.medico', $args['c_s_medico']);
         }
@@ -4079,6 +4099,9 @@ class exame_model extends Model {
         if ($_POST['medicos'] != '') {
             $this->db->where('ae.medico_consulta_id', $_POST['medicos']);
         }
+        if ($_POST['salas'] != '') {
+            $this->db->where('ae.agenda_exames_nome_id', $_POST['salas']);
+        }
 
         $return = $this->db->get();
         return $return->result();
@@ -5458,7 +5481,14 @@ class exame_model extends Model {
                             co.nome as convenio_paciente,
                             pt.nome as procedimento,
                             tc.nome as classificacao,
+                            
                             al.situacao as situacaolaudo');
+//        CASE 
+//                            WHEN realizada = "t" and situacaoexame <> "FINALIZADA" THEN status = 1
+//                            WHEN realizada = "f" THEN status = 2
+//                            WHEN realizada = "t" and situacaoexame = "FINALIZADA" THEN status = 3
+//                            WHEN confirmado = "f" THEN status = 4                                                              
+//                            END AS status,
         $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
         $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
@@ -7520,6 +7550,8 @@ class exame_model extends Model {
                             ae.entregue_telefone,
                             o.nome as operadorrecebido,
                             op.nome as operadorentregue,
+                            op2.nome as operadorresp,
+                            op2.usuario as operadorcadastro,
                             ae.procedimento_tuss_id,
                             pt.nome as procedimento');
         $this->db->from('tb_agenda_exames ae');
@@ -7531,6 +7563,7 @@ class exame_model extends Model {
         $this->db->join('tb_ambulatorio_laudo al', 'al.exame_id = e.exames_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.operador_recebido', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ae.operador_entregue', 'left');
+        $this->db->join('tb_operador op2', 'op2.operador_id = ae.operador_cadastro', 'left');
         $this->db->where('ae.confirmado', 't');
         $this->db->where('ae.guia_id', $guia_id);
         $this->db->orderby('ae.guia_id');
@@ -7553,6 +7586,7 @@ class exame_model extends Model {
                             ag.pasistolica,
                             ag.padiastolica,
                             o.usuario as medico,
+                            op.nome as operadorresp,
                             op.usuario as operadorcadastro');
         $this->db->from('tb_ambulatorio_guia ag');
         $this->db->join('tb_agenda_exames ae', 'ae.guia_id = ag.ambulatorio_guia_id', 'left');

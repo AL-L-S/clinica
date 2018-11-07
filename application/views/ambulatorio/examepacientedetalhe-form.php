@@ -4,7 +4,7 @@
         <div>
             <form name="form_faturar" id="form_faturar" action="<?= base_url() ?>ambulatorio/exame/gravarpacientedetalhes" method="post">
                 <fieldset>
-
+                    <? //echo'<pre>'; var_dump($guia[0]);die;?>
                     <dl class="dl_desconto_lista">
                         <dt>
                         <label>Nome</label>
@@ -37,6 +37,12 @@
                             <input type="text" name="medico" id="medico" class="texto01" value="<?= $guia[0]->medico; ?>" readonly/>
                         </dd>
                         <dt>
+                        <label>Operador Respons&aacute;vel</label>
+                        </dt>
+                        <dd>
+                            <input type="text" name="operador" id="operador" class="texto01" value="<?= $guia[0]->operadorresp; ?>" readonly/>
+                        </dd>
+                        <dt>
                         <label>Peso</label>
                         </dt>
                         <dd>
@@ -66,6 +72,7 @@
             <tr>
                 <th class="tabela_header">Procedimento</th>
                 <th class="tabela_header">status</th>
+                <th class="tabela_header">Operador Respons&aacute;vel</th>
             </tr>
         </thead>
         <tbody>
@@ -75,6 +82,7 @@
             <tr>
                 <td width="400px;"><?= $item->procedimento ?></td>
                 <td width="150px;"><?= $item->situacaolaudo ?></td>
+                <td width="400px;"><?= $item->operadorresp ?></td>
             </tr>
             <? endforeach; ?>
         </tbody>

@@ -231,6 +231,22 @@ class procedimento_model extends Model {
         return $return->result();
     }
     
+    function listarprocedimento() {
+        $empresa_id = $this->session->userdata('empresa_id');
+        $this->db->select('pc.procedimento_convenio_id,
+                            pt.nome,
+                            pt.codigo,
+                            pt.descricao,
+                            pt.grupo');
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pc.ativo", 't');
+        $this->db->where("pc.empresa_id", $empresa_id);        
+        $this->db->orderby("pt.nome");
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarprocedimentossetor($item) {
         $this->db->select('pc.procedimento_convenio_id,
                             pt.nome,

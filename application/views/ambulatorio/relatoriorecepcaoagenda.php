@@ -20,6 +20,7 @@
                     </dt>
                     <dd>
                         <select name="salas" id="salas" class="size2">
+                            <option value="" >Todas</option>
                             <? foreach ($salas as $value) : ?>
                                 <option value="<?= $value->exame_sala_id; ?>" ><?php echo $value->nome; ?></option>
                             <? endforeach; ?>

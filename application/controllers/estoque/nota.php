@@ -16,6 +16,10 @@ class Nota extends BaseController {
     function Nota() {
         parent::Controller();
         $this->load->model('estoque/entrada_model', 'entrada');
+        $this->load->model('ambulatorio/exame_model', 'exame');
+        $this->load->model('cadastro/forma_model', 'forma');
+        $this->load->model('estoque/classe_model', 'classe');
+        $this->load->model('cadastro/tipo_model', 'tipo');
         $this->load->model('estoque/nota_model', 'nota');
         $this->load->model('estoque/entrada_nota_model', 'entrada_nota');
         $this->load->model('estoque/cliente_model', 'cliente');
@@ -304,7 +308,19 @@ class Nota extends BaseController {
             $data['mensagem'] = 'Sucesso ao finalizar a Nota.';
         }
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "estoque/nota/alimentarnota/$estoque_nota_id");
+        redirect(base_url() . "estoque/nota/notaspagar/$estoque_nota_id/$nota_fiscal");
+    }
+    
+    function notaspagar($estoque_nota_id, $nota_fiscal) {
+//        $obj_contaspagar = new contaspagar_model($financeiro_contaspagar_id);
+//        $data['obj'] = $obj_contaspagar;
+        $data['conta'] = $this->forma->listarformaempresa();
+        $data['tipo'] = $this->tipo->listartipo();
+        $data['classe'] = $this->classe->listarclasse();
+        $data['empresas'] = $this->exame->listarempresas();
+        $data['estoque_nota_id'] = $estoque_nota_id;
+        $data['nota_fiscal'] = $nota_fiscal;
+        $this->loadView('estoque/notaspagar-form', $data);
     }
 //
 //    function gravarfracionamento() {

@@ -989,50 +989,52 @@ class nota_model extends Model {
                 $this->db->where('nota_fiscal', $nota_fiscal);
                 $this->db->update('tb_estoque_nota');
                 
-            $this->db->select('n.*');
-            $this->db->from('tb_estoque_nota n');
-            $this->db->where('nota_fiscal', $nota_fiscal);
-            $this->db->where('ativo', 'TRUE');
-            $return2 = $this->db->get()->result();  
-            
-            $this->db->select('forma_entradas_saida_id,
-                            agencia,
-                            conta,
-                            descricao');
-            $this->db->from('tb_forma_entradas_saida');
-            $this->db->where('empresa_id', $empresa_id);
-            $this->db->where('ativo', 'true');
-            $conta = $this->db->get()->result();
+                // ----x----
+                
+//            $this->db->select('n.*');
+//            $this->db->from('tb_estoque_nota n');
+//            $this->db->where('nota_fiscal', $nota_fiscal);
+//            $this->db->where('ativo', 'TRUE');
+//            $return2 = $this->db->get()->result();  
+//            
+//            $this->db->select('forma_entradas_saida_id,
+//                            agencia,
+//                            conta,
+//                            descricao');
+//            $this->db->from('tb_forma_entradas_saida');
+//            $this->db->where('empresa_id', $empresa_id);
+//            $this->db->where('ativo', 'true');
+//            $conta = $this->db->get()->result();
                 
                 /* inicia o mapeamento no banco de contas a pagar */
-            $financeiro_contaspagar_id = $_POST['financeiro_contaspagar_id'];
-            $this->db->set('valor', $return2[0]->valor_nota);
-            $this->db->set('credor', $return2[0]->fornecedor_id);
-            $this->db->set('data', $return2[0]->data_atualizacao);            
-            $this->db->set('empresa_id', $empresa_id);
-            $this->db->set('classe', 'DESPESAS ADMINISTRATIVAS');
-            $this->db->set('conta', $conta[0]->forma_entradas_saida_id);
-            $this->db->set('tipo', 'GERAL');
-            $this->db->set('estoque_nota_id', $return2[0]->estoque_nota_id);
-            
-            
-
-            if ($_POST['financeiro_contaspagar_id'] == "") {// insert
-                $this->db->set('data_cadastro', $horario);
-                $this->db->set('operador_cadastro', $operador_id);
-                $this->db->insert('tb_financeiro_contaspagar');
-                $erro = $this->db->_error_message();
-                if (trim($erro) != "") // erro de banco
-                    return -1;
-                else
-                    $financeiro_contaspagar_id = $this->db->insert_id();
-            }
-            else { // update
-                $this->db->set('data_atualizacao', $horario);
-                $this->db->set('operador_atualizacao', $operador_id);
-                $this->db->where('financeiro_contaspagar_id', $financeiro_contaspagar_id);
-                $this->db->update('tb_financeiro_contaspagar');
-            }
+//            $financeiro_contaspagar_id = $_POST['financeiro_contaspagar_id'];
+//            $this->db->set('valor', $return2[0]->valor_nota);
+//            $this->db->set('credor', $return2[0]->fornecedor_id);
+//            $this->db->set('data', $return2[0]->data_atualizacao);            
+//            $this->db->set('empresa_id', $empresa_id);
+//            $this->db->set('classe', 'DESPESAS ADMINISTRATIVAS');
+//            $this->db->set('conta', $conta[0]->forma_entradas_saida_id);
+//            $this->db->set('tipo', 'GERAL');
+//            $this->db->set('estoque_nota_id', $return2[0]->estoque_nota_id);
+//            
+//            
+//
+//            if ($_POST['financeiro_contaspagar_id'] == "") {// insert
+//                $this->db->set('data_cadastro', $horario);
+//                $this->db->set('operador_cadastro', $operador_id);
+//                $this->db->insert('tb_financeiro_contaspagar');
+//                $erro = $this->db->_error_message();
+//                if (trim($erro) != "") // erro de banco
+//                    return -1;
+//                else
+//                    $financeiro_contaspagar_id = $this->db->insert_id();
+//            }
+//            else { // update
+//                $this->db->set('data_atualizacao', $horario);
+//                $this->db->set('operador_atualizacao', $operador_id);
+//                $this->db->where('financeiro_contaspagar_id', $financeiro_contaspagar_id);
+//                $this->db->update('tb_financeiro_contaspagar');
+//            }
                 
             
             return $nota_fiscal;
