@@ -8,11 +8,17 @@
     $date_time = new DateTime($dataAtual);
     $diff = $date_time->diff(new DateTime($dataFuturo));
     $teste = $diff->format('%Ya %mm %dd');
-//    echo'<pre>';
-//    var_dump($exame[0]->grupo);die;
+
+    $densitometria = 0;
+    $mamografia = 0;
+    $rm = 0;
+    $rxtorax = 0;
+    $tomografia = 0;
+    $comum = 0;
     ?>
 <?foreach ($exame as $value12) {
-    if($value12->grupo == "DENSITOMETRIA"){
+    if($value12->grupo == "DENSITOMETRIA" && $densitometria < 1){
+        $densitometria = $densitometria + 1;
     ?>
  
  <table>
@@ -30,16 +36,16 @@
                 <tbody>
                     <tr>
                         <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-                        <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
+                        <td ><font size = -1><?= $value12->razao_social; ?></td>
                     </tr>
                     <tr>
-                        <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
-                        <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-                        <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
+                        <td ><font size = -1>Formulário: <?= $value12->ambulatorio_guia_id; ?></td>
+                        <td ><font size = -1>Data: <?= ($value12->data != '') ? date("d/m/Y", strtotime($value12->data)) : ''; ?></td>
+                        <td ><font size = -1>Informações: <?= $value12->telefoneempresa; ?></td>
                     </tr>
                     <tr>
-                        <? //echo '<pre>'; var_dump($exame); die;?>
-                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
+                        <? // echo '<pre>'; var_dump($value12->grupo); die;?>
+                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($value12->data_entrega != '') ? date("d/m/Y", strtotime($value12->data_entrega)) : ''; ?>, a partir das 16h</td>
                         <td ><font size = -1>Agradecemos a sua preferência</td>
                     </tr>
 
@@ -52,8 +58,8 @@
             <td width="170px"></td>
             <td colspan="1"><font size = -1>Exame(s):<b> <?= $value12->procedimento; ?></b></td>
             <td ><font size = -1>
-                <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
-                Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>
+                
+                &nbsp;
             </td>
         </tr>
     </table>
@@ -64,15 +70,16 @@
             <td>
                 <!--<h4 style="text-align: center;">-->
                 <span style="font-weight: bold"> Sistema de Controle de Clínicas</span> <br>
-                <span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span>
+                <span style="font-weight: normal"><?= $value12->razao_social; ?></span>
                 <!--</h4>-->  
             </td>
         </tr>
     </table>
     <hr>
     <?
+//        var_dump($value12->grupo);die;
     foreach ($exames as $item) :
-        if ($item->grupo == $exame[0]->grupo) {
+        if ($item->grupo == $value12->grupo) {
             $exame_id = $item->agenda_exames_id;
             $dataatualizacao = $item->data_autorizacao;
             $inicio = $item->inicio;
@@ -87,10 +94,10 @@
     <table style="width: 100%; font-size: 11pt;">
         <tr>
             <td>
-                Agenda...: <?= $exame[0]->crm_medico; ?>  - <?= $exame[0]->medico; ?>
+                Agenda...: <?= $value12->crm_medico; ?>  - <?= $value12->medico; ?>
             </td>
             <td>
-                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $exame[0]->ambulatorio_guia_id; ?></span> 
+                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $value12->ambulatorio_guia_id; ?></span> 
             </td>
         </tr>
         <tr>
@@ -98,7 +105,7 @@
                 Paciente.: <span style="font-weight: bold"><?= $paciente[0]->paciente_id; ?>  - <?= $paciente[0]->nome; ?></span>
             </td>
             <td>
-                Data: <?= date("d/m/Y", strtotime($exame[0]->data)); ?>
+                Data: <?= date("d/m/Y", strtotime($value12->data)); ?>
             </td>
         </tr>
         <tr>
@@ -135,7 +142,7 @@
         </tr>
         <tr>
             <td>
-                Convênio.: <span style="font-weight: bold"> <?= $exame[0]->convenio; ?> </span>
+                Convênio.: <span style="font-weight: bold"> <?= $value12->convenio; ?> </span>
             </td>
             <td>
                 Sequência:
@@ -146,15 +153,15 @@
                 Carteira....: <?= $paciente[0]->convenionumero; ?>
             </td>
             <td>
-                Autorização: <?= $exame[0]->autorizacao; ?>
+                Autorização: <?= $value12->autorizacao; ?>
             </td>
         </tr>
         <tr>
             <td>
-                Solicitante: <?= $exame[0]->crm_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?>
+                Solicitante: <?= $value12->crm_solicitante; ?>  - <?= $value12->medicosolicitante; ?>
             </td>
             <td>
-                Validade: <? //= $exame[0]->agenda_exames_id;                  ?>
+                Validade: <? //= $value12->agenda_exames_id;                  ?>
             </td>
         </tr>
         <tr>
@@ -167,7 +174,7 @@
         </tr>
         <tr>
             <td>
-                Atendente...: <?= $exame[0]->atendente; ?> 
+                Atendente...: <?= $value12->atendente; ?> 
             </td>
             <td>
                 CPF Responsável: <?= ($paciente[0]->cpf_responsavel_flag == 't') ? $paciente[0]->cpf : ''; ?>
@@ -211,7 +218,7 @@
 
 
 
-            if ($item->grupo == $exame[0]->grupo) {
+            if ($item->grupo == $value12->grupo) {
                 foreach ($formapagamento as $value) {
                     if ($item->formadepagamento == $value->nome) {
                         $data[$value->nome] = $data[$value->nome] + $item->valor1;
@@ -318,18 +325,18 @@
     </table>
     <hr>
 
-    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
+<!--    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
 
     <table style="font-size: 9pt;">
         <?
         foreach ($exames as $item) :
-            if ($item->grupo != $exame[0]->grupo) {
+            if ($item->grupo != $value12->grupo) {
                 ?>
                 <tr>
                     <td ><?= $item->codigo ?>-</td>
                     <td ><?= $item->procedimento ?>-</td>
                     <td ><?= $item->convenio ?>-</td>
-                    <!--<td ><?= $item->autorizacao ?>-</td>-->
+                    <td ><?= $item->autorizacao ?>-</td>
                     <td ><?= $item->medicosolicitante ?></td>
                 </tr>
                 <?
@@ -337,9 +344,9 @@
         endforeach;
         ?>
         </tbody>
-    </table>
-    <hr>
-    <span style="font-size: 10pt;">Observações: <?= $exame[0]->observacoes; ?></span>
+    </table>-->
+    <!--<hr>-->
+    <span style="font-size: 10pt;">Observações: <?= $value12->observacoes; ?></span>
     <style>
 
         .tdpadding{
@@ -408,7 +415,8 @@
     </style>
     <pagebreak></pagebreak>
     <br class="quebrapagina">-->
-    <?}elseif($value12->grupo == "MAMOGRAFIA"){?>
+    <?}elseif($value12->grupo == "MAMOGRAFIA" && $mamografia < 1){?>
+    <? $mamografia = $mamografia + 1; ?>
     <table>
         <td>
             <table style="width: 100%;">
@@ -424,16 +432,16 @@
                 <tbody>
                     <tr>
                         <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-                        <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
+                        <td ><font size = -1><?= $value12->razao_social; ?></td>
                     </tr>
                     <tr>
-                        <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
-                        <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-                        <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
+                        <td ><font size = -1>Formulário: <?= $value12->ambulatorio_guia_id; ?></td>
+                        <td ><font size = -1>Data: <?= ($value12->data != '') ? date("d/m/Y", strtotime($value12->data)) : ''; ?></td>
+                        <td ><font size = -1>Informações: <?= $value12->telefoneempresa; ?></td>
                     </tr>
                     <tr>
                         <? //echo '<pre>'; var_dump($exame); die;?>
-                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
+                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($value12->data_entrega != '') ? date("d/m/Y", strtotime($value12->data_entrega)) : ''; ?>, a partir das 16h</td>
                         <td ><font size = -1>Agradecemos a sua preferência</td>
                     </tr>
 
@@ -446,8 +454,8 @@
             <td></td>
             <td colspan="1"><font size = -1>Exame(s):<b> <?= $value12->procedimento; ?></b></td>
             <td ><font size = -1>
-                <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
-                Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>
+                <b></b><br>
+                &nbsp;</b></b>
             </td>
         </tr>
     </table>
@@ -458,7 +466,7 @@
             <td>
                 <!--<h4 style="text-align: center;">-->
                 <span style="font-weight: bold"> Sistema de Controle de Clínicas</span> <br>
-                <span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span>
+                <span style="font-weight: normal"><?= $value12->razao_social; ?></span>
                 <!--</h4>-->  
             </td>
         </tr>
@@ -466,7 +474,7 @@
     <hr>
     <?
     foreach ($exames as $item) :
-        if ($item->grupo == $exame[0]->grupo) {
+        if ($item->grupo == $value12->grupo) {
             $exame_id = $item->agenda_exames_id;
             $dataatualizacao = $item->data_autorizacao;
             $inicio = $item->inicio;
@@ -481,10 +489,10 @@
     <table style="width: 100%; font-size: 11pt;">
         <tr>
             <td>
-                Agenda...: <?= $exame[0]->crm_medico; ?>  - <?= $exame[0]->medico; ?>
+                Agenda...: <?= $value12->crm_medico; ?>  - <?= $value12->medico; ?>
             </td>
             <td>
-                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $exame[0]->agenda_exames_id; ?></span> 
+                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $value12->agenda_exames_id; ?></span> 
             </td>
         </tr>
         <tr>
@@ -492,7 +500,7 @@
                 Paciente.: <span style="font-weight: bold"><?= $paciente[0]->paciente_id; ?>  - <?= $paciente[0]->nome; ?></span>
             </td>
             <td>
-                Data: <?= date("d/m/Y", strtotime($exame[0]->data)); ?>
+                Data: <?= date("d/m/Y", strtotime($value12->data)); ?>
             </td>
         </tr>
         <tr>
@@ -529,7 +537,7 @@
         </tr>
         <tr>
             <td>
-                Convênio.: <span style="font-weight: bold"> <?= $exame[0]->convenio; ?> </span>
+                Convênio.: <span style="font-weight: bold"> <?= $value12->convenio; ?> </span>
             </td>
             <td>
                 Sequência:
@@ -540,15 +548,15 @@
                 Carteira....: <?= $paciente[0]->convenionumero; ?>
             </td>
             <td>
-                Autorização: <?= $exame[0]->autorizacao; ?>
+                Autorização: <?= $value12->autorizacao; ?>
             </td>
         </tr>
         <tr>
             <td>
-                Solicitante: <?= $exame[0]->crm_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?>
+                Solicitante: <?= $value12->crm_solicitante; ?>  - <?= $value12->medicosolicitante; ?>
             </td>
             <td>
-                Validade: <? //= $exame[0]->agenda_exames_id;                   ?>
+                Validade: <? //= $value12->agenda_exames_id;                   ?>
             </td>
         </tr>
         <tr>
@@ -561,7 +569,7 @@
         </tr>
         <tr>
             <td>
-                Atendente...: <?= $exame[0]->atendente; ?> 
+                Atendente...: <?= $value12->atendente; ?> 
             </td>
             <td>
                 CPF Responsável: <?= ($paciente[0]->cpf_responsavel_flag == 't') ? $paciente[0]->cpf : ''; ?>
@@ -605,7 +613,7 @@
 
 
 
-            if ($item->grupo == $exame[0]->grupo) {
+            if ($item->grupo == $value12->grupo) {
                 foreach ($formapagamento as $value) {
                     if ($item->formadepagamento == $value->nome) {
                         $data[$value->nome] = $data[$value->nome] + $item->valor1;
@@ -712,18 +720,18 @@
     </table>
     <hr>
 
-    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
+<!--    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
 
     <table style="font-size: 9pt;">
         <?
         foreach ($exames as $item) :
-            if ($item->grupo != $exame[0]->grupo) {
+            if ($item->grupo != $value12->grupo) {
                 ?>
                 <tr>
                     <td ><?= $item->codigo ?>-</td>
                     <td ><?= $item->procedimento ?>-</td>
                     <td ><?= $item->convenio ?>-</td>
-                    <!--<td ><?= $item->autorizacao ?>-</td>-->
+                    <td ><?= $item->autorizacao ?>-</td>
                     <td ><?= $item->medicosolicitante ?></td>
                 </tr>
                 <?
@@ -731,9 +739,9 @@
         endforeach;
         ?>
         </tbody>
-    </table>
-    <hr>
-    <span style="font-size: 10pt;">Observações: <?= $exame[0]->observacoes; ?></span>
+    </table>-->
+    <!--<hr>-->
+    <span style="font-size: 10pt;">Observações: <?= $value12->observacoes; ?></span>
     <style>
 
         .tdpadding{
@@ -782,7 +790,9 @@
     </style>
     <pagebreak></pagebreak>
     <br class="quebrapagina">
-    <?}elseif($value12->grupo == "RM"){?>
+    <?}elseif($value12->grupo == "RM" && $rm < 1){?>
+    <? $rm = $rm + 1; ?>
+    
      <table>
         <td>
             <table style="width: 100%;">
@@ -798,16 +808,16 @@
                 <tbody>
                     <tr>
                         <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-                        <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
+                        <td ><font size = -1><?= $value12->razao_social; ?></td>
                     </tr>
                     <tr>
-                        <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
-                        <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-                        <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
+                        <td ><font size = -1>Formulário: <?= $value12->ambulatorio_guia_id; ?></td>
+                        <td ><font size = -1>Data: <?= ($value12->data != '') ? date("d/m/Y", strtotime($value12->data)) : ''; ?></td>
+                        <td ><font size = -1>Informações: <?= $value12->telefoneempresa; ?></td>
                     </tr>
                     <tr>
                         <? //echo '<pre>'; var_dump($exame); die;?>
-                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
+                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($value12->data_entrega != '') ? date("d/m/Y", strtotime($value12->data_entrega)) : ''; ?>, a partir das 16h</td>
                         <td ><font size = -1>Agradecemos a sua preferência</td>
                     </tr>
 
@@ -820,8 +830,8 @@
             <td></td>
             <td colspan="1"><font size = -1>Exame(s):<b> <?= $value12->procedimento; ?></b></td>
             <td ><font size = -1>
-                <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
-                Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>
+                <b></b><br>
+                &nbsp;</b></b>
             </td>
         </tr>
     </table>
@@ -832,7 +842,7 @@
             <td>
                 <!--<h4 style="text-align: center;">-->
                 <span style="font-weight: bold"> Sistema de Controle de Clínicas</span> <br>
-                <span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span>
+                <span style="font-weight: normal"><?= $value12->razao_social; ?></span>
                 <!--</h4>-->  
             </td>
         </tr>
@@ -840,7 +850,8 @@
     <hr>
     <?
     foreach ($exames as $item) :
-        if ($item->grupo == $exame[0]->grupo) {
+        if ($item->grupo == $value12->grupo) {
+             
             $exame_id = $item->agenda_exames_id;
             $dataatualizacao = $item->data_autorizacao;
             $inicio = $item->inicio;
@@ -855,10 +866,10 @@
     <table style="width: 100%; font-size: 11pt;">
         <tr>
             <td>
-                Agenda...: <?= $exame[0]->crm_medico; ?>  - <?= $exame[0]->medico; ?>
+                Agenda...: <?= $value12->crm_medico; ?>  - <?= $value12->medico; ?>
             </td>
             <td>
-                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $exame[0]->ambulatorio_guia_id; ?></span> 
+                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $value12->ambulatorio_guia_id; ?></span> 
             </td>
         </tr>
         <tr>
@@ -866,7 +877,7 @@
                 Paciente.: <span style="font-weight: bold"><?= $paciente[0]->paciente_id; ?>  - <?= $paciente[0]->nome; ?></span>
             </td>
             <td>
-                Data: <?= date("d/m/Y", strtotime($exame[0]->data)); ?>
+                Data: <?= date("d/m/Y", strtotime($value12->data)); ?>
             </td>
         </tr>
         <tr>
@@ -903,7 +914,7 @@
         </tr>
         <tr>
             <td>
-                Convênio.: <span style="font-weight: bold"> <?= $exame[0]->convenio; ?> </span>
+                Convênio.: <span style="font-weight: bold"> <?= $value12->convenio; ?> </span>
             </td>
             <td>
                 Sequência:
@@ -914,15 +925,15 @@
                 Carteira....: <?= $paciente[0]->convenionumero; ?>
             </td>
             <td>
-                Autorização: <?= $exame[0]->autorizacao; ?>
+                Autorização: <?= $value12->autorizacao; ?>
             </td>
         </tr>
         <tr>
             <td>
-                Solicitante: <?= $exame[0]->crm_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?>
+                Solicitante: <?= $value12->crm_solicitante; ?>  - <?= $value12->medicosolicitante; ?>
             </td>
             <td>
-                Validade: <? //= $exame[0]->agenda_exames_id;                  ?>
+                Validade: <? //= $value12->agenda_exames_id;                  ?>
             </td>
         </tr>
         <tr>
@@ -935,7 +946,7 @@
         </tr>
         <tr>
             <td>
-                Atendente...: <?= $exame[0]->atendente; ?> 
+                Atendente...: <?= $value12->atendente; ?> 
             </td>
             <td>
                 CPF Responsável: <?= ($paciente[0]->cpf_responsavel_flag == 't') ? $paciente[0]->cpf : ''; ?>
@@ -979,7 +990,8 @@
 
 
 
-            if ($item->grupo == $exame[0]->grupo) {
+            if ($item->grupo == $value12->grupo) {
+//                echo '<pre>'; var_dump($value12->grupo); die;
                 foreach ($formapagamento as $value) {
                     if ($item->formadepagamento == $value->nome) {
                         $data[$value->nome] = $data[$value->nome] + $item->valor1;
@@ -1086,18 +1098,18 @@
     </table>
     <hr>
 
-    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
+<!--    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
 
     <table style="font-size: 9pt;">
         <?
         foreach ($exames as $item) :
-            if ($item->grupo != $exame[0]->grupo) {
+            if ($item->grupo != $value12->grupo) {
                 ?>
                 <tr>
                     <td ><?= $item->codigo ?>-</td>
                     <td ><?= $item->procedimento ?>-</td>
                     <td ><?= $item->convenio ?>-</td>
-                    <!--<td ><?= $item->autorizacao ?>-</td>-->
+                    <td ><?= $item->autorizacao ?>-</td>
                     <td ><?= $item->medicosolicitante ?></td>
                 </tr>
                 <?
@@ -1105,9 +1117,9 @@
         endforeach;
         ?>
         </tbody>
-    </table>
-    <hr>
-    <span style="font-size: 10pt;">Observações: <?= $exame[0]->observacoes; ?></span>
+    </table>-->
+    <!--<hr>-->
+    <span style="font-size: 10pt;">Observações: <?= $value12->observacoes; ?></span>
     <style>
 
         .tdpadding{
@@ -1143,7 +1155,7 @@
     <table style="width: 100%; font-size: 10pt;padding: 14px;">
         <tr>
             <td class="tdpadding" style="width: 100%">
-                ACOMPANHANTE:_______________________________________________________________________  FORM: <?= $exame[0]->ambulatorio_guia_id; ?>&nbsp;&nbsp;
+                ACOMPANHANTE:_______________________________________________________________________  FORM: <?= $value12->ambulatorio_guia_id; ?>&nbsp;&nbsp;
             </td>
         </tr>
         <tr>
@@ -1160,8 +1172,8 @@
         <th>HORÁRIO DE CHEGADA</th>
         </tr>
         <tr>
-        <td><?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-        <td><?= $exame[0]->inicio; ?></td>
+        <td><?= ($value12->data != '') ? date("d/m/Y", strtotime($value12->data)) : ''; ?></td>
+        <td><?= $value12->inicio; ?></td>
         <td><?= substr($dataatualizacao, 10, 9); ?></td>
         </tr>
     </table> <br>
@@ -1231,17 +1243,17 @@
     <table style="width: 100%; font-size: 8pt;padding: 14px;">
         <tr>
             <td class="tdpadding" style="font-size: 8pt; width: 100%">
-                PACIENTE: <?= $paciente['0']->nome; ?> FORM: <?= $exame[0]->ambulatorio_guia_id; ?>&nbsp;&nbsp;
+                PACIENTE: <?= $paciente['0']->nome; ?> FORM: <?= $value12->ambulatorio_guia_id; ?>&nbsp;&nbsp;
             </td>
         </tr>
         <tr>
             <td class="tdpadding" style="font-size: 8pt; width: 100%">
-                IDADE: <?= $teste; ?>&nbsp;&nbsp;&nbsp;&nbsp; TELEFONE: <?= $paciente[0]->telefone; ?>  - <?= $paciente[0]->celular; ?> - <?= $paciente[0]->whatsapp; ?>&nbsp;&nbsp;&nbsp;&nbsp; CONVÊNIO: <?= $exame[0]->convenio; ?>
+                IDADE: <?= $teste; ?>&nbsp;&nbsp;&nbsp;&nbsp; TELEFONE: <?= $paciente[0]->telefone; ?>  - <?= $paciente[0]->celular; ?> - <?= $paciente[0]->whatsapp; ?>&nbsp;&nbsp;&nbsp;&nbsp; CONVÊNIO: <?= $value12->convenio; ?>
             </td>
         </tr>
         <tr>
             <td class="tdpadding" style="font-size: 8pt; width: 100%">
-                MÉDICO SOLICITANTE:  <?= $exame[0]->medico_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?> &nbsp;&nbsp;&nbsp; PACIENTE INTERNADO?   (SIM)(NÃO)&nbsp;&nbsp;  EXAME: <?= $value12->procedimento; ?>
+                MÉDICO SOLICITANTE:  <?= $value12->medico_solicitante; ?>  - <?= $value12->medicosolicitante; ?> &nbsp;&nbsp;&nbsp; PACIENTE INTERNADO?   (SIM)(NÃO)&nbsp;&nbsp;  EXAME: <?= $value12->procedimento; ?>
             </td>
         </tr>
         
@@ -1262,8 +1274,8 @@
         <th style="font-size: 8pt;">HORÁRIO DE CHEGADA</th>
         </tr>
         <tr>
-        <td style="font-size: 8pt;"><?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-        <td style="font-size: 8pt;"><?= $exame[0]->inicio; ?></td>
+        <td style="font-size: 8pt;"><?= ($value12->data != '') ? date("d/m/Y", strtotime($value12->data)) : ''; ?></td>
+        <td style="font-size: 8pt;"><?= $value12->inicio; ?></td>
         <td style="font-size: 8pt;"><?= substr($dataatualizacao, 10, 9); ?></td>
         </tr>
         <tr>
@@ -1324,7 +1336,8 @@
     </style>
     <pagebreak></pagebreak>
     <br class="quebrapagina">-->
-    <?}elseif($value12->grupo == "RX(TORAX)"){?>
+    <?}elseif($value12->grupo == "RX(TORAX)" && $rxtorax < 1){?>
+    <? $rxtorax = $rxtorax + 1; ?>
     <table>
         <td>
             <table style="width: 100%;">
@@ -1340,16 +1353,16 @@
                 <tbody>
                     <tr>
                         <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-                        <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
+                        <td ><font size = -1><?= $value12->razao_social; ?></td>
                     </tr>
                     <tr>
-                        <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
-                        <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-                        <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
+                        <td ><font size = -1>Formulário: <?= $value12->ambulatorio_guia_id; ?></td>
+                        <td ><font size = -1>Data: <?= ($value12->data != '') ? date("d/m/Y", strtotime($value12->data)) : ''; ?></td>
+                        <td ><font size = -1>Informações: <?= $value12->telefoneempresa; ?></td>
                     </tr>
                     <tr>
                         <? //echo '<pre>'; var_dump($exame); die;?>
-                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
+                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($value12->data_entrega != '') ? date("d/m/Y", strtotime($value12->data_entrega)) : ''; ?>, a partir das 16h</td>
                         <td ><font size = -1>Agradecemos a sua preferência</td>
                     </tr>
 
@@ -1362,8 +1375,8 @@
             <td width="170px"></td>
             <td colspan="1"><font size = -1>Exame(s):<b> <?= $value12->procedimento; ?></b></td>
             <td ><font size = -1>
-                <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
-                Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>
+                <b></b><br>
+                &nbsp;</b></b>
             </td>
         </tr>
     </table>
@@ -1374,7 +1387,7 @@
             <td>
                 <!--<h4 style="text-align: center;">-->
                 <span style="font-weight: bold"> Sistema de Controle de Clínicas</span> <br>
-                <span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span>
+                <span style="font-weight: normal"><?= $value12->razao_social; ?></span>
                 <!--</h4>-->  
             </td>
         </tr>
@@ -1382,7 +1395,7 @@
     <hr>
     <?
     foreach ($exames as $item) :
-        if ($item->grupo == $exame[0]->grupo) {
+        if ($item->grupo == $value12->grupo) {
             $exame_id = $item->agenda_exames_id;
             $dataatualizacao = $item->data_autorizacao;
             $inicio = $item->inicio;
@@ -1397,10 +1410,10 @@
     <table style="width: 100%; font-size: 11pt;">
         <tr>
             <td>
-                Agenda...: <?= $exame[0]->crm_medico; ?>  - <?= $exame[0]->medico; ?>
+                Agenda...: <?= $value12->crm_medico; ?>  - <?= $value12->medico; ?>
             </td>
             <td>
-                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $exame[0]->ambulatorio_guia_id; ?></span> 
+                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $value12->ambulatorio_guia_id; ?></span> 
             </td>
         </tr>
         <tr>
@@ -1408,7 +1421,7 @@
                 Paciente.: <span style="font-weight: bold"><?= $paciente[0]->paciente_id; ?>  - <?= $paciente[0]->nome; ?></span>
             </td>
             <td>
-                Data: <?= date("d/m/Y", strtotime($exame[0]->data)); ?>
+                Data: <?= date("d/m/Y", strtotime($value12->data)); ?>
             </td>
         </tr>
         <tr>
@@ -1445,7 +1458,7 @@
         </tr>
         <tr>
             <td>
-                Convênio.: <span style="font-weight: bold"> <?= $exame[0]->convenio; ?> </span>
+                Convênio.: <span style="font-weight: bold"> <?= $value12->convenio; ?> </span>
             </td>
             <td>
                 Sequência:
@@ -1456,15 +1469,15 @@
                 Carteira....: <?= $paciente[0]->convenionumero; ?>
             </td>
             <td>
-                Autorização: <?= $exame[0]->autorizacao; ?>
+                Autorização: <?= $value12->autorizacao; ?>
             </td>
         </tr>
         <tr>
             <td>
-                Solicitante: <?= $exame[0]->crm_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?>
+                Solicitante: <?= $value12->crm_solicitante; ?>  - <?= $value12->medicosolicitante; ?>
             </td>
             <td>
-                Validade: <? //= $exame[0]->agenda_exames_id;                  ?>
+                Validade: <? //= $value12->agenda_exames_id;                  ?>
             </td>
         </tr>
         <tr>
@@ -1477,7 +1490,7 @@
         </tr>
         <tr>
             <td>
-                Atendente...: <?= $exame[0]->atendente; ?> 
+                Atendente...: <?= $value12->atendente; ?> 
             </td>
             <td>
                 CPF Responsável: <?= ($paciente[0]->cpf_responsavel_flag == 't') ? $paciente[0]->cpf : ''; ?>
@@ -1521,7 +1534,7 @@
 
 
 
-            if ($item->grupo == $exame[0]->grupo) {
+            if ($item->grupo == $value12->grupo) {
                 foreach ($formapagamento as $value) {
                     if ($item->formadepagamento == $value->nome) {
                         $data[$value->nome] = $data[$value->nome] + $item->valor1;
@@ -1627,19 +1640,19 @@
 
     </table>
     <hr>
-
+<!--
     <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
 
     <table style="font-size: 9pt;">
         <?
         foreach ($exames as $item) :
-            if ($item->grupo != $exame[0]->grupo) {
+            if ($item->grupo != $value12->grupo) {
                 ?>
                 <tr>
                     <td ><?= $item->codigo ?>-</td>
                     <td ><?= $item->procedimento ?>-</td>
                     <td ><?= $item->convenio ?>-</td>
-                    <!--<td ><?= $item->autorizacao ?>-</td>-->
+                    <td ><?= $item->autorizacao ?>-</td>
                     <td ><?= $item->medicosolicitante ?></td>
                 </tr>
                 <?
@@ -1647,9 +1660,9 @@
         endforeach;
         ?>
         </tbody>
-    </table>
-    <hr>
-    <span style="font-size: 10pt;">Observações: <?= $exame[0]->observacoes; ?></span>
+    </table>-->
+    <!--<hr>-->
+    <span style="font-size: 10pt;">Observações: <?= $value12->observacoes; ?></span>
     <style>
 
         .tdpadding{
@@ -1704,7 +1717,8 @@
     </style>
     <pagebreak></pagebreak>
     <br class="quebrapagina">-->
-    <?}elseif($value12->grupo == "TOMOGRAFIA"){?>
+    <?}elseif($value12->grupo == "TOMOGRAFIA" && $tomografia < 1){?>
+    <? $tomografia = $tomografia + 1; ?>
     <table>
         <td>
             <table style="width: 100%;">
@@ -1720,16 +1734,16 @@
                 <tbody>
                     <tr>
                         <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-                        <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
+                        <td ><font size = -1><?= $value12->razao_social; ?></td>
                     </tr>
                     <tr>
-                        <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
-                        <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-                        <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
+                        <td ><font size = -1>Formulário: <?= $value12->ambulatorio_guia_id; ?></td>
+                        <td ><font size = -1>Data: <?= ($value12->data != '') ? date("d/m/Y", strtotime($value12->data)) : ''; ?></td>
+                        <td ><font size = -1>Informações: <?= $value12->telefoneempresa; ?></td>
                     </tr>
                     <tr>
                         <? //echo '<pre>'; var_dump($exame); die;?>
-                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
+                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($value12->data_entrega != '') ? date("d/m/Y", strtotime($value12->data_entrega)) : ''; ?>, a partir das 16h</td>
                         <td ><font size = -1>Agradecemos a sua preferência</td>
                     </tr>
 
@@ -1742,8 +1756,8 @@
             <td></td>
             <td colspan="1"><font size = -1>Exame(s):<b> <?= $value12->procedimento; ?></b></td>
             <td ><font size = -1>
-                <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
-                Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>
+                <b></b><br>
+                &nbsp;</b></b>
             </td>
         </tr>
     </table>
@@ -1754,7 +1768,7 @@
             <td>
                 <!--<h4 style="text-align: center;">-->
                 <span style="font-weight: bold"> Sistema de Controle de Clínicas</span> <br>
-                <span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span>
+                <span style="font-weight: normal"><?= $value12->razao_social; ?></span>
                 <!--</h4>-->  
             </td>
         </tr>
@@ -1762,7 +1776,7 @@
     <hr>
     <?
     foreach ($exames as $item) :
-        if ($item->grupo == $exame[0]->grupo) {
+        if ($item->grupo == $value12->grupo) {
             $exame_id = $item->agenda_exames_id;
             $dataatualizacao = $item->data_autorizacao;
             $inicio = $item->inicio;
@@ -1777,10 +1791,10 @@
     <table style="width: 100%; font-size: 11pt;">
         <tr>
             <td>
-                Agenda...: <?= $exame[0]->crm_medico; ?>  - <?= $exame[0]->medico; ?>
+                Agenda...: <?= $value12->crm_medico; ?>  - <?= $value12->medico; ?>
             </td>
             <td>
-                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $exame[0]->ambulatorio_guia_id; ?></span> 
+                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $value12->ambulatorio_guia_id; ?></span> 
             </td>
         </tr>
         <tr>
@@ -1788,7 +1802,7 @@
                 Paciente.: <span style="font-weight: bold"><?= $paciente[0]->paciente_id; ?>  - <?= $paciente[0]->nome; ?></span>
             </td>
             <td>
-                Data: <?= date("d/m/Y", strtotime($exame[0]->data)); ?>
+                Data: <?= date("d/m/Y", strtotime($value12->data)); ?>
             </td>
         </tr>
         <tr>
@@ -1825,7 +1839,7 @@
         </tr>
         <tr>
             <td>
-                Convênio.: <span style="font-weight: bold"> <?= $exame[0]->convenio; ?> </span>
+                Convênio.: <span style="font-weight: bold"> <?= $value12->convenio; ?> </span>
             </td>
             <td>
                 Sequência:
@@ -1836,15 +1850,15 @@
                 Carteira....: <?= $paciente[0]->convenionumero; ?>
             </td>
             <td>
-                Autorização: <?= $exame[0]->autorizacao; ?>
+                Autorização: <?= $value12->autorizacao; ?>
             </td>
         </tr>
         <tr>
             <td>
-                Solicitante: <?= $exame[0]->crm_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?>
+                Solicitante: <?= $value12->crm_solicitante; ?>  - <?= $value12->medicosolicitante; ?>
             </td>
             <td>
-                Validade: <? //= $exame[0]->agenda_exames_id;                                ?>
+                Validade: <? //= $value12->agenda_exames_id;                                ?>
             </td>
         </tr>
         <tr>
@@ -1857,7 +1871,7 @@
         </tr>
         <tr>
             <td>
-                Atendente...: <?= $exame[0]->atendente; ?> 
+                Atendente...: <?= $value12->atendente; ?> 
             </td>
             <td>
                 CPF Responsável: <?= ($paciente[0]->cpf_responsavel_flag == 't') ? $paciente[0]->cpf : ''; ?>
@@ -1901,7 +1915,7 @@
 
 
 
-            if ($item->grupo == $exame[0]->grupo) {
+            if ($item->grupo == $value12->grupo) {
                 foreach ($formapagamento as $value) {
                     if ($item->formadepagamento == $value->nome) {
                         $data[$value->nome] = $data[$value->nome] + $item->valor1;
@@ -2008,18 +2022,18 @@
     </table>
     <hr>
 
-    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
+<!--    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
 
     <table style="font-size: 9pt;">
         <?
         foreach ($exames as $item) :
-            if ($item->grupo != $exame[0]->grupo) {
+            if ($item->grupo != $value12->grupo) {
                 ?>
                 <tr>
                     <td ><?= $item->codigo ?>-</td>
                     <td ><?= $item->procedimento ?>-</td>
                     <td ><?= $item->convenio ?>-</td>
-                    <!--<td ><?= $item->autorizacao ?>-</td>-->
+                    <td ><?= $item->autorizacao ?>-</td>
                     <td ><?= $item->medicosolicitante ?></td>
                 </tr>
                 <?
@@ -2027,9 +2041,9 @@
         endforeach;
         ?>
         </tbody>
-    </table>
-    <hr>
-    <span style="font-size: 10pt;">Observações: <?= $exame[0]->observacoes; ?></span>
+    </table>-->
+    <!--<hr>-->
+    <span style="font-size: 10pt;">Observações: <?= $value12->observacoes; ?></span>
     <style>
 
         .tdpadding{
@@ -2085,7 +2099,7 @@
                 PACIENTE: <?= $paciente[0]->nome ?>
             </td>
             <td class="tdpadding">
-                FORM: <?= $exame[0]->ambulatorio_guia_id ?>
+                FORM: <?= $value12->ambulatorio_guia_id ?>
             </td>
         </tr>
         <tr>
@@ -2097,7 +2111,7 @@
                 EXAME: <?= $value12->procedimento ?>
             </td>
             <td class="tdpadding">
-                DATA: <?= date("d/m/Y", strtotime($exame[0]->data)); ?>
+                DATA: <?= date("d/m/Y", strtotime($value12->data)); ?>
             </td>
         </tr>
     </table>
@@ -2216,6 +2230,8 @@
     <pagebreak></pagebreak>
     <br class="quebrapagina">-->
     <?}else{?>
+    <?if($comum < 1){?>
+    <? $comum = $comum + 1; ?>
     <table>
         <td>
             <table style="width: 100%;">
@@ -2231,16 +2247,16 @@
                 <tbody>
                     <tr>
                         <td style="width: 50%" colspan="2"><b><font size = -1><?= $paciente['0']->nome; ?></b></td>
-                        <td ><font size = -1><?= $exame[0]->razao_social; ?></td>
+                        <td ><font size = -1><?= $value12->razao_social; ?></td>
                     </tr>
                     <tr>
-                        <td ><font size = -1>Formulário: <?= $exame[0]->ambulatorio_guia_id; ?></td>
-                        <td ><font size = -1>Data: <?= ($exame[0]->data != '') ? date("d/m/Y", strtotime($exame[0]->data)) : ''; ?></td>
-                        <td ><font size = -1>Informações: <?= $exame[0]->telefoneempresa; ?></td>
+                        <td ><font size = -1>Formulário: <?= $value12->ambulatorio_guia_id; ?></td>
+                        <td ><font size = -1>Data: <?= ($value12->data != '') ? date("d/m/Y", strtotime($value12->data)) : ''; ?></td>
+                        <td ><font size = -1>Informações: <?= $value12->telefoneempresa; ?></td>
                     </tr>
                     <tr>
                         <? //echo '<pre>'; var_dump($exame); die;?>
-                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($exame[0]->data_entrega != '') ? date("d/m/Y", strtotime($exame[0]->data_entrega)) : ''; ?>, a partir das 16h</td>
+                        <td colspan="2"><font size = -1>Previsão de Entrega: <?= ($value12->data_entrega != '') ? date("d/m/Y", strtotime($value12->data_entrega)) : ''; ?>, a partir das 16h</td>
                         <td ><font size = -1>Agradecemos a sua preferência</td>
                     </tr>
 
@@ -2253,8 +2269,8 @@
             <td width="170px"></td>
             <td colspan="1"><font size = -1>Exame(s):<b> <?= $value12->procedimento; ?></b></td>
             <td ><font size = -1>
-                <b>Resultado: www.clinicavaleimagem.com.br/ </b><br>
-                Usuario:&nbsp;<b><?= $paciente['0']->paciente_id ?>&nbsp;</b>Senha: &nbsp;<b><?= $exames['0']->agenda_exames_id ?></b>
+                <b></b><br>
+                &nbsp;</b></b>
             </td>
         </tr>
     </table>
@@ -2265,7 +2281,7 @@
             <td>
                 <!--<h4 style="text-align: center;">-->
                 <span style="font-weight: bold"> Sistema de Controle de Clínicas</span> <br>
-                <span style="font-weight: normal"><?= $exame[0]->razao_social; ?></span>
+                <span style="font-weight: normal"><?= $value12->razao_social; ?></span>
                 <!--</h4>-->  
             </td>
         </tr>
@@ -2273,7 +2289,7 @@
     <hr>
     <?
     foreach ($exames as $item) :
-        if ($item->grupo == $exame[0]->grupo) {
+        if ($item->grupo == $value12->grupo) {
             $exame_id = $item->agenda_exames_id;
             $dataatualizacao = $item->data_autorizacao;
             $inicio = $item->inicio;
@@ -2288,10 +2304,10 @@
     <table style="width: 100%; font-size: 11pt;">
         <tr>
             <td>
-                Agenda...: <?= $exame[0]->crm_medico; ?>  - <?= $exame[0]->medico; ?>
+                Agenda...: <?= $value12->crm_medico; ?>  - <?= $value12->medico; ?>
             </td>
             <td>
-                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $exame[0]->ambulatorio_guia_id; ?></span> 
+                <span style="font-weight: bold; font-size: 14pt;">Formulário(AN): <?= $value12->ambulatorio_guia_id; ?></span> 
             </td>
         </tr>
         <tr>
@@ -2299,7 +2315,7 @@
                 Paciente.: <span style="font-weight: bold"><?= $paciente[0]->paciente_id; ?>  - <?= $paciente[0]->nome; ?></span>
             </td>
             <td>
-                Data: <?= date("d/m/Y", strtotime($exame[0]->data)); ?>
+                Data: <?= date("d/m/Y", strtotime($value12->data)); ?>
             </td>
         </tr>
         <tr>
@@ -2336,7 +2352,7 @@
         </tr>
         <tr>
             <td>
-                Convênio.: <span style="font-weight: bold"> <?= $exame[0]->convenio; ?> </span>
+                Convênio.: <span style="font-weight: bold"> <?= $value12->convenio; ?> </span>
             </td>
             <td>
                 Sequência:
@@ -2347,15 +2363,15 @@
                 Carteira....: <?= $paciente[0]->convenionumero; ?>
             </td>
             <td>
-                Autorização: <?= $exame[0]->autorizacao; ?>
+                Autorização: <?= $value12->autorizacao; ?>
             </td>
         </tr>
         <tr>
             <td>
-                Solicitante: <?= $exame[0]->crm_solicitante; ?>  - <?= $exame[0]->medicosolicitante; ?>
+                Solicitante: <?= $value12->crm_solicitante; ?>  - <?= $value12->medicosolicitante; ?>
             </td>
             <td>
-                Validade: <? //= $exame[0]->agenda_exames_id;                 ?>
+                Validade: <? //= $value12->agenda_exames_id;                 ?>
             </td>
         </tr>
         <tr>
@@ -2368,7 +2384,7 @@
         </tr>
         <tr>
             <td>
-                Atendente...: <?= $exame[0]->atendente; ?> 
+                Atendente...: <?= $value12->atendente; ?> 
             </td>
             <td>
                 CPF Responsável: <?= ($paciente[0]->cpf_responsavel_flag == 't') ? $paciente[0]->cpf : ''; ?>
@@ -2412,7 +2428,7 @@
 
 
 
-            if ($item->grupo == $exame[0]->grupo) {
+            if ($item->grupo == $value12->grupo) {
                 foreach ($formapagamento as $value) {
                     if ($item->formadepagamento == $value->nome) {
                         $data[$value->nome] = $data[$value->nome] + $item->valor1;
@@ -2518,12 +2534,12 @@
     </table>
     <hr>
 
-    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
+<!--    <span style="font-size: 10pt;">Outro(s) procd(s).:</span>
 
     <table style="font-size: 9pt;">
         <?
         foreach ($exames as $item) :
-            if ($item->grupo != $exame[0]->grupo) {
+            if ($item->grupo != $value12->grupo) {
                 ?>
                 <tr>
                     <td ><?= $item->codigo ?>-</td>
@@ -2536,9 +2552,9 @@
         endforeach;
         ?>
         </tbody>
-    </table>
-    <hr>
- <span style="font-size: 10pt;">Observações: <?= $exame[0]->observacoes; ?></span>
+    </table>-->
+    <!--<hr>-->
+ <span style="font-size: 10pt;">Observações: <?= $value12->observacoes; ?></span>
  <style>
      
      .tdpadding{
@@ -2547,6 +2563,8 @@
          
      
  </style>
+ 
+    <? } ?>
     <? } ?>
     <br>
     <br>

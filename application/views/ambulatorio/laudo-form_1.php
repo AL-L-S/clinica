@@ -111,7 +111,7 @@ if (count($pacs) > 0) {
                             <? if (in_array('solicitante', $opc_dadospaciente)) { ?>
                                 <td>Solicitante: <?= @$obj->_solicitante ?></td>
                             <? } ?>
-                            
+
                         </tr>
                         <tr>
                             <? if (in_array('idade', $opc_dadospaciente)) { ?>
@@ -433,7 +433,7 @@ if (count($pacs) > 0) {
                                                 <?php
                                             }
                                             ?>
-                                            <input type="checkbox" name="carimbo" id="carimbo" <? //=(@$obj->_carimbo == 't')? 'checked': '';?> /><label>Carimbo</label>
+                                            <input type="checkbox" name="carimbo" id="carimbo" <? //=(@$obj->_carimbo == 't')? 'checked': ''; ?> /><label>Carimbo</label>
                                             <?php
                                             if (@$obj->_indicado == "t") {
                                                 ?>
@@ -630,6 +630,167 @@ if (count($pacs) > 0) {
                                 </fieldset>
                                 <br>
                                 <br>
+                                <fieldset>
+                                    <legend><b><font size="3" color="red">Historico de consultas</font></b></legend>
+                                    <div>
+                                        <?
+                                        // Esse código serve para mostrar os históricos que foram importados
+                                        // De outro sistema STG.
+                                        // Na hora que o médico finaliza o atendimento, o sistema manda os dados para o endereço do sistema
+                                        // Digitado no cadastro do médico, caso exista ele salva numa tabela especifica.
+                                        // Para não criar um outro local onde iriam aparecer os atendimentos dessa tabela 
+                                        // Há essa lógica aqui embaixo para inserir no meio dos outros atendimentos da ambulatorio_laudo os outros
+                                        // da integração
+                                        $contador_teste = 0;
+                                        // Contador para utilizar no array
+//                            $historico = array();
+                                        foreach ($historico as $item) {
+                                            // Verifica se há informação
+                                            if (isset($historicowebcon[$contador_teste])) {
+                                                // Define as datas
+                                                $data_foreach = date("Y-m-d", strtotime($item->data_cadastro));
+                                                $data_while = date("Y-m-d", strtotime($historicowebcon[$contador_teste]->data));
+                                                // Caso a data do Index atual da integracao seja maior que a data rodando no foreach, ele irá mostrar
+
+                                                while ($data_while > $data_foreach) {
+                                                    ?>
+
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td ><span style="color: #007fff">Integração</span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td >Empresa: <?= $historicowebcon[$contador_teste]->empresa; ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td >Data: <?= substr($historicowebcon[$contador_teste]->data, 8, 2) . "/" . substr($historicowebcon[$contador_teste]->data, 5, 2) . "/" . substr($historicowebcon[$contador_teste]->data, 0, 4); ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td >Medico: <?= $historicowebcon[$contador_teste]->medico_integracao; ?></td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td >Tipo: <?= $historicowebcon[$contador_teste]->procedimento; ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td >Queixa principal: <?= $historicowebcon[$contador_teste]->texto; ?></td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                    <hr>
+                                                    <?
+                                                    $contador_teste ++;
+                                                    // Verifica se o próximo index existe e se sim, ele redefine a data_while pra poder rodar novamente o while
+                                                    if (isset($historicowebcon[$contador_teste])) {
+                                                        $data_while = date("Y-m-d", strtotime($historicowebcon[$contador_teste]->data_cadastro));
+                                                    } else {
+                                                        // Caso não exista ele simplesmente dá um break e deixa o foreach rodar
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                            ?>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td >Data: <?= substr($item->data_cadastro, 8, 2) . "/" . substr($item->data_cadastro, 5, 2) . "/" . substr($item->data_cadastro, 0, 4); ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >Medico: <?= $item->medico; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >Tipo: <?= $item->procedimento; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >Queixa principal: <?= $item->texto; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Arquivos anexos:
+                                                            <?
+                                                            $this->load->helper('directory');
+                                                            $arquivo_pasta = directory_map("./upload/consulta/$item->ambulatorio_laudo_id/");
+
+                                                            $w = 0;
+                                                            if ($arquivo_pasta != false):
+                                                                foreach ($arquivo_pasta as $value) :
+                                                                    $w++;
+                                                                    ?>
+
+                                                                    <a onclick="javascript:window.open('<?= base_url() . "upload/consulta/" . $item->ambulatorio_laudo_id . "/" . $value ?> ', '_blank', 'toolbar=no,Location=no,menubar=no,width=900,height=650');"><img  width="50px" height="50px" src="<?= base_url() . "upload/consulta/" . $item->ambulatorio_laudo_id . "/" . $value ?>"></a>
+                                                                    <?
+                                                                    if ($w == 8) {
+                                                                        
+                                                                    }
+                                                                endforeach;
+                                                                $arquivo_pasta = "";
+                                                            endif
+                                                            ?>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <hr>
+                                        <? }
+                                        ?>
+                                    </div>
+                                    <?
+                                    if (count($historico) == 0 || $contador_teste < count($historicowebcon)) {
+                                        while ($contador_teste < count($historicowebcon)) {
+                                            ?>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><span style="color: #007fff">Integração</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >Empresa: <?= $historicowebcon[$contador_teste]->empresa; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >Data: <?= substr($historicowebcon[$contador_teste]->data, 8, 2) . "/" . substr($historicowebcon[$contador_teste]->data, 5, 2) . "/" . substr($historicowebcon[$contador_teste]->data, 0, 4); ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >Medico: <?= $historicowebcon[$contador_teste]->medico_integracao; ?></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td >Tipo: <?= $historicowebcon[$contador_teste]->procedimento; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >Queixa principal: <?= $historicowebcon[$contador_teste]->texto; ?></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                            <hr>
+
+                                            <?
+                                            $contador_teste++;
+                                        }
+                                    }
+                                    ?>
+
+                                    <div>
+                                        <? foreach ($historicoantigo as $itens) {
+                                            ?>
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td >Data: <?= substr($itens->data_cadastro, 8, 2) . "/" . substr($itens->data_cadastro, 5, 2) . "/" . substr($itens->data_cadastro, 0, 4); ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td >Queixa principal: <?= $itens->laudo; ?></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <hr>
+                                        <? }
+                                        ?>
+                                    </div>
+
+                                </fieldset>
+                                <br><br>
                                 <fieldset>
                                     <legend><b><font size="3" color="red">Historico de exames</font></b></legend>
                                     <div>
@@ -864,345 +1025,345 @@ if (count($pacs) > 0) {
                             <script type="text/javascript" src="<?= base_url() ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
                             <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
                             <script type="text/javascript">
-                                                        jQuery('#rev').change(function () {
-                                                            if (this.checked) {
-                                                                var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
+                                                                jQuery('#rev').change(function () {
+                                                                    if (this.checked) {
+                                                                        var tag = '<table><tr><td><input type="radio" name="tempoRevisao" value="1a"><span>1 ano</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="6m" required><span>6 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="3m"><span>3 meses</span></td></tr><tr><td><input type="radio" name="tempoRevisao" value="1m"><span>1 mes</span></td></tr></table>';
 //                                                            var tag += '';
 ////                                                           <input type="radio" name="OPCAO1" VALUE="op1"> opção1
 ////                                                            var tag += '';
 //                                                            jQuery("#Altura").mask("999", {placeholder: " "});
-                                                                jQuery(".dias").append(tag);
-                                                            } else {
-                                                                jQuery(".dias span").remove();
-                                                                jQuery(".dias input").remove();
-                                                            }
-                                                        });
-                                                        document.getElementById('titulosenha').style.display = "none";
-                                                        document.getElementById('senha').style.display = "none";
-
-                                                        $(document).ready(function () {
-                                                            $("body").keypress(function (event) {
-
-                                                                if (event.keyCode == 119)   // se a tecla apertada for 13 (enter)
-                                                                {
-                                                                    document.getElementById('Imprimir').click();
-                                                                }
-                                                                if (event.keyCode == 120)   // se a tecla apertada for 13 (enter)
-                                                                {
-                                                                    var combosituacao = document.getElementById("situacao");
-                                                                    combosituacao.selectedIndex = 2;
-                                                                    document.getElementById('titulosenha').style.display = "block";
-                                                                    document.getElementById('senha').style.display = "block";
-                                                                    document.form_laudo.senha.focus()
-                                                                }
-                                                            });
-                                                        });
-                                                        $(document).ready(function () {
-                                                            $('#sortable').sortable();
-                                                        });
-
-
-                                                        $(document).ready(function () {
-                                                            jQuery('#ficha_laudo').validate({
-                                                                rules: {
-                                                                    imagem: {
-                                                                        required: true
+                                                                        jQuery(".dias").append(tag);
+                                                                    } else {
+                                                                        jQuery(".dias span").remove();
+                                                                        jQuery(".dias input").remove();
                                                                     }
-                                                                },
-                                                                messages: {
-                                                                    imagem: {
-                                                                        required: "*"
-                                                                    }
-                                                                }
-                                                            });
-                                                        });
-                                                        
-                                                        function visualizarModeloLaudo() {
-                                                            if($('#exame').val() != ''){
-                                                              varWindow = window.open('<?= base_url() ?>ambulatorio/laudo/carregarmodelolaudoselecionado/' + $('#exame').val(), 'popup', "width=800, height=600 ");  
-                                                            }else{
-                                                                alert('Escolha um modelo de laudo antes de tentar visualizá-lo');
-                                                            }
-                                                            
-                                                        }
-                                                            <? if (($endereco != '')) { ?>
-                                                                <?
-                                                                if ($obj->_cpf != '') {
-                                                                    $cpf = $obj->_cpf;
-                                                                } else {
-                                                                    $cpf = 'null';
-                                                                }
-                                                                $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$obj->_toten_fila_id/$obj->_nome/$cpf/$obj->_medico_parecer1/$obj->_medico_nome/$obj->_toten_sala_id/false";
-                                                            ?>
-                                                            $("#botaochamar").click(function () {
-//                                                                alert('<?//= $url_enviar_ficha ?>');
-                                                                $.ajax({
-                                                                    type: "POST",
-                                                                    data: {teste: 'teste'},
-                                                                    //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                                                                    url: "<?= $url_enviar_ficha ?>",
-                                                                    success: function (data) {
-                                                                        //                console.log(data);
-                                                                        //                    alert(data.id);
-                                                                        $("#idChamada").val(data.id);
+                                                                });
+                                                                document.getElementById('titulosenha').style.display = "none";
+                                                                document.getElementById('senha').style.display = "none";
 
-                                                                    },
-                                                                    error: function (data) {
-                                                                        console.log(data);
- 
-                                                                    }
+                                                                $(document).ready(function () {
+                                                                    $("body").keypress(function (event) {
+
+                                                                        if (event.keyCode == 119)   // se a tecla apertada for 13 (enter)
+                                                                        {
+                                                                            document.getElementById('Imprimir').click();
+                                                                        }
+                                                                        if (event.keyCode == 120)   // se a tecla apertada for 13 (enter)
+                                                                        {
+                                                                            var combosituacao = document.getElementById("situacao");
+                                                                            combosituacao.selectedIndex = 2;
+                                                                            document.getElementById('titulosenha').style.display = "block";
+                                                                            document.getElementById('senha').style.display = "block";
+                                                                            document.form_laudo.senha.focus()
+                                                                        }
+                                                                    });
+                                                                });
+                                                                $(document).ready(function () {
+                                                                    $('#sortable').sortable();
                                                                 });
 
 
-                                                                $.ajax({
-                                                                    type: "POST",
-                                                                    data: {teste: 'teste'},
-                                                                    //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                                                                    url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>/<?= @$obj->_toten_fila_id ?>/<?= @$obj->_toten_sala_id ?>",
-                                                                    success: function (data) {
-
-                                                                        alert('Operação efetuada com sucesso');
-
-
-                                                                    },
-                                                                    error: function (data) {
-                                                                        console.log(data);
-                                                                        alert('Erro ao chamar paciente');
-                                                                    }
+                                                                $(document).ready(function () {
+                                                                    jQuery('#ficha_laudo').validate({
+                                                                        rules: {
+                                                                            imagem: {
+                                                                                required: true
+                                                                            }
+                                                                        },
+                                                                        messages: {
+                                                                            imagem: {
+                                                                                required: "*"
+                                                                            }
+                                                                        }
+                                                                    });
                                                                 });
-                                                                $.ajax({
-                                                                    type: "POST",
-                                                                    data: {teste: 'teste'},
-                                                                    //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
-                                                                    url: "<?= $endereco ?>/webService/telaChamado/cancelar/<?= @$obj->_toten_fila_id ?>",
-                                                                                success: function (data) {
 
-                                                                                    //                            alert('Operação efetuada com sucesso');
+                                                                function visualizarModeloLaudo() {
+                                                                    if ($('#exame').val() != '') {
+                                                                        varWindow = window.open('<?= base_url() ?>ambulatorio/laudo/carregarmodelolaudoselecionado/' + $('#exame').val(), 'popup', "width=800, height=600 ");
+                                                                    } else {
+                                                                        alert('Escolha um modelo de laudo antes de tentar visualizá-lo');
+                                                                    }
 
+                                                                }
+<? if (($endereco != '')) { ?>
+    <?
+    if ($obj->_cpf != '') {
+        $cpf = $obj->_cpf;
+    } else {
+        $cpf = 'null';
+    }
+    $url_enviar_ficha = "$endereco/webService/telaAtendimento/enviarFicha/$obj->_toten_fila_id/$obj->_nome/$cpf/$obj->_medico_parecer1/$obj->_medico_nome/$obj->_toten_sala_id/false";
+    ?>
+                                                                    $("#botaochamar").click(function () {
+    //                                                                alert('<? //= $url_enviar_ficha  ?>');
+                                                                        $.ajax({
+                                                                            type: "POST",
+                                                                            data: {teste: 'teste'},
+                                                                            //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                                            url: "<?= $url_enviar_ficha ?>",
+                                                                            success: function (data) {
+                                                                                //                console.log(data);
+                                                                                //                    alert(data.id);
+                                                                                $("#idChamada").val(data.id);
 
-                                                                                },
-                                                                                error: function (data) {
-                                                                                    console.log(data);
-                                                                                    //                            alert('Erro ao chamar paciente');
-                                                                                }
-                                                                            });
+                                                                            },
+                                                                            error: function (data) {
+                                                                                console.log(data);
+
+                                                                            }
                                                                         });
+
+
+                                                                        $.ajax({
+                                                                            type: "POST",
+                                                                            data: {teste: 'teste'},
+                                                                            //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                                            url: "<?= $endereco ?>/webService/telaChamado/proximo/<?= @$obj->_medico_parecer1 ?>/<?= @$obj->_toten_fila_id ?>/<?= @$obj->_toten_sala_id ?>",
+                                                                                        success: function (data) {
+
+                                                                                            alert('Operação efetuada com sucesso');
+
+
+                                                                                        },
+                                                                                        error: function (data) {
+                                                                                            console.log(data);
+                                                                                            alert('Erro ao chamar paciente');
+                                                                                        }
+                                                                                    });
+                                                                                    $.ajax({
+                                                                                        type: "POST",
+                                                                                        data: {teste: 'teste'},
+                                                                                        //url: "http://192.168.25.47:8099/webService/telaAtendimento/cancelar/495",
+                                                                                        url: "<?= $endereco ?>/webService/telaChamado/cancelar/<?= @$obj->_toten_fila_id ?>",
+                                                                                                    success: function (data) {
+
+                                                                                                        //                            alert('Operação efetuada com sucesso');
+
+
+                                                                                                    },
+                                                                                                    error: function (data) {
+                                                                                                        console.log(data);
+                                                                                                        //                            alert('Erro ao chamar paciente');
+                                                                                                    }
+                                                                                                });
+                                                                                            });
 <? } ?>
 
 
 
-                                                                    function muda(obj) {
-                                                                        if (obj.value == 'FINALIZADO') {
-                                                                            document.getElementById('titulosenha').style.display = "block";
-                                                                            document.getElementById('senha').style.display = "block";
-                                                                        } else {
-                                                                            document.getElementById('titulosenha').style.display = "none";
-                                                                            document.getElementById('senha').style.display = "none";
-                                                                        }
-                                                                    }
+                                                                                        function muda(obj) {
+                                                                                            if (obj.value == 'FINALIZADO') {
+                                                                                                document.getElementById('titulosenha').style.display = "block";
+                                                                                                document.getElementById('senha').style.display = "block";
+                                                                                            } else {
+                                                                                                document.getElementById('titulosenha').style.display = "none";
+                                                                                                document.getElementById('senha').style.display = "none";
+                                                                                            }
+                                                                                        }
 
 
 <?
 //                                                            var_dump($laudo_sigiloso); die;
 ?>
-                                                                    var readonly = <?= $readonly ?>;
+                                                                                        var readonly = <?= $readonly ?>;
 
-                                                                    tinyMCE.init({
-                                                                        // General options
-                                                                        mode: "specific_textareas",
-                                                                        editor_selector: "laudo",
-                                                                        theme: "advanced",
-                                                                        readonly: readonly,
-                                                                        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                                                                        // Theme options
-                                                                        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                                                                        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
-                                                                        theme_advanced_toolbar_location: "top",
-                                                                        theme_advanced_toolbar_align: "left",
-                                                                        theme_advanced_statusbar_location: "bottom",
-                                                                        theme_advanced_resizing: true,
-                                                                        browser_spellcheck: true,
-                                                                        // Example content CSS (should be your site CSS)
-                                                                        //                                    content_css : "css/content.css",
-                                                                        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                                                                        // Drop lists for link/image/media/template dialogs
-                                                                        template_external_list_url: "lists/template_list.js",
-                                                                        external_link_list_url: "lists/link_list.js",
-                                                                        external_image_list_url: "lists/image_list.js",
-                                                                        media_external_list_url: "lists/media_list.js",
-                                                                        // Style formats
-                                                                        style_formats: [
-                                                                            {title: 'Bold text', inline: 'b'},
-                                                                            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                                                                            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                                                                            {title: 'Example 1', inline: 'span', classes: 'example1'},
-                                                                            {title: 'Example 2', inline: 'span', classes: 'example2'},
-                                                                            {title: 'Table styles'},
-                                                                            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                                                                        ],
-                                                                        // Replace values for the template plugin
-                                                                        template_replace_values: {
-                                                                            username: "Some User",
-                                                                            staffid: "991234"
-                                                                        }
+                                                                                        tinyMCE.init({
+                                                                                            // General options
+                                                                                            mode: "specific_textareas",
+                                                                                            editor_selector: "laudo",
+                                                                                            theme: "advanced",
+                                                                                            readonly: readonly,
+                                                                                            plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                                                            // Theme options
+                                                                                            theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                                                                            theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
+                                                                                            theme_advanced_toolbar_location: "top",
+                                                                                            theme_advanced_toolbar_align: "left",
+                                                                                            theme_advanced_statusbar_location: "bottom",
+                                                                                            theme_advanced_resizing: true,
+                                                                                            browser_spellcheck: true,
+                                                                                            // Example content CSS (should be your site CSS)
+                                                                                            //                                    content_css : "css/content.css",
+                                                                                            content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                                                                            // Drop lists for link/image/media/template dialogs
+                                                                                            template_external_list_url: "lists/template_list.js",
+                                                                                            external_link_list_url: "lists/link_list.js",
+                                                                                            external_image_list_url: "lists/image_list.js",
+                                                                                            media_external_list_url: "lists/media_list.js",
+                                                                                            // Style formats
+                                                                                            style_formats: [
+                                                                                                {title: 'Bold text', inline: 'b'},
+                                                                                                {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                                                                {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                                                                {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                                                                {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                                                                {title: 'Table styles'},
+                                                                                                {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                                                            ],
+                                                                                            // Replace values for the template plugin
+                                                                                            template_replace_values: {
+                                                                                                username: "Some User",
+                                                                                                staffid: "991234"
+                                                                                            }
 
-                                                                    });
+                                                                                        });
 
-                                                                    tinyMCE.init({
-                                                                        // General options
-                                                                        mode: "specific_textareas",
-                                                                        editor_selector: "adendo",
-                                                                        theme: "advanced",
+                                                                                        tinyMCE.init({
+                                                                                            // General options
+                                                                                            mode: "specific_textareas",
+                                                                                            editor_selector: "adendo",
+                                                                                            theme: "advanced",
 
-                                                                        plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
-                                                                        // Theme options
-                                                                        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
-                                                                        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
-                                                                        theme_advanced_toolbar_location: "top",
-                                                                        theme_advanced_toolbar_align: "left",
-                                                                        theme_advanced_statusbar_location: "bottom",
-                                                                        theme_advanced_resizing: true,
-                                                                        browser_spellcheck: true,
-                                                                        // Example content CSS (should be your site CSS)
-                                                                        //                                    content_css : "css/content.css",
-                                                                        content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
-                                                                        // Drop lists for link/image/media/template dialogs
-                                                                        template_external_list_url: "lists/template_list.js",
-                                                                        external_link_list_url: "lists/link_list.js",
-                                                                        external_image_list_url: "lists/image_list.js",
-                                                                        media_external_list_url: "lists/media_list.js",
-                                                                        // Style formats
-                                                                        style_formats: [
-                                                                            {title: 'Bold text', inline: 'b'},
-                                                                            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
-                                                                            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
-                                                                            {title: 'Example 1', inline: 'span', classes: 'example1'},
-                                                                            {title: 'Example 2', inline: 'span', classes: 'example2'},
-                                                                            {title: 'Table styles'},
-                                                                            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
-                                                                        ],
-                                                                        // Replace values for the template plugin
-                                                                        template_replace_values: {
-                                                                            username: "Some User",
-                                                                            staffid: "991234"
-                                                                        }
+                                                                                            plugins: "autolink,lists,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,wordcount,advlist,autosave,visualblocks",
+                                                                                            // Theme options
+                                                                                            theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,pagebreak,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect",
+                                                                                            theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fullscreen",
+                                                                                            theme_advanced_toolbar_location: "top",
+                                                                                            theme_advanced_toolbar_align: "left",
+                                                                                            theme_advanced_statusbar_location: "bottom",
+                                                                                            theme_advanced_resizing: true,
+                                                                                            browser_spellcheck: true,
+                                                                                            // Example content CSS (should be your site CSS)
+                                                                                            //                                    content_css : "css/content.css",
+                                                                                            content_css: "js/tinymce/jscripts/tiny_mce/themes/advanced/skins/default/img/content.css",
+                                                                                            // Drop lists for link/image/media/template dialogs
+                                                                                            template_external_list_url: "lists/template_list.js",
+                                                                                            external_link_list_url: "lists/link_list.js",
+                                                                                            external_image_list_url: "lists/image_list.js",
+                                                                                            media_external_list_url: "lists/media_list.js",
+                                                                                            // Style formats
+                                                                                            style_formats: [
+                                                                                                {title: 'Bold text', inline: 'b'},
+                                                                                                {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                                                                {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                                                                {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                                                                {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                                                                {title: 'Table styles'},
+                                                                                                {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                                                                            ],
+                                                                                            // Replace values for the template plugin
+                                                                                            template_replace_values: {
+                                                                                                username: "Some User",
+                                                                                                staffid: "991234"
+                                                                                            }
 
-                                                                    });
+                                                                                        });
 
-                                                                    $(function () {
-                                                                        $('#exame').change(function () {
-                                                                            if ($(this).val()) {
-                                                                                //$('#laudo').hide();
-                                                                                $('.carregando').show();
-                                                                                $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
-                                                                                    options = "";
+                                                                                        $(function () {
+                                                                                            $('#exame').change(function () {
+                                                                                                if ($(this).val()) {
+                                                                                                    //$('#laudo').hide();
+                                                                                                    $('.carregando').show();
+                                                                                                    $.getJSON('<?= base_url() ?>autocomplete/modeloslaudo', {exame: $(this).val(), ajax: true}, function (j) {
+                                                                                                        options = "";
 
-                                                                                    options += j[0].texto;
-                                                                                    //                                                document.getElementById("laudo").value = options
+                                                                                                        options += j[0].texto;
+                                                                                                        //                                                document.getElementById("laudo").value = options
 
-                                                                                    $('#laudo').val(options)
-                                                                                    var ed = tinyMCE.get('laudo');
-                                                                                    ed.setContent($('#laudo').val());
+                                                                                                        $('#laudo').val(options)
+                                                                                                        var ed = tinyMCE.get('laudo');
+                                                                                                        ed.setContent($('#laudo').val());
 
-                                                                                    //$('#laudo').val(options);
-                                                                                    //$('#laudo').html(options).show();
-                                                                                    //                                                $('.carregando').hide();
-                                                                                    //history.go(0) 
-                                                                                });
-                                                                            } else {
-                                                                                $('#laudo').html('value=""');
-                                                                            }
-                                                                        });
-                                                                    });
+                                                                                                        //$('#laudo').val(options);
+                                                                                                        //$('#laudo').html(options).show();
+                                                                                                        //                                                $('.carregando').hide();
+                                                                                                        //history.go(0) 
+                                                                                                    });
+                                                                                                } else {
+                                                                                                    $('#laudo').html('value=""');
+                                                                                                }
+                                                                                            });
+                                                                                        });
 
-                                                                    $(function () {
-                                                                        $('#linha').change(function () {
-                                                                            if ($(this).val()) {
-                                                                                //$('#laudo').hide();
-                                                                                $('.carregando').show();
-                                                                                $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
-                                                                                    options = "";
+                                                                                        $(function () {
+                                                                                            $('#linha').change(function () {
+                                                                                                if ($(this).val()) {
+                                                                                                    //$('#laudo').hide();
+                                                                                                    $('.carregando').show();
+                                                                                                    $.getJSON('<?= base_url() ?>autocomplete/modeloslinhas', {linha: $(this).val(), ajax: true}, function (j) {
+                                                                                                        options = "";
 
-                                                                                    options += j[0].texto;
-                                                                                    //                                                document.getElementById("laudo").value = $('#laudo').val() + options
-                                                                                    $('#laudo').val() + options
-                                                                                    var ed = tinyMCE.get('laudo');
-                                                                                    ed.setContent($('#laudo').val());
-                                                                                    //$('#laudo').html(options).show();
-                                                                                });
-                                                                            } else {
-                                                                                $('#laudo').html('value=""');
-                                                                            }
-                                                                        });
-                                                                    });
+                                                                                                        options += j[0].texto;
+                                                                                                        //                                                document.getElementById("laudo").value = $('#laudo').val() + options
+                                                                                                        $('#laudo').val() + options
+                                                                                                        var ed = tinyMCE.get('laudo');
+                                                                                                        ed.setContent($('#laudo').val());
+                                                                                                        //$('#laudo').html(options).show();
+                                                                                                    });
+                                                                                                } else {
+                                                                                                    $('#laudo').html('value=""');
+                                                                                                }
+                                                                                            });
+                                                                                        });
 
-                                                                    $(function () {
-                                                                        $('#carimbo').change(function () {
+                                                                                        $(function () {
+                                                                                            $('#carimbo').change(function () {
 //                                                                            alert('adasd');
-                                                                            if ($(this).prop('checked') == true) {
-                                                                                //$('#laudo').hide();
-                                                                                $('.carregando').show();
-                                                                                $.getJSON('<?= base_url() ?>autocomplete/carimbomedico', {medico_id: $('#medico').val(), ajax: true}, function (j) {
-                                                                                    options = "";
+                                                                                                if ($(this).prop('checked') == true) {
+                                                                                                    //$('#laudo').hide();
+                                                                                                    $('.carregando').show();
+                                                                                                    $.getJSON('<?= base_url() ?>autocomplete/carimbomedico', {medico_id: $('#medico').val(), ajax: true}, function (j) {
+                                                                                                        options = "";
 
-                                                                                    options += j[0].carimbo;
-                                                                                    tinyMCE.triggerSave(true, true);
-                                                                                    document.getElementById("laudo").value = $('#laudo').val() + j[0].carimbo;
-                                                                                    $('#laudo').val() + j[0].carimbo;
-                                                                                    var ed = tinyMCE.get('laudo');
-                                                                                    ed.setContent($('#laudo').val());
-                                                                                });
-                                                                            } else {
-                                                                                //$('#laudo').html('value=""');
-                                                                            }
-                                                                        });
-                                                                    });
+                                                                                                        options += j[0].carimbo;
+                                                                                                        tinyMCE.triggerSave(true, true);
+                                                                                                        document.getElementById("laudo").value = $('#laudo').val() + j[0].carimbo;
+                                                                                                        $('#laudo').val() + j[0].carimbo;
+                                                                                                        var ed = tinyMCE.get('laudo');
+                                                                                                        ed.setContent($('#laudo').val());
+                                                                                                    });
+                                                                                                } else {
+                                                                                                    //$('#laudo').html('value=""');
+                                                                                                }
+                                                                                            });
+                                                                                        });
 
-                                                                    $(function () {
-                                                                        $("#linha2").autocomplete({
-                                                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
-                                                                            minLength: 1,
-                                                                            focus: function (event, ui) {
-                                                                                $("#linha2").val(ui.item.label);
-                                                                                return false;
-                                                                            },
-                                                                            select: function (event, ui) {
-                                                                                $("#linha2").val(ui.item.value);
-                                                                                tinyMCE.triggerSave(true, true);
-                                                                                document.getElementById("laudo").value = $('#laudo').val() + ui.item.id;
-                                                                                $('#laudo').val() + ui.item.id;
-                                                                                var ed = tinyMCE.get('laudo');
-                                                                                ed.setContent($('#laudo').val());
-                                                                                //$( "#laudo" ).val() + ui.item.id;
-                                                                                document.getElementById("linha2").value = ''
-                                                                                return false;
-                                                                            }
-                                                                        });
-                                                                    });
+                                                                                        $(function () {
+                                                                                            $("#linha2").autocomplete({
+                                                                                                source: "<?= base_url() ?>index.php?c=autocomplete&m=linhas",
+                                                                                                minLength: 1,
+                                                                                                focus: function (event, ui) {
+                                                                                                    $("#linha2").val(ui.item.label);
+                                                                                                    return false;
+                                                                                                },
+                                                                                                select: function (event, ui) {
+                                                                                                    $("#linha2").val(ui.item.value);
+                                                                                                    tinyMCE.triggerSave(true, true);
+                                                                                                    document.getElementById("laudo").value = $('#laudo').val() + ui.item.id;
+                                                                                                    $('#laudo').val() + ui.item.id;
+                                                                                                    var ed = tinyMCE.get('laudo');
+                                                                                                    ed.setContent($('#laudo').val());
+                                                                                                    //$( "#laudo" ).val() + ui.item.id;
+                                                                                                    document.getElementById("linha2").value = ''
+                                                                                                    return false;
+                                                                                                }
+                                                                                            });
+                                                                                        });
 
-                                                                    $(function (a) {
-                                                                        $('#anteriores').change(function () {
-                                                                            if ($(this).val()) {
-                                                                                //$('#laudo').hide();
-                                                                                $('.carregando').show();
-                                                                                $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
-                                                                                    option = "";
+                                                                                        $(function (a) {
+                                                                                            $('#anteriores').change(function () {
+                                                                                                if ($(this).val()) {
+                                                                                                    //$('#laudo').hide();
+                                                                                                    $('.carregando').show();
+                                                                                                    $.getJSON('<?= base_url() ?>autocomplete/laudosanteriores', {anteriores: $(this).val(), ajax: true}, function (i) {
+                                                                                                        option = "";
 
-                                                                                    option = i[0].texto;
-                                                                                    tinyMCE.triggerSave();
-                                                                                    document.getElementById("laudo").value = option
-                                                                                    //$('#laudo').val(options);
-                                                                                    //$('#laudo').html(options).show();
-                                                                                    $('.carregando').hide();
-                                                                                    history.go(0)
-                                                                                });
-                                                                            } else {
-                                                                                $('#laudo').html('value="texto"');
-                                                                            }
-                                                                        });
-                                                                    });
-                                                                    //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
-                                                                    $('.jqte-test').jqte();
+                                                                                                        option = i[0].texto;
+                                                                                                        tinyMCE.triggerSave();
+                                                                                                        document.getElementById("laudo").value = option
+                                                                                                        //$('#laudo').val(options);
+                                                                                                        //$('#laudo').html(options).show();
+                                                                                                        $('.carregando').hide();
+                                                                                                        history.go(0)
+                                                                                                    });
+                                                                                                } else {
+                                                                                                    $('#laudo').html('value="texto"');
+                                                                                                }
+                                                                                            });
+                                                                                        });
+                                                                                        //bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+                                                                                        $('.jqte-test').jqte();
 
 
 

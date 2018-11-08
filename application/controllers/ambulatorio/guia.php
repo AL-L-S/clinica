@@ -1238,12 +1238,12 @@ class Guia extends BaseController {
         }
         
         ///////////////////////////////////////////////////////////////////////////////////////////////
-//        elseif ($data['empresa'][0]->impressao_tipo == 47) { //OFTALMOCLINICA
-//            
-//            $data['guia_id'] = $guia_id;            
-//            $this->load->View('ambulatorio/impressaofichaoftalmoclinica', $data);
-//            
-//        }
+        elseif ($data['empresa'][0]->impressao_tipo == 47) { //OFTALMOCLINICA
+            
+            $data['guia_id'] = $guia_id;            
+            $this->load->View('ambulatorio/impressaofichaoftalmoclinica', $data);
+            
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_tipo == 12) { //CIMETRA 

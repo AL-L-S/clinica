@@ -5468,6 +5468,7 @@ class exame_model extends Model {
                             ae.telefonema,
                             ae.situacao,
                             ae.guia_id,
+                            ae.ordenador,
                             ae.data_atualizacao,
                             ae.paciente_id,
                             ae.observacoes,
@@ -5516,6 +5517,7 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->orderby('ae.data');
+        $this->db->orderby('ae.ordenador desc');
  
         if($ordenacao_situacao == 't'){
             // var_dump($ordenacao_situacao); die;
