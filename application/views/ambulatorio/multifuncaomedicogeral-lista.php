@@ -153,7 +153,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                 </thead>
             </table>
             <?
-            $listas = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada)->get()->result();
+            $listas = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada, $ordenacao_situacao)->get()->result();
             $aguardando = 0;
             $espera = 0;
             $finalizado = 0;
@@ -199,7 +199,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                 $limit = 100;
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
                 $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada, $ordenacao_situacao)->limit($limit, $pagina)->get()->result();
-                $total = count($lista);
+                $total = count($listas);
 
 //                echo "<pre>";
 //                var_dump($lista); die;
@@ -244,10 +244,10 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                             }
 //                            var_dump($endereco);
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
-                            if ($item->realizada == 't' && $item->situacaoexame == 'EXECUTANDO') {
+                            if ($item->realizada == 't' && $item->situacaolaudo != 'FINALIZADO') {
                                 $situacao = "Atendendo";
                                 $verifica = 2;
-                            } elseif ($item->realizada == 't' && $item->situacaoexame == 'FINALIZADO') {
+                            } elseif ($item->realizada == 't' && $item->situacaolaudo == 'FINALIZADO') {
                                 $situacao = "Finalizado";
                                 $verifica = 4;
                             } elseif ($item->confirmado == 'f') {
@@ -263,6 +263,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                             }
                             ?>
                             <tr>
+                                <!-- <td><?=$item->data_finalizado?></td> -->
                                 <? if ($verifica == 1) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font <? ?>><b><?= $situacao; ?></b></td>
                                 <? }if ($verifica == 2) { ?>
@@ -447,6 +448,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                     <tr>
 
                         <th class="tabela_footer" colspan="12">
+                        <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>

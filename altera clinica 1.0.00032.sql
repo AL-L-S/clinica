@@ -27,3 +27,11 @@ ALTER TABLE ponto.tb_farmacia_produto ADD COLUMN procedimento_tuss_id integer;
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN detalhamento_nr text;
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN ordenacao_situacao boolean DEFAULT false;
+
+ALTER TABLE ponto.tb_agenda_exames ADD COLUMN carater_xml integer DEFAULT 1;
+
+-- Corrigindo os problemas de ordenação na tela de atendimento.
+
+UPDATE ponto.tb_ambulatorio_laudo
+   SET data_finalizado = data_atualizacao
+ WHERE situacao = 'FINALIZADO' and data_finalizado is null;

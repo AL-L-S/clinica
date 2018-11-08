@@ -3980,12 +3980,17 @@ class Exame extends BaseController {
         $listarexames = $this->exame->listarxmlfaturamentoexames();
         // $data['internacao'] = $this->internacao_m->relatoriointernacaosituacao();
         // echo'<pre>';
-        // var_dump($listarexames);die;
+        // var_dump($listarexame);
+        // var_dump($listarpacienete);
+        // die;
 
         $horario = date("Y-m-d");
         $hora = date("H:i:s");
         $empresa = $this->exame->listarcnpj();
         $lote = $this->exame->listarlote();
+        $carater_xml = 1;
+        // Só inicializando a variável pra caso alguém esqueça de adicionar em um ponto do código
+        // Daí não dá erro.
 
         $codigoUF = $this->utilitario->codigo_uf($empresa[0]->codigo_ibge, 'codigo');
 
@@ -4101,6 +4106,7 @@ class Exame extends BaseController {
                         $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                         $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
                         $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
+                        $carater_xml = $item->carater_xml;
                         if ($item->medico == '') {
                             $medico = 'ADMINISTRADOR';
                         } else {
@@ -4160,7 +4166,7 @@ class Exame extends BaseController {
               </ans:dadosSolicitante>
               <ans:dadosSolicitacao>
                  <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                 <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                 <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                  <ans:indicacaoClinica>I</ans:indicacaoClinica>
               </ans:dadosSolicitacao>
               <ans:dadosExecutante>
@@ -4267,7 +4273,7 @@ class Exame extends BaseController {
               </ans:dadosSolicitante>
               <ans:dadosSolicitacao>
                  <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                 <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                 <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                  <ans:indicacaoClinica>I</ans:indicacaoClinica>
               </ans:dadosSolicitacao>
               <ans:dadosExecutante>
@@ -4486,6 +4492,7 @@ class Exame extends BaseController {
                                     $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                                     $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
                                     $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
+                                    $carater_xml = $item->carater_xml;
                                     if ($item->medico == '') {
                                         $medico = 'ADMINISTRADOR';
                                     } else {
@@ -4552,7 +4559,7 @@ class Exame extends BaseController {
 
                           <ans:dadosSolicitacao>
                              <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                             <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                             <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                              <ans:indicacaoClinica>I</ans:indicacaoClinica>
                           </ans:dadosSolicitacao>
 
@@ -4660,7 +4667,7 @@ class Exame extends BaseController {
 
                           <ans:dadosSolicitacao>
                              <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                             <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                             <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                              <ans:indicacaoClinica>I</ans:indicacaoClinica>
                           </ans:dadosSolicitacao>
 
@@ -4978,6 +4985,7 @@ class Exame extends BaseController {
                     }
                 } else {
                     if ($_POST['layoutarq'] == 'sadt' && count($listarexame) > 0) {
+                        // echo 'its here'; die;
                         $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
         <ans:mensagemTISS xmlns='http://www.w3.org/2001/XMLSchema' xmlns:ans='http://www.ans.gov.br/padroes/tiss/schemas'>
            <ans:cabecalho>
@@ -5051,6 +5059,7 @@ class Exame extends BaseController {
                                     $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                                     $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
                                     $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
+                                    $carater_xml = $item->carater_xml;
                                     if ($item->medico == '') {
                                         $medico = 'ADMINISTRADOR';
                                     } else {
@@ -5106,7 +5115,7 @@ class Exame extends BaseController {
                           </ans:dadosSolicitante>
                           <ans:dadosSolicitacao>
                              <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                             <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                             <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                              <ans:indicacaoClinica>I</ans:indicacaoClinica>
                           </ans:dadosSolicitacao>
                           <ans:dadosExecutante>
@@ -5213,7 +5222,7 @@ class Exame extends BaseController {
                           </ans:dadosSolicitante>
                           <ans:dadosSolicitacao>
                              <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                             <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                             <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                              <ans:indicacaoClinica>I</ans:indicacaoClinica>
                           </ans:dadosSolicitacao>
                           <ans:dadosExecutante>
@@ -5308,7 +5317,13 @@ class Exame extends BaseController {
                                             fclose($fp);
                                             $corpo = "";
                                             $rodape = "";
+                                            var_dump($totExames, count($listarexames)); die;
                                         }
+                                        $total_certao = count($listarexames);
+                                        // echo '<pre>';
+                                        // var_dump($item); 
+                                        // echo '<br> <hr>';
+                                        // echo "$totExames , {$total_certao} <br>";
                                     } else {
 
                                         if ($i == 100) {
@@ -5354,11 +5369,13 @@ class Exame extends BaseController {
                                             $b++;
                                             $corpo = "";
                                             $rodape = "";
+                                            // echo 'aushd';
                                         }
                                     }
                                 }
                             }
                         }
+                       
                     } else {
                         if (count($listarexame) > 0) {
                             $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
@@ -5597,6 +5614,7 @@ class Exame extends BaseController {
                                     $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                                     $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
                                     $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
+                                    $carater_xml = $item->carater_xml;
                                     if ($item->medico == '') {
                                         $medico = 'ADMINISTRADOR';
                                     } else {
@@ -5659,7 +5677,7 @@ class Exame extends BaseController {
                           </ans:dadosSolicitante>
                           <ans:dadosSolicitacao>
                              <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                             <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                             <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                              <ans:indicacaoClinica>I</ans:indicacaoClinica>
                           </ans:dadosSolicitacao>
                           <ans:dadosExecutante>
@@ -5746,7 +5764,7 @@ class Exame extends BaseController {
                           </ans:dadosSolicitante>
                           <ans:dadosSolicitacao>
                              <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                             <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                             <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                              <ans:indicacaoClinica>I</ans:indicacaoClinica>
                           </ans:dadosSolicitacao>
                           <ans:dadosExecutante>
@@ -6028,6 +6046,7 @@ class Exame extends BaseController {
                                     $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                                     $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
                                     $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
+                                    $carater_xml = $item->carater_xml;
                                     if ($item->medico == '') {
                                         $medico = 'ADMINISTRADOR';
                                     } else {
@@ -6088,7 +6107,7 @@ class Exame extends BaseController {
                       </ans:dadosSolicitante>
                       <ans:dadosSolicitacao>
                          <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                          <ans:indicacaoClinica>I</ans:indicacaoClinica>
                       </ans:dadosSolicitacao>
                       <ans:dadosExecutante>
@@ -6174,7 +6193,7 @@ class Exame extends BaseController {
                       </ans:dadosSolicitante>
                       <ans:dadosSolicitacao>
                          <ans:dataSolicitacao>" . substr($data_autorizacao[0]->data_cadastro, 0, 10) . "</ans:dataSolicitacao>
-                         <ans:caraterAtendimento>1</ans:caraterAtendimento>
+                         <ans:caraterAtendimento>$carater_xml</ans:caraterAtendimento>
                          <ans:indicacaoClinica>I</ans:indicacaoClinica>
                       </ans:dadosSolicitacao>
                       <ans:dadosExecutante>
@@ -6436,6 +6455,7 @@ class Exame extends BaseController {
                 }
             }
         }
+        // var_dump('teee'); die;
         $data['mensagem'] = 'Sucesso ao gerar arquivo.';
         $this->session->set_flashdata('message', $data['mensagem']);
         redirect(base_url() . "ambulatorio/exame/faturamentoexamexml", $data);

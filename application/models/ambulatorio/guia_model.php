@@ -10966,6 +10966,9 @@ class guia_model extends Model {
 
             $this->db->set('data_faturamento', $horario);
             $this->db->set('operador_faturamento', $operador_id);
+            if($_POST['carater_xml'] > 0){
+                $this->db->set('carater_xml', $_POST['carater_xml']);
+            }
             $this->db->set('faturado', 't');
             $this->db->where('agenda_exames_id', $_POST['agenda_exames_id']);
             $this->db->update('tb_agenda_exames');
@@ -12550,6 +12553,9 @@ class guia_model extends Model {
                 $this->db->set('valor1', str_replace(",", ".", $value->valor_total));
                 $this->db->set('data_faturamento', $horario);
                 $this->db->set('operador_faturamento', $operador_id);
+                if($_POST['carater_xml'] > 0){
+                    $this->db->set('carater_xml', $_POST['carater_xml']);
+                }
                 $this->db->set('faturado', 't');
                 $this->db->where('agenda_exames_id', $value->agenda_exames_id);
                 $this->db->update('tb_agenda_exames');
