@@ -5055,7 +5055,9 @@ class Exame extends BaseController {
                                     }
 
                                     $i++;
+                                    
                                     $totExames++;
+                                    // echo "<span style='color:red'>$totExames</span>";
                                     $data_autorizacao = $this->exame->listarxmldataautorizacao($value->ambulatorio_guia_id);
                                     $dataautorizacao = substr($data_autorizacao[0]->data_cadastro, 0, 10);
                                     $dataValidadeSenha = date('Y-m-d', strtotime("+30 days", strtotime($dataautorizacao)));
@@ -5317,13 +5319,14 @@ class Exame extends BaseController {
                                             fclose($fp);
                                             $corpo = "";
                                             $rodape = "";
-                                            var_dump($totExames, count($listarexames)); die;
+                                        //    echo 'gravou o xml';
                                         }
                                         $total_certao = count($listarexames);
                                         // echo '<pre>';
                                         // var_dump($item); 
                                         // echo '<br> <hr>';
                                         // echo "$totExames , {$total_certao} <br>";
+                                        
                                     } else {
 
                                         if ($i == 100) {
@@ -5375,7 +5378,7 @@ class Exame extends BaseController {
                                 }
                             }
                         }
-                       
+                        // die;
                     } else {
                         if (count($listarexame) > 0) {
                             $cabecalho = "<?xml version='1.0' encoding='iso-8859-1'?>
