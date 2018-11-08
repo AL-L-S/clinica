@@ -3966,7 +3966,7 @@ class laudo_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
 
-            $this->db->select('agenda_exames_id');
+            $this->db->select('agenda_exames_id, exames_id');
             $this->db->from('tb_exames');
             $this->db->where("exames_id", $exame_id);
             $query = $this->db->get();
@@ -4034,6 +4034,15 @@ class laudo_model extends Model {
             $this->db->set('medico_consulta_id', $_POST['medico']);
             $this->db->where('agenda_exames_id', $return[0]->agenda_exames_id);
             $this->db->update('tb_agenda_exames');
+
+
+            $this->db->set('situacao', 'FINALIZADO');
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+            $this->db->set('data_atualizacao', $horario);
+            $this->db->set('operador_atualizacao', $operador_id);
+            $this->db->where('exames_id', $return[0]->exames_id);
+            $this->db->update('tb_exames');
 
             ////////////////////////////// OFTAMOLOGIA ///////////////////////////////////////////////
             if ($permissao[0]->oftamologia == 't') {
@@ -4136,6 +4145,7 @@ class laudo_model extends Model {
                 $this->db->set('rodape', 'f');
             }
             if ($_POST['status'] != 'FINALIZADO') {
+                // echo 'teste'; die;
                 $this->db->set('data_finalizado', $horario);
                 $this->db->set('operador_finalizado', $operador_id);
             }

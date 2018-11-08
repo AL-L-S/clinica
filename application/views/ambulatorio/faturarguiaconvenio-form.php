@@ -27,6 +27,15 @@
                             <input type="hidden" name="valorcadastrado" id="valorcadastrado" value="<?= $exame[0]->total; ?>"/>
                             <input type="hidden" name="novovalortotal" id="novovalortotal">
                         </dd>
+                        <dt>
+                        <label>Carater Atendimento</label>
+                        </dt>
+                        <dd>
+                            <select name="carater_xml" id="carater_xml" style="width: 100px">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </dd>
                     </dl>    
 
                     <hr/>

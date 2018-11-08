@@ -5476,6 +5476,7 @@ class exame_model extends Model {
                             al.medico_parecer1,
                             al.ambulatorio_laudo_id,
                             al.exame_id,
+                            al.data_finalizado,
                             e.situacao as situacaoexame,
                             al.procedimento_tuss_id,
                             p.toten_fila_id,
@@ -5515,8 +5516,9 @@ class exame_model extends Model {
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_consulta_id', 'left');
         $this->db->where('ae.empresa_id', $empresa_id);
         $this->db->orderby('ae.data');
-
+ 
         if($ordenacao_situacao == 't'){
+            // var_dump($ordenacao_situacao); die;
             $this->db->orderby('al.data_finalizado desc');
             $this->db->orderby('ae.confirmado desc');
             $this->db->orderby('ae.realizada desc');
@@ -6695,7 +6697,7 @@ class exame_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where("c.dinheiro", 'f');
         $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.realizada', 'true');
         if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
             $this->db->where('ae.data_faturar >=', $_POST['datainicio']);
         }
@@ -6756,7 +6758,7 @@ class exame_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->where("c.dinheiro", 'f');
         $this->db->where('ae.realizada', 'true');
-        $this->db->where('ae.cancelada', 'false');
+        // $this->db->where('ae.cancelada', 'false');
 
         if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
             $this->db->where('ae.data_faturar >=', $_POST['datainicio']);
@@ -6809,6 +6811,7 @@ class exame_model extends Model {
                             sum(ae.valor_total) as valor_total,
                             ae.valor,
                             ae.autorizacao,
+                            ae.carater_xml,
                             op.nome as medicosolicitante,
                             op.conselho as conselhosolicitante,
                             o.nome as medico,
@@ -6838,7 +6841,7 @@ class exame_model extends Model {
         $this->db->join("tb_convenio c", "c.convenio_id = pc.convenio_id", "left");
         $this->db->where("c.dinheiro", 'f');
         $this->db->where('ae.ativo', 'false');
-        $this->db->where('ae.cancelada', 'false');
+        $this->db->where('ae.realizada', 'true');
         if (isset($_POST['datainicio']) && strlen($_POST['datainicio']) > 0) {
             $this->db->where('ae.data_faturar >=', $_POST['datainicio']);
         }
