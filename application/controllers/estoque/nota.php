@@ -276,8 +276,8 @@ class Nota extends BaseController {
 //        $this->load->View('estoque/impressaorelatoriosaidaarmazem', $data);
 //    }
 
-    function excluir($estoque_nota_id) {
-        $valida = $this->nota->excluir($estoque_nota_id);
+    function excluir($estoque_nota_id, $nota_fiscal) {
+        $valida = $this->nota->excluir($estoque_nota_id, $nota_fiscal);
         if ($valida == 0) {
             $data['mensagem'] = 'Sucesso ao excluir a Nota';
         } else {
