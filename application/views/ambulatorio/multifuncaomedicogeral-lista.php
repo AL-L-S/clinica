@@ -25,6 +25,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
             $salas = $this->exame->listartodassalas();
             $empresa = $this->guia->listarempresasaladeespera();
             @$ordem_chegada = @$empresa[0]->ordem_chegada;
+            @$ordenacao_situacao = @$empresa[0]->ordenacao_situacao;
             $medicos = $this->operador_m->listarmedicos();
             $perfil_id = $this->session->userdata('perfil_id');
             ?>
@@ -182,8 +183,10 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
             <table>
                 <thead>
                     <tr>
+                        <th class="tabela_header" width="100px;">Ordem</th>
                         <th class="tabela_header" >Status</th>
                         <th class="tabela_header" width="250px;">Nome</th>
+                        <th class="tabela_header" width="100px;">Idade</th>
                         <th class="tabela_header" width="60px;">Espera</th>
                         <th class="tabela_header" width="100px;">Convenio</th>
                         <th class="tabela_header" width="80px;">Agenda</th>
@@ -197,7 +200,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                 isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
                 $limit = 100;
                 $url = $this->utilitario->build_query_params(current_url(), $_GET);
-                $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada)->limit($limit, $pagina)->get()->result();
+                $lista = $this->exame->listarmultifuncao2geral($_GET, $ordem_chegada, $ordenacao_situacao)->limit($limit, $pagina)->get()->result();
                 $total = count($lista);
 
 //                echo "<pre>";
@@ -213,6 +216,11 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
 
                         foreach ($lista as $item) {
 //                        var_dump($item->status); die;
+                            $dataFuturo2 = date("Y-m-d");
+                            $dataAtual2 = $item->nascimento;
+                            $date_time2 = new DateTime($dataAtual2);
+                            $diff2 = $date_time2->diff(new DateTime($dataFuturo2));
+                            $teste2 = $diff2->format('%Ya %mm %dd');
 
                             $dataFuturo = date("Y-m-d H:i:s");
                             $dataAtual = $item->data_autorizacao;
@@ -262,6 +270,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                             }
                             ?>
                             <tr>
+                                <td class="<?php echo $estilo_linha; ?>"></td>
                                 <? if ($verifica == 1) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font <? ?>><b><?= $situacao; ?></b></td>
                                 <? }if ($verifica == 2) { ?>
@@ -280,6 +289,7 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                                 <? }if ($verifica == 4) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font color="blue"><b><?= $item->paciente; ?></b></td>
                                 <? } ?>
+                                    <td class="<?php echo $estilo_linha; ?>"><?= $teste2; ?></td>
                                 <? if ($verifica == 4) { ?>
                                     <td class="<?php echo $estilo_linha; ?>">&nbsp;</td>
                                 <? } else { ?>

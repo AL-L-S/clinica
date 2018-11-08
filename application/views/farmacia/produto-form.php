@@ -11,7 +11,7 @@
                     </dt>
                     <dd>
                         <input type="hidden" name="txtfarmaciaprodutoid" class="texto10" value="<?= @$obj->_farmacia_produto_id; ?>" />
-                        <input type="text" name="nome" class="texto10" value="<?= @$obj->_descricao; ?>" />
+                        <input required type="text" name="nome" class="texto10" value="<?= @$obj->_descricao; ?>" />
                     </dd>
                     <dt>
                         <label>Sub-classe</label>
@@ -40,6 +40,24 @@
                         </select>
                     </dd>
                     <dt>
+                    <label>Procedimento</label>
+                    </dt>
+                    <dd>
+                        <select name="procedimentoID" id="procedimentoID" class="size4 chosen-select" data-placeholder="Selecione" tabindex="1">
+                            <option value="">Selecione</option>
+                            <? foreach($procedimentos as $value){ ?>
+                                <option value="<?= $value->procedimento_tuss_id ?>" <?if(@$obj->_procedimento_tuss_id == $value->procedimento_tuss_id){
+                                   echo 'selected'; 
+                                }?>><?= $value->nome ?></option>
+                            <? } ?>
+                        </select>
+                        <?
+//var_dump($obj->_procedimento); die;
+                        ?>
+<!--                        <input type="hidden" name="procedimentoID" id="procedimentoID" class="texto2" value="" />
+                        <input type="text" name="procedimento" id="procedimento" class="texto10" value="<?=@$obj->_procedimento?>" />-->
+                    </dd>
+                    <dt>
                         <label>Valor de compra</label>
                     </dt>
                     <dd>
@@ -49,7 +67,7 @@
                         <label>Quant. Unitária</label>
                     </dt>
                     <dd>
-                        <input type="text" id="minimo" alt="integer" class="texto02" name="quantidade" value="<?= @$obj->_quantidade_unitaria; ?>" />
+                        <input required type="text" id="minimo" alt="integer" class="texto02" name="quantidade" value="<?= @$obj->_quantidade_unitaria; ?>" />
                     </dd>
                     <dt>
                         <label>Valor de venda</label>
@@ -61,7 +79,7 @@
                         <label>Estoque minimo</label>
                     </dt>
                     <dd>
-                        <input type="text" id="minimo" alt="integer" class="texto02" name="minimo" value="<?= @$obj->_farmacia_minimo; ?>" />
+                        <input required  type="text" id="minimo" alt="integer" class="texto02" name="minimo" value="<?= @$obj->_farmacia_minimo; ?>" />
                     </dd>
                 </dl>    
                 <hr/>
@@ -74,6 +92,12 @@
 </div> <!-- Final da DIV content -->
 
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/chosen.css">
+<!--<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/style.css">-->
+<link rel="stylesheet" href="<?= base_url() ?>js/chosen/docsupport/prism.css">
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/chosen.jquery.js"></script>
+<!--<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/prism.js"></script>-->
+<script type="text/javascript" src="<?= base_url() ?>js/chosen/docsupport/init.js"></script>
 <script type="text/javascript">
     $('#btnVoltar').click(function () {
         $(location).attr('href', '<?= base_url(); ?>farmacia/produto');

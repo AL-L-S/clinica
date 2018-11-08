@@ -637,6 +637,20 @@ class internacao extends BaseController {
         $this->loadView('internacao/evolucaointernacao-lista', $data);
     }
 
+    function listarprocedimentosexterno($internacao_id) {
+        $data['lista'] = $this->internacao_m->listarprocedimentoexterno($internacao_id);
+        $data['internacao_id'] = $internacao_id;
+        $this->loadView('internacao/procedimentoexterno-lista', $data);
+    }
+
+    function editarprocedimentoexternointernacao($internacao_procedimentoexterno_id, $internacao_id) {
+        $data['lista'] = $this->internacao_m->editarprocedimentoexternointernacao($internacao_procedimentoexterno_id);
+//        var_dump( $data['lista']); die;
+        $data['internacao_id'] = $internacao_id;
+        $data['internacao_procedimentoexterno_id'] = $internacao_procedimentoexterno_id;
+        $this->loadView('internacao/procedimentoexternoeditar', $data);
+    }
+
     function editarevolucaointernacao($internacao_evolucao_id, $internacao_id) {
         $data['lista'] = $this->internacao_m->editarevolucaointernacao($internacao_evolucao_id);
 //        var_dump( $data['lista']); die;
@@ -742,6 +756,23 @@ class internacao extends BaseController {
         } else {
             redirect(base_url() . "internacao/internacao/listarevolucaointernacao/$internacao_id", $data);
         }
+    }
+
+    function gravarprocedimentoexternointernacao($internacao_id) {
+        $_POST["internacao_id"] = $internacao_id;
+        $data["internacao_id"] = $internacao_id;
+        $this->internacao_m->gravarprocedimentoexternointernacao();
+        
+        redirect(base_url() . "internacao/internacao/listarprocedimentosexterno/$internacao_id");
+       
+    }
+    function excluirprocedimentoexternointernacao($internacao_proc_id, $internacao_id) {
+        $_POST["internacao_id"] = $internacao_id;
+        $data["internacao_id"] = $internacao_id;
+        $this->internacao_m->excluirprocedimentoexternointernacao($internacao_proc_id);
+        
+        redirect(base_url() . "internacao/internacao/listarprocedimentosexterno/$internacao_id");
+       
     }
 
     function excluirevolucaointernacao($internacao_evolucao_id, $internacao_id) {

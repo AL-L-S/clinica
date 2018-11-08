@@ -392,8 +392,8 @@ class pacientes extends BaseController {
     }
 
     function gravar() {
-//        echo'<pre>';
-//        var_dump($_POST);die;
+    //    echo'<pre>';
+    //    var_dump($_POST);die;
         if ($_POST['nascimento'] != '') {
             $nascimento = str_replace('/', '-', $_POST['nascimento']);
 //            var_dump($nascimento); die;
@@ -422,6 +422,9 @@ class pacientes extends BaseController {
         if ($_POST['cpf'] != "") {
             if ($this->utilitario->validaCPF($_POST['cpf'])) {
                 $contadorcpf = $this->paciente->contadorcpf();
+                if($_POST['cpf_responsavel'] == 'on'){
+                    $contadorcpf = 0;
+                }// Caso esteja marcado como CPF responsável, ele deixa cadastrar.
             } else {
                 $data['mensagem'] = 'Erro ao gravar paciente. CPF inválido';
                 $this->session->set_flashdata('message', $data['mensagem']);
@@ -468,9 +471,9 @@ class pacientes extends BaseController {
                    $paciente_id = $this->paciente->gravar();
                    $data['mensagem'] = 'Paciente gravado com sucesso';
                 }else{
-                $data['mensagem'] = 'CPF do paciente já cadastrado';
-                $this->session->set_flashdata('message', $data['mensagem']);
-                redirect(base_url() . "cadastros/pacientes", $data);
+                    $data['mensagem'] = 'CPF do paciente já cadastrado';
+                    $this->session->set_flashdata('message', $data['mensagem']);
+                    redirect(base_url() . "cadastros/pacientes", $data);
                 }
             } else {
                 if($_POST['cpf'] == "000.000.000-00"){

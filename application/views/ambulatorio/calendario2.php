@@ -101,8 +101,11 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                     <?
                     $empresa_id = $this->session->userdata('empresa_id');
                     $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
-                    $listaespera = $this->exame->listarexameagendaconfirmada2geral()->get()->result();
-
+                     if ($empresapermissoes[0]->filtrar_agenda == 't') {
+                        $listaespera = $this->exame->listarexameagendaconfirmada2geral($_GET)->get()->result();
+                     }else{
+                        $listaespera = $this->exame->listarexameagendaconfirmada2geral()->get()->result();
+                     }
                     if (count($listaespera) > 0) {
                         @$estilo_linha == "tabela_content01";
                         foreach ($listaespera as $item) {
@@ -187,7 +190,7 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
             $salas = $this->exame->listartodassalasgrupos();
             $especialidade = $this->exame->listarespecialidade();
             $grupos = $this->procedimento->listargrupos();
-            $procedimento = $this->procedimento->listarprocedimento();
+            $procedimento = $this->procedimento->listarprocedimentos();
             $empresas = $this->exame->listarempresas();
             $empresa_logada = $this->session->userdata('empresa_id');
             $tipo_consulta = $this->tipoconsulta->listarcalendario();
@@ -316,8 +319,8 @@ if (@$_GET['data'] != '' && date("Y-m-d", strtotime(str_replace('/', '-', @$_GET
                                                 <?php
                                                 foreach ($procedimento as $item) {
                                                     ?>
-                                                    <option value ="<?php echo $item->procedimento_convenio_id; ?>" <?
-                                                    if (@$_GET['procedimento'] == $item->procedimento_convenio_id):echo 'selected';
+                                                    <option value ="<?php echo $item->procedimento_tuss_id; ?>" <?
+                                                    if (@$_GET['procedimento'] == $item->procedimento_tuss_id):echo 'selected';
                                                     endif;
                                                     ?>>
     <?php echo $item->nome; ?>

@@ -3209,6 +3209,8 @@ class laudo_model extends Model {
             }
 
             $this->db->set('situacao', 'FINALIZADO');
+            $this->db->set('data_finalizado', $horario);
+            $this->db->set('operador_finalizado', $operador_id);
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
             $this->db->where('ambulatorio_laudo_id', $ambulatorio_laudo_id);

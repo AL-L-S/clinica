@@ -48,10 +48,16 @@
 
             $estilo_linha = "tabela_content01";
             foreach ($medicamentos as $item) {
+                $retorno_proc = $this->internacao_m->listaconveniomedicamento($item->convenio_id, $item->procedimento_farmacia);
+                if(count($retorno_proc) > 0){
+                    $cor = 'green';
+                }else{
+                    $cor = 'blue';
+                }
                 ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                 ?>
                 <tr>
-                    <td class="<?php echo $estilo_linha; ?>"><?php echo $item->descricao; ?></td>
+                    <td style="color:<?=$cor?>" class="<?php echo $estilo_linha; ?>"><?php echo $item->descricao; ?></td>
                     <td class="<?php echo $estilo_linha; ?>">
                         <? if ($item->confirmado == 't') { ?>
                             <span style="color: green;">Confirmado</span>
@@ -100,6 +106,74 @@
         </tbody>
 
     </table>
+    <br>
+    <!-- <br> -->
+    <style>
+        .bold{
+            font-weight: bolder;
+        }
+        .grey{
+            background-color: grey;
+        }
+        .circulo {
+            height: 50px;
+            width: 25px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+          }
+        .tabelaPagamentos{
+            /* font-size: 5pt; */
+            /* width: 100px; */
+            border-collapse: collapse;
+            border-spacing: 5px;
+        }
+        
+        .tabelaPagamentos td{
+            font-size: 12px;
+            padding: 7px;
+            vertical-align: top;
+
+        }
+        .ficha_ceatox div{
+            float: left;
+            margin-right: 30px;
+            min-width: 50px;
+        }
+        tr{
+            /* vertical-align: top; */
+        }
+    </style>
+    <div style="width:80px">
+    <table border="1" class="tabelaPagamentos">
+                <tr class="grey">
+                    <th colspan="3">Legenda</th>
+
+                </tr>
+                <tr >
+                    <td >Associado Convênio</td>
+                    <!--<td >Azul</td>-->
+                    <td>
+                        <div class="circulo" style="color: blue; background-color: green;">
+
+                        </div>
+                    </td>
+                </tr>
+                <tr >
+                    <td >Não Associado</td>
+                    <!--<td >Verde</td>-->
+                    <td>
+                        <div class="circulo" style="color: blue; background-color: blue;">
+
+                        </div>
+                    </td>
+                </tr>
+        <tbody>
+
+        </tbody>
+    </table>
+    </div>
+    
 
 </div> 
 

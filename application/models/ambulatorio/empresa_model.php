@@ -1892,6 +1892,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('botao_ficha_convenio', 'f');
                     }
+                    if (isset($_POST['ordenacao_situacao'])) {
+                        $this->db->set('ordenacao_situacao', 't');
+                    } else {
+                        $this->db->set('ordenacao_situacao', 'f');
+                    }
                 }
 
 
@@ -2520,6 +2525,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('laboratorio_sc', 'f');
                     }
+                    if (isset($_POST['ordenacao_situacao'])) {
+                        $this->db->set('ordenacao_situacao', 't');
+                    } else {
+                        $this->db->set('ordenacao_situacao', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -2700,6 +2710,7 @@ class empresa_model extends Model {
                                ep.manternota,
                                ep.agenda_modelo2,
                                ep.perfil_marketing_p,
+                               ep.ordenacao_situacao,
                                ep.filtrar_agenda,
                                ep.botao_ficha_convenio
                                ');
@@ -2727,6 +2738,7 @@ class empresa_model extends Model {
             $this->_identificador_lis = $return[0]->identificador_lis;
             $this->_origem_lis = $return[0]->origem_lis;
             $this->_subgrupo = $return[0]->subgrupo;
+            $this->_ordenacao_situacao = $return[0]->ordenacao_situacao;
             $this->_botao_imagem_paciente = $return[0]->botao_imagem_paciente;
             $this->_reservar_escolher_proc = $return[0]->reservar_escolher_proc;
             $this->_botao_arquivos_paciente = $return[0]->botao_arquivos_paciente;

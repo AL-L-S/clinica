@@ -260,10 +260,15 @@
 
                                         <? if ($empresapermissoes[0]->retirar_botao_ficha == 'f') { ?>
                                             <td class="<?php echo $estilo_linha; ?>" >
+                                        <? if ($empresaficha[0]->impressao_tipo == 47) { ?>
                                                 <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
                                                 </a>
-
+                                        <?}else{?>
+                                                <a onclick="javascript:window.open('<?= base_url() ?>ambulatorio/guia/impressaoficha/<?= $paciente['0']->paciente_id; ?>/<?= $item->guia_id; ?>/<?= $item->agenda_exames_id ?>');">Ficha
+                                                </a>
                                                 <?
+                                                
+                                        }
                                                 $teste = $this->guia->listarfichatexto($item->agenda_exames_id);
                                                 if (isset($teste[0]->agenda_exames_id)) {
                                                     ?>

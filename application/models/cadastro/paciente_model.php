@@ -69,6 +69,7 @@ class paciente_model extends BaseModel {
         $this->db->from('tb_paciente');
         $this->db->where('cpf', str_replace("-", "", str_replace(".", "", $_POST['cpf'])));
         $this->db->where('ativo', 't');
+        $this->db->where('cpf_responsavel_flag', 'f');
         $return = $this->db->count_all_results();
         return $return;
     }

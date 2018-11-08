@@ -589,6 +589,7 @@
                                         <tr>
                                             <td><input type="checkbox" id="profissional_externo" name="profissional_externo" <? if (@$obj->_profissional_externo == 't') echo "checked"; ?>/></td><td><label title="Aparece o campo de endereço externo no profissional para integração do STG com outro STG">Endereço Externo Médico.</label></td>
                                             <td><input type="checkbox" id="profissional_agendar" name="profissional_agendar" <? if (@$obj->_profissional_agendar == 't') echo "checked"; ?>/></td><td><label title="Ativando essa opção os modelos de Laudo no atendimento serão apenas os do médico que está atendendo">Agendamento Médico (Fisioterapia)</label></td>
+                                            <td><input type="checkbox" id="ordenacao_situacao" name="ordenacao_situacao" <? if (@$obj->_ordenacao_situacao == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o sistema irá ordenar por situação no atendimento médico">Ordenar Por Situação</label></td>
                                         </tr>                                    
                                     </table>
                                 </fieldset>

@@ -50,6 +50,8 @@ class Guia extends BaseController {
     function pesquisar($paciente_id) {
         $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
         $data['exames'] = $this->guia->listarexames($paciente_id);
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresaficha'] = $this->guia->listarempresa($empresa_id);
 //        echo '<pre>';
 //        var_dump($data['exames']); die;
         $data['guia'] = $this->guia->listar($paciente_id);
@@ -1234,6 +1236,14 @@ class Guia extends BaseController {
                 $this->load->View('ambulatorio/impressaofichavaleimagem', $data);
             }
         }
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+//        elseif ($data['empresa'][0]->impressao_tipo == 47) { //OFTALMOCLINICA
+//            
+//            $data['guia_id'] = $guia_id;            
+//            $this->load->View('ambulatorio/impressaofichaoftalmoclinica', $data);
+//            
+//        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
         elseif ($data['empresa'][0]->impressao_tipo == 12) { //CIMETRA 
