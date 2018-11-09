@@ -18,7 +18,7 @@ class Nota extends BaseController {
         $this->load->model('estoque/entrada_model', 'entrada');
         $this->load->model('ambulatorio/exame_model', 'exame');
         $this->load->model('cadastro/forma_model', 'forma');
-        $this->load->model('estoque/classe_model', 'classe');
+        $this->load->model('cadastro/classe_model', 'classe');
         $this->load->model('cadastro/tipo_model', 'tipo');
         $this->load->model('estoque/nota_model', 'nota');
         $this->load->model('estoque/entrada_nota_model', 'entrada_nota');

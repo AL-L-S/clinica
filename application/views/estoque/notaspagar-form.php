@@ -13,7 +13,7 @@
 //        var_dump($notas);die;
         ?>
         <div>
-            <form name="form_contaspagar" id="form_contaspagar" action="<?= base_url() ?>cadastros/contaspagar/gravar" method="post">
+            <form name="form_contaspagar" id="form_contaspagar" action="<?= base_url() ?>cadastros/contaspagar/gravarnota" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>
@@ -25,10 +25,16 @@
                         <input type="text" name="valor" id="valor" class="texto04" value="<?= $notas[0]->valor_nota; ?>" readonly=""/>
                     </dd>
                     <dt>
-                        <label>Data*</label>
+                        <label>Data Pagamento*</label>
                     </dt>
                     <dd>
-                        <input type="text" name="inicio" id="inicio" class="texto04" alt="date" value="<?= substr(@$obj->_data, 8, 2) . '/' . substr(@$obj->_data, 5, 2) . '/' . substr(@$obj->_data, 0, 4);  ?>" required=""/>
+                        <input type="text" name="inicio" id="inicio" class="texto04" alt="date" value="<?= substr(@$obj->_data, 8, 2) . '/' . substr(@$obj->_data, 5, 2) . '/' . substr(@$obj->_data, 0, 4); ?>" required=""/>
+                    </dd>
+                    <dt>
+                        <label>Data Emissão:</label>
+                    </dt>
+                    <dd>                        
+                        <input type="text" id="dataemissao" class="texto09" name="dataemissao" value="<?= date("d/m/y H:i:s", strtotime(str_replace('/', '-', $notas[0]->data_cadastro))) ?>"  readonly=""/>
                     </dd>
                     <dt>
                         <label>Pagar a:</label>
@@ -37,13 +43,13 @@
                         <input type="hidden" id="credor" class="texto_id" name="credor" value="<?= @$obj->_credor; ?>"/>
                         <input type="text" id="credorlabel" class="texto09" name="credorlabel" value="<?= $notas[0]->fornecedor; ?>"  readonly=""/>
                     </dd>
-                    <dt>
-                        <label>Tipo numero</label>
-                    </dt>
-                    <dd>
-                        <input type="text" name="tiponumero" id="tiponumero" class="texto04" value="<?= @$obj->_tipo_numero; ?>"/>
-                    </dd>
-                    
+                    <!--                    <dt>
+                                            <label>Tipo numero</label>
+                                        </dt>
+                                        <dd>
+                                            <input type="text" name="tiponumero" id="tiponumero" class="texto04" value="<?= @$obj->_tipo_numero; ?>"/>
+                                        </dd>
+                    -->
                     <dt>
                         <label>Empresa*</label>
                     </dt>
@@ -51,7 +57,7 @@
                         <select name="empresa_id" id="empresa_id" class="size4">
                             <option value="">Selecione</option>
                             <? foreach ($empresas as $value) : ?>
-                                <option value="<?= $value->empresa_id; ?>" <?if($empresa_id == $value->empresa_id || @$obj->_empresa_id == $value->empresa_id) echo 'selected'?>>
+                                <option value="<?= $value->empresa_id; ?>" <? if ($empresa_id == $value->empresa_id || @$obj->_empresa_id == $value->empresa_id) echo 'selected' ?>>
                                     <?php echo $value->nome; ?>
                                 </option>
                             <? endforeach; ?>
@@ -102,13 +108,19 @@
                                     <? endforeach; ?>
                         </select>
                     </dd>
-
+                    <br>
                     <dt>
                         <label>Repetir </label>
                     </dt>
                     <dd>
-                        <input type="text" name="repitir" alt="integer" class="texto02" value="<?= @$obj->_numero_parcela; ?>"/> nos proximos meses
+                        <input type="text" name="repitir" alt="integer" class="texto02" value="<?= @$obj->_numero_parcela; ?>"/> nos proximos <input type="text" name="frequencia" alt="integer" class="texto02" value="<?= @$obj->_freq_parcela; ?>"/>
+                        <select  name="sala1" id="sala1" class="size2" required="">
+                            <option value="">Selecione</option>
+                            <option value="dia">DIA(S)</option>
+                            <option value="mes">MES(ES)</option>                                        
+                        </select>
                     </dd>
+                    <br>
                     <dt>
                         <label>Observa&ccedil;&atilde;o</label>
                     </dt>
@@ -129,7 +141,7 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-1.9.1.js" ></script>
 <script type="text/javascript" src="<?= base_url() ?>js/jquery-ui-1.10.4.js" ></script>
 <script type="text/javascript">
-    
+
     $(function () {
         $("#credorlabel").autocomplete({
             source: "<?= base_url() ?>index.php?c=autocomplete&m=credordevedor",

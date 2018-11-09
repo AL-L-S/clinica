@@ -64,7 +64,7 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
                                         $procedimentos = $this->procedimento->listarprocedimentoaso($item);
                                         $guia_id = $relatorio[0]->guia_id;
                                         $procedimentosdata = $this->procedimento->listarprocedimentoasodata($item, $guia_id);
-//                                        var_dump($procedimentosdata);die;
+//                                        var_dump($item);die;
                                         ?>
                                         <?                                        
                                         if ($key == count($impressao_aso->procedimento1) - 1) {
