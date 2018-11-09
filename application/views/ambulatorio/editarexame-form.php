@@ -63,10 +63,10 @@
                     </dl>
                     <dl>
 
-                        <dt>Médico</dt>
+                        <dt title="O médico só será alterado no atendimento caso o usuário tenha perfil de Administrador Total">Médico</dt>
 
-                        <dd>
-                            <select name="medico_agenda" id="medico" class="size2" required="true">
+                        <dd title="O médico só será alterado no atendimento caso o usuário tenha perfil de Administrador Total">
+                            <select name="medico_agenda" id="medico" class="size2" required="true" title="O médico só será alterado no atendimento caso o usuário tenha perfil de Administrador Total">
                                 <option value=""> </option>
                                 <? foreach ($medico as $value) : ?>
                                     <option value="<?= $value->operador_id; ?>"<?

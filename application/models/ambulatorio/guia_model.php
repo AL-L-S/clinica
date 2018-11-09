@@ -256,7 +256,7 @@ class guia_model extends Model {
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
-//        $this->db->where('pt.tipo_aso', $_POST['tipo']);
+        $this->db->where('pc.ativo', 't');
         if ($_POST['consulta'] == "particular") {
             $this->db->where('pc.convenio_id', $gravarempresa);
         } else {
@@ -17046,6 +17046,7 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->join('tb_ambulatorio_grupo ag', 'ag.nome = pt.grupo', 'left');
             $this->db->where('pt.tipo_aso', $_POST['tipo']);
+            $this->db->where('pc.ativo', 't');
             if ($_POST['consulta'] == "particular") {
                 $this->db->where('pc.convenio_id', $gravarempresa);
             } else {
@@ -17222,6 +17223,7 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->from('tb_procedimento_convenio pc');
             $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
             $this->db->where('pc.procedimento_tuss_id', $proc_tuss);
+            $this->db->where('pc.ativo', 't');
             if ($_POST['consulta'] == "particular") {
                 $this->db->where('pc.convenio_id', $gravarempresa);
             } else {
@@ -18024,6 +18026,7 @@ ORDER BY ae.paciente_credito_id)";
             $this->db->set('guia_id', $_POST['guia_id']);
             $horario = date("Y-m-d H:i:s");
             $operador_id = $this->session->userdata('operador_id');
+            $perfil_id = $this->session->userdata('perfil_id');
 //            var_dump($_POST['medico']);die;
             $this->db->set('paciente_id', $_POST['txtpaciente_id']);
             if ($_POST['medico'] != '') {
@@ -18064,6 +18067,9 @@ ORDER BY ae.paciente_credito_id)";
                 $query = $this->db->get()->result();
 
                 if (count($query) > 0) {
+                    if($perfil_id == 1){
+                        $this->db->set('medico_parecer1', $_POST['medico_agenda']);
+                    }
                     $this->db->set('data_producao', $data_prod);
                     $this->db->set('data_alteracao_producao', $horario);
                     $this->db->where('ambulatorio_laudo_id', $query[0]->ambulatorio_laudo_id);
