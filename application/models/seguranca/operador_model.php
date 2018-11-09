@@ -103,6 +103,7 @@ class Operador_model extends BaseModel {
         $this->db->select('operador_id, nome, conselho');
         $this->db->from('tb_operador');
         $this->db->where('medico', 'true');
+        $this->db->where('ativo', 'true');
         $this->db->where('solicitante', 'true');
 
         if ($args) {

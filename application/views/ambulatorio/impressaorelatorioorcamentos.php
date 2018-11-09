@@ -106,17 +106,26 @@
                         </td>
                         <td><?= $item->operador; ?></td>
                         <td><b><?= $item->empresa_nome; ?></b></td>
-                        <td><b><?
+                        <td>
+                            <b> 
+                            <? if ($item->recusado == 'f') { ?>
+                                <?
                                 if ($item->autorizado == 't') {
                                     echo "<span style='color: green; font-size: 12pt'>Realizado</span>";
                                 } else {
                                     echo "<span style='color: red; font-size: 12pt'>Pendente</span>";
                                 }
-                                ?></b></td>
+                                ?>
+                                <?}else{
+                                 echo "<span style='color: red; font-size: 12pt'>Recusado</span>";   
+                                }?> 
+                            </b>
+                                
+                        </td>
                         <td align="center">
 
 
-
+                    <? if ($item->recusado == 'f' && $item->autorizado == 'f') { ?>
                             <? if ($item->autorizado == 'f') { ?>
                                 <? if ($item->paciente != '') { ?>
                                     <a href="<?= base_url() ?>ambulatorio/exame/gravarautorizarorcamentorelatorio/<?= $item->ambulatorio_orcamento_id . "/" . $data_enviar ?>" target="_blank">Autorizar</a>
@@ -128,6 +137,8 @@
                             <?
                         } ?>
 
+                        <a onclick="javascript:return confirm('Deseja realmente recusar esse orçamento?');"  href="<?= base_url() ?>ambulatorio/exame/recusarorcamento/<?= $item->ambulatorio_orcamento_id ?>" target="_blank">Recusar</a>
+                    <?}?>        
 
                         </td>
                         <td style="text-align: left">

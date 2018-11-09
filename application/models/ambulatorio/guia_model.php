@@ -9612,22 +9612,24 @@ class guia_model extends Model {
                 $this->db->set('nascimento', date("Y-m-d", strtotime(str_replace("/", "-", $_POST['nascimento']))));
             }
             if ($_POST['cpf'] != '') {
-                $this->db->set('cpf', $_POST['cpf']);
+                $this->db->set('cpf', str_replace(".", "",str_replace("-", "",$_POST['cpf'])));
             }
             $this->db->set('celular', $_POST['txtCelular']);
             $this->db->set('telefone', $_POST['txtTelefone']);
             $this->db->set('nome', $_POST['txtNome']);
+            $this->db->set('cns', $_POST['email']);
             $this->db->insert('tb_paciente');
             $paciente_id = $this->db->insert_id();
         } else {
             $paciente_id = $_POST['txtNomeid'];
 
             if ($_POST['cpf'] != '') {
-                $this->db->set('cpf', $_POST['cpf']);
+                $this->db->set('cpf', str_replace(".", "",str_replace("-", "",$_POST['cpf'])));
             }
             $this->db->set('celular', $_POST['txtCelular']);
             $this->db->set('telefone', $_POST['txtTelefone']);
             $this->db->set('nome', $_POST['txtNome']);
+            $this->db->set('cns', $_POST['email']);
             $this->db->where('paciente_id', $paciente_id);
             $this->db->update('tb_paciente');
         }

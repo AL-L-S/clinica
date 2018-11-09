@@ -72,6 +72,7 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                 <form method="get" action="<?= base_url() ?>ambulatorio/procedimentoplano/pesquisar">
                     <tr>
                         <th class="tabela_title">Plano</th>
+                        <th class="tabela_title">Grupo Convênio</th>
                         <th class="tabela_title">Grupo</th>
                         <th class="tabela_title">Procedimento</th>
                         <th colspan="2" class="tabela_title">Codigo</th>
@@ -84,6 +85,19 @@ $data['empresa_permissao'] = $this->guia->listarempresapermissoes();
                                 <? foreach ($convenio as $value) : ?>
                                     <option value="<?= $value->convenio_id; ?>"
                                         <?if($value->convenio_id == @$_GET['convenio']) echo 'selected';?>>
+                                        <?= $value->nome; ?>
+                                    </option>
+                                <? endforeach; ?>
+
+                            </select>
+                        </th>
+                        <th class="tabela_title">
+                            <!--<input type="text" name="nome" class="texto04" value="<?php echo @$_GET['nome']; ?>" />-->
+                            <select name="grupo_convenio" id="grupo_convenio" class="size2">
+                                <option value="">Selecione</option>
+                                <? foreach ($grupoconvenio as $value) : ?>
+                                    <option value="<?= $value->convenio_grupo_id; ?>"
+                                        <?if($value->convenio_grupo_id == @$_GET['grupo_convenio']) echo 'selected';?>>
                                         <?= $value->nome; ?>
                                     </option>
                                 <? endforeach; ?>

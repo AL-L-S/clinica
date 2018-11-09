@@ -24,6 +24,7 @@ class Procedimentoplano extends BaseController {
         $this->load->model('cadastro/paciente_model', 'paciente');
         $this->load->model('cadastro/laboratorio_model', 'laboratorio');
         $this->load->model('seguranca/operador_model', 'operador_m');
+        $this->load->model('cadastro/grupoconvenio_model', 'grupoconvenio');
         $this->load->model('cadastro/grupoclassificacao_model', 'grupoclassificacao');
         $this->load->model('ponto/Competencia_model', 'competencia');
         $this->load->library('mensagem');
@@ -43,12 +44,14 @@ class Procedimentoplano extends BaseController {
         }
 
         $data["limite_paginacao"] = $limite;
+        $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento4();
         $this->loadView('ambulatorio/procedimentoplano-lista', $data);
     }
 
     function pesquisar2($limite = 50) {
         $data["limite_paginacao"] = $limite;
+        $data['grupoconvenio'] = $this->grupoconvenio->listargrupoconvenios();
         $data['subgrupos'] = $this->grupoclassificacao->listarsubgrupo2();
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento4();
         $this->loadView('ambulatorio/procedimentoplano2-lista', $data);

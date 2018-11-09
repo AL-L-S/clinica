@@ -1897,6 +1897,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('ordenacao_situacao', 'f');
                     }
+                    if (isset($_POST['grupo_convenio_proc'])) {
+                        $this->db->set('grupo_convenio_proc', 't');
+                    } else {
+                        $this->db->set('grupo_convenio_proc', 'f');
+                    }
                 }
 
 
@@ -2530,6 +2535,11 @@ class empresa_model extends Model {
                     } else {
                         $this->db->set('ordenacao_situacao', 'f');
                     }
+                    if (isset($_POST['grupo_convenio_proc'])) {
+                        $this->db->set('grupo_convenio_proc', 't');
+                    } else {
+                        $this->db->set('grupo_convenio_proc', 'f');
+                    }
                 }
 
                 $this->db->set('data_atualizacao', $horario);
@@ -2708,6 +2718,7 @@ class empresa_model extends Model {
                                ep.limitar_acesso,
                                ep.faturamento_novo,
                                ep.manternota,
+                               ep.grupo_convenio_proc,
                                ep.agenda_modelo2,
                                ep.perfil_marketing_p,
                                ep.ordenacao_situacao,
@@ -2730,6 +2741,7 @@ class empresa_model extends Model {
             $this->_orcamento_multiplo = $return[0]->orcamento_multiplo;
             $this->_profissional_agendar = $return[0]->profissional_agendar;
             $this->_profissional_externo = $return[0]->profissional_externo;
+            $this->_grupo_convenio_proc = $return[0]->grupo_convenio_proc;
             $this->_faturamento_novo = $return[0]->faturamento_novo;
             $this->_email = $return[0]->email;
             $this->_cep = $return[0]->cep;

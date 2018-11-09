@@ -2570,7 +2570,7 @@ class Guia extends BaseController {
         $data['orcamentoslista'] = $this->procedimento->listarorcamentosrecepcaoprincipal($ambulatorio_orcamento_id, $paciente_id);
         $data['exames'] = $this->exametemp->listarorcamentos($paciente_id);
         $data['ambulatorio_orcamento_id'] = $ambulatorio_orcamento_id;
-        $this->loadView('ambulatorio/orcamentomultiplocadastro-form.php', $data);
+        $this->loadView('ambulatorio/orcamentomultiplocadastro-form', $data);
     }
 
     function gravarorcamentomultiplocadastro() {

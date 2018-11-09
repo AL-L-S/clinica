@@ -33,6 +33,10 @@
                     <label>Celular</label>
                     <input type="text" id="txtCelular" class="texto02" name="txtCelular" value="<?= @$obj->_celular; ?>"/>
                 </div>
+                <div>
+                    <label>Email</label>
+                    <input type="text" id="email" class="texto07" name="email" value="<?= @$obj->_cns; ?>"/>
+                </div>
             </fieldset>
 
             <fieldset>
@@ -442,6 +446,7 @@
 //    $(".select-data").hide();
 //    $(".input-data").hide();
     var array_datas = [];
+    $("#cpf").mask("999.999.999-99");
 //    var array_datas_teste = [];
     
 //     $(document).ready(function() {
@@ -627,7 +632,7 @@ $( document ).ready(function() {
         campo.maxLength = 14;
     }
 
-
+    
     jQuery("#txtTelefone")
             .mask("(99) 9999-9999?9")
             .focusout(function (event) {
@@ -674,6 +679,8 @@ $( document ).ready(function() {
                         $("#txtCelular").val(ui.item.celular);
                         $("#nascimento").val(ui.item.valor);
                         $("#cpf").val(ui.item.cpf);
+                        $("#email").val(ui.item.email);
+                        $("#cpf").mask("999.999.999-99");
                         return false;
                     }
                 });

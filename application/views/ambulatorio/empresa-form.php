@@ -548,6 +548,7 @@
                                             <td><input type="checkbox" id="calendario" name="botao_faturar_guia" <? if (@$obj->_botao_faturar_guia == 't') echo "checked"; ?>/></td><td><label title="Aparecer  o botão de faturar guia no cadastro.">Botão Faturar Guia</label></td>                                                                                
                                             <td><input type="checkbox" id="producao_medica_saida" name="producao_medica_saida" <? if (@$obj->_producao_medica_saida == 't') echo "checked"; ?>/></td><td><label title="Ao fechar a produção médica, os valores ja irão cair como saida no Financeiro.">Produção Médica ir direto para Saida</label></td>                                                                                
                                             <td><input type="checkbox" id="financeiro_cadastro" name="financeiro_cadastro" <? if (@$obj->_financeiro_cadastro == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, o financeiro tem acesso ao Fila Caixa e ao cadastro de pacientes">Financeiro Cadastro Paciente (Faturar)</label></td>                                                                                
+                                                                                                                        
                                         </tr>
                                         <tr>
                                             <td><input type="checkbox" id="fila_caixa" name="fila_caixa" <? if (@$obj->_caixa == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, a fila de caixa vai ser ativada.">Fila de Caixa</label></td>
@@ -572,7 +573,10 @@
                                             <td><input type="checkbox" id="data_contaspagar" name="data_contaspagar" <? if (@$obj->_data_contaspagar == 't') echo "checked"; ?>/></td><td><label title="Data manual na produção médica .">Data Manual Produção M.</label></td>
                                             <td><input type="checkbox" id="manternota" name="manternota" <? if (@$obj->_manternota == 't') echo "checked"; ?>/></td><td><label title="O Estoque passará a funcionar cadastrando a nota fiscal antes de cadastrar os produtos.">Manter Nota Fiscal</label></td>
                                             <td><input type="checkbox" id="faturamento_novo" name="faturamento_novo" <? if (@$obj->_faturamento_novo == 't') echo "checked"; ?>/></td><td><label title="Novo modelo de faturamento (Particular) que permite a possibilidade de faturar parcialmente e fechar o caixa mais de uma vez">Faturamento Modelo 2</label></td>
-                                           
+                                            
+                                        </tr>
+                                        <tr>
+                                        <td><input type="checkbox" id="grupo_convenio_proc" name="grupo_convenio_proc" <? if (@$obj->_grupo_convenio_proc == 't') echo "checked"; ?>/></td><td><label title="Ativando essa flag, será possível pesquisar no Manter Procedimento Convênio utilizando grupo convênio">Filtro Grupo Convênio Manter Proc.</label></td>    
                                         </tr>
                                     </table>
                                 </fieldset>
