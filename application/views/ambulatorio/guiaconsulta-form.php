@@ -448,10 +448,21 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                             if ($item->faturado == "f" && $item->dinheiro == "t") {
                                                 if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') {
                                                     ?>
-                                                    <div class="bt_link">
-                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+                                                    <?if($empresapermissoes[0]->faturamento_novo == 't'){?>                                              <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                
+                                                        <div class="bt_link">
+                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarmodelo2/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id; ?>', '_blank', 'width=1000,height=800');">Faturar
 
-                                                        </a></div>
+                                                            </a>
+                                                        </div>
+                                                        <!--</td>-->
+                                                    <?}else{?>
+                                                        <div class="bt_link">
+                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+
+                                                            </a>
+                                                        </div>
+                                                    <?}?> 
                                                 <? } else {
                                                     ?>
 
@@ -572,10 +583,21 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                                 if (@$item->valor_diferenciado != 't') {
                                                     if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') {
                                                         ?> 
-                                                        <div class="bt_link">
-                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+                                                        <?if($empresapermissoes[0]->faturamento_novo == 't'){?>                                              <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                
+                                                            <div class="bt_link">
+                                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarmodelo2/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id; ?>', '_blank', 'width=1000,height=800');">Faturar
 
-                                                            </a></div>                  
+                                                                </a>
+                                                            </div>
+                                                            <!--</td>-->
+                                                        <?}else{?>
+                                                            <div class="bt_link">
+                                                                <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+
+                                                                </a>
+                                                            </div>
+                                                        <?}?>                  
                                                     <? } else { ?>
                                                         <div class="bt_link">
                                                             <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarpersonalizado/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar</a>
@@ -631,11 +653,20 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                             <?
                                         } else {
                                             ?>
-                                            <th colspan="2" align="center">    
+                                            <th colspan="2" align="center">
+                                            <?if($empresapermissoes[0]->faturamento_novo == 't'){?>                                              <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                <div class="bt_linkf">
+                                                    <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentosmodelo2/" . $guia; ?> ', '_blank', 'width=1000,height=800');">Faturar Procedimentos
+
+                                                    </a>
+                                                </div>
+                                            <?}else{?>
                                                 <div class="bt_linkf">
                                                     <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarprocedimentos/" . $guia; ?> ', '_blank', 'width=800,height=600');">Faturar Procedimentos
 
-                                                    </a></div></center>
+                                                    </a>
+                                                </div>        
+                                            <?}?> 
                                             </th>
                                             <?
                                         }
@@ -712,10 +743,21 @@ $retorno_alterar = $empresa[0]->selecionar_retorno;
                                             if ($perfil_id != 11) {
                                                 if ($empresapermissoes[0]->ajuste_pagamento_procedimento != 't') {
                                                     ?>
-                                                    <div class="bt_link">
-                                                        <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+                                                    <?if($empresapermissoes[0]->faturamento_novo == 't'){?>                                              <!--<td class="<?php echo $estilo_linha; ?>" width="60px;">-->
+                                                
+                                                        <div class="bt_link">
+                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturarmodelo2/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?>/<?= $item->guia_id; ?>', '_blank', 'width=1000,height=800');">Faturar
 
-                                                        </a></div>
+                                                            </a>
+                                                        </div>
+                                                        <!--</td>-->
+                                                    <?}else{?>
+                                                        <div class="bt_link">
+                                                            <a onclick="javascript:window.open('<?= base_url() . "ambulatorio/guia/faturar/" . $item->agenda_exames_id; ?>/<?= $item->procedimento_tuss_id ?> ', '_blank', 'width=800,height=600');">Faturar
+
+                                                            </a>
+                                                        </div>
+                                                    <?}?> 
                                                 <? } else {
                                                     ?>
 

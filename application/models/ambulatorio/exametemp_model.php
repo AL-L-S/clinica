@@ -4223,6 +4223,10 @@ class exametemp_model extends Model {
             $this->db->where('paciente_id', $_POST['pacienteid']);
             $this->db->update('tb_agenda_exames');
 
+            $this->db->set('paciente_id', $_POST['paciente_id']);
+            $this->db->where('paciente_id', $_POST['pacienteid']);
+            $this->db->update('tb_paciente_credito');
+
             $this->db->set('antigopaciente_id', $_POST['pacienteid']);
             $this->db->set('paciente_id', $_POST['paciente_id']);
             $this->db->set('data_unificacao', $horario);

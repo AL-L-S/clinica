@@ -9,10 +9,10 @@
             
             <textarea style="width: 100%; height:400px;" name="adicional_cabecalho" id=""><?= @$impressao[0]->adicional_cabecalho ?></textarea>
             <div>
-                    <p>
-                        Obs: Adicional do Cabeçalho seria no caso de você querer alguma das informações abaixo se repedindo em todas as páginas na parte superior da página
-                    </p>
-                </div>    
+                <p>
+                    Obs: Adicional do Cabeçalho seria no caso de você querer alguma das informações abaixo se repedindo em todas as páginas na parte superior da página
+                </p>
+            </div>    
         </fieldset>
         <fieldset>
             <legend>Laudo</legend>
@@ -198,10 +198,18 @@
                 </tr>
                 <tr class="tabela_content01">
                     <td>
-                        Medico (Médico responsável----------->
+                        Médico (Médico responsável----------->
                     </td>
                     <td style="text-align: left;">
                         _medico_
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
+                        Usuário Salvar (Último usuário a clicar no botão salvar)----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _usuario_salvar_
                     </td>
                 </tr>
                 <tr class="tabela_content02">

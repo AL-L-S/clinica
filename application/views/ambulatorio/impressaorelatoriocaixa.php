@@ -560,6 +560,15 @@
                                     <? }
                                     ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
+                                    
                                     <?
                                 }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 != '' && $item->forma_pagamento_4 == '') {
                                     ?>
@@ -579,6 +588,14 @@
                                     <? }
                                     ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
                                     <?
                                 }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 != '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                     ?>
@@ -601,6 +618,14 @@
                                     <? }
                                     ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
                                     <?
                                 }if ($item->forma_pagamento != '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                     ?>
@@ -623,6 +648,14 @@
                                     <? }
                                     ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
                                     <?
                                 } if ($item->forma_pagamento == '' && $item->forma_pagamento_2 == '' && $item->forma_pagamento_3 == '' && $item->forma_pagamento_4 == '') {
                                     ?>
@@ -645,6 +678,14 @@
                                     <? }
                                     ?>
                                     <td style="text-align: right"><font size="-2"><?= $item->desconto; ?></td>
+                                    <? if ($item->paciente != $relatorio[$p]->paciente || $p == $maximo) { ?>
+                                        <td style="text-align: right"><font size="-1"><b><?= number_format($totalpaciente, 2, ',', '.') ?></b></td>
+                                        <?
+                                        $totalpaciente = 0;
+                                    } else {
+                                        ?>
+                                        <td></td>
+                                    <? } ?>
                                     <?
                                 }
                                 ?>
