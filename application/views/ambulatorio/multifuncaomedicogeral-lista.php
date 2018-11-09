@@ -227,6 +227,19 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                             $date_time = new DateTime($dataAtual);
                             $diff = $date_time->diff(new DateTime($dataFuturo));
                             $teste = $diff->format('%H:%I:%S');
+                            
+                            if ($item->ordenador == 1) {
+                                $ordenador = 'Normal';
+                                $cor = 'blue';
+                            } elseif ($item->ordenador == 2) {
+                                $ordenador = 'Prioridade';
+                                $cor = 'darkorange';
+                            } elseif ($item->ordenador == 3) {
+                                $ordenador = 'Urgência';
+                                $cor = 'red';
+                            } else {
+                                $ordenador = $item->ordenador;
+                            }
 
                             $verifica = 0;
                             if ($item->paciente != '') {
@@ -268,9 +281,10 @@ $data['empresa'] = $this->empresa->listarempresatoten($empresa_id);
                                 $situacao = "espera";
                                 $verifica = 3;
                             }
+//                            var_dump($ordenador);die;
                             ?>
                             <tr>
-                                <td class="<?php echo $estilo_linha; ?>"></td>
+                                <td style="color: <?= @$cor ?>" class="<?php echo $estilo_linha; ?>"><?= $ordenador; ?></td>
                                 <? if ($verifica == 1) { ?>
                                     <td class="<?php echo $estilo_linha; ?>"><font <? ?>><b><?= $situacao; ?></b></td>
                                 <? }if ($verifica == 2) { ?>

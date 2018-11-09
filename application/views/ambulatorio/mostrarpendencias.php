@@ -34,7 +34,7 @@
                     </tbody>
                 </table>
             <?} else { ?>
-                <h4>N&atilde;o foi encontrado lembretes para você.</h4>
+                <h4>N&atilde;o foi encontrado nenhum atendimento pendente para você.</h4>
             <? } ?>
         </div>
     </div> <!-- Final da DIV content -->
