@@ -311,7 +311,7 @@
                         Operador: <?=$operadorAtual?>
                     </th>
                     <td class="tabela_header">
-                        <table border=1 class="tabelaFormas" cellspacing=0 cellpadding=1>
+                        <table  class="tabelaFormas" cellspacing=0 cellpadding=1>
                                 <tr>
                                     <th class="thNomeForma">
                                     F. Pag   
@@ -355,7 +355,7 @@
                 <td class="alignTop"><?=$data_faturar?></td>
                 <td style="text-align: center;">
 
-                    <table border=1 class="tabelaFormas" cellspacing=0 cellpadding=1>
+                    <table  class="tabelaFormas" cellspacing=0 cellpadding=1>
                         <!-- <tr>
                             <th>
                              Forma   
