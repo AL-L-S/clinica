@@ -9,10 +9,10 @@
             
             <textarea style="width: 100%; height:400px;" name="adicional_cabecalho" id=""><?= @$impressao[0]->adicional_cabecalho ?></textarea>
             <div>
-                    <p>
-                        Obs: Adicional do Cabeçalho seria no caso de você querer alguma das informações abaixo se repedindo em todas as páginas na parte superior da página
-                    </p>
-                </div>    
+                <p>
+                    Obs: Adicional do Cabeçalho seria no caso de você querer alguma das informações abaixo se repedindo em todas as páginas na parte superior da página
+                </p>
+            </div>    
         </fieldset>
         <fieldset>
             <legend>Laudo</legend>
@@ -198,7 +198,7 @@
                 </tr>
                 <tr class="tabela_content01">
                     <td>
-                        Medico (Médico responsável----------->
+                        Médico (Médico responsável----------->
                     </td>
                     <td style="text-align: left;">
                         _medico_
@@ -206,13 +206,21 @@
                 </tr>
                 <tr class="tabela_content02">
                     <td>
+                        Usuário Salvar (Último usuário a clicar no botão salvar)----------->
+                    </td>
+                    <td style="text-align: left;">
+                        _usuario_salvar_
+                    </td>
+                </tr>
+                <tr class="tabela_content01">
+                    <td>
                         Medico Revisor----------->
                     </td>
                     <td style="text-align: left;">
                         _revisor_
                     </td>
                 </tr>
-                <tr class="tabela_content01">
+                <tr class="tabela_content02">
                     <td>
                         Procedimento----------->
                     </td>
@@ -220,7 +228,7 @@
                         _procedimento_ 
                     </td>
                 </tr>
-                <tr class="tabela_content02">
+                <tr class="tabela_content01">
                     <td>
                         Texto descrito pelo médico no laudo----------->
                     </td>
@@ -228,7 +236,7 @@
                         _laudo_
                     </td>
                 </tr>
-                <tr class="tabela_content01">
+                <tr class="tabela_content02">
                     <td>
                         Nome do Laudo (Apenas Exame----------->
                     </td>
@@ -236,7 +244,7 @@
                         _nomedolaudo_
                     </td>
                 </tr>
-                <tr class="tabela_content02">
+                <tr class="tabela_content01">
                     <td>
                         Queixa Principal (Apenas Consulta----------->
                     </td>
@@ -244,7 +252,7 @@
                         _queixa_
                     </td>
                 </tr>
-                <tr class="tabela_content01">
+                <tr class="tabela_content02">
                     <td>
                         Cid Primário (Apenas Consulta----------->
                     </td>
@@ -252,7 +260,7 @@
                         _cid1_
                     </td>
                 </tr>
-                <tr class="tabela_content02">
+                <tr class="tabela_content01">
                     <td>
                         Cid Secundário (Apenas Consulta----------->
                     </td>
@@ -260,7 +268,7 @@
                         _cid2_
                     </td>
                 </tr>
-                <tr class="tabela_content01">
+                <tr class="tabela_content02">
                     <td>
                         Peso----------->
                     </td>
@@ -268,7 +276,7 @@
                         _peso_
                     </td>
                 </tr>
-                <tr class="tabela_content02">
+                <tr class="tabela_content01">
                     <td>
                         Altura----------->
                     </td>
@@ -276,7 +284,7 @@
                         _altura_
                     </td>
                 </tr>
-                <tr class="tabela_content01">
+                <tr class="tabela_content02">
                     <td>
                         Assinatura do médico (Apenas se quiser no corpo do texto. Também pode ser colocado no rodapé nas configurações de rodapé)
                     </td>

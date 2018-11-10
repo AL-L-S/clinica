@@ -2213,6 +2213,7 @@ class laudo_model extends Model {
                             ag.ao_relacao_atrio_esquerdo_aorta,
                             me.nome as solicitante,
                             op.nome as medicorevisor,
+                            op2.nome as usuario_salvar,
                             pt.nome as procedimento,
                             pt.grupo,
                             ae.agenda_exames_id,
@@ -2229,6 +2230,7 @@ class laudo_model extends Model {
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
+        $this->db->join('tb_operador op2', 'op2.operador_id = ag.operador_atualizacao', 'left');
         $this->db->join('tb_exames e', 'e.exames_id = ag.exame_id ', 'left');
         $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
@@ -2292,6 +2294,7 @@ class laudo_model extends Model {
                             ag.ao_relacao_atrio_esquerdo_aorta,
                             me.nome as solicitante,
                             op.nome as medicorevisor,
+                            op2.nome as usuario_salvar,
                             pt.nome as procedimento,
                             pt.grupo,
                             ae.agenda_exames_id,
@@ -2305,6 +2308,7 @@ class laudo_model extends Model {
         $this->db->join('tb_paciente p', 'p.paciente_id = ag.paciente_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ag.medico_parecer1', 'left');
         $this->db->join('tb_operador op', 'op.operador_id = ag.medico_parecer2', 'left');
+        $this->db->join('tb_operador op2', 'op2.operador_id = ag.operador_atualizacao', 'left');
         $this->db->join('tb_exames e', 'e.exames_id = ag.exame_id ', 'left');
         $this->db->join('tb_agenda_exames ae', 'ae.agenda_exames_id = e.agenda_exames_id', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');

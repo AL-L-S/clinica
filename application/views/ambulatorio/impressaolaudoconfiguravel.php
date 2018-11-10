@@ -65,6 +65,7 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
     $operador_atual = $this->operador_m->operadoratualsistema($operador_id);
     @$corpo = str_replace("_usuario_logado_", @$operador_atual[0]->usuario, $corpo);
     $corpo = str_replace("_prontuario_", $laudo[0]->paciente_id, $corpo);
+    $corpo = str_replace("_usuario_salvar_", $laudo[0]->usuario_salvar, $corpo);
     $corpo = str_replace("_telefone1_", $laudo[0]->telefone, $corpo);
     $corpo = str_replace("_telefone2_", $laudo[0]->celular, $corpo);
     $corpo = str_replace("_whatsapp_", $laudo[0]->whatsapp, $corpo);

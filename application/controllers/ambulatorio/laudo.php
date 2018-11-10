@@ -1488,6 +1488,7 @@ class Laudo extends BaseController {
         $operador_id = $this->session->userdata('operador_id');
         $operador_atual = $this->operador_m->operadoratualsistema($operador_id);
         @$cabecalho = str_replace("_usuario_logado_", @$operador_atual[0]->nome, $cabecalho);
+        @$cabecalho = str_replace("_usuario_salvar_", $laudo['laudo'][0]->usuario_salvar, $cabecalho);
         $cabecalho = str_replace("_prontuario_", $laudo[0]->paciente_id, $cabecalho);
         $cabecalho = str_replace("_telefone1_", $laudo[0]->telefone, $cabecalho);
         $cabecalho = str_replace("_telefone2_", $laudo[0]->celular, $cabecalho);
@@ -1580,6 +1581,7 @@ class Laudo extends BaseController {
             $operador_id = $this->session->userdata('operador_id');
             $operador_atual = $this->operador_m->operadoratualsistema($operador_id);
             @$cabecalho = str_replace("_usuario_logado_", @$operador_atual[0]->nome, $cabecalho);
+            @$cabecalho = str_replace("_usuario_salvar_", $data['laudo'][0]->usuario_salvar, $cabecalho);
             $cabecalho = str_replace("_prontuario_", $data['laudo'][0]->paciente_id, $cabecalho);
             $cabecalho = str_replace("_telefone1_", $data['laudo'][0]->telefone, $cabecalho);
             $cabecalho = str_replace("_telefone2_", $data['laudo'][0]->celular, $cabecalho);
@@ -2196,6 +2198,7 @@ class Laudo extends BaseController {
                 $operador_id = $this->session->userdata('operador_id');
                 $operador_atual = $this->operador_m->operadoratualsistema($operador_id);
                 @$cabecalho = str_replace("_usuario_logado_", @$operador_atual[0]->nome, $cabecalho);
+                $cabecalho = str_replace("_usuario_salvar_", $data['laudo'][0]->usuario_salvar, $cabecalho);
                 $cabecalho = str_replace("_prontuario_", $data['laudo'][0]->paciente_id, $cabecalho);
                 $cabecalho = str_replace("_telefone1_", $data['laudo'][0]->telefone, $cabecalho);
                 $cabecalho = str_replace("_telefone2_", $data['laudo'][0]->celular, $cabecalho);
@@ -2203,8 +2206,8 @@ class Laudo extends BaseController {
 
                 $cabecalho = $cabecalho . "<br> {$data['impressaolaudo'][0]->adicional_cabecalho}";
                 $cabecalho = $this->adicionalcabecalho($cabecalho, $data['laudo']);
-                var_dump($operador_atual);
-                die;
+                // var_dump($operador_atual);
+                // die;
 
 
                 if (file_exists("upload/1ASSINATURAS/" . $data['laudo'][0]->medico_parecer1 . ".jpg")) {
