@@ -1,19 +1,20 @@
 <div class="content"> <!-- Inicio da DIV content -->
+    <?
+    $notas = $this->nota->listarnota($estoque_nota_id);
+    $empresa_id = $this->session->userdata('empresa_id');
+//        var_dump($notas);die;
+    ?>
     <div class="bt_link_voltar">
-        <a href="<?= base_url() ?>cadastros/contaspagar">
+        <a href="<?= base_url() ?>estoque/nota/alimentarnota/<?= $notas[0]->estoque_nota_id; ?>">
             Voltar
         </a>
         <!--ponto/horarioscontaspagar-->        
     </div>
     <div id="accordion">
         <h3 class="singular"><a href="#">Notas a Pagar</a></h3>
-        <?
-        $notas = $this->nota->listarnota($estoque_nota_id);
-        $empresa_id = $this->session->userdata('empresa_id');
-//        var_dump($notas);die;
-        ?>
+
         <div>
-            <form name="form_contaspagar" id="form_contaspagar" action="<?= base_url() ?>cadastros/contaspagar/gravarnota" method="post">
+            <form name="form_notaspagar" id="form_notaspagar" action="<?= base_url() ?>cadastros/contaspagar/gravarnota/<?= $notas[0]->fornecedor_id; ?>" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>
@@ -40,16 +41,16 @@
                         <label>Pagar a:</label>
                     </dt>
                     <dd>
-                        <input type="hidden" id="credor" class="texto_id" name="credor" value="<?= @$obj->_credor; ?>"/>
+                        <input type="hidden" id="credor" class="texto_id" name="credor" value="<?= $notas[0]->fornecedor_id; ?>"/>
                         <input type="text" id="credorlabel" class="texto09" name="credorlabel" value="<?= $notas[0]->fornecedor; ?>"  readonly=""/>
                     </dd>
-                    <!--                    <dt>
-                                            <label>Tipo numero</label>
-                                        </dt>
-                                        <dd>
-                                            <input type="text" name="tiponumero" id="tiponumero" class="texto04" value="<?= @$obj->_tipo_numero; ?>"/>
-                                        </dd>
-                    -->
+                    <dt>
+                        <label>Tipo numero</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="tiponumero" id="tiponumero" class="texto04" value="<?= @$obj->_tipo_numero; ?>"/>
+                    </dd>
+
                     <dt>
                         <label>Empresa*</label>
                     </dt>
@@ -110,11 +111,18 @@
                     </dd>
                     <br>
                     <dt>
-                        <label>Repetir </label>
+                        <label>Parcelar em </label>
                     </dt>
                     <dd>
-                        <input type="text" name="repitir" alt="integer" class="texto02" value="<?= @$obj->_numero_parcela; ?>"/> nos proximos <input type="text" name="frequencia" alt="integer" class="texto02" value="<?= @$obj->_freq_parcela; ?>"/>
-                        <select  name="sala1" id="sala1" class="size2" required="">
+                        <input type="text" name="repitir" alt="integer" class="texto02" value="<?= @$obj->_numero_parcela; ?>"/> Vezes                         
+                    </dd>
+                    <br>
+                    <dt>
+                        <label>Intervalo entre Parcelas</label>
+                    </dt>
+                    <dd>
+                        <input type="text" name="intervalo" alt="integer" class="texto02" value="<?= @$obj->_intervalo_parcela; ?>"/>
+                        <select  name="periodo" id="periodo" class="size2" required="">
                             <option value="">Selecione</option>
                             <option value="dia">DIA(S)</option>
                             <option value="mes">MES(ES)</option>                                        

@@ -593,7 +593,7 @@ class exametemp_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    function listarhorarioscalendariovago($medico = null, $especialidade = null, $empresa_id = null, $sala_id = null, $grupo = null, $tipoagenda = null) {
+    function listarhorarioscalendariovago($medico = null, $especialidade = null, $empresa_id = null, $sala_id = null, $grupo = null, $tipoagenda = null, $procedimento_tuss_id = null) {
         $data = date('Y-m-d');
         $data_passado = date('Y-m-d', strtotime("-1 year", strtotime($data)));
         $data_futuro = date('Y-m-d', strtotime("+1 year", strtotime($data)));
@@ -604,6 +604,7 @@ class exametemp_model extends Model {
             $this->db->select('ae.data, count(ae.data) as contagem, situacao');
         }
         $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ae.medico_agenda', 'left');
         $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
         if ($grupo != '') {
@@ -631,6 +632,9 @@ class exametemp_model extends Model {
         }
         if ($tipoagenda != '') {
             $this->db->where('ae.tipo_consulta_id', $tipoagenda);
+        }
+        if ($procedimento_tuss_id != '') {
+            $this->db->where('pc.procedimento_tuss_id', $procedimento_tuss_id);
         }
         if ($medico != '') {
             $this->db->where("ae.medico_agenda", $medico);

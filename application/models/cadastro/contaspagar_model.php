@@ -779,12 +779,79 @@ class contaspagar_model extends Model {
             return -1;
         }
     }
+    
+    function gravarnota($dia, $parcela, $credor, $valor) {
+        try {
+            if($_POST['empresa_id'] != ''){
+                $empresa_id = $_POST['empresa_id'];
+            }
+            else{
+                $empresa_id = $this->session->userdata('empresa_id');
+            }
+            
+                        
+            //busca tipo
+            $this->db->select('t.descricao');
+            $this->db->from('tb_tipo_entradas_saida t');
+            $this->db->join('tb_financeiro_classe c', 'c.tipo_id = t.tipo_entradas_saida_id', 'left');
+            $this->db->where('c.ativo', 't');
+            $this->db->where('c.descricao', $_POST['classe']);
+            $return = $this->db->get();
+            $result = $return->result();
+            if(count($result) > 0){
+             $tipo = $result[0]->descricao;   
+            }else {
+                $tipo = '';
+            }
+           
+            
+//            var_dump($tipo); die;
+
+            /* inicia o mapeamento no banco */
+            $financeiro_contaspagar_id = $_POST['financeiro_contaspagar_id'];
+            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $valor)));
+            $this->db->set('credor', $credor);
+            $this->db->set('data', $dia);
+            $this->db->set('parcela', $parcela);
+            $this->db->set('tipo', $tipo);
+            $this->db->set('empresa_id', $empresa_id);
+            $this->db->set('classe', $_POST['classe']);
+            $this->db->set('conta', $_POST['conta']);
+            $this->db->set('tipo_numero', $_POST['tiponumero']);
+            $this->db->set('numero_parcela', $_POST['repitir']);
+            $this->db->set('observacao', $_POST['Observacao']);
+            $horario = date("Y-m-d H:i:s");
+            $operador_id = $this->session->userdata('operador_id');
+
+            if ($_POST['financeiro_contaspagar_id'] == "") {// insert
+                $this->db->set('data_cadastro', $horario);
+                $this->db->set('operador_cadastro', $operador_id);
+                $this->db->insert('tb_financeiro_contaspagar');
+                $erro = $this->db->_error_message();
+                if (trim($erro) != "") // erro de banco
+                    return -1;
+                else
+                    $financeiro_contaspagar_id = $this->db->insert_id();
+            }
+            else { // update
+                $this->db->set('data_atualizacao', $horario);
+                $this->db->set('operador_atualizacao', $operador_id);
+                $this->db->where('financeiro_contaspagar_id', $financeiro_contaspagar_id);
+                $this->db->update('tb_financeiro_contaspagar');
+            }
+            return $financeiro_contaspagar_id;
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
 
     private function instanciar($financeiro_contaspagar_id) {
 
         if ($financeiro_contaspagar_id != 0) {
             $this->db->select('fc.financeiro_contaspagar_id,
                             fc.valor,
+                            fc.intervalo_parcela,
+                            fc.periodo,
                             fc.credor,
                             fc.parcela,
                             fc.numero_parcela,
@@ -809,7 +876,9 @@ class contaspagar_model extends Model {
             $this->_credor = $return[0]->credor;
             $this->_parcela = $return[0]->parcela;
             $this->_numero_parcela = $return[0]->numero_parcela;
+            $this->_intervalo_parcela = $return[0]->intervalo_parcela;
             $this->_observacao = $return[0]->observacao;
+            $this->_periodo = $return[0]->periodo;
             $this->_tipo = $return[0]->tipo;
             $this->_data = $return[0]->data;
             $this->_razao_social = $return[0]->razao_social;

@@ -54,6 +54,7 @@ class exame_model extends Model {
                             nome_mae,
                             nascimento,
                             cpf,
+                            cns,
                             logradouro,
                             numero');
         $this->db->from('tb_paciente');
@@ -3273,6 +3274,7 @@ class exame_model extends Model {
                             o.nome as operador,
                             aoi.data_preferencia,
                             aoi.autorizado,                           
+                            ao.recusado,                           
                             aoi.observacao,                           
                             e.nome as empresa_nome,
                             (
@@ -3632,6 +3634,18 @@ class exame_model extends Model {
                 }
             }
             return (isset($return[0]->paciente_id) ? @$return[0]->paciente_id : '');
+        } catch (Exception $exc) {
+            return -1;
+        }
+    }
+    function gravarrecusarorcamento($ambulatorio_orcamento_id) {
+
+        try {
+            
+            $this->db->set('recusado', 't');
+            $this->db->where('ambulatorio_orcamento_id', $ambulatorio_orcamento_id);
+            $this->db->update('tb_ambulatorio_orcamento');
+
         } catch (Exception $exc) {
             return -1;
         }

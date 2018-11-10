@@ -54,6 +54,9 @@ class procedimentoplano_model extends Model {
         if (isset($args['convenio']) && @$args['convenio'] != '') {
             $this->db->where('c.convenio_id', $args['convenio']);
         }
+        if (isset($args['grupo_convenio']) && @$args['grupo_convenio'] != '') {
+            $this->db->where('c.convenio_grupo_id', $args['grupo_convenio']);
+        }
         if (isset($args['procedimento']) && strlen($args['procedimento']) > 0) {
             $this->db->where('pt.nome ilike', $args['procedimento'] . "%");
         }
@@ -100,6 +103,9 @@ class procedimentoplano_model extends Model {
         }
         if (isset($args['convenio']) && @$args['convenio'] != '') {
             $this->db->where('c.convenio_id', $args['convenio']);
+        }
+        if (isset($args['grupo_convenio']) && @$args['grupo_convenio'] != '') {
+            $this->db->where('c.convenio_grupo_id', $args['grupo_convenio']);
         }
         if (isset($args['subgrupo']) && @$args['subgrupo'] != '') {
             $this->db->where('pt.subgrupo_id', $args['subgrupo']);

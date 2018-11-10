@@ -1303,7 +1303,7 @@ class Autocomplete extends Controller {
     function listarhorarioscalendario() {
 //            echo $_POST['custom_param1'];
         if (count($_POST) > 0) {
-            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], null, $_POST['empresa'], $_POST['sala'], $_POST['grupo'], $_POST['tipoagenda']);
+            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], null, $_POST['empresa'], $_POST['sala'], $_POST['grupo'], $_POST['tipoagenda'],  $_POST['procedimento']);
 //            $algo = 'asd';
         } else {
             $result = $this->exametemp->listarhorarioscalendariovago();
@@ -1346,6 +1346,11 @@ class Autocomplete extends Controller {
             } else {
                 $nome = null;
             }
+            if ($_POST['procedimento'] != '') {
+                $procedimento = $_POST['procedimento'];
+            } else {
+                $procedimento = null;
+            }
             $sala = $_POST['sala'];
             $grupo = $_POST['grupo'];
             $empresa = $_POST['empresa'];
@@ -1356,7 +1361,7 @@ class Autocomplete extends Controller {
 
 //            $medico = $item->medico;
             if ($this->session->userdata('calendario_layout') == 't') {
-                $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario2?empresa=$empresa&grupo=$grupo&sala=$sala&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=$nome";
+                $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario2?empresa=$empresa&grupo=$grupo&sala=$sala&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=$nome&procedimento=$procedimento";
             } else {
                 $retorno['url'] = "../../ambulatorio/exame/listarmultifuncaocalendario?empresa=$empresa&grupo=$grupo&sala=$sala&tipoagenda=$tipoagenda&medico=$medico&situacao=$situacao&data=$dia%2F$mes%2F$ano&nome=$nome";
             }
@@ -3892,6 +3897,7 @@ class Autocomplete extends Controller {
             $retorno['itens'] = $item->telefone;
             $retorno['celular'] = $item->celular;
             $retorno['cpf'] = $item->cpf;
+            $retorno['email'] = $item->cns;
             $retorno['valor'] = substr($item->nascimento, 8, 2) . "/" . substr($item->nascimento, 5, 2) . "/" . substr($item->nascimento, 0, 4);
             $retorno['id'] = $item->paciente_id;
             $retorno['endereco'] = $item->logradouro . " - " . $item->numero;

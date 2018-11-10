@@ -1456,7 +1456,7 @@ $empresapermissoes = $this->guia->listarempresapermissoes($empresa_id);
                                                             var idade = new Date().getFullYear() - ano;
 
                                                             var dtAtual = new Date();
-                                                            var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
+                                                            var aniversario = new Date(dtAtual.getFullYear(), parseInt(data.substring(3, 5)) - 1, data.substring(0, 2));
 
                                                             if (dtAtual < aniversario) {
                                                                 idade--;

@@ -852,10 +852,11 @@
 
             var ano = data.substring(6, 12);
             var idade = new Date().getFullYear() - ano;
-
+            // var mes = ;
             var dtAtual = new Date();
-            var aniversario = new Date(dtAtual.getFullYear(), data.substring(3, 5), data.substring(0, 2));
-
+            var aniversario = new Date(dtAtual.getFullYear(), parseInt(data.substring(3, 5)) - 1, data.substring(0, 2));
+            // alert(aniversario);
+            // alert(dtAtual.getFullYear());
             if (dtAtual < aniversario) {
                 idade--;
             }

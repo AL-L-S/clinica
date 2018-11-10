@@ -94,8 +94,8 @@ class Operador extends BaseController {
     }
 
     function excluirmedicosolicitante($operador_id) {
-
-        redirect(base_url() . "seguranca/operador/associarempresas/$operador_id");
+        $this->operador_m->excluirOperador($operador_id);
+        redirect(base_url() . "seguranca/operador/pesquisarmedicosolicitante");
     }
 
     function alterarrecepcao($operador_id) {

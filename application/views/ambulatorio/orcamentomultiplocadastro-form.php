@@ -18,6 +18,7 @@
             <form name="form_guia" id="form_guia" action="<?= base_url() ?>ambulatorio/guia/gravarorcamentomultiplocadastro" method="post">
                 <fieldset>
                     <legend>Dados do paciente</legend>
+                    <!-- <div></div> -->
                     <div>
                         <label>Nome</label>                      
                         <input type="text" id="txtNome" name="nome"  class="texto09" value="<?= $paciente['0']->nome; ?>" readonly/>
@@ -51,6 +52,10 @@
                     <div>
                         <label>CPF</label>
                         <input type="text" name="cpf" id="cpf" class="texto02" value="<?= @$paciente['0']->cpf ?>" readonly/>
+                    </div>
+                    <div>
+                        <label>Email</label>
+                        <input type="text" name="email" id="email" class="texto09" value="<?= @$paciente['0']->cns ?>" readonly/>
                     </div>
                     <div>
                         <?

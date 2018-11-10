@@ -515,6 +515,13 @@ class Exame extends BaseController {
         $this->load->View('ambulatorio/impressaorelatorioteleoperadora', $data);
     }
 
+    function recusarorcamento($ambulatorio_orcamento_id) {
+        $teste = $this->exame->gravarrecusarorcamento($ambulatorio_orcamento_id, $dataSelecionada);
+    //    var_dump($teste);
+    //    die;
+        redirect(base_url() . "seguranca/operador/pesquisarrecepcao");
+         
+    }
     function gravarautorizarorcamentorelatorio($ambulatorio_orcamento_id, $dataSelecionada) {
         $dataSelecionada = date("Y-m-d", strtotime(str_replace('/', '-', $dataSelecionada)));
 
