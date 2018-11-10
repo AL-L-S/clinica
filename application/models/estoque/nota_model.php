@@ -664,20 +664,22 @@ class nota_model extends Model {
 //        return $return;
 //    }
 
-    function excluir($estoque_nota_id) {
+    function excluir($estoque_nota_id, $nota_fiscal) {
 
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
+
         
         $this->db->select('en.saida_id_transferencia');
         $this->db->from('tb_estoque_entrada_nota en');
-        $this->db->where('estoque_nota_id', $estoque_nota_id);
+        $this->db->where('nota_fiscal', $nota_fiscal);
         $return = $this->db->get()->result();
 //        var_dump($return);
 //        die;
         // DELETANDO A TRANSFERENCIA
-        if ($return[0]->saida_id_transferencia != '') {
-            $saida_id_transferencia = $return[0]->saida_id_transferencia;
+        foreach ($return as $item){
+        if ($item->saida_id_transferencia != '') {
+            $saida_id_transferencia = $item->saida_id_transferencia;
             
             $this->db->set('ativo', 'f');
             $this->db->set('data_atualizacao', $horario);
@@ -693,26 +695,41 @@ class nota_model extends Model {
             $this->db->update('tb_estoque_saida');
         }
 
+        }    
         
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('estoque_entrada_id', $estoque_nota_id);
+        $this->db->where('nota_fiscal', $nota_fiscal);
         $this->db->update('tb_estoque_entrada');
         
         //atualizando tabela estoque_saldo
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('estoque_entrada_id', $estoque_nota_id);
+        $this->db->where('nota_fiscal', $nota_fiscal);
         $this->db->update('tb_estoque_saldo');
         
         //atualizando tabela estoque_saida
         $this->db->set('ativo', 'f');
         $this->db->set('data_atualizacao', $horario);
         $this->db->set('operador_atualizacao', $operador_id);
-        $this->db->where('estoque_entrada_id', $estoque_nota_id);
+        $this->db->where('nota_fiscal', $nota_fiscal);
         $this->db->update('tb_estoque_saida');
+        
+        //atualizando tabela estoque_entrada_nota
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('nota_fiscal', $nota_fiscal);
+        $this->db->update('tb_estoque_entrada_nota');
+        
+        //atualizando tabela estoque_nota
+        $this->db->set('ativo', 'f');
+        $this->db->set('data_atualizacao', $horario);
+        $this->db->set('operador_atualizacao', $operador_id);
+        $this->db->where('estoque_nota_id', $estoque_nota_id);
+        $this->db->update('tb_estoque_nota');
         
         
         $erro = $this->db->_error_message();

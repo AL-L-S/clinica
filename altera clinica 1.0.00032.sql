@@ -21,13 +21,16 @@ CREATE TABLE ponto.tb_internacao_procedimento_externo
 
 
 
--- 06/11/2018
-ALTER TABLE ponto.tb_farmacia_produto ADD COLUMN procedimento_tuss_id integer;
 -- Dia 05/11/2018
 
 ALTER TABLE ponto.tb_cadastro_aso ADD COLUMN detalhamento_nr text;
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN ordenacao_situacao boolean DEFAULT false;
+
+-- Dia 06/11/2018
+
+ALTER TABLE ponto.tb_farmacia_produto ADD COLUMN procedimento_tuss_id integer;
+
 -- Dia 07/11/2018
 
 ALTER TABLE ponto.tb_empresa_permissoes ADD COLUMN filtrar_agenda boolean DEFAULT false;
@@ -126,4 +129,9 @@ END;
 $$ LANGUAGE plpgsql;
 SELECT insereValor();
 
+-- Dia 10/11/2018
+
+ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN periodo text;
+
+ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN intervalo_parcela integer;
 

@@ -95,7 +95,7 @@
                                     <? } ?>
 
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"> <div class="bt_link">                                 
-                                            <a onclick="javascript: return confirm('Deseja realmente exlcuir essa Nota?');" href="<?= base_url() ?>estoque/nota/excluir/<?= $item->estoque_nota_id ?>">Excluir</a></div>
+                                            <a onclick="javascript: return confirm('Deseja realmente exlcuir essa Nota?');" href="<?= base_url() ?>estoque/nota/excluir/<?= $item->estoque_nota_id?>/<?= $item->nota_fiscal ?>">Excluir</a></div>
                                     </td> 
                                     <td class="<?php echo $estilo_linha; ?>" width="70px;"><div class="bt_link">                                  
                                             <a href="<?= base_url() ?>estoque/nota/alimentarnota/<?= $item->estoque_nota_id ?>">Entradas</a></div>
