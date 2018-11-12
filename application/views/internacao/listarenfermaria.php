@@ -7,17 +7,45 @@
     <div id="accordion">
         <h3><a href="#">Manter Enfermarias</a></h3>
         <div>
+            <form method="get" action="<?php echo base_url() ?>internacao/internacao/pesquisarenfermaria">
+                <table>
+                    <tr>
+                        <th class="tabela_title" colspan="1">
+                            Nome
+                        </th>
+                        <th class="tabela_title" colspan="1">
+                            Unidade
+                        </th>
+                    </tr>
+                    <tr>
+                        <? $unidade = $this->unidade_m->listaunidadepacientes(); ?>
+                        <th class="tabela_title" colspan="1">
+                            <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />
+                        </th>
+                        <th class="tabela_title" colspan="1">
+                            <select name="unidade" id="unidade" class="size2" >
+                                <option value=''>TODOS</option>
+                                <?php
+                                foreach ($unidade as $item) {
+                                    ?>
+                                    <option <?=($item->internacao_unidade_id == @$_GET['unidade'])? 'selected' : '';?> value="<?php echo $item->internacao_unidade_id; ?>">
+                                        <?php echo $item->nome; ?>
+                                    </option>
+                                    <?php
+                                }
+                                ?> 
+                            </select>
+                        </th>
+                        <th class="tabela_title" colspan="1">
+                            <button type="submit" name="enviar">Pesquisar</button>
+                        </th>
+                        
+                    </tr>
+                </table>
+            </form>
             <table>
                 <thead>
-                    <tr>
-                        <th class="tabela_title" colspan="4">
-                            Lista de Enfermarias
-                <form method="get" action="<?php echo base_url() ?>internacao/internacao/pesquisarenfermaria">
-                    <input type="text" name="nome" value="<?php echo @$_GET['nome']; ?>" />
-                    <button type="submit" name="enviar">Pesquisar</button>
-                </form>
-                </th>
-                </tr>
+                
                 <tr>
                     <th class="tabela_header">Codigo</th>
                     <th class="tabela_header">Nome</th>

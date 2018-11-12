@@ -8393,6 +8393,30 @@ class guia_model extends Model {
         return $return->result();
     }
 
+    function listarexamesguiaetiquetagrupo($guia_id) {
+
+        $this->db->select('pt.grupo');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_paciente p', 'p.paciente_id = ae.paciente_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_paciente_indicacao pi', 'ae.indicacao = pi.paciente_indicacao_id', 'left');
+        $this->db->join('tb_exame_sala es', 'es.exame_sala_id = ae.agenda_exames_nome_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_exames e', 'e.agenda_exames_id = ae.agenda_exames_id', 'left');
+        $this->db->join('tb_ambulatorio_guia ge', 'ge.ambulatorio_guia_id = ae.guia_id', 'left');
+        $this->db->join('tb_ambulatorio_laudo l', 'l.exame_id = e.exames_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->join('tb_empresa ep', 'ep.empresa_id = ae.empresa_id', 'left');
+
+        $this->db->where("ae.guia_id", $guia_id);
+        $this->db->where("ae.cancelada", "f");
+        $this->db->groupby('pt.grupo');
+        $this->db->orderby('pt.grupo');
+        $return = $this->db->get();
+//        var_dump($return->result()); die;
+        return $return->result();
+    }
+
     function listarexamesguialaboratorio($guia_id) {
 
         $this->db->select('ae.agenda_exames_id,
