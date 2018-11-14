@@ -116,8 +116,14 @@ class leito_model extends BaseModel {
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('il.nome ilike', "%" . $args['nome'] . "%");
-                $this->db->orwhere('ie.nome ilike', "%" . $args['nome'] . "%");
-                $this->db->orwhere('iu.nome ilike', "%" . $args['nome'] . "%");
+                // $this->db->orwhere('ie.nome ilike', "%" . $args['nome'] . "%");
+                // $this->db->orwhere('iu.nome ilike', "%" . $args['nome'] . "%");
+            }
+            if(isset($args['unidade']) && $args['unidade'] > 0){
+                $this->db->where('iu.internacao_unidade_id',$args['unidade']);
+            }
+            if(isset($args['enfermaria']) && $args['enfermaria'] > 0){
+                $this->db->where('ie.internacao_enfermaria_id',$args['enfermaria']);
             }
         }
         $this->db->where('il.excluido', 'f');

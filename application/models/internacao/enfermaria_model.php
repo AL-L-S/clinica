@@ -95,7 +95,10 @@ class enfermaria_model extends BaseModel {
         if ($args) {
             if (isset($args['nome']) && strlen($args['nome']) > 0) {
                 $this->db->where('ie.nome ilike', "%" . $args['nome'] . "%");
-                $this->db->orwhere('iu.nome ilike', "%" . $args['nome'] . "%");
+                // $this->db->orwhere('iu.nome ilike', "%" . $args['nome'] . "%");
+            }
+            if(isset($args['unidade']) && $args['unidade'] > 0){
+                $this->db->where('iu.internacao_unidade_id',$args['unidade']);
             }
         }
         $this->db->where('ie.ativo', 't');

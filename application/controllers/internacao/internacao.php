@@ -40,6 +40,7 @@ class internacao extends BaseController {
     }
 
     public function pesquisarenfermaria($args = array()) {
+        // $data['unidade'] = $this->internacao_m->listaunidade();
         $this->loadView('internacao/listarenfermaria');
     }
 
