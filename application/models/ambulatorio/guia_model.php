@@ -21,6 +21,16 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listarempresamodelo() {
+
+        $this->db->select('convenio_id');
+        $this->db->from('tb_convenio');
+        $this->db->where("padrao_particular", 'TRUE');
+        $this->db->where("ativo", 'TRUE');
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function procedimentocirurgicovalor($agenda_exames_id) {
 
@@ -245,6 +255,19 @@ class guia_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
+    
+    function listartipoasovalidade($tipo, $convenio_id) {
+
+        $this->db->select('pc.validade');
+
+        $this->db->from('tb_procedimento_convenio pc');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('pt.tipo_aso', $tipo);
+        $this->db->where('pc.convenio_id', $convenio_id);
+
+        $return = $this->db->get();
+        return $return->result();
+    }
 
     function gravarcadastroaso($gravarempresa, $paciente_id, $ambulatorio_guia) {
 
@@ -263,6 +286,7 @@ class guia_model extends Model {
             $this->db->where('pc.convenio_id', $_POST['convenio1']);
         }
         $this->db->where('pt.grupo', 'ASO');
+        $this->db->where('pt.tipo_aso', $_POST['tipo']);
         $result = $this->db->get()->result();
 
 //            echo'<pre>';var_dump($_POST['tipo']);die;

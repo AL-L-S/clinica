@@ -70,7 +70,7 @@
     <? } ?>
     <div>
         <table>
-            
+
             <tr>
                 <th class="tabela_header">Nota Fiscal: <?= $nota[0]->nota_fiscal ?></th>
                 <th class="tabela_header">Valor Total: <?= $nota[0]->valor_nota ?></th> 
@@ -107,6 +107,7 @@
                         if ($item->nota_fiscal == $nota[0]->nota_fiscal) {
 
                             $valor += $item->valor_compra;
+//                            $valor_teste = $item->valor_compra - 484.07;
 
                             ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
@@ -153,15 +154,17 @@
 
                                 <? }
                                 ?>
-            <!--                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
-                                                    <a href="<?= base_url() ?>estoque/entrada/anexarimagementrada/<?= $item->estoque_entrada_nota_id ?>">Arquivos</a></div>
-                                            </td>-->
+                        <!--                                <td class="<?php echo $estilo_linha; ?>" width="50px;"><div class="bt_link">
+                                                                <a href="<?= base_url() ?>estoque/entrada/anexarimagementrada/<?= $item->estoque_entrada_nota_id ?>">Arquivos</a></div>
+                                                        </td>-->
                             </tr>
 
                         </tbody>
                         <?php
                     }
                 }
+//                var_dump($valor);
+//                var_dump($nota[0]->valor_nota);
 //                echo '<pre>';var_dump($valor);die;
             }
             ?>
@@ -169,14 +172,19 @@
         </table>
         <table style="width: 180px">
             <tr>
+                <?
+                $valor1 = (float) round($nota[0]->valor_nota, 2);
+                $valor2 = (float) round($valor, 2);               
+                ?>
                 <? if (@$notafiscal[0]->situacao != "FINALIZADA") { ?>
-                    <? if ($nota[0]->valor_nota < $valor) { ?>                
+                    <? if ($valor1 < $valor2) { ?>                
                         <td>
                             <div class="bt_link" style="width: 100px">
                                 <a onclick="javascript: return alert('A soma dos valores dos produtos é maior que o valor total da nota. Não é possível finalizar!');">Finalizar Nota</a>
                             </div>
                         </td>
-                    <? } elseif ($nota[0]->valor_nota > $valor) { ?>
+                    <? } elseif ($valor1 > $valor2) {
+                        ?>
                         <td>
                             <div class="bt_link" style="width: 100px">
                                 <a onclick="javascript: return alert('A soma dos valores dos produtos é menor que o valor total da nota. Não é possível finalizar!');">Finalizar Nota</a>
@@ -204,81 +212,81 @@
 <script type="text/javascript" src="<?= base_url() ?>js/jquery.validate.js"></script>
 <script type="text/javascript">
 
-                                $(function () {
-                                    $("#txtfornecedorlabel").autocomplete({
-                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=fornecedor",
-                                        minLength: 2,
-                                        focus: function (event, ui) {
-                                            $("#txtfornecedorlabel").val(ui.item.label);
-                                            return false;
-                                        },
-                                        select: function (event, ui) {
-                                            $("#txtfornecedorlabel").val(ui.item.value);
-                                            $("#txtfornecedor").val(ui.item.id);
-                                            return false;
-                                        }
-                                    });
-                                });
-
-                                $(function () {
-                                    $("#txtprodutolabel").autocomplete({
-                                        source: "<?= base_url() ?>index.php?c=autocomplete&m=produto",
-                                        minLength: 2,
-                                        focus: function (event, ui) {
-                                            $("#txtprodutolabel").val(ui.item.label);
-                                            return false;
-                                        },
-                                        select: function (event, ui) {
-                                            $("#txtprodutolabel").val(ui.item.value);
-                                            $("#txtproduto").val(ui.item.id);
-                                            return false;
-                                        }
-                                    });
-                                });
-
-                                $(function () {
-                                    $("#validade").datepicker({
-                                        autosize: true,
-                                        changeYear: true,
-                                        changeMonth: true,
-                                        monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                                        dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                                        buttonImage: '<?= base_url() ?>img/form/date.png',
-                                        dateFormat: 'dd/mm/yy'
-                                    });
-                                });
-
-
-                                $(document).ready(function () {
-                                    jQuery('#form_entrada').validate({
-                                        rules: {
-                                            txtproduto: {
-                                                required: true
+                                    $(function () {
+                                        $("#txtfornecedorlabel").autocomplete({
+                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=fornecedor",
+                                            minLength: 2,
+                                            focus: function (event, ui) {
+                                                $("#txtfornecedorlabel").val(ui.item.label);
+                                                return false;
                                             },
-                                            quantidade: {
-                                                required: true
-                                            },
-                                            compra: {
-                                                required: true
+                                            select: function (event, ui) {
+                                                $("#txtfornecedorlabel").val(ui.item.value);
+                                                $("#txtfornecedor").val(ui.item.id);
+                                                return false;
                                             }
-
-                                        },
-                                        messages: {
-                                            txtproduto: {
-                                                required: "*"
-                                            },
-                                            quantidade: {
-                                                required: "*"
-                                            },
-                                            compra: {
-                                                required: "*"
-                                            }
-                                        }
+                                        });
                                     });
-                                });
+
+                                    $(function () {
+                                        $("#txtprodutolabel").autocomplete({
+                                            source: "<?= base_url() ?>index.php?c=autocomplete&m=produto",
+                                            minLength: 2,
+                                            focus: function (event, ui) {
+                                                $("#txtprodutolabel").val(ui.item.label);
+                                                return false;
+                                            },
+                                            select: function (event, ui) {
+                                                $("#txtprodutolabel").val(ui.item.value);
+                                                $("#txtproduto").val(ui.item.id);
+                                                return false;
+                                            }
+                                        });
+                                    });
+
+                                    $(function () {
+                                        $("#validade").datepicker({
+                                            autosize: true,
+                                            changeYear: true,
+                                            changeMonth: true,
+                                            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                                            buttonImage: '<?= base_url() ?>img/form/date.png',
+                                            dateFormat: 'dd/mm/yy'
+                                        });
+                                    });
 
 
-                                $(function () {
-                                    $("#accordion").accordion();
-                                });
+                                    $(document).ready(function () {
+                                        jQuery('#form_entrada').validate({
+                                            rules: {
+                                                txtproduto: {
+                                                    required: true
+                                                },
+                                                quantidade: {
+                                                    required: true
+                                                },
+                                                compra: {
+                                                    required: true
+                                                }
+
+                                            },
+                                            messages: {
+                                                txtproduto: {
+                                                    required: "*"
+                                                },
+                                                quantidade: {
+                                                    required: "*"
+                                                },
+                                                compra: {
+                                                    required: "*"
+                                                }
+                                            }
+                                        });
+                                    });
+
+
+                                    $(function () {
+                                        $("#accordion").accordion();
+                                    });
 </script>

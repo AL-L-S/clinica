@@ -60,6 +60,7 @@
                             <option value="1">Agenda Exame</option>
                             <option value="3">Agenda Especialidade</option>
                             <option value="2">Faltas</option>
+                            <option value="4">Todos</option>
                             
                         </select>
                     </dd>

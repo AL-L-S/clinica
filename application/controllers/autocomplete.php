@@ -1995,12 +1995,54 @@ class Autocomplete extends Controller {
 
         
     }
-
+//
+//    function tipoasovalidade() {
+//        
+//        if (isset($_GET['tipo'])) {            
+//            $result = $this->guia->listartipoasovalidade($_GET['tipo'], $_GET['empresa']);
+//            $result2 = $result[0]->tipo_aso;
+//        }
+//        echo json_encode($result2);
+//    }
+//    
     function datavalidade356() {
         
-        if (isset($_GET['data_realizacao'])) {
+        if (isset($_GET['tipo'])) {
+            if($_GET['empresa'] != ''){
+                $empresa = $_GET['empresa'];
+            }else{
+                $modelo = $this->guia->listarempresamodelo();
+                $empresa = $modelo[0]->convenio_id;
+            }
+            $result1 = $this->guia->listartipoasovalidade($_GET['tipo'], $empresa);
+            if(count($result1) > 0){
+            $result2 = $result1[0]->validade;
+            }else{
+            $result2 = 365;    
+            }
             $data = date("Y-m-d", strtotime(str_replace('/', '-', $_GET['data_realizacao'])));
-            $result = date('d/m/Y', strtotime("+365 days", strtotime($data)));
+            $result = date('d/m/Y', strtotime("+$result2 day", strtotime($data)));
+        }
+        echo json_encode($result);
+    }
+    
+    function datavalidadenova() {
+        
+        if (isset($_GET['data_realizacao'])) {
+            if($_GET['empresa'] != ''){
+                $empresa = $_GET['empresa'];
+            }else{
+                $modelo = $this->guia->listarempresamodelo();
+                $empresa = $modelo[0]->convenio_id;
+            }
+            $result1 = $this->guia->listartipoasovalidade($_GET['tipo'], $empresa);
+            if(count($result1) > 0){
+            $result2 = $result1[0]->validade;
+            }else{
+            $result2 = 365;    
+            }
+            $data = date("Y-m-d", strtotime(str_replace('/', '-', $_GET['data_realizacao'])));
+            $result = date('d/m/Y', strtotime("+$result2 day", strtotime($data)));
         }
         echo json_encode($result);
     }

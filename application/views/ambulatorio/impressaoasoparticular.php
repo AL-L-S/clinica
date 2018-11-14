@@ -298,18 +298,22 @@
                         <tr>
                             <td>
                                 <?
-                                if (isset($impressao_aso->procedimento1)) {
-                                    foreach ($impressao_aso->procedimento1 as $key => $item) :
-                                        $procedimentos = $this->procedimento->listarprocedimentoaso($item);
+                                
                                         $guia_id = $relatorio[0]->guia_id;
-                                        $procedimentosdata = $this->procedimento->listarprocedimentoasodata($item, $guia_id);
+                                        $procedimentoscomp = $this->procedimento->listarprocedimentoasonovo($guia_id, $cadastro_aso_id);
+                                        
+                                if (isset($impressao_aso->procedimento1)) {
+                                    foreach ($procedimentoscomp as $key => $item) :
+                                       
+                                        $procedimentos = $this->procedimento->listarprocedimentoaso($item->procedimento_tuss_id);
+                                        $procedimentosdata = $this->procedimento->listarprocedimentoasodata($item->procedimento_tuss_id, $guia_id);
 //                                        var_dump($procedimentosdata);die;
                                         ?>
                                         <?                                        
-                                        if ($key == count($impressao_aso->procedimento1) - 1) {
-                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', @$procedimentosdata[0]->data))) . ")" ;
+                                        if ($key == count($procedimentoscomp) - 1) {
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentoscomp[0]->data))) . ")" ;
                                         } else {
-                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', @$procedimentosdata[0]->data))) . ")" . ", ";
+                                            echo $procedimentos[0]->nome . " " . "(" . date("d/m/Y", strtotime(str_replace('-', '/', $procedimentoscomp[0]->data))) . ")" . ", ";
                                         }
                                         ?>
 
