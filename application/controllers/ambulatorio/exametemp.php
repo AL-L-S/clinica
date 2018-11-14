@@ -1103,9 +1103,39 @@ class Exametemp extends BaseController {
 
     }
 
-    function reservartempgeral($agenda_exames_id, $paciente_id, $agenda_exames_nome_id, $data) {
-        $paciente_id = $this->exametemp->reservarexametemp($agenda_exames_id, $paciente_id, $agenda_exames_nome_id, $data);
+    function reservarexametempalterarprocedimentogeral($agenda_exames_id, $paciente_id, $medico_id) {
+        // $empresa_id = $this->session->userdata('empresa_id');
+        // $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+        // var_dump($medico_id); die;
+        $paciente_id = $this->exametemp->reservarexametempalterarproc($agenda_exames_id, $paciente_id, $medico_id);
         redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$paciente_id");
+
+    }
+
+    function reservartempgeral($agenda_exames_id, $paciente_id, $medico_id, $data_escolhida) {
+       $empresaPermissao = $this->guia->listarempresapermissoes();
+        // var_dump($empresaPermissao); die;
+        if ($empresaPermissao[0]->reservar_escolher_proc == 't') {
+            $data['agenda_exames_id'] = $agenda_exames_id;
+            $data['paciente_id'] = $paciente_id;
+            $data['medico_id'] = $medico_id;
+            // $data['data'] = $data;
+
+            $obj_paciente = new paciente_model($paciente_id);
+            $data['obj'] = $obj_paciente;
+            $data['medico'] = $this->exametemp->listarmedicoconsulta();
+            $data['convenio'] = $this->procedimentoplano->listarconvenio();
+            $data['contador'] = $this->exametemp->contadorfisioterapiapaciente($paciente_id);
+            $data['exames'] = $this->exametemp->listaragendasexamepacientereservar($agenda_exames_id);
+            $data['grupos'] = $this->procedimento->listargrupos();
+            // var_dump($data['exames']); die;
+            $this->loadview('ambulatorio/reservarescolherprocedimentogeral', $data);
+            
+        } else {
+            $paciente_id = $this->exametemp->reservarexametemp($agenda_exames_id, $paciente_id, $agenda_exames_nome_id, $data_escolhida);
+            redirect(base_url() . "ambulatorio/exametemp/carregarpacientetempgeral/$paciente_id");
+        }
+       
     }
 
     function reservarconsultatemp($agenda_exames_id, $paciente_id, $medico_consulta_id, $data) {

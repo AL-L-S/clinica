@@ -425,11 +425,11 @@ if (count($pacs) > 0) {
                                             <?php
                                             if (@$obj->_assinatura == "t") {
                                                 ?>
-                                                <input type="checkbox" name="assinatura" checked ="true" /><label>Assinatura</label>
+                                                <input type="checkbox" name="assinatura" id="assinatura" checked ="true" /><label>Assinatura</label>
                                                 <?php
                                             } else {
                                                 ?>
-                                                <input type="checkbox" name="assinatura"  /><label>Assinatura</label>
+                                                <input type="checkbox" name="assinatura" id="assinatura"  /><label>Assinatura</label>
                                                 <?php
                                             }
                                             ?>
@@ -1310,6 +1310,28 @@ if (count($pacs) > 0) {
                                                                                                         tinyMCE.triggerSave(true, true);
                                                                                                         document.getElementById("laudo").value = $('#laudo').val() + j[0].carimbo;
                                                                                                         $('#laudo').val() + j[0].carimbo;
+                                                                                                        var ed = tinyMCE.get('laudo');
+                                                                                                        ed.setContent($('#laudo').val());
+                                                                                                    });
+                                                                                                } else {
+                                                                                                    //$('#laudo').html('value=""');
+                                                                                                }
+                                                                                            });
+                                                                                        });
+
+                                                                                        $(function () {
+                                                                                            $('#assinatura').change(function () {
+//                                                                            alert('adasd');
+                                                                                                if ($(this).prop('checked') == true) {
+                                                                                                    //$('#laudo').hide();
+                                                                                                    $('.carregando').show();
+                                                                                                    $.getJSON('<?= base_url() ?>autocomplete/assinaturamedico', {medico_id: $('#medico').val(), ajax: true}, function (j) {
+                                                                                                        options = "";
+                                                                                                        console.log(j);
+                                                                                                        options += j;
+                                                                                                        tinyMCE.triggerSave(true, true);
+                                                                                                        document.getElementById("laudo").value = $('#laudo').val() + j;
+                                                                                                        $('#laudo').val() + j;
                                                                                                         var ed = tinyMCE.get('laudo');
                                                                                                         ed.setContent($('#laudo').val());
                                                                                                     });
