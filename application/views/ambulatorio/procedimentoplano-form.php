@@ -56,6 +56,17 @@
                             </select>
                         </td>
                     </tr>
+                    <? // echo '<pre>'; var_dump($procedimentoescolhido);die;?>
+                    <?if(@$procedimentoescolhido[0]->grupo == "ASO"){?>
+                    <tr>
+                        <td>
+                            <label>Validade (dias)</label>
+                        </td>
+                        <td>
+                            <input type="text" name="validade" id="validade" class="texto02" value="<?= $procedimentoescolhido[0]->validade; ?>"/> 
+                        </td>
+                    </tr>
+                    <? } ?>
                     <tr>
                         <td>
                             <label>Empresa *</label>

@@ -247,6 +247,7 @@ class Procedimentoplano extends BaseController {
         $obj_procedimentoplano = new procedimentoplano_model($procedimentoplano_tuss_id);
         $data['obj'] = $obj_procedimentoplano;
         $data['procedimento'] = $this->procedimentoplano->listarprocedimento2();
+        $data['procedimentoescolhido'] = $this->procedimentoplano->listarprocedimentoescolhido($procedimentoplano_tuss_id);
         $data['convenio'] = $this->procedimentoplano->listarconvenio();
         $data['grupos'] = $this->procedimento->listargruposmatmed();
         $data['empresa'] = $this->empresa->listarempresasprocedimento();
@@ -1238,6 +1239,7 @@ class Procedimentoplano extends BaseController {
     }
 
     function gravar() {
+//        echo '<pre>';var_dump($_POST);die;
         $procedimentoplano_tuss_id = $this->procedimentoplano->gravar();
         if ($procedimentoplano_tuss_id == "-1") {
             $data['mensagem'] = 'Erro ao gravar o Procedimentoplano. Procedimento já cadastrado.';

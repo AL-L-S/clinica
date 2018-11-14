@@ -472,6 +472,8 @@ class Exame extends BaseController {
             $this->gerarelatoriomedicoagendaexamefaltou();
         } else if ($_POST['tipoRelatorio'] == '3') {
             $this->gerarelatoriomedicoagendaespecialidade();
+        } else if ($_POST['tipoRelatorio'] == '4') {
+            $this->gerarelatoriomedicoagendatodos();
         }
     }
 
@@ -762,6 +764,18 @@ class Exame extends BaseController {
         $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
         $data['relatorio'] = $this->exame->listaragendaexame();
         $this->load->View('ambulatorio/impressaorelatoriomedicoagendaexame', $data);
+    }
+    
+    function gerarelatoriomedicoagendatodos() {
+        $medicos = $_POST['medicos'];
+        $salas = $_POST['salas'];
+        $data['medico'] = $this->operador_m->listarCada($medicos);
+        $data['salas'] = $this->sala->listarsala($salas);
+        $data['txtdata_inicio'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio'])));
+        $data['txtdata_fim'] = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim'])));
+        $data['empresa'] = $this->guia->listarempresa($_POST['empresa']);
+        $data['relatorio'] = $this->exame->listaragendaexame();
+        $this->load->View('ambulatorio/impressaorelatoriomedicoagendatodos', $data);
     }
 
     function gerarelatoriomedicoagendaexamefaltou() {

@@ -35,6 +35,7 @@ class procedimentoplano_model extends Model {
                             pt.nome as procedimento,
                             pt.codigo,
                             pc.valortotal,
+                            pc.validade,
                             pt.grupo,
                             e.nome as empresa');
         $this->db->from('tb_procedimento_convenio pc');
@@ -170,7 +171,7 @@ class procedimentoplano_model extends Model {
     }
 
     function excluirprocedimentomultiempresa($procedimento_tuss_id, $convenio_id) {
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('ativo', 'f');
@@ -198,11 +199,10 @@ class procedimentoplano_model extends Model {
             $this->db->where('procedimento_tuss_id', $procedimento_tuss_id);
             $this->db->update('tb_procedimento_convenio');
         }
-
     }
 
     function desativarprocedimentomultiempresa($procedimento_tuss_id, $convenio_id) {
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('ativo', 'f');
@@ -213,11 +213,10 @@ class procedimentoplano_model extends Model {
         $this->db->where("convenio_id", $convenio_id);
         // $this->db->where("pc.excluido", "f");
         $this->db->update('tb_procedimento_convenio pc');
-
     }
 
     function excluirdesativarprocedimentomultiempresa($procedimento_tuss_id, $convenio_id) {
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('excluido', 't');
@@ -227,11 +226,10 @@ class procedimentoplano_model extends Model {
         $this->db->where("convenio_id", $convenio_id);
         // $this->db->where("pc.excluido", "f");
         $this->db->update('tb_procedimento_convenio pc');
-
     }
 
     function ativarprocedimentomultiempresa($procedimento_tuss_id, $convenio_id) {
-        
+
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
         $this->db->set('ativo', 't');
@@ -241,7 +239,6 @@ class procedimentoplano_model extends Model {
         $this->db->where("convenio_id", $convenio_id);
         // $this->db->where("pc.excluido", "f");
         $this->db->update('tb_procedimento_convenio pc');
-
     }
 
     function listarprocedimentoconsultalaudo1($args = array()) {
@@ -1011,7 +1008,7 @@ class procedimentoplano_model extends Model {
         $this->db->where('convenio_primario_id', $_POST['convenio']);
         $this->db->where('ativo', 't');
         $conv_sec = $this->db->get()->result();
-        
+
 //        var_dump($conv_sec); die;
 
         if (count($conv_sec) > 0) {
@@ -1404,6 +1401,22 @@ class procedimentoplano_model extends Model {
         return $return->result();
     }
 
+    function listarprocedimentoescolhido($procedimentoplano_tuss_id) {
+        $this->db->select(' pt.procedimento_tuss_id,
+                            pt.nome,
+                            pt.grupo,
+                            pt.codigo,
+                            pc.validade ');
+        $this->db->from('tb_procedimento_tuss pt');
+        $this->db->join('tb_procedimento_convenio pc', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where("pt.ativo", 't');
+        $this->db->where('pc.procedimento_convenio_id', $procedimentoplano_tuss_id);
+//        $this->db->where("(grupo != 'AGRUPADOR' OR grupo IS NULL)");
+        $return = $this->db->get();
+
+        return $return->result();
+    }
+
     function listarprocedimento3() {
         $this->db->select('pt.procedimento_tuss_id,
                             pt.nome,
@@ -1558,25 +1571,25 @@ class procedimentoplano_model extends Model {
                             
                             count(pt.procedimento_tuss_id) as contador,
                             pt.nome as procedimento', false); // O false retira as aspas duplas da consulta
-                                                              // É preciso disso pois na hora de utilizar a verificação de array logo abaixo, ele coloca aspas duplas
-                                                              // sem o false e acaba interpretando o array como uma coluna
+        // É preciso disso pois na hora de utilizar a verificação de array logo abaixo, ele coloca aspas duplas
+        // sem o false e acaba interpretando o array como uma coluna
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
 //        $this->db->where("pt.grupo !=", 'CONSULTA');
         $this->db->where("pc.ativo", 't');
         $this->db->where("pc.excluido", 'f');
-        if(count($parametro) > 0 && $parametro != ''){
+        if (count($parametro) > 0 && $parametro != '') {
             $this->db->where_in('pc.convenio_id', $parametro);
             $array_hav = implode(',', $parametro);
-        }else{
+        } else {
             $array_hav = 0;
         }
 
         // Caso queira entender essa lógica dos havings e etc. E eu, Cleyson por acaso tiver morrido
         // ou estiver doente, ou tiver pedido demissão. Leia abaixo. Se eu estiver do seu lado, vou te mandar ler abaixo
         // Então leia abaixo e caso realmente não entenda, me pergunte. Sei que vai me perguntar, mas primeiro, leia abaixo
-        
+
         $empresa_id = $this->session->userdata('empresa_id');
         $contador_hav = count($parametro);
         $procedimento_multiempresa = $this->session->userdata('procedimento_multiempresa');
@@ -1585,7 +1598,7 @@ class procedimentoplano_model extends Model {
         }
         $this->db->orderby("pt.nome");
         $this->db->groupby("pt.procedimento_tuss_id, pt.codigo, pt.nome");
-        
+
         $this->db->having("count(pt.procedimento_tuss_id) >= $contador_hav");
         $this->db->having("ARRAY[$array_hav] <@ array_agg(pc.convenio_id)");
         $return = $this->db->get();
@@ -1596,14 +1609,14 @@ class procedimentoplano_model extends Model {
         // Caso queira entender essa lógica dos havings e etc. E eu, Cleyson por acaso tiver morrido
         // ou estiver doente, ou tiver pedido demissão. Leia abaixo. Se eu estiver do seu lado, vou te mandar ler abaixo
         // Então leia abaixo e caso realmente não entenda, me pergunte. Sei que vai me perguntar, mas primeiro, leia abaixo
-        
+
         $this->db->select('
                             pt.procedimento_tuss_id,
                             pt.codigo,
                             count(pt.procedimento_tuss_id) as contador,
                             pt.nome as procedimento', false); // O false retira as aspas duplas da consulta
-                                                              // É preciso disso pois na hora de utilizar a verificação de array logo abaixo, ele coloca aspas duplas
-                                                              // sem o false e acaba interpretando o array como uma coluna  
+        // É preciso disso pois na hora de utilizar a verificação de array logo abaixo, ele coloca aspas duplas
+        // sem o false e acaba interpretando o array como uma coluna  
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
@@ -1611,13 +1624,13 @@ class procedimentoplano_model extends Model {
         $this->db->where("pc.ativo", 't');
         $this->db->where("pc.excluido", 'f');
         // Como os convênios e grupos podem ser mais de um, agora utiliza-se o where_in para verificar a existência dentro do array
-    
-        if(count($parametro) > 0 && $parametro != ''){
+
+        if (count($parametro) > 0 && $parametro != '') {
             $this->db->where_in('pc.convenio_id', $parametro);
             $array_hav = implode(',', $parametro);
             // Cria uma string com os convênios para poder utilizar logo abaixo na comparação entre arrays
             // Ex: 134,149,139
-        }else{
+        } else {
             $array_hav = 0;
         }
         // var_dump($array_hav); die;
@@ -1656,9 +1669,9 @@ class procedimentoplano_model extends Model {
         if ($procedimento_multiempresa == 't') {
             $this->db->where('pc.empresa_id', $empresa_id);
         }
-        $this->db->orderby("pt.nome"); 
+        $this->db->orderby("pt.nome");
         $this->db->groupby("pt.procedimento_tuss_id, pt.codigo, pt.nome");
-        
+
         $this->db->having("count(pt.procedimento_tuss_id) >= $contador_hav");
         $this->db->having("ARRAY[$array_hav] <@ array_agg(pc.convenio_id)");
         $return = $this->db->get();
@@ -3061,7 +3074,7 @@ class procedimentoplano_model extends Model {
             /* inicia o mapeamento no banco */
             $empresa_id = $_POST['empresa'];
             $convenio_id = $_POST['convenio'];
-        //    echo "<pre>"; var_dump($_POST); die;
+            //    echo "<pre>"; var_dump($_POST); die;
             $this->db->select('forma_pagamento_id, ajuste, convenio_id');
             $this->db->from('tb_convenio_forma_pagamento cg');
             $this->db->where('cg.ativo', 't');
@@ -3155,12 +3168,12 @@ class procedimentoplano_model extends Model {
                 }
             } else {
 
-            //    echo "<pre>";
+                //    echo "<pre>";
 //                var_dump($_POST); die;
                 foreach ($_POST['convenio'] as $convenio_id) {
                     foreach ($_POST['empresa'] as $empresa_id) {
                         // var_dump($empresa_id, $convenio_id);
-                // die;
+                        // die;
                         foreach ($_POST['valortotal'] as $key => $value) {
                             if ($_POST['valortotal'][$key] != "") {// insert
 //                        die('teste');
@@ -3200,7 +3213,7 @@ class procedimentoplano_model extends Model {
                                     $this->db->insert('tb_procedimento_convenio');
                                     $erro = $this->db->_error_message();
                                     if (trim($erro) != "") // erro de banco
-                                    return -1;
+                                        return -1;
                                     else
                                         $procedimento_convenio_id = $this->db->insert_id();
 
@@ -3215,7 +3228,7 @@ class procedimentoplano_model extends Model {
                                         }
                                     }
 
-                            // Inserindo o valor nos convenios secundarios
+                                    // Inserindo o valor nos convenios secundarios
                                     $this->db->select('csa.convenio_secundario_id, valor_percentual');
                                     $this->db->from('tb_convenio_secudario_associacao csa');
                                     $this->db->where('csa.ativo', 't');
@@ -3246,7 +3259,7 @@ class procedimentoplano_model extends Model {
                                         $this->db->set('valorporte', (($_POST['valorporte'][$key] == "") ? 0 : $_POST['valorporte'][$key]));
                                         $this->db->set('qtdeuco', (($_POST['qtdeuco'][$key] == "") ? 0 : $_POST['qtdeuco'][$key]));
                                         $this->db->set('valoruco', (($_POST['valoruco'][$key] == "") ? 0 : $_POST['valoruco'][$key]));
-                                        $this->db->set('valortotal', ($_POST['valortotal'][$key] + ($_POST['valortotal'][$key] * (float)$sec->valor_percentual / 100)));
+                                        $this->db->set('valortotal', ($_POST['valortotal'][$key] + ($_POST['valortotal'][$key] * (float) $sec->valor_percentual / 100)));
                                         $this->db->set('empresa_id', $empresa_id);
                                         if (count($query) == 0) {
                                             $this->db->set('data_cadastro', $horario);
@@ -3264,7 +3277,7 @@ class procedimentoplano_model extends Model {
                                             $secundario_id = $this->db->insert_id();
                                         }
 
-                                // Adicionando o grupo de pagamento 
+                                        // Adicionando o grupo de pagamento 
                                         $this->db->select('grupo_pagamento_id');
                                         $this->db->from('tb_convenio_grupopagamento cg');
                                         $this->db->where('cg.ativo', 't');
@@ -3285,7 +3298,7 @@ class procedimentoplano_model extends Model {
                                     $this->db->where('procedimento_convenio_id', $return[0]->procedimento_convenio_id);
                                     $this->db->update('tb_procedimento_convenio');
 
-                            // Atualizando o valor nos convenios secundarios
+                                    // Atualizando o valor nos convenios secundarios
                                     $this->db->select('csa.convenio_secundario_id, valor_percentual');
                                     $this->db->from('tb_convenio_secudario_associacao csa');
                                     $this->db->where('csa.ativo', 't');
@@ -3303,7 +3316,7 @@ class procedimentoplano_model extends Model {
                                         $this->db->set('valorporte', (($_POST['valorporte'][$key] == "") ? 0 : $_POST['valorporte'][$key]));
                                         $this->db->set('qtdeuco', (($_POST['qtdeuco'][$key] == "") ? 0 : $_POST['qtdeuco'][$key]));
                                         $this->db->set('valoruco', (($_POST['valoruco'][$key] == "") ? 0 : $_POST['valoruco'][$key]));
-                                        $this->db->set('valortotal', ($_POST['valortotal'][$key] + ($_POST['valortotal'][$key] * (float)$sec->valor_percentual / 100)));
+                                        $this->db->set('valortotal', ($_POST['valortotal'][$key] + ($_POST['valortotal'][$key] * (float) $sec->valor_percentual / 100)));
                                         $this->db->set('empresa_id', $empresa_id);
                                         $this->db->set('data_atualizacao', $horario);
                                         $this->db->set('operador_atualizacao', $operador_id);
@@ -3319,7 +3332,7 @@ class procedimentoplano_model extends Model {
                         }
                     }
                 }
-            }    
+            }
 
             return $servidor_id;
         } catch (Exception $exc) {
@@ -3338,7 +3351,7 @@ class procedimentoplano_model extends Model {
             $query = $this->db->get();
             $grupoPagamento = $query->result();
 
-            if ($_POST['teste_conv_secundario'] == 't') { // Caso seja um convneio secundario
+            if ($_POST['teste_conv_secundario'] == 't') { // Caso seja um convenio secundario
                 // Vê qual o convenio primario associado a esse grupo
                 $this->db->select('convenio_primario_id, valor_percentual');
                 $this->db->from('tb_convenio_secudario_associacao csa');
@@ -3361,7 +3374,7 @@ class procedimentoplano_model extends Model {
                     $return = $query->result();
                     $qtde = count($return);
 
-                    if ($qtde > 0) { // Verifica de esse procedimento esta contido no convenio primario
+                    if ($qtde > 0) { // Verifica se esse procedimento esta contido no convenio primario
                         $this->db->select('pc.*');
                         $this->db->from('tb_procedimento_convenio pc');
                         if ($procedimento_multiempresa != 't') { //vide chamado #1950 
@@ -3378,6 +3391,9 @@ class procedimentoplano_model extends Model {
 
                         $this->db->set("procedimento_tuss_id", $_POST['procedimento']);
                         $this->db->set("convenio_id", $_POST['convenio']);
+                        if ($_POST['validade'] != '') {
+                            $this->db->set("validade", $_POST['validade']);
+                        }
                         $this->db->set('empresa_id', $_POST['empresa']);
                         $this->db->set('qtdech', $return[0]->qtdech);
                         $this->db->set('valorch', $return[0]->valorch);
@@ -3523,6 +3539,9 @@ class procedimentoplano_model extends Model {
                         if ($qtde == 0) {
                             $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                             $this->db->set('convenio_id', $_POST['convenio']);
+                            if ($_POST['validade'] != '') {
+                                $this->db->set("validade", $_POST['validade']);
+                            }
                             $this->db->set('qtdech', (int) $_POST['qtdech']);
                             $this->db->set('valorch', (float) $_POST['valorch']);
                             $this->db->set('qtdefilme', (int) $_POST['qtdefilme']);
@@ -3572,6 +3591,9 @@ class procedimentoplano_model extends Model {
                                 $this->db->set('valoruco', (float) $_POST['valoruco']);
                                 $this->db->set('valortotal', (float) ($_POST['valortotal'] + ($_POST['valortotal'] * (float) $sec->valor_percentual / 100)));
                                 $this->db->set('empresa_id', $_POST['empresa']);
+                                if ($_POST['validade'] != '') {
+                                    $this->db->set("validade", $_POST['validade']);
+                                }
                                 $this->db->set('data_atualizacao', $horario);
                                 $this->db->set('operador_atualizacao', $operador_id);
                                 $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
@@ -3611,6 +3633,9 @@ class procedimentoplano_model extends Model {
 
                         $this->db->set('procedimento_tuss_id', $_POST['procedimento']);
                         $this->db->set('convenio_id', $_POST['convenio']);
+                        if ($_POST['validade'] != '') {
+                            $this->db->set("validade", $_POST['validade']);
+                        }
                         $this->db->set('qtdech', (int) $_POST['qtdech']);
                         $this->db->set('valorch', (float) $_POST['valorch']);
                         $this->db->set('qtdefilme', (int) $_POST['qtdefilme']);
@@ -3646,6 +3671,9 @@ class procedimentoplano_model extends Model {
                             $this->db->set('valoruco', (float) $_POST['valoruco']);
                             $this->db->set('valortotal', (float) ($_POST['valortotal'] + ($_POST['valortotal'] * (float) $sec->valor_percentual / 100)));
                             $this->db->set('empresa_id', $_POST['empresa']);
+                            if ($_POST['validade'] != '') {
+                                $this->db->set("validade", $_POST['validade']);
+                            }
                             $this->db->set('data_atualizacao', $horario);
                             $this->db->set('operador_atualizacao', $operador_id);
                             $this->db->where('procedimento_tuss_id', $_POST['procedimento']);
@@ -3928,7 +3956,7 @@ class procedimentoplano_model extends Model {
         $procediemento = $_POST['procedimento'];
         $horario = date("Y-m-d H:i:s");
         $operador_id = $this->session->userdata('operador_id');
-        
+
         // Lista os convenios secundarios associados
         $this->db->select('csa.convenio_primario_id, csa.convenio_secundario_id, csa.grupo');
         $this->db->from('tb_convenio_secudario_associacao csa');
@@ -3945,7 +3973,7 @@ class procedimentoplano_model extends Model {
 
             foreach ($secundarios as $value) {
                 $implode_conv = implode(',', $convenio);
-            // Traz os procedimentos que o convenio primario possui nesse grupo 
+                // Traz os procedimentos que o convenio primario possui nesse grupo 
                 $this->db->select('procedimento_convenio_id, pt.procedimento_tuss_id');
                 $this->db->from('tb_procedimento_convenio pc');
                 $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
@@ -3956,7 +3984,7 @@ class procedimentoplano_model extends Model {
                 if (!in_array('TODOS', $procediemento) && $procediemento != '') {
                     $this->db->where_in('pc.procedimento_tuss_id', $procediemento);
                 }
-            // Traz apenas os procedimentos que possuem percentuais no principal
+                // Traz apenas os procedimentos que possuem percentuais no principal
                 $this->db->where("pc.procedimento_convenio_id IN (
                 SELECT ppm.procedimento_tuss_id FROM ponto.tb_procedimento_percentual_medico ppm
                 INNER JOIN ponto.tb_procedimento_convenio pc
@@ -3967,7 +3995,7 @@ class procedimentoplano_model extends Model {
                 AND pt.grupo = '{$value->grupo}'
                 AND ppm.ativo = 't'
             )");
-            // Retira os procedimentos que ja possuem percentual no secundario    
+                // Retira os procedimentos que ja possuem percentual no secundario    
                 $this->db->where("pc.procedimento_tuss_id NOT IN (
                 SELECT pt.procedimento_tuss_id FROM ponto.tb_procedimento_percentual_medico ppm
                 INNER JOIN ponto.tb_procedimento_convenio pc
@@ -3990,7 +4018,7 @@ class procedimentoplano_model extends Model {
                     $pr = $this->db->get()->result();
                     $pc_id = $pr[0]->procedimento_convenio_id;
 
-                // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico)
+                    // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico)
                     $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico(procedimento_tuss_id, medico, valor, data_cadastro, operador_cadastro)
                         SELECT {$pc_id}, ppm.medico, ppm.valor, '{$horario}', {$operador_id}
                         FROM ponto.tb_procedimento_percentual_medico ppm
@@ -3998,7 +4026,7 @@ class procedimentoplano_model extends Model {
                         AND ppm.procedimento_tuss_id = {$item->procedimento_convenio_id}";
                     $this->db->query($sql);
 
-                // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico_convenio)
+                    // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico_convenio)
                     $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico_convenio(
                             medico, 
                             procedimento_percentual_medico_id, 
@@ -4030,7 +4058,7 @@ class procedimentoplano_model extends Model {
                     $this->db->query($sql);
                 }
 
-            // traz apenas os procedimentos que ja estavam cadastrados para inserir os novos médicos
+                // traz apenas os procedimentos que ja estavam cadastrados para inserir os novos médicos
                 $this->db->select('procedimento_convenio_id, pt.procedimento_tuss_id');
                 $this->db->from('tb_procedimento_convenio pc');
                 $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id');
@@ -4061,7 +4089,7 @@ class procedimentoplano_model extends Model {
                     $pr = $this->db->get()->result();
                     $pc_id = $pr[0]->procedimento_convenio_id;
 
-                // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico_convenio)
+                    // INSERINDO PERCENTUAIS MÉDICOS (tb_procedimento_percentual_medico_convenio)
                     $sql = "INSERT INTO ponto.tb_procedimento_percentual_medico_convenio(
                             medico, 
                             procedimento_percentual_medico_id, 
@@ -4650,7 +4678,7 @@ class procedimentoplano_model extends Model {
             $this->db->where('consulta', 'true');
             $this->db->where('ativo', 'true');
             $this->db->where('solicitante', 'f');
-            if (!in_array('TODOS',$_POST['medico']) && count($_POST['medico']) > 0) {
+            if (!in_array('TODOS', $_POST['medico']) && count($_POST['medico']) > 0) {
                 $this->db->where_in('operador_id', $_POST['medico']);
             }
             $medicos = $this->db->get()->result();
@@ -4670,7 +4698,7 @@ class procedimentoplano_model extends Model {
                     $valor = $_POST['valor'][$key];
                     $medico = $item->operador_id;
 
-                    
+
 
                     if ($valor != '') {
 
@@ -4997,16 +5025,16 @@ class procedimentoplano_model extends Model {
             // echo '<pre>';
             // var_dump($percentuais); die;
             foreach ($percentuais as $value) {
-                if(isset($_POST['ajuste'])){
-                    $str = (float) str_replace(",", ".", $_POST['ajuste_percentual'])/ 100;
+                if (isset($_POST['ajuste'])) {
+                    $str = (float) str_replace(",", ".", $_POST['ajuste_percentual']) / 100;
                     $conta = $value->valor + ($value->valor * $str);
-                }else{
+                } else {
                     $conta = (float) str_replace(",", ".", $_POST['txtperc_medico']);
                     $this->db->set('percentual', $_POST['percentual']);
                 }
                 // var_dump($conta);die;
                 $this->db->set('valor', $conta);
-                
+
 //                $this->db->set("perc_medico = perc_medico + (perc_medico * {$vlr} / 100)", str_replace(",", ".", $_POST['valor']));
 //                $percentual = $_POST['percentual'];
 //                $this->db->set('percentual', $percentual);

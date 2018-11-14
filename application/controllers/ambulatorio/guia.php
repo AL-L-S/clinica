@@ -908,7 +908,7 @@ class Guia extends BaseController {
         $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
         $data['empresa'] = $this->guia->listarempresa($empresa_id);
         $data['cabecalhomedico'] = $this->operador_m->medicocabecalhorodape($medico_id);
-
+        $data['cadastro_aso_id'] = $cadastro_aso_id;
 
         $this->load->View('ambulatorio/impressaoasoparticular', $data);
     }

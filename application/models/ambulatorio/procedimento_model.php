@@ -212,9 +212,9 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimentossetores($convenio_id) {
-        
+
         $this->db->select('pc.procedimento_convenio_id,
                             pt.nome,
                             pt.codigo,
@@ -230,7 +230,7 @@ class procedimento_model extends Model {
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimento() {
         $empresa_id = $this->session->userdata('empresa_id');
         $this->db->select('pc.procedimento_convenio_id,
@@ -241,12 +241,12 @@ class procedimento_model extends Model {
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
         $this->db->where("pc.ativo", 't');
-        $this->db->where("pc.empresa_id", $empresa_id);        
+        $this->db->where("pc.empresa_id", $empresa_id);
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimentossetor($item) {
         $this->db->select('pc.procedimento_convenio_id,
                             pt.nome,
@@ -255,9 +255,9 @@ class procedimento_model extends Model {
                             pt.tipo_aso');
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
-        $this->db->where("pc.ativo", 't');        
+        $this->db->where("pc.ativo", 't');
         $this->db->where("procedimento_convenio_id", $item);
-        
+
         $this->db->orderby("pt.nome");
         $return = $this->db->get();
         return $return->result();
@@ -295,24 +295,38 @@ class procedimento_model extends Model {
         $this->db->from('tb_procedimento_convenio pc');
         $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
 
-        $this->db->orderby('nome');
-        $this->db->where("pc.ativo", 't');
+        $this->db->where('pc.ativo', 't');
         $this->db->where('pc.procedimento_convenio_id', $procedimento_convenio_id);
+        $this->db->orderby('pt.nome');
         $return = $this->db->get();
         return $return->result();
     }
-    
+
     function listarprocedimentoasodata($procedimento_convenio_id, $guia_id) {
         $this->db->select('
                             ae.data
                             
                             ');
-        $this->db->from('tb_agenda_exames ae');        
+        $this->db->from('tb_agenda_exames ae');
         $this->db->join('tb_cadastro_aso ca', 'ca.guia_id = ae.guia_id', 'left');
-        
-        
+
+
         $this->db->where('ae.procedimento_tuss_id', $procedimento_convenio_id);
         $this->db->where('ae.guia_id', $guia_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listarprocedimentoasonovo($guia_id, $cadastro_aso_id) {
+        
+        $this->db->select('ae.procedimento_tuss_id, ae.data');
+        $this->db->from('tb_agenda_exames ae');
+        $this->db->join('tb_procedimento_convenio pc', 'pc.procedimento_convenio_id = ae.procedimento_tuss_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pt.procedimento_tuss_id = pc.procedimento_tuss_id', 'left');
+        $this->db->where('ae.guia_id', $guia_id);
+        $this->db->where('ae.cadastro_aso_id', $cadastro_aso_id);
+        $this->db->where('pc.ativo', 't'); 
+        $this->db->where('pt.grupo !=', 'ASO');
         $return = $this->db->get();
         return $return->result();
     }
@@ -595,11 +609,11 @@ class procedimento_model extends Model {
         if ($_POST['grupo'] == "1") {
             $this->db->where('pt.grupo !=', 'RM');
         }
-        
+
         if ($_POST['subgrupo'] > 0) {
             $this->db->where('pt.subgrupo_id', $_POST['subgrupo']);
         }
-        
+
         if ($_POST['grupo'] != "0" && $_POST['grupo'] != "1") {
             $this->db->where('pt.grupo', $_POST['grupo']);
         }
@@ -1226,13 +1240,13 @@ class procedimento_model extends Model {
 
     function gravarajustevalores() {
         try {
-            
+
             $grupos_string = '';
-            foreach($_POST['grupo'] as $item){
-                if($grupos_string == ''){
+            foreach ($_POST['grupo'] as $item) {
+                if ($grupos_string == '') {
                     $grupos_string = $grupos_string . "'$item'";
-                }else{
-                    $grupos_string = $grupos_string . ", " .  "'$item'";
+                } else {
+                    $grupos_string = $grupos_string . ", " . "'$item'";
                 }
             }
             // var_dump($grupos_string); die;

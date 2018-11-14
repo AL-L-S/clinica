@@ -30,7 +30,8 @@
                 <th class="tabela_header" width="150px;">Convenio</th>
                 <th class="tabela_header">Telefone</th>
                 <th class="tabela_header" width="250px;">Observa&ccedil;&otilde;es</th>
-                <th class="tabela_header" colspan="2"><center>Status</center></th>
+                <th class="tabela_header"><center>Status</center></th>
+                <th class="tabela_header" colspan="2"><center>Procedimento</center></th>
         </tr>
         </thead>
         <tbody>
@@ -118,7 +119,7 @@
                             <td width="60px;"></td>
                        <? }
                         ?>
-
+                        <td ><?= $item->observacoes; ?></td>  
                     </tr>
 
                 </tbody>

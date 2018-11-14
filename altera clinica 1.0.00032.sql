@@ -135,3 +135,11 @@ ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN periodo text;
 
 ALTER TABLE ponto.tb_financeiro_contaspagar ADD COLUMN intervalo_parcela integer;
 
+-- Dia 12/11/2018
+
+ALTER TABLE ponto.tb_procedimento_convenio ADD COLUMN validade integer;
+
+UPDATE ponto.tb_procedimento_convenio
+SET validade = 365
+WHERE procedimento_tuss_id in (SELECT procedimento_tuss_id FROM ponto.tb_procedimento_tuss WHERE grupo = 'ASO')
+AND validade is null;
