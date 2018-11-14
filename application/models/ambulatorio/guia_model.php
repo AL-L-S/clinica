@@ -22,6 +22,15 @@ class guia_model extends Model {
         return $return->result();
     }
     
+    function preencherdetalhamento($aso_id) {
+
+        $this->db->select('detalhamento_nr');
+        $this->db->from('tb_cadastro_aso ca');
+        $this->db->where('ca.cadastro_aso_id', $aso_id);        
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
     function listarempresamodelo() {
 
         $this->db->select('convenio_id');
