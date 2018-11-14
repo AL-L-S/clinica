@@ -397,7 +397,7 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
                     
                     $(function () {
                         $('#tipo').change(function () {
-                            $.getJSON('<?= base_url() ?>autocomplete/datavalidade356', {data_realizacao: $('#data_realizacao').val(), tipo: $(this).val(), empresa: $('#convenio1').val()}, function (j) {
+                            $.getJSON('<?= base_url() ?>autocomplete/datavalidade356', {data_realizacao: $('#data_realizacao').val(), tipo: $(this).val(), empresa: $('#convenio1').val(), modalidade: $('#consulta').val()}, function (j) {
 
                                 validade = j;
 //                                console.log(validade);
@@ -412,7 +412,7 @@ Utilitario::pmf_mensagem($this->session->flashdata('message'));
                     
                     $(function () {
                         $('#data_realizacao').change(function () {
-                            $.getJSON('<?= base_url() ?>autocomplete/datavalidadenova', {data_realizacao: $(this).val(), tipo: $('#tipo').val(), empresa: $('#convenio1').val()}, function (j) {
+                            $.getJSON('<?= base_url() ?>autocomplete/datavalidadenova', {data_realizacao: $(this).val(), tipo: $('#tipo').val(), empresa: $('#convenio1').val(), modalidade: $('#consulta').val()}, function (j) {
 
                                 validadenova = j;
 //                                console.log(validadenova);

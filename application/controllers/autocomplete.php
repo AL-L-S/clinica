@@ -2008,7 +2008,7 @@ class Autocomplete extends Controller {
     function datavalidade356() {
         
         if (isset($_GET['tipo'])) {
-            if($_GET['empresa'] != ''){
+            if($_GET['modalidade'] == "conveniado"){
                 $empresa = $_GET['empresa'];
             }else{
                 $modelo = $this->guia->listarempresamodelo();
@@ -2029,7 +2029,7 @@ class Autocomplete extends Controller {
     function datavalidadenova() {
         
         if (isset($_GET['data_realizacao'])) {
-            if($_GET['empresa'] != ''){
+            if($_GET['modalidade'] == "conveniado"){
                 $empresa = $_GET['empresa'];
             }else{
                 $modelo = $this->guia->listarempresamodelo();
