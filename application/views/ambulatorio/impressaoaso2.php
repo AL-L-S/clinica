@@ -2,7 +2,7 @@
 
 <?
 $impressao_aso = json_decode($relatorio[0]->impressao_aso);
-//echo'<pre>'; var_dump($relatorio[0]->guia_id);die;
+//echo'<pre>'; var_dump($impressao_aso);die;
 ?>
 <br><br><br>
 
@@ -22,11 +22,11 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         </td>
     </tr>
     <tr height="35px">
-        <td>
+        <td width="700px">
             <? $funcao = $this->saudeocupacional->carregarfuncao($impressao_aso->funcao); ?>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<?= $funcao[0]->descricao_funcao ?>
         </td>
-        <td width="350px" style="text-align: right; padding-right: 80px">
+        <td  style="text-align: right; padding-right: 80px">
             <?= ($relatorio[0]->nascimento != '') ? date("d/m/Y", strtotime($relatorio[0]->nascimento)) : '' ?>
         </td>
         
@@ -85,16 +85,29 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
     <tr height="30px">
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;            
-            <? if($impressao_aso->tipo == "ADMISSIONAL"){
-                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER";
+            <? if($impressao_aso->questao_um == "INAPTO"){
+                echo "INAPTO."; 
+            }elseif($impressao_aso->questao_um != ''){
+            if($impressao_aso->tipo == "ADMISSIONAL"){
+                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER.";
             } elseif($impressao_aso->tipo == "PERÍODICO"){
-                echo "APTO PARA A FUNÇÃO QUE EXERCE"; 
+                echo "APTO PARA A FUNÇÃO QUE EXERCE."; 
             }elseif($impressao_aso->tipo == "DEMISSIONAL"){
-                echo "APTO PARA A FUNÇÃO QUE EXERCEU"; 
+                echo "APTO PARA A FUNÇÃO QUE EXERCEU."; 
             }elseif($impressao_aso->tipo == "RETORNO AO TRABALHO"){
-                echo "APTO PARA A FUNÇÃO QUE EXERCE"; 
+                echo "APTO PARA A FUNÇÃO QUE EXERCE."; 
             }elseif($impressao_aso->tipo == "MUDANÇA DE FUNÇÃO"){
-                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER"; 
+                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER."; 
+            }
+            }
+            if($impressao_aso->questao_dois != ''){
+              if($impressao_aso->questao_dois == ", INAPTO"){
+                echo " INAPTO PARA TRABALHO EM ALTURA."; 
+            }elseif($impressao_aso->questao_dois == "APTO"){
+                echo " APTO PARA TRABALHO EM ALTURA.";
+            }else{
+                echo " NÃO MAPEADO.";
+            }  
             }
             ?>
         </td>    
@@ -147,11 +160,11 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
         </td>
     </tr>
     <tr height="35px">
-        <td>
+        <td width="700px">
             <? $funcao = $this->saudeocupacional->carregarfuncao($impressao_aso->funcao); ?>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<?= $funcao[0]->descricao_funcao ?>
         </td>
-        <td width="350px" style="text-align: right; padding-right: 80px">
+        <td  style="text-align: right; padding-right: 80px">
             <?= ($relatorio[0]->nascimento != '') ? date("d/m/Y", strtotime($relatorio[0]->nascimento)) : '' ?>
         </td>
         
@@ -210,16 +223,29 @@ $impressao_aso = json_decode($relatorio[0]->impressao_aso);
     <tr height="30px">
         <td colspan="3">
             &nbsp;&nbsp;&nbsp;            
-            <? if($impressao_aso->tipo == "ADMISSIONAL"){
-                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER";
+            <? if($impressao_aso->questao_um == "INAPTO"){
+                echo "INAPTO."; 
+            }elseif($impressao_aso->questao_um != ''){
+            if($impressao_aso->tipo == "ADMISSIONAL"){
+                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER.";
             } elseif($impressao_aso->tipo == "PERÍODICO"){
-                echo "APTO PARA A FUNÇÃO QUE EXERCE"; 
+                echo "APTO PARA A FUNÇÃO QUE EXERCE."; 
             }elseif($impressao_aso->tipo == "DEMISSIONAL"){
-                echo "APTO PARA A FUNÇÃO QUE EXERCEU"; 
+                echo "APTO PARA A FUNÇÃO QUE EXERCEU."; 
             }elseif($impressao_aso->tipo == "RETORNO AO TRABALHO"){
-                echo "APTO PARA A FUNÇÃO QUE EXERCE"; 
+                echo "APTO PARA A FUNÇÃO QUE EXERCE."; 
             }elseif($impressao_aso->tipo == "MUDANÇA DE FUNÇÃO"){
-                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER"; 
+                echo "APTO PARA A FUNÇÃO QUE IRÁ EXERCER."; 
+            }
+            }
+            if($impressao_aso->questao_dois != ''){
+              if($impressao_aso->questao_dois == ", INAPTO"){
+                echo " INAPTO PARA TRABALHO EM ALTURA."; 
+            }elseif($impressao_aso->questao_dois == "APTO"){
+                echo " APTO PARA TRABALHO EM ALTURA.";
+            }else{
+                echo " NÃO MAPEADO.";
+            }  
             }
             ?>
         </td>    

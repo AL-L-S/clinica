@@ -14,7 +14,7 @@
         <h3 class="singular"><a href="#">Notas a Pagar</a></h3>
 
         <div>
-            <form name="form_notaspagar" id="form_notaspagar" action="<?= base_url() ?>cadastros/contaspagar/gravarnota/<?= $notas[0]->fornecedor_id; ?>" method="post">
+            <form name="form_notaspagar" id="form_notaspagar" action="<?= base_url() ?>cadastros/contaspagar/gravarnota/<?= $notas[0]->credor_devedor_id; ?>" method="post">
 
                 <dl class="dl_desconto_lista">
                     <dt>

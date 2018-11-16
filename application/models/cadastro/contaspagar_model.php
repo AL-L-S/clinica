@@ -805,11 +805,11 @@ class contaspagar_model extends Model {
             }
            
             
-//            var_dump($tipo); die;
+//            var_dump($credor); die;
 
             /* inicia o mapeamento no banco */
             $financeiro_contaspagar_id = $_POST['financeiro_contaspagar_id'];
-            $this->db->set('valor', str_replace(",", ".", str_replace(".", "", $valor)));
+            $this->db->set('valor', $valor);
             $this->db->set('credor', $credor);
             $this->db->set('data', $dia);
             $this->db->set('parcela', $parcela);
