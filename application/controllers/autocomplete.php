@@ -3443,6 +3443,24 @@ class Autocomplete extends Controller {
         echo json_encode($result);
     }
 
+    function assinaturamedico() {
+        $medico_id = $_GET['medico_id'];
+        if (file_exists("upload/1ASSINATURAS/" . $medico_id . ".jpg")) {
+            $assinatura = "<img src='" . base_url() . "./upload/1ASSINATURAS/" . $medico_id . ".jpg'>";
+
+            $path = "./upload/1ASSINATURAS/" . $medico_id . ".jpg";
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            // var_dump($data); die;
+            $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            $assinatura = "<img src='$base64'>";
+        } else {
+            $assinatura = "";
+        }
+        
+        echo json_encode($assinatura);
+    }
+
     function medicoespecialidadetodos() {
         header('Access-Control-Allow-Origin: *');
         if (isset($_GET['txtcbo'])) {

@@ -1856,6 +1856,7 @@ class guia_model extends Model {
                             ac.procedimento_tuss_id,
                             pt.nome as exame,
                             pt.grupo,
+                            oe.nome as operador_aut,
                             ca.descricao,
                             pt.descricao as procedimento,
                             pt.codigo');
@@ -1867,6 +1868,7 @@ class guia_model extends Model {
         $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
         $this->db->join('tb_ambulatorio_cancelamento ca', 'ca.ambulatorio_cancelamento_id = ac.ambulatorio_cancelamento_id', 'left');
         $this->db->join('tb_operador o', 'o.operador_id = ac.operador_cadastro', 'left');
+        $this->db->join('tb_operador oe', 'oe.operador_id = ae.operador_autorizacao', 'left');
         $this->db->where("ac.data_cadastro >=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_inicio']))) . ' 00:00:00');
         $this->db->where("ac.data_cadastro <=", date("Y-m-d", strtotime(str_replace('/', '-', $_POST['txtdata_fim']))) . ' 23:59:59');
         if ($_POST['convenio'] != "0" && $_POST['convenio'] != "" && $_POST['convenio'] != "-1") {
