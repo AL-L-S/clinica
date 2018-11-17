@@ -32,7 +32,7 @@
 
             <? IF ($armazem > 0) { ?>
                 <tr>
-                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ARMAZEM: <?= $armazem[0]->descricao; ?></th>
+                    <th style='text-align: left; font-family: serif; font-size: 12pt;' colspan="4">ARMAZEM: <?= utf8_decode($armazem[0]->descricao); ?></th>
                 </tr>
             <? } ELSE { ?>
                 <tr>
@@ -107,7 +107,7 @@
                             <td style='text-align: center;'><font size="-2">PENDENTE</td>
                             <? } ?>
                             <td style='text-align: center;'><font size="-2"><?= $item->nome; ?></td>
-                            <td style='text-align: center;'><font size="-2"><?= $item->armazem; ?></td>
+                            <td style='text-align: center;'><font size="-2"><?= utf8_decode($item->armazem); ?></td>
                         </tr>
 
 
@@ -125,14 +125,14 @@
                         $qtde++;
                         $qtdetotal++;
                         ?>
-                        <tr>
+<!--                        <tr>
                             <td colspan="8"><font size="-2"><b>Armazem:&nbsp;<?= utf8_decode($item->armazem); ?></b></td>
                         </tr>
                         <tr>
                             <td style='text-align: right;'><font size="-2"><?= $item->quantidade; ?></td>
-                            <!--<td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>-->
+                            <td><font size="-2"><?= utf8_decode($item->fantasia); ?></td>
                             <td><font size="-2"><?= utf8_decode($item->produto); ?></td>
-                        </tr>
+                        </tr>-->
                         <?
                     }
                 endforeach;
@@ -146,10 +146,10 @@
         <hr>
         <table>
             <tbody>
-                <tr>
+<!--                <tr>
                     <td width="140px;" align="Right" ><b>TOTAL GERAL</b></td>
                     <td width="140px;" align="center" ><b>Nr. Itens: &nbsp;<?= $qtdetotal; ?></b></td>
-                </tr>
+                </tr>-->
             </tbody>
 
         </table>

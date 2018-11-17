@@ -248,7 +248,9 @@
                                 <th class="tabela_header">Qtde*</th>
                                 <th colspan="2" class="tabela_header">Solicitante*</th>
                                 <th class="tabela_header">Convenio*</th>
+                                <?if($empresapermissoes[0]->laboratorio_sc != 't'){?>
                                 <th class="tabela_header">Grupo</th>
+                                <?}?>
                                 <th class="tabela_header">Procedimento*</th>
                                 <th class="tabela_header">Autorizacao</th>
                                 <th class="tabela_header">Guia Convênio</th>
@@ -316,6 +318,7 @@
                                     </select>
                                 </td>
                                 <? } ?>
+                                <?if($empresapermissoes[0]->laboratorio_sc != 't'){?>
                                 <td  width="50px;">
                                     <select  name="grupo1" id="grupo1" class="size1" >
                                         <option value="">Selecione</option>
@@ -329,6 +332,7 @@
                                         <? endforeach; ?>
                                     </select>
                                 </td>
+                                <? } ?>
                                 <td  width="50px;">
 <!--                                    <select  name="procedimento1" id="procedimento1" class="size1"  required="">
                                         <option value="">Selecione</option>
@@ -884,13 +888,21 @@
                                                             $('#convenio1').change(function () {
                                                                 if ($(this).val()) {
                                                                     $('.carregando').show();
+                                                                   
                                                                     if ($("#grupo1").val() == "") {
                                                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoconvenio', {convenio1: $(this).val()}, function (j) {
                                                                             options = '<option value=""></option>';
-                                                                            for (var c = 0; c < j.length; c++) {
-                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                                                            }
-//                                                    $('#procedimento1').html(options).show();
+                                                                                <?if($empresapermissoes[0]->laboratorio_sc != 't'){?>
+                                                                                        
+                                                                                    for (var c = 0; c < j.length; c++) {
+                                                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                                                    }
+                                                                                <?}else{?>
+                                                                                    for (var c = 0; c < j.length; c++) {
+                                                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].codigo + ' - ' + j[c].procedimento + '</option>';
+                                                                
+                                                                                    }   
+                                                                                <? } ?> 
 
                                                                             $('#procedimento1 option').remove();
                                                                             $('#procedimento1').append(options);
@@ -900,10 +912,17 @@
                                                                     } else { // Caso esteja selecionado algum grupo, ele ja faz o filtro por grupo
                                                                         $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $("#grupo1").val(), convenio1: $(this).val()}, function (j) {
                                                                             options = '<option value=""></option>';
-                                                                            for (var c = 0; c < j.length; c++) {
-                                                                                options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
-                                                                            }
-//                                                    $('#procedimento1').html(options).show();
+                                                                            <?if($empresapermissoes[0]->laboratorio_sc != 't'){?>
+                                                                                        alert('asdsd');
+                                                                                    for (var c = 0; c < j.length; c++) {
+                                                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
+                                                                                    }
+                                                                                <?}else{?>
+                                                                                    for (var c = 0; c < j.length; c++) {
+                                                                                    options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].codigo + ' - ' + j[c].procedimento + '</option>';
+                                                                
+                                                                                    }   
+                                                                                <? } ?> 
 
                                                                             $('#procedimento1 option').remove();
                                                                             $('#procedimento1').append(options);
@@ -974,13 +993,19 @@
                                                         $(function () {
                                                             $('#grupo1').change(function () {
 //                                                if ($(this).val()) {
+
                                                                 $('.carregando').show();
                                                                 $.getJSON('<?= base_url() ?>autocomplete/procedimentoconveniogrupo', {grupo1: $(this).val(), convenio1: $('#convenio1').val()}, function (j) {
                                                                     options = '<option value=""></option>';
+                                                                    <?if($empresapermissoes[0]->laboratorio_sc != 't'){?>
                                                                     for (var c = 0; c < j.length; c++) {
                                                                         options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].procedimento + ' - ' + j[c].codigo + '</option>';
                                                                     }
-//                                            $('#procedimento1').html(options).show();
+                                                                    <?}else{?>
+                                                                     for (var c = 0; c < j.length; c++) {
+                                                                        options += '<option value="' + j[c].procedimento_convenio_id + '">' + j[c].codigo + ' - ' + j[c].procedimento + '</option>';
+                                                                    }   
+                                                                    <? } ?>    
 
                                                                     $('#procedimento1 option').remove();
                                                                     $('#procedimento1').append(options);

@@ -68,6 +68,7 @@ class nota_model extends Model {
                             f.fantasia,                            
                             n.fornecedor_id,
                             f.razao_social as fornecedor,
+                            f.credor_devedor_id,
                             n.armazem_id,                            
                             a.descricao as armazem,                            
                             n.data_cadastro,
