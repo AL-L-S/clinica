@@ -1,10 +1,23 @@
 <div class="content"> <!-- Inicio da DIV content -->
-
-    <div class="bt_link_new">
-        <a href="<?php echo base_url() ?>internacao/internacao/evolucaointernacao/<?=$internacao_id?>">
-            Nova Evolução
-        </a>
-    </div>
+    <table>
+        <tr>
+            <td>
+                <div class="bt_link_new">
+                    <a href="<?php echo base_url() ?>internacao/internacao/evolucaointernacao/<?=$internacao_id?>">
+                        Nova Evolução
+                    </a>
+                </div>   
+            </td>
+            <td>
+                <div class="bt_link_new">
+                    <a target="_blank" href="<?php echo base_url() ?>internacao/internacao/imprimirevolucaointernacaotodas/<?=$internacao_id?>">
+                        Imprimir Todas
+                    </a>
+                </div> 
+            </td>
+        </tr>
+    </table>
+    
     <div id="accordion">
         <h3><a href="#">Evolu&ccedil;&atilde;o selecionada:</a></h3>
         <div>

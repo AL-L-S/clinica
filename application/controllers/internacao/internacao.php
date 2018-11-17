@@ -495,7 +495,37 @@ class internacao extends BaseController {
         pdf($html, $filename, $cabecalho_file, $rodape);
     }
 
-    function imprimirevolucaointernacao($internacao_evolucao_id) {
+    function imprimirevolucaointernacao($internacao_evolucao_id, $internacao_id) {
+        $this->load->plugin('mpdf');
+
+        $empresa_id = $this->session->userdata('empresa_id');
+        $data['empresa'] = $this->guia->listarempresa($empresa_id);
+        $data['empresapermissoes'] = $this->guia->listarempresapermissoes();
+        $data['cabecalho'] = $this->guia->listarconfiguracaoimpressao($empresa_id);
+        $data['internacao_evolucao_id'] = $internacao_evolucao_id;
+        @$cabecalho_config = $data['cabecalho'][0]->cabecalho;
+        @$rodape_config = $data['cabecalho'][0]->rodape;
+        @$impressao_empresa_id = $data['empresa'][0]->impressao_internacao;
+
+        if ($data['empresa'][0]->cabecalho_config == 't') { // Cabeçalho Da clinica
+            $cabecalho = "$cabecalho_config";
+        } else {
+            $cabecalho = "<table><tr><td><img src='img/cabecalho.jpg'></td></tr></table>";
+        }
+
+        $data['cabecalho_form'] = $cabecalho;
+        $data['paciente'] = $this->internacao_m->imprimirevolucaointernacao($internacao_evolucao_id);
+        $paciente_id = $data['paciente'][0]->paciente_id;
+//        echo '<pre>';
+//        var_dump($data['historicoantigo']); die;
+        $html = $this->load->View('internacao/impressaoevolucaointernacao', $data, true);
+        $filename = 'Impressão Evolução';
+        $rodape = @$rodape_config;
+        $cabecalho_file = $cabecalho;
+        pdf($html, $filename, $cabecalho_file, $rodape);
+    }
+
+    function imprimirevolucaointernacaotodas($internacao_id) {
         $this->load->plugin('mpdf');
 
         $empresa_id = $this->session->userdata('empresa_id');
@@ -513,11 +543,47 @@ class internacao extends BaseController {
         }
 
         $data['cabecalho_form'] = $cabecalho;
-        $data['paciente'] = $this->internacao_m->imprimirevolucaointernacao($internacao_evolucao_id);
+        $data['paciente'] = $this->internacao_m->imprimirevolucaointernacaotodas($internacao_id);
         $paciente_id = $data['paciente'][0]->paciente_id;
-//        echo '<pre>';
-//        var_dump($data['historicoantigo']); die;
-        $html = $this->load->View('internacao/impressaoevolucaointernacao', $data, true);
+    //    echo '<pre>';
+    //    var_dump($data['paciente']); die;
+        // Começando os cálculos escrotos da gambiarra que eu preciso fazer.
+        $maxLinhas = 40;
+        $maxCharLinha = 100;
+        $contadorLinhas = 0;
+        $contadorChar = 0;
+        $linhasAdicionais = 6;
+        foreach($data['paciente'] as $value){
+
+            $contadorChar += strlen($value->diagnostico);
+            if($contadorLinhas > $maxCharLinha){
+                $contadorLinhas += ceil($contadorChar/$maxCharLinha);
+            }else{
+                $contadorLinhas++;
+            }
+            $contadorLinhas += $linhasAdicionais; 
+            // Essa adição é pra suprir a questão das linhas a mais do carimbo e etc; 
+           
+        }
+        // Descobrir quantos cabem por folha
+        if($contadorLinhas > $maxLinhas){
+            $paginas = ceil($contadorLinhas/$maxLinhas);
+        }else{
+            $paginas = 1;
+        }
+        
+
+        // foreach($data['paciente'] as $value){
+
+
+        // }
+        // echo '<pre>';
+        // var_dump($contadorLinhas);
+        // die;
+
+
+
+        $html = $this->load->View('internacao/impressaoevolucaointernacaotodos', $data, true);
         $filename = 'Impressão Evolução';
         $rodape = @$rodape_config;
         $cabecalho_file = $cabecalho;
