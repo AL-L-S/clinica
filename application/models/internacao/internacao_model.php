@@ -659,6 +659,7 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
         $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
         $this->db->where('ie.internacao_id', $internacao_id);
+        $this->db->orderby('ie.internacao_evolucao_id');
         $return = $this->db->get();
         return $return->result();
     }

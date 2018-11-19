@@ -72,12 +72,16 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
     //    $teste = $teste . 'A ';
     //}
     ?>
+    <?if($paciente[0]->internacao_evolucao_id == $internacao_evolucao_id){?>
     <p style='text-align:center;font-size: 15pt;font-weight: bold'> Evolução </p>
+    <?}else{?>
+    <p style='text-align:center;font-size: 15pt;font-weight: bold'> &nbsp; </p>
+    <?}?>
     <br>
     <!-- <div class="divTamanhoMaximo"> -->
         <!-- <div> -->
             <?
-            $maxLinhas = 40;
+            $maxLinhas = 35;
             $maxCharLinha = 100;
             $contadorLinhas = 0;
             $contadorLinhasTot = 0;
@@ -126,7 +130,7 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
                 $contadorLinhasTot += $linhasAdicionais; 
                     
                 ?>
-                <?if($contadorLinhasTot >= $maxLinhas + (($paginas - 1) * $maxLinhas) || $linhasPular == 0){?>
+                <?//if($contadorLinhasTot >= $maxLinhas + (($paginas - 1) * $maxLinhas) || $linhasPular == 0){?>
                     <?if($item->internacao_evolucao_id == $internacao_evolucao_id){?>
                     
                         <table border="1">
@@ -171,7 +175,7 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
                             echo '<br>';
                         }
                     }?>
-                <?}?>
+                <?//}?>
                 
             <? }?>
         <!-- </div> -->

@@ -514,15 +514,74 @@ class internacao extends BaseController {
         }
 
         $data['cabecalho_form'] = $cabecalho;
-        $data['paciente'] = $this->internacao_m->imprimirevolucaointernacao($internacao_evolucao_id);
+        $data['paciente'] = $this->internacao_m->imprimirevolucaointernacaotodas($internacao_id);
         $paciente_id = $data['paciente'][0]->paciente_id;
 //        echo '<pre>';
 //        var_dump($data['historicoantigo']); die;
-        $html = $this->load->View('internacao/impressaoevolucaointernacao', $data, true);
+        $html = $this->load->View('internacao/impressaoevolucaointernacaounico', $data, true);
         $filename = 'Impressão Evolução';
         $rodape = @$rodape_config;
         $cabecalho_file = $cabecalho;
+        // if(){
+
+        // }
+        // Aqui eu pego o tamanho do cabecalho/rodape pra adicionar uma imagem em branco com o mesmo
+        // tamanho
+        /////////////////////////////// CABECALHO
+
+        $cabecalho64_img = explode('src="', $cabecalho_file);
+        $cabecalho64 = explode('alt=""', $cabecalho64_img[1]);
+        $cabecalho64[1] = str_replace('/>', '', $cabecalho64[1]);
+        // $cabecalho_size = getimagesizefromstring($cabecalho64[0]);
+        $arquivo_salvo = $this->base64_to_jpeg($cabecalho64[0], "img/cabecalhoInt.jpg");
+        $cabecalho_info = getimagesize('img/cabecalhoInt.jpg');
+
+        ///////////////////////////////// RODAPE
+
+        $rodape64_img = explode('src="', $rodape);
+        $rodape64 = explode('alt=""', $rodape64_img[1]);
+        $rodape64[1] = str_replace('/>', '', $rodape64[1]);
+        // $rodape_size = getimagesizefromstring($rodape64[0]);
+        $arquivo_salvo = $this->base64_to_jpeg($rodape64[0], "img/rodapeInt.jpg");
+        $rodape_info = getimagesize('img/rodapeInt.jpg');
+
+        ////////////////////////////////////////
+        // É count - 1 no indice porque a primeira evolucao nesse listar é a ultima. Tá em ordem decrescente
+        if($data['paciente'][0]->internacao_evolucao_id != $internacao_evolucao_id){
+            
+            $branco_img = base_url() . "img/branco.jpg";
+            $height = $cabecalho_info[1];
+            $width = $cabecalho_info[0];
+            $div_branco_c = "<div style='width:{$width}px; height:{$height}px'>&nbsp;</div>";
+            $cabecalho_file = "<p>$div_branco_c</p>";
+            
+
+            $height_ro = $rodape_info[1];
+            $width_ro = $rodape_info[0];
+            $div_branco_r = "<div style='width:{$width_ro}px; height:{$height_ro}px'>&nbsp;</div>";
+            $rodape = "<p>$div_branco_r</p>";
+        }
+        // echo '<pre>';
+        // var_dump($rodape); die;
         pdf($html, $filename, $cabecalho_file, $rodape);
+    }
+
+    function base64_to_jpeg($base64_string, $output_file) {
+        // open the output file for writing
+        $ifp = fopen($output_file, 'wb');
+
+        // split the string on commas
+        // $data[ 0 ] == "data:image/png;base64"
+        // $data[ 1 ] == <actual base64 string>
+        $data = explode(',', $base64_string);
+
+        // we could add validation here with ensuring count( $data ) > 1
+        fwrite($ifp, base64_decode($data[1]));
+
+        // clean up the file resource
+        fclose($ifp);
+
+        return $output_file;
     }
 
     function imprimirevolucaointernacaotodas($internacao_id) {

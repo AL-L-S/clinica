@@ -112,11 +112,11 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
                     }else{
                         $contadorLinhas++;
                     }
-                    $contadorLinhas += $linhasAdicionais; 
+                    // $contadorLinhas += $linhasAdicionais; 
                     if($contadorLinhas >= $maxLinhas){
                         $pulos = $contadorLinhas - $maxLinhas;
                         for ($i=1; $i <= $pulos; $i++) { 
-                           echo '<br>';
+                           echo '<hr>';
                         }                        
                         $contadorLinhas = 0;
                     }

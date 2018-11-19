@@ -853,8 +853,13 @@ function debug($object) {
                                         <!--<ul><span class="file"><a href="<?= base_url() ?>ambulatorio/exame/listarmultifuncaomedicofisioterapiareagendar">Reagendar</a></span></ul>-->
                                         <?
                                     }
+                                    
                                     ?>
+                                     <? if ($perfil_id == 1 || $perfil_id == 10 || $perfil_id == 4) { ?>
+                                        <ul><span class="file"><a href="<?= base_url() ?>ambulatorio/laudo/pesquisarconsultaantigo">Histórico de Consultas Antigas</a></span></ul>
+                                    <? } ?>
                                 </li> 
+                               
                                 <?
                                 if ($relatorio_producao == 't') {
                                     ?>
