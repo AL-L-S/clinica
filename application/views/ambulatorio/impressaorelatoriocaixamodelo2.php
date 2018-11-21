@@ -175,12 +175,17 @@
           $valorGeralFormas = 0;
           $valorTotalRelatorio = 0;
           $botaoFechar = false;
+          $contador_teste = 0;
           // Se houver pelo menos uma coisa a ser mandada pro financeiro, ele deixa o botao pra fechar caixa
           $i = 0;
           $asterisco = '(*)';
         foreach ($relatorio as $item) { ?>
         <?
 //           $valorTotalRelatorio += $valor_totalOperador;
+           if($contador_teste == 106){
+            // break;
+           }
+           $contador_teste++;
            $contador_operadorAnt = $contador_operador;
            $valor_totalOperadorAnt = $valor_totalOperador;
            // Quantidade de procedimentos e valor do último operador

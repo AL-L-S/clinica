@@ -9,7 +9,7 @@
                     <label>Nome</label>
                     </dt>
                     <dd>
-                        <input type="hidden" name="grupocontaid" class="texto10" value="<?= @$obj->_operador_grupo_id; ?>" />
+                        <input type="hidden" name="grupocontaid" class="texto10" value="<?= @$obj->_conta_grupo_id; ?>" />
                         <input type="text" name="txtNome" class="texto10" value="<?= @$obj->_nome; ?>" />
                     </dd>
                 </dl>    
@@ -34,7 +34,7 @@
 
 
     $(document).ready(function(){
-        jQuery('#form_grupomedico').validate( {
+        jQuery('#form_grupoconta').validate( {
             rules: {
                 txtNome: {
                     required: true,

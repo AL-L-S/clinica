@@ -8732,6 +8732,7 @@ class guia_model extends Model {
                             ae.data,
                             ae.inicio,
                             ae.fim,
+                            ae.financeiro,
                             pc.convenio_id,
                             pc.procedimento_convenio_id,
                             ae.data_entregue,
@@ -9188,6 +9189,7 @@ class guia_model extends Model {
         $this->db->select('sum((valor * quantidade)) as valor_total, 
                            array_agg(ae.agenda_exames_id) as array_exames,
                            array_agg(valor * quantidade) as array_valores,
+                           paciente_id
     
                         ');
         $this->db->from('tb_agenda_exames ae');
@@ -9198,7 +9200,7 @@ class guia_model extends Model {
         $this->db->where('confirmado', 't');
         $this->db->where('c.dinheiro', 't');
         $this->db->where("guia_id", $guia_id);
-        $this->db->groupby("guia_id");
+        $this->db->groupby("guia_id, paciente_id");
         $return = $this->db->get();
         return $return->result();
     }
@@ -11074,9 +11076,9 @@ class guia_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $hora = date("H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $dataautorizacao = $_POST['data'] . " " . $hora;
-//            var_dump($dataautorizacao);
-//            die;
+            $dataautorizacao = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))) . " " . $hora;
+            // var_dump($dataautorizacao);
+            // die;
             $sql = "UPDATE ponto.tb_agenda_exames
                     SET data_antiga = data
                     WHERE agenda_exames_id = $agenda_exames_id;";
@@ -11087,7 +11089,7 @@ class guia_model extends Model {
             $this->db->set('data_aterardatafaturamento', $horario);
             $this->db->set('data_autorizacao', $dataautorizacao);
             $this->db->set('operador_aterardatafaturamento', $operador_id);
-            $this->db->set('data', $_POST['data']);
+            $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
             $this->db->where('agenda_exames_id', $agenda_exames_id);
             $this->db->update('tb_agenda_exames');
             $erro = $this->db->_error_message();
@@ -11111,12 +11113,12 @@ class guia_model extends Model {
 
             $this->db->set('data_atualizacao', $horario);
             $this->db->set('operador_atualizacao', $operador_id);
-            $this->db->set('data_aso', $_POST['data']);
+            $this->db->set('data_aso', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
             $this->db->set('data_validade', $result);
             $this->db->where('cadastro_aso_id', $aso_id);
             $this->db->update('tb_cadastro_aso');
 
-            $this->db->set('data', $_POST['data']);
+            $this->db->set('data', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
             $this->db->where('agenda_exames_id', $exames_id);
             $this->db->update('tb_agenda_exames');
 
@@ -11134,7 +11136,7 @@ class guia_model extends Model {
             $horario = date("Y-m-d H:i:s");
             $hora = date("H:i:s");
             $operador_id = $this->session->userdata('operador_id');
-            $dataautorizacao = $_POST['data'] . " " . $hora;
+            $dataautorizacao = date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))) . " " . $hora;
 //            var_dump($dataautorizacao);
 //            die;
             $sql = "UPDATE ponto.tb_agenda_exames
@@ -11147,7 +11149,7 @@ class guia_model extends Model {
             $this->db->set('data_aterardatafaturamento', $horario);
             $this->db->set('data_autorizacao', $dataautorizacao);
             $this->db->set('operador_aterardatafaturamento', $operador_id);
-            $this->db->set('data_faturar', $_POST['data']);
+            $this->db->set('data_faturar', date("Y-m-d", strtotime(str_replace('/', '-', $_POST['data']))));
             $this->db->where('agenda_exames_id', $agenda_exames_id);
             $this->db->update('tb_agenda_exames');
             $erro = $this->db->_error_message();

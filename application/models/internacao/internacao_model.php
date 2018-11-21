@@ -593,9 +593,11 @@ class internacao_model extends BaseModel {
     function imprimirevolucaointernacao($internacao_evolucao_id) {
 
         $this->db->select('i.internacao_id,
-                           p.*,
+                           p.nome,
                            p.paciente_id,
                            ie.operador_cadastro,
+                           ie.data_cadastro,
+                           ie.internacao_evolucao_id,
                            i.prelaudo,
                            o.nome as medico,
                            o.conselho,
@@ -620,6 +622,44 @@ class internacao_model extends BaseModel {
         $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
         $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
         $this->db->where('ie.internacao_evolucao_id', $internacao_evolucao_id);
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function imprimirevolucaointernacaotodas($internacao_id) {
+
+        $this->db->select('i.internacao_id,
+                           p.nome,
+                           p.paciente_id,
+                           ie.operador_cadastro,
+                           ie.internacao_evolucao_id,
+                           i.prelaudo,
+                           o.nome as medico,
+                           o.conselho,
+                           i.data_internacao,
+                           i.data_saida,
+                           i.senha,
+                           cbo.descricao as especialidade,
+                           ie.diagnostico,
+                           ie.data_cadastro,
+
+                           p.nascimento');
+        $this->db->from('tb_internacao_evolucao ie');
+        $this->db->join('tb_internacao i', 'ie.internacao_id = i.internacao_id', 'left');
+        $this->db->join('tb_paciente p', 'p.paciente_id = i.paciente_id', 'left');
+        $this->db->join('tb_operador o', 'o.operador_id = ie.operador_cadastro', 'left');
+        $this->db->join('tb_municipio m', 'm.municipio_id = p.municipio_id', 'left');
+        $this->db->join('tb_cid cid', 'cid.co_cid = i.cid1solicitado', 'left');
+        $this->db->join('tb_cid cid2', 'cid2.co_cid = i.cid2solicitado', 'left');
+        $this->db->join('tb_municipio mr', 'mr.municipio_id = i.municipio_responsavel_id', 'left');
+        
+        $this->db->join('tb_cbo_ocupacao cbo', 'cbo.cbo_ocupacao_id = o.cbo_ocupacao_id', 'left');
+        $this->db->join('tb_procedimento_convenio pc', 'i.procedimento_convenio_id = pc.procedimento_convenio_id', 'left');
+        $this->db->join('tb_convenio c', 'c.convenio_id = pc.convenio_id', 'left');
+        $this->db->join('tb_procedimento_tuss pt', 'pc.procedimento_tuss_id = pt.procedimento_tuss_id', 'left');
+        $this->db->join('tb_internacao_leito il', 'il.internacao_leito_id = i.leito', 'left');
+        $this->db->where('ie.internacao_id', $internacao_id);
+        $this->db->orderby('ie.internacao_evolucao_id');
         $return = $this->db->get();
         return $return->result();
     }

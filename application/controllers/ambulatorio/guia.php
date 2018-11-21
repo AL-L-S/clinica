@@ -3086,6 +3086,24 @@ class Guia extends BaseController {
             // if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
             //     $this->guia->descontacreditopaciente();
             // }
+            $valorSomadoProc = $this->guia->listarexameguiaprocedimentosmodelo2($guia_id);
+            $valor_total = $valorSomadoProc[0]->valor_total;
+            $paciente_id = $valorSomadoProc[0]->paciente_id;
+            $valor_metade = (float) $valor_total/2;
+            $valor_pago = 0;
+            $forma_cadastradaTotal = $this->guia->agendaExamesFormasPagamentoGuiaTotalLab($guia_id);
+            if(count($forma_cadastradaTotal) > 0){
+                $valor_pago = (float) $forma_cadastradaTotal[0]->valor_total_pago;
+            }
+        //    echo '<pre>';
+    //        var_dump($forma_cadastradaTotal);
+        //    var_dump($valor_metade);
+        //    var_dump($valor_pago);
+        //    die;
+            if($valor_metade < $valor_pago){
+    //            echo 'asuhdhuasd';
+                redirect(base_url() . "ambulatorio/guia/enviarExamesLabLuz/$guia_id/$paciente_id");
+            }
 
             if ($ambulatorio_guia_id == "-1") {
                 $data['mensagem'] = 'Erro ao gravar pagamento. Opera&ccedil;&atilde;o cancelada.';
@@ -3111,6 +3129,24 @@ class Guia extends BaseController {
             // if ($_POST['formapamento1'] == 1000 || $_POST['formapamento2'] == 1000 || $_POST['formapamento3'] == 1000 || $_POST['formapamento4'] == 1000) {
             //     $this->guia->descontacreditopaciente();
             // }
+            $valorSomadoProc = $this->guia->listarexameguiaprocedimentosmodelo2($guia_id);
+            $valor_total = $valorSomadoProc[0]->valor_total;
+            $paciente_id = $valorSomadoProc[0]->paciente_id;
+            $valor_metade = (float) $valor_total/2;
+            $valor_pago = 0;
+            $forma_cadastradaTotal = $this->guia->agendaExamesFormasPagamentoGuiaTotalLab($guia_id);
+            if(count($forma_cadastradaTotal) > 0){
+                $valor_pago = (float) $forma_cadastradaTotal[0]->valor_total_pago;
+            }
+        //    echo '<pre>';
+    //        var_dump($forma_cadastradaTotal);
+        //    var_dump($valor_metade);
+        //    var_dump($valor_pago);
+        //    die;
+            if($valor_metade < $valor_pago){
+    //            echo 'asuhdhuasd';
+                redirect(base_url() . "ambulatorio/guia/enviarExamesLabLuz/$guia_id/$paciente_id");
+            }
 
             if ($ambulatorio_guia_id == "-1") {
                 $data['mensagem'] = 'Erro ao gravar pagamento. Opera&ccedil;&atilde;o cancelada.';

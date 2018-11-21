@@ -28,7 +28,7 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
      
     }
 
-    $texto = @$paciente[0]->diagnostico;
+    // $texto = @$paciente[0]->diagnostico;
     ?>
     <style> 
     p {margin-top:0px;margin-bottom:0px;}
@@ -73,28 +73,57 @@ if ($empresapermissoes[0]->desativar_personalizacao_impressao == 'f') {
     //}
     ?>
     <p style='text-align:center;font-size: 15pt;font-weight: bold'> Evolução </p>
-    <div class="divTamanhoMaximo">
-        <div>
-            <table border="1">
-                <tr>
-                    <td class="textoCentro">
-                    <?=date("d/m/Y", strtotime($paciente[0]->data_cadastro))?>
-                    </td>
-                    <td>
-                        <?=$texto?>
-                    </td>
-                </tr>
-                <tr class="semBorda">
+    <br>
+    <!-- <div class="divTamanhoMaximo"> -->
+        <!-- <div> -->
+            <?
+            $maxLinhas = 40;
+            $maxCharLinha = 100;
+            $contadorLinhas = 0;
+            $contadorChar = 0;
+            $linhasAdicionais = 6;
+            ?>
+            <?foreach ($paciente as $key => $item) {?>
                 
-                    <td colspan="2" class="textoDireita">
-                        <?=$paciente[0]->medico?> <br> 
-                        Especialidade - CRM
-                    </td>
-                </tr>
-                
-            </table>
-        </div>
-    </div>
+                <table border="1">
+                    <tr>
+                        <td class="textoCentro">
+                         <?=date("d/m/Y", strtotime($item->data_cadastro))?>
+                        </td>
+                        <td>
+                            <?=$item->diagnostico?>
+                        </td>
+                    </tr>
+                    <tr class="semBorda">
+                    
+                        <td colspan="2" class="textoDireita">
+                            <?=$item->medico?> <br> 
+                            <?=$item->especialidade?> - <?=$item->conselho?>
+                        </td>
+                    </tr>
+                    
+                </table>
+                <br>
+                <?
+                    $contadorChar = strlen($item->diagnostico);
+                    if($contadorChar > $maxCharLinha){
+                        $contadorLinhas += ceil($contadorChar/$maxCharLinha);
+                        
+                    }else{
+                        $contadorLinhas++;
+                    }
+                    // $contadorLinhas += $linhasAdicionais; 
+                    if($contadorLinhas >= $maxLinhas){
+                        $pulos = $contadorLinhas - $maxLinhas;
+                        for ($i=1; $i <= $pulos; $i++) { 
+                           echo '<hr>';
+                        }                        
+                        $contadorLinhas = 0;
+                    }
+                ?>
+            <? }?>
+        <!-- </div> -->
+    <!-- </div> -->
     <!-- <p style='text-align:left;'> $texto </p> -->
     
 

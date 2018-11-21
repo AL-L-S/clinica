@@ -31,20 +31,22 @@ class forma_model extends Model {
         return $this->db;
     }
     
-//    function listar2($args = array()) {
-//        $this->db->select('c.forma_entradas_saida_id,
-//                            c.conta,
-//                            c.agencia,
-//                            c.empresa_id,
-//                            c.descricao');
-//        $this->db->from('tb_forma_entradas_saida c');        
-//        $this->db->where('c.ativo', 'true');        
-//        
-//        $return = $this->db->get();
-//        return $return->result();
-//    }
-//    
-//    function listarcontas($args = array()) {
+    function listarcontas() {
+        $this->db->select('c.forma_entradas_saida_id,
+                            c.conta,
+                            c.agencia,
+                            c.empresa_id,
+                            e.nome,
+                            c.descricao');
+        $this->db->from('tb_forma_entradas_saida c');        
+        $this->db->join('tb_empresa e', 'e.empresa_id = c.empresa_id', 'left');        
+        $this->db->where('c.ativo', 'true');        
+        
+        $return = $this->db->get();
+        return $return->result();
+    }
+    
+//    function listarcontas2($args = array()) {
 //        $this->db->select('e.empresa_id,
 //                           e.nome
 //                                            ');

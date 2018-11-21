@@ -258,6 +258,13 @@ $this->load->library('utilitario');
 Utilitario::pmf_mensagem($this->session->flashdata('message'));
 ?>
 <script type="text/javascript">
+        var formID = document.getElementById("form_faturar");
+        var send = $("#btnEnviar");
+        $(formID).submit(function(event){ 
+            if (formID.checkValidity()) {
+                send.attr('disabled', 'disabled');
+            }
+        });
         $(function () {
             $('#desconto').change(function () {
                 descontoFuncao();

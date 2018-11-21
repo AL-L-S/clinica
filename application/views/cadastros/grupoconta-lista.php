@@ -9,10 +9,10 @@
         <h3 class="singular"><a href="#">Manter Grupo Conta</a></h3>
         <div>
             <table>
-<!--                <thead>
+                <thead>
                     <tr>
                         <th colspan="5" class="tabela_title">
-                            <form method="get" action="<?= base_url() ?>cadastros/grupomedico/pesquisar">
+                            <form method="get" action="<?= base_url() ?>cadastros/grupoconta/pesquisar">
                                 <input type="text" name="nome" class="texto10 bestupper" value="<?php echo @$_GET['nome']; ?>" />
                                 <button type="submit" id="enviar">Pesquisar</button>
                             </form>
@@ -22,47 +22,47 @@
                         <th class="tabela_header">Nome</th>
                         <th class="tabela_header" colspan="2"><center>Detalhes</center></th>
                     </tr>
-                </thead>-->
+                </thead>
                 <?php
-//                $url = $this->utilitario->build_query_params(current_url(), $_GET);
-//                $consulta = $this->grupoconta->listar($_GET);
-//                $total = $consulta->count_all_results();
-//                $limit = 10;
-//                isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
+                $url = $this->utilitario->build_query_params(current_url(), $_GET);
+                $consulta = $this->grupoconta->listar($_GET);
+                $total = $consulta->count_all_results();
+                $limit = 10;
+                isset($_GET['per_page']) ? $pagina = $_GET['per_page'] : $pagina = 0;
 
-//                if ($total > 0) {
+                if ($total > 0) {
                     ?>
                     <tbody>
                         <?php
-//                        $lista = $this->grupoconta->listar($_GET)->limit($limit, $pagina)->orderby("nome")->get()->result();
-//                        $estilo_linha = "tabela_content01";
-//                        foreach ($lista as $item) {
-//                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
+                        $lista = $this->grupoconta->listar($_GET)->limit($limit, $pagina)->orderby("nome")->get()->result();
+                        $estilo_linha = "tabela_content01";
+                        foreach ($lista as $item) {
+                            ($estilo_linha == "tabela_content01") ? $estilo_linha = "tabela_content02" : $estilo_linha = "tabela_content01";
                             ?>
-<!--                            <tr>
+                            <tr>
                                 <td class="<?php echo $estilo_linha; ?>"><?= $item->nome; ?></td>
 
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>cadastros/grupomedico/carregargrupomedicoadicionar/<?= $item->operador_grupo_id ?>">Editar</a></div>
+                                    <a href="<?= base_url() ?>cadastros/grupoconta/carregargrupocontaadicionar/<?= $item->conta_grupo_id ?>">Editar</a></div>
                                 </td>
                                 <td class="<?php echo $estilo_linha; ?>" width="60px;"><div class="bt_link">
-                                    <a href="<?= base_url() ?>cadastros/grupomedico/excluir/<?= $item->operador_grupo_id ?>">Excluir</a></div>
+                                    <a href="<?= base_url() ?>cadastros/grupoconta/excluir/<?= $item->conta_grupo_id ?>">Excluir</a></div>
                                 </td>
                             </tr>
 
-                        </tbody>-->
+                        </tbody>
                         <?php
-//                    }
-//                }
+                    }
+                }
                 ?>
-<!--                <tfoot>
+                <tfoot>
                     <tr>
                         <th class="tabela_footer" colspan="6">
                             <?php $this->utilitario->paginacao($url, $total, $pagina, $limit); ?>
                             Total de registros: <?php echo $total; ?>
                         </th>
                     </tr>
-                </tfoot>-->
+                </tfoot>
             </table>
         </div>
     </div>

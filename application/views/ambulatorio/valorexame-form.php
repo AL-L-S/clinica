@@ -125,16 +125,21 @@ if ($perfil_id != 1) {
                     $mostrarBotao = true;
                     // Caso o caixa esteja fechado
                     // ele não deixa o botão pra trocar o procedimento.
-                    if(count($forma_cadastrada) > 0){
-                        $array_financeiroPG = $forma_cadastrada[0]->array_financeiro;
-                        $array_financeiroStr = str_replace('{', '',str_replace('}', '', $array_financeiroPG));
-                        $array_financeiro = explode(',', $array_financeiroStr);
-                        
-                        if(in_array('t', $array_financeiro)){
-                            $mostrarBotao = false;
+                    if($empresapermissoes[0]->faturamento_novo == 't'){
+
+                        if(count($forma_cadastrada) > 0){
+                            $array_financeiroPG = $forma_cadastrada[0]->array_financeiro;
+                            $array_financeiroStr = str_replace('{', '',str_replace('}', '', $array_financeiroPG));
+                            $array_financeiro = explode(',', $array_financeiroStr);
+                            
+                            if(in_array('t', $array_financeiro)){
+                                $mostrarBotao = false;
+                            }
                         }
                     }
-                    
+                    if(@$exame[0]->financeiro == 'f'){
+                        $mostrarBotao = false;
+                    }
                     ?>
                     <?if($mostrarBotao){?>
                         <button type="submit" name="btnEnviar">Enviar</button>
