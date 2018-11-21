@@ -8732,6 +8732,7 @@ class guia_model extends Model {
                             ae.data,
                             ae.inicio,
                             ae.fim,
+                            ae.financeiro,
                             pc.convenio_id,
                             pc.procedimento_convenio_id,
                             ae.data_entregue,

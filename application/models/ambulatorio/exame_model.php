@@ -123,18 +123,16 @@ class exame_model extends Model {
         
         $guiche = $_POST['guiche'];
         $operador_id = $_POST['operador_id'];
-        $count = count($operador_id);
+        // $count = count($operador_id);
         
-            for($i=0; $i<$count; $i++){            
-
-                    if($guiche[$i] != ''){
-                    $this->db->set('guiche', $guiche[$i]);
-                    }else{
-                    $this->db->set('guiche', 0);    
-                    }
-                    $this->db->where('operador_id', $operador_id[$i]);                    
-                    $this->db->update('tb_operador');
-            }
+        // var_dump($_POST); die;
+        if($guiche > 0){
+            $this->db->set('guiche', $guiche);
+        }else{
+            $this->db->set('guiche', 0);    
+        }
+        $this->db->where('operador_id', $operador_id);                    
+        $this->db->update('tb_operador');
         
         
         $erro = $this->db->_error_message();
