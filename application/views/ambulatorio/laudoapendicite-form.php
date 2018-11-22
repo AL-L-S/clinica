@@ -42,6 +42,13 @@
     $this->load->library('utilitario');
     Utilitario::pmf_mensagem($this->session->flashdata('message'));
     ?>
+
+    <?
+    $detalhamento = $this->laudo->preencherlaudous($obj->_paciente_id, $obj->_guia_id);
+    $diagnostico = json_decode(@$detalhamento[0]->simnao);
+    $diagnosticous = json_decode(@$detalhamento[0]->perguntas);
+//                   echo '<pre>';var_dump();die;
+    ?>
     <div >
         <form name="form_laudo" id="form_laudo" action="<?= base_url() ?>ambulatorio/laudo/gravarlaudoapendicite/<?= $ambulatorio_laudo_id ?>" method="post">
             <div >
@@ -65,19 +72,19 @@
                         <tr height="30px">
                             <td style="padding-left: 350px"><b>Histórico Clínico:</b></td>
                             <td>
-                                <input type="text" name="historicoclinico" id="historicoclinico" value="<?= @$obj->_ciddescricao; ?>" class="size3" />
+                                <input type="text" name="historicoclinico" id="historicoclinico" value="<?= @$diagnosticous->historicoclinico; ?>" class="size3" />
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px"><b>Estudos Anteriores:</b></td>
                             <td>
-                                <input type="text" name="estudosanteriores" id="estudosanteriores" value="<?= @$obj->_ciddescricao; ?>" class="size3" />
+                                <input type="text" name="estudosanteriores" id="estudosanteriores" value="<?= @$diagnosticous->estudosanteriores; ?>" class="size3" />
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px"><b>Descobertas:</b></td>
                             <td>
-                                <input type="text" name="descobertas" id="descobertas" value="<?= @$obj->_ciddescricao; ?>" class="size3" />
+                                <input type="text" name="descobertas" id="descobertas" value="<?= @$diagnosticous->descobertas; ?>" class="size3" />
                             </td>
                         </tr>
                         <tr height="30px">
@@ -86,15 +93,17 @@
                         <tr height="30px">
                             <td style="padding-left: 350px">&nbsp;&nbsp;&nbsp;&nbsp;- Visualizado:</td>
                             <td>
-                                <input type="text" name="visualizado" id="visualizado" value="<?= @$obj->_ciddescricao; ?>" class="size3" />
+                                <input type="text" name="visualizado" id="visualizado" value="<?= @$diagnosticous->visualizado; ?>" class="size3" />
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px">&nbsp;&nbsp;&nbsp;&nbsp;- Com Fluido:</td>
                             <td>
-                                <input type="radio" id="comfluidosim" name="comfluido" value='SIM'>
+                                <input type="radio" id="comfluidosim" name="comfluido" value='SIM' <? if (@$diagnostico->comfluido == "SIM"):echo 'checked';
+    endif; ?>>
                                 Sim
-                                <input type="radio" id="comfluidonao" name="comfluido" value='NAO'>
+                                <input type="radio" id="comfluidonao" name="comfluido" value='NAO' <? if (@$diagnostico->comfluido == "NAO"):echo 'checked';
+    endif; ?>>
                                 Não
                             </td>
                         </tr>
@@ -102,24 +111,28 @@
                             <td style="padding-left: 350px">&nbsp;&nbsp;&nbsp;&nbsp;- Compressível:</td>
 
                             <td>
-                                <input type="radio" id="compressivelsim" name="compressivel" value='SIM'>
+                                <input type="radio" id="compressivelsim" name="compressivel" value='SIM' <? if (@$diagnostico->compressivel == "SIM"):echo 'checked';
+    endif; ?>>
                                 Sim
-                                <input type="radio" id="compressivelnao" name="compressivel" value='NAO'>
+                                <input type="radio" id="compressivelnao" name="compressivel" value='NAO' <? if (@$diagnostico->compressivel == "NAO"):echo 'checked';
+    endif; ?>>
                                 Não
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px">&nbsp;&nbsp;&nbsp;&nbsp;- Diâmetro máximo com compressão (parede exterior a parede exterior):</td>
                             <td>
-                                <input type="text" name="diametromax" id="diametromax" value="<?= @$obj->_ciddescricao; ?>" class="size3" />
+                                <input type="text" name="diametromax" id="diametromax" value="<?= @$diagnosticous->diametromax; ?>" class="size3" />
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px">&nbsp;&nbsp;&nbsp;&nbsp;- Apendicólito:</td>
                             <td>
-                                <input type="radio" id="apendicolitosim" name="apendicolito" value='SIM'>
+                                <input type="radio" id="apendicolitosim" name="apendicolito" value='SIM' <? if (@$diagnostico->apendicolito == "SIM"):echo 'checked';
+    endif; ?>>
                                 Sim
-                                <input type="radio" id="apendicolitonao" name="apendicolito" value='NAO'>
+                                <input type="radio" id="apendicolitonao" name="apendicolito" value='NAO' <? if (@$diagnostico->apendicolito == "NAO"):echo 'checked';
+    endif; ?>>
                                 Não
                             </td>
                         </tr>
@@ -130,36 +143,44 @@
                             <td style="padding-left: 350px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- Hiperemia:</td>
                             <td>
                                 <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-                                <input type="radio" id="hiperemiasim" name="hiperemia" value='SIM'>
+                                <input type="radio" id="hiperemiasim" name="hiperemia" value='SIM' <? if (@$diagnostico->hiperemia == "SIM"):echo 'checked';
+    endif; ?>>
                                 Sim
-                                <input type="radio" id="hiperemianao" name="hiperemia" value='NAO'>
+                                <input type="radio" id="hiperemianao" name="hiperemia" value='NAO' <? if (@$diagnostico->hiperemia == "NAO"):echo 'checked';
+    endif; ?>>
                                 Não
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- Espessamento (>2mm):</td>
                             <td>
-                                <input type="radio" id="espessamentosim" name="espessamento" value='SIM'>
+                                <input type="radio" id="espessamentosim" name="espessamento" value='SIM' <? if (@$diagnostico->espessamento == "SIM"):echo 'checked';
+    endif; ?>>
                                 Sim
-                                <input type="radio" id="espessamentonao" name="espessamento" value='NAO'>
+                                <input type="radio" id="espessamentonao" name="espessamento" value='NAO' <? if (@$diagnostico->espessamento == "NAO"):echo 'checked';
+    endif; ?>>
                                 Não
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- Perda de estratificação mural:</td>
                             <td>
-                                <input type="radio" id="pemuralsim" name="pemural" value='SIM'>
+                                <input type="radio" id="pemuralsim" name="pemural" value='SIM' <? if (@$diagnostico->pemural == "SIM"):echo 'checked';
+    endif; ?>>
                                 Sim
-                                <input type="radio" id="pemuralnao" name="pemural" value='NAO'>
+                                <input type="radio" id="pemuralnao" name="pemural" value='NAO' <? if (@$diagnostico->pemural == "NAO"):echo 'checked';
+    endif; ?>>
                                 Não
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px"><b>Fluido Livre:</b></td>
                             <td>
-                                <input type="radio" id="fluidolivresim" name="fluidolivre" value='SIM'>
+                                <input type="radio" id="fluidolivresim" name="fluidolivre" value='SIM' <? if (@$diagnostico->fluidolivre == "SIM"):echo 'checked';
+    endif; ?>>
                                 Sim
-                                <input type="radio" id="fluidolivrenao" name="fluidolivre" value='NAO'>
+                                <input type="radio" id="fluidolivrenao" name="fluidolivre" value='NAO' <? if (@$diagnostico->fluidolivre == "NAO"):echo 'checked';
+    endif; ?>>
                                 Não 
                             </td>
 
@@ -167,25 +188,29 @@
                         <tr height="30px">
                             <td style="padding-left: 350px"><b>Aumento da ecogenicidade da gordura periapendicular:</b></td>
                             <td>
-                                <input type="radio" id="aegperiapendicular2sim" name="aegperiapendicular" value='SIM'>
+                                <input type="radio" id="aegperiapendicular2sim" name="aegperiapendicular" value='SIM' <? if (@$diagnostico->aegperiapendicular == "SIM"):echo 'checked';
+    endif; ?>>
                                 Sim
-                                <input type="radio" id="aegperiapendicularnao" name="aegperiapendicular" value='NAO'>
+                                <input type="radio" id="aegperiapendicularnao" name="aegperiapendicular" value='NAO' <? if (@$diagnostico->aegperiapendicular == "NAO"):echo 'checked';
+    endif; ?>>
                                 Não
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px"><b>Abscesso:</b></td>
                             <td>
-                                <input type="radio" id="abscessosim" name="abscesso" value='SIM'>
+                                <input type="radio" id="abscessosim" name="abscesso" value='SIM' <? if (@$diagnostico->abscesso == "SIM"):echo 'checked';
+    endif; ?>>
                                 Sim
-                                <input type="radio" id="abscessonao" name="abscesso" value='NAO'>
+                                <input type="radio" id="abscessonao" name="abscesso" value='NAO' <? if (@$diagnostico->abscesso == "NAO"):echo 'checked';
+    endif; ?>>
                                 Não
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px"><b>Descobertas Adicionais:</b></td>
                             <td>
-                                <input type="text" name="descobertasadc" id="descobertasadc" value="<?= @$obj->_ciddescricao; ?>" class="size3" />
+                                <input type="text" name="descobertasadc" id="descobertasadc" value="<?= @$diagnosticous->descobertasadc; ?>" class="size3" />
                             </td>
                         </tr>
                         <tr height="60px">
@@ -194,13 +219,13 @@
                         <tr height="30px">
                             <td style="padding-left: 350px">Escore de Apendicite:</td>
                             <td>
-                                <input type="text" name="escoreapendicite" id="escoreapendicite" value="<?= @$obj->_ciddescricao; ?>" class="size3" />
+                                <input type="text" name="escoreapendicite" id="escoreapendicite" value="<?= @$diagnosticous->escoreapendicite; ?>" class="size3" />
                             </td>
                         </tr>
                         <tr height="30px">
                             <td style="padding-left: 350px">Diagnóstico adicional/alternativo</td>
                             <td>
-                                <input type="text" name="diagnosticoadc" id="diagnosticoadc" value="<?= @$obj->_ciddescricao; ?>" class="size3" />
+                                <input type="text" name="diagnosticoadc" id="diagnosticoadc" value="<?= @$diagnosticous->diagnosticoadc; ?>" class="size3" />
                             </td>
                         </tr>
                     </table>
@@ -249,7 +274,7 @@
                 <br>
                 <table align="center">
                     <td><button type="submit" name="btnEnviar">Salvar</button></td>
-                    <td width="40px;"><button type="button" name="btnImprimir" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoparecer/<?= $ambulatorio_laudo_id ?>');">
+                    <td width="40px;"><button type="button" name="btnImprimir" onclick="javascript:window.open('<?= base_url() ?>ambulatorio/laudo/impressaoapendicite/<?= $ambulatorio_laudo_id ?>');">
 
                             Imprimir
                         </button>

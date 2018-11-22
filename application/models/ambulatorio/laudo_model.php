@@ -4367,6 +4367,17 @@ class laudo_model extends Model {
         $result = $return->result();
         return $result;
     }
+    
+    function preencherlaudous($paciente_id, $guia_id) {
+
+        $this->db->select('*');
+        $this->db->from('tb_laudo_apendicite lap');
+        $this->db->where('lap.guia_id', $guia_id);
+        $this->db->where('lap.paciente_id', $paciente_id);
+        $return = $this->db->get();
+        $result = $return->result();
+        return $result;
+    }
 
     function preencherecocardio($paciente_id, $guia_id) {
 
@@ -4640,7 +4651,7 @@ class laudo_model extends Model {
                 "aegperiapendicular" => (isset($_POST["aegperiapendicular"])) ? $_POST["aegperiapendicular"] : '',
                 "abscesso" => (isset($_POST["abscesso"])) ? $_POST["abscesso"] : ''
             );
-            $resposta_form = array(
+            $pergunta_form = array(
                 "historicoclinico" => (isset($_POST["historicoclinico"])) ? $_POST["historicoclinico"] : '',
                 "estudosanteriores" => (isset($_POST["estudosanteriores"])) ? $_POST["estudosanteriores"] : '',
                 "descobertas" => (isset($_POST["descobertas"])) ? $_POST["descobertas"] : '',
@@ -4652,13 +4663,13 @@ class laudo_model extends Model {
                 
             );
             
-            $this->db->select('lp.guia_id, lp.paciente_id');
+            $this->db->select('la.guia_id, la.paciente_id');
             $this->db->from('tb_laudo_apendicite la');
             $this->db->where('la.guia_id', $_POST['guia_id']);
             $this->db->where('la.paciente_id', $_POST['paciente_id']);
             $return = $this->db->get();
             $result = $return->result();
-            //  var_dump($result);die;
+//              var_dump(count($result));die;
 
             if (count($result) > 0) {
                 if (count($simnao_form) > 0) {
@@ -4678,38 +4689,22 @@ class laudo_model extends Model {
                 $this->db->set('guia_id', $_POST['guia_id']);
                 $this->db->update('tb_laudo_apendicite');
             } else {
-                if (count($dados_form) > 0) {
-                    $this->db->set('dados', json_encode($dados_form));
+                if (count($simnao_form) > 0) {
+                    $this->db->set('simnao', json_encode($simnao_form));
                 } else {
-                    $this->db->set('dados', '');
+                    $this->db->set('simnao', '');
                 }
-                if (count($exames_form) > 0) {
-                    $this->db->set('exames', json_encode($exames_form));
+                if (count($pergunta_form) > 0) {
+                    $this->db->set('perguntas', json_encode($pergunta_form));
                 } else {
-                    $this->db->set('exames', '');
-                }
-                if (count($examesc_form) > 0) {
-                    $this->db->set('exames_complementares', json_encode($examesc_form));
-                } else {
-                    $this->db->set('exames_complementares', '');
-                }
-                if (count($hipotese_diagnostica) > 0) {
-                    $this->db->set('hipotese_diagnostica', json_encode($hipotese_diagnostica));
-                } else {
-                    $this->db->set('hipotese_diagnostica', '');
-                }
-                if (isset($_POST['sim'])) {
-                    $this->db->set('antibiotico', "SIM");
-                }
-                if (isset($_POST['nao'])) {
-                    $this->db->set('antibiotico', "NÃO");
-                }
+                    $this->db->set('perguntas', '');
+                }   
 
                 $this->db->where('guia_id', $_POST['guia_id']);
                 $this->db->where('paciente_id', $_POST['paciente_id']);
                 $this->db->set('paciente_id', $_POST['paciente_id']);
                 $this->db->set('guia_id', $_POST['guia_id']);
-                $this->db->insert('tb_laudo_parecer');
+                $this->db->insert('tb_laudo_apendicite');
             }
             $erro = $this->db->_error_message();
             if (trim($erro) != "") // erro de banco

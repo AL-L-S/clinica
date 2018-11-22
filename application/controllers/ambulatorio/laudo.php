@@ -2302,6 +2302,27 @@ class Laudo extends BaseController {
 
         $this->load->View('ambulatorio/impressao_parecer_cirurgia_pediatrica', $data);
     }
+    
+    function impressaoapendicite($ambulatorio_laudo_id) {
+
+        //$this->load->plugin('mpdf');
+        $obj_laudo = new laudo_model($ambulatorio_laudo_id);
+        $data['laudo'] = $this->laudo->listarlaudo($ambulatorio_laudo_id);
+        $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
+        $data['empresa'] = $this->guia->listarempresa();
+        $data['obj'] = $obj_laudo;
+        $paciente_id = @$obj_laudo->_paciente_id;
+        $guia_id = @$obj_laudo->_guia_id;
+        $data['parecer'] = $this->laudo->preencherparecer($paciente_id, $guia_id);
+
+        $dataFuturo = date("Y-m-d");
+        $dataAtual = $data['laudo']['0']->nascimento;
+        $date_time = new DateTime($dataAtual);
+        $diff = $date_time->diff(new DateTime($dataFuturo));
+        $teste = $diff->format('%Ya %mm %dd');
+
+        $this->load->View('ambulatorio/impressao_laudo_apendicite', $data);
+    }
 
     function impressaocirurgia($ambulatorio_laudo_id) {
 
@@ -4720,9 +4741,9 @@ class Laudo extends BaseController {
 
         $this->laudo->gravarlaudoapendicite($ambulatorio_laudo_id);
         $data['ambulatorio_laudo_id'] = $ambulatorio_laudo_id;
-        $data['mensagem'] = 'Parecer gravado com sucesso';
+        $data['mensagem'] = 'Laudo Apendicite gravado com sucesso';
         $this->session->set_flashdata('message', $data['mensagem']);
-        redirect(base_url() . "ambulatorio/laudo/carregarparecer/$ambulatorio_laudo_id");
+        redirect(base_url() . "ambulatorio/laudo/preencherlaudoapendicite/$ambulatorio_laudo_id");
     }
 
     function gravaravaliacao($ambulatorio_laudo_id) {
