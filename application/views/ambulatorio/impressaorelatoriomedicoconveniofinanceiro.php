@@ -160,9 +160,12 @@ switch ($MES) {
                     $valor_total_calculo = 0;
                     $valor_credito = 0;
                     $producao_paga = 'f';
+                    $descontoTotal = 0;
+                    
                     foreach ($relatorio as $item) :
                         $i++;
                         $procedimentopercentual = $item->procedimento_convenio_id;
+                        $descontoAtual = 0;
 //            $medicopercentual = $item->medico_parecer1;
                         $medicopercentual = $item->operador_id;
                         if ($item->grupo != "RETORNO") {
@@ -173,6 +176,15 @@ switch ($MES) {
 
                         if($item->producao_paga == 't'){
                             $producao_paga = 't';
+                        }
+
+                        if($empresa_permissao[0]->faturamento_novo == 't'){
+                            $descontoForma = $this->guia->listardescontoTotal($item->agenda_exames_id);
+                            // var_dump($descontoForma);
+                            if(count($descontoForma) > 0){
+                                $descontoTotal+= $descontoForma[0]->desconto;
+                                $descontoAtual = $descontoForma[0]->desconto;
+                            }
                         }
 
                         $valor_total = $item->valor_total;
@@ -491,7 +503,48 @@ switch ($MES) {
                     </tr>
                 </tbody>
             </table>
+            <?if($empresa_permissao[0]->faturamento_novo == 't'){?>
+                <br>
+                <br>
+                <table border="1">
+                    <tr>
+                        <td>
+                            TOTAL BRUTO
+                        </td>
+                        <td>
+                            <?= number_format($resultadototalgeral + $totalperc, 2, ",", "."); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            TOTAL DESCONTO
+                        </td>
+                        <td>
+                            <?= number_format($descontoTotal, 2, ",", "."); ?>         
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            PRODUÇÃO MÉDICA
+                        </td>
+                        <td>
+                            <?= number_format($totalperc, 2, ",", "."); ?> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            SALDO
+                        </td>
+                        <td>
+                            <?= number_format($resultadototalgeral, 2, ",", "."); ?>          
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+            <?}?>
         <? endif; ?>
+
 
         <? if (count($relatoriohomecare) > 0): ?>
             <hr>

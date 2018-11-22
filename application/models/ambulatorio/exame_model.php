@@ -7219,6 +7219,8 @@ class exame_model extends Model {
 
             $i++;
         }
+        // echo 'something';
+        // die;
         return $ambulatorio_gasto_sala_id;
     }
 

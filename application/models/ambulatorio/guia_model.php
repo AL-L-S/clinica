@@ -530,7 +530,8 @@ class guia_model extends Model {
                             ep.ocupacao_pai,
                             ep.faturamento_novo,
                             ep.filtrar_agenda,
-                            ep.impressao_cimetra
+                            ep.impressao_cimetra,
+                            ep.faturamento_novo
                             
                             ');
         $this->db->from('tb_empresa e');
@@ -5216,6 +5217,7 @@ class guia_model extends Model {
                             pt.nome as procedimento,
                             pc.procedimento_convenio_id,
                             ae.autorizacao,
+                            ae.agenda_exames_id,
                             ae.percentual_medico,
                             ae.valor_medico,
                             ae.percentual_laboratorio,
@@ -9201,6 +9203,18 @@ class guia_model extends Model {
         $this->db->where('c.dinheiro', 't');
         $this->db->where("guia_id", $guia_id);
         $this->db->groupby("guia_id, paciente_id");
+        $return = $this->db->get();
+        return $return->result();
+    }
+
+    function listardescontoTotal($agenda_exames_id) {
+
+        $this->db->select('sum(aef.desconto) as desconto');
+                        
+        $this->db->from('tb_agenda_exames_faturar aef');
+        $this->db->where("aef.ativo", 't');
+        $this->db->where("aef.agenda_exames_id", $agenda_exames_id);
+        $this->db->groupby("aef.agenda_exames_id");
         $return = $this->db->get();
         return $return->result();
     }

@@ -1303,7 +1303,7 @@ class Autocomplete extends Controller {
     function listarhorarioscalendario() {
 //            echo $_POST['custom_param1'];
         if (count($_POST) > 0) {
-            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], null, $_POST['empresa'], $_POST['sala'], $_POST['grupo'], $_POST['tipoagenda'],  $_POST['procedimento']);
+            $result = $this->exametemp->listarhorarioscalendariovago($_POST['medico'], null, $_POST['empresa'], $_POST['sala'], $_POST['grupo'], $_POST['tipoagenda'],  @$_POST['procedimento']);
 //            $algo = 'asd';
         } else {
             $result = $this->exametemp->listarhorarioscalendariovago();
@@ -1346,7 +1346,7 @@ class Autocomplete extends Controller {
             } else {
                 $nome = null;
             }
-            if ($_POST['procedimento'] != '') {
+            if (@$_POST['procedimento'] != '') {
                 $procedimento = $_POST['procedimento'];
             } else {
                 $procedimento = null;
