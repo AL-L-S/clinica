@@ -2204,6 +2204,9 @@ class Exame extends BaseController {
                     $this->exame->faturargastodesala($data['procedimento'][0], $gasto_id);
                 }
             }
+            $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
+            $convenio_id = $data['agenda_exames'][0]->convenio_id;
+            redirect(base_url() . "ambulatorio/exame/gastosdesala/$exame_id/$convenio_id/$sala_id");
         } else {
             $data['agenda_exames'] = $this->exame->listaagendaexames($exame_id);
             $convenio_id = $data['agenda_exames'][0]->convenio_id;

@@ -3670,7 +3670,7 @@ class procedimentoplano_model extends Model {
                             $this->db->set('qtdeuco', (int) $_POST['qtdeuco']);
                             $this->db->set('valoruco', (float) $_POST['valoruco']);
                             $this->db->set('valortotal', (float) ($_POST['valortotal'] + ($_POST['valortotal'] * (float) $sec->valor_percentual / 100)));
-                            $this->db->set('empresa_id', $_POST['empresa']);
+                           
                             if ($_POST['validade'] != '') {
                                 $this->db->set("validade", $_POST['validade']);
                             }
@@ -3678,6 +3678,7 @@ class procedimentoplano_model extends Model {
                             $this->db->set('operador_atualizacao', $operador_id);
                             $this->db->where('procedimento_tuss_id', $_POST['procedimento']);
                             $this->db->where('convenio_id', $sec->convenio_secundario_id);
+                            $this->db->where('empresa_id', $_POST['empresa']);
                             $this->db->update('tb_procedimento_convenio');
                         }
                     }
